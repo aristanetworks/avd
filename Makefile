@@ -1,6 +1,6 @@
 CURRENT_DIR = $(shell pwd)
-# option to run ansible-test sanity: must be either venv or docker (default is docker)
-ANSIBLE_TEST_MODE ?= docker
+# option to run ansible-test sanity: must be either venv or docker (default is venv)
+ANSIBLE_TEST_MODE ?= venv
 MUFFET_TIMEOUT ?= 60
 
 .PHONY: help
@@ -23,7 +23,7 @@ pyavd-build: ## Build PyAVD Python package locally.
 	cd python-avd && $(MAKE) clean build
 
 .PHONY: pyavd-test
-pyavd-test: ## Test PyAVD Python code.
+pyavd-test: ## Test PyAVD Python code with tox.
 	cd python-avd && $(MAKE) clean && tox -r
 
 .PHONY: pyavd-publish
@@ -44,19 +44,19 @@ pyavd-editable-install: ## Build and install PyAVD as editable
 #########################################
 
 .PHONY: sanity
-sanity: sanity-info sanity-lint sanity-import ## Run ansible-test sanity validation.
+sanity: sanity-info sanity-lint sanity-import ## Run ansible-test sanity validation. Requires docker.
 
 .PHONY: sanity-info
 sanity-info: ## Show information about ansible-test.
 	cd ansible_collections/arista/avd/ ; ansible-test env
 
 .PHONY: sanity-lint
-sanity-lint: ## Run ansible-test sanity for code sanity. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+sanity-lint: ## Run ansible-test sanity for code sanity. Specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 	cd ansible_collections/arista/avd/ ; \
 	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import
 
 .PHONY: sanity-import
-sanity-import: ## Run ansible-test sanity for code import. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+sanity-import: ## Run ansible-test sanity for code import. Specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 	cd ansible_collections/arista/avd/ ; \
 	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --test import
 
@@ -71,7 +71,7 @@ galaxy-importer:  ## Run galaxy importer tests.
 #############################################
 
 .PHONY: unit-tests
-unit-tests: ## Run unit test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+unit-tests: ## Run unit test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 	cd ansible_collections/arista/avd/ ; \
 	ansible-test units --requirements --$(ANSIBLE_TEST_MODE) -vv
 
@@ -80,6 +80,6 @@ unit-tests: ## Run unit test cases using ansible-test. Specify `ANSIBLE_TEST_MOD
 ###################################################
 
 .PHONY: integration-tests
-integration-tests: ## Run integration test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+integration-tests: ## Run integration test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 	cd ansible_collections/arista/avd/ ; \
 	ansible-test integration --requirements --$(ANSIBLE_TEST_MODE)

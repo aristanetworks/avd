@@ -12,23 +12,45 @@
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
-    This guide doesn't got into details on how to install common development tooling: Git, Make, Docker and Python virtualenv, as this differs from operating system to operating system.
+    This guide doesn't got into details on how to install common development tooling as this differs from operating system to operating system.
 
 ## Development environments
 
+Before setting up your development environment, create a fork of the [GitHub AVD project](https://github.com/aristanetworks/avd) and clone your fork to a local directory.
+
+Recommended directory structure:
+
+```shell
+├── avd <- Clone of forked avd GitHub repository
+└── avd-venv <- Python virtual environment, applicable only when leveraging a Local Python environment.
+```
+
 ### VSCode Dev Containers
 
-- To facilitate onboarding of development the AVD project builds [Dev Containers](../containers/overview.md) with all the required tools to get started.
-- Before you can leverage the Dev Container ensure to have [Docker](https://docs.docker.com/engine/install/) and [Visual Studio Code](https://code.visualstudio.com/) installed.
-- Follow the instruction to customize and leverage the [AVD Dev Container](../containers/overview.md#how-to-use-dev-containers).
+To facilitate onboarding of development the AVD project builds [Dev Containers](../containers/overview.md) with all the required tools to get started.
+Before you can leverage the VSCode Dev Container ensure to have the following tools installed on your workstation:
+
+- [Docker](https://docs.docker.com/engine/install/).
+- [Visual Studio Code](https://code.visualstudio.com/).
+  - Install the [Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+
+The AVD repository contains a devcontainer definition at the root of the project.
+This will be executed automatically by VSCode by following these steps:
+
+1. Start VSCode on your worksation
+2. Select "File/Open Folder..." and open the cloned avd GitHub repository (Your fork).
+3. A pop up will appear with "Folder contains a Dev Container configuration file. Reopen folder to develop in a container." Select "Reopen in Container".
 
 ### Local Python environments
 
-- Developing with your local Python environment requires configuring and installing the AVD project development tools and dependencies.
-- The development environment requires a minimum version of **Python 3.10**.
-- In addition to Python, you must have the following tools installed on your workstation: Git, Make, Docker, Python virtualenv and additional Python dependencies required by the AVD project.
+Developing with your local Python environment requires you to configure and install the AVD project development tools and dependencies installed on your workstation:
 
-Recommend steps with Python virtual environment:
+- [Python 3.10](https://docs.python.org/) or later and [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html).
+- Additional AVD Python package dependencies.
+- [Make](https://www.gnu.org/software/make/manual/make.html): Leveraged for automating software building and test procedures.
+- [Docker](https://docs.docker.com/engine/install/) (Optional): Some of the tests require docker to be executed locally and useful when troubleshooting failures of the CI pipeline.
+
+Recommended steps with Python virtual environment:
 
 1. Create and activate a Python virtual environment.
 2. Install Python requirements located in the AVD repository: [requirements-dev.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt) and [requirements.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements.txt).
@@ -37,11 +59,11 @@ Recommend steps with Python virtual environment:
     Ensure the virtual environment is located outside of the AVD project directory.
 
 ```shell
-# Create a Python virtual environment `python3 -m venv <virtual-environment-name>`.
-python3 -m venv avd-development
+# Create a Python virtual environment `python -m venv <virtual-environment-name>`.
+python3 -m venv avd-venv
 
 # Activate Python virtual environment `source <virtual-environment-name>/bin/activate`.
-source avd-development/bin/activate
+source avd-venv/bin/activate
 
 # Install AVD project requirements-dev.txt and requirements.txt in your Python Virtual environment.
 # Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
@@ -174,6 +196,9 @@ molecule converge -s eos_cli_config_gen -- --limit logging
 molecule converge -s eos_designs_unit_tests -- -vvv
 ```
 
+!!! note
+    Some of the molecule scenarios may require docker.
+
 ## Ansible-test
 
 The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to run sanity, unit and integration tests for the `arista.avd` Ansible Collection.
@@ -181,18 +206,33 @@ The AVD project leverages [ansible-test](https://www.ansible.com/blog/introducti
 Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `ansible-test`:
 
 - `sanity`: Run ansible-test sanity validation.
-- `unit-tests`: Run unit test cases using ansible-test. Optionally specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
-- `integration-tests`: Run integration test cases using `ansible-test`. Optionally specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+- `unit-tests`: Run unit test cases using ansible-test. Optionally specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
+- `integration-tests`: Run integration test cases using `ansible-test`. Optionally specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 
 Examples:
 
 ```shell
-# Run ansible-test sanity validation.
+# Run ansible-test sanity validation. Requires docker.
 make sanity
 
-# Run unit test cases using ansible-test with docker (default)
+# Run unit test cases using ansible-test with venv (default)
 make unit-test
 
-# Run integration test cases using ansible-test with venv.
-make integration-tests ANSIBLE_TEST_MODE=venv
+# Run integration test cases using ansible-test with docker.
+make integration-tests ANSIBLE_TEST_MODE=docker
+```
+
+## Tox
+
+The AVD project leverages [Tox](https://tox.wiki/) to run unit and integration of the `pyavd` Python package.
+
+Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `tox`:
+
+- `pyavd-test`: Test PyAVD Python code with tox.
+
+Example:
+
+```shell
+# Run tox on pyavd
+make pyavd-test
 ```
