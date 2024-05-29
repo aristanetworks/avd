@@ -31,8 +31,7 @@ To facilitate onboarding of development the AVD project builds [Dev Containers](
 Before you can leverage the VSCode Dev Container ensure to have the following tools installed on your workstation:
 
 - [Docker](https://docs.docker.com/engine/install/).
-- [Visual Studio Code](https://code.visualstudio.com/).
-  - Install the [Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+- [Visual Studio Code](https://code.visualstudio.com/) and the [Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
 
 The AVD repository contains a devcontainer definition at the root of the project.
 This will be executed automatically by VSCode by following these steps:
