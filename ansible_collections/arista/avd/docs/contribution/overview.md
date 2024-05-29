@@ -10,7 +10,7 @@
 
 ## Governance
 
-AVD is a community-based Free Open Source Software (FOSS) project sponsored by [Arista Networks](https://www.arista.com/). [Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eAPI or [CloudVision Portal (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
+AVD is a community-based Free Open Source Software (FOSS) project sponsored by [Arista Networks](https://www.arista.com/). Arista Networks supports Ansible for managing devices running the EOS operating system natively through eAPI or [CloudVision Portal (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
 The AVD Core Team is responsible for the direction and execution of the code that gets committed to the project.
 
@@ -24,11 +24,11 @@ The following individuals are on the AVD Core Team:
 
 ## Contributing
 
-We welcome many forms of contributions to AVD. While we understand most contributions will commonly come from ansible power users, we encourage others to contribute through docs, tutorials, and user guides. Also, if you have other ideas for contributing, don't hesitate to open an issue or have a discussion in one of the forums below.
+We welcome all forms of contribution to AVD, whether to the code base, docs, tutorials, or user guides. If you have other ideas for contributing, don't hesitate to open an issue or discuss them in one of the forums below.
 
 ### Communication
 
-Communication among the contributors should always occur via public channels. The following outlines the best ways to communicate and engage on all things AVD:
+The following links outline the best ways to communicate and engage on all things AVD:
 
 #### GitHub
 
@@ -51,20 +51,20 @@ Semantic Versioning ([SemVer](https://semver.org/)) is used for AVD versioning.
 
 ### Contributor Workflow
 
-The AVD repository follows a [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow) to collaborate on the project with personal fork.
+The AVD repository follows a [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow) to collaborate on the project with a personal fork.
 
 The following documents the lifecycle of work within AVD:
 
 1. Open/request a feature enhancement or file a bug
-  a. If bug, see [here](#reporting-bugs)
-  b. If feature request or enhancement, continue.
+  1. If a bug, please see [reporting bugs](#reporting-bugs).
+  2. If feature request or enhancement, continue.
 2. Open a GitHub Issue
-  a. The issue will be reviewed approved by a maintainer.
+    - The issue will be reviewed and approved by a maintainer.
 3. Submit a [Pull Request (PR)](#submitting-pull-requests) referencing the issue with `Fixes #<issue number>`.
 
-If you follow these steps, there **will** be a GitHub Issue opened before submitting a PR. However, a PR may come in without being discussed in an Issue or Discussion. While we don't advocate for this, you should be aware of the process that will be followed for those circumstances.
+If you follow these steps, a GitHub Issue will be opened before you submit a PR. However, a PR may come in without being discussed in an Issue or Discussion. While we don't advocate for this, you should be aware of the process that will be followed for those circumstances.
 
-Should this happen, and if you followed the project guidelines, have sample tests, and code quality, you will first be acknowledged for your work; thank you in advance. After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project and to gauge the work effort or issues with merging into *devel*. If the effort required by the core team is manageable, it'll likely still be a few weeks before it gets thoroughly reviewed and merged. After that, it will just depend on the current backlog.
+Should this happen, and if you followed the project guidelines, have sample tests, and code quality, you will first be acknowledged for your work; thank you in advance. After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project and to gauge the work effort or issues with merging into the *devel* branch. If the effort required by the core team is manageable, it'll likely still be a few weeks before it gets thoroughly reviewed and merged. After that, it will just depend on the current backlog.
 
 ### Contributing to Arista Validated Designs
 
@@ -118,7 +118,7 @@ The issue will be reviewed by a moderator after submission, and the appropriate 
 
 #### Submitting Pull Requests
 
-- If you're interested in contributing to AVD, check out our [getting started](development-tooling.md) documentation for tips on setting up your development environment.
+- If you're interested in contributing to AVD, check out our [development tooling](development-tooling.md) documentation for tips on setting up your development environment.
 
 - It's recommended to open an issue **before** starting work on a pull request and discuss your idea with the AVD maintainers before beginning work. This will save time on something we might be unable to implement. When suggesting a new feature, ensure it will be consistent with any work already in progress.
 
