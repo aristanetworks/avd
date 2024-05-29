@@ -216,7 +216,7 @@ Examples:
 make sanity
 
 # Run unit test cases using ansible-test with venv (default)
-make unit-test
+make unit-tests
 
 # Run integration test cases using ansible-test with docker.
 make integration-tests ANSIBLE_TEST_MODE=docker
