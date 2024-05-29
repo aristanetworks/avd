@@ -56,8 +56,8 @@ The AVD repository follows a [GitHub flow](https://docs.github.com/en/get-starte
 The following documents the lifecycle of work within AVD:
 
 1. Open/request a feature enhancement or file a bug
-  1. If a bug, please see [reporting bugs](#reporting-bugs).
-  2. If feature request or enhancement, continue.
+1. If a bug, please see [reporting bugs](#reporting-bugs).
+2. If feature request or enhancement, continue.
 2. Open a GitHub Issue
     - The issue will be reviewed and approved by a maintainer.
 3. Submit a [Pull Request (PR)](#submitting-pull-requests) referencing the issue with `Fixes #<issue number>`.
