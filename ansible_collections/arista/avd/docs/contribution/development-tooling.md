@@ -111,9 +111,9 @@ The Makefile supports the following targets:
 
 - `help`: Display available make target and descriptions.
 - `converge`: Execute molecule "converge" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
-  - This is the recommend way for development, as it is quicker and does not execute idempotency checks.
+  - This is the recommended way for development, as it is quicker and does not execute idempotency checks.
 - `test`: Execute molecule "test" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
-  - This is executed as part of the CI and tests for idempotency
+  - This is executed as part of the CI and tests for idempotency.
 - `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/molecule/MOLECULE_SCENARIOS.txt).
 
 !!! info
@@ -157,11 +157,9 @@ Examples:
 cd ansible_collections/arista/avd
 
 # Run eos_cli_config_gen scenario
-
 molecule converge -s eos_cli_config_gen
 
 # Run eos_cli_config_gen scenario limiting to "logging" host only
-
 molecule converge -s eos_cli_config_gen -- --limit logging
 
 # Run eos_designs)unit_test scenario with verbosity
