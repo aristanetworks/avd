@@ -226,7 +226,7 @@ router bgp 65101
    redistribute ospf include leaked
    redistribute ospf match internal
    redistribute ospf match external
-   redistribute ospf match nssa-external 1
+   redistribute ospf match nssa-external 1 include leaked route-map RM-REDISTRIBUTE-OSPF-NSSA-1
    redistribute static rcf Router_BGP_Static()
    !
    address-family ipv4
@@ -244,7 +244,7 @@ router bgp 65101
       redistribute connected include leaked rcf Address_Family_IPV4_Connected()
       redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
       redistribute ospf match internal include leaked
-      redistribute ospf match external
+      redistribute ospf match external include leaked route-map RM-REDISTRIBUTE-OSPF-EXTERNAL
       redistribute ospf match nssa-external
       redistribute static rcf Address_Family_IPV4_Static()
    !
@@ -260,9 +260,8 @@ router bgp 65101
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
       redistribute ospfv3 match external include leaked
-      redistribute ospfv3 match internal
+      redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
       redistribute ospfv3 match nssa-external 1
-      redistribute ospfv3 include leaked
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
    session tracker ST1
       recovery delay 666 seconds
