@@ -1667,7 +1667,7 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
 | ------ | ------------------- | ------------ | --- | ------------------- |
 | - | - | - | True | - |
 
@@ -1675,7 +1675,7 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
 | ------ | ------------------- | ------------ | --- | ------------------- |
 | - | - | - | - | - |
 
