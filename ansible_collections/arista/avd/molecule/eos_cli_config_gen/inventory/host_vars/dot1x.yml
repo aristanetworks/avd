@@ -32,12 +32,12 @@ dot1x:
     profiles:
       - name: Profile1
         eap_method: tls
-        identity: <user_id>
+        identity: user_id1
         passphrase_type: 0
-        passphrase: <password>
+        passphrase: 1048080A02
         ssl_profile: PF1
       - name: Profile2
-        identity: <user_id>
-        passphrase: <password>
+        identity: user_id2
+        passphrase: 1048080A01
     logging: true
     disconnect_cached_results_timeout: 79

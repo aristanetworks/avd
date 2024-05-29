@@ -76,5 +76,5 @@ interface Management1
 
 | Profile | EAP Method | Identity | SSL Profile |
 | ------- | ---------- | -------- | ----------- |
-| Profile1 | tls | <user_id> | PF1 |
-| Profile2 | - | <user_id> | - |
+| Profile1 | tls | user_id1 | PF1 |
+| Profile2 | - | user_id2 | - |
