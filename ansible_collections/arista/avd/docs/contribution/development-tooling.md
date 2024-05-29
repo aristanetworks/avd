@@ -173,12 +173,13 @@ molecule converge -s eos_designs_unit_tests -- -vvv
 
 ## Ansible-test
 
-- The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to test the asrista.avd Ansible Collection for sanity, unit and integration tests.
-- Testing is performed automatically as part of the CI pipeline.
-- If troubleshooting is required, a Makefile at the root of the avd repository supports the following targets to execute ansible-test:
-  - `sanity`: Run ansible-test sanity validation.
-  - `unit-tests`: Run unit test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
-  - `integration-tests`: Run integration test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+The AVD project leverages [ansible-test](https://www.ansible.com/blog/introduction-to-ansible-test/) to run sanity, unit and integration tests for the `arista.avd` Ansible Collection.
+
+Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `ansible-test`:
+
+- `sanity`: Run ansible-test sanity validation.
+- `unit-tests`: Run unit test cases using ansible-test. Optionally specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
+- `integration-tests`: Run integration test cases using `ansible-test`. Optionally specify `ANSIBLE_TEST_MODE=<docker|venv>` (default: `docker`).
 
 Examples:
 
