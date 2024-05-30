@@ -398,14 +398,8 @@ router bgp {{ router_bgp.as }}
 {%         if aggregate_address.advertise_map is arista.avd.defined %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " advertise-map " ~ aggregate_address.advertise_map %}
 {%         endif %}
-{%         if aggregate_address.supress_map is arista.avd.defined %}
-{%             set aggregate_address_cli = aggregate_address_cli ~ " supress-map " ~ aggregate_address.supress_map %}
-{%         endif %}
 {%         if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " summary-only" %}
-{%         endif %}
-{%         if aggregate_address.attribute_map is arista.avd.defined %}
-{%             set aggregate_address_cli = aggregate_address_cli ~  " attribute-map " ~ aggregate_address.attribute_map %}
 {%         endif %}
 {%         if aggregate_address.match_map is arista.avd.defined %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " match-map " ~ aggregate_address.match_map %}

@@ -2612,9 +2612,6 @@ keys:
                   advertise_map:
                     type: str
                     description: Route-map name.
-                  supress_map:
-                    type: str
-                    description: Route-map name.
                   summary_only:
                     type: bool
                   attribute_map:
