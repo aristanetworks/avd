@@ -34746,7 +34746,7 @@
                       },
                       "redistribute_internal": {
                         "type": "boolean",
-                        "description": "Redistribute internal BGP routes.",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
                         "title": "Redistribute Internal"
                       }
                     },
@@ -36575,7 +36575,7 @@
                         "properties": {
                           "redistribute_internal": {
                             "type": "boolean",
-                            "description": "Redistribute internal BGP routes.",
+                            "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
                             "title": "Redistribute Internal"
                           }
                         },
@@ -37069,7 +37069,7 @@
                         "properties": {
                           "redistribute_internal": {
                             "type": "boolean",
-                            "description": "Redistribute internal BGP routes.",
+                            "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
                             "title": "Redistribute Internal"
                           }
                         },
@@ -39163,7 +39163,7 @@
                                 },
                                 "redistribute_internal": {
                                   "type": "boolean",
-                                  "description": "Redistribute internal BGP routes.",
+                                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
                                   "title": "Redistribute Internal"
                                 }
                               },
@@ -39441,7 +39441,7 @@
                                 },
                                 "redistribute_internal": {
                                   "type": "boolean",
-                                  "description": "Redistribute internal BGP routes.",
+                                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
                                   "title": "Redistribute Internal"
                                 }
                               },
