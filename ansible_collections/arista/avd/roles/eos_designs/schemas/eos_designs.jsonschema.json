@@ -47879,8 +47879,7 @@
           "management_interface": "Management0",
           "feature_support": {
             "poe": true,
-            "queue_monitor_length_notify": false,
-            "per_interface_mtu": false
+            "queue_monitor_length_notify": false
           },
           "reload_delay": {
             "mlag": 300,
@@ -47895,8 +47894,7 @@
           ],
           "feature_support": {
             "poe": true,
-            "queue_monitor_length_notify": false,
-            "per_interface_mtu": false
+            "queue_monitor_length_notify": false
           },
           "reload_delay": {
             "mlag": 300,
@@ -47905,8 +47903,7 @@
         },
         {
           "platforms": [
-            "7010TX",
-            "720DT"
+            "7010TX"
           ],
           "feature_support": {
             "queue_monitor_length_notify": false,
