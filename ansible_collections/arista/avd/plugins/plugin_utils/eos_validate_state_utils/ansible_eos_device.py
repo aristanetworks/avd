@@ -84,14 +84,15 @@ class AnsibleEOSDevice(AntaDevice):
 
         super().__init__(name, tags, disable_cache=False)
         self.check_mode = check_mode
-        # Check the ansible connection is defined
-        if not self.check_mode and not hasattr(connection, "_sub_plugin"):
-            raise AristaAvdError(message="Unable to determine ansible connection. Please manually configure ansible_connection as `httpapi` for this host.")
-        # In check_mode we don't care that we cannot connect to the device
-        if self.check_mode or (plugin_name := connection._sub_plugin.get("name")) == ANSIBLE_EOS_PLUGIN_NAME:
-            self._connection = connection
-        else:
-            raise AristaAvdError(message=f"The provided Ansible connection does not use EOS HttpApi plugin: {plugin_name}")
+
+        try:
+            # In check_mode we don't care that we cannot connect to the device
+            if self.check_mode or (plugin_name := connection._sub_plugin.get("name")) == ANSIBLE_EOS_PLUGIN_NAME:
+                self._connection = connection
+            else:
+                raise AristaAvdError(message=f"The provided Ansible connection does not use EOS HttpApi plugin: {plugin_name}")
+        except AttributeError as err:
+            raise AristaAvdError(message="AVD could not determine ansible connection. Please configure ansible_connection as `httpapi` for this host.") from err
 
     @property
     def _keys(self) -> tuple:
