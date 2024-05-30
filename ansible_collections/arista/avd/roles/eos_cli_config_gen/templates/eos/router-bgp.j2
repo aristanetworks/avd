@@ -219,20 +219,21 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
-{%         if peer_group.missing_policy.address_family_all.direction_in_action.action is arista.avd.defined %}
-{%             if peer_group.missing_policy.address_family_all.direction_in_action.include is arista.avd.defined %}
-   neighbor {{ peer_group.name }} missing-policy address-family all include {{ peer_group.missing_policy.address_family_all.direction_in_action.include | arista.avd.natural_sort | join(" ") }} direction in action {{ peer_group.missing_policy.address_family_all.direction_in_action.action }}
-{%             else %}
-   neighbor {{ peer_group.name }} missing-policy address-family all direction in action {{ peer_group.missing_policy.address_family_all.direction_in_action.action }}
+{%         for direction in ['in', 'out'] %}
+{%             set dir = 'direction_' ~ direction %}
+{%             set action = peer_group.missing_policy_af_all[dir].action %}
+{%             if action is arista.avd.defined %}
+{%                 set missing_policy_cli = "neighbor " ~ peer_group.name ~ " missing-policy address-family all" %}
+{%                 if peer_group.missing_policy_af_all[dir].include is arista.avd.defined %}
+{%                     set include_list = peer_group.missing_policy_af_all[dir].include | arista.avd.natural_sort %}
+{%                     set include_str = include_list | join(" ") %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " include " ~ include_str ~ " direction " ~ direction ~ " action " ~ action %}
+{%                 else %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ action %}
+{%                 endif %}
+   {{ missing_policy_cli }}
 {%             endif %}
-{%         endif %}
-{%         if peer_group.missing_policy.address_family_all.direction_out_action.action is arista.avd.defined %}
-{%             if peer_group.missing_policy.address_family_all.direction_out_action.include is arista.avd.defined %}
-   neighbor {{ peer_group.name }} missing-policy address-family all include {{ peer_group.missing_policy.address_family_all.direction_out_action.include | arista.avd.natural_sort | join(" ") }} direction out action {{ peer_group.missing_policy.address_family_all.direction_out_action.action }}
-{%             else %}
-   neighbor {{ peer_group.name }} missing-policy address-family all direction in action {{ peer_group.missing_policy.address_family_all.direction_out_action.action }}
-{%             endif %}
-{%         endif %}
+{%         endfor %}
 {%         if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%             set link_bandwidth_cli = "neighbor " ~ peer_group.name ~ " link-bandwidth" %}
 {%             if peer_group.link_bandwidth.default is arista.avd.defined %}
@@ -396,20 +397,21 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
-{%         if neighbor.missing_policy.address_family_all.direction_in_action.action is arista.avd.defined %}
-{%             if neighbor.missing_policy.address_family_all.direction_in_action.include is arista.avd.defined %}
-   neighbor {{ neighbor.ip_address }} missing-policy address-family all include {{ neighbor.missing_policy.address_family_all.direction_in_action.include | arista.avd.natural_sort | join(" ") }} direction in action {{ neighbor.missing_policy.address_family_all.direction_in_action.action }}
-{%             else %}
-   neighbor {{ neighbor.ip_address }} missing-policy address-family all direction in action {{ neighbor.missing_policy.address_family_all.direction_in_action.action }}
+{%         for direction in ['in', 'out'] %}
+{%             set dir = 'direction_' ~ direction %}
+{%             set action = neighbor.missing_policy_af_all[dir].action %}
+{%             if action is arista.avd.defined %}
+{%                 set missing_policy_cli = "neighbor " ~ neighbor.ip_address ~ " missing-policy address-family all" %}
+{%                 if neighbor.missing_policy_af_all[dir].include is arista.avd.defined %}
+{%                     set include_list = neighbor.missing_policy_af_all[dir].include | arista.avd.natural_sort %}
+{%                     set include_str = include_list | join(" ") %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " include " ~ include_str ~ " direction " ~ direction ~ " action " ~ action %}
+{%                 else %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ action %}
+{%                 endif %}
+   {{ missing_policy_cli }}
 {%             endif %}
-{%         endif %}
-{%         if neighbor.missing_policy.address_family_all.direction_out_action.action is arista.avd.defined %}
-{%             if neighbor.missing_policy.address_family_all.direction_out_action.include is arista.avd.defined %}
-   neighbor {{ neighbor.ip_address }} missing-policy address-family all include {{ neighbor.missing_policy.address_family_all.direction_out_action.include | arista.avd.natural_sort | join(" ") }} direction out action {{ neighbor.missing_policy.address_family_all.direction_out_action.action }}
-{%             else %}
-   neighbor {{ neighbor.ip_address }} missing-policy address-family all direction in action {{ neighbor.missing_policy.address_family_all.direction_out_action.action }}
-{%             endif %}
-{%         endif %}
+{%         endfor %}
 {%         if neighbor.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%             set link_bandwidth_cli = "neighbor " ~ neighbor.ip_address ~ " link-bandwidth" %}
 {%             if neighbor.link_bandwidth.default is arista.avd.defined %}

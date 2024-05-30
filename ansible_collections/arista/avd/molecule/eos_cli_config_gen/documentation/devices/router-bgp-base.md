@@ -85,6 +85,10 @@ ASN Notation: asplain
 | -------- | ----- |
 | TTL Max Hops | 1 |
 | Link-Bandwidth | default 100G |
+| Missing Policy In Action | deny |
+| Missing Policy In Decision | ['community-list', 'prefix-list'] |
+| Missing Policy Out Action | permit |
+| Missing Policy Out Decision | ['community-list'] |
 
 ##### test-link-bandwidth2
 
@@ -165,6 +169,8 @@ router bgp 65101
    neighbor TEST ttl maximum-hops 42
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
+   neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
+   neighbor test-link-bandwidth1 missing-policy address-family all include community-list direction out action permit
    neighbor test-link-bandwidth1 link-bandwidth default 100G
    neighbor test-link-bandwidth2 peer group
    neighbor test-link-bandwidth2 link-bandwidth

@@ -10837,54 +10837,52 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
-            missing_policy:
+            missing_policy_af_all:
               type: dict
-              description: Missing policy override configuration commands
+              description: Include all address families for missing policy configuration.
               keys:
-                address_family_all:
-                  description: Include all address families for missing policy configuration
+                direction_in:
+                  description: Missing policy inbound direction.
                   type: dict
                   keys:
-                    direction_in_action:
-                      type: dict
-                      keys:
-                        action:
-                          description: Missing policy in direction options
-                          type: str
-                          valid_values:
-                          - deny
-                          - deny-in-out
-                          - permit
-                        include:
-                          description: Include route map references in missing policy
-                            decision
-                          type: list
-                          items:
-                            type: str
-                            valid_values:
-                            - community-list
-                            - prefix-list
-                            - sub-route-map
-                    direction_out_action:
-                      type: dict
-                      keys:
-                        action:
-                          description: Missing policy out direction options
-                          type: str
-                          valid_values:
-                          - deny
-                          - deny-in-out
-                          - permit
-                        include:
-                          description: Include route map references in missing policy
-                            decision
-                          type: list
-                          items:
-                            type: str
-                            valid_values:
-                            - community-list
-                            - prefix-list
-                            - sub-route-map
+                    action:
+                      description: Missing policy action options.
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    include:
+                      description: Include route map references in missing policy
+                        decision.
+                      type: list
+                      items:
+                        type: str
+                        valid_values:
+                        - community-list
+                        - prefix-list
+                        - sub-route-map
+                direction_out:
+                  description: Missing policy outbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action options.
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    include:
+                      description: Include route map references in missing policy
+                        decision.
+                      type: list
+                      items:
+                        type: str
+                        valid_values:
+                        - community-list
+                        - prefix-list
+                        - sub-route-map
             link_bandwidth:
               type: dict
               keys:
@@ -11101,54 +11099,52 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
-            missing_policy:
+            missing_policy_af_all:
               type: dict
-              description: Missing policy override configuration commands
+              description: Include all address families for missing policy configuration.
               keys:
-                address_family_all:
-                  description: Include all address families for missing policy configuration
+                direction_in:
+                  description: Missing policy inbound direction.
                   type: dict
                   keys:
-                    direction_in_action:
-                      type: dict
-                      keys:
-                        action:
-                          description: Missing policy in direction options
-                          type: str
-                          valid_values:
-                          - deny
-                          - deny-in-out
-                          - permit
-                        include:
-                          description: Include route map references in missing policy
-                            decision
-                          type: list
-                          items:
-                            type: str
-                            valid_values:
-                            - community-list
-                            - prefix-list
-                            - sub-route-map
-                    direction_out_action:
-                      type: dict
-                      keys:
-                        action:
-                          description: Missing policy out direction options
-                          type: str
-                          valid_values:
-                          - deny
-                          - deny-in-out
-                          - permit
-                        include:
-                          description: Include route map references in missing policy
-                            decision
-                          type: list
-                          items:
-                            type: str
-                            valid_values:
-                            - community-list
-                            - prefix-list
-                            - sub-route-map
+                    action:
+                      description: Missing policy action options.
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    include:
+                      description: Include route map references in missing policy
+                        decision.
+                      type: list
+                      items:
+                        type: str
+                        valid_values:
+                        - community-list
+                        - prefix-list
+                        - sub-route-map
+                direction_out:
+                  description: Missing policy outbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action options.
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    include:
+                      description: Include route map references in missing policy
+                        decision.
+                      type: list
+                      items:
+                        type: str
+                        valid_values:
+                        - community-list
+                        - prefix-list
+                        - sub-route-map
             allowas_in:
               type: dict
               keys:
