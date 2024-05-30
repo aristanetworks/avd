@@ -12,7 +12,7 @@
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
-    This guide doesn't go into details on how to install common development tooling as this differs from operating system to operating system.
+    The examples in this guide assume a Linux or macOS based operating system, however, it does not go into details on how to install common development tooling as this differs between operating systems.
 
 ## Development environments
 
