@@ -90,11 +90,13 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
+  mtu: 9214
   ip_address: 10.10.224.4/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
+  mtu: 9214
   ip_address: 10.10.255.4/31
 port_channel_interfaces:
 - name: Port-Channel5
