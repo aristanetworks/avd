@@ -16,7 +16,7 @@
 
 ## Install Collection from Ansible Galaxy
 
-These instructions are for regular users to install via Ansible Galaxy. To se tup a development environment, please follow the [development tooling](../contribution/development-tooling.md) instructions. **arista.avd** can also be consumed using the ["Universal" container](../containers/overview.md#how-to-use-dev-containers). The **arista.avd** collection is available on the [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
+These instructions are for regular users to install via Ansible Galaxy. To set up a development environment, please follow the [development tooling](../contribution/development-tooling.md) instructions. **arista.avd** can also be consumed using the ["Universal" container](../containers/overview.md#how-to-use-dev-containers). The **arista.avd** collection is available on the [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
 
 ### Latest version
 
