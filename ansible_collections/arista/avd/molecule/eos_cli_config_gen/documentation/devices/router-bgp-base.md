@@ -86,9 +86,9 @@ ASN Notation: asplain
 | TTL Max Hops | 1 |
 | Link-Bandwidth | default 100G |
 | Missing Policy In Action | deny |
-| Missing Policy In Decision | ['community-list', 'prefix-list'] |
+| Missing Policy In Decision | community-list, prefix-list |
 | Missing Policy Out Action | permit |
-| Missing Policy Out Decision | ['community-list'] |
+| Missing Policy Out Decision | community-list |
 
 ##### test-link-bandwidth2
 

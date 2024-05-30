@@ -254,13 +254,13 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             if peer_group.missing_policy_af_all.direction_in.action is arista.avd.defined %}
 | Missing Policy In Action | {{ peer_group.missing_policy_af_all.direction_in.action }} |
 {%                 if peer_group.missing_policy_af_all.direction_in.include is arista.avd.defined %}
-| Missing Policy In Decision | {{ peer_group.missing_policy_af_all.direction_in.include }} |
+| Missing Policy In Decision | {{ peer_group.missing_policy_af_all.direction_in.include | join(', ') }} |
 {%                 endif %}
 {%             endif %}
 {%             if peer_group.missing_policy_af_all.direction_out.action is arista.avd.defined %}
 | Missing Policy Out Action | {{ peer_group.missing_policy_af_all.direction_out.action }} |
 {%                 if peer_group.missing_policy_af_all.direction_out.include is arista.avd.defined %}
-| Missing Policy Out Decision | {{ peer_group.missing_policy_af_all.direction_out.include }} |
+| Missing Policy Out Decision | {{ peer_group.missing_policy_af_all.direction_out.include | join(', ') }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
