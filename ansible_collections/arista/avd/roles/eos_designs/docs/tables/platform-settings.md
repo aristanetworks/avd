@@ -142,6 +142,7 @@
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
         - feature_support:
+            per_interface_mtu: false
             poe: true
             queue_monitor_length_notify: false
           management_interface: Management0
@@ -153,12 +154,22 @@
             mlag: 300
             non_mlag: 330
         - feature_support:
+            per_interface_mtu: false
             poe: true
             queue_monitor_length_notify: false
           platforms:
           - 720DP
           - 722XP
           - 710P
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            per_interface_mtu: false
+            queue_monitor_length_notify: false
+          platforms:
+          - 7010TX
+          - 720DT
           reload_delay:
             mlag: 300
             non_mlag: 330

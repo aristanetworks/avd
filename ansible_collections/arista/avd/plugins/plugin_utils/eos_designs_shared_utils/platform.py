@@ -51,7 +51,7 @@ DEFAULT_PLATFORM_SETTINGS = [
             "mlag": 300,
             "non_mlag": 330,
         },
-        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True, "per_interface_mtu": False},
     },
     {
         "platforms": ["720DP", "722XP", "710P"],
@@ -59,7 +59,15 @@ DEFAULT_PLATFORM_SETTINGS = [
             "mlag": 300,
             "non_mlag": 330,
         },
-        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True, "per_interface_mtu": False},
+    },
+    {
+        "platforms": ["720DT", "7010TX"],
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
     },
     {
         "platforms": ["7280R", "7280R2", "7020R"],

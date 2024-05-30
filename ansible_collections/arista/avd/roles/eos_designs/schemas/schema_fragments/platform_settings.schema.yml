@@ -145,6 +145,7 @@ keys:
         feature_support:
           poe: true
           queue_monitor_length_notify: false
+          per_interface_mtu: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -155,6 +156,16 @@ keys:
         feature_support:
           poe: true
           queue_monitor_length_notify: false
+          per_interface_mtu: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+      - platforms:
+          - 7010TX
+          - 720DT
+        feature_support:
+          queue_monitor_length_notify: false
+          per_interface_mtu: false
         reload_delay:
           mlag: 300
           non_mlag: 330
