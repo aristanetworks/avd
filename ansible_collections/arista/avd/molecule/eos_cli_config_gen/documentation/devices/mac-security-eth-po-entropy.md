@@ -141,7 +141,7 @@ FIPS restrictions enabled.
 ###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ------------------- |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
 | aes128-gcm | 100 | 30 | True | allow |
 
 ###### Keys
@@ -162,7 +162,7 @@ FIPS restrictions enabled.
 ###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ------------------- |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
 | - | - | - | - | allow active-sak |
 
 ###### Keys
@@ -176,7 +176,7 @@ FIPS restrictions enabled.
 ###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ------------------- |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
 | aes256-gcm-xpn | - | - | - | drop |
 
 ###### Keys

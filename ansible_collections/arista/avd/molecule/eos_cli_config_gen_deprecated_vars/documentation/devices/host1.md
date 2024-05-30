@@ -1668,7 +1668,7 @@ FIPS restrictions enabled.
 ###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ------------------- |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
 | - | - | - | True | - |
 
 ##### Profile A2
@@ -1676,7 +1676,7 @@ FIPS restrictions enabled.
 ###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ------------------- |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
 | - | - | - | - | - |
 
 ###### Keys
