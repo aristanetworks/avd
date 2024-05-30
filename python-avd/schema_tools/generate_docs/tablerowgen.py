@@ -351,6 +351,12 @@ class TableRowGenDict(TableRowGenBase):
                     target_table=self.target_table,
                 )
 
+        if self.schema.pattern_keys:
+            for child_schema in self.schema.pattern_keys.values():
+                yield from child_schema._generate_table_rows(
+                    target_table=self.target_table,
+                )
+
         if self.schema.keys:
             for child_schema in self.schema.keys.values():
                 yield from child_schema._generate_table_rows(

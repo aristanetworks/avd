@@ -270,6 +270,16 @@
                                 }
                             }
                         },
+                        "pattern_keys": {
+                            "type": "object",
+                            "description": "Dictionary in the format `{<regex>: {<schema>}}`.\n`regex` is a regex string used for matching keys in the data. Regular expressions are anchored, meaning they must match the full key name.\n`schema` is the schema used for validating those keys. This is a recursive schema, so the value must conform to AVD Schema.",
+                            "propertyNames": {
+                                "format": "regex"
+                            },
+                            "additionalProperties": {
+                                "$ref": "#/$defs/avd_schema_var"
+                            }
+                        },
                         "allow_other_keys": {
                             "type": "boolean",
                             "default": false,

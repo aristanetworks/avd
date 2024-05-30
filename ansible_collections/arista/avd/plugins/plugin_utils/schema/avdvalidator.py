@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from collections import ChainMap
+from re import fullmatch
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
@@ -93,7 +94,18 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
         for resolved_key in resolved_keys:
             dynamic_keys.setdefault(resolved_key, childschema)
 
-    all_keys = ChainMap(keys, dynamic_keys)
+    # Compile schema_pattern_keys and add to "pattern_keys"
+    schema_pattern_keys = schema.get("pattern_keys", {})
+    pattern_keys = {}
+    for pattern_key, childschema in schema_pattern_keys.items():
+        for instance_key in instance:
+            # Skip if key is already in schema. This also means if key matches multiple patterns, only the first match will be used.
+            if not isinstance(instance_key, str) or instance_key in pattern_keys:
+                continue
+            if fullmatch(pattern_key, instance_key) is not None:
+                pattern_keys[instance_key] = childschema
+
+    all_keys = ChainMap(keys, dynamic_keys, pattern_keys)
 
     # Validation of "allow_other_keys"
     if not schema.get("allow_other_keys", False):

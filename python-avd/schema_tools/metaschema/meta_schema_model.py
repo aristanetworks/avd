@@ -493,6 +493,12 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     `schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema.
     Note that this is building the schema from values in the _data_ being validated!
     """
+    pattern_keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
+    """
+    Dictionary in the format `{<regex>: {<schema>}}`.
+    `regex` is a regex string used for matching keys in the data. Regular expressions are anchored, meaning they must match the full key name.
+    `schema` is the schema used for validating those keys. This is a recursive schema, so the value must conform to AVD Schema.
+    """
     allow_other_keys: bool | None = False
     """Allow keys in the dictionary which are not defined in the schema."""
     documentation_options: DocumentationOptions | None = None
@@ -526,6 +532,10 @@ class AvdSchemaDict(AvdSchemaBaseModel):
             for childschema in self.dynamic_keys.values():
                 descendant_tables.add(childschema._table)
                 descendant_tables.update(childschema._descendant_tables)
+        if self.pattern_keys:
+            for childschema in self.pattern_keys.values():
+                descendant_tables.add(childschema._table)
+                descendant_tables.update(childschema._descendant_tables)
 
         return descendant_tables
 
@@ -546,6 +556,11 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         if self.dynamic_keys:
             for key, childschema in self.dynamic_keys.items():
                 childschema._key = f"<{key}>"
+                childschema._parent_schema = self
+
+        if self.pattern_keys:
+            for key, childschema in self.pattern_keys.items():
+                childschema._key = key
                 childschema._parent_schema = self
 
         return super().model_post_init(__context)

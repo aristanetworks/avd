@@ -4602,6 +4602,17 @@ dynamic_keys:
     type: dict
     documentation_options:
       table: node-type-structure
+pattern_keys:
+  custom_structured_configuration_.+:
+    documentation_options:
+      table: custom-structured-configuration
+    display_name: Custom Structured Configuration
+    type: dict
+    deprecation:
+      warning: true
+      new_key: structured_config_<anything> with the key inside the dict.'
+      remove_in_version: 5.0.0
+      url: https://avd.sh/en/devel/docs/porting-guides/5.x.x.html#custom-structured-configuration
 $defs:
   adapter_config:
     type: dict
