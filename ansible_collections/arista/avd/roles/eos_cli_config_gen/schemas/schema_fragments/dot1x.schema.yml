@@ -157,8 +157,8 @@ keys:
             type: str
             description: |-
               Supported URL type:
-                - http: http[s]://<hostname>[:<port>]
-                - https: http[s]://<hostname>[:<port>]
+                - http: http://<hostname>[:<port>]
+                - https: https://<hostname>[:<port>]
           ssl_profile:
             type: str
             description: SSL profile name.

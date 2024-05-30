@@ -19477,7 +19477,7 @@
                       },
                       "url": {
                         "type": "string",
-                        "description": "Supported URL type:\n  - http: http[s]://<hostname>[:<port>]\n  - https: http[s]://<hostname>[:<port>]",
+                        "description": "Supported URL type:\n  - http: http://<hostname>[:<port>]\n  - https: https://<hostname>[:<port>]",
                         "title": "URL"
                       },
                       "ssl_profile": {
