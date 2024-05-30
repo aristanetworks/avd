@@ -23,6 +23,12 @@
             id: 1
             location: Copenhagen, Denmark
     expected_output:
+      cloud_name: zscalerbeta
+      device_location:
+        city: ""
+        country: ""
+        latitude: 55.67531204223633
+        longitude: 12.569733619689941
       primary:
         city: Frankfurt
         country: Germany
@@ -45,6 +51,12 @@
         latitude: 37.0
         longitude: -121.0
 
-  ansible.builtin.assert:
-    that:
-      - lookup('arista.avd.cv_zscaler_endpoints') == expected_output
+  block:
+    - name: Print output
+      ansible.builtin.debug:
+        msg: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
+
+    - name: Assert output
+      ansible.builtin.assert:
+        that:
+          - lookup('arista.avd.cv_zscaler_endpoints') == expected_output

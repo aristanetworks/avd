@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [IPv6 Static Routes](#ipv6-static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes-1)
 
 ## Management
 

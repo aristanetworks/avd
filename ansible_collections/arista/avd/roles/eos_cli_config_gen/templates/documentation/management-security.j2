@@ -129,6 +129,41 @@
 | {{ policy.name }} | > {{ min_digits }} | > {{ min_length }} | > {{ min_lower }} | > {{ min_special }} | > {{ min_upper }} | < {{ max_repetitive }} | < {{ max_sequential }} |
 {%         endfor %}
 {%     endif %}
+{%     if management_security.shared_secret_profiles is arista.avd.defined %}
+
+### Session Shared-secret Profiles
+{%         for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile") %}
+
+#### {{ profile.profile }}
+
+| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
+| ----------- | ---------------- | ----------------- | -------- |
+{%             for secret in profile.secrets | arista.avd.natural_sort("name") %}
+{%                 if secret.secret is arista.avd.defined and
+                      ((secret.receive_lifetime.infinite is arista.avd.defined(true) or
+                        (secret.receive_lifetime.start_date_time and secret.receive_lifetime.end_date_time is arista.avd.defined)) and
+                       (secret.transmit_lifetime.infinite is arista.avd.defined(true) or
+                        (secret.transmit_lifetime.start_date_time and secret.transmit_lifetime.end_date_time is arista.avd.defined))) %}
+{%                     if secret.local_time is arista.avd.defined(true) %}
+{%                         set timezone = "Local Time" %}
+{%                     else %}
+{%                         set timezone = "UTC" %}
+{%                     endif %}
+{%                     if secret.receive_lifetime.infinite is arista.avd.defined(true) %}
+{%                         set receive_lifetime = "Infinite" %}
+{%                     else %}
+{%                         set receive_lifetime = secret.receive_lifetime.start_date_time ~ " - " ~ secret.receive_lifetime.end_date_time %}
+{%                     endif %}
+{%                     if secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
+{%                         set transmit_lifetime = "Infinite" %}
+{%                     else %}
+{%                         set transmit_lifetime = secret.transmit_lifetime.start_date_time ~ " - " ~ secret.transmit_lifetime.end_date_time %}
+{%                     endif %}
+| {{ secret.name }} | {{ receive_lifetime | arista.avd.default("-") }} | {{ transmit_lifetime | arista.avd.default("-") }} | {{ timezone }} |
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 
 ### Management Security Device Configuration
 

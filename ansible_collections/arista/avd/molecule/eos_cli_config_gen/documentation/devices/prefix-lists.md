@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Filters](#filters)
   - [Dynamic Prefix-lists](#dynamic-prefix-lists)
-  - [Prefix-lists](#prefix-lists)
+  - [Prefix-lists](#prefix-lists-1)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
 
 ## Management

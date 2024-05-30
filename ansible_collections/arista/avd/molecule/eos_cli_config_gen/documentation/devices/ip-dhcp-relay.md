@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP DHCP Relay](#ip-dhcp-relay)
+- [IP DHCP Relay](#ip-dhcp-relay-1)
   - [IP DHCP Relay Summary](#ip-dhcp-relay-summary)
   - [IP DHCP Relay Device Configuration](#ip-dhcp-relay-device-configuration)
 

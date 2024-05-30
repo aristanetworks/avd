@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing)
+  - [IP Routing](#ip-routing-1)
   - [IPv6 Routing](#ipv6-routing)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)

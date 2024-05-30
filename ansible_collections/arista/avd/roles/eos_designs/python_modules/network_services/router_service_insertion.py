@@ -19,9 +19,9 @@ class RouterServiceInsertionMixin(UtilsMixin):
         """
         Return structured config for router_service_insertion
 
-        Only used for CV Pathfinder routers today
+        Only used for CV Pathfinder edge routers today
         """
-        if not self.shared_utils.is_cv_pathfinder_router:
+        if not self._filtered_internet_exit_policies:
             return None
 
         router_service_insertion = {}
@@ -29,18 +29,22 @@ class RouterServiceInsertionMixin(UtilsMixin):
 
         for policy in self._filtered_internet_exit_policies:
             for connection in policy.get("connections", []):
-                if connection["type"] == "tunnel":
-                    connections.append(
-                        {
-                            "name": f"IE-Tunnel{connection['tunnel_id']}",
-                            "tunnel_interface": {
-                                "primary": f"Tunnel{connection['tunnel_id']}",
-                            },
-                            # TODO this host need to match monitor connectivity, maybe centralize name generation in utils
-                            "monitor_connectivity_host": f"IE-Tunnel{connection['tunnel_id']}",
-                        }
-                    )
+                service_connection = {
+                    "name": connection["name"],
+                    "monitor_connectivity_host": connection["monitor_name"],
+                }
 
+                if connection["type"] == "tunnel":
+                    service_connection["tunnel_interface"] = {
+                        "primary": f"Tunnel{connection['tunnel_id']}",
+                    }
+                elif connection["type"] == "ethernet":
+                    service_connection["ethernet_interface"] = {
+                        "name": connection["source_interface"],
+                        "next_hop": connection["next_hop"],
+                    }
+
+                connections.append(service_connection)
         if connections:
             router_service_insertion["enabled"] = True
             router_service_insertion["connections"] = connections

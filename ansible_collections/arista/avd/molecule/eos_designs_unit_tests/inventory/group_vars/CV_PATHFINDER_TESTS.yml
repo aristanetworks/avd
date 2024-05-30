@@ -22,6 +22,7 @@ cv_pathfinder_regions:
     sites:
       - name: Site511
         id: 511
+        location: Miami
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -94,10 +95,24 @@ wan_router:
               peer_ip: 172.16.5.4
               static_routes:
                 - prefix: 172.16.0.0/16
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: DIRECT-EXIT-POLICY-1
+            - name: Ethernet2/1
+              wan_carrier: Colt
+              wan_circuit_id: 10555
+              ip_address: 172.15.5.6/31
+              peer_ip: 172.16.5.9
+              static_routes:
+                - prefix: 172.16.0.0/16
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: DIRECT-EXIT-POLICY-1
             - name: Ethernet3
               wan_carrier: Comcast-5G
               wan_circuit_id: AF830
               ip_address: 172.20.20.20/31
+              peer_ip: 172.20.20.21
               connected_to_pathfinder: false
               cv_pathfinder_internet_exit:
                 policies:
@@ -123,12 +138,15 @@ wan_router:
               wan_circuit_id: 404
               dhcp_accept_default_route: true
               ip_address: dhcp
+              peer_ip: 172.31.0.1
               cv_pathfinder_internet_exit:
                 policies:
                   - name: ZSCALER-EXIT-POLICY-1
                     tunnel_interface_numbers: 100-102
                   - name: ZSCALER-EXIT-POLICY-2
                     tunnel_interface_numbers: 110-112
+                  - name: DIRECT-EXIT-POLICY-1
+                  - name: DIRECT-EXIT-POLICY-2
     # SITE_HA_ENABLED
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
@@ -184,10 +202,14 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
             - name: Ethernet2.42
+              peer_ip: 123.12.3.4
               encapsulation_dot1q_vlan: 666
               wan_carrier: Colt
               wan_circuit_id: 10666
               ip_address: 172.16.6.6/31
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: DIRECT-EXIT-POLICY-2
         - name: cv-pathfinder-transit1B
           cv_pathfinder_region: AVD_Land_West
           cv_pathfinder_site: Site422
@@ -459,6 +481,8 @@ wan_virtual_topologies:
             # since we are overriding the default_preference value (2/alternate).
             - names: [MPLS, INET, Equinix]
               preference: preferred
+          internet_exit:
+            policy: DIRECT-EXIT-POLICY-1
           id: 3
     - name: TRANSIT-AVT-POLICY
       default_virtual_topology:
@@ -475,6 +499,8 @@ wan_virtual_topologies:
               preference: preferred
             - names: [INET]
               preference: alternate
+          internet_exit:
+            policy: DIRECT-EXIT-POLICY-2
           id: 42
 
 application_classification:
@@ -562,6 +588,11 @@ cv_pathfinder_internet_exit_policies:
     zscaler:
       domain_name: test.local
       ipsec_key_salt: THIS_SHOULD_BE_VAULTED
+  - name: DIRECT-EXIT-POLICY-1
+    fallback_to_system_default: False
+    type: direct
+  - name: DIRECT-EXIT-POLICY-2
+    type: direct
 
 zscaler_endpoints:
   cloud_name: zscalerbeta

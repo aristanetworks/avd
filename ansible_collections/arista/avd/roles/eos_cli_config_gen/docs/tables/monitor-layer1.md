@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;logging_transceiver</samp>](## "monitor_layer1.logging_transceiver") | Dictionary |  |  |  | Configure transceiver monitoring logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dom</samp>](## "monitor_layer1.logging_transceiver.dom") | Boolean |  |  |  | Enable transceiver Digital Optical Monitoring (DOM) logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;communication</samp>](## "monitor_layer1.logging_transceiver.communication") | Boolean |  |  |  | Enable transceiver SMBus fail and reset logging. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "monitor_layer1.logging_transceiver.enabled") | Boolean |  |  |  | Some platforms support only the `logging transceiver` command. `enabled` key configures this command. |
 
 === "YAML"
 
@@ -34,4 +35,7 @@
 
         # Enable transceiver SMBus fail and reset logging.
         communication: <bool>
+
+        # Some platforms support only the `logging transceiver` command. `enabled` key configures this command.
+        enabled: <bool>
     ```

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [DPS Interfaces](#dps-interfaces)
+  - [DPS Interfaces](#dps-interfaces-1)
 
 ## Management
 

@@ -10,7 +10,7 @@
   - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
-  - [Router ISIS](#router-isis)
+  - [Router ISIS](#router-isis-1)
 
 ## Management
 

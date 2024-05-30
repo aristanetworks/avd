@@ -37,6 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_action_reauthenticate</samp>](## "dot1x.aaa.unresponsive.recovery_action_reauthenticate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accounting_update_interval</samp>](## "dot1x.aaa.accounting_update_interval") | Integer |  |  | Min: 5<br>Max: 65535 | Interval period in seconds. |
 
 === "YAML"
 
@@ -107,4 +108,7 @@
             # Set action for supplicant traffic when AAA times out.
             traffic_allow: <bool>
           recovery_action_reauthenticate: <bool>
+
+        # Interval period in seconds.
+        accounting_update_interval: <int; 5-65535>
     ```

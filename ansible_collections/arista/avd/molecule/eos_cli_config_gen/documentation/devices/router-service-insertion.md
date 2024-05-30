@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-- [Router Service Insertion](#router-service-insertion)
+- [Router Service Insertion](#router-service-insertion-1)
   - [Connections](#connections)
   - [Router Service Insertion Configuration](#router-service-insertion-configuration)
 

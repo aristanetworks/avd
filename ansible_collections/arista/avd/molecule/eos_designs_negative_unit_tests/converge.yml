@@ -225,7 +225,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
-  hosts: EOS_DESIGNS_FAILURES
+  hosts: EOS_DESIGNS_FAILURES_INCLUDED
   gather_facts: false
   connection: local
   tasks:
