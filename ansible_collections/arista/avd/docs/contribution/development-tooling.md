@@ -205,15 +205,15 @@ The AVD project leverages [ansible-test](https://www.ansible.com/blog/introducti
 
 Testing is performed automatically as part of the CI pipeline. If troubleshooting is required, a Makefile at the root of the `avd` repository supports the following targets to execute `ansible-test`:
 
-- `sanity`: Run ansible-test sanity validation.
+- `sanity-info`: Show information about ansible-test.
 - `unit-tests`: Run unit test cases using ansible-test. Optionally specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 - `integration-tests`: Run integration test cases using `ansible-test`. Optionally specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 
 Examples:
 
 ```shell
-# Run ansible-test sanity validation. Requires docker.
-make sanity
+# Show information about ansible-test.
+make sanity-info
 
 # Run unit test cases using ansible-test with venv (default)
 make unit-tests

@@ -44,7 +44,7 @@ pyavd-editable-install: ## Build and install PyAVD as editable
 #########################################
 
 .PHONY: sanity
-sanity: sanity-info sanity-lint sanity-import ## Run ansible-test sanity validation. Requires docker.
+sanity: sanity-info sanity-lint sanity-import ## Run ansible-test sanity validation.
 
 .PHONY: sanity-info
 sanity-info: ## Show information about ansible-test.
