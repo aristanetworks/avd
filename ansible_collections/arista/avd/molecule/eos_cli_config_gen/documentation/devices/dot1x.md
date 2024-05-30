@@ -61,9 +61,11 @@ interface Management1
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
+| Captive-portal | Enabled |
 | URL | http://portal-nacm08/captiveredirect/ |
 | SSL profile | Profile1 |
 | Access-list IPv4 | ACL |
+| Start limit | Infinite |
 
 #### 802.1X Dot1x supplicant
 

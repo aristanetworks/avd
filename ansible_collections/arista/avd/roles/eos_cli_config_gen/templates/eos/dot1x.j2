@@ -100,6 +100,9 @@ dot1x
 {%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
    supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds
 {%         endif %}
+{%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
+   captive-portal
+{%         endif %}
 {%         if dot1x.captive_portal.url is arista.avd.defined or dot1x.captive_portal.ssl_profile is arista.avd.defined %}
 {%             set captive_portal_cli = "captive-portal" %}
 {%             if dot1x.captive_portal.url is arista.avd.defined %}
@@ -112,6 +115,9 @@ dot1x
 {%         endif %}
 {%         if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
    captive-portal access-list ipv4 {{ dot1x.captive_portal.access_list_ipv4 }}
+{%         endif %}
+{%         if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
+   captive-portal start limit infinite
 {%         endif %}
 {%         if dot1x.supplicant.logging is arista.avd.defined(true) %}
    supplicant logging

@@ -1610,6 +1610,8 @@ keys:
         description: Web authentication feature authenticates a supplicant through
           a web page, referred to as a captive portal.
         keys:
+          enabled:
+            type: bool
           url:
             type: str
             description: "Supported URL type:\n  - http: http[s]://<hostname>[:<port>]\n
@@ -1617,6 +1619,9 @@ keys:
           ssl_profile:
             type: str
             description: SSL profile name.
+          start_limit_infinite:
+            type: bool
+            description: Set captive-portal start limit to infinte.
           access_list_ipv4:
             type: str
             description: Standard access-list name.
@@ -1667,7 +1672,7 @@ keys:
             - str
             min: 60
             max: 65535
-            description: Timeout period in seconds.
+            description: Timeout in seconds for removing a disconnected supplicant.
   dps_interfaces:
     type: list
     primary_key: name

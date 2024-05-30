@@ -51,6 +51,9 @@
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
+{%             if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
+| Captive-portal | Enabled |
+{%             endif %}
 {%             if dot1x.captive_portal.url is arista.avd.defined %}
 | URL | {{ dot1x.captive_portal.url }} |
 {%             endif %}
@@ -59,6 +62,9 @@
 {%             endif %}
 {%             if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
 | Access-list IPv4 | {{ dot1x.captive_portal.access_list_ipv4 }} |
+{%             endif %}
+{%             if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
+| Start limit | Infinite |
 {%             endif %}
 {%         endif %}
 {%         if dot1x.supplicant is arista.avd.defined %}

@@ -19471,6 +19471,10 @@
                     "type": "object",
                     "description": "Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.",
                     "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
                       "url": {
                         "type": "string",
                         "description": "Supported URL type:\n  - http: http[s]://<hostname>[:<port>]\n  - https: http[s]://<hostname>[:<port>]",
@@ -19480,6 +19484,11 @@
                         "type": "string",
                         "description": "SSL profile name.",
                         "title": "SSL Profile"
+                      },
+                      "start_limit_infinite": {
+                        "type": "boolean",
+                        "description": "Set captive-portal start limit to infinte.",
+                        "title": "Start Limit Infinite"
                       },
                       "access_list_ipv4": {
                         "type": "string",
@@ -19560,7 +19569,7 @@
                         "type": "integer",
                         "minimum": 60,
                         "maximum": 65535,
-                        "description": "Timeout period in seconds.",
+                        "description": "Timeout in seconds for removing a disconnected supplicant.",
                         "title": "Disconnect Cached Results Timeout"
                       }
                     },
