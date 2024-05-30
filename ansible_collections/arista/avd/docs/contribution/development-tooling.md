@@ -12,7 +12,7 @@
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
-    This guide doesn't got into details on how to install common development tooling as this differs from operating system to operating system.
+    This guide doesn't go into details on how to install common development tooling as this differs from operating system to operating system.
 
 ## Development environments
 
@@ -70,7 +70,7 @@ source avd-venv/bin/activate
 
 # Install AVD project requirements-dev.txt and requirements.txt in your Python Virtual environment.
 # Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
-pip3 install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
+pip3 install -r avd/ansible_collections/arista/avd/requirements-dev.txt -r avd/ansible_collections/arista/avd/requirements.txt --upgrade
 ```
 
 !!! note
@@ -150,7 +150,7 @@ The Makefile supports the following targets:
 - `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/molecule/MOLECULE_SCENARIOS.txt).
 
 !!! info
-    `make refresh-facts` can be useful when your change common template or structured configuration output.
+    `make refresh-facts` can be useful when you change common template or structured configuration output.
     Note that it will take a significant amount of local resources and several minutes/hours to execute.
 
 In the majority of new features or bug fixes, the process is the following:
