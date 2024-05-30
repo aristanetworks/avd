@@ -45,6 +45,10 @@ event_handlers:
       regex: "ab*"
     actions:
       increment_device_health_metric: Metric2
+  - name: trigger-on-logging2
+    trigger: on-logging
+    trigger_on_logging:
+      regex: "ab*"
   - name: trigger-on-counters
     trigger: on-counters
     trigger_on_counters:
@@ -53,6 +57,11 @@ event_handlers:
       granularity_per_source: true
     actions:
       log: true
+  - name: trigger-on-counters2
+    trigger: on-counters
+    trigger_on_counters:
+      condition: ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
+      granularity_per_source: true
   - name: trigger-on-intf
     trigger: on-intf
     trigger_on_intf:

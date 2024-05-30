@@ -46,8 +46,10 @@ interface Management1
 | CONFIG_VERSIONING | bash <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
 | trigger-on-boot | bash <code>if [ 15 -gt 10 ]\nthen\n  echo "a is greater than 10"\nfi</code><br>increment device health metric Metric1 | on-boot | - |
 | trigger-on-counters | log | on-counters | poll interval 10<br>condition( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )<br>granularity per-source |
+| trigger-on-counters2 | - | on-counters | condition( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )<br>granularity per-source |
 | trigger-on-intf | - | on-intf | trigger on-intf Ethernet4 operstatus ip ip6 |
 | trigger-on-logging | increment device health metric Metric2 | on-logging | poll interval 10<br>regex ab* |
+| trigger-on-logging2 | - | on-logging | regex ab* |
 | trigger-on-maintenance1 | - | on-maintenance | trigger on-maintenance enter interface Management3 after stage linkdown |
 | trigger-on-maintenance2 | bash <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance enter unit unit1 before stage bgp |
 | trigger-on-maintenance3 | bash <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 all |
@@ -79,6 +81,11 @@ event-handler trigger-on-counters
       granularity per-source
    action log
 !
+event-handler trigger-on-counters2
+   trigger on-counters
+      condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
+      granularity per-source
+!
 event-handler trigger-on-intf
    trigger on-intf Ethernet4 operstatus ip ip6
 !
@@ -87,6 +94,10 @@ event-handler trigger-on-logging
       poll interval 10
       regex ab*
    action increment device-health metric Metric2
+!
+event-handler trigger-on-logging2
+   trigger on-logging
+      regex ab*
 !
 event-handler trigger-on-maintenance1
    trigger on-maintenance enter interface Management3 after stage linkdown
