@@ -225,6 +225,15 @@ $defs:
               Set point-to-Point interface speed for the uplink switch interface only.
               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             type: str
+          uplink_mtu:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+            type: int
+            convert_types:
+              - str
+            min: 68
+            max: 65535
           max_uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration

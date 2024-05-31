@@ -116,7 +116,7 @@ vlan_interfaces:
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
-  mtu: 1500
+  mtu: 1499
   ip_address: 10.255.252.15/31
 port_channel_interfaces:
 - name: Port-Channel3
