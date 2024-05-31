@@ -38,8 +38,11 @@
 {%         endif %}
 {%         if handler.trigger is arista.avd.defined("on-maintenance")
             and handler.trigger_on_maintenance.operation is arista.avd.defined
-            and handler.trigger_on_maintenance.action is arista.avd.defined %}
-{%             set trigger_config =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
+            and handler.trigger_on_maintenance.action is arista.avd.defined
+            and (handler.trigger_on_maintenance.bgp_peer is arista.avd.defined
+                or handler.trigger_on_maintenance.interface is arista.avd.defined
+                or handler.trigger_on_maintenance.unit is arista.avd.defined) %}
+{%             set trigger_config = "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
 {%             if handler.trigger_on_maintenance.bgp_peer is arista.avd.defined %}
 {%                 set trigger_config = trigger_config ~ " bgp " ~ handler.trigger_on_maintenance.bgp_peer %}
 {%                 if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
