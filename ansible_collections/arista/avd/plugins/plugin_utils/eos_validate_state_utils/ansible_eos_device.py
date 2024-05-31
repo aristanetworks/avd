@@ -92,7 +92,7 @@ class AnsibleEOSDevice(AntaDevice):
             else:
                 raise AristaAvdError(message=f"The provided Ansible connection does not use EOS HttpApi plugin: {plugin_name}")
         except AttributeError as err:
-            raise AristaAvdError(message="AVD could not determine ansible connection. Please configure ansible_connection as `httpapi` for this host.") from err
+            raise AristaAvdError(message="AVD could not determine the Ansible connection plugin used. Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host.") from err
 
     @property
     def _keys(self) -> tuple:
