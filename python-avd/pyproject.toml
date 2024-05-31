@@ -36,7 +36,7 @@ requires = [
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
 ]
-build-backend = "custom-build-backend"
+build-backend = "custom_build_backend"
 backend-path = ["scripts"]
 
 [tool.setuptools]
