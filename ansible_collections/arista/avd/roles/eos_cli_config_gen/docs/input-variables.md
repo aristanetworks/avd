@@ -905,6 +905,12 @@ roles/eos_cli_config_gen/docs/tables/router-ospf.md
 roles/eos_cli_config_gen/docs/tables/router-path-selection.md
 --8<--
 
+### Router segment-security
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-segment-security.md
+--8<--
+
 ### Router service-insertion
 
 --8<--
