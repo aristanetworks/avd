@@ -49,6 +49,8 @@ event_handlers:
     trigger: on-logging
     trigger_on_logging:
       regex: "ab*"
+  - name: trigger-on-logging3
+    trigger: on-logging
   - name: trigger-on-counters
     trigger: on-counters
     trigger_on_counters:
