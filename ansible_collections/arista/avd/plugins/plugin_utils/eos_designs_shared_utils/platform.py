@@ -161,6 +161,27 @@ DEFAULT_PLATFORM_SETTINGS = [
             "bgp_update_wait_install": False,
         },
     },
+    {
+        "platforms": ["AWE-5310", "AWE-5510", "AWE-7250R", "AWE-7230R"],
+        "management_interface": "Management1/1",
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": False,
+            "bgp_update_wait_for_convergence": True,
+            "bgp_update_wait_install": False,
+        },
+    },
+    {
+        "platforms": ["AWE-7220R"],
+        "management_interface": "Management1",
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": False,
+            "bgp_update_wait_for_convergence": True,
+            "bgp_update_wait_install": False,
+            "poe": True,
+        },
+    },
 ]
 
 

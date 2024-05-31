@@ -4,6 +4,7 @@
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
+from .j2filters.default import default
 
 
 class Undefined(StrictUndefined):
@@ -52,7 +53,6 @@ class Templar:
         # pylint: disable=import-outside-toplevel
         from .vendor.j2.filter.convert_dicts import convert_dicts
         from .vendor.j2.filter.decrypt import decrypt
-        from .vendor.j2.filter.default import default
         from .vendor.j2.filter.encrypt import encrypt
         from .vendor.j2.filter.hide_passwords import hide_passwords
         from .vendor.j2.filter.list_compress import list_compress
