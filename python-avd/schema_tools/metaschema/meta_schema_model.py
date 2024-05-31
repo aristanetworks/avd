@@ -10,8 +10,26 @@ from typing import Annotated, Any, ClassVar, Generator, List, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, constr
 
-from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
-from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
+from ..generate_docs.tablerowgen import (
+    TableRow,
+    TableRowGenAny,
+    TableRowGenBase,
+    TableRowGenBool,
+    TableRowGenDict,
+    TableRowGenInt,
+    TableRowGenList,
+    TableRowGenStr,
+)
+from ..generate_docs.yamllinegen import (
+    YamlLine,
+    YamlLineGenAny,
+    YamlLineGenBase,
+    YamlLineGenBool,
+    YamlLineGenDict,
+    YamlLineGenInt,
+    YamlLineGenList,
+    YamlLineGenStr,
+)
 from .resolvemodel import merge_schema_from_ref
 
 """
@@ -210,6 +228,24 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """
         # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
         yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
+
+
+class AvdSchemaAny(AvdSchemaBaseModel):
+    """
+    Pydantic model for AvdSchema fields of type "any".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal attributes and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
+    # AvdSchema field properties
+    type: Literal["any"]
+
+    # Type of schema docs generators to use for this schema field.
+    _table_row_generator = TableRowGenAny
+    _yaml_line_generator = YamlLineGenAny
 
 
 class AvdSchemaInt(AvdSchemaBaseModel):
@@ -593,5 +629,5 @@ class AristaAvdSchema(AvdSchemaDict):
         return []
 
 
-AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict
+AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict | AvdSchemaAny
 """Alias for any of the AvdSchema field types"""

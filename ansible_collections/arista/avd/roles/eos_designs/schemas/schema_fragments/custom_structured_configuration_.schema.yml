@@ -10,7 +10,7 @@ pattern_keys:
     documentation_options:
       table: custom-structured-configuration
     display_name: Custom Structured Configuration
-    type: dict
+    type: any
     deprecation:
       warning: true
       new_key: structured_config_<anything> with the key inside the dict.'

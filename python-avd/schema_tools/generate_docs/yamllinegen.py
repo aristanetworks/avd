@@ -191,7 +191,7 @@ class YamlLineGenBase(ABC):
         Is true for list or dict with length above 1. Otherwise false.
         """
         return (
-            self.schema.default is not None
+            getattr(self.schema, "default", None) is not None
             and isinstance(self.schema.default, (list, dict))
             and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40)
         )
@@ -202,7 +202,7 @@ class YamlLineGenBase(ABC):
         For list or dict with len > 1 it will return none.
         See get_default_popup.
         """
-        if self.schema.default is not None and not self.needs_annotation_for_default_value:
+        if getattr(self.schema, "default", None) is not None and not self.needs_annotation_for_default_value:
             if self.schema.type == "str":
                 # Add quotes to string default value.
                 return f'default="{self.schema.default}"'
@@ -246,6 +246,10 @@ class YamlLineGenBase(ABC):
     def render_children(self) -> Generator[YamlLine]:
         """Noop for classes without children. Override in subclasses for dict and list."""
         yield from []
+
+
+class YamlLineGenAny(YamlLineGenBase):
+    pass
 
 
 class YamlLineGenBool(YamlLineGenBase):

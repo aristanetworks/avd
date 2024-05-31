@@ -59718,8 +59718,7 @@
   "additionalProperties": true,
   "patternProperties": {
     "custom_structured_configuration_.+": {
-      "title": "Custom Structured Configuration",
-      "type": "object"
+      "title": "Custom Structured Configuration"
     }
   }
 }

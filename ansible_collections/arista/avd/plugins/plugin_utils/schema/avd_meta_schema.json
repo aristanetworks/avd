@@ -296,6 +296,24 @@
                         "$defs": { "$ref": "#/$defs/$defs" }
                     },
                     "additionalProperties": false
+                },
+                {
+                    "required": [ "type" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "any"
+                            ]
+                        },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                    },
+                    "additionalProperties": false
                 }
             ]
         },

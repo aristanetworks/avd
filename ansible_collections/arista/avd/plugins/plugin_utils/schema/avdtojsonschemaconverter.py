@@ -104,8 +104,11 @@ class AvdToJsonSchemaConverter:
             "bool": "boolean",
             "list": "array",
             "dict": "object",
+            "any": None,
         }
-        return {"type": TYPE_MAP[type]}
+        if json_type := TYPE_MAP[type]:
+            return {"type": json_type}
+        return {}
 
     def convert_keys(self, keys: dict, parent_schema: dict) -> dict:
         return self.__convert_keys(keys, parent_schema, "properties")
