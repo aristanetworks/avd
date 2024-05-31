@@ -2,19 +2,21 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
-from sys import path
+from sys import path, version_info
 from unittest.mock import patch
 
 import pytest
 
-# Override global path to load schema from source instead of any installed version.
-# Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-path.insert(0, str(Path(__file__).parents[3]))
+if version_info >= (3, 10):
+    # Override global path to load schema from source instead of any installed version.
+    # Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
+    path.insert(0, str(Path(__file__).parents[3]))
 
-from schema_tools.generate_docs.mdtabsgen import get_md_tabs
-from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
+    from schema_tools.generate_docs.mdtabsgen import get_md_tabs
+    from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 
+@pytest.mark.skipif(version_info < (3, 10), reason="Our Pydantic models require minimum Python3.10")
 @pytest.mark.parametrize("table_name", ["network-services-multicast-settings"])
 def test_get_md_tabs(table_name: str, schema_store, artifacts_path, output_path):
     """

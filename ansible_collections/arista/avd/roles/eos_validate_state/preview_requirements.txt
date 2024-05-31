@@ -1,4 +1,10 @@
 # Temporary requirements while ANTA integration is in preview state.
 # Once the integration is final, this file can be removed and the regular requirements can include ANTA.
--r ../../requirements.txt
 anta==0.14.0
+# Installing PyAVD as editable install.
+# Providing config-settings in a requirements file is only supported by pip from version 23.1.
+# The editable_mode=compat is required for pylance to work correctly.
+# The -e path is relative to the repo root and will only work if the pip install is executed from there.
+-e python-avd --config-settings editable_mode=compat
+# The -r path is relative to this file.
+-r ../../requirements.txt

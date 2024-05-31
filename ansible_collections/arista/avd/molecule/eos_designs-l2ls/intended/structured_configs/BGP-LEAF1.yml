@@ -4,6 +4,8 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.31.0.1
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 172.23.254.1
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -92,7 +94,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 1,100,200
+  vlans: 1,100,200,4092
 vlans:
 - id: 1
   name: SVI_1
@@ -103,5 +105,15 @@ vlans:
 - id: 200
   name: SVI_200
   tenant: L2LS_BGP
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 ip_igmp_snooping:
   globally_enabled: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.23.254.4/24
+  type: inband_mgmt
