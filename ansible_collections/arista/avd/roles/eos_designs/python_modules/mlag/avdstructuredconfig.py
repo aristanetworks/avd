@@ -76,11 +76,15 @@ class AvdStructuredConfigMlag(AvdFacts):
             "name": main_vlan_interface_name,
             "description": "MLAG_PEER",
             "shutdown": False,
-            "ip_address": f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}",
             "no_autostate": True,
             "struct_cfg": self.shared_utils.mlag_peer_vlan_structured_config,
             "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
+
+        if self.shared_utils.mlag_peer_address_family == "ipv6":
+            main_vlan_interface["ipv6_address"] = f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv6_prefix_length}"
+        else:
+            main_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
         if not self.shared_utils.mlag_l3:
             return [strip_empties_from_dict(main_vlan_interface)]
 
@@ -100,6 +104,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             l3_cfg.update(
                 {
                     "isis_enable": self.shared_utils.isis_instance_name,
+                    "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                     "isis_metric": 50,
                     "isis_network_point_to_point": True,
                 }
@@ -213,7 +218,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
             if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
-                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_mgmt_vlan")})
+                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_ztp_vlan")})
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces

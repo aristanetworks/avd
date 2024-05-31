@@ -115,8 +115,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].index") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;spf_interval</samp>](## "router_isis.spf_interval") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.spf_interval.interval") | Integer |  |  | Min: 1<br>Max: 300 | Maximum interval between two SPFs in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.spf_interval.interval") | Integer |  |  |  | Maximum interval between two SPFs in seconds or milliseconds.<br>Range in seconds: <1-300><br>Range in milliseconds: <1-300000> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval_unit</samp>](## "router_isis.spf_interval.interval_unit") | String |  |  | Valid Values:<br>- <code>seconds</code><br>- <code>milliseconds</code> | If interval unit is not defined EOS takes `seconds` by default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_interval</samp>](## "router_isis.spf_interval.wait_interval") | Integer |  |  | Min: 1<br>Max: 300000 | Initial wait interval for SPF in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_interval</samp>](## "router_isis.spf_interval.hold_interval") | Integer |  |  | Min: 1<br>Max: 300000 | Hold interval between the first and second SPF runs in milliseconds. |
     | [<samp>&nbsp;&nbsp;graceful_restart</samp>](## "router_isis.graceful_restart") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.graceful_restart.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;restart_hold_time</samp>](## "router_isis.graceful_restart.restart_hold_time") | Integer |  |  | Min: 5<br>Max: 300 | Number of seconds. |
@@ -336,11 +338,19 @@
             index: <int>
       spf_interval:
 
-        # Maximum interval between two SPFs in seconds.
-        interval: <int; 1-300>
+        # Maximum interval between two SPFs in seconds or milliseconds.
+        # Range in seconds: <1-300>
+        # Range in milliseconds: <1-300000>
+        interval: <int>
+
+        # If interval unit is not defined EOS takes `seconds` by default.
+        interval_unit: <str; "seconds" | "milliseconds">
 
         # Initial wait interval for SPF in milliseconds.
         wait_interval: <int; 1-300000>
+
+        # Hold interval between the first and second SPF runs in milliseconds.
+        hold_interval: <int; 1-300000>
       graceful_restart:
         enabled: <bool>
 

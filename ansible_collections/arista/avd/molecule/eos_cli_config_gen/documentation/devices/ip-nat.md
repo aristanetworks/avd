@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP NAT](#ip-nat)
+- [IP NAT](#ip-nat-1)
   - [NAT Profiles](#nat-profiles)
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
@@ -84,7 +84,7 @@ interface Management1
 | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
 | - | 1.0.0.2 | 22 | - | 2.0.0.2 | - | - | - | 0 | - |
-| - | 1.0.0.3 | 22 | - | 2.0.0.3 | 23 | - | - | 0 | - |
+| - | 1.0.0.2 | 23 | - | 2.0.0.3 | 23 | - | - | 0 | - |
 | - | 1.0.0.4 | 22 | - | 2.0.0.4 | 23 | udp | - | 0 | - |
 | - | 1.0.0.5 | 22 | - | 2.0.0.5 | 23 | tcp | 1 | 0 | - |
 | - | 1.0.0.6 | 22 | - | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
@@ -121,7 +121,7 @@ NAT profile VRF is: TEST
 
 | Setting | Value |
 | -------- | ----- |
-| State | Disabled !
+| State | Disabled |
 | Expiry Interval | 60 Seconds |
 | Interface | Ethernet1 |
 | Peer IP Address | 1.1.1.1 |
@@ -182,7 +182,7 @@ ip nat profile NAT-PROFILE-NO-VRF-2
    ip nat source dynamic access-list ACL19 pool POOL19 full-cone priority 10 comment Priority_10
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination static 1.0.0.2 22 2.0.0.2
-   ip nat destination static 1.0.0.3 22 2.0.0.3 23
+   ip nat destination static 1.0.0.2 23 2.0.0.3 23
    ip nat destination static 1.0.0.4 22 2.0.0.4 23 protocol udp
    ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
    ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test

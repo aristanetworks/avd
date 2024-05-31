@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Multicast](#multicast)
-  - [Router Multicast](#router-multicast)
+  - [Router Multicast](#router-multicast-1)
 
 ## Management
 
@@ -71,9 +71,13 @@ router multicast
       rpf route 10.10.10.1/32 Ethernet1 1
       rpf route 10.10.10.2/32 Ethernet2
       counters rate period decay 300 seconds
+      activity polling-interval 10
       routing
       multipath deterministic router-id
       software-forwarding sfe
+   !
+   ipv6
+      activity polling-interval 20
    !
    vrf MCAST_VRF1
       ipv4

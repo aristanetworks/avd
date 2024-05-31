@@ -99,7 +99,7 @@ class UtilsMixin:
                         "structured_config": get(uplink, "structured_config"),
                     }
                     if get(peer_facts, "inband_ztp"):
-                        link["inband_ztp_vlan"] = get(peer_facts, "inband_mgmt_vlan")
+                        link["inband_ztp_vlan"] = get(peer_facts, "inband_ztp_vlan")
                         link["inband_ztp_lacp_fallback_delay"] = get(peer_facts, "inband_ztp_lacp_fallback_delay")
 
                     if (subinterfaces := get(uplink, "subinterfaces")) is not None:
@@ -157,7 +157,6 @@ class UtilsMixin:
         interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
         if "." in interface_name:
             iface_type = "l3dot1q"
-            encapsulation = int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))
         else:
             iface_type = "routed"
 
@@ -201,7 +200,7 @@ class UtilsMixin:
         }
 
         if iface_type == "l3dot1q":
-            interface["encapsulation_dot1q_vlan"] = encapsulation
+            interface["encapsulation_dot1q_vlan"] = int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))
 
         if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True

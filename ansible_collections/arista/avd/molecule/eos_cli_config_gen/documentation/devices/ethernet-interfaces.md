@@ -9,7 +9,7 @@
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces-1)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [MPLS](#mpls)
@@ -135,6 +135,8 @@ sFlow is disabled.
 | Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 | Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet67 |  Custom_Transceiver_Frequency | access | - | - | - | - |
+| Ethernet68 |  Custom_Transceiver_Frequency | access | - | - | - | - |
 | Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -167,7 +169,24 @@ sFlow is disabled.
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
-| Ethernet16 | 111-112 | 110 | out
+| Ethernet16 | 111-112 | 110 | out |
+
+##### TCP MSS Clamping
+
+| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Direction |
+| --------- | ----------------- | ----------------- | --------- |
+| Ethernet1 | 70 | 75 | egress |
+| Ethernet2 | 70 | - | ingress |
+| Ethernet3 | - | 65 | - |
+| Ethernet4 | 65 | - | - |
+
+##### Transceiver Settings
+
+| Interface | Transceiver Frequency | Media Override |
+| --------- | --------------------- | -------------- |
+| Ethernet7 | - | 100gbase-ar4 |
+| Ethernet67 | 190050.000 | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
 
 ##### Link Tracking Groups
 
@@ -291,9 +310,9 @@ sFlow is disabled.
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 | False | md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | md5 |
 
 ##### EVPN Multihoming
 
@@ -359,6 +378,7 @@ interface Ethernet1
    ip igmp host-proxy access-list ACL2
    ip igmp host-proxy report-interval 2
    ip igmp host-proxy version 2
+   tcp mss ceiling ipv4 70 ipv6 75 egress
    switchport port-security
    priority-flow-control on
    priority-flow-control priority 5 drop
@@ -373,6 +393,7 @@ interface Ethernet2
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
@@ -397,6 +418,7 @@ interface Ethernet3
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   tcp mss ceiling ipv6 65
    switchport port-security
    no switchport port-security mac-address maximum disabled
    switchport port-security vlan 1 mac-address maximum 3
@@ -418,6 +440,7 @@ interface Ethernet4
    ipv6 address FE80:FEA::AB65/64 link-local
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
+   tcp mss ceiling ipv4 65
    ipv6 access-group IPv6_ACL_IN in
    ipv6 access-group IPv6_ACL_OUT out
    multicast ipv4 boundary 224.0.1.0/24 out
@@ -447,6 +470,7 @@ interface Ethernet5
    pim ipv4 dr-priority 200
    pim ipv4 bfd
    isis enable ISIS_TEST
+   isis bfd
    isis circuit-type level-2
    isis metric 99
    no isis hello padding
@@ -975,6 +999,19 @@ interface Ethernet66
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
+!
+interface Ethernet67
+   description Custom_Transceiver_Frequency
+   no shutdown
+   switchport
+   transceiver frequency 190050.000
+!
+interface Ethernet68
+   description Custom_Transceiver_Frequency
+   no shutdown
+   switchport
+   transceiver media override 100gbase-ar4
+   transceiver frequency 190080.000 ghz
 !
 interface Ethernet69
    description IP NAT service-profile

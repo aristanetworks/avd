@@ -97,7 +97,7 @@ class UtilsMixin:
         """
         Return short_esi for one adapter
         """
-        if len(set(adapter["switches"])) < 2:
+        if len(set(adapter["switches"])) < 2 or not self.shared_utils.overlay_evpn or not self.shared_utils.overlay_vtep:
             # Only configure ESI for multi-homing.
             return None
 

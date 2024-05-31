@@ -318,16 +318,21 @@ vlan_internal_order:
     ending: 1199
 event_handlers:
 - name: evpn-blacklist-recovery
-  action_type: bash
-  action: FastCli -p 15 -c "clear bgp evpn host-flap"
+  actions:
+    bash_command: FastCli -p 15 -c "clear bgp evpn host-flap"
   delay: 300
   trigger: on-logging
-  regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+  trigger_on_logging:
+    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
   asynchronous: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
 - ip_address: 8.8.8.8
+  vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
   vrf: MGMT
 - ip_address: 1.1.1.1
   vrf: MGMT

@@ -194,8 +194,8 @@ class MiscMixin:
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
         if not self.platform_settings_feature_support_per_interface_mtu:
             return None
-
-        return get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        return get(self.switch_data_combined, "uplink_mtu", default=p2p_uplinks_mtu)
 
     @cached_property
     def evpn_short_esi_prefix(self: SharedUtils) -> str:
@@ -204,6 +204,10 @@ class MiscMixin:
     @cached_property
     def shutdown_interfaces_towards_undeployed_peers(self: SharedUtils) -> bool:
         return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
+
+    @cached_property
+    def shutdown_bgp_towards_undeployed_peers(self: SharedUtils) -> bool:
+        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers") is True
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
@@ -311,6 +315,10 @@ class MiscMixin:
     @cached_property
     def fabric_ip_addressing_mlag_ipv4_prefix_length(self: SharedUtils) -> int:
         return get(self.hostvars, "fabric_ip_addressing.mlag.ipv4_prefix_length", default=31)
+
+    @cached_property
+    def fabric_ip_addressing_mlag_ipv6_prefix_length(self: SharedUtils) -> int:
+        return get(self.hostvars, "fabric_ip_addressing.mlag.ipv6_prefix_length", default=64)
 
     @cached_property
     def fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length(self: SharedUtils) -> int:

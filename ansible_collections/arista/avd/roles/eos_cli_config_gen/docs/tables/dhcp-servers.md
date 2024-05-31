@@ -12,6 +12,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String | Required, Unique |  |  | VRF in which to configure the DHCP server, use `default` to indicate default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv4</samp>](## "dhcp_servers.[].dns_domain_name_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv6</samp>](## "dhcp_servers.[].dns_domain_name_ipv6") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_ipv4</samp>](## "dhcp_servers.[].dns_servers_ipv4") | List, items: String |  |  | Min Length: 1 | List of DNS servers for IPv4 clients. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].dns_servers_ipv4.[]") | String | Required |  |  | IPv4 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_ipv6</samp>](## "dhcp_servers.[].dns_servers_ipv6") | List, items: String |  |  | Min Length: 1 | List of DNS servers for IPv6 clients. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].dns_servers_ipv6.[]") | String | Required |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tftp_server</samp>](## "dhcp_servers.[].tftp_server") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_ipv4</samp>](## "dhcp_servers.[].tftp_server.file_ipv4") | String |  |  | Min Length: 1<br>Max Length: 255 | Name of TFTP file for IPv4 clients. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_ipv6</samp>](## "dhcp_servers.[].tftp_server.file_ipv6") | String |  |  | Min Length: 1<br>Max Length: 255 | Name of TFTP file for IPv6 clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_vendor_options</samp>](## "dhcp_servers.[].ipv4_vendor_options") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vendor_id</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].vendor_id") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub_options</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options") | List, items: Dictionary |  |  |  |  |
@@ -44,6 +51,25 @@
         vrf: <str; required; unique>
         dns_domain_name_ipv4: <str>
         dns_domain_name_ipv6: <str>
+
+        # List of DNS servers for IPv4 clients.
+        dns_servers_ipv4: # >=1 items
+
+            # IPv4 address of DNS server.
+          - <str; required>
+
+        # List of DNS servers for IPv6 clients.
+        dns_servers_ipv6: # >=1 items
+
+            # IPv6 address of DNS server.
+          - <str; required>
+        tftp_server:
+
+          # Name of TFTP file for IPv4 clients.
+          file_ipv4: <str; length 1-255>
+
+          # Name of TFTP file for IPv6 clients.
+          file_ipv6: <str; length 1-255>
         ipv4_vendor_options:
           - vendor_id: <str; required; unique>
             sub_options:

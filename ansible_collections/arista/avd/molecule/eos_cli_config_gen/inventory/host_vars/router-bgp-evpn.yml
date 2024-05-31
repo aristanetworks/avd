@@ -26,6 +26,9 @@ router_bgp:
       maximum_routes: 0
       allowas_in:
         enabled: true
+      shared_secret:
+        profile: profile2
+        hash_algorithm: aes-128-cmac-96
     - name: MLAG-IPv4-UNDERLAY-PEER
       type: ipv4
       remote_as: 65101
@@ -43,6 +46,9 @@ router_bgp:
       allowas_in:
         enabled: true
         times: 5
+      shared_secret:
+        profile: profile1
+        hash_algorithm: aes-128-cmac-96
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
     - ip_address: 192.168.255.3
@@ -109,6 +115,13 @@ router_bgp:
     route:
       import_ethernet_segment_ip_mass_withdraw: true
       export_ethernet_segment_ip_mass_withdraw: true
+      import_overlay_index_gateway: true
+    bgp_additional_paths:
+      receive: true
+      send:
+        any: true
+    layer_2_fec_in_place_update:
+      enabled: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS

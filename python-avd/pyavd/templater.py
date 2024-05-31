@@ -4,31 +4,7 @@
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
-from .vendor.j2.filter.convert_dicts import convert_dicts
-from .vendor.j2.filter.decrypt import decrypt
-from .vendor.j2.filter.default import default
-from .vendor.j2.filter.encrypt import encrypt
-from .vendor.j2.filter.hide_passwords import hide_passwords
-from .vendor.j2.filter.list_compress import list_compress
-from .vendor.j2.filter.natural_sort import natural_sort
-from .vendor.j2.filter.range_expand import range_expand
-from .vendor.j2.test.contains import contains
-from .vendor.j2.test.defined import defined
-
-JINJA2_CUSTOM_FILTERS = {
-    "arista.avd.default": default,
-    "arista.avd.convert_dicts": convert_dicts,
-    "arista.avd.decrypt": decrypt,
-    "arista.avd.encrypt": encrypt,
-    "arista.avd.hide_passwords": hide_passwords,
-    "arista.avd.list_compress": list_compress,
-    "arista.avd.natural_sort": natural_sort,
-    "arista.avd.range_expand": range_expand,
-}
-JINJA2_CUSTOM_TESTS = {
-    "arista.avd.defined": defined,
-    "arista.avd.contains": contains,
-}
+from .j2filters.default import default
 
 
 class Undefined(StrictUndefined):
@@ -71,8 +47,40 @@ class Templar:
             undefined=Undefined,
             trim_blocks=True,
         )
-        self.environment.filters.update(JINJA2_CUSTOM_FILTERS)
-        self.environment.tests.update(JINJA2_CUSTOM_TESTS)
+        self.import_filters_and_tests()
+
+    def import_filters_and_tests(self) -> None:
+        # pylint: disable=import-outside-toplevel
+        from .vendor.j2.filter.convert_dicts import convert_dicts
+        from .vendor.j2.filter.decrypt import decrypt
+        from .vendor.j2.filter.encrypt import encrypt
+        from .vendor.j2.filter.hide_passwords import hide_passwords
+        from .vendor.j2.filter.list_compress import list_compress
+        from .vendor.j2.filter.natural_sort import natural_sort
+        from .vendor.j2.filter.range_expand import range_expand
+        from .vendor.j2.test.contains import contains
+        from .vendor.j2.test.defined import defined
+
+        # pylint: enable=import-outside-toplevel
+
+        self.environment.filters.update(
+            {
+                "arista.avd.default": default,
+                "arista.avd.convert_dicts": convert_dicts,
+                "arista.avd.decrypt": decrypt,
+                "arista.avd.encrypt": encrypt,
+                "arista.avd.hide_passwords": hide_passwords,
+                "arista.avd.list_compress": list_compress,
+                "arista.avd.natural_sort": natural_sort,
+                "arista.avd.range_expand": range_expand,
+            }
+        )
+        self.environment.tests.update(
+            {
+                "arista.avd.defined": defined,
+                "arista.avd.contains": contains,
+            }
+        )
 
     def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
         return self.environment.get_template(template_file).render(template_vars)

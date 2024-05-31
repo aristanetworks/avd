@@ -35,9 +35,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.1/31
   no_autostate: true
   mtu: 9214
+  ip_address: 10.255.252.1/31
 port_channel_interfaces:
 - name: Port-Channel101
   description: MLAG_PEER_network-ports-tests.1_Po101

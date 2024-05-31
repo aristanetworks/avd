@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [LLDP](#lldp)
+- [LLDP](#lldp-1)
   - [LLDP Summary](#lldp-summary)
   - [LLDP Device Configuration](#lldp-device-configuration)
 - [Interfaces](#interfaces)

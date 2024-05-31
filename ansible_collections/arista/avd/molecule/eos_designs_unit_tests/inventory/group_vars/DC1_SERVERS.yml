@@ -213,6 +213,20 @@ servers:
           description: PortChanne1
           mode: active
 
+  # Test short_esi on non-vtep device.
+  - name: server03_ESI_L2LEAF
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ DC1-L2LEAF1A, DC1-L2LEAF1B ]
+        profile: TENANT_A_B
+        ethernet_segment:
+          short_esi: '0303:0202:0101'
+        port_channel:
+          description: PortChanne1
+          mode: active
+
   - name: server04_inherit_all_from_profile
     rack: RackC
     adapters:

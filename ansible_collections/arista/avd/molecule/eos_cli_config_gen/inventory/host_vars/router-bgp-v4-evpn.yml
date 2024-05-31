@@ -74,6 +74,9 @@ router_bgp:
     - source_protocol: connected
       route_map: RM-CONN-2-BGP
   address_family_evpn:
+    bgp_additional_paths:
+      send:
+        backup: true
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
@@ -193,10 +196,21 @@ router_bgp:
               address_family_ipv6:
                 enabled: false
                 originate: true # this should not get added to the configuration
+          - ip_address: 10.2.3.9
+            activate: true
+            rcf_in: VRF_AFIPV4_RCF_IN()
+          - ip_address: 10.2.3.10
+            activate: true
+            rcf_out: VRF_AFIPV4_RCF_OUT()
         networks:
           - prefix: 10.0.0.0/8
           - prefix: 100.64.0.0/10
             route_map: RM-10.2.3.4
+        redistribute_routes:
+          - source_protocol: connected
+            rcf: VRF_AFIPV4_RCF_CONNECTED()
+          - source_protocol: static
+            route_map: VRF_AFIPV4_RM_STATIC
       redistribute_routes:
         - source_protocol: connected
         - source_protocol: static

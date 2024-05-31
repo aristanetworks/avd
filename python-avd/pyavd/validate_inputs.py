@@ -4,7 +4,6 @@
 from .avd_schema_tools import AvdSchemaTools
 from .constants import EOS_DESIGNS_SCHEMA_ID
 from .validation_result import ValidationResult
-from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
 
 eos_designs_schema_tools = None
 
@@ -21,6 +20,7 @@ def validate_inputs(inputs: dict) -> ValidationResult:
     Returns:
         Validation result object with any validation errors or deprecation warnings.
     """
+    from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils  # pylint: disable=import-outside-toplevel
 
     # Initialize a global instance of eos_designs_schema_tools
     global eos_designs_schema_tools
