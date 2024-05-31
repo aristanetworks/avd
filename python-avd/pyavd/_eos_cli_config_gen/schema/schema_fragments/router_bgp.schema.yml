@@ -1144,6 +1144,18 @@ keys:
                   description: |-
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
+                default_route:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    rcf:
+                      type: str
+                      description: |-
+                        RCF function name with parenthesis.
+                        Example: MyFunction(myarg).
+                    route_map:
+                      type: str
                 domain_remote:
                   type: bool
                 encapsulation:
@@ -2195,6 +2207,18 @@ keys:
                   description: |-
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
+                default_route:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    rcf:
+                      type: str
+                      description: |-
+                        RCF function name with parenthesis.
+                        Example: MyFunction(myarg).
+                    route_map:
+                      type: str
           route:
             type: dict
             keys:
@@ -2230,6 +2254,18 @@ keys:
                   description: |-
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
+                default_route:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    rcf:
+                      type: str
+                      description: |-
+                        RCF function name with parenthesis.
+                        Example: MyFunction(myarg).
+                    route_map:
+                      type: str
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -2269,6 +2305,18 @@ keys:
                   description: |-
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
+                default_route:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    rcf:
+                      type: str
+                      description: |-
+                        RCF function name with parenthesis.
+                        Example: MyFunction(myarg).
+                    route_map:
+                      type: str
           route:
             type: dict
             keys:
@@ -2304,6 +2352,18 @@ keys:
                   description: |-
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
+                default_route:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    rcf:
+                      type: str
+                      description: |-
+                        RCF function name with parenthesis.
+                        Example: MyFunction(myarg).
+                    route_map:
+                      type: str
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -2343,6 +2403,27 @@ keys:
                     transit:
                       type: bool
                       description: Enable EVPN multicast transit mode.
+            default_route_export:
+              type: list
+              description: Enable default-originate per VRF/address family.
+              items:
+                type: dict
+                keys:
+                  address_family:
+                    type: str
+                    valid_values:
+                      - "evpn"
+                      - "vpn-ipv4"
+                      - "vpn-ipv6"
+                  always:
+                    type: bool
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: |-
+                      RCF function name with parenthesis.
+                      Example: MyFunction(myarg).
             route_targets:
               type: dict
               keys:

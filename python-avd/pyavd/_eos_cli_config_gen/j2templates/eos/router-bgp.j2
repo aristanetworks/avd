@@ -677,6 +677,15 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.rcf_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} rcf out {{ peer_group.rcf_out }}
 {%             endif %}
+{%             if peer_group.default_route.enabled is arista.avd.defined(true) %}
+{%                 set peer_group_default_route_cli = "neighbor " ~ peer_group.name ~ " default-route" %}
+{%                 if peer_group.default_route.rcf is arista.avd.defined %}
+{%                     set peer_group_default_route_cli = peer_group_default_route_cli ~ " rcf " ~ peer_group.default_route.rcf %}
+{%                 elif peer_group.default_route.route_map is arista.avd.defined %}
+{%                     set peer_group_default_route_cli = peer_group_default_route_cli ~ " route-map " ~ peer_group.default_route.route_map %}
+{%                 endif %}
+      {{ peer_group_default_route_cli }}
+{%             endif %}
 {%             if peer_group.activate is arista.avd.defined(true) %}
       neighbor {{ peer_group.name }} activate
 {%             elif peer_group.activate is arista.avd.defined(false) %}
@@ -1331,6 +1340,15 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.rcf_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} rcf out {{ peer_group.rcf_out }}
 {%             endif %}
+{%             if peer_group.default_route.enabled is arista.avd.defined(true) %}
+{%                 set peer_group_default_route_cli = "neighbor " ~ peer_group.name ~ " default-route" %}
+{%                 if peer_group.default_route.rcf is arista.avd.defined %}
+{%                     set peer_group_default_route_cli = peer_group_default_route_cli ~ " rcf " ~ peer_group.default_route.rcf %}
+{%                 elif peer_group.default_route.route_map is arista.avd.defined %}
+{%                     set peer_group_default_route_cli = peer_group_default_route_cli ~ " route-map " ~ peer_group.default_route.route_map %}
+{%                 endif %}
+      {{ peer_group_default_route_cli }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1349,6 +1367,15 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.rcf_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}
+{%             endif %}
+{%             if neighbor.default_route.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_default_route_cli = "neighbor " ~ neighbor.ip_address ~ " default-route" %}
+{%                 if neighbor.default_route.rcf is arista.avd.defined %}
+{%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " rcf " ~ neighbor.default_route.rcf %}
+{%                 elif neighbor.default_route.route_map is arista.avd.defined %}
+{%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " route-map " ~ neighbor.default_route.route_map %}
+{%                 endif %}
+      {{ neighbor_default_route_cli }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
@@ -1383,6 +1410,15 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.rcf_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} rcf out {{ peer_group.rcf_out }}
 {%             endif %}
+{%             if peer_group.default_route.enabled is arista.avd.defined(true) %}
+{%                 set peer_group_default_route_cli = "neighbor " ~ peer_group.name ~ " default-route" %}
+{%                 if peer_group.default_route.rcf is arista.avd.defined %}
+{%                     set peer_group_default_route_cli = peer_group_default_route_cli ~ " rcf " ~ peer_group.default_route.rcf %}
+{%                 elif peer_group.default_route.route_map is arista.avd.defined %}
+{%                     set peer_group_default_route_cli = peer_group_default_route_cli ~ " route-map " ~ peer_group.default_route.route_map %}
+{%                 endif %}
+      {{ peer_group_default_route_cli }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1401,6 +1437,15 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.rcf_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}
+{%             endif %}
+{%             if neighbor.default_route.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_default_route_cli = "neighbor " ~ neighbor.ip_address ~ " default-route" %}
+{%                 if neighbor.default_route.rcf is arista.avd.defined %}
+{%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " rcf " ~ neighbor.default_route.rcf %}
+{%                 elif neighbor.default_route.route_map is arista.avd.defined %}
+{%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " route-map " ~ neighbor.default_route.route_map %}
+{%                 endif %}
+      {{ neighbor_default_route_cli }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
@@ -1426,6 +1471,19 @@ router bgp {{ router_bgp.as }}
             transit
 {%                 endif %}
 {%             endif %}
+{%         endif %}
+{%         if vrf.default_route_export is arista.avd.defined %}
+{%             for address_family in vrf.default_route_export %}
+{%                 set vrf_default_route_export_cli = "default-route export " ~ address_family.address_family %}
+{%                 if address_family.rcf is arista.avd.defined %}
+{%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " rcf " ~ address_family.rcf %}
+{%                 elif address_family.route_map is arista.avd.defined %}
+{%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " route-map " ~ address_family.route_map %}
+{%                 elif address_family.always is arista.avd.defined(true) %}
+{%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " always" %}
+{%                 endif %}
+      {{ vrf_default_route_export_cli }}
+{%             endfor %}
 {%         endif %}
 {%         if vrf.route_targets.import is arista.avd.defined %}
 {%             for address_family in vrf.route_targets.import %}

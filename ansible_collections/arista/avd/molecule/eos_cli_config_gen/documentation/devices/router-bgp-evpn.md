@@ -270,6 +270,7 @@ router bgp 65101
       neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
       neighbor ADDITIONAL-PATH-PG-6 activate
       no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
+      neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
@@ -287,6 +288,7 @@ router bgp 65101
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
       evpn multicast
+      default-route export evpn
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.3
@@ -297,6 +299,7 @@ router bgp 65101
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12
+      default-route export evpn always
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.3
@@ -310,6 +313,7 @@ router bgp 65101
       evpn multicast
          address-family ipv4
             transit
+      default-route export evpn route-map TENANT_A_PROJECT03_RM_DEFAULT
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.3
@@ -317,6 +321,7 @@ router bgp 65101
    vrf TENANT_A_PROJECT04
       rd 192.168.255.3:14
       evpn multicast
+      default-route export evpn rcf TENANT_A_PROJECT03_RCF_DEFAULT()
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.3

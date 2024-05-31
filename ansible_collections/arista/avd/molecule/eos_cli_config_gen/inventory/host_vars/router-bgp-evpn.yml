@@ -80,6 +80,8 @@ router_bgp:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
+        default_route:
+          enabled: true
         domain_remote: true
         encapsulation: vxlan
       - name: MLAG-IPv4-UNDERLAY-PEER
@@ -225,6 +227,8 @@ router_bgp:
       router_id: 192.168.255.3
       rd: "192.168.255.3:11"
       evpn_multicast: true
+      default_route_export:
+        - address_family: evpn
       route_targets:
         import:
           - address_family: evpn
@@ -248,6 +252,9 @@ router_bgp:
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
+      default_route_export:
+        - address_family: evpn
+          always: true
       route_targets:
         import:
           - address_family: evpn
@@ -276,6 +283,9 @@ router_bgp:
       evpn_multicast_address_family:
         ipv4:
           transit: true
+      default_route_export:
+        - address_family: evpn
+          route_map: TENANT_A_PROJECT03_RM_DEFAULT
       route_targets:
         import:
           - address_family: evpn
@@ -292,6 +302,9 @@ router_bgp:
       evpn_multicast_address_family:
         ipv4:
           transit: false
+      default_route_export:
+        - address_family: evpn
+          rcf: TENANT_A_PROJECT03_RCF_DEFAULT()
       route_targets:
         import:
           - address_family: evpn
