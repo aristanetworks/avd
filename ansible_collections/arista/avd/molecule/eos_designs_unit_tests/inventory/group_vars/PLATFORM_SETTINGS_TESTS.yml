@@ -13,12 +13,12 @@ l3leaf:
       bgp_as: 923
       vtep: false
       nodes:
-        - name: 750-LEAF
+        - name: 7010TX-LEAF1
           id: 3
-          platform: '750'
+          platform: 7010TX
           mgmt_ip: 192.168.201.116/24
           vtep: true
-        - name: 7010TX-LEAF
+        - name: 7010TX-LEAF2
           id: 4
           platform: 7010TX
           mgmt_ip: 192.168.201.117/24
