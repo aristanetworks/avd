@@ -531,6 +531,33 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.1.1 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.255.10 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.255.20 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifySSHIPv4Acl",
     "categories": [
       "security"
