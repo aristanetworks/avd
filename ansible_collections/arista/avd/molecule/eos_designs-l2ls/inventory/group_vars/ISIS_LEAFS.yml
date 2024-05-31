@@ -9,6 +9,7 @@ leaf:
     isis_system_id_prefix: '0001.0001'
     isis_maximum_paths: 4
     platform: vEOS-LAB
+    inband_mgmt_subnet: 172.23.254.0/24
   node_groups:
     - group: ISIS_LEAFS
       vtep_loopback: Loopback0

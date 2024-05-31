@@ -13,6 +13,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
@@ -74,6 +75,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 100 | SVI_100 | - |
+| 4092 | INBAND_MGMT | - |
 
 ### VLANs Device Configuration
 
@@ -81,6 +83,9 @@ vlan internal order ascending range 1006 1199
 !
 vlan 100
    name SVI_100
+!
+vlan 4092
+   name INBAND_MGMT
 ```
 
 ## Interfaces
@@ -93,8 +98,8 @@ vlan 100
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | BGP-SPINE1_Ethernet2 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | BGP-SPINE2_Ethernet2 | *trunk | *100 | *- | *- | 1 |
+| Ethernet1 | BGP-SPINE1_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
+| Ethernet2 | BGP-SPINE2_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet10 |  Endpoint | access | 100 | - | - | - |
 | Ethernet11 |  Endpoint | access | 100 | - | - | - |
 
@@ -137,7 +142,7 @@ interface Ethernet11
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | BGP_SPINES_Po2 | switched | trunk | 100 | - | - | - | - | - | - |
+| Port-Channel1 | BGP_SPINES_Po2 | switched | trunk | 100,4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -147,8 +152,33 @@ interface Port-Channel1
    description BGP_SPINES_Po2
    no shutdown
    switchport
-   switchport trunk allowed vlan 100
+   switchport trunk allowed vlan 100,4092
    switchport mode trunk
+```
+
+### VLAN Interfaces
+
+#### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4092 | Inband Management | default | 1500 | False |
+
+##### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4092 |  default  |  172.23.254.5/24  |  -  |  -  |  -  |  -  |  -  |
+
+#### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4092
+   description Inband Management
+   no shutdown
+   mtu 1500
+   ip address 172.23.254.5/24
 ```
 
 ## Routing
@@ -193,12 +223,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 172.23.254.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.31.0.1
+ip route 0.0.0.0/0 172.23.254.1
 ```
 
 ## Multicast
