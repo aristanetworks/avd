@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Application Traffic Recognition](#application-traffic-recognition)
+- [Application Traffic Recognition](#application-traffic-recognition-1)
   - [Applications](#applications)
   - [Application Profiles](#application-profiles)
   - [Categories](#categories)

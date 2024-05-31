@@ -631,11 +631,14 @@ keys:
           description: Internet-exit policy name.
         type:
           type: str
-          valid_values:
-          - zscaler
           description: 'Internet-exit policy type.
 
-            Only Zscaler supported.'
+            direct: Exit directly over wan interfaces
+
+            zscaler: Exit using Zscaler secure web gateway service'
+          valid_values:
+          - direct
+          - zscaler
           required: true
         fallback_to_system_default:
           type: bool
@@ -7336,6 +7339,16 @@ $defs:
 
               '
             type: str
+          uplink_mtu:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: Point-to-Point uplinks MTU in bytes. This setting overrides
+              the `p2p_uplinks_mtu` setting.
+            type: int
+            convert_types:
+            - str
+            min: 68
+            max: 65535
           max_uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
@@ -8913,7 +8926,6 @@ $defs:
                     description: Internet-exit policy name.
                   tunnel_interface_numbers:
                     type: str
-                    required: true
                     description: 'Number range to use for Tunnel interfaces to an
                       internet-exit service provider using this local interface.
 

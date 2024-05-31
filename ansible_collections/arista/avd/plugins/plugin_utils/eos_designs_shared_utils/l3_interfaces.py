@@ -20,6 +20,15 @@ class L3InterfacesMixin:
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
+    def sanitize_interface_name(self: SharedUtils, interface_name: str) -> str:
+        """
+        Interface name is used as value for certain fields, but `/` are not allowed in the value.
+
+        So we transform `/` to `_`
+        Ethernet1/1.1 is transformed into Ethernet1_1.1
+        """
+        return interface_name.replace("/", "_")
+
     def apply_l3_interfaces_profile(self: SharedUtils, l3_interface: dict) -> dict:
         """
         Apply a profile to an l3_interface

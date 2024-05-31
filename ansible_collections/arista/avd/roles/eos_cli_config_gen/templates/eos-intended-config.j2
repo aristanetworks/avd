@@ -263,8 +263,12 @@
 {% include 'eos/ip-nat-part2.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps.j2' %}
+{# COPP policy-map #}
+{% include 'eos/policy-maps-copp.j2' %}
 {# PBR policy-map #}
 {% include 'eos/policy-maps-pbr.j2' %}
+{# Monitor telemetry postcard #}
+{% include 'eos/monitor-telemetry-postcard-policy.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}

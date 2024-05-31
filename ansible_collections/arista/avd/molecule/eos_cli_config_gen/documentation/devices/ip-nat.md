@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP NAT](#ip-nat)
+- [IP NAT](#ip-nat-1)
   - [NAT Profiles](#nat-profiles)
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)

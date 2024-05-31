@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
+  - [Service Routing Configuration BGP](#service-routing-configuration-bgp-1)
 
 ## Management
 

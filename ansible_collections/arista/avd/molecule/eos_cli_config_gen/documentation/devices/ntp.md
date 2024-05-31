@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [NTP](#ntp)
+  - [NTP](#ntp-1)
 
 ## Management
 

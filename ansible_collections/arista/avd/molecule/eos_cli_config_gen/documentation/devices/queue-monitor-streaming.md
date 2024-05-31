@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Queue Monitor](#queue-monitor)
-  - [Queue Monitor Streaming](#queue-monitor-streaming)
+  - [Queue Monitor Streaming](#queue-monitor-streaming-1)
   - [Queue Monitor Configuration](#queue-monitor-configuration)
 
 ## Management

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [RADIUS Server](#radius-server)
+  - [RADIUS Server](#radius-server-1)
 
 ## Management
 
