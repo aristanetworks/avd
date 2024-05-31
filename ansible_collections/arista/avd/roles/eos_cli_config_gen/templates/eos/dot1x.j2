@@ -23,7 +23,6 @@ dot1x dynamic-authorization
          or dot1x.supplicant is arista.avd.defined %}
 dot1x
 {%         for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
-   !
    supplicant profile {{ profile.name }}
 {%             if profile.identity is arista.avd.defined %}
       identity {{ profile.identity }}
@@ -36,6 +35,9 @@ dot1x
 {%             endif %}
 {%             if profile.ssl_profile is arista.avd.defined %}
       ssl profile {{ profile.ssl_profile }}
+{%             endif %}
+{%             if not loop.last %}
+   !
 {%             endif %}
 {%         endfor %}
 {%         if dot1x.aaa.unresponsive is arista.avd.defined %}
@@ -100,9 +102,6 @@ dot1x
 {%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
    supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds
 {%         endif %}
-{%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
-   captive-portal
-{%         endif %}
 {%         if dot1x.captive_portal.url is arista.avd.defined or dot1x.captive_portal.ssl_profile is arista.avd.defined %}
 {%             set captive_portal_cli = "captive-portal" %}
 {%             if dot1x.captive_portal.url is arista.avd.defined %}
@@ -112,6 +111,8 @@ dot1x
 {%                 set captive_portal_cli = captive_portal_cli ~ " ssl profile " ~ dot1x.captive_portal.ssl_profile %}
 {%             endif %}
    {{ captive_portal_cli }}
+{%         elif dot1x.captive_portal.enabled is arista.avd.defined(true) %}
+   captive-portal
 {%         endif %}
 {%         if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
    captive-portal access-list ipv4 {{ dot1x.captive_portal.access_list_ipv4 }}

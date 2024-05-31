@@ -61,7 +61,6 @@ interface Management1
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
-| Captive-portal | Enabled |
 | URL | http://portal-nacm08/captiveredirect/ |
 | SSL profile | Profile1 |
 | Access-list IPv4 | ACL |
@@ -80,3 +79,4 @@ interface Management1
 | ------- | ---------- | -------- | ----------- |
 | Profile1 | tls | user_id1 | PF1 |
 | Profile2 | - | user_id2 | - |
+| Profile3 | - | - | PF2 |

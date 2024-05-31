@@ -51,14 +51,15 @@
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
-{%             if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
-| Captive-portal | Enabled |
-{%             endif %}
-{%             if dot1x.captive_portal.url is arista.avd.defined %}
+{%             if dot1x.captive_portal.url is arista.avd.defined or dot1x.captive_portal.ssl_profile is arista.avd.defined %}
+{%                 if dot1x.captive_portal.url is arista.avd.defined %}
 | URL | {{ dot1x.captive_portal.url }} |
-{%             endif %}
-{%             if dot1x.captive_portal.ssl_profile is arista.avd.defined %}
+{%                 endif %}
+{%                 if dot1x.captive_portal.ssl_profile is arista.avd.defined %}
 | SSL profile | {{ dot1x.captive_portal.ssl_profile }} |
+{%                 endif %}
+{%             elif dot1x.captive_portal.enabled is arista.avd.defined %}
+| Captive-portal enabled | {{ dot1x.captive_portal.enabled }} |
 {%             endif %}
 {%             if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
 | Access-list IPv4 | {{ dot1x.captive_portal.access_list_ipv4 }} |
@@ -73,8 +74,8 @@
 
 | Attribute | Value |
 | --------- | ----- |
-{%             if dot1x.supplicant.logging is arista.avd.defined(true) %}
-| Logging | True |
+{%             if dot1x.supplicant.logging is arista.avd.defined %}
+| Logging | {{ dot1x.supplicant.logging }} |
 {%             endif %}
 {%             if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
 | Disconnect cached-results timeout | {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds |

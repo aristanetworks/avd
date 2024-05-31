@@ -39,9 +39,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_action_reauthenticate</samp>](## "dot1x.aaa.unresponsive.recovery_action_reauthenticate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accounting_update_interval</samp>](## "dot1x.aaa.accounting_update_interval") | Integer |  |  | Min: 5<br>Max: 65535 | Interval period in seconds. |
     | [<samp>&nbsp;&nbsp;captive_portal</samp>](## "dot1x.captive_portal") | Dictionary |  |  |  | Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x.captive_portal.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x.captive_portal.enabled") | Boolean |  |  |  | The `enabled` key is mutually exclusive with `url` and `ssl_profile`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x.captive_portal.url") | String |  |  |  | Supported URL type:<br>  - http: http://<hostname>[:<port>]<br>  - https: https://<hostname>[:<port>] |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.captive_portal.ssl_profile") | String |  |  |  | SSL profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.captive_portal.ssl_profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x.captive_portal.start_limit_infinite") | Boolean |  |  |  | Set captive-portal start limit to infinte. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "dot1x.captive_portal.access_list_ipv4") | String |  |  |  | Standard access-list name. |
     | [<samp>&nbsp;&nbsp;supplicant</samp>](## "dot1x.supplicant") | Dictionary |  |  |  |  |
@@ -51,7 +51,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity</samp>](## "dot1x.supplicant.profiles.[].identity") | String |  |  |  | User identity. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passphrase_type</samp>](## "dot1x.supplicant.profiles.[].passphrase_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passphrase</samp>](## "dot1x.supplicant.profiles.[].passphrase") | String |  |  |  | Extensible Authentication Protocol password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.supplicant.profiles.[].ssl_profile") | String |  |  |  | SSL profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.supplicant.profiles.[].ssl_profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "dot1x.supplicant.logging") | Boolean |  |  |  | Enable supplicant logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disconnect_cached_results_timeout</samp>](## "dot1x.supplicant.disconnect_cached_results_timeout") | Integer |  |  | Min: 60<br>Max: 65535 | Timeout in seconds for removing a disconnected supplicant. |
 
@@ -130,14 +130,14 @@
 
       # Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
       captive_portal:
+
+        # The `enabled` key is mutually exclusive with `url` and `ssl_profile`.
         enabled: <bool>
 
         # Supported URL type:
         #   - http: http://<hostname>[:<port>]
         #   - https: https://<hostname>[:<port>]
         url: <str>
-
-        # SSL profile name.
         ssl_profile: <str>
 
         # Set captive-portal start limit to infinte.
@@ -162,8 +162,6 @@
 
             # Extensible Authentication Protocol password.
             passphrase: <str>
-
-            # SSL profile name.
             ssl_profile: <str>
 
         # Enable supplicant logging.

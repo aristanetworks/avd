@@ -2415,6 +2415,7 @@
           "properties": {
             "enabled": {
               "type": "boolean",
+              "description": "The `enabled` key is mutually exclusive with `url` and `ssl_profile`.",
               "title": "Enabled"
             },
             "url": {
@@ -2424,7 +2425,6 @@
             },
             "ssl_profile": {
               "type": "string",
-              "description": "SSL profile name.",
               "title": "SSL Profile"
             },
             "start_limit_infinite": {
@@ -2488,7 +2488,6 @@
                   },
                   "ssl_profile": {
                     "type": "string",
-                    "description": "SSL profile name.",
                     "title": "SSL Profile"
                   }
                 },

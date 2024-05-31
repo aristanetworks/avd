@@ -1612,13 +1612,13 @@ keys:
         keys:
           enabled:
             type: bool
+            description: The `enabled` key is mutually exclusive with `url` and `ssl_profile`.
           url:
             type: str
             description: "Supported URL type:\n  - http: http://<hostname>[:<port>]\n
               \ - https: https://<hostname>[:<port>]"
           ssl_profile:
             type: str
-            description: SSL profile name.
           start_limit_infinite:
             type: bool
             description: Set captive-portal start limit to infinte.
@@ -1662,7 +1662,6 @@ keys:
                   description: Extensible Authentication Protocol password.
                 ssl_profile:
                   type: str
-                  description: SSL profile name.
           logging:
             type: bool
             description: Enable supplicant logging.

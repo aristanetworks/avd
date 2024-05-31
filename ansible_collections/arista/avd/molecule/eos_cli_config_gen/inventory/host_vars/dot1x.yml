@@ -41,5 +41,7 @@ dot1x:
       - name: Profile2
         identity: user_id2
         passphrase: 1048080A01
+      - name: Profile3
+        ssl_profile: PF2
     logging: true
     disconnect_cached_results_timeout: 79
