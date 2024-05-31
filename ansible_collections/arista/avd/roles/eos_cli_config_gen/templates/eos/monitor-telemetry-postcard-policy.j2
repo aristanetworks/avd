@@ -1,0 +1,71 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor telemetry postcard policy #}
+{% if monitor_telemetry_postcard_policy is arista.avd.defined %}
+!
+monitor telemetry postcard policy
+{%     if monitor_telemetry_postcard_policy.disabled is arista.avd.defined(false) %}
+   no disabled
+{%     elif monitor_telemetry_postcard_policy.disabled is arista.avd.defined(true) %}
+   disabled
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.ingress.sample.rate is arista.avd.defined %}
+   ingress sample rate {{ monitor_telemetry_postcard_policy.ingress.sample.rate }}
+{%     elif monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.value is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.mask is arista.avd.defined %}
+   ingress sample tcp-udp-checksum value {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.value }} mask {{ monitor_telemetry_postcard_policy.ingress.sample.tcp_udp_checksum.mask }}
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.marker_vxlan.enabled is arista.avd.defined(true) %}
+{%         set marker_cli = "marker vxlan" %}
+{%         if monitor_telemetry_postcard_policy.marker_vxlan.header_word_zero_bit is arista.avd.defined %}
+{%             set marker_cli = marker_cli ~ " header word 0 bit " ~ monitor_telemetry_postcard_policy.marker_vxlan.header_word_zero_bit %}
+{%         endif %}
+   {{ marker_cli }}
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.ingress.collection.source is arista.avd.defined and monitor_telemetry_postcard_policy.ingress.collection.destination is arista.avd.defined %}
+{%         set ingress_cli = "ingress collection gre source " ~ monitor_telemetry_postcard_policy.ingress.collection.source ~ " destination " ~ monitor_telemetry_postcard_policy.ingress.collection.destination %}
+{%         if monitor_telemetry_postcard_policy.ingress.collection.version is arista.avd.defined %}
+{%             set ingress_cli = ingress_cli ~ " version " ~ monitor_telemetry_postcard_policy.ingress.collection.version %}
+{%         endif %}
+   {{ ingress_cli }}
+{%     endif %}
+{%     for policy in monitor_telemetry_postcard_policy.sample_policies | arista.avd.natural_sort("name") %}
+   !
+   sample policy {{ policy.name }}
+{%         for rule in policy.match_rules | arista.avd.natural_sort("name") %}
+{%             if rule.type is arista.avd.defined %}
+      match {{ rule.name }} {{ rule.type }}
+{%                 if rule.source_prefix is arista.avd.defined %}
+         source prefix {{ rule.source_prefix }}
+{%                 endif %}
+{%                 if rule.destination_prefix is arista.avd.defined %}
+         destination prefix {{ rule.destination_prefix }}
+{%                 endif %}
+{%                 for protocol in rule.protocols | arista.avd.natural_sort('protocol') %}
+{%                     if protocol.protocol is arista.avd.defined %}
+{%                         set protocol_cli = "protocol " ~ protocol.protocol %}
+{%                         if protocol.source_ports is arista.avd.defined %}
+{%                             set protocol_cli = protocol_cli ~ " source port " ~ protocol.source_ports | join(", ") %}
+{%                         endif %}
+{%                         if protocol.destination_ports is arista.avd.defined %}
+{%                             set protocol_cli = protocol_cli ~ " destination port " ~ protocol.destination_ports | join(", ") %}
+{%                         endif %}
+         {{ protocol_cli }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%             if not loop.last %}
+      !
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     for profile in monitor_telemetry_postcard_policy.profiles | arista.avd.natural_sort("name") %}
+   !
+   profile {{ profile.name }}
+{%         if profile.ingress_sample_policy is arista.avd.defined %}
+      ingress sample policy {{ profile.ingress_sample_policy }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
