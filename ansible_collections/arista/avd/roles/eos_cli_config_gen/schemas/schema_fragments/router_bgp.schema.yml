@@ -342,6 +342,7 @@ keys:
                     action:
                       description: Missing policy action options.
                       type: str
+                      required: true
                       valid_values:
                         - deny
                         - deny-in-out
@@ -589,6 +590,7 @@ keys:
                     action:
                       description: Missing policy action options.
                       type: str
+                      required: true
                       valid_values:
                         - deny
                         - deny-in-out
