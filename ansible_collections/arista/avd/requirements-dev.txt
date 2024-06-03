@@ -1,3 +1,8 @@
+# Installing PyAVD as editable install.
+# Providing config-settings in a requirements file is only supported by very recent pip versions.
+# The editable_mode=compat is required for pylance to work correctly.
+# The path is relative to the root of the repo, so this only works when executed from there.
+-e python-avd --config-settings editable_mode=compat
 ansible-core>=2.15.0,<2.18.0
 ansible-lint>=6.21.0,<24.5.0
 codespell>=2.2.6

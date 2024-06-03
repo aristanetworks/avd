@@ -26919,6 +26919,33 @@
                             "^_.+$": {}
                           },
                           "title": "L2 Protocols"
+                        },
+                        "traffic_unprotected": {
+                          "type": "object",
+                          "properties": {
+                            "action": {
+                              "type": "string",
+                              "description": "Allow/drop the transmit/receive of unprotected traffic.",
+                              "enum": [
+                                "allow",
+                                "drop"
+                              ],
+                              "title": "Action"
+                            },
+                            "allow_active_sak": {
+                              "type": "boolean",
+                              "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                              "title": "Allow Active Sak"
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Traffic Unprotected"
                         }
                       },
                       "additionalProperties": false,
@@ -29669,6 +29696,253 @@
                   "^_.+$": {}
                 },
                 "title": "Monitor Telemetry Influx"
+              },
+              "monitor_telemetry_postcard_policy": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable or disable the postcard telemetry feature.",
+                    "title": "Disabled"
+                  },
+                  "ingress": {
+                    "type": "object",
+                    "properties": {
+                      "collection": {
+                        "type": "object",
+                        "description": "Collector configuration.",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "description": "Source IP address of GRE tunnel.",
+                            "title": "Source"
+                          },
+                          "destination": {
+                            "type": "string",
+                            "description": "Destination IP address of GRE tunnel.",
+                            "title": "Destination"
+                          },
+                          "version": {
+                            "type": "integer",
+                            "description": "Postcard version.",
+                            "enum": [
+                              1,
+                              2
+                            ],
+                            "title": "Version"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Collection"
+                      },
+                      "sample": {
+                        "type": "object",
+                        "description": "Sampling parameters.",
+                        "properties": {
+                          "rate": {
+                            "type": "integer",
+                            "description": "Sampling rate. `rate` is preferred when both `rate` and `tcp_udp_checksum` are defined.",
+                            "enum": [
+                              16384,
+                              32768,
+                              65536
+                            ],
+                            "title": "Rate"
+                          },
+                          "tcp_udp_checksum": {
+                            "type": "object",
+                            "description": "TCP/UDP parameters.",
+                            "properties": {
+                              "value": {
+                                "type": "integer",
+                                "description": "TCP/UDP checksum or IP ID value.",
+                                "minimum": 0,
+                                "maximum": 65535,
+                                "title": "Value"
+                              },
+                              "mask": {
+                                "type": "string",
+                                "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.",
+                                "title": "Mask"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "TCP UDP Checksum"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Sample"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Ingress"
+                  },
+                  "marker_vxlan": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Enable vxlan marking using default bit 0.",
+                        "title": "Enabled"
+                      },
+                      "header_word_zero_bit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 31,
+                        "title": "Header Word Zero Bit"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Marker VxLAN"
+                  },
+                  "profiles": {
+                    "type": "array",
+                    "description": "Postcard telemetry profiles.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Profile name.",
+                          "title": "Name"
+                        },
+                        "ingress_sample_policy": {
+                          "type": "string",
+                          "title": "Ingress Sample Policy"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Profiles"
+                  },
+                  "sample_policies": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "match_rules": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "title": "Name"
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "IP address version.",
+                                "enum": [
+                                  "ipv4",
+                                  "ipv6"
+                                ],
+                                "title": "Type"
+                              },
+                              "destination_prefix": {
+                                "type": "string",
+                                "description": "IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.\neg. 10.3.3.0/24",
+                                "title": "Destination Prefix"
+                              },
+                              "source_prefix": {
+                                "type": "string",
+                                "description": "IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.\neg. 10.3.3.0/24",
+                                "title": "Source Prefix"
+                              },
+                              "protocols": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "protocol": {
+                                      "type": "string",
+                                      "enum": [
+                                        "tcp",
+                                        "udp"
+                                      ],
+                                      "title": "Protocol"
+                                    },
+                                    "source_ports": {
+                                      "type": "array",
+                                      "description": "A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n  [ \"www\" ]",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "title": "Source Ports"
+                                    },
+                                    "destination_ports": {
+                                      "type": "array",
+                                      "description": "A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\", \"80\" ]\n  [ \"https\" ]",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "title": "Destination Ports"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  },
+                                  "required": [
+                                    "protocol"
+                                  ]
+                                },
+                                "title": "Protocols"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "name"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Match Rules"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Sample Policies"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Monitor Telemetry Postcard Policy"
               },
               "mpls": {
                 "type": "object",
@@ -35361,6 +35635,18 @@
                         "include_leaked": {
                           "type": "boolean",
                           "title": "Include Leaked"
+                        },
+                        "ospf_route_type": {
+                          "type": "string",
+                          "enum": [
+                            "external",
+                            "internal",
+                            "nssa-external",
+                            "nssa-external 1",
+                            "nssa-external 2"
+                          ],
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                          "title": "OSPF Route Type"
                         }
                       },
                       "additionalProperties": false,
@@ -36514,6 +36800,18 @@
                               "type": "string",
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                               "title": "RCF"
+                            },
+                            "ospf_route_type": {
+                              "type": "string",
+                              "enum": [
+                                "external",
+                                "internal",
+                                "nssa-external",
+                                "nssa-external 1",
+                                "nssa-external 2"
+                              ],
+                              "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -36627,6 +36925,18 @@
                               "type": "string",
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                               "title": "RCF"
+                            },
+                            "ospf_route_type": {
+                              "type": "string",
+                              "enum": [
+                                "external",
+                                "internal",
+                                "nssa-external",
+                                "nssa-external 1",
+                                "nssa-external 2"
+                              ],
+                              "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -36884,6 +37194,18 @@
                               "type": "string",
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
                               "title": "RCF"
+                            },
+                            "ospf_route_type": {
+                              "type": "string",
+                              "enum": [
+                                "external",
+                                "internal",
+                                "nssa-external",
+                                "nssa-external 1",
+                                "nssa-external 2"
+                              ],
+                              "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospfv3'.\n",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -37071,6 +37393,18 @@
                               "type": "string",
                               "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                               "title": "RCF"
+                            },
+                            "ospf_route_type": {
+                              "type": "string",
+                              "enum": [
+                                "external",
+                                "internal",
+                                "nssa-external",
+                                "nssa-external 1",
+                                "nssa-external 2"
+                              ],
+                              "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                              "title": "OSPF Route Type"
                             }
                           },
                           "additionalProperties": false,
@@ -38630,6 +38964,18 @@
                                 "type": "string",
                                 "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
                                 "title": "RCF"
+                              },
+                              "ospf_route_type": {
+                                "type": "string",
+                                "enum": [
+                                  "external",
+                                  "internal",
+                                  "nssa-external",
+                                  "nssa-external 1",
+                                  "nssa-external 2"
+                                ],
+                                "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                                "title": "OSPF Route Type"
                               }
                             },
                             "additionalProperties": false,
@@ -38935,6 +39281,18 @@
                                     "type": "string",
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
                                     "title": "RCF"
+                                  },
+                                  "ospf_route_type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "external",
+                                      "internal",
+                                      "nssa-external",
+                                      "nssa-external 1",
+                                      "nssa-external 2"
+                                    ],
+                                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -39164,6 +39522,18 @@
                                     "type": "string",
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
                                     "title": "RCF"
+                                  },
+                                  "ospf_route_type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "external",
+                                      "internal",
+                                      "nssa-external",
+                                      "nssa-external 1",
+                                      "nssa-external 2"
+                                    ],
+                                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospfv3'.\n",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -39327,6 +39697,18 @@
                                     "type": "string",
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                                     "title": "RCF"
+                                  },
+                                  "ospf_route_type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "external",
+                                      "internal",
+                                      "nssa-external",
+                                      "nssa-external 1",
+                                      "nssa-external 2"
+                                    ],
+                                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -39489,6 +39871,18 @@
                                     "type": "string",
                                     "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
                                     "title": "RCF"
+                                  },
+                                  "ospf_route_type": {
+                                    "type": "string",
+                                    "enum": [
+                                      "external",
+                                      "internal",
+                                      "nssa-external",
+                                      "nssa-external 1",
+                                      "nssa-external 2"
+                                    ],
+                                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                                    "title": "OSPF Route Type"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -47556,6 +47950,19 @@
         },
         {
           "platforms": [
+            "7010TX"
+          ],
+          "feature_support": {
+            "queue_monitor_length_notify": false,
+            "per_interface_mtu": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
             "7280R",
             "7280R2",
             "7020R"
@@ -47673,6 +48080,34 @@
             "mlag": 300,
             "non_mlag": 330
           }
+        },
+        {
+          "platforms": [
+            "AWE-5310",
+            "AWE-5510",
+            "AWE-7250R",
+            "AWE-7230R"
+          ],
+          "feature_support": {
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false,
+            "interface_storm_control": false,
+            "queue_monitor_length_notify": false
+          },
+          "management_interface": "Management1/1"
+        },
+        {
+          "platforms": [
+            "AWE-7220R"
+          ],
+          "feature_support": {
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false,
+            "interface_storm_control": false,
+            "queue_monitor_length_notify": false,
+            "poe": true
+          },
+          "management_interface": "Management1"
         }
       ],
       "title": "Platform Settings"

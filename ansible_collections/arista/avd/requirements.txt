@@ -1,3 +1,6 @@
+# PyAVD must follow the exact same version as the Ansible collection.
+# For development this should be installed as an editable install as specified in requirement-dev.txt
+pyavd==4.9.0-dev0
 netaddr>=0.7.19
 Jinja2>=3.0.0
 treelib>=1.5.5
