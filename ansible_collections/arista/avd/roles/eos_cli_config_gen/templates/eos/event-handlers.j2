@@ -9,7 +9,7 @@
 !
 event-handler {{ handler.name }}
 {%         if handler.trigger is arista.avd.defined %}
-{%             if handler.trigger is arista.avd.defined("on-maintenance") 
+{%             if handler.trigger is arista.avd.defined("on-maintenance")
                   and handler.trigger_on_maintenance.operation is arista.avd.defined
                   and handler.trigger_on_maintenance.action is arista.avd.defined %}
 {%                 set on_maintenance_cli = [] %}
