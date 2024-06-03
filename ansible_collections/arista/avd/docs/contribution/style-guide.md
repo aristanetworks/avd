@@ -27,7 +27,10 @@ Configurations for the above tools can be found in:
 - [.flake8](https://github.com/aristanetworks/avd/blob/devel/.flake8)
 - [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc)
 
-## Jinja2 Syntax guidelines
+## Jinja2 Syntax and guidelines
+
+- Jinja2 template syntax is enforced by [j2lint](https://github.com/aristanetworks/j2lint).
+- Additional guidelines are also provided and will be enforced by maintainers.
 
 ### SYNTAX-1 - Using variables in Jinja
 

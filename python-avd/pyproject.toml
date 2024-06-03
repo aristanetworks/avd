@@ -10,6 +10,7 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -17,7 +18,7 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 keywords = ["pyavd"]
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 
 [project.urls]
 homepage = "https://avd.arista.com"
@@ -35,7 +36,7 @@ requires = [
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
 ]
-build-backend = "custom-build-backend"
+build-backend = "custom_build_backend"
 backend-path = ["scripts"]
 
 [tool.setuptools]
