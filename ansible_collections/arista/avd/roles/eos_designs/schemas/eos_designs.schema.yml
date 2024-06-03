@@ -3066,6 +3066,26 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+    - platforms:
+      - AWE-5310
+      - AWE-5510
+      - AWE-7250R
+      - AWE-7230R
+      feature_support:
+        bgp_update_wait_for_convergence: true
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+      management_interface: Management1/1
+    - platforms:
+      - AWE-7220R
+      feature_support:
+        bgp_update_wait_for_convergence: true
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+        poe: true
+      management_interface: Management1
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -7319,6 +7339,16 @@ $defs:
 
               '
             type: str
+          uplink_mtu:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: Point-to-Point uplinks MTU in bytes. This setting overrides
+              the `p2p_uplinks_mtu` setting.
+            type: int
+            convert_types:
+            - str
+            min: 68
+            max: 65535
           max_uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration

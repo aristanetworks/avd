@@ -9,6 +9,7 @@ from .tests import (
     AvdTestHardware,
     AvdTestInbandReachability,
     AvdTestInterfacesState,
+    AvdTestIPSecurity,
     AvdTestLLDPTopology,
     AvdTestLoopback0Reachability,
     AvdTestMLAG,
@@ -37,6 +38,7 @@ AVD_TEST_CLASSES = {
     AvdTestInbandReachability: {"legacy_ansible_tags": ["loopback_reachability", "loopback0_reachability", "optional"]},
     AvdTestLoopback0Reachability: {"legacy_ansible_tags": ["loopback_reachability", "loopback0_reachability"]},
     AvdTestAPIHttpsSSL: {},
+    AvdTestIPSecurity: {},
     AvdTestStun: {},
 }
 """

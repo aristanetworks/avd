@@ -6,7 +6,7 @@ from .avdtesthardware import AvdTestHardware
 from .avdtestinterfaces import AvdTestInterfacesState
 from .avdtestmlag import AvdTestMLAG
 from .avdtestrouting import AvdTestBGP, AvdTestRoutingTable
-from .avdtestsecurity import AvdTestAPIHttpsSSL
+from .avdtestsecurity import AvdTestAPIHttpsSSL, AvdTestIPSecurity
 from .avdteststun import AvdTestStun
 from .avdtestsystem import AvdTestNTP, AvdTestReloadCause
 
@@ -24,4 +24,5 @@ __all__ = [
     "AvdTestBGP",
     "AvdTestAPIHttpsSSL",
     "AvdTestStun",
+    "AvdTestIPSecurity",
 ]

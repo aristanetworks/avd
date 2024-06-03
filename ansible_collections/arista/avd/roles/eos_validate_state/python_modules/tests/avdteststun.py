@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 from functools import cached_property
+from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
@@ -41,8 +42,12 @@ class AvdTestStun(AvdTestBase):
             local_interfaces["name"]
             for group_idx, path_group in enumerate(path_groups)
             if self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="local_interfaces")
-            for local_interfaces in path_group["local_interfaces"]
-            if self.validate_data(data=local_interfaces, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="stun.server_profiles")
+            for interface_idx, local_interfaces in enumerate(path_group["local_interfaces"])
+            if self.validate_data(
+                data=local_interfaces,
+                data_path=f"router_path_selection.path_groups.[{group_idx}].local_interfaces.[{interface_idx}]",
+                required_keys="stun.server_profiles",
+            )
         ]
         if not stun_interfaces:
             LOGGER.info("No local interface found with STUN configuration. %s is skipped.", self.__class__.__name__)
@@ -50,8 +55,9 @@ class AvdTestStun(AvdTestBase):
 
         # Generate the ANTA tests for each identified local interface.
         for source_interface in stun_interfaces:
-            ip_address = self.get_interface_ip("ethernet_interfaces", source_interface)
-            source_address = ip_address.split("/")[0]
+            if (ip_address := self.get_interface_ip("ethernet_interfaces", source_interface)) is None:
+                continue
+            source_address = str(ip_interface(ip_address).ip)
             source_port = 4500
             anta_tests.append(
                 {
