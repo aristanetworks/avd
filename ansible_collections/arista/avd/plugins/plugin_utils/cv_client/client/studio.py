@@ -5,10 +5,10 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, Literal
 
 from ..api.arista.studio.v1 import (
-    DeviceInfo,
     Inputs,
     InputsConfig,
     InputsConfigServiceStub,
@@ -19,16 +19,21 @@ from ..api.arista.studio.v1 import (
     InputsRequest,
     InputsServiceStub,
     InputsStreamRequest,
-    InterfaceInfo,
-    InterfaceInfos,
-    TopologyInput,
-    TopologyInputKey,
+    Studio,
+    StudioConfig,
+    StudioConfigServiceStub,
+    StudioConfigStreamRequest,
+    StudioKey,
+    StudioRequest,
+    StudioServiceStub,
 )
 from ..api.fmp import RepeatedString
 from .exceptions import CVResourceNotFound, get_cv_client_exception
 
 if TYPE_CHECKING:
     from .cv_client import CVClient
+
+LOGGER = getLogger(__name__)
 
 TOPOLOGY_STUDIO_ID = "TOPOLOGY"
 
@@ -39,6 +44,81 @@ class StudioMixin:
     """
 
     studio_api_version: Literal["v1"] = "v1"
+
+    async def get_studio(
+        self: CVClient,
+        studio_id: str,
+        workspace_id: str,
+        time: datetime | None = None,
+        timeout: float = 10.0,
+    ) -> Studio:
+        """
+        Get Studio definition using arista.studio.v1.StudioService.GetOne.
+
+        The Studio GetOne API for the workspace does not return anything from mainline and does not return deletions in the workspace.
+        So to produce the Workspace Studio we need to fetch from the workspace, and if we find nothing, we need to check if the studio
+        got deleted in the workspace by retrieving config. Finally we can fetch from mainline.
+
+        Parameters:
+            studio_id: Unique identifier for the studio.
+            workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
+            time: Timestamp from which the information is fetched. `now()` if not set.
+            timeout: Timeout in seconds.
+
+        Returns:
+            Studio object.
+        """
+        request = StudioRequest(
+            # First attempt to fetch studio from workspace.
+            key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
+            time=time,
+        )
+        client = StudioServiceStub(self._channel)
+        try:
+            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+            return response.value
+        except Exception as e:
+            e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+            if isinstance(e, CVResourceNotFound):
+                # Continue execution if we did not find any state in the workspace.
+                # This simply means the studio itself was not changed in this workspace.
+                pass
+            else:
+                raise e
+
+        # If we get here, it means no studio was returned by the workspace call.
+        # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
+        request = StudioConfigStreamRequest(
+            partial_eq_filter=[
+                StudioConfig(
+                    key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
+                    remove=True,
+                )
+            ],
+            time=time,
+        )
+        client = StudioConfigServiceStub(self._channel)
+        try:
+            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                # If we get here it means we got an entry with "removed: True" so no need to look further.
+                raise CVResourceNotFound("The studio was deleted in the workspace.", f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+        # If we get here, it means there are no inputs in the workspace and they are not deleted, so we can fetch from mainline.
+        request = StudioRequest(
+            # First attempt to fetch studio from workspace.
+            key=StudioKey(studio_id=studio_id, workspace_id=""),
+            time=time,
+        )
+        client = StudioServiceStub(self._channel)
+        try:
+            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+            return response.value
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
 
     async def get_studio_inputs(
         self: CVClient,
@@ -101,10 +181,12 @@ class StudioMixin:
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
         request = InputsConfigStreamRequest(
-            partial_eq_filter=InputsConfig(
-                key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
-                remove=True,
-            ),
+            partial_eq_filter=[
+                InputsConfig(
+                    key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
+                    remove=True,
+                )
+            ],
             time=time,
         )
         client = InputsConfigServiceStub(self._channel)
@@ -293,7 +375,7 @@ class StudioMixin:
         device_ids: list[str] | None = None,
         time: datetime | None = None,
         timeout: float = 10.0,
-    ) -> list[TopologyInput]:
+    ) -> list[dict]:
         """
         TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
               It will probably need some version detection to see if the API is supported.
@@ -309,7 +391,7 @@ class StudioMixin:
         Returns:
             TopologyInput objects for the requested devices.
         """
-        topology_inputs: list[TopologyInput] = []
+        topology_inputs: list[dict] = []
         studio_inputs: dict = await self.get_studio_inputs(
             studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, time=time, timeout=timeout
         )
@@ -325,28 +407,20 @@ class StudioMixin:
             device_info: dict = device_entry.get("inputs", {}).get("device", {})
             interfaces: list[dict] = device_info.get("interfaces", [])
             topology_inputs.append(
-                TopologyInput(
-                    key=TopologyInputKey(
-                        workspace_id=workspace_id,
-                        device_id=device_id,
-                    ),
-                    device_info=DeviceInfo(
-                        device_id=device_id,
-                        model_name=device_info.get("modelName"),
-                        hostname=device_info.get("hostname"),
-                        mac_address=device_info.get("macAddress"),
-                        interface_infos=InterfaceInfos(
-                            [
-                                InterfaceInfo(
-                                    name=str(interface.get("tags", {}).get("query", "")).removeprefix("interface:").split("@", maxsplit=1)[0],
-                                    neighbor_device_id=interface.get("inputs", {}).get("interface", {}).get("neighborDeviceId"),
-                                    neighbor_interface_name=interface.get("inputs", {}).get("interface", {}).get("neighborInterfaceName"),
-                                )
-                                for interface in interfaces
-                            ]
-                        ),
-                    ),
-                )
+                {
+                    "device_id": device_id,
+                    "hostname": device_info.get("hostname"),
+                    "mac_address": device_info.get("macAddress"),
+                    "model_name": device_info.get("modelName"),
+                    "interfaces": [
+                        {
+                            "name": str(interface.get("tags", {}).get("query", "")).removeprefix("interface:").split("@", maxsplit=1)[0],
+                            "neighbor_device_id": interface.get("inputs", {}).get("interface", {}).get("neighborDeviceId"),
+                            "neighbor_interface_name": interface.get("inputs", {}).get("interface", {}).get("neighborInterfaceName"),
+                        }
+                        for interface in interfaces
+                    ],
+                }
             )
         return topology_inputs
 

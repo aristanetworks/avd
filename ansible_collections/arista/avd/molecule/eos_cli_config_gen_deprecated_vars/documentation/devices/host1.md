@@ -450,10 +450,10 @@ vmtracer session session_2
 
 #### Event Handler Summary
 
-| Handler | Action Type | Action | Trigger | Trigger Config |
-| ------- | ----------- | ------ | ------- | -------------- |
-| CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
-| evpn-blacklist-recovery | bash | <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging | - |
+| Handler | Actions | Trigger | Trigger Config |
+| ------- | ------- | ------- | -------------- |
+| CONFIG_VERSIONING | bash <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
+| evpn-blacklist-recovery | bash <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging | - |
 
 #### Event Handler Device Configuration
 
@@ -868,11 +868,11 @@ interface Tunnel4
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
-| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - |
-| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - |
-| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - | - |
+| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - | - |
+| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -1117,29 +1117,29 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 192.168.255.4 | True | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 192.168.255.4 | True | - | - | - | - |
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| EVPN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 2001:cafe:192:168::4 | True | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 2001:cafe:192:168::4 | True | - | - | - | - |
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| EVPN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VLAN Aware Bundles
 
@@ -1667,17 +1667,17 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | True | - |
 
 ##### Profile A2
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | - | - |
 
 ###### Keys
 

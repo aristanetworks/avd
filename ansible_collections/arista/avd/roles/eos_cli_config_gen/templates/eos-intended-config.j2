@@ -30,6 +30,8 @@
 {% include 'eos/dhcp-relay.j2' %}
 {# IP DHCP Relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
+{# IPv6 DHCP Relay #}
+{% include 'eos/ipv6-dhcp-relay.j2' %}
 {# IP DHCP Snooping #}
 {% include 'eos/ip-dhcp-snooping.j2' %}
 {# dhcp servers #}
@@ -159,6 +161,8 @@
 {% include 'eos/link-tracking-groups.j2' %}
 {# CVX #}
 {% include 'eos/cvx.j2' %}
+{# influxDB Telemetry #}
+{% include 'eos/monitor-telemetry-influx.j2' %}
 {# IP Security #}
 {% include 'eos/ip-security.j2' %}
 {# Port-Channel Interfaces #}
@@ -259,8 +263,12 @@
 {% include 'eos/ip-nat-part2.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps.j2' %}
+{# COPP policy-map #}
+{% include 'eos/policy-maps-copp.j2' %}
 {# PBR policy-map #}
 {% include 'eos/policy-maps-pbr.j2' %}
+{# Monitor telemetry postcard #}
+{% include 'eos/monitor-telemetry-postcard-policy.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}
@@ -279,6 +287,8 @@
 {% include 'eos/router-multicast.j2' %}
 {# router general configuration #}
 {% include 'eos/router-general.j2' %}
+{# router segment-security #}
+{% include 'eos/router-segment-security.j2' %}
 {# router traffic-engineering configuration #}
 {% include 'eos/router-traffic-engineering.j2' %}
 {# router ospf configuration #}

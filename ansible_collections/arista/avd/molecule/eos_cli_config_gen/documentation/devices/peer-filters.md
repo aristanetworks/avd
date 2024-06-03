@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Filters](#filters)
-  - [Peer Filters](#peer-filters)
+  - [Peer Filters](#peer-filters-1)
 
 ## Management
 

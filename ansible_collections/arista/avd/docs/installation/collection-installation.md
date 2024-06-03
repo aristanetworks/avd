@@ -9,14 +9,14 @@
 ## Installation workflow
 
 - Install [Python](https://www.python.org/downloads/) **3.9** or later
-- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.14.0** to **2.16.x**. Avoid the `pipx` installation method.
+- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.15.0** to **2.17.x**. Avoid the `pipx` installation method.
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection
 - Install additional Python [requirements](#python-requirements-installation)
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
 
 ## Install Collection from Ansible Galaxy
 
-These instructions are for regular users to install via Ansible Galaxy. To setup a development environment use [these](../contribution/setup-environment.md) instructions. **arista.avd** can also be consumed using the ["AVD All-in-one" container](https://github.com/arista-netdevops-community/avd-all-in-one-container). The **arista.avd** collection is available on [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
+These instructions are for regular users to install via Ansible Galaxy. To set up a development environment, please follow the [development tooling](../contribution/development-tooling.md) instructions. **arista.avd** can also be consumed using the ["Universal" container](../containers/overview.md#how-to-use-dev-containers). The **arista.avd** collection is available on the [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
 
 ### Latest version
 

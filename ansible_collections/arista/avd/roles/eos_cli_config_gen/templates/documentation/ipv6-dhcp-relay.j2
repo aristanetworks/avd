@@ -1,0 +1,41 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip dhcp relay #}
+{% if ipv6_dhcp_relay is arista.avd.defined %}
+
+## IPv6 DHCP Relay
+
+### IPv6 DHCP Relay Summary
+{%     if ipv6_dhcp_relay.always_on is arista.avd.defined(true) %}
+
+DhcpRelay Agent is in always-on mode.
+{%     endif %}
+{%     if ipv6_dhcp_relay.all_subnets is arista.avd.defined(true) %}
+
+Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
+{%     endif %}
+{%     if ipv6_dhcp_relay.option is arista.avd.defined() %}
+{%         if ipv6_dhcp_relay.option.link_layer_address is arista.avd.defined(true) %}
+
+Add Option 79 - Link Layer Address Option.
+{%         endif %}
+{%         if ipv6_dhcp_relay.option.remote_id_format is arista.avd.defined() %}
+{%             if ipv6_dhcp_relay.option.remote_id_format == "%m:%i" %}
+
+Add RemoteID option 37 in format MAC address and interface ID.
+{%             elif ipv6_dhcp_relay.option.remote_id_format == "%m:%p" %}
+
+Add RemoteID option 37 in format MAC address and interface name.
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+### IPv6 DHCP Relay Device Configuration
+
+```eos
+{%     include 'eos/ipv6-dhcp-relay.j2' %}
+```
+{% endif %}

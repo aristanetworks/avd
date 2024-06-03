@@ -656,6 +656,8 @@ vlan_interfaces:
   - opzone
   description: Tenant_A_OP_Zone_1
   shutdown: false
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
   ip_address_virtual: 10.1.10.1/24
   vrf: Tenant_A_OP_Zone
 - name: Vlan111
@@ -1500,6 +1502,21 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.1.10.1
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.1.10.1
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
   vlans:

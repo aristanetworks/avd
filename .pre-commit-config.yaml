@@ -5,20 +5,24 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
+        name: Trims trailing whitespace.
         exclude: ansible_collections/arista/avd/molecule
       - id: end-of-file-fixer
+        name: Ensures that a file is either empty, or ends with one newline.
         exclude_types: [svg, json]
         exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
+        name: Prevents giant files from being committed.
         exclude: (ansible_collections/arista/avd/molecule|pickle$)
       - id: check-merge-conflict
+        name: Checks for files that contain merge conflict strings.
         exclude: ansible_collections/arista/avd/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.5
     hooks:
-      - name: Check and insert license on Python files
-        id: insert-license
+      - id: insert-license
+        name: Check and insert license on Python files.
         exclude: ansible_collections/arista/avd/(plugins/module_utils|tests/unit(/module_utils|/modules|))/__init__.py
         files: .*\.py$
         args:
@@ -29,8 +33,8 @@ repos:
           - --fuzzy-match-generates-todo
           - --no-extra-eol
 
-      - name: Check and insert license on select YAML files
-        id: insert-license
+      - id: insert-license
+        name: Check and insert license on select YAML files.
         files: ansible_collections/arista/avd/roles/.*/(handlers|schemas|tasks)/.*\.yml$
         args:
           - --license-filepath
@@ -40,8 +44,8 @@ repos:
           - --fuzzy-match-generates-todo
           - --no-extra-eol
 
-      - name: Check and insert license on Jinja2 files
-        id: insert-license
+      - id: insert-license
+        name: Check and insert license on Jinja2 files.
         files: .*\.j2$
         exclude: ansible_collections/arista/avd/molecule.*
         args:
@@ -54,8 +58,8 @@ repos:
           - '{#||#}'
           - --no-extra-eol
 
-      - name: Check and insert license on Markdown files
-        id: insert-license
+      - id: insert-license
+        name: Check and insert license on Markdown files.
         files: .*\.md$
         exclude: (ansible_collections/arista/avd/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
         args:
@@ -76,19 +80,19 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
-        name: Check for changes when running isort on all python files
+        name: Check for changes when running isort on all python files.
 
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
       - id: black
-        name: Check for changes when running Black on all python files
+        name: Check for changes when running Black on all python files.
 
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
     hooks:
       - id: flake8
-        name: Check for Flake8 errors on Python files
+        name: Check for Flake8 errors on Python files.
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
         types: [python]
@@ -96,10 +100,10 @@ repos:
         exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.1.0"
+    rev: "v3.1.1"
     hooks:
       - id: pylint # Use pylintrc file in repository
-        name: Check for Linting errors on Python files
+        name: Check for Linting errors on Python files with settings defined in `pylintrc`.
         description: This hook runs pylint.
         types: [python]
         args:
@@ -110,7 +114,7 @@ repos:
     rev: "v1.35.1"
     hooks:
       - id: yamllint
-        name: Check for Linting errors on YAML files
+        name: Check for Linting errors on YAML files with settings defined in `.github/yamllintrc`.
         description: This hook runs yamllint.
         entry: yamllint
         language: python
@@ -124,7 +128,7 @@ repos:
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
+    rev: v2.3.0
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
@@ -154,58 +158,58 @@ repos:
     hooks:
 
       - id: docs-plugin-modules
-        name: Build documentation for collection modules and action plugins
+        name: Build documentation for collection modules and action plugins.
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Modules_and_action_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.15.0,<2.18.0']
         files: ansible_collections/arista/avd/plugins/modules/
 
       - id: docs-plugin-filter
-        name: Build documentation for collection filter plugins
+        name: Build documentation for collection filter plugins.
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Filter_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.15.0,<2.18.0']
         files: ansible_collections/arista/avd/plugins/filter/
 
       - id: docs-plugin-lookup
-        name: Build documentation for collection lookup plugins
+        name: Build documentation for collection lookup plugins.
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Lookup_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.15.0,<2.18.0']
         files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
-        name: Build documentation for collection test plugins
+        name: Build documentation for collection test plugins.
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Test_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.15.0,<2.18.0']
         files: ansible_collections/arista/avd/plugins/test/
 
       - id: docs-plugin-vars
-        name: Build documentation for collection var plugins
+        name: Build documentation for collection var plugins.
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Vars_plugins/"
         language: python
         types: [python]
-        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.14.0,<2.17.0']
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.15.0,<2.18.0']
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: schemas
-        name: Build AVD Schemas and Docs
+        name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build-schemas.py'
         language: python
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
-        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.5.1,<4.18']
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.39.0
+    rev: v0.41.0
     hooks:
       - id: markdownlint
-        name: Check for Linting errors on MarkDown files
+        name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
         args:
           - --config=.github/.markdownlint.yaml
           - --ignore-path=.github/.markdownlintignore

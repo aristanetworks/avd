@@ -68,23 +68,11 @@ Requirements (automatically installed with above command):
 
 ```ini
 jinja2>=3.0
-jsonschema>=4.5.1,<4.18
+jsonschema>=4.10.3
 deepmerge>=1.1.0
 ```
 
 ### Optional requirements
-
-For support of `get_device_doc(..., add_md_toc=True)` install with extra `mdtoc`:
-
-```sh
-pip3 install pyavd[mdtoc]
-```
-
-Optional `md-toc` requirement (automatically installed with above command):
-
-```ini
-md-toc>=8.1.8
-```
 
 To install Ansible [AVD collection additional Python requirements](installation/collection-installation.md#additional-python-libraries-required) install with extra `ansible`:
 

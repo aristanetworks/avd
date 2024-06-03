@@ -19,7 +19,7 @@ jobs:
         avd_scenario:
           - 'cv_workflow'
         ansible_version:
-          - 'ansible-core<2.17.0 --upgrade'
+          - 'ansible-core<2.18.0 --upgrade'
     steps:
       - name: 'Set environment variables'
         run: |
@@ -34,7 +34,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: .github/requirements-ci.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
@@ -52,7 +52,7 @@ jobs:
         avd_scenario:
           - 'cv_deploy'
         ansible_version:
-          - 'ansible-core<2.17.0 --upgrade'
+          - 'ansible-core<2.18.0 --upgrade'
     steps:
       - name: 'Set environment variables'
         run: |
@@ -67,7 +67,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: .github/requirements-ci.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true

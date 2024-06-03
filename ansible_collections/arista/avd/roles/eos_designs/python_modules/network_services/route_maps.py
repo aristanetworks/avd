@@ -140,7 +140,7 @@ class RouteMapsMixin(UtilsMixin):
                     "match": ["ip address prefix-list PL-MLAG-PEER-VRFS"],
                 }
             )
-        # TODO Using 15 for now to not impact exsiting deployment with renumbering
+        # TODO Using 15 for now to not impact existing deployment with renumbering
         if self._uplink_subnets_without_redistribution:
             sequence_numbers.append(
                 {

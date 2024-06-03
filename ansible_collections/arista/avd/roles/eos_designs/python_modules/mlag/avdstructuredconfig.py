@@ -104,6 +104,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             l3_cfg.update(
                 {
                     "isis_enable": self.shared_utils.isis_instance_name,
+                    "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                     "isis_metric": 50,
                     "isis_network_point_to_point": True,
                 }

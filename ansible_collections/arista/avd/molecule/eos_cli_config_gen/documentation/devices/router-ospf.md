@@ -10,7 +10,7 @@
   - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
-  - [Router OSPF](#router-ospf)
+  - [Router OSPF](#router-ospf-1)
 
 ## Management
 

@@ -124,7 +124,7 @@ The variable validation_role.only_failed_tests is used to limit the number of te
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#additional-python-libraries-required)
 
 ## Example Playbook
 

@@ -112,7 +112,7 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: Bouygues_Telecom_777
-- name: Ethernet2
+- name: Ethernet2/2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
@@ -302,7 +302,7 @@ router_path_selection:
   - name: MPLS
     id: 100
     local_interfaces:
-    - name: Ethernet2
+    - name: Ethernet2/2
     keepalive:
       interval: 300
       failure_threshold: 5
@@ -403,7 +403,7 @@ stun:
   server:
     local_interfaces:
     - Ethernet1
-    - Ethernet2
+    - Ethernet2/2
     - Ethernet3
     ssl_profile: profileA
 application_traffic_recognition:
@@ -513,7 +513,7 @@ metadata:
         value: Bouygues_Telecom
       - name: Circuit
         value: '777'
-    - interface: Ethernet2
+    - interface: Ethernet2/2
       tags:
       - name: Type
         value: wan
@@ -541,7 +541,7 @@ metadata:
       circuit_id: '777'
       pathgroup: INET
       public_ip: 172.17.7.7
-    - name: Ethernet2
+    - name: Ethernet2/2
       carrier: Colt
       circuit_id: '10000'
       pathgroup: MPLS
@@ -597,6 +597,8 @@ metadata:
         sites:
         - name: Site511
           id: 511
+          location:
+            address: Miami
     vrfs:
     - name: default
       vni: 1

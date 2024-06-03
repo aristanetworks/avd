@@ -1,7 +1,11 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_cli_config_gen
+$schema: avd_meta_schema
 type: dict
 allow_other_keys: true
 keys:
@@ -1306,6 +1310,35 @@ keys:
           type: str
         dns_domain_name_ipv6:
           type: str
+        dns_servers_ipv4:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv4 clients.
+          items:
+            type: str
+            required: true
+            description: IPv4 address of DNS server.
+        dns_servers_ipv6:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv6 clients.
+          items:
+            type: str
+            required: true
+            description: IPv6 address of DNS server.
+        tftp_server:
+          type: dict
+          keys:
+            file_ipv4:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv4 clients.
+            file_ipv6:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv6 clients.
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id
@@ -1565,6 +1598,13 @@ keys:
                     type: bool
               recovery_action_reauthenticate:
                 type: bool
+          accounting_update_interval:
+            type: int
+            convert_types:
+            - str
+            min: 5
+            max: 65535
+            description: Interval period in seconds.
   dps_interfaces:
     type: list
     primary_key: name
@@ -2280,6 +2320,31 @@ keys:
           keys:
             profile:
               type: str
+        tcp_mss_ceiling:
+          type: dict
+          description: 'The TCP MSS clamping feature involves clamping the maximum
+            segment size (MSS) in the TCP header
+
+            of TCP SYN packets if it exceeds the configured MSS ceiling limit for
+            the interface.'
+          keys:
+            ipv4_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+            ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+            direction:
+              type: str
+              valid_values:
+              - egress
+              - ingress
         channel_group:
           type: dict
           keys:
@@ -2296,6 +2361,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -2860,6 +2928,18 @@ keys:
         transceiver:
           type: dict
           keys:
+            frequency:
+              type: str
+              convert_types:
+              - int
+              - float
+              description: Transceiver Laser Frequency in GHz (min 190000, max 200000).
+            frequency_unit:
+              type: str
+              required: false
+              valid_values:
+              - ghz
+              description: Unit of Transceiver Laser Frequency.
             media:
               type: dict
               keys:
@@ -3300,11 +3380,36 @@ keys:
           - bash
           - increment
           - log
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
         action:
           type: str
           description: 'Command to execute.
 
             '
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
+        actions:
+          type: dict
+          description: 'Note: `bash_command` and `log` are mutually exclusive. `bash_command`
+            takes precedence over `log`.'
+          keys:
+            bash_command:
+              type: str
+              description: Define BASH command action. Command could be multiline
+                also.
+            log:
+              type: bool
+              description: Log a message when the event is triggered.
+            increment_device_health_metric:
+              type: str
+              description: Name of device-health metric.
         delay:
           type: int
           convert_types:
@@ -3719,6 +3824,7 @@ keys:
               - qos dual-rate-policer
               - route
               - routed-port
+              - segment-security
               - subinterface
               - tapagg
               - traffic-class
@@ -4063,6 +4169,13 @@ keys:
   ip_dhcp_relay:
     type: dict
     keys:
+      always_on:
+        type: bool
+        description: DhcpRelay Agent will be in always-on mode.
+      all_subnets:
+        type: bool
+        description: Allow forwarding requests with secondary IP addresses in the
+          gateway address "giaddr" field.
       information_option:
         type: bool
         description: Insert Option-82 information.
@@ -4895,6 +5008,30 @@ keys:
                   Example: "deny ipv6 any any"
 
                   '
+  ipv6_dhcp_relay:
+    type: dict
+    keys:
+      always_on:
+        type: bool
+        description: DhcpRelay Agent will be in always-on mode, off by default.
+      all_subnets:
+        type: bool
+        description: Allow forwarding requests with additional IPv6 addresses in the
+          gateway address "giaddr" field.
+      option:
+        type: dict
+        description: Insert DHCP Option.
+        keys:
+          link_layer_address:
+            type: bool
+            description: Add Option 79 (Link Layer Address Option).
+          remote_id_format:
+            type: str
+            valid_values:
+            - '%m:%i'
+            - '%m:%p'
+            description: Add RemoteID option 37 in format MAC address and interface
+              ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
   ipv6_hardware:
     type: dict
     keys:
@@ -5455,6 +5592,57 @@ keys:
                     min: 10
                     max: 65535
                     description: Logging interval in seconds.
+      level:
+        type: list
+        description: Configure logging severity.
+        primary_key: facility
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            facility:
+              type: str
+            severity:
+              type: str
+              convert_types:
+              - int
+              description: 'Severity of facility. Below are the supported severites.
+
+                emergencies    System is unusable                (severity=0)
+
+                alerts         Immediate action needed           (severity=1)
+
+                critical       Critical conditions               (severity=2)
+
+                errors         Error conditions                  (severity=3)
+
+                warnings       Warning conditions                (severity=4)
+
+                notifications  Normal but significant conditions (severity=5)
+
+                informational  Informational messages            (severity=6)
+
+                debugging      Debugging messages                (severity=7)
+
+                <0-7>          Severity level value'
+              valid_values:
+              - alerts
+              - critical
+              - debugging
+              - emergencies
+              - errors
+              - informational
+              - notifications
+              - warnings
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
   loopback_interfaces:
     type: list
     primary_key: name
@@ -5505,6 +5693,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance name.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -5671,6 +5862,20 @@ keys:
                       valid_values:
                       - bypass
                       - bypass unauthorized
+            traffic_unprotected:
+              type: dict
+              keys:
+                action:
+                  type: str
+                  required: true
+                  description: Allow/drop the transmit/receive of unprotected traffic.
+                  valid_values:
+                  - allow
+                  - drop
+                allow_active_sak:
+                  type: bool
+                  description: Allow transmit/receive of encrypted traffic using operational
+                    SAK and block otherwise.
   maintenance:
     type: dict
     display_name: Maintenance Mode
@@ -6247,7 +6452,7 @@ keys:
               description: 'cipher_list syntax follows the openssl cipher strings
                 format.
 
-                Colon (:) separated list of allowed ciphers as a string
+                Colon (:) separated list of allowed ciphers as a string.
 
                 '
             trust_certificate:
@@ -6309,6 +6514,98 @@ keys:
                 '
               items:
                 type: str
+      shared_secret_profiles:
+        type: list
+        primary_key: profile
+        items:
+          type: dict
+          keys:
+            profile:
+              type: str
+            secrets:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  secret:
+                    type: str
+                    required: true
+                  secret_type:
+                    type: str
+                    default: '7'
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
+                    convert_types:
+                    - int
+                  receive_lifetime:
+                    type: dict
+                    required: true
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                  transmit_lifetime:
+                    type: dict
+                    required: true
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: 'Start date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                      end_date_time:
+                        type: str
+                        description: 'End date and time of lifetime of the secret.
+                          End date should be greater than start date.
+
+                          Formats supported:
+
+                          1. mm/dd/yyyy hh:mm:ss
+
+                          2. yyyy-mm-dd hh:mm:ss
+
+                          e.g 2024-12-20 10:00:00'
+                  local_time:
+                    type: bool
+                    description: Configuring secret using the local timezone from
+                      system clock. Default is UTC.
   management_ssh:
     type: dict
     keys:
@@ -6999,6 +7296,10 @@ keys:
           communication:
             type: bool
             description: Enable transceiver SMBus fail and reset logging.
+          enabled:
+            type: bool
+            description: Some platforms support only the `logging transceiver` command.
+              `enabled` key configures this command.
   monitor_sessions:
     type: list
     convert_types:
@@ -7086,6 +7387,229 @@ keys:
               description: Size in bytes.
               convert_types:
               - str
+  monitor_telemetry_influx:
+    type: dict
+    keys:
+      vrf:
+        type: str
+      destinations:
+        type: list
+        primary_key: name
+        description: Configure telemetry output destinations.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: InfluxDB connection name.
+            database:
+              type: str
+              description: Set name of the database.
+            data_retention_policy:
+              type: str
+            url:
+              type: str
+              description: It only accepts http(s), udp and unix domain destination
+                URL.
+              pattern: (http(s)?|udp|unix)://.+
+            username:
+              type: str
+            password:
+              type: str
+            password_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
+      source_group_standard_disabled:
+        type: bool
+        description: Disable standard set of telemetry.
+      source_sockets:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Label of the socket connection.
+            connection_limit:
+              type: int
+              min: 0
+              max: 4294967295
+              convert_types:
+              - str
+            url:
+              type: str
+              description: It only accepts http(s), udp and unix domain socket URL.
+              pattern: (http(s)?|udp|unix)://.+
+      tags:
+        type: list
+        primary_key: name
+        description: Extra tags added to the telemetry output.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Key of the global tag pair.
+            value:
+              type: str
+              required: true
+              description: Value of the global tag pair.
+  monitor_telemetry_postcard_policy:
+    type: dict
+    keys:
+      disabled:
+        type: bool
+        default: true
+        description: Enable or disable the postcard telemetry feature.
+      ingress:
+        type: dict
+        keys:
+          collection:
+            type: dict
+            description: Collector configuration.
+            keys:
+              source:
+                type: str
+                description: Source IP address of GRE tunnel.
+              destination:
+                type: str
+                description: Destination IP address of GRE tunnel.
+              version:
+                type: int
+                description: Postcard version.
+                valid_values:
+                - 1
+                - 2
+                convert_types:
+                - str
+          sample:
+            type: dict
+            description: Sampling parameters.
+            keys:
+              rate:
+                type: int
+                description: Sampling rate. `rate` is preferred when both `rate` and
+                  `tcp_udp_checksum` are defined.
+                convert_types:
+                - str
+                valid_values:
+                - 16384
+                - 32768
+                - 65536
+              tcp_udp_checksum:
+                type: dict
+                description: TCP/UDP parameters.
+                keys:
+                  value:
+                    type: int
+                    description: TCP/UDP checksum or IP ID value.
+                    min: 0
+                    max: 65535
+                    convert_types:
+                    - str
+                  mask:
+                    type: str
+                    description: 16 bit hexadecimal mask for TCP/UDP or IP ID with
+                      atmost 2 unset bits.
+      marker_vxlan:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable vxlan marking using default bit 0.
+          header_word_zero_bit:
+            type: int
+            min: 1
+            max: 31
+            convert_types:
+            - str
+      profiles:
+        type: list
+        description: Postcard telemetry profiles.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Profile name.
+            ingress_sample_policy:
+              type: str
+      sample_policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            match_rules:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  type:
+                    type: str
+                    description: IP address version.
+                    required: true
+                    valid_values:
+                    - ipv4
+                    - ipv6
+                  destination_prefix:
+                    type: str
+                    description: 'IPv4 Network/Mask or IPv6 Network/Mask. Host part
+                      of prefix must be zero.
+
+                      eg. 10.3.3.0/24'
+                  source_prefix:
+                    type: str
+                    description: 'IPv4 Network/Mask or IPv6 Network/Mask. Host part
+                      of prefix must be zero.
+
+                      eg. 10.3.3.0/24'
+                  protocols:
+                    type: list
+                    primary_key: protocol
+                    items:
+                      type: dict
+                      keys:
+                        protocol:
+                          type: str
+                          valid_values:
+                          - tcp
+                          - udp
+                        source_ports:
+                          type: list
+                          description: "A list of port numbers or port range or port
+                            name. Combination of port numbers or range and port name
+                            is not supported on EOS. The port numbers should be in
+                            range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n  [
+                            \"www\" ]"
+                          items:
+                            type: str
+                            convert_types:
+                            - int
+                        destination_ports:
+                          type: list
+                          description: "A list of port numbers or port range or port
+                            name. Combination of port numbers or range and port name
+                            is not supported on EOS. The port numbers should be in
+                            range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\", \"80\"
+                            ]\n  [ \"https\" ]"
+                          items:
+                            type: str
+                            convert_types:
+                            - int
   mpls:
     type: dict
     keys:
@@ -7717,6 +8241,38 @@ keys:
                         - mbytes
                         - packets
                         default: bytes
+      copp_system_policy:
+        type: dict
+        description: Control-plane policy configuration.
+        keys:
+          classes:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                shape:
+                  type: int
+                  description: Maximum rate limit.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                  - str
+                bandwidth:
+                  type: int
+                  description: Minimum bandwidth.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                  - str
+                rate_unit:
+                  type: str
+                  description: The `rate_unit` must be defined for `shape` and `bandwidth`.
+                  valid_values:
+                  - pps
+                  - kbps
   port_channel_interfaces:
     type: list
     primary_key: name
@@ -8145,6 +8701,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:
@@ -9686,6 +10245,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -9700,6 +10260,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -9714,6 +10275,7 @@ keys:
           name:
             type: str
             required: true
+            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
           id:
             type: int
             convert_types:
@@ -10297,6 +10859,22 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            shared_secret:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  required: true
+                  description: Name of profile defined under `management_security`.
+                hash_algorithm:
+                  type: str
+                  required: true
+                  description: 'Note: Algorithm hmac-sha-256 requires EOS version
+                    4.31.1F and above.'
+                  valid_values:
+                  - aes-128-cmac-96
+                  - hmac-sha-256
+                  - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -10493,6 +11071,22 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            shared_secret:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  required: true
+                  description: Name of profile defined under `management_security`.
+                hash_algorithm:
+                  type: str
+                  required: true
+                  description: 'Note: Algorithm hmac-sha-256 requires EOS version
+                    4.31.1F and above.'
+                  valid_values:
+                  - aes-128-cmac-96
+                  - hmac-sha-256
+                  - hmac-sha1-96
             ttl_maximum_hops:
               type: int
               convert_types:
@@ -10562,6 +11156,7 @@ keys:
       redistribute_routes:
         type: list
         primary_key: source_protocol
+        allow_duplicate_primary_key: true
         convert_types:
         - dict
         - list
@@ -10570,10 +11165,44 @@ keys:
           keys:
             source_protocol:
               type: str
+              valid_values:
+              - attached-host
+              - bgp
+              - connected
+              - dynamic
+              - isis
+              - ospf
+              - ospfv3
+              - rip
+              - static
+              - user
             route_map:
               type: str
+            rcf:
+              type: str
+              description: 'RCF function name with parenthesis.
+
+                Example: MyFunction(myarg).
+
+                `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+
+                Only applicable if `source_protocol` is one of `connected`, `static`,
+                `isis`, `user`, `dynamic`.'
             include_leaked:
               type: bool
+            ospf_route_type:
+              type: str
+              valid_values:
+              - external
+              - internal
+              - nssa-external
+              - nssa-external 1
+              - nssa-external 2
+              description: 'Routes learned by the OSPF protocol.
+
+                The `ospf_route_type` is valid for source_protocols ''ospf'' and ''ospfv3''.
+
+                '
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -10869,6 +11498,16 @@ keys:
                   type: str
                 activate:
                   type: bool
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
           peer_groups:
             type: list
             primary_key: name
@@ -10888,6 +11527,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
                 domain_remote:
                   type: bool
                 encapsulation:
@@ -11004,6 +11653,20 @@ keys:
                     - str
                     min: 2
                     max: 64
+          layer_2_fec_in_place_update:
+            type: dict
+            description: BGP layer-2 in-place FEC operation.
+            keys:
+              enabled:
+                type: bool
+                required: true
+              timeout:
+                type: int
+                description: In-place FEC update tracking timeout in seconds.
+                convert_types:
+                - str
+                min: 0
+                max: 300
       address_family_rtc:
         type: dict
         keys:
@@ -11063,6 +11726,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
                 default_originate:
                   type: dict
                   keys:
@@ -11113,6 +11786,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -11126,6 +11809,57 @@ keys:
                       type: bool
                     route_map:
                       type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            allow_duplicate_primary_key: true
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                  valid_values:
+                  - attached-host
+                  - bgp
+                  - connected
+                  - dynamic
+                  - isis
+                  - ospf
+                  - ospfv3
+                  - rip
+                  - static
+                  - user
+                route_map:
+                  type: str
+                include_leaked:
+                  type: bool
+                  description: Only applicable if `source_protocol` is one of `connected`,
+                    `static`, `isis`, `ospf`, `ospfv3`.
+                rcf:
+                  type: str
+                  description: 'RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.
+
+                    Only applicable if `source_protocol` is one of `connected`, `static`,
+                    `isis`, `user`, `dynamic`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -11169,6 +11903,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
             - dict
             items:
@@ -11178,6 +11913,33 @@ keys:
                   type: str
                 route_map:
                   type: str
+                include_leaked:
+                  type: bool
+                  description: Only applicable if `source_protocol` is `isis`.
+                rcf:
+                  type: str
+                  description: 'RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.
+
+                    Only applicable if `source_protocol` is `isis`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -11250,6 +12012,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -11274,6 +12046,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name.
@@ -11283,6 +12065,7 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
+            allow_duplicate_primary_key: true
             convert_types:
             - dict
             items:
@@ -11294,6 +12077,30 @@ keys:
                   type: str
                 include_leaked:
                   type: bool
+                rcf:
+                  type: str
+                  description: 'RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.
+
+                    Only used if `source_protocol` is one of `connected`, `static`,
+                    `isis`, `user`, `dynamic`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                    '
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -11364,6 +12171,52 @@ keys:
                   description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                 route_map:
                   type: str
+          redistribute_routes:
+            type: list
+            primary_key: source_protocol
+            allow_duplicate_primary_key: true
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                source_protocol:
+                  type: str
+                  valid_values:
+                  - connected
+                  - isis
+                  - ospf
+                  - ospfv3
+                  - static
+                include_leaked:
+                  type: bool
+                  description: Only applicable if `source_protocol` is `isis`.
+                route_map:
+                  type: str
+                rcf:
+                  type: str
+                  description: 'RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.
+
+                    Only applicable if `source_protocol` is `isis`.'
+                ospf_route_type:
+                  type: str
+                  valid_values:
+                  - external
+                  - internal
+                  - nssa-external
+                  - nssa-external 1
+                  - nssa-external 2
+                  description: 'Routes learned by the OSPF protocol.
+
+                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
+                    ''ospfv3''.
+
+                    '
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -11721,6 +12574,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
           route:
             type: dict
             keys:
@@ -11746,6 +12609,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -11775,6 +12648,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
           route:
             type: dict
             keys:
@@ -11800,6 +12683,16 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
           neighbor_default_encapsulation_mpls_next_hop_self:
             type: dict
             keys:
@@ -11853,6 +12746,25 @@ keys:
                           type: str
                       route_map:
                         type: str
+                        description: Only applicable if `address_family` is one of
+                          `evpn`, `vpn-ipv4` or `vpn-ipv6`.
+                      rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).
+
+                          Only applicable if `address_family` is one of `evpn`, `vpn-ipv4`
+                          or `vpn-ipv6`.'
+                      vpn_route_filter_rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis for filtering
+                          VPN routes. Also requires `rcf` to be set.
+
+                          Example: MyFunction(myarg).
+
+                          Only applicable if `address_family` is one of `vpn-ipv4`
+                          or `vpn-ipv6`.'
                 export:
                   type: list
                   primary_key: address_family
@@ -11870,6 +12782,25 @@ keys:
                           type: str
                       route_map:
                         type: str
+                        description: Only applicable if `address_family` is one of
+                          `evpn`, `vpn-ipv4` or `vpn-ipv6`.
+                      rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).
+
+                          Only applicable if `address_family` is one of `evpn`, `vpn-ipv4`
+                          or `vpn-ipv6`.'
+                      vpn_route_filter_rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis for filtering
+                          VPN routes. Also requires `rcf` to be set.
+
+                          Example: MyFunction(myarg).
+
+                          Only applicable if `address_family` is one of `vpn-ipv4`
+                          or `vpn-ipv6`.'
             router_id:
               description: in IP address format A.B.C.D.
               type: str
@@ -12167,6 +13098,7 @@ keys:
             redistribute_routes:
               type: list
               primary_key: source_protocol
+              allow_duplicate_primary_key: true
               convert_types:
               - dict
               - list
@@ -12179,6 +13111,31 @@ keys:
                     type: str
                   include_leaked:
                     type: bool
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.
+
+                      Only applicable if `source_protocol` is one of `connected`,
+                      `dynamic`, `isis`, `static` and `user`.'
+                  ospf_route_type:
+                    type: str
+                    valid_values:
+                    - external
+                    - internal
+                    - nssa-external
+                    - nssa-external 1
+                    - nssa-external 2
+                    description: 'Routes learned by the OSPF protocol.
+
+                      The `ospf_route_type` is valid for source_protocols ''ospf''
+                      and ''ospfv3''.
+
+                      '
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -12277,6 +13234,16 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      rcf_in:
+                        type: str
+                        description: 'Inbound RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).'
+                      rcf_out:
+                        type: str
+                        description: 'Outbound RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).'
                       prefix_list_in:
                         type: str
                         description: Inbound prefix-list name.
@@ -12307,6 +13274,57 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                        - attached-host
+                        - bgp
+                        - connected
+                        - dynamic
+                        - isis
+                        - ospf
+                        - ospfv3
+                        - rip
+                        - static
+                        - user
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                      rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.
+
+                          Only applicable if `source_protocol` is one of `connected`,
+                          `dynamic`, `isis`, `static` and `user`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_ipv6:
               type: dict
               keys:
@@ -12378,6 +13396,16 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      rcf_in:
+                        type: str
+                        description: 'Inbound RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).'
+                      rcf_out:
+                        type: str
+                        description: 'Outbound RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).'
                       prefix_list_in:
                         type: str
                         description: Inbound prefix-list name.
@@ -12397,6 +13425,55 @@ keys:
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                        - attached-host
+                        - bgp
+                        - connected
+                        - dhcp
+                        - dynamic
+                        - isis
+                        - ospfv3
+                        - static
+                        - user
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                      rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.
+
+                          Only applicable if `source_protocol` is one of `connected`,
+                          `dynamic`, `isis`, `static` and `user`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                          '
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -12454,6 +13531,53 @@ keys:
                         description: IPv6 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                        - attached-host
+                        - connected
+                        - isis
+                        - ospf
+                        - ospfv3
+                        - static
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                        description: Only applicable if `source_protocol` is `isis`.
+                      rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.
+
+                          Only applicable if `source_protocol` is `isis`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -12511,6 +13635,52 @@ keys:
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
                         type: str
+                redistribute_routes:
+                  type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      source_protocol:
+                        type: str
+                        valid_values:
+                        - connected
+                        - isis
+                        - ospf
+                        - ospfv3
+                        - static
+                      route_map:
+                        type: str
+                      include_leaked:
+                        type: bool
+                        description: Only applicable if `source_protocol` is `isis`.
+                      rcf:
+                        type: str
+                        description: 'RCF function name with parenthesis.
+
+                          Example: MyFunction(myarg).
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.
+
+                          Only applicable if `source_protocol` is `isis`.'
+                      ospf_route_type:
+                        type: str
+                        valid_values:
+                        - external
+                        - internal
+                        - nssa-external
+                        - nssa-external 1
+                        - nssa-external 2
+                        description: 'Routes learned by the OSPF protocol.
+
+                          The `ospf_route_type` is valid for source_protocols ''ospf''
+                          and ''ospfv3''.
+
+                          '
             address_family_flow_spec_ipv4:
               type: dict
               keys:
@@ -13204,9 +14374,17 @@ keys:
             type: int
             convert_types:
             - str
-            min: 1
-            max: 300
-            description: Maximum interval between two SPFs in seconds.
+            description: 'Maximum interval between two SPFs in seconds or milliseconds.
+
+              Range in seconds: <1-300>
+
+              Range in milliseconds: <1-300000>'
+          interval_unit:
+            type: str
+            valid_values:
+            - seconds
+            - milliseconds
+            description: If interval unit is not defined EOS takes `seconds` by default.
           wait_interval:
             type: int
             convert_types:
@@ -13214,6 +14392,13 @@ keys:
             min: 1
             max: 300000
             description: Initial wait interval for SPF in milliseconds.
+          hold_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 300000
+            description: Hold interval between the first and second SPF runs in milliseconds.
       graceful_restart:
         type: dict
         keys:
@@ -14266,6 +15451,147 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_segment_security:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      policies:
+        type: list
+        description: 'Customised application policies.
+
+          Using the Application Traffic Recognition L4 profiles, custom policies can
+          be defined. The built-in application ''app-match-all'' can be used to match
+          any packets.
+
+          Note that this is stateless, so both the source and destination flows need
+          to be considered.'
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            sequence_numbers:
+              type: list
+              required: true
+              primary_key: sequence
+              items:
+                type: dict
+                keys:
+                  sequence:
+                    type: int
+                    description: Sequence ID.
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 1023
+                  application:
+                    type: str
+                    required: true
+                    description: The name of the application.
+                  action:
+                    type: str
+                    required: true
+                    description: The action to take - note that platform support for
+                      the redirect action is limited. The "redirect" action also requires
+                      the 'next_hop' to be configured.
+                    valid_values:
+                    - forward
+                    - drop
+                    - redirect
+                  log:
+                    type: bool
+                    description: Enable logging - note that platform support is limited.
+                  stateless:
+                    type: bool
+                    description: Take action, regardless of state. Should be set to
+                      'true' for MSS-G.
+                    default: true
+                  next_hop:
+                    type: str
+                    description: When the action is 'redirect', this indicates the
+                      IPv4 next hop to redirect to.
+      vrfs:
+        type: list
+        description: The name of the VRF that the segments and policies are defined
+          in.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            segments:
+              type: list
+              primary_key: name
+              required: true
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Segment name.
+                  definition:
+                    type: dict
+                    keys:
+                      interfaces:
+                        type: list
+                        description: The names of the source interface e.g. Port-Channel1
+                          - note that platform support is limited.
+                        min_length: 1
+                        items:
+                          type: str
+                      match_lists:
+                        type: list
+                        description: The set of lists that define the segment. These
+                          can be a mix of IPv4 and IPv6 prefix or match lists.
+                        max_length: 2
+                        min_length: 1
+                        primary_key: address_family
+                        items:
+                          type: dict
+                          keys:
+                            address_family:
+                              type: str
+                              required: true
+                              description: Indicate which address-family the match
+                                list belongs to e.g. ipv4 or ipv6.
+                              valid_values:
+                              - ipv4
+                              - ipv6
+                            covered_prefix_list:
+                              type: str
+                              description: The name of the prefix-list. You can have
+                                a maximum of one per address-family. Mutually exclusive
+                                to the use of match_list.  If both are configured
+                                prefix takes precedence.
+                            prefix:
+                              type: str
+                              description: The name of the match-list. You can have
+                                a maximum of one per address-family. Mutually exclusive
+                                to the use of covered_prefix_list. If both are configured
+                                prefix takes precedence.
+                  policies:
+                    type: list
+                    description: The policies controlling traffic into the segment.
+                    primary_key: from
+                    items:
+                      type: dict
+                      keys:
+                        from:
+                          type: str
+                          description: The name of the source segment or 'forwarding-segments'
+                            for all segments.
+                        policy:
+                          type: str
+                          description: The name of the policy to apply. The built-in
+                            policies are 'policy-forward-all' and 'policy-drop-all'.
+                  fallback_policy:
+                    type: str
+                    description: Only supported on the R3 series platforms, this allows
+                      a per-segment default policy to be specified by name.
   router_service_insertion:
     type: dict
     description: Configure network services inserted to data forwarding.
@@ -15926,6 +17252,10 @@ keys:
                 description: VRF where DHCP server can be reached.
                 convert_types:
                 - int
+        ip_dhcp_relay_all_subnets:
+          type: bool
+          description: Allow forwarding requests with secondary IP addresses in the
+            gateway address "giaddr" field.
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
@@ -15977,6 +17307,31 @@ keys:
           type: bool
         ipv6_nd_managed_config_flag:
           type: bool
+        ipv6_nd_other_config_flag:
+          type: bool
+          description: Set the "other stateful configuration" flag in IPv6 router
+            advertisements.
+        ipv6_nd_cache:
+          type: dict
+          description: IPv6 neighbor cache options.
+          keys:
+            dynamic_capacity:
+              type: int
+              description: Capacity of dynamic cache entries.
+              convert_types:
+              - str
+              min: 0
+              max: 4294967295
+            expire:
+              type: int
+              description: Cache entries expirery in seconds.
+              convert_types:
+              - str
+              min: 1
+              max: 65535
+            refresh_always:
+              type: bool
+              description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
           convert_types:
@@ -16025,6 +17380,10 @@ keys:
                 type: str
                 description: Override the default link address specified in the relayed
                   DHCP packet.
+        ipv6_dhcp_relay_all_subnets:
+          type: bool
+          description: Allow forwarding requests with additional IPv6 addresses in
+            the gateway address "giaddr" field.
         access_group_in:
           type: str
           description: IPv4 access-list name.
@@ -16200,6 +17559,9 @@ keys:
         isis_enable:
           type: str
           description: ISIS instance name.
+        isis_bfd:
+          type: bool
+          description: Enable BFD for ISIS.
         isis_passive:
           type: bool
         isis_metric:

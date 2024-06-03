@@ -229,6 +229,8 @@ ethernet_interfaces:
   type: routed
   description: ATT_404
   dhcp_client_accept_default_route: true
+  ip_nat:
+    service_profile: IE-DIRECT-NAT
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -380,6 +382,7 @@ ip_security:
       interval: 10
       time: 60
       action: clear
+    connection: start
   - name: IE-ZSCALER-EXIT-POLICY-2-PROFILE
     ike_policy: IE-ZSCALER-EXIT-POLICY-2-IKE-POLICY
     sa_policy: IE-ZSCALER-EXIT-POLICY-2-SA-POLICY
@@ -388,6 +391,7 @@ ip_security:
       interval: 10
       time: 60
       action: clear
+    connection: start
   key_controller:
     profile: DP-PROFILE
 management_security:
@@ -416,6 +420,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+    internet_exit_policy: DIRECT-EXIT-POLICY-1
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
@@ -632,48 +637,71 @@ ip_access_lists:
     source: any
     destination: any
 ip_nat:
+  profiles:
+  - name: IE-DIRECT-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        nat_type: overload
+  - name: IE-ZSCALER-NAT
+    source:
+      dynamic:
+      - access_list: ALLOW-ALL
+        pool_name: PORT-ONLY-POOL
+        nat_type: pool
   pools:
   - name: PORT-ONLY-POOL
     type: port-only
     ranges:
     - first_port: 1500
       last_port: 65535
-  profiles:
-  - name: VRF-AWARE-NAT
-    source:
-      dynamic:
-      - access_list: ALLOW-ALL
-        pool_name: PORT-ONLY-POOL
-        nat_type: pool
+static_routes:
+- destination_address_prefix: 10.37.121.1/32
+  name: IE-ZSCALER-PRI
+  gateway: 172.31.0.1
+- destination_address_prefix: 10.39.77.1/32
+  name: IE-ZSCALER-SEC
+  gateway: 172.31.0.1
+- destination_address_prefix: 10.50.9.1/32
+  name: IE-ZSCALER-TER
+  gateway: 172.31.0.1
 router_service_insertion:
   enabled: true
   connections:
+  - name: IE-Ethernet3
+    monitor_connectivity_host: IE-Ethernet3
+    ethernet_interface:
+      name: Ethernet3
+      next_hop: 172.31.0.1
   - name: IE-Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
-    monitor_connectivity_host: IE-Tunnel100
   - name: IE-Tunnel101
+    monitor_connectivity_host: IE-Tunnel101
     tunnel_interface:
       primary: Tunnel101
-    monitor_connectivity_host: IE-Tunnel101
   - name: IE-Tunnel102
+    monitor_connectivity_host: IE-Tunnel102
     tunnel_interface:
       primary: Tunnel102
-    monitor_connectivity_host: IE-Tunnel102
   - name: IE-Tunnel110
+    monitor_connectivity_host: IE-Tunnel110
     tunnel_interface:
       primary: Tunnel110
-    monitor_connectivity_host: IE-Tunnel110
   - name: IE-Tunnel111
+    monitor_connectivity_host: IE-Tunnel111
     tunnel_interface:
       primary: Tunnel111
-    monitor_connectivity_host: IE-Tunnel111
   - name: IE-Tunnel112
+    monitor_connectivity_host: IE-Tunnel112
     tunnel_interface:
       primary: Tunnel112
-    monitor_connectivity_host: IE-Tunnel112
 router_internet_exit:
   exit_groups:
+  - name: DIRECT-EXIT-POLICY-1
+    local_connections:
+    - name: IE-Ethernet3
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
     - name: IE-Tunnel100
@@ -693,6 +721,9 @@ router_internet_exit:
     local_connections:
     - name: IE-Tunnel112
   policies:
+  - name: DIRECT-EXIT-POLICY-1
+    exit_groups:
+    - name: DIRECT-EXIT-POLICY-1
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
     - name: ZSCALER-EXIT-POLICY-1_PRI
@@ -730,59 +761,61 @@ tunnel_interfaces:
 - name: Tunnel100
   description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel110
   description: Internet Exit ZSCALER-EXIT-POLICY-2 PRI
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel111
   description: Internet Exit ZSCALER-EXIT-POLICY-2 SEC
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 - name: Tunnel112
   description: Internet Exit ZSCALER-EXIT-POLICY-2 TER
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-2-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  nat_profile: IE-ZSCALER-NAT
 monitor_connectivity:
   interface_sets:
+  - name: SET-Ethernet3
+    interfaces: Ethernet3
   - name: SET-Tunnel100
     interfaces: Tunnel100
   - name: SET-Tunnel101
@@ -796,6 +829,11 @@ monitor_connectivity:
   - name: SET-Tunnel112
     interfaces: Tunnel112
   hosts:
+  - name: IE-Ethernet3
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.31.0.1
+    local_interfaces: SET-Ethernet3
+    address_only: false
   - name: IE-Tunnel100
     description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
     ip: 10.37.121.1
@@ -832,13 +870,14 @@ monitor_connectivity:
     local_interfaces: SET-Tunnel112
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
+  shutdown: false
 metadata:
   cv_pathfinder:
     internet_exit_policies:
     - name: ZSCALER-EXIT-POLICY-1
       type: zscaler
-      city: BigCity
-      country: BigCountry
+      city: Santa Clara, CA
+      country: United States
       firewall: false
       ips_control: false
       acceptable_use_policy: false
@@ -855,8 +894,8 @@ metadata:
         preference: Alternate
     - name: ZSCALER-EXIT-POLICY-2
       type: zscaler
-      city: BigCity
-      country: BigCountry
+      city: Santa Clara, CA
+      country: United States
       firewall: false
       ips_control: false
       acceptable_use_policy: false

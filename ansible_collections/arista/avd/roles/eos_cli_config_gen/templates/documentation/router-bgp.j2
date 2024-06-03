@@ -542,6 +542,13 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 - Next-hop MPLS resolution {{ rib_position[loop.index0] }}-RIB : {{ evpn_mpls_resolution_rib }}
 {%             endfor %}
 {%         endif %}
+{%         if router_bgp.address_family_evpn.layer_2_fec_in_place_update.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout is arista.avd.defined %}
+- Layer-2 In-place FEC update tracking timeout: {{ router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout }} seconds
+{%             else %}
+- Layer-2 In-place FEC update operation enabled
+{%             endif %}
+{%         endif %}
 {%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 
 ##### EVPN Peer Groups
@@ -734,24 +741,28 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
 {%             for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set rcf_in = neighbor.rcf_in | arista.avd.default("-") %}
+{%                 set rcf_out = neighbor.rcf_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.peer_groups is arista.avd.defined %}
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
 {%             for peer_group in router_bgp.address_family_vpn_ipv4.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set rcf_in = peer_group.rcf_in | arista.avd.default("-") %}
+{%                 set rcf_out = peer_group.rcf_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -766,24 +777,28 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
 {%             for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set rcf_in = neighbor.rcf_in | arista.avd.default("-") %}
+{%                 set rcf_out = neighbor.rcf_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.peer_groups is arista.avd.defined %}
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
 {%             for peer_group in router_bgp.address_family_vpn_ipv6.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set rcf_in = peer_group.rcf_in | arista.avd.default("-") %}
+{%                 set rcf_out = peer_group.rcf_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}

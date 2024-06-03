@@ -27,7 +27,7 @@ wan_route_servers:
             public_ip: 172.17.17.17
       - name: INET
         interfaces:
-          - name: Ethernet2
+          - name: Ethernet2/1
             public_ip: 10.50.50.50
 
 # Overwriting TTL

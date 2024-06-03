@@ -162,6 +162,14 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
+        - feature_support:
+            per_interface_mtu: false
+            queue_monitor_length_notify: false
+          platforms:
+          - 7010TX
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
         - lag_hardware_only: true
           platforms:
           - 7280R
@@ -244,4 +252,24 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          management_interface: Management1/1
+          platforms:
+          - AWE-5310
+          - AWE-5510
+          - AWE-7250R
+          - AWE-7230R
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            poe: true
+            queue_monitor_length_notify: false
+          management_interface: Management1
+          platforms:
+          - AWE-7220R
         ```
