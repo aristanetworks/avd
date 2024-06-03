@@ -44,7 +44,7 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -56,7 +56,7 @@ keys:
               type: list
               primary_key: id
               convert_types:
-              - dict
+                - dict
               min_length: 2
               max_length: 2
               description: Must have exactly two connectors to a patch of which at least one must be of type "interface".
@@ -66,12 +66,12 @@ keys:
                   id:
                     type: str
                     convert_types:
-                    - int
+                      - int
                   type:
                     type: str
                     valid_values:
-                    - interface
-                    - pseudowire
+                      - interface
+                      - pseudowire
                     required: true
                   endpoint:
                     type: str

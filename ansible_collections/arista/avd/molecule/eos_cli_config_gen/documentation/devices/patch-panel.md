@@ -50,6 +50,7 @@ Patch Panel Connector Interface Recovery Review Delay Min: 10
 Patch Panel Connector Interface Recovery Review Delay Max: 900
 
 Patch Panel Connector Interface Path BGP VPWS Remote Failure Errdisable is enabled.
+
 ### Patch Panel Device Configuration
 
 ```eos
