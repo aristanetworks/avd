@@ -17,7 +17,7 @@ keys:
       keys:
         name:
           type: str
-          description: Prefix-list Name
+          description: Prefix-list Name.
         sequence_numbers:
           type: list
           required: true
@@ -29,12 +29,12 @@ keys:
             keys:
               sequence:
                 type: int
-                description: Sequence ID
+                description: Sequence ID.
                 convert_types:
                   - str
               action:
                 type: str
                 required: true
                 description: |
-                  Action as string
+                  Action as string.
                   Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"

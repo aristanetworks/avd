@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [VXLAN Interface](#vxlan-interface)
+  - [VXLAN Interface](#vxlan-interface-1)
 
 ## Management
 

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [Flow Tracking](#flow-tracking)
+  - [Flow Tracking](#flow-tracking-1)
 - [Interfaces](#interfaces)
   - [DPS Interfaces](#dps-interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
@@ -68,6 +68,8 @@ interface Management1
 | T3 | T3-E4 | - | - | No local interface |
 
 #### Flow Tracking Hardware
+
+Software export of IPFIX data records enabled.
 
 ##### Trackers Summary
 
@@ -136,6 +138,7 @@ flow tracking hardware
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
+   record format ipfix standard timestamps counters
    no shutdown
 ```
 

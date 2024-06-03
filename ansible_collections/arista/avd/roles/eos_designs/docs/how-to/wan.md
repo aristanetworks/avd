@@ -38,6 +38,13 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - VRF `default` is being configured by default on all WAN devices with a `wan_vni` of 1. To override this, it is necessary to configure VRF `default` in a tenant in `network_services`.
 - Path-group ID `65535` is reserved for the path-group called `LAN_HA`.
 
+!!! info "CV Pathfinder & CloudVision"
+
+    When deploying CV Pathfinder with CloudVision, it is necessary to leverage
+    the `arista.avd.cv_deploy` role and not the `arista.avd.eos_config_deploy_cvp`
+    role, as CloudVision relies on metadata sent by AVD for visualization and to
+    generate and deliver certificates for STUN to devices.
+
 ### Features in PREVIEW
 
 - WAN HA is in PREVIEW
@@ -46,6 +53,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
   - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default.
   - It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
   - HA for AutoVPN is not supported
+- Internet-exit for Zscaler is in PREVIEW
 - `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
     These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
@@ -65,7 +73,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - HA support out of PREVIEW
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
 - HA for AutoVPN
-- WAN Internet exit
+- WAN Internet exit for other type than Zscaler
 - `import path-group` functionality
 - Indirect connectivity to pathfinder
 - BGP peerings on WAN L3 interfaces and associated route filtering.
@@ -101,17 +109,18 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
-| `wan_mode` | ✅ |  Two possible modes, `autovpn` and `cv-pathfinder` (default) |
-| `wan_virtual_topologies` | ✅ |  to define the Policies and the VRF to policy mappings |
-| `wan_path_groups` | ✅ |  to define the list of path-groups in the network |
-| `wan_carriers` | ✅ |  to define the list of carriers in the network, each carrier is assigned to a path-group |
-| `wan_ipsec_profiles` | ✅ |  to define the shared key for the Control Plane and Data Plane IPSec profiles. |
-| `cv_pathfinder_regions` | ✅ |  to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
-| `tenants` | ✅ |  the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF informaiton |
-| `wan_stun_dtls_disable` | ✅ |  disable dTLS for STUN for instance for lab. (**NOT** recommended in production) |
-| `application_classification` | ✅ |  to define the specific traffic classification required for the WAN if any. |
-| `wan_route_servers` | ✘|  Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
-| `ipv4_acls` | ✘|  List of IPv4 access-lists to be assigned to WAN interfaces. |
+| `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
+| `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
+| `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
+| `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
+| `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
+| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
+| `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
+| `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
+| `cv_pathfinder_internet_exit_policies` | ✅ | to define the internet-exit policies. |
+| `wan_route_servers` | ✘| Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
+| `ipv4_acls` | ✘| List of IPv4 access-lists to be assigned to WAN interfaces. |
 
 Additionally, following keys must be set for the WAN route servers for the connectivity to work:
 
@@ -163,7 +172,7 @@ However, if the WAN route servers are in a different inventory, it is then neces
 
 #### WAN STUN handling
 
-WAN STUN connections are configured by default authenticated and secured with DTLS by default. A security profile is configured with an hardcoded root certificate and matching a certifcate `<profile_name>.crt` and  key `<profile_name>.key`:
+WAN STUN connections are configured by default authenticated and secured with DTLS by default. A security profile is configured with an hardcoded root certificate and matching a certificate `<profile_name>.crt` and  key `<profile_name>.key`:
 
 ```eos
 management security
@@ -177,8 +186,8 @@ These values can be overwritten using `custom_structured_configuration`.
 
 This configuration requires certificates to be distributed on the WAN devices to be able to authenticate themselves:
 
-- For CV Pathinder deployments,  CloudVision will automatically deploy certificates on the devices.
-- For AutoVPN, the certficiates must be generated and deployed to the devices for the STUN connections to work.
+- For CV Pathinder deployments,  CloudVision will automatically generate and deploy the certificates on the devices once AVD configs and metadata have been pushed.
+- For AutoVPN, the certificates must be generated and deployed to the devices for the STUN connections to work.
 
 !!! Danger "Disabling STUN"
 
@@ -234,7 +243,10 @@ wan_router:
       cv_pathfinder_site: Site11
 ```
 
-For Pathfinders (`wan_rr`), it is possible to set the `cv_pathfinder_region` key. It is not rendered in configuration but leveraged in CloudVision for the visualization.
+For Pathfinders (`wan_rr`), both `cv_pathfinder_site` and `cv_pathfinder_region` are optional but recommended for the following use cases:
+
+- To define a "global" pathfinder, only set the `cv_pathfinder_site` and define the site under `cv_pathfinder_global_sites`.
+- To define a "regional" pathfinder, set both `cv_pathfinder_region` and `cv_pathfinder_site`. The region and site must be defined under `cv_pathfinder_hierarchy`.
 
 #### WAN carriers and path-groups
 
@@ -362,7 +374,7 @@ The policies definition works as follow:
 - The `default_virtual_topology` is used as the default match in the policy.  To prevent configuring it, the `drop_unmatched` boolean must be set to `true` otherwise, at least one `path-group` must be configured or AVD will raise an error.
 - Policies are assigned to VRFs using the list `wan_virtual_topologies.vrfs`. A policy can be reused in multiple VRFs.
 - If no policy is assigned for the `default` VRF policy, AVD auto generates one with one `default_virtual_topology` entry configured to use all available local path-groups.
-- For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targetted policy name.
+- For the policy defined for VRF `default` (or the auto-generared one), an extra match statement is injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs, the name of the application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targeted policy name.
 - For the policy defined for VRF `default` (or the auto-generated one), an extra match statement is always injected in the policy to match the traffic towards the Pathfinders or AutoVPN RRs. The name of the injected application-profile is hardcoded as `APP-PROFILE-CONTROL-PLANE`. A special policy is created by appending `-WITH-CP` at the end of the targeted policy name.
 
 ```yaml
@@ -420,12 +432,191 @@ wan_virtual_topologies:
    This block of configuration will configure the Load Balance policy, the match statement in the policy (in `router path-selection` for AutoVPN or `router adaptive-virtual-topology` for CV-Pathfinder) and for CV-Pathfinder, the AVT profile.
    The application profile must be defined under `application_classification.application_profiles`.
    The Load Balance policy will favor direct path over multihop path (`lowest_hop_count`).
-   MPLS is prefered over the INET path-group.
+   MPLS is preferred over the INET path-group.
 6. The constraints are applied on the load-balance policy. If the delay, jitter or loss-rate of a given path-selection path
    exceeds the defined criteria, the path is avoided and the remaining ECMP paths are used or the next path in line meeting
    the constraints is used.
 7. The `id` is used as the AVT profile ID in the configuration.
 8. The `MPLS-ONLY` application profile won't be rendered on devices not having this path-group.
+
+### Internet-exit policies
+
+!!! info "Supported internet-exit policy types"
+
+    In its current version, AVD supports only Internet-Exit policies towards Zscaler in PREVIEW mode.
+
+!!! warning "PREVIEW: Changes ahead"
+
+    This configuration currently in PREVIEW **may** change in future version of AVD.
+
+The Internet exit feature enables hosts attached to a VRF in an edge router to reach prefixes that may be reachable over the internet.
+Internet-exit can be achieved in multiple ways:
+
+- Local exit toward the ISP
+- Local exit toward an enterprise firewall
+- Local exit toward a Secure Internet Gateway
+
+#### AVD abstraction
+
+The internet-exit policies are defined as global variables for all the WAN routers under `cv_pathfinder_internet_exit_policies`.
+
+- A device is configured with an Internet-exit policy if the internet-exit policy is configured **both** under one of its WAN interfaces and under a WAN virtual topology applied on the device.
+- The internet-exit policies are not included on the Pathfinders.
+
+The policies are assigned a type, currently `zscaler` and `direct` are supported. Then additional parameters can be provided according to the type.
+
+```yaml
+cv_pathfinder_internet_exit_policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    type: zscaler
+    # [...] type specific options
+  - name: ZSCALER-EXIT-POLICY-2
+    fallback_to_system_default: False
+    type: zscaler
+    # [...] type specific options
+  - name: DIRECT-EXIT-POLICY-1
+    type: direct
+    # [...] type specific options
+```
+
+An Application Virtual Topology policy is composed of multiple profiles.  An AVT profile can be assigned an Internet-policy as follow:
+
+```yaml
+wan_virtual_topologies:
+  vrfs:
+    [...]
+  policies:
+    - name: PROD-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+        internet_exit:
+          policy: DIRECT-EXIT-POLICY-1 # (2)!
+      application_virtual_topologies:
+        - application_profile: VOICE
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          internet_exit:
+            policy: ZSCALER-EXIT-POLICY-1 # (1)!
+          id: 2
+```
+
+1. Assign the `ZSCALER-EXIT-POLICY-1` internet-exit policy to the AVT profile.
+2. Assign the `DIRECT-EXIT-POLICY-1` internet-exit policy to the default AVT.
+
+Then on each device, the local Internet-exit policies needs to be assigned to the exit WAN interface under the node-settings `l3_interfaces`:
+
+```yaml
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+    uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  nodes:
+    - name: cv-pathfinder-edge1
+      id: 2
+      uplink_switch_interfaces: [Ethernet2]
+      l3_interfaces:
+        - name: Ethernet3
+          wan_carrier: Comcast-5G
+          wan_circuit_id: AF830
+          ip_address: 172.20.20.20/31
+          connected_to_pathfinder: false
+          wan_circuit_id: 404
+          dhcp_accept_default_route: true
+          ip_address: dhcp
+          cv_pathfinder_internet_exit: # (1)!
+            policies:
+              - name: ZSCALER-EXIT-POLICY-1
+                tunnel_interface_numbers: 100-102
+              - name: ZSCALER-EXIT-POLICY-2
+                tunnel_interface_numbers: 110-112
+              - name: DIRECT-EXIT-POLICY-1
+```
+
+1. Assign the `ZSCALER-EXIT-POLICY-1` and `ZSCALER-EXIT-POLICY-2` internet-exit policies to the Ethernet3 WAN interface.
+
+#### Local exit toward the ISP
+
+!!! Warning "Only supported in PREVIEW"
+
+Internet-exit policy type should be set to `direct` to locally exit toward the ISP.
+The feature requires NAT to be enabled on the interfaces part of the policy and following NAT policy will be configured on the interfaces implicitly.
+
+```eos
+ip access-list ALLOW-ALL
+   10 permit ip any any
+!
+ip nat profile IE-DIRECT-NAT
+   ip nat source dynamic access-list ALLOW-ALL overload
+!
+interface Ethernet3
+   description Comcast-5G_AF830
+   no shutdown
+   no switchport
+   ip address 172.20.20.20/31
+   ip nat service-profile IE-DIRECT-NAT
+```
+
+#### Local exit toward an entreprise firewall
+
+!!! Warning "Not currently supported in eos_designs."
+
+#### Local exit toward a Secure Internet Gateway
+
+!!! Warning "Only supported in PREVIEW toward Zscaler SIG"
+
+An internet-exit policy of type `zscaler` leverages the following AVD data model to generate the target configuration.
+
+AVD supports up to three tunnels (primary, secondary, tertiary).
+
+The target is for this data to be retrieved from Cloudvision through a lookup plugin for each device to determine what are the best tunnel(s) to use for a given location.
+
+```yaml
+# Variables used by the lookup plugin to connect to Cloudvision
+cv_server: <cloudvision_ip>
+cv_token: <cloudvision_token>
+
+# Lookup plugin usage
+zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
+```
+
+For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.
+
+The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary has additonnal options to configure the policy parameters shared with Zscaler through Cloudvision.
+
+```yaml
+    # PREVIEW: These keys are in preview mode.
+    cv_pathfinder_internet_exit_policies:
+      - name: <str; required; unique>
+        type: <str; "zscaler"; required>
+        fallback_to_system_default: <bool; default=True>
+        zscaler:
+          ipsec_key_salt: <str; required>
+          domain_name: <str; required>
+          encrypt_traffic: <bool; default=True>
+          download_bandwidth: <int>
+          upload_bandwidth: <int>
+          firewall:
+            enabled: <bool; default=False>
+            ips: <bool; default=False>
+          acceptable_use_policy: <bool; default=False>
+```
+
+!!! tip "IPsec"
+
+    When `encrypt_traffic: true` the traffic going over the tunnels will be encrypted with AES-256-GCM.
+    Otherwise the traffic will be using NULL encryption.
+    Note that encryption requires a subscription on the Zscaler account.
 
 ### LAN Designs
 
@@ -536,11 +727,11 @@ The tags will only be generated when `wan_mode` is set to `cv-pathfinder`.
 As described in the design principles, the goal is to be able to distribute the
 WAN routers in separate Ansible inventories.
 
-When leveraging multiple inventories, the arista.avd collection provide capabilites to create [global variables](../../../../docs/plugins/Vars_plugins/global_vars.md).
-The following example will be leveraging this capability to share required WAN variables accross multiple inventories.
+When leveraging multiple inventories, the arista.avd collection provide capabilities to create [global variables](../../../../docs/plugins/Vars_plugins/global_vars.md).
+The following example will be leveraging this capability to share required WAN variables across multiple inventories.
 
 This example contains contains two sites, SITE1 and SITE2 and a dedicate inventory for pathfinder nodes.
-This would still relevant for configuring AutoVPN in seperate ansible inventories.
+This would still relevant for configuring AutoVPN in separate ansible inventories.
 
 Inventory layout:
 
@@ -578,7 +769,7 @@ Inventory layout:
 ```yaml title="global_vars/cv_pathfinder.yml"
 wan_mode: cv-pathfinder
 
-# When Pathfinders are in a seperate inventory in addition to the hostname you also need to capture the `vtep_ip` and `path_groups`.
+# When Pathfinders are in a separate inventory in addition to the hostname you also need to capture the `vtep_ip` and `path_groups`.
 wan_route_servers:
   - hostname: pf1
     vtep_ip: 10.255.0.1
@@ -603,7 +794,7 @@ wan_route_servers:
           - name: Ethernet2
             public_ip: 100.64.2.2/24
 
-# Suggested variables to share in your global variables accross inventories.
+# Suggested variables to share in your global variables across inventories.
 
 cv_pathfinder_regions:
   - name: Global

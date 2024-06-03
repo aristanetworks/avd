@@ -7,7 +7,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
-- [MPLS](#mpls)
+- [MPLS](#mpls-1)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
 

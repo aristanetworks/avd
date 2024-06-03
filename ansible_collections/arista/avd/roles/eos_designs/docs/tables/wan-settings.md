@@ -7,8 +7,8 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>wan_advertise_wan_servers_loopbacks_in_default_vrf</samp>](## "wan_advertise_wan_servers_loopbacks_in_default_vrf") | Boolean |  | `False` |  | PREVIEW: The `wan_ha` key is currently not supported<br><br>Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.<br>By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from<br>WAN route servers are not reachable over the WAN from the WAN routers. |
-    | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: The `wan_ha` key is currently not supported |
+    | [<samp>wan_advertise_wan_servers_loopbacks_in_default_vrf</samp>](## "wan_advertise_wan_servers_loopbacks_in_default_vrf") | Boolean |  | `False` |  | PREVIEW: The `wan_advertise_wan_servers_loopbacks_in_default_vrf` key is currently not supported<br><br>Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.<br>By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from<br>WAN route servers are not reachable over the WAN from the WAN routers. |
+    | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: The `wan_ha` key is currently not supported. |
     | [<samp>&nbsp;&nbsp;lan_ha_path_group_name</samp>](## "wan_ha.lan_ha_path_group_name") | String |  | `LAN_HA` |  | When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.<br>This key allows to overwrite the default LAN HA path-group name. |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | Define IPsec profiles parameters for WAN configuration. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  |  |
@@ -28,14 +28,14 @@
 === "YAML"
 
     ```yaml
-    # PREVIEW: The `wan_ha` key is currently not supported
+    # PREVIEW: The `wan_advertise_wan_servers_loopbacks_in_default_vrf` key is currently not supported
     #
     # Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.
     # By default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from
     # WAN route servers are not reachable over the WAN from the WAN routers.
     wan_advertise_wan_servers_loopbacks_in_default_vrf: <bool; default=False>
 
-    # PREVIEW: The `wan_ha` key is currently not supported
+    # PREVIEW: The `wan_ha` key is currently not supported.
     wan_ha:
 
       # When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.

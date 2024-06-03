@@ -11,7 +11,7 @@
   - [Extended Access-lists](#extended-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [Quality Of Service](#quality-of-service)
-  - [QOS](#qos)
+  - [QOS](#qos-1)
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
@@ -282,13 +282,13 @@ class-map type qos match-any cmap_tc5_v6
 
 ##### pmap_test1
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| cmap_tc0_v4 | traffic_class | 0 |
-| cmap_tc5_v4 | traffic_class | 5 |
-| cmap_tc5_v6 | traffic_class | 5 |
-| cmap_tc0_v6 | traffic_class | 0 |
-| class-default | traffic_class | 1 |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| cmap_tc0_v4 | - | - | 0 | - | - |
+| cmap_tc5_v4 | - | - | 5 | - | - |
+| cmap_tc5_v6 | - | - | 5 | - | - |
+| cmap_tc0_v6 | - | - | 0 | - | - |
+| class-default | - | - | 1 | - | - |
 
 #### QOS Policy Maps Device Configuration
 
@@ -481,9 +481,9 @@ Priority Flow Control is **enabled**.
 | 2 | All | 2 | 2 kbytes | 200 kbytes | 50 | 10 |
 | 3 | All | - | -  | -  | - | - |
 | 4 | All | - | 1 kbytes | 10 kbytes | 90 | - |
-| 1 | Multicast | - | - | - | - |
-| 2 | Multicast | - | - | - | - |
-| 4 | Multicast | - | - | - | - |
+| 1 | Multicast | - | - | - | - | - |
+| 2 | Multicast | - | - | - | - | - |
+| 4 | Multicast | - | - | - | - | - |
 
 ##### QOS Profile: **wred_uc_queues_test**
 

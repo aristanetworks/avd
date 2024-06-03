@@ -73,7 +73,7 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 The following default variables are defined and can be modified as desired:
 
 ```yaml
-# configure playbook to ingnore errors and continue testing.
+# configure playbook to ignore errors and continue testing.
 eos_validate_state_validation_mode_loose: true
 
 # Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
@@ -124,7 +124,7 @@ The variable validation_role.only_failed_tests is used to limit the number of te
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#additional-python-libraries-required)
 
 ## Example Playbook
 

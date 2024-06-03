@@ -16,8 +16,11 @@ jobs:
     name: "PR Labeller"
     # https://github.com/actions/labeler
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - uses: actions/labeler@v4
+      - uses: actions/labeler@v5
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: '.github/labeler.yml'
@@ -27,7 +30,7 @@ jobs:
     # https://github.com/marketplace/actions/auto-author-assign
     runs-on: ubuntu-latest
     steps:
-      - uses: toshimaru/auto-author-assign@v1.6.1
+      - uses: toshimaru/auto-author-assign@v2.1.0
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
 

@@ -235,6 +235,9 @@ class UtilsMixin:
             interface_cfg["ip_address"] = ip[index]
 
         if p2p_link.get("include_in_underlay_protocol", True) is True:
+            if p2p_link.get("underlay_multicast", False) and self.shared_utils.underlay_multicast is True:
+                interface_cfg["pim"] = {"ipv4": {"sparse_mode": True}}
+
             if (self.shared_utils.underlay_rfc5549 and p2p_link.get("routing_protocol") != "ebgp") or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
@@ -250,6 +253,7 @@ class UtilsMixin:
                 interface_cfg.update(
                     {
                         "isis_enable": self.shared_utils.isis_instance_name,
+                        "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                         "isis_metric": default(p2p_link.get("isis_metric"), self.shared_utils.isis_default_metric),
                         "isis_network_point_to_point": p2p_link.get("isis_network_type", "point-to-point") == "point-to-point",
                         "isis_hello_padding": p2p_link.get("isis_hello_padding", True),
@@ -266,6 +270,9 @@ class UtilsMixin:
 
         if (p2p_link_sflow := get(p2p_link, "sflow", default=self._p2p_links_sflow)) is not None:
             interface_cfg["sflow"] = {"enable": p2p_link_sflow}
+
+        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link, self.data_model)) is not None:
+            interface_cfg["flow_tracker"] = p2p_link_flow_tracking
 
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}

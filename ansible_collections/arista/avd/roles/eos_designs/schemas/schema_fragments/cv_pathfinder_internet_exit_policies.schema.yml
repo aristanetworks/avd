@@ -1,0 +1,77 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  cv_pathfinder_internet_exit_policies:
+    description: |-
+      PREVIEW: These keys are in preview mode.
+
+      List of internet-exit policies used for the WAN configuration.
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Internet-exit policy name.
+        type:
+          type: str
+          description: |-
+            Internet-exit policy type.
+            direct: Exit directly over wan interfaces
+            zscaler: Exit using Zscaler secure web gateway service
+          valid_values:
+            - direct
+            - zscaler
+          required: true
+        fallback_to_system_default:
+          type: bool
+          default: true
+          description: Add system default exit-group at the end of the policy.
+        zscaler:
+          type: dict
+          description: Zscaler information. Only used if `type` is 'zscaler'.
+          keys:
+            ipsec_key_salt:
+              type: str
+              required: true
+              description: |-
+                "Salt" used for auto generation of encryption keys for IPsec tunnels to Zscaler.
+                The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
+                Since this salt can be used to deduct the encryption key, it is recommeneded to use vault.
+            domain_name:
+              type: str
+              required: true
+              description: Domain name as configured in Zscaler for the tenant. Used as UFQDN suffix for authentication.
+            encrypt_traffic:
+              type: bool
+              default: true
+              description: |-
+                When `true` the traffic going over the tunnels will be encrypted with AES-256-GCM. Otherwise the traffic will be using NULL encryption.
+                Note that encryption requires a subscription on the Zscaler account.
+            download_bandwidth:
+              type: int
+              description: Maximum allowed download bandwidth in Mbps for each device using this policy.
+            upload_bandwidth:
+              type: int
+              description: Maximum allowed upload bandwidth in Mbps for each device using this policy.
+            firewall:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enforce firewall controls.
+                  default: false
+                ips:
+                  type: bool
+                  description: Enable IPS Controls for the firewall.
+                  default: false
+            acceptable_use_policy:
+              type: bool
+              description: Display an Acceptable Use Policy (AUP) and require users to accept it.
+              default: false

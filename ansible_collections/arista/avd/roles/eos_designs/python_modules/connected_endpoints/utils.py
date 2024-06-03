@@ -97,7 +97,7 @@ class UtilsMixin:
         """
         Return short_esi for one adapter
         """
-        if len(set(adapter["switches"])) < 2:
+        if len(set(adapter["switches"])) < 2 or not self.shared_utils.overlay_evpn or not self.shared_utils.overlay_vtep:
             # Only configure ESI for multi-homing.
             return None
 
@@ -265,3 +265,7 @@ class UtilsMixin:
             return {"enable": adapter_sflow}
 
         return None
+
+    def _get_adapter_flow_tracking(self, adapter: dict) -> dict | None:
+        # Adapter flow tracking variables will be validated in _filtered_connected_endpoints
+        return self.shared_utils.get_flow_tracker(adapter, "endpoints")

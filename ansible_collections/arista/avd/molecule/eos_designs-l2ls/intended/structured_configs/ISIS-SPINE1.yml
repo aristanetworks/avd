@@ -54,7 +54,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: '110'
+  vlans: 110,4092
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -78,6 +78,9 @@ vlans:
 - id: 110
   name: SVI_110
   tenant: L2LS_ISIS
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:9a
@@ -87,5 +90,15 @@ vlan_interfaces:
   description: SVI_110
   shutdown: false
   ip_address_virtual: 10.0.110.1/24
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  ip_address: 172.23.254.2/24
+  ip_virtual_router_addresses:
+  - 172.23.254.1
 metadata:
   platform: vEOS-LAB

@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP Security](#ip-security)
+- [IP Security](#ip-security-1)
   - [IKE policies](#ike-policies)
   - [Security Association policies](#security-association-policies)
   - [IPSec profiles](#ipsec-profiles)
@@ -49,14 +49,16 @@ interface Management1
 | ----------- | ------------ | ---------- | -------- | -------- |
 | IKE-1 | 24 | aes256 | 20 | 192.168.100.1 |
 | IKE-2 | - | - | - | - |
+| IKE-FQDN | - | - | - | fqdn.local |
+| IKE-UFQDN | - | - | - | my.awesome@fqdn.local |
 
 ### Security Association policies
 
-| Policy name | ESP Integrity | ESP Encryption | PFS DH Group |
-| ----------- | ------------- | -------------- | ------------ |
-| SA-1 | - | aes128 | 14 |
-| SA-2 | - | aes128 | 14 |
-| SA-3 | disabled | disabled | 17 |
+| Policy name | ESP Integrity | ESP Encryption | Lifetime | PFS DH Group |
+| ----------- | ------------- | -------------- | -------- | ------------ |
+| SA-1 | - | aes128 | - | 14 |
+| SA-2 | - | aes128 | 42 gigabytes | 14 |
+| SA-3 | disabled | disabled | 8 hours | 17 |
 
 ### IPSec profiles
 
@@ -86,17 +88,25 @@ ip security
    !
    ike policy IKE-2
    !
+   ike policy IKE-FQDN
+      local-id fqdn fqdn.local
+   !
+   ike policy IKE-UFQDN
+      local-id fqdn my.awesome@fqdn.local
+   !
    sa policy SA-1
       esp encryption aes128
       pfs dh-group 14
    !
    sa policy SA-2
       esp encryption aes128
+      sa lifetime 42 gigabytes
       pfs dh-group 14
    !
    sa policy SA-3
       esp integrity null
       esp encryption null
+      sa lifetime 8 hours
       pfs dh-group 17
    !
    profile Profile-1

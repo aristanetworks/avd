@@ -205,7 +205,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_underlay_peer:
         type: dict
         keys:
@@ -225,7 +225,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       evpn_overlay_peers:
         type: dict
         keys:
@@ -245,7 +245,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       evpn_overlay_core:
         type: dict
         keys:
@@ -265,7 +265,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mpls_overlay_peers:
         type: dict
         keys:
@@ -285,7 +285,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       rr_overlay_peers:
         type: dict
         keys:
@@ -305,7 +305,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       ipvpn_gateway_peers:
         type: dict
         keys:
@@ -325,7 +325,7 @@ keys:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -876,7 +876,7 @@ keys:
             define it.\nrt_override will default to vni_override if set.\n\nrt_override
             supports two formats:\n  - A single number which will be used in the RT
             fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n
-            \ - A full RT string with colon seperator which will override the full
+            \ - A full RT string with colon separator which will override the full
             RT.\n"
         rd_override:
           type: str
@@ -888,7 +888,7 @@ keys:
             set.\n\nrd_override supports two formats:\n  - A single number which will
             be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni
             (see 'overlay_rd_type' for details).\n  - A full RD string with colon
-            seperator which will override the full RD.\n"
+            separator which will override the full RD.\n"
         evpn_l2_multi_domain:
           type: bool
           description: 'Explicitly extend VLAN-Aware Bundle to remote EVPN domains.
@@ -2978,7 +2978,7 @@ $defs:
         type: str
         description: 'By default the description is built leveraging `<peer>_<peer_interface>`.
 
-          When set this key will overide the default value on the physical ports.
+          When set this key will override the default value on the physical ports.
 
           '
       profile:
@@ -3554,7 +3554,7 @@ $defs:
               for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -3565,7 +3565,7 @@ $defs:
           for eos_cli_config_gen.
         documentation_options:
           hide_keys: true
-        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
   connected_endpoints:
     type: list
     primary_key: name
@@ -4490,7 +4490,7 @@ $defs:
                         for eos_cli_config_gen.
                       documentation_options:
                         hide_keys: true
-                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
+                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Ethernet interface
@@ -4852,7 +4852,7 @@ $defs:
                   if set.\n\nrt_override supports two formats:\n  - A single number
                   which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni
                   (see 'overlay_rt_type' for details).\n  - A full RT string with
-                  colon seperator which will override the full RT.\n"
+                  colon separator which will override the full RT.\n"
               rd_override:
                 type: str
                 convert_types:
@@ -4863,7 +4863,7 @@ $defs:
                   vni_override if set.\n\nrd_override supports two formats:\n  - A
                   single number which will be used in the RD assigned number field
                   instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n
-                  \ - A full RD string with colon seperator which will override the
+                  \ - A full RD string with colon separator which will override the
                   full RD.\n"
               name:
                 type: str
@@ -5394,7 +5394,7 @@ $defs:
 
               '
           mlag_port_channel_structured_config:
-            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -6706,7 +6706,7 @@ $defs:
           define it.\nrt_override will default to vni_override if set.\n\nrt_override
           supports two formats:\n  - A single number which will be used in the RT
           fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n
-          \ - A full RT string with colon seperator which will override the full RT.\n"
+          \ - A full RT string with colon separator which will override the full RT.\n"
       rd_override:
         type: str
         convert_types:
@@ -6716,7 +6716,7 @@ $defs:
           define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override
           supports two formats:\n  - A single number which will be used in the RD
           assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type'
-          for details).\n  - A full RD string with colon seperator which will override
+          for details).\n  - A full RD string with colon separator which will override
           the full RD.\n"
       tags:
         type: list

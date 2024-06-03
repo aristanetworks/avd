@@ -52,7 +52,7 @@ See the following examples using the `l3ls-evpn` design:
 
 ### 5-stage clos topology support (Super Spine)
 
-- The **eos_designs** role support lager deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
+- The **eos_designs** role support larger deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
 - 5 stage Clos fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
@@ -110,7 +110,7 @@ For more information please read the [WAN how-to guide](./how-to/wan.md).
 ## Fabric topology hierarchy
 
 <div style="text-align:center">
-  <img src="../../../media/5-stage-topology.gif" />
+  <img src="../../../media/5-stage-topology.gif" alt="5 stage topology"/>
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -139,15 +139,15 @@ To customize or create new node types, please refer to [node type customization]
 
 ### L3LS EVPN
 
-| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | --------------------------------- | -------------------------------- |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘                | eBGP                             | eBGP                             |
-| overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                             | eBGP                             |
-| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                             | iBGP                             |
-| wan_router         | ✅              | p2p          | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                             | iBGP                             |
+| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Default WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | ---------------- | --------------------------------- | -------------------------------- |
+| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
+| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
+| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                              | eBGP                             |
+| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘                | eBGP                              | eBGP                             |
+| overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
+| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                              | iBGP                             |
+| wan_router         | ✅              | p2p          | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                              | iBGP                             |
 
 - `wan_router`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
@@ -162,11 +162,11 @@ To customize or create new node types, please refer to [node type customization]
 
 ### MPLS
 
-| Node Type Key | Underlay Router | Uplink Type | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| --------------| --------------- | ----------- | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| p             | ✅              | p2p         | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| rr            | ✅              | p2p         | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| pe            | ✅              | p2p         | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
+| Node Type Key      | Underlay Router | Uplink Type  | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| ------------------ | --------------- | ------------ | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| p                  | ✅              | p2p          | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| rr                 | ✅              | p2p          | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| pe                 | ✅              | p2p          | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
 
 ## Node type customization
 
@@ -326,7 +326,9 @@ mlag_ip_primary & mlag_ip_secondary:
 
 - `{{ mlag_primary_id }}`
 - `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_address_family }}`
 - `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
+- `{{ switch_data.combined.mlag_peer_ipv6_pool }}`
 - All group/hostvars
 
 mlag_l3_ip_primary & mlag_l3_ip_secondary:
@@ -719,6 +721,12 @@ roles/eos_designs/docs/tables/bfd-settings.md
 roles/eos_designs/docs/tables/bgp-settings.md
 --8<--
 
+## IPv4 ACL settings
+
+--8<--
+roles/eos_designs/docs/tables/ipv4-acls.md
+--8<--
+
 ## OSPF settings
 
 --8<--
@@ -798,6 +806,27 @@ roles/eos_designs/docs/tables/wan-virtual-topologies.md
 roles/eos_designs/docs/tables/application-classification.md
 --8<--
 
+#### Internet Exit policies
+
+!!! note
+
+    This section is only relevant for CV Pathfinder and not for AutoVPN
+
+--8<--
+roles/eos_designs/docs/tables/cv-pathfinder-internet-exit-policies.md
+--8<--
+
+##### Zscaler Internet Exit
+
+!!! note
+
+    This data model is intended to be autofilled using a lookup plugin.
+    See the top level key description for more information.
+
+--8<--
+roles/eos_designs/docs/tables/zscaler-endpoints.md
+--8<--
+
 ## Management settings
 
 --8<--
@@ -819,7 +848,7 @@ roles/eos_designs/docs/tables/management-sflow-settings.md
 ### Flow Tracking Settings
 
 --8<--
-roles/eos_designs/docs/tables/flow-tracking-settings.md
+roles/eos_designs/docs/tables/management-flow-tracking-settings.md
 --8<--
 
 ### SNMP settings
@@ -1026,6 +1055,7 @@ Both data models support variable inheritance from profiles defined under [`port
             port_channel:
               description: PortChanne1
               mode: active
+            ethernet_segment:
               short_esi: 0303:0202:0101
     ```
 
@@ -1177,7 +1207,7 @@ The network services are grouped by tenants. The definition of a tenant may vary
 The filtering models defined under [Node type network services configuration](#node-type-network-services-configuration) allows
 for granular deployment of network services to the fabric leveraging the tenant name and tags applied to the service definition.
 
-- This allows for the re-use of SVI/VLAN IDs across the fabric.
+- This allows for the reuse of SVI/VLAN IDs across the fabric.
 - An error will be returned at runtime in case of duplicate or conflicting SVI/VLAN IDs or VNIs targeted towards the same device.
 
 ### Network services settings

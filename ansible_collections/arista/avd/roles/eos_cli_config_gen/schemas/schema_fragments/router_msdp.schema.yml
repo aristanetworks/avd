@@ -11,12 +11,12 @@ keys:
     keys:
       originator_id_local_interface:
         type: str
-        description: Interface to use for originator ID
+        description: Interface to use for originator ID.
       rejected_limit:
         type: int
         convert_types:
           - str
-        description: Maximum number of rejected SA messages allowed in cache
+        description: Maximum number of rejected SA messages allowed in cache.
         min: 0
         max: 40000
       forward_register_packets:
@@ -35,12 +35,12 @@ keys:
           keys:
             source_prefix:
               type: str
-              description: Source address prefix
+              description: Source address prefix.
             limit:
               type: int
               convert_types:
                 - str
-              description: Limit for SAs matching the source address prefix
+              description: Limit for SAs matching the source address prefix.
               min: 0
               max: 40000
               required: true
@@ -52,7 +52,7 @@ keys:
           keys:
             ipv4_address:
               type: str
-              description: Peer IP Address
+              description: Peer IP Address.
             default_peer:
               type: dict
               keys:
@@ -60,19 +60,19 @@ keys:
                   type: bool
                 prefix_list:
                   type: str
-                  description: Prefix list to filter source of SA messages
+                  description: Prefix list to filter source of SA messages.
             local_interface:
               type: str
             description:
               type: str
             disabled:
               type: bool
-              description: Disable the MSDP peer
+              description: Disable the MSDP peer.
             sa_limit:
               type: int
               convert_types:
                 - str
-              description: Maximum number of SA messages allowed in cache
+              description: Maximum number of SA messages allowed in cache.
               min: 0
               max: 40000
             mesh_groups:
@@ -83,7 +83,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Mesh group name
+                    description: Mesh group name.
             keepalive:
               type: dict
               keys:
@@ -99,7 +99,7 @@ keys:
                   convert_types:
                     - str
                   required: true
-                  description: Must be greater than keepalive timer
+                  description: Must be greater than keepalive timer.
                   min: 1
                   max: 65535
             sa_filter:
@@ -107,10 +107,10 @@ keys:
               keys:
                 in_list:
                   type: str
-                  description: ACL to filter inbound SA messages
+                  description: ACL to filter inbound SA messages.
                 out_list:
                   type: str
-                  description: ACL to filter outbound SA messages
+                  description: ACL to filter outbound SA messages.
       vrfs:
         type: list
         primary_key: name
@@ -119,17 +119,17 @@ keys:
           keys:
             name:
               type: str
-              description: VRF name
+              description: VRF name.
               convert_types:
                 - int
             originator_id_local_interface:
               type: str
-              description: Interface to use for originator ID
+              description: Interface to use for originator ID.
             rejected_limit:
               type: int
               convert_types:
                 - str
-              description: Maximum number of rejected SA messages allowed in cache
+              description: Maximum number of rejected SA messages allowed in cache.
               min: 0
               max: 40000
             forward_register_packets:
@@ -148,12 +148,12 @@ keys:
                 keys:
                   source_prefix:
                     type: str
-                    description: Source address prefix
+                    description: Source address prefix.
                   limit:
                     type: int
                     convert_types:
                       - str
-                    description: Limit for SAs matching the source address prefix
+                    description: Limit for SAs matching the source address prefix.
                     min: 0
                     max: 40000
                     required: true
@@ -165,7 +165,7 @@ keys:
                 keys:
                   ipv4_address:
                     type: str
-                    description: Peer IP Address
+                    description: Peer IP Address.
                   default_peer:
                     type: dict
                     keys:
@@ -173,19 +173,19 @@ keys:
                         type: bool
                       prefix_list:
                         type: str
-                        description: Prefix list to filter source of SA messages
+                        description: Prefix list to filter source of SA messages.
                   local_interface:
                     type: str
                   description:
                     type: str
                   disabled:
                     type: bool
-                    description: Disable the MSDP peer
+                    description: Disable the MSDP peer.
                   sa_limit:
                     type: int
                     convert_types:
                       - str
-                    description: Maximum number of SA messages allowed in cache
+                    description: Maximum number of SA messages allowed in cache.
                     min: 0
                     max: 40000
                   mesh_groups:
@@ -196,7 +196,7 @@ keys:
                       keys:
                         name:
                           type: str
-                          description: Mesh group name
+                          description: Mesh group name.
                   keepalive:
                     type: dict
                     keys:
@@ -212,7 +212,7 @@ keys:
                         convert_types:
                           - str
                         required: true
-                        description: Must be greater than keepalive timer
+                        description: Must be greater than keepalive timer.
                         min: 1
                         max: 65535
                   sa_filter:
@@ -220,7 +220,7 @@ keys:
                     keys:
                       in_list:
                         type: str
-                        description: ACL to filter inbound SA messages
+                        description: ACL to filter inbound SA messages.
                       out_list:
                         type: str
-                        description: ACL to filter outbound SA messages
+                        description: ACL to filter outbound SA messages.

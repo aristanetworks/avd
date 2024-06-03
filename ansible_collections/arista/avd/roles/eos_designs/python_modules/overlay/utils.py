@@ -238,7 +238,7 @@ class UtilsMixin:
 
     def _append_peer(self, peers_dict: dict, peer_name: str, peer_facts: dict) -> None:
         """
-        Retieve bgp_as and "overlay.peering_address" from peer_facts and append
+        Retrieve bgp_as and "overlay.peering_address" from peer_facts and append
         a new peer to peers_dict
         {
             peer_name: {
@@ -265,8 +265,12 @@ class UtilsMixin:
     def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
         """
         Return a string to use as the name of the stun server_profile
+
+        `/` are not allowed, `.` are allowed so
+        Ethernet1/1.1 is transformed into Ethernet1_1.1
         """
-        return f"{path_group_name}-{wan_route_server_name}-{interface_name}"
+        sanitized_interface_name = self.shared_utils.sanitize_interface_name(interface_name)
+        return f"{path_group_name}-{wan_route_server_name}-{sanitized_interface_name}"
 
     @cached_property
     def _stun_server_profiles(self) -> list:

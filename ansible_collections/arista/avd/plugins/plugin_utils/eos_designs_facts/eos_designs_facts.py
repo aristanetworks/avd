@@ -127,6 +127,15 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         return None
 
     @cached_property
+    def downlink_pools(self) -> dict | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.downlink_pools
+        return None
+
+    @cached_property
     def bgp_as(self) -> str | None:
         """
         Exposed in avd_switch_facts
@@ -180,6 +189,14 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         Exposed in avd_switch_facts
         """
         return self.shared_utils.inband_ztp
+
+    @cached_property
+    def inband_ztp_vlan(self) -> int | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        if self.shared_utils.inband_ztp:
+            return self.shared_utils.inband_mgmt_vlan
 
     @cached_property
     def inband_ztp_lacp_fallback_delay(self) -> int | None:

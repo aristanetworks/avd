@@ -18,7 +18,7 @@ $defs:
         type: str
         description: |
           By default the description is built leveraging `<peer>_<peer_interface>`.
-          When set this key will overide the default value on the physical ports.
+          When set this key will override the default value on the physical ports.
       profile:
         type: str
         description: Port-profile name to inherit configuration.
@@ -117,7 +117,7 @@ $defs:
               - "on"
       qos_profile:
         type: str
-        description: QOS profile name
+        description: QOS profile name.
       ptp:
         type: dict
         description: |
@@ -143,8 +143,13 @@ $defs:
               - "smpte2059-2"
       sflow:
         type: bool
-        description: |
-          Configures sFlow on the interface. Overrides `fabric_sflow` setting.
+        description: |-
+          Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
+      flow_tracking:
+        type: dict
+        $ref: "eos_designs#/$defs/flow_tracking_link"
+        description: |-
+          Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
       link_tracking:
         type: dict
         description: |
@@ -380,7 +385,7 @@ $defs:
                       type: bool
                     size:
                       type: int
-                      description: Size in bytes
+                      description: Size in bytes.
                       convert_types:
                         - str
       ethernet_segment:
@@ -462,6 +467,13 @@ $defs:
             description: |
               Port-Channel administrative state.
               Setting to false will set port to 'shutdown' in intended configuration.
+          ptp_mpass:
+            type: bool
+            default: false
+            description: |-
+              When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.
+              Arista PTP enabled devices always place PTP messages on the same physical link within the port-channel.
+              Hence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.
           esi:
             type: str
             description: Format xxxx:xxxx:xxxx.
@@ -530,12 +542,12 @@ $defs:
                   type: int
                   convert_types:
                     - str
-                  description: Subinterface number
+                  description: Subinterface number.
                 short_esi:
                   type: str
                   description: |
-                    In format xxxx:xxxx:xxxx or "auto"
-                    Required for multihomed port-channels with subinterfaces
+                    In format xxxx:xxxx:xxxx or "auto".
+                    Required for multihomed port-channels with subinterfaces.
                 vlan_id:
                   type: int
                   convert_types:
@@ -565,7 +577,7 @@ $defs:
             description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
             documentation_options:
               hide_keys: true
-            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state` role.
@@ -577,4 +589,4 @@ $defs:
         description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
         documentation_options:
           hide_keys: true
-        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

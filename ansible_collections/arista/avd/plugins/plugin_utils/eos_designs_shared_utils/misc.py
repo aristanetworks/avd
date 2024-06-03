@@ -9,10 +9,13 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
+    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts.eos_designs_facts import EosDesignsFacts
+
     from .shared_utils import SharedUtils
 
 
@@ -112,6 +115,55 @@ class MiscMixin:
         )
 
     @cached_property
+    def uplink_interfaces(self: SharedUtils) -> list:
+        return range_expand(
+            default(
+                get(self.switch_data_combined, "uplink_interfaces"),
+                get(self.cv_topology_config, "uplink_interfaces"),
+                get(self.default_interfaces, "uplink_interfaces"),
+                [],
+            )
+        )
+
+    @cached_property
+    def uplink_switch_interfaces(self: SharedUtils) -> list:
+        uplink_switch_interfaces = default(
+            get(self.switch_data_combined, "uplink_switch_interfaces"),
+            get(self.cv_topology_config, "uplink_switch_interfaces"),
+        )
+        if uplink_switch_interfaces is not None:
+            return range_expand(uplink_switch_interfaces)
+
+        if not self.uplink_switches:
+            return []
+
+        if self.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
+
+        uplink_switch_interfaces = []
+        uplink_switch_counter = {}
+        for uplink_switch in self.uplink_switches:
+            uplink_switch_facts: EosDesignsFacts = self.get_peer_facts(uplink_switch, required=True)
+
+            # Count the number of instances the current switch was processed
+            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
+            index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
+
+            # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
+            # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
+            # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
+            downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
+            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
+                uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
+            else:
+                raise AristaAvdError(
+                    f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                )
+
+        return uplink_switch_interfaces
+
+    @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "virtual_router_mac_address")
 
@@ -142,8 +194,8 @@ class MiscMixin:
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
         if not self.platform_settings_feature_support_per_interface_mtu:
             return None
-
-        return get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        return get(self.switch_data_combined, "uplink_mtu", default=p2p_uplinks_mtu)
 
     @cached_property
     def evpn_short_esi_prefix(self: SharedUtils) -> str:
@@ -152,6 +204,10 @@ class MiscMixin:
     @cached_property
     def shutdown_interfaces_towards_undeployed_peers(self: SharedUtils) -> bool:
         return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
+
+    @cached_property
+    def shutdown_bgp_towards_undeployed_peers(self: SharedUtils) -> bool:
+        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers") is True
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
@@ -259,6 +315,10 @@ class MiscMixin:
     @cached_property
     def fabric_ip_addressing_mlag_ipv4_prefix_length(self: SharedUtils) -> int:
         return get(self.hostvars, "fabric_ip_addressing.mlag.ipv4_prefix_length", default=31)
+
+    @cached_property
+    def fabric_ip_addressing_mlag_ipv6_prefix_length(self: SharedUtils) -> int:
+        return get(self.hostvars, "fabric_ip_addressing.mlag.ipv6_prefix_length", default=64)
 
     @cached_property
     def fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length(self: SharedUtils) -> int:

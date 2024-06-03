@@ -41,6 +41,17 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.arp_cache_dynamic_capacity is arista.avd.defined %}
    arp cache dynamic capacity {{ vlan_interface.arp_cache_dynamic_capacity }}
 {%     endif %}
+{%     if vlan_interface.ipv6_nd_cache is arista.avd.defined() %}
+{%         if vlan_interface.ipv6_nd_cache.expire is arista.avd.defined() %}
+   ipv6 nd cache expire {{ vlan_interface.ipv6_nd_cache.expire }}
+{%         endif %}
+{%         if vlan_interface.ipv6_nd_cache.dynamic_capacity is arista.avd.defined() %}
+   ipv6 nd cache dynamic capacity {{ vlan_interface.ipv6_nd_cache.dynamic_capacity }}
+{%         endif %}
+{%         if vlan_interface.ipv6_nd_cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
@@ -57,6 +68,12 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ vlan_interface.ip_verify_unicast_source_reachable_via }}
+{%     endif %}
+{%     if vlan_interface.ip_dhcp_relay_all_subnets is arista.avd.defined(true) %}
+   ip dhcp relay all-subnets
+{%     endif %}
+{%     if vlan_interface.ipv6_dhcp_relay_all_subnets is arista.avd.defined(true) %}
+   ipv6 dhcp relay all-subnets
 {%     endif %}
 {%     for ip_helper in vlan_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
@@ -99,6 +116,39 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_igmp_version is arista.avd.defined %}
    ip igmp version {{ vlan_interface.ip_igmp_version }}
 {%     endif %}
+{%     if vlan_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
+{%         set host_proxy_cli =  "ip igmp host-proxy" %}
+   {{ host_proxy_cli }}
+{%         if vlan_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
+{%             for proxy_group in vlan_interface.ip_igmp_host_proxy.groups %}
+{%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
+{%                     if proxy_group.include is arista.avd.defined %}
+{%                         for include_source in proxy_group.include %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ include_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                     if proxy_group.exclude is arista.avd.defined %}
+{%                         for exclude_source in proxy_group.exclude %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                 elif proxy_group.group is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if vlan_interface.ip_igmp_host_proxy.access_lists is arista.avd.defined %}
+{%             for access_list in vlan_interface.ip_igmp_host_proxy.access_lists %}
+   {{ host_proxy_cli }} access-list {{ access_list.name }}
+{%             endfor %}
+{%         endif %}
+{%         if vlan_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}
+   {{ host_proxy_cli }} report-interval {{ vlan_interface.ip_igmp_host_proxy.report_interval }}
+{%         endif %}
+{%         if vlan_interface.ip_igmp_host_proxy.version is arista.avd.defined %}
+   {{ host_proxy_cli }} version {{ vlan_interface.ip_igmp_host_proxy.version }}
+{%         endif %}
+{%     endif %}
 {%     if vlan_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
@@ -119,6 +169,9 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
+{%     endif %}
+{%     if vlan_interface.ipv6_nd_other_config_flag is arista.avd.defined(true) %}
+   ipv6 nd other-config-flag
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_prefixes is arista.avd.defined %}
 {%         for prefix in vlan_interface.ipv6_nd_prefixes %}
@@ -249,6 +302,9 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.isis_enable is arista.avd.defined %}
    isis enable {{ vlan_interface.isis_enable }}
+{%     endif %}
+{%     if vlan_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
 {%     endif %}
 {%     if vlan_interface.isis_passive is arista.avd.defined(true) %}
    isis passive

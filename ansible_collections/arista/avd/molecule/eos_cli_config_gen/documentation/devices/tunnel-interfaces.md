@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [Tunnel Interfaces](#tunnel-interfaces)
+  - [Tunnel Interfaces](#tunnel-interfaces-1)
 
 ## Management
 
@@ -41,12 +41,12 @@ interface Management1
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
-| --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
-| Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False | Ethernet42 | 6.6.6.6 | True |
-| Tunnel2 | test ipv6 only | default | - | True | Ethernet42 | dead:beef::1 | False |
-| Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
+| Interface | Description | VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Tunnel1 | test ipv4 only | Tunnel-VRF | 1500 | False | - | ipsec | Ethernet42 | 6.6.6.6 | True | - |
+| Tunnel2 | test ipv6 only | default | - | True | NAT-PROFILE-NO-VRF-2 | gre | Ethernet42 | dead:beef::1 | False | Profile-2 |
+| Tunnel3 | test dual stack | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
+| Tunnel4 | test no tcp_mss | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | Ethernet42 | 1.1.1.1 | - | - |
 
 ##### IPv4
 
@@ -77,6 +77,7 @@ interface Tunnel1
    ip access-group test-in in
    ip access-group test-out out
    tcp mss ceiling ipv4 666 ingress
+   tunnel mode ipsec
    tunnel source interface Ethernet42
    tunnel destination 6.6.6.6
    tunnel path-mtu-discovery
@@ -93,8 +94,11 @@ interface Tunnel2
    ipv6 access-group test-in in
    ipv6 access-group test-out out
    tcp mss ceiling ipv6 666 egress
+   ip nat service-profile NAT-PROFILE-NO-VRF-2
+   tunnel mode gre
    tunnel source interface Ethernet42
    tunnel destination dead:beef::1
+   tunnel ipsec profile Profile-2
 !
 interface Tunnel3
    description test dual stack
@@ -103,8 +107,10 @@ interface Tunnel3
    ipv6 enable
    ipv6 address beef::64/64
    tcp mss ceiling ipv4 666 ipv6 666
+   tunnel mode ipsec
    tunnel source interface Ethernet42
    tunnel destination 1.1.1.1
+   tunnel ipsec profile Profile-3
 !
 interface Tunnel4
    description test no tcp_mss
@@ -112,6 +118,7 @@ interface Tunnel4
    ip address 64.64.64.64/24
    ipv6 enable
    ipv6 address beef::64/64
+   ip nat service-profile NAT-PROFILE-NO-VRF-1
    tunnel source interface Ethernet42
    tunnel destination 1.1.1.1
 ```

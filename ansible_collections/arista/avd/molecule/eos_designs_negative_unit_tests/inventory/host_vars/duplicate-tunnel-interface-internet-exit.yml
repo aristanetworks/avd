@@ -1,0 +1,148 @@
+---
+wan_mode: cv-pathfinder
+# Disabling underlay for tests
+underlay_routing_protocol: none
+
+type: wan_router
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_route_servers:
+  - hostname: cv-pathfinder-pathfinder
+    vtep_ip: 10.10.10.10
+    path_groups:
+      - name: INET
+        interfaces:
+          - name: Ethernet1
+            public_ip: 192.168.55.55
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: duplicate-tunnel-interface-internet-exit
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 666
+          dhcp_accept_default_route: true
+          ip_address: dhcp
+          peer_ip: 10.254.254.1
+          cv_pathfinder_internet_exit:
+            policies:
+              - name: ZSCALER-EXIT-POLICY-1
+                tunnel_interface_numbers: 100-102
+        - name: Ethernet2
+          wan_carrier: ATT
+          wan_circuit_id: 777
+          dhcp_accept_default_route: true
+          ip_address: dhcp
+          peer_ip: 10.254.254.5
+          cv_pathfinder_internet_exit:
+            policies:
+              - name: ZSCALER-EXIT-POLICY-2
+                # Clashing IDs with Ethernet1
+                tunnel_interface_numbers: 100-102
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+  policies:
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: TEST
+          path_groups:
+            - names: [ INET ]
+          internet_exit:
+            policy: ZSCALER-EXIT-POLICY-1
+          id: 42
+        - application_profile: TEST2
+          path_groups:
+            - names: [ INET ]
+          internet_exit:
+            policy: ZSCALER-EXIT-POLICY-2
+          id: 43
+
+application_classification:
+  application_profiles:
+    - name: TEST
+    - name: TEST2
+
+cv_pathfinder_internet_exit_policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    type: zscaler
+    zscaler:
+      domain_name: test.local
+      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
+  - name: ZSCALER-EXIT-POLICY-2
+    fallback_to_system_default: False
+    type: zscaler
+    zscaler:
+      domain_name: test.local
+      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
+
+zscaler_endpoints:
+  cloud_name: zscalerbeta
+  device_location:
+    city: Santa Clara, CA
+    country: United States
+  primary:
+    city: Fremont, CA
+    datacenter: FMT1
+    country: United States
+    latitude: 37
+    longitude: -121
+    ip_address: 10.37.121.1 # Not the correct address
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Tunnel interface for Internet Exit policy.
+  {'name': 'Tunnel100', 'description': 'Internet Exit ZSCALER-EXIT-POLICY-2 PRI', 'ipsec_profile': 'IE-ZSCALER-EXIT-POLICY-2-PROFILE', 'source_interface': 'Ethernet2'}
+  conflicts with
+  {'name': 'Tunnel100', 'description': 'Internet Exit ZSCALER-EXIT-POLICY-1 PRI', 'ipsec_profile': 'IE-ZSCALER-EXIT-POLICY-1-PROFILE', 'source_interface': 'Ethernet1'}.

@@ -181,10 +181,10 @@ vlan internal order ascending range 1006 1199
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | CORE | 50 | point-to-point | level-2 | True | md5 |
-| Ethernet3 | - | CORE | 50 | point-to-point | level-2 | True | md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
+| Ethernet3 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -456,7 +456,7 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.255.2.1 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 10.255.2.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
-| 10.1.1.10 | 65124 | C2_VRF1 | - | standard | 100 | - | - | - | - | - |
+| 10.1.1.10 | 65124 | C2_VRF1 | - | standard | 100 | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -469,9 +469,9 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VRFs
 

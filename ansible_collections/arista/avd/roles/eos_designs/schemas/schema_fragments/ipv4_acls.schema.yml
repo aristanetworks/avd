@@ -34,14 +34,14 @@ keys:
               source:
                 type: str
                 description: |-
-                  This field supports substitution of the fields "interface_ip" and "peer_ip".
+                  This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
                   "<ip>" without a mask means host.
                   Required except for remarks.
               destination:
                 type: str
                 description: |-
-                  This field supports substitution of the fields "interface_ip" and "peer_ip".
+                  This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
                   Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
                   "<ip>" without a mask means host.
                   Required except for remarks.

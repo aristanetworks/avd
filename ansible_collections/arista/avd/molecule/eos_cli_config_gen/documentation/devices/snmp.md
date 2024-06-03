@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [SNMP](#snmp)
+  - [SNMP](#snmp-1)
 
 ## Management
 

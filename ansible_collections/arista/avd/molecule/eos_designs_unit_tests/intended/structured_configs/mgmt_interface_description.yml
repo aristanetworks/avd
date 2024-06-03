@@ -3,7 +3,7 @@ is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 1.1.1.1
+  gateway: 1.1.1.254
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -18,8 +18,8 @@ management_interfaces:
   description: Custom Management Interface Description
   shutdown: false
   vrf: MGMT
-  ip_address: 1.1.1.2
-  gateway: 1.1.1.1
+  ip_address: 1.1.1.2/24
+  gateway: 1.1.1.254
   type: oob
 management_api_http:
   enable_vrfs:

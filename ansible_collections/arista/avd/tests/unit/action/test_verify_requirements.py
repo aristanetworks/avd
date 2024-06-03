@@ -106,7 +106,7 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
     Running with n_reqs requirements
 
     TODO - check the results
-         - not testing for wrongly formated requirements
+         - not testing for wrongly formatted requirements
     """
     result = {}
     requirements = [f"test-dep>={requirement_version}" for _ in range(n_reqs)]  # pylint: disable=disallowed-name
@@ -122,13 +122,13 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
     "mocked_running_version, deprecated_version, expected_return",
     [
         pytest.param(
-            "2.14",
+            "2.16",
             False,
             True,
             id="valid ansible version",
         ),
         pytest.param(
-            "2.11.0",
+            "2.14.0",
             True,
             False,
             id="invalid ansible version",
@@ -199,7 +199,7 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
     Running with n_reqs requirements
 
     TODO - check the results
-         - not testing for wrongly formated collection.yml file
+         - not testing for wrongly formatted collection.yml file
     """
     result = {}
 

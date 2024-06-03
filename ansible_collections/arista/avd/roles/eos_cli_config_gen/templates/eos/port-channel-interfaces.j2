@@ -64,7 +64,7 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
    switchport
 {%     endif %}
-{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("access") %}
+{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode in ["access", "dot1q-tunnel"] %}
    switchport access vlan {{ port_channel_interface.vlans }}
 {%     endif %}
 {%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
@@ -165,6 +165,39 @@ interface {{ port_channel_interface.name }}
    no snmp trap link-change
 {%     elif port_channel_interface.snmp_trap_link_change is arista.avd.defined(true) %}
    snmp trap link-change
+{%     endif %}
+{%     if port_channel_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
+{%         set host_proxy_cli =  "ip igmp host-proxy" %}
+   {{ host_proxy_cli }}
+{%         if port_channel_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
+{%             for proxy_group in port_channel_interface.ip_igmp_host_proxy.groups %}
+{%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
+{%                     if proxy_group.include is arista.avd.defined %}
+{%                         for include_source in proxy_group.include %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ include_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                     if proxy_group.exclude is arista.avd.defined %}
+{%                         for exclude_source in proxy_group.exclude %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                 elif proxy_group.group is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if port_channel_interface.ip_igmp_host_proxy.access_lists is arista.avd.defined %}
+{%             for access_list in port_channel_interface.ip_igmp_host_proxy.access_lists %}
+   {{ host_proxy_cli }} access-list {{ access_list.name }}
+{%             endfor %}
+{%         endif %}
+{%         if port_channel_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}
+   {{ host_proxy_cli }} report-interval {{ port_channel_interface.ip_igmp_host_proxy.report_interval }}
+{%         endif %}
+{%         if port_channel_interface.ip_igmp_host_proxy.version is arista.avd.defined %}
+   {{ host_proxy_cli }} version {{ port_channel_interface.ip_igmp_host_proxy.version }}
+{%         endif %}
 {%     endif %}
 {%     if port_channel_interface.l2_mtu is arista.avd.defined %}
    l2 mtu {{ port_channel_interface.l2_mtu }}
@@ -331,6 +364,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
+{%     if port_channel_interface.ptp.mpass is arista.avd.defined(true) %}
+   ptp mpass
+{%     endif %}
 {%     if port_channel_interface.ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ port_channel_interface.ptp.announce.interval }}
 {%     endif %}
@@ -415,6 +451,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.isis_enable is arista.avd.defined %}
    isis enable {{ port_channel_interface.isis_enable }}
+{%     endif %}
+{%     if port_channel_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
 {%     endif %}
 {%     if port_channel_interface.isis_circuit_type is arista.avd.defined %}
    isis circuit-type {{ port_channel_interface.isis_circuit_type }}

@@ -1,0 +1,59 @@
+---
+- name: Converge - Configuration deployment with CVP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    cv_server: www.cv-staging.corp.arista.io
+    # token: "{{ lookup('file', playbook_dir ~ '/token-aawg-ci.tok')}}"
+    token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
+    configuration_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+    structured_config_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+
+  tasks:
+    - name: Generate random string
+      ansible.builtin.set_fact:
+        r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+      run_once: true
+
+    - name: Set facts
+      ansible.builtin.set_fact:
+        ws_name: avd-static-studio-cleanup-{{ r }}
+        ws_description: sample description
+        ws_req_state: submitted
+        ws_force: true
+        cc_name: cc_avd_studio-cleanup-{{ r }}
+        cc_requested_state: completed
+        cc_description: sample description
+      run_once: true
+
+    - name: Clean up and provision CVP with with base AVD configuration
+      run_once: true
+      delegate_to: localhost
+      arista.avd.cv_workflow:
+        configuration_dir: "{{ configuration_dir }}"
+        structured_config_dir: "{{ structured_config_dir }}"
+        # structured_config_suffix: "yml"
+        # device_list: "{{ ansible_play_hosts }}"
+        device_list: ["ci-s1-leaf1", "ci-s1-leaf2", "ci-s1-leaf3", "ci-s1-leaf4", "ci-s1-spine1", "ci-s1-spine2"]
+        strict_tags: true
+        # skip_strict_devices: false
+        # configlet_name_template: "AVD-${hostname}"
+        cv_servers: [ '{{ cv_server }}' ]
+        cv_token: '{{ token }}'
+        # cv_verify_certs: True
+        workspace:
+          name: '{{ ws_name }}'
+          description: '{{ ws_description }}'
+          id: '{{ ws_name }}'
+          requested_state: '{{ ws_req_state }}'
+          force: '{{ ws_force }}'
+        change_control:
+          name: '{{ cc_name }}'
+          description: '{{ cc_description }}'
+          requested_state: '{{ cc_requested_state }}'
+        # timeouts:
+        #   workspace_build_timeout: 300.0
+        #   change_control_creation_timeout: 300.0
+        return_details: true
+      register: cvp_results

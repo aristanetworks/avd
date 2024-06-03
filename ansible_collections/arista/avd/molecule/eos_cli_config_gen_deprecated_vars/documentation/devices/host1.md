@@ -12,6 +12,9 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [RADIUS Server](#radius-server)
+- [Management Security](#management-security)
+  - [Management Security Summary](#management-security-summary)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -270,6 +273,22 @@ radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
 ```
 
+## Management Security
+
+### Management Security Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Entropy source | hardware |
+
+### Management Security Device Configuration
+
+```eos
+!
+management security
+   entropy source hardware
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -431,10 +450,10 @@ vmtracer session session_2
 
 #### Event Handler Summary
 
-| Handler | Action Type | Action | Trigger |
-| ------- | ----------- | ------ | ------- |
-| CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config |
-| evpn-blacklist-recovery | bash | <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging |
+| Handler | Actions | Trigger | Trigger Config |
+| ------- | ------- | ------- | -------------- |
+| CONFIG_VERSIONING | bash <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
+| evpn-blacklist-recovery | bash <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging | - |
 
 #### Event Handler Device Configuration
 
@@ -785,10 +804,10 @@ interface Loopback1
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
-| --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
-| Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
+| Interface | Description | VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Tunnel3 | test dual stack | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
+| Tunnel4 | test no tcp_mss | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
 
 ##### IPv4
 
@@ -849,11 +868,11 @@ interface Tunnel4
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
-| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - |
-| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - |
-| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - | - |
+| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - | - |
+| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -1068,9 +1087,9 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
-| 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
-| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
-| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
+| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
+| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
@@ -1098,29 +1117,29 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 192.168.255.4 | True | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 192.168.255.4 | True | - | - | - | - |
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| EVPN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 2001:cafe:192:168::4 | True | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 2001:cafe:192:168::4 | True | - | - | - | - |
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| EVPN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VLAN Aware Bundles
 
@@ -1648,17 +1667,17 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | True | - |
 
 ##### Profile A2
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | - | - |
 
 ###### Keys
 
@@ -1778,11 +1797,9 @@ class-map type pbr match-any CM_PBR_INCLUDE
 
 ##### PM_REPLICATION_LD
 
-| class | Set | Value |
-| ----- | --- | ----- |
-| CM_REPLICATION_LD | dscp | af11 |
-| CM_REPLICATION_LD | traffic_class | 2 |
-| CM_REPLICATION_LD | drop_precedence | 1 |
+| Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
+| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| CM_REPLICATION_LD | - | af11 | 2 | 1 | - |
 
 #### QOS Policy Maps Device Configuration
 

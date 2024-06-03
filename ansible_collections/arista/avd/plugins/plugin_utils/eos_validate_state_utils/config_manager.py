@@ -19,7 +19,7 @@ class ConfigManager:
 
     This class is used to manage the structured configuration of the devices and to generate variables for the eos_validate_state tests.
 
-    It should be initialized per device and the instance should be passed to the AvdTestBase classe.
+    It should be initialized per device and the instance should be passed to the AvdTestBase class.
     """
 
     def __init__(self, device_name: str, hostvars: Mapping) -> None:

@@ -1,0 +1,74 @@
+---
+name: "CV integration testing"
+
+# on: pull_request
+on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+jobs:
+  # ----------------------------------------------- #
+  # CV INTEGRATION MOLECULE TEST FOR CV_WORKFLOW    #
+  # ----------------------------------------------- #
+  molecule_cv_workflow:
+    name: Run molecule test for new cvp integration
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'cv_workflow'
+        ansible_version:
+          - 'ansible-core<2.18.0 --upgrade'
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+      - name: Run molecule action
+        env:
+          CVAAS_AAWG_CI: ${{ secrets.CVAAS_AAWG_CI }}
+        uses: arista-netdevops-community/action-molecule-avd@v1.7
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: .github/requirements-ci.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
+          ansible: ${{ matrix.ansible_version }}
+          check_git: true
+          check_git_enforced: true
+
+  # ------------------------------------------- #
+  # CV INTEGRATION MOLECULE TEST FOR CV_DEPLOY  #
+  # ------------------------------------------- #
+  molecule_cv_deploy:
+    name: Run molecule test for new cvp integration
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'cv_deploy'
+        ansible_version:
+          - 'ansible-core<2.18.0 --upgrade'
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+      - name: Run molecule action
+        env:
+          CVAAS_AAWG_CI: ${{ secrets.CVAAS_AAWG_CI }}
+        uses: arista-netdevops-community/action-molecule-avd@v1.7
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: .github/requirements-ci.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
+          ansible: ${{ matrix.ansible_version }}
+          check_git: true
+          check_git_enforced: true

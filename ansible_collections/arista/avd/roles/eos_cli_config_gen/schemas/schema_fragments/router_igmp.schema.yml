@@ -13,9 +13,9 @@ keys:
       host_proxy_match_mroute:
         type: str
         description: |
-          Specify conditions for sending IGMP joins for host-proxy
-          'iif' will enable igmp host-proxy to work in iif aware
-          'all' will enable igmp host-proxy to work in iif unaware mode (EOS default)
+          Specify conditions for sending IGMP joins for host-proxy.
+          'iif' will enable igmp host-proxy to work in iif aware.
+          'all' will enable igmp host-proxy to work in iif unaware mode (EOS default).
         valid_values:
           - all
           - iif
@@ -34,13 +34,13 @@ keys:
           keys:
             name:
               type: str
-              description: VRF name
+              description: VRF name.
             host_proxy_match_mroute:
               type: str
               description: |
-                Specify conditions for sending IGMP joins for host-proxy
-                'iif' will enable igmp host-proxy to work in iif aware
-                'all' will enable igmp host-proxy to work in iif unaware mode (EOS default)
+                Specify conditions for sending IGMP joins for host-proxy.
+                'iif' will enable igmp host-proxy to work in iif aware.
+                'all' will enable igmp host-proxy to work in iif unaware mode (EOS default).
               valid_values:
                 - all
                 - iif

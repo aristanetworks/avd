@@ -37,6 +37,9 @@ router_bgp:
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
   address_family_evpn:
+    bgp_additional_paths:
+      send:
+        limit: 10
     next_hop_mpls_resolution_ribs:
       - rib_type: "tunnel-rib-colored"
       - rib_type: "tunnel-rib"
@@ -48,6 +51,12 @@ router_bgp:
     neighbors:
       - ip_address: 192.168.255.3
         activate: true
+      - ip_address: 192.168.255.4
+        rcf_in: Address_Family_EVPN_In()
+        rcf_out: Address_Family_EVPN_Out()
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
+    layer_2_fec_in_place_update:
+      enabled: true
+      timeout: 100

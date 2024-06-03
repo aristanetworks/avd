@@ -360,6 +360,39 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.dhcp_server_ipv6 is arista.avd.defined(true) %}
    dhcp server ipv6
 {%     endif %}
+{%     if ethernet_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
+{%         set host_proxy_cli =  "ip igmp host-proxy" %}
+   {{ host_proxy_cli }}
+{%         if ethernet_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
+{%             for proxy_group in ethernet_interface.ip_igmp_host_proxy.groups %}
+{%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
+{%                     if proxy_group.include is arista.avd.defined %}
+{%                         for include_source in proxy_group.include %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} include {{ include_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                     if proxy_group.exclude is arista.avd.defined %}
+{%                         for exclude_source in proxy_group.exclude %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
+{%                         endfor %}
+{%                     endif %}
+{%                 elif proxy_group.group is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.access_lists is arista.avd.defined %}
+{%             for access_list in ethernet_interface.ip_igmp_host_proxy.access_lists %}
+   {{ host_proxy_cli }} access-list {{ access_list.name }}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}
+   {{ host_proxy_cli }} report-interval {{ ethernet_interface.ip_igmp_host_proxy.report_interval }}
+{%         endif %}
+{%         if ethernet_interface.ip_igmp_host_proxy.version is arista.avd.defined %}
+   {{ host_proxy_cli }} version {{ ethernet_interface.ip_igmp_host_proxy.version }}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
@@ -405,6 +438,19 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ destination_cli }}
 {%     endfor %}
+{%     if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ ethernet_interface.tcp_mss_ceiling.ipv4_segment_size %}
+{%         endif %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6_segment_size %}
+{%         endif %}
+{%         if ethernet_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ ethernet_interface.tcp_mss_ceiling.direction %}
+{%         endif %}
+   {{ tcp_mss_ceiling_cli }}
+{%     endif %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
    channel-group {{ ethernet_interface.channel_group.id }} mode {{ ethernet_interface.channel_group.mode }}
 {%         if ethernet_interface.lacp_timer.mode is arista.avd.defined %}
@@ -675,6 +721,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.isis_enable is arista.avd.defined %}
    isis enable {{ ethernet_interface.isis_enable }}
 {%     endif %}
+{%     if ethernet_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
+{%     endif %}
 {%     if ethernet_interface.isis_circuit_type is arista.avd.defined %}
    isis circuit-type {{ ethernet_interface.isis_circuit_type }}
 {%     endif %}
@@ -743,6 +792,13 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
+{%     endif %}
+{%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
+{%         set frequency_cli = 'transceiver frequency ' ~ "%.3f" | format(ethernet_interface.transceiver.frequency | float) %}
+{%         if ethernet_interface.transceiver.frequency_unit is arista.avd.defined %}
+{%             set frequency_cli = frequency_cli ~ ' ' ~ ethernet_interface.transceiver.frequency_unit %}
+{%         endif %}
+   {{ frequency_cli }}
 {%     endif %}
 {%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.natural_sort %}
 {%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}

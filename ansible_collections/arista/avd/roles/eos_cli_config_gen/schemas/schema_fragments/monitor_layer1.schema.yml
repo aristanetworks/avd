@@ -13,7 +13,7 @@ keys:
       enabled:
         type: bool
         required: true
-        description: "Enable monitor layer1"
+        description: "Enable monitor layer1."
       logging_mac_fault:
         type: bool
         description: "Enable MAC fault logging."
@@ -27,3 +27,6 @@ keys:
           communication:
             type: bool
             description: "Enable transceiver SMBus fail and reset logging."
+          enabled:
+            type: bool
+            description: Some platforms support only the `logging transceiver` command. `enabled` key configures this command.

@@ -84,16 +84,18 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         for policy in self._filtered_wan_policies:
             pathfinder_policy = {"name": policy["name"], "matches": []}
             for match in get(policy, "matches", default=[]):
-                # popping id and load_balance_policy
+                # popping id, load_balance_and internet-exit policy
                 pathfinder_match = match.copy()
                 pathfinder_match.pop("id")
                 pathfinder_match.pop("load_balance_policy")
+                pathfinder_match.pop("internet_exit_policy_name")
                 pathfinder_policy["matches"].append(pathfinder_match)
 
             if (default_match := policy.get("default_match")) is not None:
                 pathfinder_match = default_match.copy()
                 pathfinder_match.pop("id")
                 pathfinder_match.pop("load_balance_policy")
+                pathfinder_match.pop("internet_exit_policy_name")
                 pathfinder_policy["matches"].append(pathfinder_match)
 
             policies.append(strip_empties_from_dict(pathfinder_policy))
@@ -103,24 +105,40 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
     def _cv_pathfinder_profiles(self) -> list:
         """
         Return a list of router adaptive-virtual-topology profiles for this router.
-
-        TODO: add internet exit once supported
         """
         profiles = []
         for policy in self._filtered_wan_policies:
             for match in policy.get("matches", []):
+                profile = {
+                    "name": match["avt_profile"],
+                    "load_balance_policy": match["load_balance_policy"]["name"],
+                }
+                if (internet_exit_policy_name := match["internet_exit_policy_name"]) is not None and get_item(
+                    self._filtered_internet_exit_policies, "name", internet_exit_policy_name
+                ) is not None:
+                    profile["internet_exit_policy"] = internet_exit_policy_name
+
                 append_if_not_duplicate(
                     list_of_dicts=profiles,
                     primary_key="name",
-                    new_dict={"name": match["avt_profile"], "load_balance_policy": match["load_balance_policy"]["name"]},
+                    new_dict=profile,
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],
                 )
             if (default_match := policy.get("default_match")) is not None:
+                profile = {
+                    "name": default_match["avt_profile"],
+                    "load_balance_policy": default_match["load_balance_policy"]["name"],
+                }
+                if (internet_exit_policy_name := default_match["internet_exit_policy_name"]) is not None and get_item(
+                    self._filtered_internet_exit_policies, "name", internet_exit_policy_name
+                ) is not None:
+                    profile["internet_exit_policy"] = internet_exit_policy_name
+
                 append_if_not_duplicate(
                     list_of_dicts=profiles,
                     primary_key="name",
-                    new_dict={"name": default_match["avt_profile"], "load_balance_policy": default_match["load_balance_policy"]["name"]},
+                    new_dict=profile,
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],
                 )

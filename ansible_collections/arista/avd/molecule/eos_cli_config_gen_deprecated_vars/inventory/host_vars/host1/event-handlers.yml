@@ -4,10 +4,12 @@
 # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 event_handlers:
   evpn-blacklist-recovery:
+    # Testing "action_type" and "action" key which are deprecared and will be removed in 5.0.0
     action_type: bash
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
     trigger: on-logging
+    # Testing "regex" key which is deprecared and will be removed in 5.0.0
     regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
   CONFIG_VERSIONING:

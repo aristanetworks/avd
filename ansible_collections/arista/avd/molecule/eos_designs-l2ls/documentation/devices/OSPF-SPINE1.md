@@ -124,6 +124,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 100 | SVI_100 | - |
+| 4092 | INBAND_MGMT | - |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -132,6 +133,9 @@ vlan internal order ascending range 1006 1199
 !
 vlan 100
    name SVI_100
+!
+vlan 4092
+   name INBAND_MGMT
 !
 vlan 4094
    name MLAG_PEER
@@ -148,8 +152,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | OSPF-LEAF1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | OSPF-LEAF2_Ethernet1 | *trunk | *100 | *- | *- | 2 |
+| Ethernet1 | OSPF-LEAF1_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
+| Ethernet2 | OSPF-LEAF2_Ethernet1 | *trunk | *100,4092 | *- | *- | 2 |
 | Ethernet3 | MLAG_PEER_OSPF-SPINE2_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_OSPF-SPINE2_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 
@@ -203,8 +207,8 @@ interface Ethernet5
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | OSPF-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
-| Port-Channel2 | OSPF-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
+| Port-Channel1 | OSPF-LEAF1_Po1 | switched | trunk | 100,4092 | - | - | - | - | 1 | - |
+| Port-Channel2 | OSPF-LEAF2_Po1 | switched | trunk | 100,4092 | - | - | - | - | 2 | - |
 | Port-Channel3 | MLAG_PEER_OSPF-SPINE2_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -215,7 +219,7 @@ interface Port-Channel1
    description OSPF-LEAF1_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 100
+   switchport trunk allowed vlan 100,4092
    switchport mode trunk
    mlag 1
 !
@@ -223,7 +227,7 @@ interface Port-Channel2
    description OSPF-LEAF2_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 100
+   switchport trunk allowed vlan 100,4092
    switchport mode trunk
    mlag 2
 !
@@ -270,6 +274,7 @@ interface Loopback0
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 | SVI_100 | default | - | False |
+| Vlan4092 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG_PEER | default | 9214 | False |
 
 ##### IPv4
@@ -277,6 +282,7 @@ interface Loopback0
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan100 |  default  |  -  |  10.0.100.1/24  |  -  |  -  |  -  |  -  |
+| Vlan4092 |  default  |  172.23.254.2/24  |  -  |  172.23.254.1  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  192.168.254.0/31  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
@@ -287,6 +293,14 @@ interface Vlan100
    description SVI_100
    no shutdown
    ip address virtual 10.0.100.1/24
+!
+interface Vlan4092
+   description Inband Management
+   no shutdown
+   mtu 1500
+   ip address 172.23.254.2/24
+   ip attached-host route export 19
+   ip virtual-router address 172.23.254.1
 !
 interface Vlan4094
    description MLAG_PEER

@@ -86,8 +86,8 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 172.20.110.3/31
   no_autostate: true
+  ip_address: 172.20.110.3/31
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false

@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.defaults.uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet to use to connect to uplink switches. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
@@ -25,6 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.defaults.uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.defaults.uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.defaults.max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.defaults.max_parallel_uplinks") | Integer |  |  |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_bfd</samp>](## "<node_type_keys.key>.defaults.uplink_bfd") | Boolean |  | `False` |  | Enable bfd on uplink interfaces. |
@@ -41,6 +42,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_pools</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 pool from which subnets will be allocated for links to downlink switches. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
@@ -49,7 +54,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet to use to connect to uplink switches. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
@@ -57,6 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].max_parallel_uplinks") | Integer |  |  |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_bfd</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_bfd") | Boolean |  | `False` |  | Enable bfd on uplink interfaces. |
@@ -77,7 +83,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet to use to connect to uplink switches. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
@@ -85,6 +91,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.node_groups.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.node_groups.[].max_parallel_uplinks") | Integer |  |  |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_bfd</samp>](## "<node_type_keys.key>.node_groups.[].uplink_bfd") | Boolean |  | `False` |  | Enable bfd on uplink interfaces. |
@@ -99,6 +106,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.node_groups.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_pools</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 pool from which subnets will be allocated for links to downlink switches. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
@@ -107,7 +118,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.nodes.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet to use to connect to uplink switches. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: Ethernet[\d/]+ |  |
@@ -115,6 +126,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.nodes.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.nodes.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.nodes.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.nodes.[].max_parallel_uplinks") | Integer |  |  |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_bfd</samp>](## "<node_type_keys.key>.nodes.[].uplink_bfd") | Boolean |  | `False` |  | Enable bfd on uplink interfaces. |
@@ -160,7 +172,7 @@
         # IPv4 subnet to use to connect to uplink switches.
         uplink_ipv4_pool: <str>
 
-        # Local uplink interfaces
+        # Local uplink interfaces.
         # Each list item supports range syntax that can be expanded into a list of interfaces.
         # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
         # Please note that default_interfaces are not defined by default, you should define these yourself.
@@ -185,6 +197,9 @@
         # Set point-to-Point interface speed for the uplink switch interface only.
         # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         uplink_switch_interface_speed: <str>
+
+        # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+        uplink_mtu: <int; 68-65535>
 
         # Maximum number of uplink switches.
         # Changing this value may change IP Addressing on uplinks.
@@ -259,6 +274,16 @@
               # The Node Name is used as "hostname".
             - name: <str; required; unique>
 
+              # IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
+              downlink_pools:
+
+                  # IPv4 pool from which subnets will be allocated for links to downlink switches.
+                - ipv4_pool: <str>
+
+                  # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
+                  downlink_interfaces:
+                    - <str>
+
               # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
               # Useful in EVPN multhoming designs.
               link_tracking:
@@ -283,7 +308,7 @@
               # IPv4 subnet to use to connect to uplink switches.
               uplink_ipv4_pool: <str>
 
-              # Local uplink interfaces
+              # Local uplink interfaces.
               # Each list item supports range syntax that can be expanded into a list of interfaces.
               # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
               # Please note that default_interfaces are not defined by default, you should define these yourself.
@@ -308,6 +333,9 @@
               # Set point-to-Point interface speed for the uplink switch interface only.
               # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
               uplink_switch_interface_speed: <str>
+
+              # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+              uplink_mtu: <int; 68-65535>
 
               # Maximum number of uplink switches.
               # Changing this value may change IP Addressing on uplinks.
@@ -393,7 +421,7 @@
           # IPv4 subnet to use to connect to uplink switches.
           uplink_ipv4_pool: <str>
 
-          # Local uplink interfaces
+          # Local uplink interfaces.
           # Each list item supports range syntax that can be expanded into a list of interfaces.
           # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
           # Please note that default_interfaces are not defined by default, you should define these yourself.
@@ -418,6 +446,9 @@
           # Set point-to-Point interface speed for the uplink switch interface only.
           # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
           uplink_switch_interface_speed: <str>
+
+          # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+          uplink_mtu: <int; 68-65535>
 
           # Maximum number of uplink switches.
           # Changing this value may change IP Addressing on uplinks.
@@ -485,6 +516,16 @@
           # The Node Name is used as "hostname".
         - name: <str; required; unique>
 
+          # IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
+          downlink_pools:
+
+              # IPv4 pool from which subnets will be allocated for links to downlink switches.
+            - ipv4_pool: <str>
+
+              # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
+              downlink_interfaces:
+                - <str>
+
           # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
           # Useful in EVPN multhoming designs.
           link_tracking:
@@ -509,7 +550,7 @@
           # IPv4 subnet to use to connect to uplink switches.
           uplink_ipv4_pool: <str>
 
-          # Local uplink interfaces
+          # Local uplink interfaces.
           # Each list item supports range syntax that can be expanded into a list of interfaces.
           # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
           # Please note that default_interfaces are not defined by default, you should define these yourself.
@@ -534,6 +575,9 @@
           # Set point-to-Point interface speed for the uplink switch interface only.
           # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
           uplink_switch_interface_speed: <str>
+
+          # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+          uplink_mtu: <int; 68-65535>
 
           # Maximum number of uplink switches.
           # Changing this value may change IP Addressing on uplinks.

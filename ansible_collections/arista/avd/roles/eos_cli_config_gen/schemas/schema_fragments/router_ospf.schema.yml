@@ -22,17 +22,17 @@ keys:
               type: int
               convert_types:
                 - str
-              description: OSPF Process ID
+              description: OSPF Process ID.
             vrf:
               type: str
-              description: VRF Name for OSPF Process
+              description: VRF Name for OSPF Process.
               convert_types:
                 - int
             passive_interface_default:
               type: bool
             router_id:
               type: str
-              description: IPv4 Address
+              description: IPv4 Address.
             distance:
               type: dict
               keys:
@@ -76,7 +76,7 @@ keys:
               type: list
               items:
                 type: str
-                description: Interface Name
+                description: Interface Name.
             distribute_list_in:
               type: dict
               keys:
@@ -96,7 +96,7 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Min interval in msecs between accepting the same LSA
+                      description: Min interval in msecs between accepting the same LSA.
                       min: 0
                       max: 600000
                     tx_delay:
@@ -106,21 +106,21 @@ keys:
                           type: int
                           convert_types:
                             - str
-                          description: Delay to generate first occurrence of LSA in msecs
+                          description: Delay to generate first occurrence of LSA in msecs.
                           min: 0
                           max: 600000
                         min:
                           type: int
                           convert_types:
                             - str
-                          description: Min delay between originating the same LSA in msecs
+                          description: Min delay between originating the same LSA in msecs.
                           min: 1
                           max: 600000
                         max:
                           type: int
                           convert_types:
                             - str
-                          description: 1-600000 Maximum delay between originating the same LSA in msec
+                          description: 1-600000 Maximum delay between originating the same LSA in msec.
                           min: 1
                           max: 600000
                 spf_delay:
@@ -130,21 +130,21 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Initial SPF schedule delay in msecs
+                      description: Initial SPF schedule delay in msecs.
                       min: 0
                       max: 600000
                     min:
                       type: int
                       convert_types:
                         - str
-                      description: Min Hold time between two SPFs in msecs
+                      description: Min Hold time between two SPFs in msecs.
                       min: 0
                       max: 65535000
                     max:
                       type: int
                       convert_types:
                         - str
-                      description: Max wait time between two SPFs in msecs
+                      description: Max wait time between two SPFs in msecs.
                       min: 0
                       max: 65535000
             default_information_originate:
@@ -156,7 +156,7 @@ keys:
                   type: int
                   convert_types:
                     - str
-                  description: Metric for default route
+                  description: Metric for default route.
                   min: 1
                   max: 65535
                 metric_type:
@@ -164,7 +164,7 @@ keys:
                   convert_types:
                     - str
                   valid_values: [1, 2]
-                  description: OSPF metric type for default route
+                  description: OSPF metric type for default route.
             summary_addresses:
               type: list
               primary_key: prefix
@@ -173,7 +173,7 @@ keys:
                 keys:
                   prefix:
                     type: str
-                    description: Summary Prefix Address
+                    description: Summary Prefix Address.
                   tag:
                     type: int
                   attribute_map:
@@ -188,7 +188,7 @@ keys:
                   keys:
                     route_map:
                       type: str
-                      description: Route Map Name
+                      description: Route Map Name.
                     include_leaked:
                       type: bool
                 connected:
@@ -196,7 +196,7 @@ keys:
                   keys:
                     route_map:
                       type: str
-                      description: Route Map Name
+                      description: Route Map Name.
                     include_leaked:
                       type: bool
                 bgp:
@@ -204,14 +204,14 @@ keys:
                   keys:
                     route_map:
                       type: str
-                      description: Route Map Name
+                      description: Route Map Name.
                     include_leaked:
                       type: bool
             auto_cost_reference_bandwidth:
               type: int
               convert_types:
                 - str
-              description: Bandwidth in mbps
+              description: Bandwidth in mbps.
             areas:
               type: list
               primary_key: id
@@ -231,10 +231,10 @@ keys:
                         type: list
                         items:
                           type: str
-                          description: IPv4 Prefix
+                          description: IPv4 Prefix.
                       prefix_list:
                         type: str
-                        description: Prefix-List Name
+                        description: Prefix-List Name.
                   type:
                     type: str
                     valid_values: ["normal", "stub", "nssa"]
@@ -250,7 +250,7 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        description: Metric for default route
+                        description: Metric for default route.
                         min: 1
                         max: 65535
                       metric_type:
@@ -258,7 +258,7 @@ keys:
                         convert_types:
                           - str
                         valid_values: [1, 2]
-                        description: OSPF metric type for default route
+                        description: OSPF metric type for default route.
             maximum_paths:
               type: int
               convert_types:
@@ -287,7 +287,7 @@ keys:
                       convert_types:
                         - int
                       description: |
-                        "wait-for-bgp" or Integer 5-86400
+                        "wait-for-bgp" or Integer 5-86400.
                         Example: "wait-for-bgp" Or "222"
                     summary_lsa:
                       type: dict
@@ -302,4 +302,4 @@ keys:
               type: bool
             eos_cli:
               type: str
-              description: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration
+              description: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration.

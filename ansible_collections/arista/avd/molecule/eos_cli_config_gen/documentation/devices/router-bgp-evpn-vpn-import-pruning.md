@@ -85,8 +85,8 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | True | - | - |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | True | - | - | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -117,7 +117,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static<br>isis |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
 
 #### Router BGP Device Configuration
@@ -169,6 +169,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp additional-paths send ecmp limit 20
       host-flap detection window 10 threshold 1
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
@@ -181,11 +182,15 @@ router bgp 65101
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
       route-target import evpn 11:11
+      route-target import evpn rcf RT_IMPORT_AF_RCF()
       route-target export evpn 11:11
+      route-target export evpn rcf RT_EXPORT_AF_RCF()
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 rib-in pre-policy retain
       redistribute connected
+      redistribute isis route-map Router_BGP_Isis
+      redistribute static rcf Router_BGP_Static()
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12

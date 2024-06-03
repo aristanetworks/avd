@@ -43,6 +43,7 @@ router_bgp:
       interval: 1000
       min_rx: 1000
       multiplier: 10
+    route_reflector_client: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -184,20 +185,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -424,6 +411,20 @@ vxlan_interface:
         vni: 42
       - name: IT
         vni: 14
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:
@@ -522,6 +523,8 @@ metadata:
         sites:
         - name: Site511
           id: 511
+          location:
+            address: Miami
     vrfs:
     - name: default
       vni: 1

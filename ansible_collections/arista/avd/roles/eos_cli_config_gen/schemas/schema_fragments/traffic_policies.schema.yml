@@ -28,12 +28,12 @@ keys:
               keys:
                 name:
                   type: str
-                  description: IPv4 Prefix Field Set Name
+                  description: IPv4 Prefix Field Set Name.
                 prefixes:
                   type: list
                   items:
                     type: str
-                    description: IPv4 Prefix
+                    description: IPv4 Prefix.
           ipv6:
             type: list
             secondary_key: prefixes
@@ -45,12 +45,12 @@ keys:
               keys:
                 name:
                   type: str
-                  description: IPv6 Prefix Field Set Name
+                  description: IPv6 Prefix Field Set Name.
                 prefixes:
                   type: list
                   items:
                     type: str
-                    description: IPv6 Prefix
+                    description: IPv6 Prefix.
           ports:
             type: list
             primary_key: name
@@ -62,7 +62,7 @@ keys:
               keys:
                 name:
                   type: str
-                  description: L4 Port Field Set Name
+                  description: L4 Port Field Set Name.
                 port_range:
                   type: str
                   description: "Example: '10,20,80,440-450'"
@@ -76,7 +76,7 @@ keys:
           keys:
             name:
               type: str
-              description: Traffic Policy Name
+              description: Traffic Policy Name.
             matches:
               type: list
               primary_key: name
@@ -87,7 +87,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Traffic Policy Item
+                    description: Traffic Policy Item.
                   type:
                     type: str
                     valid_values:
@@ -100,10 +100,10 @@ keys:
                         type: list
                         items:
                           type: str
-                          description: IP address or prefix
+                          description: IP address or prefix.
                       prefix_lists:
                         type: list
-                        description: Field-set prefix lists
+                        description: Field-set prefix lists.
                         items:
                           type: str
                   destination:
@@ -113,24 +113,24 @@ keys:
                         type: list
                         items:
                           type: str
-                          description: IP address or prefix
+                          description: IP address or prefix.
                       prefix_lists:
                         type: list
-                        description: Field-set prefix lists
+                        description: Field-set prefix lists.
                         items:
                           type: str
                   ttl:
                     type: str
-                    description: TTL range
+                    description: TTL range.
                   fragment:
                     type: dict
                     description: |
                       The 'fragment' command is not supported when 'source port'
-                      or 'destination port' command is configured
+                      or 'destination port' command is configured.
                     keys:
                       offset:
                         type: str
-                        description: Fragment offset range
+                        description: Fragment offset range.
                   protocols:
                     type: list
                     primary_key: protocol
@@ -143,16 +143,16 @@ keys:
                           type: str
                         src_port:
                           type: str
-                          description: Port range
+                          description: Port range.
                         dst_port:
                           type: str
-                          description: Port range
+                          description: Port range.
                         src_field:
                           type: str
-                          description: L4 port range field set
+                          description: L4 port range field set.
                         dst_field:
                           type: str
-                          description: L4 port range field set
+                          description: L4 port range field set.
                         flags:
                           type: list
                           items:
@@ -173,15 +173,15 @@ keys:
                         type: int
                         convert_types:
                           - str
-                        description: Traffic class ID
+                        description: Traffic class ID.
                       count:
                         type: str
-                        description: Counter name
+                        description: Counter name.
                       drop:
                         type: bool
                       log:
                         type: bool
-                        description: Only supported when action is set to drop
+                        description: Only supported when action is set to drop.
             default_actions:
               type: dict
               keys:
@@ -196,15 +196,15 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Traffic class ID
+                      description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name
+                      description: Counter name.
                     drop:
                       type: bool
                     log:
                       type: bool
-                      description: Only supported when action is set to drop
+                      description: Only supported when action is set to drop.
                 ipv6:
                   type: dict
                   keys:
@@ -216,12 +216,12 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Traffic class ID
+                      description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name
+                      description: Counter name.
                     drop:
                       type: bool
                     log:
                       type: bool
-                      description: Only supported when action is set to drop
+                      description: Only supported when action is set to drop.

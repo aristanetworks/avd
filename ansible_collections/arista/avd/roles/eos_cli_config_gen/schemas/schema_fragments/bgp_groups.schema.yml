@@ -16,7 +16,7 @@ keys:
       keys:
         name:
           type: str
-          description: Group Name
+          description: Group Name.
         vrf:
           type: str
           convert_types:
@@ -29,4 +29,4 @@ keys:
           type: list
           items:
             type: str
-            description: Profile Name
+            description: Profile Name.

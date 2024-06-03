@@ -1,0 +1,84 @@
+// Copyright (c) 2024 Arista Networks, Inc.  All rights reserved.
+// Use of this source code is governed by the Apache License 2.0
+// that can be found in the LICENSE file.
+
+syntax = "proto3";
+
+package arista.swg.v1;
+
+option go_package = "arista/resources/arista/swg.v1;swg";
+
+import "google/protobuf/wrappers.proto";
+import "fmp/extensions.proto";
+import "fmp/inet.proto";
+
+// ServiceName represents the name of the secure web gateway service
+enum ServiceName {
+    // SERVICE_NAME_UNSPECIFIED indicates service name is unknown
+    SERVICE_NAME_UNSPECIFIED = 0;
+    // SERVICE_NAME_ZSCALER indicates service name as "zscaler"
+    SERVICE_NAME_ZSCALER = 1;
+}
+
+// SwgKey identifies a device and a secure web gateway service
+message SwgKey {
+    option (fmp.model_key) = true;
+    // device_id is id of a device
+    google.protobuf.StringValue device_id = 1;
+    // service_name is the name of the secure web gateway service.
+    ServiceName service_name = 2;
+}
+
+// Location represents a device's or an endpoint's location
+message Location {
+    // city is the city where a device or endpoint is located
+    google.protobuf.StringValue city = 1;
+    // region is the region where device or endpoint is located
+    google.protobuf.StringValue region = 2;
+    // country is the country where a device or endpoint is located
+    google.protobuf.StringValue country = 3;
+    // latitude is the latitude of a device's or an endpoint's location
+    google.protobuf.FloatValue latitude = 4;
+    // longitude is the longitude of a device's or an endpoint's location
+    google.protobuf.FloatValue longitude = 5;
+}
+
+// VpnEndpoint represents the secure web gateway endpoint
+message VpnEndpoint {
+    // ip_address is the IP address of a SWG endpoint
+    fmp.IPAddress ip_address = 1;
+    // datacenter of a SWG endpoint
+    google.protobuf.StringValue datacenter = 2;
+    // endpoint_location represents the location of a SWG endpoint
+    Location endpoint_location = 3;
+}
+
+// VpnEndpoints represents a collection of SWG endpoints
+message VpnEndpoints {
+    // values is a map of vpn endpoints.
+    // Valid keys are "primary", "secondary" and "tertiary"
+    map<string, VpnEndpoint> values = 1;
+}
+
+// EndpointStatus represents the status of a SWG endpoint
+message EndpointStatus {
+    option (fmp.model) = "ro";
+    // key represents a device and a SWG service
+    SwgKey key = 1;
+    // vpn_endpoints represents a collection of SWG endpoints
+    VpnEndpoints vpn_endpoints = 2;
+    // cloud_name represents the cloud name assigned to the user
+    // by the SWG administrator
+    google.protobuf.StringValue cloud_name = 3;
+    // device_location is the location of the device
+    Location device_location = 4;
+}
+
+// EndpointConfig represents the configuration of a device endpoint
+message EndpointConfig {
+    option (fmp.model) = "rw";
+    // key represents a device and a SWG service
+    SwgKey key = 1;
+    // address is the physical address of a device
+    google.protobuf.StringValue address = 2;
+}
