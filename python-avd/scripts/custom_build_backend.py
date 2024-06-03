@@ -3,10 +3,18 @@
 # that can be found in the LICENSE file.
 from pathlib import Path
 from subprocess import Popen
+from typing import TYPE_CHECKING
 
 from setuptools import build_meta as _orig
-from setuptools.build_meta import *  # noqa: F401,F403 # pylint:disable=wildcard-import,unused-wildcard-import
 from yaml import safe_load
+
+if not TYPE_CHECKING:
+
+    def __getattr__(name):
+        """
+        Workaround to avoid 'from setuptools.build_meta import *'
+        """
+        return locals().get(name, getattr(_orig, name))
 
 
 def _translate_version(version: str, pyavd_prerelease: str) -> str:

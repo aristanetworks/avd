@@ -49,14 +49,14 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: '100'
+  vlans: 100,4092
   mlag: 1
 - name: Port-Channel2
   description: L2ONLY-LEAF2_Po1
   type: switched
   shutdown: false
   mode: trunk
-  vlans: '100'
+  vlans: 100,4092
   mlag: 2
 ethernet_interfaces:
 - name: Ethernet3

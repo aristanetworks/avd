@@ -106,6 +106,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 110 | SVI_110 | - |
+| 4092 | INBAND_MGMT | - |
 
 ### VLANs Device Configuration
 
@@ -113,6 +114,9 @@ vlan internal order ascending range 1006 1199
 !
 vlan 110
    name SVI_110
+!
+vlan 4092
+   name INBAND_MGMT
 ```
 
 ## Interfaces
@@ -125,7 +129,7 @@ vlan 110
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | ISIS-LEAF1_Ethernet1 | *trunk | *110 | *- | *- | 1 |
+| Ethernet1 | ISIS-LEAF1_Ethernet1 | *trunk | *110,4092 | *- | *- | 1 |
 | Ethernet10 |  Endpoint | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -155,7 +159,7 @@ interface Ethernet10
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | ISIS-LEAF1_Po1 | switched | trunk | 110 | - | - | - | - | - | - |
+| Port-Channel1 | ISIS-LEAF1_Po1 | switched | trunk | 110,4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -165,7 +169,7 @@ interface Port-Channel1
    description ISIS-LEAF1_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110
+   switchport trunk allowed vlan 110,4092
    switchport mode trunk
 ```
 
@@ -210,12 +214,14 @@ interface Loopback0
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan110 | SVI_110 | default | - | False |
+| Vlan4092 | Inband Management | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan110 |  default  |  -  |  10.0.110.1/24  |  -  |  -  |  -  |  -  |
+| Vlan4092 |  default  |  172.23.254.2/24  |  -  |  172.23.254.1  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
@@ -225,6 +231,14 @@ interface Vlan110
    description SVI_110
    no shutdown
    ip address virtual 10.0.110.1/24
+!
+interface Vlan4092
+   description Inband Management
+   no shutdown
+   mtu 1500
+   ip address 172.23.254.2/24
+   ip attached-host route export 19
+   ip virtual-router address 172.23.254.1
 ```
 
 ## Routing
