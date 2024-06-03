@@ -28,7 +28,18 @@
 | {{ patch.name }} | {{ patch_panel_patch.enabled }} | {{ patch_panel_patch.connector_a_type }} | {{ patch_panel_patch.connector_a_endpoint }} | {{ patch_panel_patch.connector_b_type }} | {{ patch_panel_patch.connector_b_endpoint }} |
 {%         endif %}
 {%     endfor %}
+{%     if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined %}
 
+Patch Panel Connector Interface Recovery Review Delay Min: {{ patch_panel.connector.interface.recovery.review_delay.min }}
+{%     endif %}
+{%     if patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
+
+Patch Panel Connector Interface Recovery Review Delay Max: {{ patch_panel.connector.interface.recovery.review_delay.max }}
+{%     endif %}
+{%     if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable  is arista.avd.defined(true) %}
+
+Patch Panel Connector Interface Path BGP VPWS Remote Failure Errdisable is enabled.
+{%     endif %}
 ### Patch Panel Device Configuration
 
 ```eos

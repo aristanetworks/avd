@@ -7,6 +7,27 @@
 {% if patch_panel is arista.avd.defined %}
 !
 patch panel
+{%     if patch_panel.connector is arista.avd.defined %}
+{%         set pp_connector_cli = "connector " %}
+{%         if patch_panel.connector.interface is arista.avd.defined %}
+{%             set pp_connector_cli = pp_connector_cli ~ "interface " %}
+{%             if patch_panel.connector.interface.recovery is arista.avd.defined %}
+{%                 set pp_connector_cli_recovery = pp_connector_cli ~ "recovery " %}
+{%                 if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined and patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
+{%                     set pp_connector_cli_recovery = pp_connector_cli_recovery ~ "review delay " ~ patch_panel.connector.interface.recovery.review_delay.min ~ " " ~ patch_panel.connector.interface.recovery.review_delay.max %}
+   {{ pp_connector_cli_recovery }}
+{%                 endif %}
+{%             endif %}
+{%             if patch_panel.connector.interface.patch is arista.avd.defined %}
+{%                 set pp_connector_cli_patch = pp_connector_cli ~ "patch " %}
+{%                 if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable is arista.avd.defined(true) %}
+{%                     set pp_connector_cli_patch = pp_connector_cli_patch ~ "bgp vpws remote-failure errdisable" %}
+   {{ pp_connector_cli_patch }}
+{%                 endif %}
+{%             endif %}
+{%         endif %}
+   !
+{%     endif %}
 {%     for patch in patch_panel.patches | arista.avd.default([]) %}
 {%         if patch.name is arista.avd.defined %}
    patch {{ patch.name }}

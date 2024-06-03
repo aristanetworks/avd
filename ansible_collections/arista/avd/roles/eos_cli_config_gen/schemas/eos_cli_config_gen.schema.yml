@@ -7737,6 +7737,37 @@ keys:
   patch_panel:
     type: dict
     keys:
+      connector:
+        type: dict
+        keys:
+          interface:
+            type: dict
+            keys:
+              patch:
+                type: dict
+                keys:
+                  bgp_vpws_remote_failure_errdisable:
+                    type: bool
+              recovery:
+                type: dict
+                keys:
+                  review_delay:
+                    type: dict
+                    keys:
+                      min:
+                        type: int
+                        required: true
+                        min: 10
+                        convert_types:
+                        - str
+                        description: Minimum delay (10-600).
+                      max:
+                        type: int
+                        required: true
+                        min: 15
+                        convert_types:
+                        - str
+                        description: Maximum delay (15-900).
       patches:
         type: list
         primary_key: name
