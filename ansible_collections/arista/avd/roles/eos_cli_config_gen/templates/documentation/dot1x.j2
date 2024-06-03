@@ -62,7 +62,7 @@
 | Captive-portal enabled | {{ dot1x.captive_portal.enabled }} |
 {%             endif %}
 {%             if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
-| Access-list IPv4 | {{ dot1x.captive_portal.access_list_ipv4 }} |
+| IPv4 Access-list | {{ dot1x.captive_portal.access_list_ipv4 }} |
 {%             endif %}
 {%             if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
 | Start limit | Infinite |
