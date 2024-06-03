@@ -13,15 +13,15 @@ event-handler {{ handler.name }}
                   and handler.trigger_on_maintenance.operation is arista.avd.defined
                   and handler.trigger_on_maintenance.action is arista.avd.defined %}
 {%                 set on_maintenance_cli = [] %}
-{%                 for maintenance_option in ["bgp_peer", "interface", "unit"] %}
-{%                     if handler.trigger_on_maintenance[maintenance_option] is arista.avd.defined %}
-{%                         if maintenance_option == "bgp_peer" %}
+{%                 for trigger in ["bgp_peer", "interface", "unit"] %}
+{%                     if handler.trigger_on_maintenance[trigger] is arista.avd.defined %}
+{%                         if trigger == "bgp_peer" %}
 {%                             do on_maintenance_cli.append("bgp " ~ handler.trigger_on_maintenance.bgp_peer) %}
 {%                             if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
 {%                                 do on_maintenance_cli.append("vrf " ~ handler.trigger_on_maintenance.vrf) %}
 {%                             endif %}
 {%                         else %}
-{%                             do on_maintenance_cli.append(maintenance_option ~ " " ~ handler.trigger_on_maintenance[maintenance_option]) %}
+{%                             do on_maintenance_cli.append(trigger ~ " " ~ handler.trigger_on_maintenance[trigger]) %}
 {%                         endif %}
 {%                     endif %}
 {%                 endfor %}
