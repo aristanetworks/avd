@@ -75,7 +75,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_in.include") | List, items: String |  |  |  | Include route map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_in.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_out") | Dictionary |  |  |  | Missing policy outbound direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy action options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy action options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.include") | List, items: String |  |  |  | Include route map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_bandwidth</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].link_bandwidth") | Dictionary |  |  |  |  |
@@ -192,7 +192,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_in.include") | List, items: String |  |  |  | Include route map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_in.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_out") | Dictionary |  |  |  | Missing policy outbound direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy action options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> | Missing policy action options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.include") | List, items: String |  |  |  | Include route map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy_af_all.direction_out.include.[]") | String |  |  | Valid Values:<br>- <code>community-list</code><br>- <code>prefix-list</code><br>- <code>sub-route-map</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_bandwidth</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].link_bandwidth") | Dictionary |  |  |  |  |
@@ -377,7 +377,7 @@
               direction_out:
 
                 # Missing policy action options.
-                action: <str; "deny" | "deny-in-out" | "permit">
+                action: <str; "deny" | "deny-in-out" | "permit"; required>
 
                 # Include route map references in missing policy decision.
                 include:
@@ -661,7 +661,7 @@
                   direction_out:
 
                     # Missing policy action options.
-                    action: <str; "deny" | "deny-in-out" | "permit">
+                    action: <str; "deny" | "deny-in-out" | "permit"; required>
 
                     # Include route map references in missing policy decision.
                     include:

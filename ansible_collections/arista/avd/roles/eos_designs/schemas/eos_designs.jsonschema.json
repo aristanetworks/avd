@@ -868,6 +868,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -1325,6 +1328,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -1782,6 +1788,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -2239,6 +2248,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -2696,6 +2708,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -3153,6 +3168,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -3610,6 +3628,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -4120,6 +4141,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -4622,6 +4646,9 @@
                           "title": "Include"
                         }
                       },
+                      "required": [
+                        "action"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -35892,6 +35919,9 @@
                                   "title": "Include"
                                 }
                               },
+                              "required": [
+                                "action"
+                              ],
                               "additionalProperties": false,
                               "patternProperties": {
                                 "^_.+$": {}
@@ -36289,6 +36319,9 @@
                                   "title": "Include"
                                 }
                               },
+                              "required": [
+                                "action"
+                              ],
                               "additionalProperties": false,
                               "patternProperties": {
                                 "^_.+$": {}
