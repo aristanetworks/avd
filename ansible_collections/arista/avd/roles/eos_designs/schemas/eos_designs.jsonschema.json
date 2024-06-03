@@ -30127,6 +30127,76 @@
               "patch_panel": {
                 "type": "object",
                 "properties": {
+                  "connector": {
+                    "type": "object",
+                    "properties": {
+                      "interface": {
+                        "type": "object",
+                        "properties": {
+                          "patch": {
+                            "type": "object",
+                            "properties": {
+                              "bgp_vpws_remote_failure_errdisable": {
+                                "type": "boolean",
+                                "title": "BGP Vpws Remote Failure Errdisable"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Patch"
+                          },
+                          "recovery": {
+                            "type": "object",
+                            "properties": {
+                              "review_delay": {
+                                "type": "object",
+                                "properties": {
+                                  "min": {
+                                    "type": "integer",
+                                    "minimum": 10,
+                                    "description": "Minimum delay (10-600).",
+                                    "title": "Min"
+                                  },
+                                  "max": {
+                                    "type": "integer",
+                                    "minimum": 15,
+                                    "description": "Maximum delay (15-900).",
+                                    "title": "Max"
+                                  }
+                                },
+                                "required": [
+                                  "min",
+                                  "max"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Review Delay"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Recovery"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Interface"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Connector"
+                  },
                   "patches": {
                     "type": "array",
                     "items": {
