@@ -39,6 +39,13 @@
 
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
+| L2LS_BGP | leaf | BGP-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_BGP | leaf | BGP-LEAF2 | 172.23.254.5/24 | Vlan4092 |
+| L2LS_ISIS | leaf | ISIS-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_L2ONLY | leaf | L2ONLY-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_L2ONLY | leaf | L2ONLY-LEAF2 | 172.23.254.5/24 | Vlan4092 |
+| L2LS_OSPF | leaf | OSPF-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_OSPF | leaf | OSPF-LEAF2 | 172.23.254.5/24 | Vlan4092 |
 
 ## Fabric Topology
 
