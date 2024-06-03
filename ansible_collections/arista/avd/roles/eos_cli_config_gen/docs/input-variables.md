@@ -955,6 +955,12 @@ roles/eos_cli_config_gen/docs/tables/vrfs.md
 roles/eos_cli_config_gen/docs/tables/ip-security.md
 --8<--
 
+### Router segment-security
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-segment-security.md
+--8<--
+
 ## Switching
 
 ### MLAG configuration
