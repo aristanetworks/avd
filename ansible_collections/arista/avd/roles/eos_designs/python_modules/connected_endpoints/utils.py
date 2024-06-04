@@ -14,7 +14,7 @@ try:
 except ImportError as e:
     default = None
     PYAVD_IMPORT_EXCEPTION = e
-    
+
 from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
 from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils

@@ -14,7 +14,7 @@ try:
 except ImportError as e:
     default = None
     PYAVD_IMPORT_EXCEPTION = e
-    
+
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get

@@ -12,7 +12,7 @@ try:
 except ImportError as e:
     default = None
     PYAVD_IMPORT_EXCEPTION = e
-    
+
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdConversionWarning, AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 

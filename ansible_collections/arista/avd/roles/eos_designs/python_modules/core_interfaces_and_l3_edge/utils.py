@@ -16,7 +16,7 @@ try:
 except ImportError as e:
     default = None
     PYAVD_IMPORT_EXCEPTION = e
-    
+
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge

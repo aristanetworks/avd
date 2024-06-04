@@ -13,7 +13,7 @@ try:
 except ImportError as e:
     default = None
     PYAVD_IMPORT_EXCEPTION = e
-    
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
