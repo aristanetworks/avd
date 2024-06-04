@@ -166,6 +166,7 @@ class CvPathfinderMixin:
                             "jitter": lb_policy.get("jitter"),
                             "latency": lb_policy.get("latency"),
                             "lossrate": float(lb_policy["loss_rate"]) if "loss_rate" in lb_policy else None,
+                            "hop_count": "lowest" if lb_policy.get("lowest_hop_count") else None,
                         },
                         "description": "",  # TODO: Not sure we have this field anywhere
                         "id": profile["id"],

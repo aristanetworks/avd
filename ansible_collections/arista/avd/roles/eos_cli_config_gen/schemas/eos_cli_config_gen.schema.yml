@@ -7006,6 +7006,8 @@ keys:
                             type: str
                             convert_types:
                             - float
+                          hop_count:
+                            type: str
                       description:
                         type: str
                       id:
