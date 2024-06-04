@@ -6,7 +6,14 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+try:
+    from pyavd.j2filters.convert_dict import convert_dicts
+
+    PYAVD_IMPORT_EXCEPTION = None
+except ImportError as e:
+    default = None
+    PYAVD_IMPORT_EXCEPTION = e
+    
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError

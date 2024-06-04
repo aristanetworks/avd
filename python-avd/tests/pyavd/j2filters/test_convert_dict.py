@@ -6,7 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import FilterModule
-from pyavd.j2filters.default import convert_dicts
+from pyavd.j2filters.convert_dicts import convert_dicts
 
 nested_list_of_dict = {
     "TEST1": [{"type": "permit", "extcommunities": "65000:65000"}, {"type": "deny", "extcommunities": "65002:65002"}],
