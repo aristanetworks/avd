@@ -53,7 +53,6 @@ class Templar:
 
     def import_filters_and_tests(self) -> None:
         # pylint: disable=import-outside-toplevel
-        from .vendor.j2.filter.convert_dicts import convert_dicts
         from .vendor.j2.filter.decrypt import decrypt
         from .vendor.j2.filter.encrypt import encrypt
         from .vendor.j2.filter.hide_passwords import hide_passwords
