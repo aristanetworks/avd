@@ -479,13 +479,13 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     """Default value"""
 
     # TODO: Change pattern to KEY_PATTERN once we have removed all upper case keys from the schema
-    keys: dict[constr(pattern=KEY_PATTERN_WITH_UPPERCASE), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
+    keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.
     `keyname` must use snake_case.
     `schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema.
     """
-    dynamic_keys: dict[constr(pattern=DYNAMIC_KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None  # type: ignore
+    dynamic_keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.
     `variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.
@@ -501,7 +501,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     """Schema name used when exporting to JSON schema"""
     field_id: str | None = Field(None, alias="$id")
     """Schema ID used when exporting to JSON schema"""
-    field_defs: dict[constr(pattern=KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")  # type: ignore
+    field_defs: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")
     """Storage for reusable schema fragments"""
 
     # Type of schema docs generators to use for this schema field.
