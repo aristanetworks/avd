@@ -95,3 +95,16 @@ keys:
                       valid_values:
                         - bypass
                         - "bypass unauthorized"
+            traffic_unprotected:
+              type: dict
+              keys:
+                action:
+                  type: str
+                  required: true
+                  description: Allow/drop the transmit/receive of unprotected traffic.
+                  valid_values:
+                    - "allow"
+                    - "drop"
+                allow_active_sak:
+                  type: bool
+                  description: Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.
