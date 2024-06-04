@@ -32,7 +32,7 @@ class RouterBgpMixin(UtilsMixin):
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
-                raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as")
+                raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links.[].as or {self.data_model}.p2p_links_profiles.[].as")
 
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
