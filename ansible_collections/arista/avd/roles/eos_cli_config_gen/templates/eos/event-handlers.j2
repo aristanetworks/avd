@@ -55,7 +55,7 @@ event-handler {{ handler.name }}
 {%                 if handler.trigger_on_logging.regex is arista.avd.defined %}
       regex {{ handler.trigger_on_logging.regex }}
 {%                 endif %}
-{%             elif handler.trigger is arista.avd.defined("on-intf") %}
+{%             elif handler.trigger is arista.avd.defined("on-intf") and handler.trigger_on_intf.interface is arista.avd.defined %}
 {%                 set trigger = [] %}
 {%                 for intf_change in ['operstatus', 'ip', 'ipv6'] %}
 {%                     if handler.trigger_on_intf[intf_change] is arista.avd.defined(true) %}
