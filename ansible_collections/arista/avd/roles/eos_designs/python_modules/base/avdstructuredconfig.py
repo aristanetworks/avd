@@ -6,11 +6,11 @@ from __future__ import annotations
 from functools import cached_property
 
 try:
-    from pyavd.j2filters.convert_dict import convert_dicts
+    from pyavd.j2filters.convert_dicts import convert_dicts
 
     PYAVD_IMPORT_EXCEPTION = None
 except ImportError as e:
-    default = None
+    convert_dicts = None
     PYAVD_IMPORT_EXCEPTION = e
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort

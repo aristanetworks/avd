@@ -10,11 +10,11 @@ from ipaddress import ip_network
 from itertools import islice
 
 try:
-    from pyavd.j2filters.convert_dict import convert_dicts
+    from pyavd.j2filters.convert_dicts import convert_dicts
 
     PYAVD_IMPORT_EXCEPTION = None
 except ImportError as e:
-    default = None
+    convert_dicts = None
     PYAVD_IMPORT_EXCEPTION = e
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
