@@ -32,7 +32,7 @@ class RouterBgpMixin(UtilsMixin):
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
-                raise AristaAvdMissingVariableError("l3_edge.p2p_links.[].as")
+                raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links.[].as or {self.data_model}.p2p_links_profiles.[].as")
 
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
@@ -48,7 +48,7 @@ class RouterBgpMixin(UtilsMixin):
 
             # Regular BGP Neighbors
             if p2p_link["data"]["ip"] is None or p2p_link["data"]["peer_ip"] is None:
-                raise AristaAvdMissingVariableError("l3_edge.p2p_links.[].ip, .subnet or .ip_pool")
+                raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links.[].ip, .subnet or .ip_pool")
 
             neighbor["bfd"] = p2p_link.get("bfd")
             if p2p_link["data"]["bgp_as"] != self.shared_utils.bgp_as:
