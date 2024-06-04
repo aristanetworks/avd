@@ -479,7 +479,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     """Default value"""
 
     # TODO: Change pattern to KEY_PATTERN once we have removed all upper case keys from the schema
-    keys: dict[constr(pattern=KEY_PATTERN_WITH_UPPERCASE), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None  # type: ignore
+    keys: dict[constr(pattern=KEY_PATTERN_WITH_UPPERCASE), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.
     `keyname` must use snake_case.
