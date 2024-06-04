@@ -17,7 +17,7 @@ Patch Panel Connector Interface Recovery Review Delay Min: {{ patch_panel.connec
 
 Patch Panel Connector Interface Recovery Review Delay Max: {{ patch_panel.connector.interface.recovery.review_delay.max }}
 {%     endif %}
-{%     if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable  is arista.avd.defined(true) %}
+{%     if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable is arista.avd.defined(true) %}
 
 Patch Panel Connector Interface Path BGP VPWS Remote Failure Errdisable is enabled.
 {%     endif %}
