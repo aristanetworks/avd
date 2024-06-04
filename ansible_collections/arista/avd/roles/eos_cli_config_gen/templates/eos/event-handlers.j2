@@ -12,21 +12,19 @@ event-handler {{ handler.name }}
 {%             if handler.trigger is arista.avd.defined("on-maintenance")
                   and handler.trigger_on_maintenance.operation is arista.avd.defined
                   and handler.trigger_on_maintenance.action is arista.avd.defined %}
-{%                 set on_maintenance_cli = [] %}
-{%                 for trigger in ["bgp_peer", "interface", "unit"] %}
-{%                     if handler.trigger_on_maintenance[trigger] is arista.avd.defined %}
-{%                         if trigger == "bgp_peer" %}
-{%                             do on_maintenance_cli.append("bgp " ~ handler.trigger_on_maintenance.bgp_peer) %}
-{%                             if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
-{%                                 do on_maintenance_cli.append("vrf " ~ handler.trigger_on_maintenance.vrf) %}
-{%                             endif %}
-{%                         else %}
-{%                             do on_maintenance_cli.append(trigger ~ " " ~ handler.trigger_on_maintenance[trigger]) %}
-{%                         endif %}
+{%                 set on_maintenance_cli = "" %}
+{%                 if handler.trigger_on_maintenance.bgp_peer is arista.avd.defined %}
+{%                     set on_maintenance_cli = on_maintenance_cli ~ "bgp " ~ handler.trigger_on_maintenance.bgp_peer %}
+{%                     if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
+{%                         set on_maintenance_cli = on_maintenance_cli ~ " vrf " ~ handler.trigger_on_maintenance.vrf %}
 {%                     endif %}
-{%                 endfor %}
+{%                 elif handler.trigger_on_maintenance.interface is arista.avd.defined %}
+{%                     set on_maintenance_cli = on_maintenance_cli ~ "interface " ~ handler.trigger_on_maintenance.interface %}
+{%                 elif handler.trigger_on_maintenance.unit is arista.avd.defined %}
+{%                     set on_maintenance_cli = on_maintenance_cli ~ "unit " ~ handler.trigger_on_maintenance.unit %}
+{%                 endif %}
 {%                 if on_maintenance_cli %}
-{%                     set trigger_on_maintenance_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation ~ " " ~ on_maintenance_cli | join(" ") %}
+{%                     set trigger_on_maintenance_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation ~ " " ~ on_maintenance_cli %}
 {%                     if handler.trigger_on_maintenance.action is arista.avd.defined %}
 {%                         if handler.trigger_on_maintenance.action in ["after", "before"] and handler.trigger_on_maintenance.stage is arista.avd.defined %}
 {%                             set trigger_on_maintenance_cli = trigger_on_maintenance_cli ~ " " ~ handler.trigger_on_maintenance.action ~ " stage " ~ handler.trigger_on_maintenance.stage %}
@@ -55,20 +53,22 @@ event-handler {{ handler.name }}
 {%                 if handler.trigger_on_logging.regex is arista.avd.defined %}
       regex {{ handler.trigger_on_logging.regex }}
 {%                 endif %}
-{%             elif handler.trigger is arista.avd.defined("on-intf") and handler.trigger_on_intf.interface is arista.avd.defined %}
-{%                 set trigger = [] %}
-{%                 for intf_change in ['operstatus', 'ip', 'ipv6'] %}
-{%                     if handler.trigger_on_intf[intf_change] is arista.avd.defined(true) %}
-{%                         if intf_change == "ipv6" %}
-{%                             do trigger.append("ip6") %}
-{%                         else %}
-{%                             do trigger.append(intf_change) %}
+{%             elif handler.trigger is arista.avd.defined("on-intf") %}
+{%                 if handler.trigger_on_intf.interface is arista.avd.defined %}
+{%                     set trigger = [] %}
+{%                     for intf_change in ['operstatus', 'ip', 'ipv6'] %}
+{%                         if handler.trigger_on_intf[intf_change] is arista.avd.defined(true) %}
+{%                             if intf_change == "ipv6" %}
+{%                                 do trigger.append("ip6") %}
+{%                             else %}
+{%                                 do trigger.append(intf_change) %}
+{%                             endif %}
 {%                         endif %}
-{%                     endif %}
-{%                 endfor %}
-{%                 if trigger %}
-{%                     set trigger_on_intf_cli = "trigger on-intf " ~ handler.trigger_on_intf.interface ~ " " ~ trigger | join(" ") %}
+{%                     endfor %}
+{%                     if trigger %}
+{%                          set trigger_on_intf_cli = "trigger on-intf " ~ handler.trigger_on_intf.interface ~ " " ~ trigger | join(" ") %}
    {{ trigger_on_intf_cli }}
+{%                     endif %}
 {%                 endif %}
 {%             else %}
    trigger {{ handler.trigger }}
