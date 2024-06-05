@@ -19,16 +19,29 @@ class TestNaturalSortFilter:
             assert resp == item_to_convert.lower()
 
     @pytest.mark.parametrize(
-        "item_to_natural_sort, expected_output",
+        "item_to_natural_sort, sort_key, expected_output",
         [
-            (None, []),
-            ([], []),
-            ({}, []),
-            ("", []),
-            (["1,2,3,4", "11,2,3,4", "5.6.7.8"], ["1,2,3,4", "5.6.7.8", "11,2,3,4"]),
-            ({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, ["a1", "a2", "a10", "a11"]),
+            (None, None, []), # test with None 
+            ([], None, []), # test with blank list
+            ({}, "", []), # test with blank dict
+            ("", None, []), # test with blank string
+            (["1,2,3,4", "11,2,3,4", "5.6.7.8"], None, ["1,2,3,4", "5.6.7.8", "11,2,3,4"]), # test with list of integers
+            ({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, None, ["a1", "a2", "a10", "a11"]), # test with dict
+            (
+                [
+                    {"name": "ACL-10", "counters_per_entry": True},
+                    {"name": "ACL-01", "counters_per_entry": True},
+                    {"name": "ACL-05", "counters_per_entry": False},
+                ],
+                "name",
+                [
+                    {"name": "ACL-01", "counters_per_entry": True},
+                    {"name": "ACL-05", "counters_per_entry": False},
+                    {"name": "ACL-10", "counters_per_entry": True},
+                ], # test list of dict with "name" as sort_key
+            ),
         ],
     )
-    def test_natural_sort(self, item_to_natural_sort, expected_output):
-        resp = natural_sort(item_to_natural_sort)
+    def test_natural_sort(self, item_to_natural_sort, sort_key, expected_output):
+        resp = natural_sort(item_to_natural_sort, sort_key)
         assert resp == expected_output
