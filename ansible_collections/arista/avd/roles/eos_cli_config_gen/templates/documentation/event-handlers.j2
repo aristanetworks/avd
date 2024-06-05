@@ -39,24 +39,23 @@
 {%         if handler.trigger is arista.avd.defined("on-maintenance")
             and handler.trigger_on_maintenance.operation is arista.avd.defined
             and handler.trigger_on_maintenance.action is arista.avd.defined %}
-{%             set on_maintenance_cli = "" %}
+{%             set trigger_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
 {%             if handler.trigger_on_maintenance.bgp_peer is arista.avd.defined %}
-{%                 set on_maintenance_cli = on_maintenance_cli ~ "bgp " ~ handler.trigger_on_maintenance.bgp_peer %}
+{%                 set on_maintenance_cli = "bgp " ~ handler.trigger_on_maintenance.bgp_peer %}
 {%                 if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
 {%                     set on_maintenance_cli = on_maintenance_cli ~ " vrf " ~ handler.trigger_on_maintenance.vrf %}
 {%                 endif %}
 {%             elif handler.trigger_on_maintenance.interface is arista.avd.defined %}
-{%                 set on_maintenance_cli = on_maintenance_cli ~ "interface " ~ handler.trigger_on_maintenance.interface %}
+{%                 set on_maintenance_cli = "interface " ~ handler.trigger_on_maintenance.interface %}
 {%             elif handler.trigger_on_maintenance.unit is arista.avd.defined %}
-{%                 set on_maintenance_cli = on_maintenance_cli ~ "unit " ~ handler.trigger_on_maintenance.unit %}
+{%                 set on_maintenance_cli = "unit " ~ handler.trigger_on_maintenance.unit %}
 {%             endif %}
-{%             if on_maintenance_cli %}
-{%                 set trigger_config =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation ~ " " ~ on_maintenance_cli %}
+{%             if on_maintenance_cli is arista.avd.defined %}
 {%                 if handler.trigger_on_maintenance.action is arista.avd.defined %}
 {%                     if handler.trigger_on_maintenance.action in ["after", "before"] and handler.trigger_on_maintenance.stage is arista.avd.defined %}
-{%                         set trigger_config = trigger_config ~ " " ~ handler.trigger_on_maintenance.action ~ " stage " ~ handler.trigger_on_maintenance.stage %}
+{%                         set trigger_config = trigger_cli ~ " " ~ on_maintenance_cli ~ " " ~ handler.trigger_on_maintenance.action ~ " stage " ~ handler.trigger_on_maintenance.stage %}
 {%                     elif handler.trigger_on_maintenance.action in ["all", "begin", "end"] %}
-{%                         set trigger_config = trigger_config ~ " " ~ handler.trigger_on_maintenance.action %}
+{%                         set trigger_config = trigger_cli ~ " " ~ on_maintenance_cli ~ " " ~ handler.trigger_on_maintenance.action %}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}

@@ -43,6 +43,12 @@ event_handlers:
     trigger_on_maintenance:
       operation: enter
       action: all
+  - name: trigger-on-maintenance5
+    trigger: on-maintenance
+    trigger_on_maintenance:
+      operation: enter
+      action: before
+      bgp_peer: test
   - name: trigger-on-logging
     trigger: on-logging
     trigger_on_logging:

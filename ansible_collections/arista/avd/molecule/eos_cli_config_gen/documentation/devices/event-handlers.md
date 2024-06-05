@@ -57,6 +57,7 @@ interface Management1
 | trigger-on-maintenance2 | bash <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance exit unit unit1 before stage bgp |
 | trigger-on-maintenance3 | bash <code>echo "on-maintenance"</code> | on-maintenance | trigger on-maintenance enter bgp 10.0.0.2 vrf vrf1 all |
 | trigger-on-maintenance4 | - | on-maintenance | - |
+| trigger-on-maintenance5 | - | on-maintenance | - |
 | trigger-vm-tracer | bash <code>echo "vm-tracer vm"</code> | vm-tracer vm | - |
 
 #### Event Handler Device Configuration
@@ -123,6 +124,8 @@ event-handler trigger-on-maintenance3
    action bash echo "on-maintenance"
 !
 event-handler trigger-on-maintenance4
+!
+event-handler trigger-on-maintenance5
 !
 event-handler trigger-vm-tracer
    trigger vm-tracer vm
