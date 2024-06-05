@@ -7,6 +7,8 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ..._utils import get, get_item, merge
+from ..._errors import AristaAvdMissingVariableError
+from ..interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -63,3 +65,55 @@ class L3InterfacesMixin:
             l3_interfaces = [self.apply_l3_interfaces_profile(l3_interface) for l3_interface in l3_interfaces]
 
         return l3_interfaces
+
+    @cached_property
+    def l3_interfaces_bgp_neighbors(self: SharedUtils) -> list:
+        neighbors = []
+        for interface in self.l3_interfaces:
+            peer_ip = get(interface, "peer_ip")
+            bgp = get(interface, "bgp")
+            if not (peer_ip and bgp):
+                continue
+
+            peer_as = get(bgp, "peer_as")
+            if peer_as is None:
+                raise AristaAvdMissingVariableError(f"'l3_interfaces[{interface['name']}].bgp.peer_as' needs to be set to enable BGP.")
+
+            is_intf_wan = get(interface, "wan_carrier") is not None
+
+            prefix_list_in = get(bgp, "ipv4_prefix_list_in")
+            if prefix_list_in is None and is_intf_wan:
+                raise AristaAvdMissingVariableError(f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for l3_interfaces[{interface['name']}]")
+
+            description = interface.get("description")
+            if not description:
+                description = self.interface_descriptions.underlay_ethernet_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self,
+                        interface=interface["name"],
+                        peer=interface.get("peer"),
+                        peer_interface=interface.get("peer_interface"),
+                        wan_carrier=interface.get("wan_carrier"),
+                        wan_circuit_id=interface.get("wan_circuit_id"),
+                    )
+                )
+
+            neighbor = {
+                "ip_address": peer_ip,
+                "remote_as": peer_as,
+                "description": description,
+            }
+
+            neighbor["ipv4_prefix_list_in"] = prefix_list_in
+            neighbor["ipv4_prefix_list_out"] = get(bgp, "ipv4_prefix_list_out")
+            if is_intf_wan:
+                neighbor["set_no_advertise"] = True
+
+            if prefix_list_in:
+                # In route map is used only if there is a prefix list
+                neighbor["route_map_in"] = f"RM-BGP-{neighbor['ip_address']}-IN"
+            neighbor["route_map_out"] = f"RM-BGP-{neighbor['ip_address']}-OUT"
+
+            neighbors.append(neighbor)
+
+        return neighbors

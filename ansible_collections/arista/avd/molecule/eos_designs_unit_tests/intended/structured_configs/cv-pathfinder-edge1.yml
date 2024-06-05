@@ -44,6 +44,13 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
+  - ip_address: 172.29.0.13
+    remote_as: '64520'
+    route_map_in: RM-BGP-172.29.0.13-IN
+    route_map_out: RM-BGP-172.29.0.13-OUT
+  - ip_address: 172.28.0.14
+    remote_as: '64520'
+    route_map_out: RM-BGP-172.28.0.14-OUT
   - ip_address: 192.168.144.2
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder1
@@ -236,6 +243,18 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   ip_nat:
     service_profile: IE-DIRECT-NAT
+- name: Ethernet4
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  dhcp_client_accept_default_route: true
+- name: Ethernet5
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  dhcp_client_accept_default_route: true
 - name: Ethernet1/49
   type: routed
   peer_type: l3_interface
@@ -250,6 +269,16 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
+- name: PL2
+  sequence_numbers:
+  - sequence: 10
+    action: permit 5.0.0.0/0
+  - sequence: 20
+    action: deny 10.00.0.0/24
+- name: ALLOW-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 0.0.0.0/0
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -266,6 +295,28 @@ route_maps:
     description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.42.2:511 additive
+- name: RM-BGP-172.29.0.13-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL2
+- name: RM-BGP-172.29.0.13-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+  - sequence: 20
+    type: deny
+- name: RM-BGP-172.28.0.14-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL2
+  - sequence: 20
+    type: deny
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -977,6 +1028,14 @@ metadata:
         value: ATT
       - name: Circuit
         value: '404'
+    - interface: Ethernet4
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet5
+      tags:
+      - name: Type
+        value: lan
     - interface: Ethernet1/49
       tags:
       - name: Type

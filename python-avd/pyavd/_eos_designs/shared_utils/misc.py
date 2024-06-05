@@ -418,3 +418,7 @@ class MiscMixin:
             return value
 
         return field_value
+
+    @cached_property
+    def ipv4_prefix_list_catalog(self: SharedUtils) -> list:
+        return get(self.hostvars, "ipv4_prefix_list_catalog", default=[])

@@ -47,6 +47,16 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet1
+  - ip_address: 172.16.9.4
+    remote_as: '64520'
+    description: ATT_666_peer3_Ethernet42
+    route_map_in: RM-BGP-172.16.9.4-IN
+    route_map_out: RM-BGP-172.16.9.4-OUT
+  - ip_address: 172.16.5.4
+    remote_as: '64520'
+    description: Colt_10555
+    route_map_in: RM-BGP-172.16.5.4-IN
+    route_map_out: RM-BGP-172.16.5.4-OUT
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
@@ -254,6 +264,10 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
+- name: ALLOW-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 0.0.0.0/0
 - name: PL-STATIC-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -274,6 +288,34 @@ route_maps:
     description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.42.1:511 additive
+- name: RM-BGP-172.16.9.4-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+    set:
+    - community no-advertise additive
+- name: RM-BGP-172.16.9.4-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+- name: RM-BGP-172.16.5.4-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+    set:
+    - community no-advertise additive
+- name: RM-BGP-172.16.5.4-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+  - sequence: 20
+    type: deny
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
