@@ -25,4 +25,5 @@
   register: cvp_vars
 
 - name: "Execute upload with collection in version {{ cv_collection }}"
+  tags: [always]
   ansible.builtin.include_tasks: "cv_collection_{{ cv_collection }}.yml"
