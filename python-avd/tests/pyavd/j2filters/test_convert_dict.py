@@ -2,12 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 from pyavd.j2filters.convert_dicts import convert_dicts
-
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import FilterModule
 
 nested_list_of_dict = {
     "TEST1": [{"type": "permit", "extcommunities": "65000:65000"}, {"type": "deny", "extcommunities": "65002:65002"}],
@@ -17,9 +12,6 @@ nested_dict = {"TEST1": {"action": "permit 1000:1000"}, "TEST2": {"action": "per
 list = ["Test1", "Test2", "Test3"]
 list_of_dict = [{"type": "permit"}, {"extcommunities": "65000:65000"}]
 dict_with_string = {"dict": "test_string"}
-
-f = FilterModule()
-
 
 class TestConvertDicts:
     def test_convert_dicts_with_nested_dict_default(self):
@@ -109,8 +101,3 @@ class TestConvertDicts:
         # We convert a list-of-dict input if primary_key is found in element and secondary_key is set
         resp = convert_dicts(list_of_dict, "test", "id")
         assert resp == [{"test": "type", "id": "permit"}, {"test": "extcommunities", "id": "65000:65000"}]
-
-    def test_convert_dicts_filter(self):
-        resp = f.filters()
-        assert isinstance(resp, dict)
-        assert "convert_dicts" in resp.keys()
