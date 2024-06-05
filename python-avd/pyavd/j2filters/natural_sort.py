@@ -7,9 +7,10 @@ import re
 from jinja2.runtime import Undefined
 from jinja2.utils import Namespace
 
+
 def convert(text):
     return int(text) if text.isdigit() else text.lower()
-    
+
 
 def natural_sort(iterable, sort_key=None):
     if isinstance(iterable, Undefined) or iterable is None:

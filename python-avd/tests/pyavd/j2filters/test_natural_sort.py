@@ -29,6 +29,6 @@ class TestNaturalSortFilter:
             ({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, ["a1", "a2", "a10", "a11"]),
         ],
     )
-    def test_natural_sort(self, item_to_natural_sort , expected_output):
+    def test_natural_sort(self, item_to_natural_sort, expected_output):
         resp = natural_sort(item_to_natural_sort)
         assert resp == expected_output
