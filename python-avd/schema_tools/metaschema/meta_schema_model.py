@@ -24,7 +24,7 @@ Each variable in the schema is called a field, and for each type of field we hav
 - AvdSchemaList
 - AvdSchemaDict
 
-The alias "AvdSchemaField" is a union of of all the models above, and can be used as easy type hint for any field type.
+The alias "AvdSchemaField" is a union of all the models above, and can be used as an easy type hint for any field type.
 
 All the type-specific Pydantic models inherit the common base class "AvdSchemaBaseModel", and have local overrides
 as needed. For example, only "AvdSchemaList" and "AvdSchemaDict" need to parse child fields.
@@ -35,10 +35,6 @@ The overall schema is covered by the class "AristaAvdSchema" which inherits from
 
 KEY_PATTERN = r"^[a-z][a-z0-9_]*$"
 """Common pattern to match legal key strings"""
-DYNAMIC_KEY_PATTERN = r"^[a-z][a-z0-9_.]*$"
-"""Common pattern to match legal dynamic key strings"""
-KEY_PATTERN_WITH_UPPERCASE = r"^[a-zA-Z][a-zA-Z0-9_]*$"
-"""This is a temporary pattern allowing uppercase keys too"""
 
 
 class AvdSchemaBaseModel(BaseModel, ABC):
@@ -89,7 +85,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     display_name: str | None = Field(None, pattern=r"^[^\n]+$")
     """Free text display name for forms and documentation (single line)"""
     description: Annotated[str, constr(min_length=1)] | None = None
-    """Free text description for forms and documentation (multi line)"""
+    """Free text description for forms and documentation (multi-line)"""
     required: bool | None = None
     """Key is required"""
     deprecation: Deprecation | None = None
@@ -478,7 +474,6 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     default: dict[str, Any] | None = None
     """Default value"""
 
-    # TODO: Change pattern to KEY_PATTERN once we have removed all upper case keys from the schema
     keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.
