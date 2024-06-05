@@ -62,6 +62,14 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {"queue_monitor_length_notify": False, "poe": True},
     },
     {
+        "platforms": ["7010TX"],
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
+    },
+    {
         "platforms": ["7280R", "7280R2", "7020R"],
         "tcam_profile": "vxlan-routing",
         "lag_hardware_only": True,

@@ -273,6 +273,7 @@ def simple_7_encrypt(data: str, salt: int | None = None) -> str:
     Returns the encrypted password as a string.
     """
     if salt is None:
-        salt = random.randint(0, 15)
+        # Accepting SonarLint issue: Pseudo random is ok since this is simply creating a visible salt
+        salt = random.randint(0, 15)  # NOSONAR
     cleartext = data.encode("UTF-8")
     return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[(salt + i) % 53]) for i, char in enumerate(cleartext)).hex().upper()

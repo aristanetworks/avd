@@ -103,10 +103,11 @@ class CVClient(
             self._set_token()
 
         if not self._verify_certs:
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
+            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
+            context.verify_mode = ssl.CERT_NONE  # NOSONAR
             context.check_hostname = False
             context.set_alpn_protocols(["h2"])
-            context.verify_mode = ssl.CERT_NONE
         else:
             context = True
 
@@ -115,7 +116,7 @@ class CVClient(
 
         self._metadata = {"authorization": "Bearer " + self._token}
 
-    def _set_token(self) -> str:
+    def _set_token(self) -> None:
         """
         Uses username/password for authenticating via REST.
         Sets the session token into self._token to be used for gRPC channel.
@@ -129,10 +130,10 @@ class CVClient(
             raise CVClientException("Unable to authenticate. Missing token or username/password.")
 
         if not self._verify_certs:
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
+            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
+            context.verify_mode = ssl.CERT_NONE  # NOSONAR
             context.check_hostname = False
-            # context.set_alpn_protocols(["h2"])
-            context.verify_mode = ssl.CERT_NONE
         else:
             # None means default context which will verify certs.
             context = None
