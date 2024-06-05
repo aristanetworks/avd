@@ -1,0 +1,24 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ipv6 static neighbors #}
+{% if ipv6_neighbor.static_entries is arista.avd.defined %}
+
+### IPv6 Static Neighbors
+
+#### IPv6 Static Neighbors Summary
+
+| VRF | IPv6 address | Exit interface | Hardware Address |
+| --- | ------------ | -------------- | ---------------- |
+{%     for neighbor in ipv6_neighbor.static_entries %}
+| {{ neighbor.vrf | arista.avd.default("-") }} | {{ neighbor.ipv6_address | arista.avd.default("-") }} | {{ neighbor.interface | arista.avd.default("-") }} | {{ neighbor.mac_address | arista.avd.default("-") }} |
+{%     endfor %}
+
+#### IPv6 Neighbor Configuration
+
+```eos
+{%     include 'eos/ipv6-neighbors.j2' %}
+```
+{% endif %}

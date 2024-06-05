@@ -1,0 +1,45 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipv6_neighbor:
+    type: dict
+    keys:
+      static_entries:
+        type: list
+        description: Static IPv6 neighbors entries.
+        items:
+          type: dict
+          keys:
+            ipv6_address:
+              type: str
+              required: true
+              description: IPv6 address of neighbor.
+            vrf:
+              type: str
+            interface:
+              type: str
+              required: true
+            mac_address:
+              type: str
+              required: true
+              description: Hardware address of neighbor.
+              pattern: "^(?:[0-9A-Fa-f]{1,4}\\.){2}[0-9A-Fa-f]{1,4}$"
+      cache:
+        type: bool
+        description: Manage the IPv6 neighbor cache.
+      persistent:
+        type: bool
+        description: Restore the IPv6 neighbor cache after reboot.
+      refresh_delay:
+        type: int
+        description: Time to wait in seconds before refresh.
+        default: 600
+        min: 600
+        max: 3600
+        convert_types:
+          - str

@@ -1,0 +1,27 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ipv6 neighbors #}
+{% if ipv6_neighbor.cache is arista.avd.defined or ipv6_neighbor.persistent is arista.avd.defined or ipv6_neighbor.static_entries is arista.avd.defined %}
+!
+{%     if ipv6_neighbor.cache is arista.avd.defined(true) %}
+ipv6 neighbor cache persistent
+{%     endif %}
+{%     if ipv6_neighbor.persistent is arista.avd.defined(true) %}
+ipv6 neighbor persistent refresh-delay {{ ipv6_neighbor.refresh_delay | arista.avd.default('600') }}
+{%     endif %}
+{%     if ipv6_neighbor.static_entries is arista.avd.defined %}
+{%         for neighbor in ipv6_neighbor.static_entries %}
+{%             if neighbor.ipv6_address is arista.avd.defined and neighbor.interface is arista.avd.defined and neighbor.mac_address is arista.avd.defined %}
+{%                 if neighbor.vrf is arista.avd.defined %}
+{%                     set neighbor_cli = "ipv6 neighbor vrf " ~ neighbor.vrf ~ " " ~ neighbor.ipv6_address ~ " " ~ neighbor.interface ~ " " ~ neighbor.mac_address %}
+{%                 else %}
+{%                     set neighbor_cli = "ipv6 neighbor " ~ neighbor.ipv6_address ~ " " ~ neighbor.interface ~ " " ~ neighbor.mac_address %}
+{%                 endif %}
+{{ neighbor_cli }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endif %}
