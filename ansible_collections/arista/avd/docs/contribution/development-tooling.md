@@ -69,8 +69,10 @@ python3 -m venv avd-venv
 source avd-venv/bin/activate
 
 # Install AVD project requirements-dev.txt and requirements.txt in your Python Virtual environment.
+# The installation _must_ be performed from the root of the cloned avd repository.
+cd avd
 # Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
-pip3 install -r avd/ansible_collections/arista/avd/requirements-dev.txt -r avd/ansible_collections/arista/avd/requirements.txt --upgrade
+pip3 install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
 ```
 
 !!! note
@@ -101,6 +103,9 @@ pre-commit install
 To run `pre-commit` manually before you commit, use this command:
 
 ```shell
+# Change to directory to your cloned avd repository.
+cd avd
+
 # Run pre-commit hooks on all staged files.
 # The command will automatically detect changed files using `git status` and run tests according to their type.
 pre-commit run
@@ -115,6 +120,8 @@ pre-commit run schemas --all
 !!! note
     This process is also implemented in the project CI to ensure code quality and compliance.
     All pre-commit checks must pass, therefore we highly recommend running this workflow before committing changes!
+
+    Pre-commit will fail if any files are changed by the pre-commit hooks. Make sure to review the changes, commit them and rerun pre-commit.
 
 ## Molecule
 
