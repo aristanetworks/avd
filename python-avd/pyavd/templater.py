@@ -41,7 +41,8 @@ class Templar:
             ]
         )
 
-        self.environment = Environment(
+        # Accepting SonarLint issue: No autoescaping is ok, since we are not using this for a website, so XSS is not applicable.
+        self.environment = Environment(  # NOSONAR
             extensions=JINJA2_EXTENSIONS,
             loader=self.loader,
             undefined=Undefined,

@@ -833,7 +833,8 @@ class UtilsMixin(UtilsZscalerMixin):
                     required=True,
                     org_key=f"The configured internet-exit policy requires `peer_ip` configured under the WAN Interface {wan_interface['name']}",
                 ),
-                "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",
+                # Accepting SonarLint issue: The URL is just for verifying connectivity. No data is passed.
+                "monitor_url": f"http://gateway.{cloud_name}.net/vpntest",  # NOSONAR
             }
 
             tunnel_interface_numbers = get(interface_policy_config, "tunnel_interface_numbers")
