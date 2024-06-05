@@ -818,6 +818,8 @@ mpls ldp
 
 ### Patch Panel Summary
 
+#### Patch Panel Connections
+
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
 | TEN_B_site3_site5_eline_vlan_based_1000 | True | Interface | Port-Channel3.1000 | Pseudowire | bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1000 |
