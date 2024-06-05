@@ -10,16 +10,16 @@ from pyavd.j2filters.natural_sort import convert, natural_sort
 
 
 class TestNaturalSortFilter:
-    @pytest.mark.parametrize("STRING_VALID", ["100", "200", "ABC"])
-    def test_convert_function(self, STRING_VALID):
-        resp = convert(STRING_VALID)
-        if STRING_VALID.isdigit():
-            assert resp == int(STRING_VALID)
+    @pytest.mark.parametrize("item_to_convert", ["100", "200", "ABC"])
+    def test_convert_function(self, item_to_convert):
+        resp = convert(item_to_convert)
+        if item_to_convert.isdigit():
+            assert resp == int(item_to_convert)
         else:
-            assert resp == STRING_VALID.lower()
+            assert resp == item_to_convert.lower()
 
     @pytest.mark.parametrize(
-        "ITEM_TO_NATURAL_SORT, EXPECTED_OUTPUT",
+        "item_to_natural_sort, expected_output",
         [
             (None, []),
             ([], []),
@@ -29,6 +29,6 @@ class TestNaturalSortFilter:
             ({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, ["a1", "a2", "a10", "a11"]),
         ],
     )
-    def test_natural_sort(self, ITEM_TO_NATURAL_SORT, EXPECTED_OUTPUT):
-        resp = natural_sort(ITEM_TO_NATURAL_SORT)
-        assert resp == EXPECTED_OUTPUT
+    def test_natural_sort(self, item_to_natural_sort , expected_output):
+        resp = natural_sort(item_to_natural_sort)
+        assert resp == expected_output
