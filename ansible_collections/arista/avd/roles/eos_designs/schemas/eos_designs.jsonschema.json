@@ -26899,6 +26899,33 @@
                             "^_.+$": {}
                           },
                           "title": "L2 Protocols"
+                        },
+                        "traffic_unprotected": {
+                          "type": "object",
+                          "properties": {
+                            "action": {
+                              "type": "string",
+                              "description": "Allow/drop the transmit/receive of unprotected traffic.",
+                              "enum": [
+                                "allow",
+                                "drop"
+                              ],
+                              "title": "Action"
+                            },
+                            "allow_active_sak": {
+                              "type": "boolean",
+                              "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                              "title": "Allow Active Sak"
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Traffic Unprotected"
                         }
                       },
                       "additionalProperties": false,
@@ -30127,6 +30154,76 @@
               "patch_panel": {
                 "type": "object",
                 "properties": {
+                  "connector": {
+                    "type": "object",
+                    "properties": {
+                      "interface": {
+                        "type": "object",
+                        "properties": {
+                          "patch": {
+                            "type": "object",
+                            "properties": {
+                              "bgp_vpws_remote_failure_errdisable": {
+                                "type": "boolean",
+                                "title": "BGP Vpws Remote Failure Errdisable"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Patch"
+                          },
+                          "recovery": {
+                            "type": "object",
+                            "properties": {
+                              "review_delay": {
+                                "type": "object",
+                                "properties": {
+                                  "min": {
+                                    "type": "integer",
+                                    "minimum": 10,
+                                    "description": "Minimum delay (10-600).",
+                                    "title": "Min"
+                                  },
+                                  "max": {
+                                    "type": "integer",
+                                    "minimum": 15,
+                                    "description": "Maximum delay (15-900).",
+                                    "title": "Max"
+                                  }
+                                },
+                                "required": [
+                                  "min",
+                                  "max"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Review Delay"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Recovery"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Interface"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Connector"
+                  },
                   "patches": {
                     "type": "array",
                     "items": {
@@ -47890,6 +47987,19 @@
           "feature_support": {
             "poe": true,
             "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
+            "7010TX"
+          ],
+          "feature_support": {
+            "queue_monitor_length_notify": false,
+            "per_interface_mtu": false
           },
           "reload_delay": {
             "mlag": 300,
