@@ -18027,9 +18027,9 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
-              "missing_policy_af_all": {
+              "missing_policy": {
                 "type": "object",
-                "description": "Include all address families for missing policy configuration.",
+                "description": "Missing policy override configuration.",
                 "properties": {
                   "direction_in": {
                     "description": "Missing policy inbound direction.",
@@ -18040,27 +18040,37 @@
                         "type": "string",
                         "enum": [
                           "deny",
-                          "deny-in-out",
                           "permit"
                         ],
                         "title": "Action"
                       },
-                      "include": {
-                        "description": "Include route map references in missing policy decision.",
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "community-list",
-                            "prefix-list",
-                            "sub-route-map"
-                          ]
-                        },
-                        "title": "Include"
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub route map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      },
+                      "address_family_all": {
+                        "description": "Include all address families for missing policy configuration.",
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ],
+                        "title": "Address Family All"
                       }
                     },
                     "required": [
-                      "action"
+                      "action",
+                      "address_family_all"
                     ],
                     "additionalProperties": false,
                     "patternProperties": {
@@ -18077,27 +18087,37 @@
                         "type": "string",
                         "enum": [
                           "deny",
-                          "deny-in-out",
                           "permit"
                         ],
                         "title": "Action"
                       },
-                      "include": {
-                        "description": "Include route map references in missing policy decision.",
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "community-list",
-                            "prefix-list",
-                            "sub-route-map"
-                          ]
-                        },
-                        "title": "Include"
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub route map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      },
+                      "address_family_all": {
+                        "description": "Include all address families for missing policy configuration.",
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ],
+                        "title": "Address Family All"
                       }
                     },
                     "required": [
-                      "action"
+                      "action",
+                      "address_family_all"
                     ],
                     "additionalProperties": false,
                     "patternProperties": {
@@ -18110,7 +18130,7 @@
                 "patternProperties": {
                   "^_.+$": {}
                 },
-                "title": "Missing Policy AF All"
+                "title": "Missing Policy"
               },
               "link_bandwidth": {
                 "type": "object",
@@ -18427,9 +18447,9 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
-              "missing_policy_af_all": {
+              "missing_policy": {
                 "type": "object",
-                "description": "Include all address families for missing policy configuration.",
+                "description": "Missing policy override configuration.",
                 "properties": {
                   "direction_in": {
                     "description": "Missing policy inbound direction.",
@@ -18440,27 +18460,37 @@
                         "type": "string",
                         "enum": [
                           "deny",
-                          "deny-in-out",
                           "permit"
                         ],
                         "title": "Action"
                       },
-                      "include": {
-                        "description": "Include route map references in missing policy decision.",
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "community-list",
-                            "prefix-list",
-                            "sub-route-map"
-                          ]
-                        },
-                        "title": "Include"
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub route map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      },
+                      "address_family_all": {
+                        "description": "Include all address families for missing policy configuration.",
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ],
+                        "title": "Address Family All"
                       }
                     },
                     "required": [
-                      "action"
+                      "action",
+                      "address_family_all"
                     ],
                     "additionalProperties": false,
                     "patternProperties": {
@@ -18477,27 +18507,37 @@
                         "type": "string",
                         "enum": [
                           "deny",
-                          "deny-in-out",
                           "permit"
                         ],
                         "title": "Action"
                       },
-                      "include": {
-                        "description": "Include route map references in missing policy decision.",
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "community-list",
-                            "prefix-list",
-                            "sub-route-map"
-                          ]
-                        },
-                        "title": "Include"
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub route map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      },
+                      "address_family_all": {
+                        "description": "Include all address families for missing policy configuration.",
+                        "type": "boolean",
+                        "enum": [
+                          true
+                        ],
+                        "title": "Address Family All"
                       }
                     },
                     "required": [
-                      "action"
+                      "action",
+                      "address_family_all"
                     ],
                     "additionalProperties": false,
                     "patternProperties": {
@@ -18510,7 +18550,7 @@
                 "patternProperties": {
                   "^_.+$": {}
                 },
-                "title": "Missing Policy AF All"
+                "title": "Missing Policy"
               },
               "allowas_in": {
                 "type": "object",

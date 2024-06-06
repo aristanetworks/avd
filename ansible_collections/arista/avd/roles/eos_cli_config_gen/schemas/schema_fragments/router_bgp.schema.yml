@@ -331,9 +331,9 @@ keys:
                 - int
             maximum_routes_warning_only:
               type: bool
-            missing_policy_af_all:
+            missing_policy:
               type: dict
-              description: Include all address families for missing policy configuration.
+              description: Missing policy override configuration.
               keys:
                 direction_in:
                   description: Missing policy inbound direction.
@@ -345,17 +345,22 @@ keys:
                       required: true
                       valid_values:
                         - deny
-                        - deny-in-out
                         - permit
-                    include:
-                      description: Include route map references in missing policy decision.
-                      type: list
-                      items:
-                        type: str
-                        valid_values:
-                          - community-list
-                          - prefix-list
-                          - sub-route-map
+                    include_community_list:
+                      type: bool
+                      description: Include community list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub route map references in missing policy decision.
+                    address_family_all:
+                      description: Include all address families for missing policy configuration.
+                      type: bool
+                      required: true
+                      valid_values:
+                        - True
                 direction_out:
                   description: Missing policy outbound direction.
                   type: dict
@@ -366,17 +371,22 @@ keys:
                       required: true
                       valid_values:
                         - deny
-                        - deny-in-out
                         - permit
-                    include:
-                      description: Include route map references in missing policy decision.
-                      type: list
-                      items:
-                        type: str
-                        valid_values:
-                          - community-list
-                          - prefix-list
-                          - sub-route-map
+                    include_community_list:
+                      type: bool
+                      description: Include community list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub route map references in missing policy decision.
+                    address_family_all:
+                      description: Include all address families for missing policy configuration.
+                      type: bool
+                      required: true
+                      valid_values:
+                        - True
             link_bandwidth:
               type: dict
               keys:
@@ -580,9 +590,9 @@ keys:
                 - int
             maximum_routes_warning_only:
               type: bool
-            missing_policy_af_all:
+            missing_policy:
               type: dict
-              description: Include all address families for missing policy configuration.
+              description: Missing policy override configuration.
               keys:
                 direction_in:
                   description: Missing policy inbound direction.
@@ -594,17 +604,22 @@ keys:
                       required: true
                       valid_values:
                         - deny
-                        - deny-in-out
                         - permit
-                    include:
-                      description: Include route map references in missing policy decision.
-                      type: list
-                      items:
-                        type: str
-                        valid_values:
-                          - community-list
-                          - prefix-list
-                          - sub-route-map
+                    include_community_list:
+                      type: bool
+                      description: Include community list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub route map references in missing policy decision.
+                    address_family_all:
+                      description: Include all address families for missing policy configuration.
+                      type: bool
+                      required: true
+                      valid_values:
+                        - True
                 direction_out:
                   description: Missing policy outbound direction.
                   type: dict
@@ -615,17 +630,22 @@ keys:
                       required: true
                       valid_values:
                         - deny
-                        - deny-in-out
                         - permit
-                    include:
-                      description: Include route map references in missing policy decision.
-                      type: list
-                      items:
-                        type: str
-                        valid_values:
-                          - community-list
-                          - prefix-list
-                          - sub-route-map
+                    include_community_list:
+                      type: bool
+                      description: Include community list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub route map references in missing policy decision.
+                    address_family_all:
+                      description: Include all address families for missing policy configuration.
+                      type: bool
+                      required: true
+                      valid_values:
+                        - True
             allowas_in:
               type: dict
               keys:
