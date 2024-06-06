@@ -55,7 +55,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     if not isinstance(dictionary, (dict, list)) or os.environ.get("AVD_DISABLE_CONVERT_DICTS"):
         # Not a dictionary/list, return the original
         return dictionary
-    elif isinstance(dictionary, list):
+    if isinstance(dictionary, list):
         output = []
         for element in dictionary:
             if not isinstance(element, dict):
@@ -72,27 +72,27 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
             else:
                 output.append(element)
         return output
-    else:
-        output = []
-        for key in dictionary:
-            if secondary_key is not None:
-                # Add secondary key for the values if secondary key is provided
+    # This is now a dict
+    output = []
+    for key in dictionary:
+        if secondary_key is not None:
+            # Add secondary key for the values if secondary key is provided
+            output.append(
+                {
+                    primary_key: key,
+                    secondary_key: dictionary[key],
+                }
+            )
+        else:
+            if not isinstance(dictionary[key], dict):
+                # Not a nested dictionary
+                output.append({primary_key: key})
+            else:
+                # Nested dictionary
                 output.append(
                     {
                         primary_key: key,
-                        secondary_key: dictionary[key],
+                        **dictionary[key],
                     }
                 )
-            else:
-                if not isinstance(dictionary[key], dict):
-                    # Not a nested dictionary
-                    output.append({primary_key: key})
-                else:
-                    # Nested dictionary
-                    output.append(
-                        {
-                            primary_key: key,
-                            **dictionary[key],
-                        }
-                    )
-        return output
+    return output
