@@ -1,11 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 import pytest
+
 from pyavd.j2filters.natural_sort import convert, natural_sort
 
 
@@ -19,7 +16,7 @@ class TestNaturalSortFilter:
             assert resp == item_to_convert.lower()
 
     @pytest.mark.parametrize(
-        "item_to_natural_sort, sort_key, expected_output",
+        "item_to_natural_sort, sort_key, sorted_list",
         [
             (None, None, []),  # test with None
             ([], None, []),  # test with blank list
@@ -42,6 +39,6 @@ class TestNaturalSortFilter:
             ),
         ],
     )
-    def test_natural_sort(self, item_to_natural_sort, sort_key, expected_output):
+    def test_natural_sort(self, item_to_natural_sort, sort_key, sorted_list):
         resp = natural_sort(item_to_natural_sort, sort_key)
-        assert resp == expected_output
+        assert resp == sorted_list
