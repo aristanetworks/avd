@@ -16,7 +16,6 @@ PLUGIN_NAME = "arista.avd.default"
 
 try:
     from pyavd.j2filters.default import default
-
 except ImportError as e:
     default = RaiseOnUse(
         AnsibleFilterError(

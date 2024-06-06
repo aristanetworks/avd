@@ -8,15 +8,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import wrap_filter
+from ansible.errors import AnsibleFilterError
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.natural_sort"
 
 try:
     from pyavd.j2filters.natural_sort import natural_sort
-
-    PYAVD_IMPORT_EXCEPTION = None
 except ImportError as e:
-    natural_sort = None
-    PYAVD_IMPORT_EXCEPTION = e
+    natural_sort = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -63,5 +69,5 @@ _value:
 class FilterModule(object):
     def filters(self):
         return {
-            "natural_sort": wrap_filter("arista.avd.natural_sort", PYAVD_IMPORT_EXCEPTION)(natural_sort),
+            "natural_sort": wrap_filter(PLUGIN_NAME)(natural_sort),
         }
