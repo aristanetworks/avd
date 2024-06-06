@@ -21998,11 +21998,6 @@
                       "type": "boolean",
                       "title": "As Set"
                     },
-                    "advertise_map": {
-                      "type": "string",
-                      "description": "Route-map name.",
-                      "title": "Advertise Map"
-                    },
                     "summary_only": {
                       "type": "boolean",
                       "title": "Summary Only"

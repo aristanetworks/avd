@@ -2612,6 +2612,15 @@ keys:
                   advertise_map:
                     type: str
                     description: Route-map name.
+                    deprecation:
+                      removed: true
+                      remove_in_version: 4.9.0
+                  supress_map:
+                    type: str
+                    description: Route-map name.
+                    deprecation:
+                      removed: true
+                      remove_in_version: 4.9.0
                   summary_only:
                     type: bool
                   attribute_map:

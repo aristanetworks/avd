@@ -395,11 +395,11 @@ router bgp {{ router_bgp.as }}
 {%         if aggregate_address.as_set is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " as-set" %}
 {%         endif %}
-{%         if aggregate_address.advertise_map is arista.avd.defined %}
-{%             set aggregate_address_cli = aggregate_address_cli ~ " advertise-map " ~ aggregate_address.advertise_map %}
-{%         endif %}
 {%         if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " summary-only" %}
+{%         endif %}
+{%         if aggregate_address.attribute_map is arista.avd.defined %}
+{%             set aggregate_address_cli = aggregate_address_cli ~  " attribute-map " ~ aggregate_address.attribute_map %}
 {%         endif %}
 {%         if aggregate_address.match_map is arista.avd.defined %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " match-map " ~ aggregate_address.match_map %}
@@ -1598,12 +1598,6 @@ router bgp {{ router_bgp.as }}
 {%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set  aggregate_address_cli = aggregate_address_cli ~ " as-set" %}
-{%             endif %}
-{%             if aggregate_address.advertise_map is arista.avd.defined %}
-{%                 set  aggregate_address_cli = aggregate_address_cli ~ " advertise-map " ~ aggregate_address.advertise_map %}
-{%             endif %}
-{%             if aggregate_address.supress_map is arista.avd.defined %}
-{%                 set  aggregate_address_cli = aggregate_address_cli ~ " supress-map " ~ aggregate_address.supress_map %}
 {%             endif %}
 {%             if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%                 set aggregate_address_cli = aggregate_address_cli ~ " summary-only" %}
