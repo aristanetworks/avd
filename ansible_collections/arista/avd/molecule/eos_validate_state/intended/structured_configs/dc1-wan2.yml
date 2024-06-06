@@ -228,9 +228,9 @@ route_maps:
     - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 30
+  - sequence: 40
     type: permit
-    description: Set SOO on prefixes from the site.
+    description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 10.255.2.1:100 additive
   - sequence: 10
@@ -245,6 +245,14 @@ route_maps:
     - as-path ASPATH-WAN
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make tagged routes received from WAN HA peer less preferred for LAN router
+    match:
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
   - sequence: 20
     type: permit
     description: Advertise local routes towards LAN
@@ -255,14 +263,6 @@ route_maps:
     description: Advertise routes received from WAN iBGP towards LAN
     match:
     - route-type internal
-  - sequence: 10
-    type: permit
-    description: Make tagged routes received from WAN HA peer less preferred for LAN router
-    match:
-    - tag 50
-    - route-type internal
-    set:
-    - metric 50
   - sequence: 40
     type: permit
     description: Advertise WAN HA prefixes towards LAN
