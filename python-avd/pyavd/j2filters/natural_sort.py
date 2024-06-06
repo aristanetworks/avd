@@ -20,9 +20,8 @@ def natural_sort(iterable, sort_key=None):
         pattern = r"(\d+)"
         if sort_key is not None and isinstance(key, dict):
             return [convert(c) for c in re.split(pattern, str(key.get(sort_key, key)))]
-        elif sort_key is not None and isinstance(key, Namespace):
+        if sort_key is not None and isinstance(key, Namespace):
             return [convert(c) for c in re.split(pattern, getattr(key, sort_key))]
-        else:
-            return [convert(c) for c in re.split(pattern, str(key))]
+        return [convert(c) for c in re.split(pattern, str(key))]
 
     return sorted(iterable, key=alphanum_key)
