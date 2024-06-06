@@ -11,7 +11,7 @@ def convert(text: str) -> int | str:
     return int(text) if text.isdigit() else text.lower()
 
 
-def natural_sort(iterable, sort_key=None):
+def natural_sort(iterable: list | dict | str | None, sort_key: str | None = None) -> list:
     if isinstance(iterable, Undefined) or iterable is None:
         return []
 
