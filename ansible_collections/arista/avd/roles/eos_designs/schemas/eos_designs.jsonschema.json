@@ -5860,8 +5860,8 @@
           },
           "title": "DPS Interfaces"
         },
-        "wan_ha_links": {
-          "description": "Enable flow-tracking on all non uplink WAN HA links..",
+        "direct_wan_ha_links": {
+          "description": "Enable flow-tracking on all direct WAN HA links.",
           "type": "object",
           "properties": {
             "enabled": {
@@ -5878,7 +5878,7 @@
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "Wan Ha Links"
+          "title": "Direct Wan Ha Links"
         }
       },
       "additionalProperties": false,

@@ -252,8 +252,8 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # WAN HA interfaces for direct connection
         if self.shared_utils.use_uplinks_for_wan_ha is False:
-            wan_ha_links_flow_tracker = get(
-                self.shared_utils.switch_data_combined, "wan_ha.flow_tracker", default=self.shared_utils.get_flow_tracker(None, "wan_ha_links")
+            direct_wan_ha_links_flow_tracker = get(
+                self.shared_utils.switch_data_combined, "wan_ha.flow_tracker", default=self.shared_utils.get_flow_tracker(None, "direct_wan_ha_links")
             )
             for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
                 ha_interface = {
@@ -264,7 +264,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "shutdown": False,
                     "description": "DIRECT LAN HA LINK",
                     "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
-                    "flow_tracker": wan_ha_links_flow_tracker,
+                    "flow_tracker": direct_wan_ha_links_flow_tracker,
                 }
 
                 append_if_not_duplicate(

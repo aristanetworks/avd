@@ -97,9 +97,9 @@ class RouteMapsMixin(UtilsMixin):
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = [
                 {
-                    "sequence": 30,
+                    "sequence": 40,
                     "type": "permit",
-                    "description": "Set SOO on prefixes from the site.",
+                    "description": "Mark prefixes originated from the LAN",
                     "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                 },
             ]
@@ -123,38 +123,51 @@ class RouteMapsMixin(UtilsMixin):
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
             # RM-BGP-UNDERLAY-PEERS-OUT
-            sequence_numbers = [
-                {
-                    "sequence": 20,
-                    "type": "permit",
-                    "description": "Advertise local routes towards LAN",
-                    "match": ["route-type local"],
-                },
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "description": "Advertise routes received from WAN iBGP towards LAN",
-                    "match": ["route-type internal"],
-                },
-            ]
+            # TODO @gmuloc: AVD 5.0.0 unify non HA and HA usecase
             if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
-                sequence_numbers.extend(
-                    [
-                        {
-                            "sequence": 10,
-                            "type": "permit",
-                            "description": "Make tagged routes received from WAN HA peer less preferred for LAN router",
-                            "match": ["tag 50", "route-type internal"],
-                            "set": ["metric 50"],
-                        },
-                        {
-                            "sequence": 40,
-                            "type": "permit",
-                            "description": "Advertise WAN HA prefixes towards LAN",
-                            "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
-                        },
-                    ]
-                )
+                sequence_numbers = [
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "description": "Make tagged routes received from WAN HA peer less preferred for LAN router",
+                        "match": ["tag 50", "route-type internal"],
+                        "set": ["metric 50"],
+                    },
+                    {
+                        "sequence": 20,
+                        "type": "permit",
+                        "description": "Advertise local routes towards LAN",
+                        "match": ["route-type local"],
+                    },
+                    {
+                        "sequence": 30,
+                        "type": "permit",
+                        "description": "Advertise routes received from WAN iBGP towards LAN",
+                        "match": ["route-type internal"],
+                    },
+                    {
+                        "sequence": 40,
+                        "type": "permit",
+                        "description": "Advertise WAN HA prefixes towards LAN",
+                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
+                    },
+                ]
+            else:
+                # These should be removed and aligned with the HA sequence numbers when moving to 5.0.0
+                sequence_numbers = [
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "description": "Advertise local routes towards LAN",
+                        "match": ["extcommunity ECL-EVPN-SOO"],
+                    },
+                    {
+                        "sequence": 20,
+                        "type": "permit",
+                        "description": "Advertise routes received from WAN iBGP towards LAN",
+                        "match": ["route-type internal"],
+                    },
+                ]
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
 
         if route_maps:

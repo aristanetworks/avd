@@ -185,19 +185,19 @@ route_maps:
     - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
-  - sequence: 30
+  - sequence: 40
     type: permit
-    description: Set SOO on prefixes from the site.
+    description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.42.6:404 additive
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
-  - sequence: 20
+  - sequence: 10
     type: permit
     description: Advertise local routes towards LAN
     match:
-    - route-type local
-  - sequence: 30
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
     type: permit
     description: Advertise routes received from WAN iBGP towards LAN
     match:

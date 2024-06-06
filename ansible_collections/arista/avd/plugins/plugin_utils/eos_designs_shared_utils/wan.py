@@ -63,9 +63,7 @@ class WanMixin:
         )
 
     @cached_property
-    def cv_pathfinder_transit_mode(
-        self: SharedUtils,
-    ) -> Literal["region", "zone"] | None:
+    def cv_pathfinder_transit_mode(self: SharedUtils) -> Literal["region", "zone"] | None:
         """
         When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None.
         """
@@ -207,10 +205,7 @@ class WanMixin:
         If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return default(
-                interface.get("public_ip"),
-                interface["ip_address"].split("/", maxsplit=1)[0],
-            )
+            return default(interface.get("public_ip"), interface["ip_address"].split("/", maxsplit=1)[0])
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
@@ -253,12 +248,7 @@ class WanMixin:
                 f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list"
             )
         else:
-            sites = get(
-                self.wan_region,
-                "sites",
-                required=True,
-                org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites",
-            )
+            sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
             site_not_found_error_msg = (
                 (
                     f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
@@ -293,10 +283,7 @@ class WanMixin:
             return None
 
         regions = get(
-            self.hostvars,
-            "cv_pathfinder_regions",
-            required=True,
-            org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.",
+            self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
         )
 
         # Verify that site names are unique across all regions.
@@ -359,11 +346,7 @@ class WanMixin:
 
                 # Prefer values coming from the input variables over peer facts
                 vtep_ip = get(wan_rs_dict, "vtep_ip", default=peer_facts.get("vtep_ip"))
-                wan_path_groups = get(
-                    wan_rs_dict,
-                    "path_groups",
-                    default=peer_facts.get("wan_path_groups"),
-                )
+                wan_path_groups = get(wan_rs_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
 
                 if vtep_ip is None:
                     raise AristaAvdMissingVariableError(
