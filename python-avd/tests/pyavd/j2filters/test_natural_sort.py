@@ -6,13 +6,17 @@ from pyavd.j2filters.natural_sort import convert, natural_sort
 
 
 class TestNaturalSortFilter:
-    @pytest.mark.parametrize("item_to_convert", ["100", "200", "ABC"])
-    def test_convert_function(self, item_to_convert):
+    @pytest.mark.parametrize(
+        "item_to_convert, converted_item",
+        [
+            ("100", 100),
+            ("200", 200),
+            ("ABC", "abc"),
+        ],
+    )
+    def test_convert(self, item_to_convert, converted_item):
         resp = convert(item_to_convert)
-        if item_to_convert.isdigit():
-            assert resp == int(item_to_convert)
-        else:
-            assert resp == item_to_convert.lower()
+        assert resp == converted_item
 
     @pytest.mark.parametrize(
         "item_to_natural_sort, sort_key, sorted_list",

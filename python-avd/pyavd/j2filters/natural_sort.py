@@ -10,10 +10,25 @@ from jinja2.utils import Namespace
 
 
 def convert(text: str) -> int | str:
+    """
+    Converts the string to an integer if it is a digit, otherwise converts it to lower case.
+    Args:
+        text (str): Input string.
+    Returns:
+        int | str: Converted string.
+    """
     return int(text) if text.isdigit() else text.lower()
 
 
 def natural_sort(iterable: list | dict | str | None, sort_key: str | None = None) -> list:
+    """
+    Sorts an iterable in a natural (alphanumeric) order.
+    Args:
+        iterable (list | dict | str | None): Input iterable.
+        sort_key (str | None, optional): Key to sort by, defaults to None.
+    Returns:
+        list: Sorted iterable.
+    """
     if isinstance(iterable, Undefined) or iterable is None:
         return []
 
