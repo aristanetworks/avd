@@ -2,7 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import pytest
-
 from pyavd.j2filters.natural_sort import convert, natural_sort
 
 
