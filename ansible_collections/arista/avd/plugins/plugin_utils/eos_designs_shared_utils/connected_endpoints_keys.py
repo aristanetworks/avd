@@ -6,14 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-try:
-    from pyavd.j2filters.convert_dicts import convert_dicts
-
-    PYAVD_IMPORT_EXCEPTION = None
-except ImportError as e:
-    convert_dicts = None
-    PYAVD_IMPORT_EXCEPTION = e
-
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
