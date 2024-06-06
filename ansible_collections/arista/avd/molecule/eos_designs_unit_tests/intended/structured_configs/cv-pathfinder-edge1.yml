@@ -45,10 +45,14 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
-  - ip_address: 192.168.144.1
+  - ip_address: 192.168.144.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    peer: cv-pathfinder-pathfinder1
+    description: cv-pathfinder-pathfinder1
+  - ip_address: 192.168.144.3
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2
   vrfs:
   - name: IT
     router_id: 192.168.42.2
@@ -510,16 +514,19 @@ router_path_selection:
     - name: Ethernet3
       stun:
         server_profiles:
-        - INET-cv-pathfinder-pathfinder-Ethernet1
-        - INET-cv-pathfinder-pathfinder-Ethernet3
+        - INET-cv-pathfinder-pathfinder1-Ethernet1
+        - INET-cv-pathfinder-pathfinder2-Ethernet1
     dynamic_peers:
       enabled: true
     static_peers:
-    - router_ip: 192.168.144.1
-      name: cv-pathfinder-pathfinder
+    - router_ip: 192.168.144.2
+      name: cv-pathfinder-pathfinder1
       ipv4_addresses:
-      - 172.17.7.7
-      - 10.9.9.9
+      - 10.8.8.8
+    - router_ip: 192.168.144.3
+      name: cv-pathfinder-pathfinder2
+      ipv4_addresses:
+      - 10.9.9.6
     ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
@@ -558,11 +565,11 @@ router_traffic_engineering:
 stun:
   client:
     server_profiles:
-    - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 172.17.7.7
+    - name: INET-cv-pathfinder-pathfinder1-Ethernet1
+      ip_address: 10.8.8.8
       ssl_profile: profileA
-    - name: INET-cv-pathfinder-pathfinder-Ethernet3
-      ip_address: 10.9.9.9
+    - name: INET-cv-pathfinder-pathfinder2-Ethernet1
+      ip_address: 10.9.9.6
       ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
@@ -615,7 +622,8 @@ application_traffic_recognition:
       - 6.6.6.0/24
     - name: PFX-PATHFINDERS
       prefix_values:
-      - 192.168.144.1/32
+      - 192.168.144.2/32
+      - 192.168.144.3/32
 ip_access_lists:
 - name: ALLOW-ALL
   entries:
@@ -918,7 +926,8 @@ metadata:
       circuit_id: '404'
       pathgroup: INET
     pathfinders:
-    - vtep_ip: 192.168.144.1
+    - vtep_ip: 192.168.144.2
+    - vtep_ip: 192.168.144.3
   cv_tags:
     device_tags:
     - name: Role
