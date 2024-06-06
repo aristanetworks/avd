@@ -21,6 +21,7 @@ class TestNaturalSortFilter:
             ([], None, []),  # test with blank list
             ({}, "", []),  # test with blank dict
             ("", None, []),  # test with blank string
+            ("access_list", None, ['_', 'a', 'c', 'c', 'e', 'i', 'l', 's', 's', 's', 't']), # test with string
             (["1,2,3,4", "11,2,3,4", "5.6.7.8"], None, ["1,2,3,4", "5.6.7.8", "11,2,3,4"]),  # test with list of integers
             ({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, None, ["a1", "a2", "a10", "a11"]),  # test with dict
             (
