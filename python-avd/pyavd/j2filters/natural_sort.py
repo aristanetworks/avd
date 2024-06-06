@@ -7,7 +7,7 @@ from jinja2.runtime import Undefined
 from jinja2.utils import Namespace
 
 
-def convert(text):
+def convert(text: str) -> int | str:
     return int(text) if text.isdigit() else text.lower()
 
 
