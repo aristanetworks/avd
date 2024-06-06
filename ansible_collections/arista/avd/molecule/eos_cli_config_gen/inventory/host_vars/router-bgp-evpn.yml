@@ -24,9 +24,10 @@ router_bgp:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
       maximum_routes: 0
-      missing_policy_af_all:
+      missing_policy:
         direction_out:
           action: permit
+          address_family_all: True
       allowas_in:
         enabled: true
       shared_secret:
@@ -40,9 +41,10 @@ router_bgp:
       maximum_routes: 12000
       maximum_routes_warning_limit: 80 percent
       maximum_routes_warning_only: true
-      missing_policy_af_all:
+      missing_policy:
         direction_in:
           action: deny
+          address_family_all: True
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
       route_map_out: RM-MLAG-PEER-OUT
@@ -57,17 +59,19 @@ router_bgp:
         hash_algorithm: aes-128-cmac-96
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
-      missing_policy_af_all:
+      missing_policy:
         direction_out:
           action: permit
+          address_family_all: True
     - ip_address: 192.168.255.3
       allowas_in:
         enabled: true
         times: 5
       maximum_routes: 52000
-      missing_policy_af_all:
+      missing_policy:
         direction_in:
           action: deny
+          address_family_all: True
       maximum_routes_warning_limit: 2000
       maximum_routes_warning_only: true
   redistribute_routes:

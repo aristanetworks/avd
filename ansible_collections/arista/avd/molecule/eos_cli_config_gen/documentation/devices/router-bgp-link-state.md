@@ -63,10 +63,10 @@ ASN Notation: asdot
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops | Missing Policy In Action | Missing Policy Out Action | Missing Policy In Decision | Missing Policy Out Decision |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ | ------------------------ | ------------------------- | -------------------------- | --------------------------- |
-| 192.168.255.1 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 192.168.255.2 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 192.168.255.1 | - | default | - | - | - | - | - | - | - | - | - |
+| 192.168.255.2 | - | default | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 

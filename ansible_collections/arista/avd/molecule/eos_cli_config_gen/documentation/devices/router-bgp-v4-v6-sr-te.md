@@ -63,10 +63,10 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops | Missing Policy In Action | Missing Policy Out Action | Missing Policy In Decision | Missing Policy Out Decision |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ | ------------------------ | ------------------------- | -------------------------- | --------------------------- |
-| 192.168.42.42 | 65004 | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 2001:db8::dead:beef:cafe | 65004 | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 192.168.42.42 | 65004 | default | - | - | - | - | - | - | - | - | - |
+| 2001:db8::dead:beef:cafe | 65004 | default | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP IPv4 SR-TE Address Family
 

@@ -86,13 +86,13 @@ ASN Notation: asplain
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops | Missing Policy In Action | Missing Policy Out Action | Missing Policy In Decision | Missing Policy Out Decision |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ | ------------------------ | ------------------------- | -------------------------- | --------------------------- |
-| 172.31.255.0 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 172.31.255.2 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 172.31.255.3 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 172.31.255.4 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 192.168.255.1 | - | default | - | - | - | - | - | - | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 172.31.255.0 | - | default | - | - | - | - | - | - | - | - | - |
+| 172.31.255.2 | - | default | - | - | - | - | - | - | - | - | - |
+| 172.31.255.3 | - | default | - | - | - | - | - | - | - | - | - |
+| 172.31.255.4 | - | default | - | - | - | - | - | - | - | - | - |
+| 192.168.255.1 | - | default | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP Path-Selection Address Family
 

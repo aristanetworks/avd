@@ -219,18 +219,26 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
-{%         if peer_group.missing_policy_af_all is arista.avd.defined %}
+{%         if peer_group.missing_policy is arista.avd.defined %}
 {%             for direction in ['in', 'out'] %}
 {%                 set dir = 'direction_' ~ direction %}
-{%                 set action = peer_group.missing_policy_af_all[dir].action %}
-{%                 if action is arista.avd.defined %}
+{%                 set policy = peer_group.missing_policy[dir] %}
+{%                 if policy.action is arista.avd.defined and policy.address_family_all is arista.avd.defined(true) %}
 {%                     set missing_policy_cli = "neighbor " ~ peer_group.name ~ " missing-policy address-family all" %}
-{%                     if peer_group.missing_policy_af_all[dir].include is arista.avd.defined %}
-{%                         set include_list = peer_group.missing_policy_af_all[dir].include | arista.avd.natural_sort %}
-{%                         set include_str = include_list | join(" ") %}
-{%                         set missing_policy_cli = missing_policy_cli ~ " include " ~ include_str %}
+{%                     set include = peer_group.missing_policy[dir] %}
+{%                     if include.include_community_list is arista.avd.defined or include.include_prefix_list is arista.avd.defined or include.include_sub_route_map is arista.avd.defined %}
+{%                         set missing_policy_cli = missing_policy_cli ~ " include" %}
+{%                         if include.include_community_list is arista.avd.defined %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " community-list" %}
+{%                         endif %}
+{%                         if include.include_prefix_list is arista.avd.defined %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " prefix-list" %}
+{%                         endif %}
+{%                         if include.include_sub_route_map is arista.avd.defined %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " sub-route-map" %}
+{%                         endif %}
 {%                     endif %}
-{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ action %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ policy.action %}
    {{ missing_policy_cli }}
 {%                 endif %}
 {%             endfor %}
@@ -398,18 +406,26 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
    {{ maximum_routes_cli }}
 {%         endif %}
-{%         if neighbor.missing_policy_af_all is arista.avd.defined %}
+{%         if neighbor.missing_policy is arista.avd.defined %}
 {%             for direction in ['in', 'out'] %}
 {%                 set dir = 'direction_' ~ direction %}
-{%                 set action = neighbor.missing_policy_af_all[dir].action %}
-{%                 if action is arista.avd.defined %}
+{%                 set policy = neighbor.missing_policy[dir] %}
+{%                 if policy.action is arista.avd.defined and policy.address_family_all is arista.avd.defined(true) %}
 {%                     set missing_policy_cli = "neighbor " ~ neighbor.ip_address ~ " missing-policy address-family all" %}
-{%                     if neighbor.missing_policy_af_all[dir].include is arista.avd.defined %}
-{%                         set include_list = neighbor.missing_policy_af_all[dir].include | arista.avd.natural_sort %}
-{%                         set include_str = include_list | join(" ") %}
-{%                         set missing_policy_cli = missing_policy_cli ~ " include " ~ include_str %}
+{%                     set include = neighbor.missing_policy[dir] %}
+{%                     if include.include_community_list is arista.avd.defined or include.include_prefix_list is arista.avd.defined or include.include_sub_route_map is arista.avd.defined %}
+{%                         set missing_policy_cli = missing_policy_cli ~ " include" %}
+{%                         if include.include_community_list is arista.avd.defined %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " community-list" %}
+{%                         endif %}
+{%                         if include.include_prefix_list is arista.avd.defined %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " prefix-list" %}
+{%                         endif %}
+{%                         if include.include_sub_route_map is arista.avd.defined %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " sub-route-map" %}
+{%                         endif %}
 {%                     endif %}
-{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ action %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ policy.action %}
    {{ missing_policy_cli }}
 {%                 endif %}
 {%             endfor %}
