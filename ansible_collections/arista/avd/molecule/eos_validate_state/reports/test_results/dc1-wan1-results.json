@@ -670,6 +670,24 @@
   },
   {
     "name": "dc1-wan1",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
+    "custom_field": "Source IPv4 Address: 100.64.3.2 Source Port: 4500"
+  },
+  {
+    "name": "dc1-wan1",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
+    "custom_field": "Source IPv4 Address: 172.18.3.2 Source Port: 4500"
+  },
+  {
+    "name": "dc1-wan1",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
