@@ -11,12 +11,12 @@ if [ -z "$(command -v ansible)" ]; then
   if ! [ -z "${AVD_GITHUB_REPO}" ] && ! [ -z "${AVD_BRANCH_NAME}" ]; then
     AVD_INSTALL_PATH="git+https://github.com/${AVD_GITHUB_REPO}.git#/ansible_collections/arista/avd/,${AVD_BRANCH_NAME}"
     PYAVD_INSTALL_LOCATION="git+https://github.com/${AVD_GITHUB_REPO}.git@${AVD_BRANCH_NAME}#subdirectory=python-avd"
-    pip3 install "pyavd[ansible] @ ${PYAVD_INSTALL_LOCATION}"
+    pip install "pyavd[ansible] @ ${PYAVD_INSTALL_LOCATION}"
     ansible-galaxy collection install --force ${AVD_INSTALL_PATH}
   # otherwise install requirements and collection from container workspace
   elif [ -f ${CONTAINER_WSF_AVD_PATH}/requirements.txt ] && [ -f ${CONTAINER_WSF_AVD_PATH}/requirements-dev.txt ] ; then
     # use editable install for requirements
-    pip3 install -r ${CONTAINER_WSF_AVD_PATH}/requirements-dev.txt -r ${CONTAINER_WSF_AVD_PATH}/requirements.txt
+    pip install -r ${CONTAINER_WSF_AVD_PATH}/requirements-dev.txt -r ${CONTAINER_WSF_AVD_PATH}/requirements.txt
     ansible-galaxy collection install --force ${CONTAINER_WSF_AVD_PATH}
   fi
 
