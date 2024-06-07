@@ -14,8 +14,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_vpws_remote_failure_errdisable</samp>](## "patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery</samp>](## "patch_panel.connector.interface.recovery") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;review_delay</samp>](## "patch_panel.connector.interface.recovery.review_delay") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "patch_panel.connector.interface.recovery.review_delay.min") | Integer | Required |  | Min: 10 | Minimum delay (10-600). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "patch_panel.connector.interface.recovery.review_delay.max") | Integer | Required |  | Min: 15 | Maximum delay (15-900). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "patch_panel.connector.interface.recovery.review_delay.min") | Integer | Required |  | Min: 10<br>Max: 600 | Minimum delay. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "patch_panel.connector.interface.recovery.review_delay.max") | Integer | Required |  | Min: 15<br>Max: 900 | Maximum delay. |
     | [<samp>&nbsp;&nbsp;patches</samp>](## "patch_panel.patches") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "patch_panel.patches.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "patch_panel.patches.[].enabled") | Boolean |  |  |  |  |
@@ -35,11 +35,11 @@
           recovery:
             review_delay:
 
-              # Minimum delay (10-600).
-              min: <int; >=10; required>
+              # Minimum delay.
+              min: <int; 10-600; required>
 
-              # Maximum delay (15-900).
-              max: <int; >=15; required>
+              # Maximum delay.
+              max: <int; 15-900; required>
       patches:
         - name: <str; required; unique>
           enabled: <bool>

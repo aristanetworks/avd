@@ -12,23 +12,25 @@ from ansible.errors import AnsibleFilterError, AnsibleUndefinedVariable
 from ansible.module_utils.basic import to_native
 from jinja2.exceptions import UndefinedError
 
-from ansible_collections.arista.avd.plugins.action.verify_requirements import _get_running_collection_version
+
+class RaiseOnUse:
+    """
+    Class that will delay raises of errors until the instance is called.
+
+    Used with Ansible try/except import logic to not fail on import of plugins, but instead fail on first use.
+    """
+
+    def __init__(self, exception: Exception):
+        self.exception = exception
+
+    def __call__(self, *args):
+        raise self.exception
 
 
-def wrap_filter(name: str, pyavd_import_error: Exception | None) -> Callable:
+def wrap_filter(name: str) -> Callable:
     def wrap_filter_decorator(func: Callable | None) -> Callable:
         @wraps(func)
         def filter_wrapper(*args, **kwargs):
-            if pyavd_import_error:
-                result = {}
-                _get_running_collection_version("arista.avd", result)
-                version = result["collection"]["version"]
-                raise AnsibleFilterError(
-                    f"Filter '{name}' was not imported correctly. Check PyAVD is installed correctly with version '{version}' "
-                    f"and that all PyAVD dependencies are also installed correctly. Got import error: '{to_native(pyavd_import_error)}'",
-                    orig_exc=pyavd_import_error,
-                )
-
             try:
                 return func(*args, **kwargs)
             except UndefinedError as e:

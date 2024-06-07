@@ -13125,13 +13125,15 @@
                         "min": {
                           "type": "integer",
                           "minimum": 10,
-                          "description": "Minimum delay (10-600).",
+                          "maximum": 600,
+                          "description": "Minimum delay.",
                           "title": "Min"
                         },
                         "max": {
                           "type": "integer",
                           "minimum": 15,
-                          "description": "Maximum delay (15-900).",
+                          "maximum": 900,
+                          "description": "Maximum delay.",
                           "title": "Max"
                         }
                       },
