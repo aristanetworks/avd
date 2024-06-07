@@ -11,7 +11,8 @@ on:
       - .github/workflows/container_build_dev.yml
   workflow_dispatch:
     branches:
-      - devel
+      # - devel
+      - '**'
 
 jobs:
   build_dev_container:

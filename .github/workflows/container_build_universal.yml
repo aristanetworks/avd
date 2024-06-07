@@ -12,7 +12,8 @@ on:
       - ansible_collections/arista/avd/**
   workflow_dispatch:
     branches:
-      - devel
+      # - devel
+      - - '**'
   release:
     types: [published]
 
