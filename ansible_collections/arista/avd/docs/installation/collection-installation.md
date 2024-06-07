@@ -27,7 +27,7 @@ These commands install all Python requirements including `ansible-core` and then
 all required Ansible collections.
 
 ```shell
-pip install pyavd[ansible]
+pip install "pyavd[ansible]"
 ansible-galaxy collection install arista.avd
 ```
 
@@ -40,7 +40,7 @@ ansible-galaxy collection install arista.avd
 ### Install a specific version
 
 ```shell
-pip install pyavd[ansible]==4.8.0
+pip install "pyavd[ansible]==4.8.0"
 ansible-galaxy collection install arista.avd:==4.8.0
 ```
 
@@ -52,15 +52,19 @@ ansible-galaxy collection install git+https://github.com/aristanetworks/avd.git#
 ```
 
 !!! note
+    Installing from `devel` will require minimum Python 3.10, since the PyAVD package will be built during installation, and some
+    of the build tooling requires minimum 3.10.
+
+!!! note
     Collection dependencies like `ansible-cvp` will be installed from Ansible Galaxy unless installed first using similar GitHub source.
 
 ### Install in a specific directory
 
 If you want to install collection in a specific directory part of your project, you can call `ansible-galaxy` with the `-p` option
-and update your `ansible.cfg`
+and update your `ansible.cfg`:
 
 ```shell
-# Install collection under ${PWD/collections/}
+# Install collection under ${PWD}/collections/
 $ ansible-galaxy collection install arista.avd -p collections/
 
 # Update ansible.cfg file
@@ -70,20 +74,19 @@ collections_paths = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible
 
 ### Upgrade installed AVD collection
 
-!!! note
-    You can use `-U` to upgrade to a new version for any installed collection:
+You can use `-U` to upgrade to a new version for any installed collection:
 
 ```shell
 $ ansible-galaxy collection install -U arista.avd
 Process install dependency map
 Starting collection install process
-Installing 'arista.avd:4.8.0' to '/home/arista/.ansible/collections/ansible_collections/arista/avd'
+Installing 'arista.avd:4.9.0' to '/home/arista/.ansible/collections/ansible_collections/arista/avd'
 ```
 
-After an upgrade, some python requirements may have changed. Make sure to also update the Python requirements for the same version:
+After an upgrade, some python requirements may have changed. Make sure to also update the Python requirements for the same version (the version given below matches the installed collection above):
 
 ```shell
-pip install pyavd[ansible]
+pip install "pyavd[ansible]==4.9.0"
 ```
 
 ## Required Python Libraries
@@ -97,7 +100,7 @@ ansible-core>=2.15.0,<2.18.0
 
 ### Python requirements installation
 
-Python requirements can be installed with the `pip install pyavd[ansible]`.
+Python requirements can be installed with the `pip install "pyavd[ansible]"`.
 The installed version of PyAVD **must** match the version of the `arista.avd` collection.
 
 See the [collection installation](#install-collection-from-ansible-galaxy) section for details of each installation method.
