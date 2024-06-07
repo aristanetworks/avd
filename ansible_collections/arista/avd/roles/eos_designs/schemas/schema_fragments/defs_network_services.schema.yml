@@ -894,6 +894,7 @@ $defs:
                   table: network-services-vrfs-bgp-settings
                 type: list
                 primary_key: ip_address
+                allow_duplicate_primary_key: True
                 convert_types:
                   - dict
                 description: |
