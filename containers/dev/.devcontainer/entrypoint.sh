@@ -17,7 +17,7 @@ if [ -z "$(command -v ansible)" ]; then
   elif [ -f ${CONTAINER_WSF_AVD_PATH}/requirements.txt ] && [ -f ${CONTAINER_WSF_AVD_PATH}/requirements-dev.txt ] ; then
     # use editable install for requirements
     pip3 install -r ${CONTAINER_WSF_AVD_PATH}/requirements-dev.txt -r ${CONTAINER_WSF_AVD_PATH}/requirements.txt
-    ansible-galaxy collection install --force ${CONTAINER_WSF_AVD_PATH}/ansible_collections/arista/avd/
+    ansible-galaxy collection install --force ${CONTAINER_WSF_AVD_PATH}
   fi
 
   # if ansible installation failed for whatever reason - raise an error
