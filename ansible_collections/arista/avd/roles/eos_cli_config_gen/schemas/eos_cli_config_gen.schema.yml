@@ -5122,7 +5122,7 @@ keys:
     keys:
       static_entries:
         type: list
-        description: Static IPv6 neighbors entries.
+        description: Static IPv6 neighbor entries.
         items:
           type: dict
           keys:
@@ -5135,10 +5135,15 @@ keys:
             interface:
               type: str
               required: true
+              description: "Interface name.\nExample - Ethernet4\n          Loopback4-6\n
+                \         Port-channel4,7\n          Management 1\n          Tunnel10\n
+                \         Vlan101,102"
             mac_address:
               type: str
               required: true
-              description: Hardware address of neighbor.
+              description: 'Hardware address of neighbor.
+
+                Example - aaaf.1234.bcbf'
               pattern: ^(?:[0-9A-Fa-f]{1,4}\.){2}[0-9A-Fa-f]{1,4}$
       cache:
         type: bool

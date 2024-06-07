@@ -8675,7 +8675,7 @@
       "properties": {
         "static_entries": {
           "type": "array",
-          "description": "Static IPv6 neighbors entries.",
+          "description": "Static IPv6 neighbor entries.",
           "items": {
             "type": "object",
             "properties": {
@@ -8690,11 +8690,12 @@
               },
               "interface": {
                 "type": "string",
+                "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7\n          Management 1\n          Tunnel10\n          Vlan101,102",
                 "title": "Interface"
               },
               "mac_address": {
                 "type": "string",
-                "description": "Hardware address of neighbor.",
+                "description": "Hardware address of neighbor.\nExample - aaaf.1234.bcbf",
                 "pattern": "^(?:[0-9A-Fa-f]{1,4}\\.){2}[0-9A-Fa-f]{1,4}$",
                 "title": "MAC Address"
               }

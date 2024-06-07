@@ -4,6 +4,17 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ipv6 static neighbors #}
+{% if ipv6_neighbor is arista.avd.defined %}
+
+## IPv6 Neighbors
+
+{%     if ipv6_neighbor.cache is arista.avd.defined(true) %}
+IPv6 neighbor cache is enabled.
+{%     endif %}
+{%     if ipv6_neighbor.persistent is arista.avd.defined(true) %}
+Refresh delay to restore the IPv6 neighbor cache after reboot: {{ ipv6_neighbor.refresh_delay | arista.avd.default('600') }} seconds
+{%     endif %}
+{% endif %}
 {% if ipv6_neighbor.static_entries is arista.avd.defined %}
 
 ### IPv6 Static Neighbors

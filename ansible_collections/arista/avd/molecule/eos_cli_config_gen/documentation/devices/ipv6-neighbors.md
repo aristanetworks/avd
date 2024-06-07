@@ -4,6 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [IPv6 Neighbors](#ipv6-neighbors-1)
   - [IPv6 Static Neighbors](#ipv6-static-neighbors)
 
 ## Management
@@ -33,6 +34,11 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
+## IPv6 Neighbors
+
+IPv6 neighbor cache is enabled.
+Refresh delay to restore the IPv6 neighbor cache after reboot: 1000 seconds
 
 ### IPv6 Static Neighbors
 

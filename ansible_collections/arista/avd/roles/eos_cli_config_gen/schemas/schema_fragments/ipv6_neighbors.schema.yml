@@ -11,7 +11,7 @@ keys:
     keys:
       static_entries:
         type: list
-        description: Static IPv6 neighbors entries.
+        description: Static IPv6 neighbor entries.
         items:
           type: dict
           keys:
@@ -24,10 +24,20 @@ keys:
             interface:
               type: str
               required: true
+              description: |-
+                Interface name.
+                Example - Ethernet4
+                          Loopback4-6
+                          Port-channel4,7
+                          Management 1
+                          Tunnel10
+                          Vlan101,102
             mac_address:
               type: str
               required: true
-              description: Hardware address of neighbor.
+              description: |-
+                Hardware address of neighbor.
+                Example - aaaf.1234.bcbf
               pattern: "^(?:[0-9A-Fa-f]{1,4}\\.){2}[0-9A-Fa-f]{1,4}$"
       cache:
         type: bool
