@@ -15,12 +15,14 @@ on:
 
 jobs:
   build_dev_container:
-    if: github.repository == 'aristanetworks/avd'
+    # if: github.repository == 'aristanetworks/avd'
+    # try to build on my fork
+    if: github.repository == 'ankudinov/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:
         container_name: [dev]
-        python_version: ["3.9", "3.10", "3.11"]
+        python_version: ["3.10", "3.11", "3.12"]
         include:
           - python_version: "3.11"
             container_tags: latest
