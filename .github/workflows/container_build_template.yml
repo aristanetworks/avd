@@ -122,12 +122,6 @@ jobs:
             exit 1
           fi
 
-      - name: Find ansible-core version 🔥
-        id: find-ansible-core-version
-        run: |
-          ANSIBLE_CORE_VERSION=$(cat ansible_collections/arista/avd/requirements-dev.txt| grep ansible-core)
-          echo "ansible_core_version=$ANSIBLE_CORE_VERSION" >> $GITHUB_OUTPUT
-
       - name: Find ansible and pyavd install location
         id: find-install-locations
         run: |
@@ -180,7 +174,6 @@ jobs:
           FROM_VARIANT: ${{ steps.generate-from-parameters.outputs.from_variant }}
           ANSIBLE_INSTALL_LOCATION: ${{ steps.find-install-locations.outputs.ansible_install_location }}
           PYAVD_INSTALL_LOCATION: ${{ steps.find-install-locations.outputs.pyavd_install_location }}
-          ANSIBLE_CORE_VERSION: ${{ steps.find-ansible-core-version.outputs.ansible_core_version }}
           USERNAME: ${{ inputs.username }}
           UID: ${{ inputs.user_id }}
           GID: ${{ inputs.group_id }}
