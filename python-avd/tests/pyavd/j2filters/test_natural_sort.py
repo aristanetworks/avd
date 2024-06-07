@@ -41,6 +41,34 @@ class TestNaturalSortFilter:
                     {"name": "ACL-10", "counters_per_entry": True},
                 ],  # test list of dict with "name" as sort_key
             ),
+            (
+                [
+                    {"name": "ACL-10", "counters_per_entry": True},
+                    {"sequence_numbers": {"sequence": 10}},
+                    {"counters_per_entry": False},
+                    {"name": "ACL-05", "counters_per_entry": False},
+                ],
+                "name",
+                [
+                    {"name": "ACL-05", "counters_per_entry": False},
+                    {"name": "ACL-10", "counters_per_entry": True},
+                    {"counters_per_entry": False},
+                    {"sequence_numbers": {"sequence": 10}},
+                ],  # test list of dict without "name" sort_key in some entries
+            ),
+            (
+                [
+                    {"sequence_numbers": {"sequence": 10}},
+                    {"counters_per_entry": False},
+                    {"action": "action_command"},
+                ],
+                "name",
+                [
+                    {"action": "action_command"},
+                    {"counters_per_entry": False},
+                    {"sequence_numbers": {"sequence": 10}},
+                ],
+            ),  # test test list of dict without "name" sort_key in all entries
         ],
     )
     def test_natural_sort(self, item_to_natural_sort, sort_key, sorted_list):
