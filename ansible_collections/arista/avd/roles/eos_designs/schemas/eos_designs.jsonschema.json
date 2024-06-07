@@ -34815,6 +34815,11 @@
                           "^_.+$": {}
                         },
                         "title": "Bestpath"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,
@@ -36637,6 +36642,21 @@
                         },
                         "title": "Networks"
                       },
+                      "bgp": {
+                        "type": "object",
+                        "properties": {
+                          "redistribute_internal": {
+                            "type": "boolean",
+                            "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                            "title": "Redistribute Internal"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
+                      },
                       "peer_groups": {
                         "type": "array",
                         "items": {
@@ -37115,6 +37135,21 @@
                           ]
                         },
                         "title": "Networks"
+                      },
+                      "bgp": {
+                        "type": "object",
+                        "properties": {
+                          "redistribute_internal": {
+                            "type": "boolean",
+                            "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                            "title": "Redistribute Internal"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
                       },
                       "peer_groups": {
                         "type": "array",
@@ -38447,6 +38482,21 @@
                           "description": "VRF name.",
                           "title": "Name"
                         },
+                        "bgp": {
+                          "type": "object",
+                          "properties": {
+                            "redistribute_internal": {
+                              "type": "boolean",
+                              "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                              "title": "Redistribute Internal"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "BGP"
+                        },
                         "rd": {
                           "type": "string",
                           "description": "Route distinguisher.",
@@ -39182,6 +39232,11 @@
                                     "^_.+$": {}
                                   },
                                   "title": "Additional Paths"
+                                },
+                                "redistribute_internal": {
+                                  "type": "boolean",
+                                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                                  "title": "Redistribute Internal"
                                 }
                               },
                               "additionalProperties": false,
@@ -39455,6 +39510,11 @@
                                     "^_.+$": {}
                                   },
                                   "title": "Additional Paths"
+                                },
+                                "redistribute_internal": {
+                                  "type": "boolean",
+                                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                                  "title": "Redistribute Internal"
                                 }
                               },
                               "additionalProperties": false,
