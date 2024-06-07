@@ -11,11 +11,13 @@ on:
       - .github/workflows/container_build_base.yml
   workflow_dispatch:
     branches:
-      - devel
+      # - devel
+      - '**'
 
 jobs:
   build_base:
-    if: github.repository == 'aristanetworks/avd'
+    # if: github.repository == 'aristanetworks/avd'
+    if: github.repository == 'ankudinov/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:
