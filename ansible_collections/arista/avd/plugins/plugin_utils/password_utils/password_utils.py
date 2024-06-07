@@ -187,7 +187,8 @@ def cbc_encrypt(key: bytes, data: bytes) -> bytes:
     padding = (8 - ((len(data) + 4) % 8)) % 8
     ciphertext = ENC_SIG + bytes([padding * 16 + 0xE]) + data + bytes(padding)
 
-    cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())
+    # Accepting SonarLint issue: Insecure algorithm is ok since this is simply matching the algorithm of EOS.
+    cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
     encryptor = cipher.encryptor()
     result = encryptor.update(ciphertext)
     encryptor.finalize()
@@ -208,7 +209,8 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     data = base64.b64decode(data)
     hashed_key = hashkey(key)
 
-    cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())
+    # Accepting SonarLint issue: Insecure algorithm is ok since this is simply matching the algorithm of EOS.
+    cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
     decryptor = cipher.decryptor()
     result = decryptor.update(data)
     decryptor.finalize()

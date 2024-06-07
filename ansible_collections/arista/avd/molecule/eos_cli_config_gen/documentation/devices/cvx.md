@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [CVX](#cvx)
+- [CVX](#cvx-1)
   - [CVX Services](#cvx-services)
   - [CVX Device Configuration](#cvx-device-configuration)
 

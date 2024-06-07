@@ -262,6 +262,24 @@ anta.tests.security:
     profile: eAPI_SSL_Profile
     result_overwrite:
       custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.255.10
+      vrf: default
+    result_overwrite:
+      custom_field: 'IPv4 Peer: 10.255.255.10 VRF: default'
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.255.20
+      vrf: default
+    result_overwrite:
+      custom_field: 'IPv4 Peer: 10.255.255.20 VRF: default'
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.1.2
+      vrf: default
+    result_overwrite:
+      custom_field: 'IPv4 Peer: 10.255.1.2 VRF: default'
 - VerifySSHStatus: null
 - VerifySSHIPv4Acl:
     number: 3
@@ -375,6 +393,18 @@ anta.tests.software:
     - v1.13.6
     - v1.8.0
 anta.tests.stun:
+- VerifyStunClient:
+    result_overwrite:
+      custom_field: 'Source IPv4 Address: 172.18.3.2 Source Port: 4500'
+    stun_clients:
+    - source_address: 172.18.3.2
+      source_port: 4500
+- VerifyStunClient:
+    result_overwrite:
+      custom_field: 'Source IPv4 Address: 100.64.3.2 Source Port: 4500'
+    stun_clients:
+    - source_address: 100.64.3.2
+      source_port: 4500
 - VerifyStunClient:
     stun_clients:
     - public_address: 172.18.3.21

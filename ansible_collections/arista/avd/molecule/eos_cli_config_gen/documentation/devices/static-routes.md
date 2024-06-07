@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [Static Routes](#static-routes)
+  - [Static Routes](#static-routes-1)
 
 ## Management
 

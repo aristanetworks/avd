@@ -1,3 +1,6 @@
+# PyAVD must follow the exact same version as the Ansible collection.
+# For development this should be installed as an editable install as specified in requirement-dev.txt
+pyavd==4.9.0-dev0
 netaddr>=0.7.19
 Jinja2>=3.0.0
 treelib>=1.5.5
@@ -6,7 +9,6 @@ jsonschema>=4.10.3
 referencing>=0.35.0
 requests>=2.27.0
 PyYAML>=6.0.0
-md-toc>=8.1.0
 deepmerge>=1.1.0
 cryptography>=38.0.4
 # No anta requirement until the eos_validate_state integration is out of preview.

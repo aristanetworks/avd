@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces-1)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)

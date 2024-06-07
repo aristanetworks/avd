@@ -531,6 +531,33 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.1.1 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.255.10 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.255.20 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifySSHIPv4Acl",
     "categories": [
       "security"
@@ -640,6 +667,24 @@
       "stun"
     ],
     "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
+    "custom_field": "Source IPv4 Address: 100.64.4.2 Source Port: 4500"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
+    "custom_field": "Source IPv4 Address: 172.18.4.2 Source Port: 4500"
   },
   {
     "name": "dc1-wan2",

@@ -3,6 +3,9 @@ site_name: Arista AVD
 site_author: Arista Ansible Team
 site_description: Arista Validated Designs documentation
 copyright: Copyright &copy; 2019 - 2023 Arista Networks
+strict: true
+exclude_docs: |
+  /README.md
 
 # Repository information
 repo_name: AVD on Github
@@ -128,7 +131,7 @@ markdown_extensions:
 # TOC
 docs_dir: ansible_collections/arista/avd/
 nav:
-  - Home: README.md
+  - Home: index.md
   - Getting Started:
       - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
   - Examples:
@@ -171,11 +174,8 @@ nav:
   - Ansible Collection Plugins: docs/plugins/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
-      - Setup Environment: docs/contribution/setup-environment.md
-      - Git Installation: docs/contribution/setup-git.md
-      - Getting Started: docs/contribution/getting-started.md
+      - Development Tooling: docs/contribution/development-tooling.md
       - Code Style: docs/contribution/style-guide.md
-      - Development Tips & Tricks: docs/contribution/development.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
   - External Resources:

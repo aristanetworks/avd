@@ -1,0 +1,144 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  monitor_telemetry_postcard_policy:
+    type: dict
+    keys:
+      disabled:
+        type: bool
+        default: true
+        description: Enable or disable the postcard telemetry feature.
+      ingress:
+        type: dict
+        keys:
+          collection:
+            type: dict
+            description: Collector configuration.
+            keys:
+              source:
+                type: str
+                description: Source IP address of GRE tunnel.
+              destination:
+                type: str
+                description: Destination IP address of GRE tunnel.
+              version:
+                type: int
+                description: Postcard version.
+                valid_values: [ 1, 2 ]
+                convert_types:
+                - str
+          sample:
+            type: dict
+            description: Sampling parameters.
+            keys:
+              rate:
+                type: int
+                description: Sampling rate. `rate` is preferred when both `rate` and `tcp_udp_checksum` are defined.
+                convert_types:
+                - str
+                valid_values: [ 16384, 32768, 65536 ]
+              tcp_udp_checksum:
+                type: dict
+                description: TCP/UDP parameters.
+                keys:
+                  value:
+                    type: int
+                    description: TCP/UDP checksum or IP ID value.
+                    min: 0
+                    max: 65535
+                    convert_types:
+                    - str
+                  mask:
+                    type: str
+                    description: 16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.
+      marker_vxlan:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable vxlan marking using default bit 0.
+          header_word_zero_bit:
+            type: int
+            min: 1
+            max: 31
+            convert_types:
+            - str
+      profiles:
+        type: list
+        description: Postcard telemetry profiles.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Profile name.
+            ingress_sample_policy:
+              type: str
+      sample_policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            match_rules:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  type:
+                    type: str
+                    description: IP address version.
+                    required: true
+                    valid_values: [ ipv4, ipv6 ]
+                  destination_prefix:
+                    type: str
+                    description: |-
+                      IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.
+                      eg. 10.3.3.0/24
+                  source_prefix:
+                    type: str
+                    description: |-
+                      IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.
+                      eg. 10.3.3.0/24
+                  protocols:
+                    type: list
+                    primary_key: protocol
+                    items:
+                      type: dict
+                      keys:
+                        protocol:
+                          type: str
+                          valid_values: [ tcp, udp ]
+                        source_ports:
+                          type: list
+                          description: |-
+                            A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
+                            e.g.
+                              [ "12", "14-20" ]
+                              [ "www" ]
+                          items:
+                            type: str
+                            convert_types:
+                            - int
+                        destination_ports:
+                          type: list
+                          description: |-
+                            A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.
+                            e.g.
+                              [ "12", "14-20", "80" ]
+                              [ "https" ]
+                          items:
+                            type: str
+                            convert_types:
+                            - int

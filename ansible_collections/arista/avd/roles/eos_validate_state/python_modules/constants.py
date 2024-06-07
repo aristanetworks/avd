@@ -9,6 +9,7 @@ from .tests import (
     AvdTestHardware,
     AvdTestInbandReachability,
     AvdTestInterfacesState,
+    AvdTestIPSecurity,
     AvdTestLLDPTopology,
     AvdTestLoopback0Reachability,
     AvdTestMLAG,
@@ -16,6 +17,7 @@ from .tests import (
     AvdTestP2PIPReachability,
     AvdTestReloadCause,
     AvdTestRoutingTable,
+    AvdTestStun,
 )
 
 ACRONYM_CATEGORIES: set[str] = {"aaa", "mlag", "snmp", "bgp", "ospf", "vxlan", "stp", "igmp", "ip", "lldp", "ntp", "bfd", "ptp", "lanz", "stun", "vlan"}
@@ -36,6 +38,8 @@ AVD_TEST_CLASSES = {
     AvdTestInbandReachability: {"legacy_ansible_tags": ["loopback_reachability", "loopback0_reachability", "optional"]},
     AvdTestLoopback0Reachability: {"legacy_ansible_tags": ["loopback_reachability", "loopback0_reachability"]},
     AvdTestAPIHttpsSSL: {},
+    AvdTestIPSecurity: {},
+    AvdTestStun: {},
 }
 """
 A dict of all AVD eos_validate_state test classes with their equivalent legacy Ansible tags.

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
+  - [Local Users](#local-users-1)
 
 ## Management
 

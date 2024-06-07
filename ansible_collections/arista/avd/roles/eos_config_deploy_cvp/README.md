@@ -269,7 +269,7 @@ cv_configlets:
 
 This module also supports tags to run a subset of ansible tasks:
 
-- **`build`**: Generate Arista Validated Design configuration for EOS devices (structure_configs / configs / documentation) and CloudVision inputs.
+- **`build`**: Generate Arista Validated Designs configuration for EOS devices (structure_configs / configs / documentation) and CloudVision inputs.
 - **`provision`**: Run `build` tags + configure CloudVision with information generated in previous tasks
 
 ```shell
@@ -303,7 +303,7 @@ ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers,apply"
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#additional-python-libraries-required)
 
 ## License
 

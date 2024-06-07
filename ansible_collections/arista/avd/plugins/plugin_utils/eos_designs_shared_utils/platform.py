@@ -62,6 +62,14 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {"queue_monitor_length_notify": False, "poe": True},
     },
     {
+        "platforms": ["7010TX"],
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
+    },
+    {
         "platforms": ["7280R", "7280R2", "7020R"],
         "tcam_profile": "vxlan-routing",
         "lag_hardware_only": True,
@@ -151,6 +159,27 @@ DEFAULT_PLATFORM_SETTINGS = [
             "interface_storm_control": False,
             "bgp_update_wait_for_convergence": False,
             "bgp_update_wait_install": False,
+        },
+    },
+    {
+        "platforms": ["AWE-5310", "AWE-5510", "AWE-7250R", "AWE-7230R"],
+        "management_interface": "Management1/1",
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": False,
+            "bgp_update_wait_for_convergence": True,
+            "bgp_update_wait_install": False,
+        },
+    },
+    {
+        "platforms": ["AWE-7220R"],
+        "management_interface": "Management1",
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": False,
+            "bgp_update_wait_for_convergence": True,
+            "bgp_update_wait_install": False,
+            "poe": True,
         },
     },
 ]

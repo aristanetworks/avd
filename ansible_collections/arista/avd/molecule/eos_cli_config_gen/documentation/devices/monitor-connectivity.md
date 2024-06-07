@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Monitor Connectivity](#monitor-connectivity)
+- [Monitor Connectivity](#monitor-connectivity-1)
   - [Global Configuration](#global-configuration)
   - [VRF Configuration](#vrf-configuration)
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)

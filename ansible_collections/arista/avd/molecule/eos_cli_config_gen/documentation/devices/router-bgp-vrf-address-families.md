@@ -81,8 +81,12 @@ router bgp 65001
    address-family ipv6 multicast
       no neighbor FOOBAR activate
       redistribute isis rcf Router_BGP_Isis()
+      redistribute ospf match internal
+      redistribute ospfv3 match external
+      redistribute ospfv3 match nssa-external 2
    !
    vrf VRF01
+      no bgp redistribute-internal
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit
@@ -104,7 +108,11 @@ router bgp 65001
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          network 2.3.4.0/24 route-map BARFOO
+         no bgp redistribute-internal
          redistribute connected rcf VRF_AFIPV4_RCF_CONNECTED_1()
+         redistribute ospf match external
+         redistribute ospf match nssa-external 1
+         redistribute ospfv3 match internal
          redistribute static route-map VRF_AFIPV4_RM_STATIC_1
       !
       address-family ipv4 multicast
@@ -115,6 +123,9 @@ router bgp 65001
          neighbor 1.2.3.4 route-map BAR out
          network 239.0.0.0/24 route-map BARFOO
          redistribute connected
+         redistribute ospf match internal
+         redistribute ospf match nssa-external 2
+         redistribute ospfv3 match external
          redistribute static route-map VRF_AFIPV4MULTI_RM_STATIC
       !
       address-family ipv6
@@ -130,8 +141,12 @@ router bgp 65001
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
          network aa::/64
+         no bgp redistribute-internal
       redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
       redistribute isis include leaked
+      redistribute ospfv3 match external
+      redistribute ospfv3 match internal include leaked
+      redistribute ospfv3 match nssa-external
       redistribute static route-map VRF_AFIPV6_RM_STATIC
       !
       address-family ipv6 multicast
@@ -139,6 +154,9 @@ router bgp 65001
          bgp missing-policy direction out action deny
          network ff08:1::/64
          redistribute connected
+         redistribute ospf match external
+         redistribute ospf match nssa-external
+         redistribute ospfv3 match internal
          redistribute static route-map VRF_AFIPV6MULTI_RM_STATIC
    !
    vrf VRF02

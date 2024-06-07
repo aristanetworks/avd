@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [SFlow](#sflow)
+  - [SFlow](#sflow-1)
 
 ## Management
 
