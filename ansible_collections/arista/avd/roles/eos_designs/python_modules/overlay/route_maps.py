@@ -102,14 +102,14 @@ class RouteMapsMixin(UtilsMixin):
                             {
                                 "sequence": 10,
                                 "type": "permit",
-                                "description": "Make EVPN routes received from WAN less preferred when sending them to peer.",
+                                "description": "Make EVPN routes learned from WAN less preferred on HA peer",
                                 "match": ["route-type internal"],
                                 "set": ["local-preference 50"],
                             },
                             {
                                 "sequence": 20,
                                 "type": "permit",
-                                "description": "Make locally injected routes less preferred when sending them to peer over EVPN.",
+                                "description": "Make locally injected routes less preferred on HA peer",
                                 "set": ["local-preference 75"],
                             },
                         ],

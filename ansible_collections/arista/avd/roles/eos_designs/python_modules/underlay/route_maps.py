@@ -129,7 +129,7 @@ class RouteMapsMixin(UtilsMixin):
                     {
                         "sequence": 10,
                         "type": "permit",
-                        "description": "Make tagged routes received from WAN HA peer less preferred for LAN router",
+                        "description": "Make routes learned from WAN HA peer less preferred on LAN routers",
                         "match": ["tag 50", "route-type internal"],
                         "set": ["metric 50"],
                     },
@@ -142,7 +142,7 @@ class RouteMapsMixin(UtilsMixin):
                     {
                         "sequence": 30,
                         "type": "permit",
-                        "description": "Advertise routes received from WAN iBGP towards LAN",
+                        "description": "Advertise routes learned from WAN iBGP towards LAN",
                         "match": ["route-type internal"],
                     },
                     {

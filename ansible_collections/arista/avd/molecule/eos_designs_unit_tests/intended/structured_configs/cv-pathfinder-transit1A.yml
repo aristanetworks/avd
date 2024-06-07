@@ -334,7 +334,7 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Make tagged routes received from WAN HA peer less preferred for LAN router
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
     match:
     - tag 50
     - route-type internal
@@ -347,7 +347,7 @@ route_maps:
     - route-type local
   - sequence: 30
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
+    description: Advertise routes learned from WAN iBGP towards LAN
     match:
     - route-type internal
   - sequence: 40
@@ -380,14 +380,14 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Make EVPN routes received from WAN less preferred when sending them to peer.
+    description: Make EVPN routes learned from WAN less preferred on HA peer
     match:
     - route-type internal
     set:
     - local-preference 50
   - sequence: 20
     type: permit
-    description: Make locally injected routes less preferred when sending them to peer over EVPN.
+    description: Make locally injected routes less preferred on HA peer
     set:
     - local-preference 75
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
