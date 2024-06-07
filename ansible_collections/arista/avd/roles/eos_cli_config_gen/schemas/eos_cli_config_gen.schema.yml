@@ -7751,6 +7751,39 @@ keys:
   patch_panel:
     type: dict
     keys:
+      connector:
+        type: dict
+        keys:
+          interface:
+            type: dict
+            keys:
+              patch:
+                type: dict
+                keys:
+                  bgp_vpws_remote_failure_errdisable:
+                    type: bool
+              recovery:
+                type: dict
+                keys:
+                  review_delay:
+                    type: dict
+                    keys:
+                      min:
+                        type: int
+                        required: true
+                        min: 10
+                        max: 600
+                        convert_types:
+                        - str
+                        description: Minimum delay.
+                      max:
+                        type: int
+                        required: true
+                        min: 15
+                        max: 900
+                        convert_types:
+                        - str
+                        description: Maximum delay.
       patches:
         type: list
         primary_key: name
@@ -10605,6 +10638,10 @@ keys:
             keys:
               d_path:
                 type: bool
+          redistribute_internal:
+            type: bool
+            description: Allow redistribution of iBGP routes into an Interior Gateway
+              Protocol (IGP). EOS default is true.
       listen_ranges:
         type: list
         description: 'Improved "listen_ranges" data model to support multiple listen
@@ -11707,6 +11744,13 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+          bgp:
+            type: dict
+            keys:
+              redistribute_internal:
+                type: bool
+                description: Allow redistribution of iBGP routes into an Interior
+                  Gateway Protocol (IGP). EOS default is true.
           peer_groups:
             type: list
             primary_key: name
@@ -11993,6 +12037,13 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+          bgp:
+            type: dict
+            keys:
+              redistribute_internal:
+                type: bool
+                description: Allow redistribution of iBGP routes into an Interior
+                  Gateway Protocol (IGP). EOS default is true.
           peer_groups:
             type: list
             primary_key: name
@@ -12711,6 +12762,13 @@ keys:
               description: VRF name.
               convert_types:
               - int
+            bgp:
+              type: dict
+              keys:
+                redistribute_internal:
+                  type: bool
+                  description: Allow redistribution of iBGP routes into an Interior
+                    Gateway Protocol (IGP). EOS default is true.
             rd:
               type: str
               description: Route distinguisher.
@@ -13216,6 +13274,10 @@ keys:
                               - str
                               min: 2
                               max: 64
+                    redistribute_internal:
+                      type: bool
+                      description: Allow redistribution of iBGP routes into an Interior
+                        Gateway Protocol (IGP). EOS default is true.
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -13378,6 +13440,10 @@ keys:
                               - str
                               min: 2
                               max: 64
+                    redistribute_internal:
+                      type: bool
+                      description: Allow redistribution of iBGP routes into an Interior
+                        Gateway Protocol (IGP). EOS default is true.
                 neighbors:
                   type: list
                   primary_key: ip_address
