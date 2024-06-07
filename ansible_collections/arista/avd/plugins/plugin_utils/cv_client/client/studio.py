@@ -27,6 +27,7 @@ from ..api.arista.studio.v1 import (
     StudioRequest,
     StudioServiceStub,
 )
+from ..api.arista.time import TimeBounds
 from ..api.fmp import RepeatedString
 from .exceptions import CVResourceNotFound, get_cv_client_exception
 
@@ -95,7 +96,7 @@ class StudioMixin:
                     remove=True,
                 )
             ],
-            time=time,
+            time=TimeBounds(start=None, end=time),
         )
         client = StudioConfigServiceStub(self._channel)
         try:
