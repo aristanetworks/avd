@@ -9,13 +9,9 @@
 ## Patch Panel
 
 ### Patch Panel Summary
-{%     if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined %}
+{%     if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined and patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
 
-Patch Panel Connector Interface Recovery Review Delay Min: {{ patch_panel.connector.interface.recovery.review_delay.min }}
-{%     endif %}
-{%     if patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
-
-Patch Panel Connector Interface Recovery Review Delay Max: {{ patch_panel.connector.interface.recovery.review_delay.max }}
+Patch Panel Connector Interface Recovery Review Delay Min: {{ patch_panel.connector.interface.recovery.review_delay.min }}s - Max: {{ patch_panel.connector.interface.recovery.review_delay.max }}s
 {%     endif %}
 {%     if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable is arista.avd.defined(true) %}
 
