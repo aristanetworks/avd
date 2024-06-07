@@ -85,7 +85,7 @@ It's important to note when and perhaps more importantly, when not to use AVD.
 AVD is designed to generate and deploy complete configuration files where the network device's running configuration is entirely replaced. As such, caution should be exercised when running AVD against an existing manually configured network. We can take various approaches under such circumstances:
 
 - Compare AVD-generated configurations against device running configurations; make changes to the AVD input data and iterate until the configurations are functionally equivalent.
-- Use AVD to generate partial configurations that we can be apply to devices in such a way that will not destroy the existing manual configuration.
+- Use AVD to generate partial configurations that we can apply to devices in such a way that will not destroy the existing manual configuration.
 - Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD's `structured_configuration`, `raw_eos_cli` or `custom_template` facilities.
 
 Automating the provisioning of network infrastructure makes the most sense when the network is built from repeatable building blocks. These allow for code reuse and the abstraction of data. For example, point-to-point links are allocated IP subnets from a much larger pool in most leaf-spine networks. This is a tedious job for a human to design and configure, but is an ideal candidate to be automated. However, automation may take longer to achieve in a network that has evolved rather than one designed from the ground up.
