@@ -11,14 +11,11 @@ on:
       - .github/workflows/container_build_dev.yml
   workflow_dispatch:
     branches:
-      # - devel
-      - '**'
+      - devel
 
 jobs:
   build_dev_container:
-    # if: github.repository == 'aristanetworks/avd'
-    # try to build on my fork
-    if: github.repository == 'ankudinov/avd'
+    if: github.repository == 'aristanetworks/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:

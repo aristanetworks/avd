@@ -12,16 +12,13 @@ on:
       - ansible_collections/arista/avd/**
   workflow_dispatch:
     branches:
-      # - devel
-      - '**'
+      - devel
   release:
     types: [published]
 
 jobs:
   build_universal_container:
-    # if: github.repository == 'aristanetworks/avd'
-    # try to build on my fork
-    if: github.repository == 'ankudinov/avd'
+    if: github.repository == 'aristanetworks/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:
