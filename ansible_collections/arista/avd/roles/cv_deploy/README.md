@@ -123,13 +123,13 @@ for the `cv_server` var. The following are the cluster URLs used in production:
 
 | Region | URL |
 |--------|-----|
-| United States 1a | [www.arista.io](https://www.arista.io) |
-| United States 1b | [www.cv-prod-us-central1-b.arista.io](https://www.cv-prod-us-central1-b.arista.io)|
-| United States 1c | [www.cv-prod-us-central1-c.arista.io](https://www.cv-prod-us-central1-c.arista.io)|
-| Canada | [www.cv-prod-na-northeast1-b.arista.io](https://www.cv-prod-na-northeast1-b.arista.io)|
-| Europe West 2| [www.cv-prod-euwest-2.arista.io](https://www.cv-prod-euwest-2.arista.io)|
-| Japan| [www.cv-prod-apnortheast-1.arista.io](https://www.cv-prod-apnortheast-1.arista.io)|
-| Australia | [www.cv-prod-ausoutheast-1.arista.io](https://www.cv-prod-ausoutheast-1.arista.io)|
+| United States 1a | [www.arista.io](www.arista.io) |
+| United States 1b | [www.cv-prod-us-central1-b.arista.io](www.cv-prod-us-central1-b.arista.io)|
+| United States 1c | [www.cv-prod-us-central1-c.arista.io](www.cv-prod-us-central1-c.arista.io)|
+| Canada | [www.cv-prod-na-northeast1-b.arista.io](www.cv-prod-na-northeast1-b.arista.io)|
+| Europe West 2| [www.cv-prod-euwest-2.arista.io](www.cv-prod-euwest-2.arista.io)|
+| Japan| [www.cv-prod-apnortheast-1.arista.io](www.cv-prod-apnortheast-1.arista.io)|
+| Australia | [www.cv-prod-ausoutheast-1.arista.io](www.cv-prod-ausoutheast-1.arista.io)|
 | United Kingdon | [www.cv-prod-uk-1.arista.io](www.cv-prod-uk-1.arista.io) |
 
 !!! Warning
@@ -149,9 +149,9 @@ Make sure to copy the generated password. You only get view it once.
 Click "Save" to exit the dialogue box.
 ```
 
-![Figure: 1](../../../media/serviceaccount1.png)
-![Figure: 2](../../../media/serviceaccount2.png)
-![Figure: 3](../../../media/serviceaccount3.png)
+![Figure: 1](../../media/serviceaccount1.png)
+![Figure: 2](../../media/serviceaccount2.png)
+![Figure: 3](../../media/serviceaccount3.png)
 
 !!! note
     The name of the service account must match a username configured to be authorized on
