@@ -225,15 +225,15 @@ router bgp {{ router_bgp.as }}
 {%                 set policy = peer_group.missing_policy[dir] %}
 {%                 if policy.action is arista.avd.defined %}
 {%                     set missing_policy_cli = "neighbor " ~ peer_group.name ~ " missing-policy address-family all" %}
-{%                     if policy.include_community_list is arista.avd.defined or policy.include_prefix_list is arista.avd.defined or policy.include_sub_route_map is arista.avd.defined %}
+{%                     if policy.include_community_list is arista.avd.defined(true) or policy.include_prefix_list is arista.avd.defined(true) or policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                         set missing_policy_cli = missing_policy_cli ~ " include" %}
-{%                         if policy.include_community_list is arista.avd.defined %}
+{%                         if policy.include_community_list is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " community-list" %}
 {%                         endif %}
-{%                         if policy.include_prefix_list is arista.avd.defined %}
+{%                         if policy.include_prefix_list is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " prefix-list" %}
 {%                         endif %}
-{%                         if policy.include_sub_route_map is arista.avd.defined %}
+{%                         if policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " sub-route-map" %}
 {%                         endif %}
 {%                     endif %}
@@ -411,15 +411,15 @@ router bgp {{ router_bgp.as }}
 {%                 set policy = neighbor.missing_policy[dir] %}
 {%                 if policy.action is arista.avd.defined %}
 {%                     set missing_policy_cli = "neighbor " ~ neighbor.ip_address ~ " missing-policy address-family all" %}
-{%                     if policy.include_community_list is arista.avd.defined or policy.include_prefix_list is arista.avd.defined or policy.include_sub_route_map is arista.avd.defined %}
+{%                     if policy.include_community_list is arista.avd.defined(true) or policy.include_prefix_list is arista.avd.defined(true) or policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                         set missing_policy_cli = missing_policy_cli ~ " include" %}
-{%                         if policy.include_community_list is arista.avd.defined %}
+{%                         if policy.include_community_list is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " community-list" %}
 {%                         endif %}
-{%                         if policy.include_prefix_list is arista.avd.defined %}
+{%                         if policy.include_prefix_list is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " prefix-list" %}
 {%                         endif %}
-{%                         if policy.include_sub_route_map is arista.avd.defined %}
+{%                         if policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " sub-route-map" %}
 {%                         endif %}
 {%                     endif %}
