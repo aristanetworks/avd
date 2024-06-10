@@ -58,6 +58,7 @@ ASN Notation: asplain
 | update wait-install |
 | no bgp default ipv4-unicast |
 | no bgp default ipv4-unicast transport ipv6 |
+| no bgp redistribute-internal |
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 | bgp route-reflector preserve-attributes always |
@@ -218,6 +219,7 @@ router bgp 65101
    neighbor 192.0.3.9 peer group TEST
    neighbor 192.0.3.9 remote-as 65438
    no neighbor 192.0.3.9 bfd
+   no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set advertise-map ADV-MAP supress-map SUP-MAP summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
@@ -240,6 +242,7 @@ router bgp 65101
       network 10.0.0.0/8
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
+      no bgp redistribute-internal
       redistribute bgp leaked
       redistribute connected include leaked rcf Address_Family_IPV4_Connected()
       redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
@@ -257,6 +260,7 @@ router bgp 65101
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
+      bgp redistribute-internal
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
       redistribute ospfv3 match external include leaked
