@@ -333,7 +333,7 @@ keys:
               type: bool
             missing_policy:
               type: dict
-              description: Missing policy configuration.
+              description: Missing policy configuration for all address-families.
               keys:
                 direction_in:
                   description: Missing policy inbound direction.
@@ -356,12 +356,6 @@ keys:
                     include_sub_route_map:
                       type: bool
                       description: Include sub-route-map references in missing policy decision.
-                    address_family_all:
-                      description: Include all address-families for missing policy configuration.
-                      type: bool
-                      default: true
-                      valid_values:
-                        - true
                 direction_out:
                   description: Missing policy outbound direction.
                   type: dict
@@ -383,12 +377,6 @@ keys:
                     include_sub_route_map:
                       type: bool
                       description: Include sub-route-map references in missing policy decision.
-                    address_family_all:
-                      description: Include all address-families for missing policy configuration.
-                      type: bool
-                      default: true
-                      valid_values:
-                        - true
             link_bandwidth:
               type: dict
               keys:
@@ -594,7 +582,7 @@ keys:
               type: bool
             missing_policy:
               type: dict
-              description: Missing policy configuration.
+              description: Missing policy configuration for all address-families.
               keys:
                 direction_in:
                   description: Missing policy inbound direction.
@@ -617,12 +605,6 @@ keys:
                     include_sub_route_map:
                       type: bool
                       description: Include sub-route-map references in missing policy decision.
-                    address_family_all:
-                      description: Include all address-families for missing policy configuration.
-                      type: bool
-                      default: true
-                      valid_values:
-                        - true
                 direction_out:
                   description: Missing policy outbound direction.
                   type: dict
@@ -644,12 +626,6 @@ keys:
                     include_sub_route_map:
                       type: bool
                       description: Include sub-route-map references in missing policy decision.
-                    address_family_all:
-                      description: Include all address-families for missing policy configuration.
-                      type: bool
-                      default: true
-                      valid_values:
-                        - true
             allowas_in:
               type: dict
               keys:

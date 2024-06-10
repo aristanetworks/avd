@@ -27,7 +27,6 @@ router_bgp:
       missing_policy:
         direction_out:
           action: permit
-          address_family_all: True
       allowas_in:
         enabled: true
       shared_secret:
@@ -44,7 +43,6 @@ router_bgp:
       missing_policy:
         direction_in:
           action: deny
-          address_family_all: True
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
       route_map_out: RM-MLAG-PEER-OUT
@@ -62,7 +60,6 @@ router_bgp:
       missing_policy:
         direction_out:
           action: deny-in-out
-          address_family_all: True
     - ip_address: 192.168.255.3
       allowas_in:
         enabled: true
@@ -71,7 +68,6 @@ router_bgp:
       missing_policy:
         direction_in:
           action: deny
-          address_family_all: True
       maximum_routes_warning_limit: 2000
       maximum_routes_warning_only: true
   redistribute_routes:

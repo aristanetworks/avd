@@ -409,7 +409,7 @@ router bgp {{ router_bgp.as }}
 {%             for direction in ['in', 'out'] %}
 {%                 set dir = 'direction_' ~ direction %}
 {%                 set policy = neighbor.missing_policy[dir] %}
-{%                 if policy.action is arista.avd.defined and policy.address_family_all is arista.avd.defined(true) %}
+{%                 if policy.action is arista.avd.defined %}
 {%                     set missing_policy_cli = "neighbor " ~ neighbor.ip_address ~ " missing-policy address-family all" %}
 {%                     if policy.include_community_list is arista.avd.defined or policy.include_prefix_list is arista.avd.defined or policy.include_sub_route_map is arista.avd.defined %}
 {%                         set missing_policy_cli = missing_policy_cli ~ " include" %}

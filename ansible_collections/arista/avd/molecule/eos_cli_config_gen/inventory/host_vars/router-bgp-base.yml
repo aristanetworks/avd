@@ -58,11 +58,9 @@ router_bgp:
           action: deny
           include_prefix_list: True
           include_community_list: True
-          address_family_all: True
         direction_out:
           action: permit
           include_community_list: True
-          address_family_all: True
     - name: test-link-bandwidth2
       link_bandwidth:
         enabled: true
@@ -223,11 +221,9 @@ router_bgp:
           action: deny
           include_prefix_list: True
           include_community_list: True
-          address_family_all: True
         direction_out:
           action: permit
           include_community_list: True
-          address_family_all: True
     - ip_address: 192.0.3.3
       remote_as: 65434
       send_community: standard

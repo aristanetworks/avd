@@ -801,7 +801,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -831,15 +831,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -879,15 +870,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -1283,7 +1265,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -1313,15 +1295,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -1361,15 +1334,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -1765,7 +1729,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -1795,15 +1759,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -1843,15 +1798,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -2247,7 +2193,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -2277,15 +2223,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -2325,15 +2262,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -2729,7 +2657,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -2759,15 +2687,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -2807,15 +2726,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -3211,7 +3121,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -3241,15 +3151,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -3289,15 +3190,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -3693,7 +3585,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -3723,15 +3615,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -3771,15 +3654,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -4228,7 +4102,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -4258,15 +4132,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -4306,15 +4171,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -4755,7 +4611,7 @@
                 },
                 "missing_policy": {
                   "type": "object",
-                  "description": "Missing policy configuration.",
+                  "description": "Missing policy configuration for all address-families.",
                   "properties": {
                     "direction_in": {
                       "description": "Missing policy inbound direction.",
@@ -4785,15 +4641,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -4833,15 +4680,6 @@
                           "type": "boolean",
                           "description": "Include sub-route-map references in missing policy decision.",
                           "title": "Include Sub Route Map"
-                        },
-                        "address_family_all": {
-                          "description": "Include all address-families for missing policy configuration.",
-                          "type": "boolean",
-                          "default": true,
-                          "enum": [
-                            true
-                          ],
-                          "title": "Address Family All"
                         }
                       },
                       "required": [
@@ -36050,7 +35888,7 @@
                         },
                         "missing_policy": {
                           "type": "object",
-                          "description": "Missing policy configuration.",
+                          "description": "Missing policy configuration for all address-families.",
                           "properties": {
                             "direction_in": {
                               "description": "Missing policy inbound direction.",
@@ -36080,15 +35918,6 @@
                                   "type": "boolean",
                                   "description": "Include sub-route-map references in missing policy decision.",
                                   "title": "Include Sub Route Map"
-                                },
-                                "address_family_all": {
-                                  "description": "Include all address-families for missing policy configuration.",
-                                  "type": "boolean",
-                                  "default": true,
-                                  "enum": [
-                                    true
-                                  ],
-                                  "title": "Address Family All"
                                 }
                               },
                               "required": [
@@ -36128,15 +35957,6 @@
                                   "type": "boolean",
                                   "description": "Include sub-route-map references in missing policy decision.",
                                   "title": "Include Sub Route Map"
-                                },
-                                "address_family_all": {
-                                  "description": "Include all address-families for missing policy configuration.",
-                                  "type": "boolean",
-                                  "default": true,
-                                  "enum": [
-                                    true
-                                  ],
-                                  "title": "Address Family All"
                                 }
                               },
                               "required": [
@@ -36472,7 +36292,7 @@
                         },
                         "missing_policy": {
                           "type": "object",
-                          "description": "Missing policy configuration.",
+                          "description": "Missing policy configuration for all address-families.",
                           "properties": {
                             "direction_in": {
                               "description": "Missing policy inbound direction.",
@@ -36502,15 +36322,6 @@
                                   "type": "boolean",
                                   "description": "Include sub-route-map references in missing policy decision.",
                                   "title": "Include Sub Route Map"
-                                },
-                                "address_family_all": {
-                                  "description": "Include all address-families for missing policy configuration.",
-                                  "type": "boolean",
-                                  "default": true,
-                                  "enum": [
-                                    true
-                                  ],
-                                  "title": "Address Family All"
                                 }
                               },
                               "required": [
@@ -36550,15 +36361,6 @@
                                   "type": "boolean",
                                   "description": "Include sub-route-map references in missing policy decision.",
                                   "title": "Include Sub Route Map"
-                                },
-                                "address_family_all": {
-                                  "description": "Include all address-families for missing policy configuration.",
-                                  "type": "boolean",
-                                  "default": true,
-                                  "enum": [
-                                    true
-                                  ],
-                                  "title": "Address Family All"
                                 }
                               },
                               "required": [
