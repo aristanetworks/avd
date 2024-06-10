@@ -69,19 +69,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy override configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code> | Missing policy action options. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.include_community_list") | Boolean |  |  |  | Include community list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.include_prefix_list") | Boolean |  |  |  | Include prefix list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.include_sub_route_map") | Boolean |  |  |  | Include sub route map references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.address_family_all") | Boolean | Required |  | Valid Values:<br>- <code>True</code> | Include all address families for missing policy configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_in.address_family_all") | Boolean |  | `True` | Valid Values:<br>- <code>True</code> | Include all address-families for missing policy configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out") | Dictionary |  |  |  | Missing policy outbound direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code> | Missing policy action options. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.include_community_list") | Boolean |  |  |  | Include community list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub route map references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.address_family_all") | Boolean | Required |  | Valid Values:<br>- <code>True</code> | Include all address families for missing policy configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].missing_policy.direction_out.address_family_all") | Boolean |  | `True` | Valid Values:<br>- <code>True</code> | Include all address-families for missing policy configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_bandwidth</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].link_bandwidth") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].link_bandwidth.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].link_bandwidth.default") | String |  |  |  | nn.nn(K|M|G) link speed in bits/second. |
@@ -190,19 +190,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_limit</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_limit") | String |  |  |  | Maximum number of routes after which a warning is issued (0 means never warn) or<br>Percentage of maximum number of routes at which to warn ("<1-100> percent").<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes_warning_only</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].maximum_routes_warning_only") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy override configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code> | Missing policy action options. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.include_community_list") | Boolean |  |  |  | Include community list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.include_prefix_list") | Boolean |  |  |  | Include prefix list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.include_sub_route_map") | Boolean |  |  |  | Include sub route map references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.address_family_all") | Boolean | Required |  | Valid Values:<br>- <code>True</code> | Include all address families for missing policy configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_in.address_family_all") | Boolean |  | `True` | Valid Values:<br>- <code>True</code> | Include all address-families for missing policy configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out") | Dictionary |  |  |  | Missing policy outbound direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code> | Missing policy action options. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.include_community_list") | Boolean |  |  |  | Include community list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix list references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub route map references in missing policy decision. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.address_family_all") | Boolean | Required |  | Valid Values:<br>- <code>True</code> | Include all address families for missing policy configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_all</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].missing_policy.direction_out.address_family_all") | Boolean |  | `True` | Valid Values:<br>- <code>True</code> | Include all address-families for missing policy configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_bandwidth</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].link_bandwidth") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].link_bandwidth.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].link_bandwidth.default") | String |  |  |  | nn.nn(K|M|G) link speed in bits/second. |
@@ -368,44 +368,44 @@
             maximum_routes_warning_limit: <str>
             maximum_routes_warning_only: <bool>
 
-            # Missing policy override configuration.
+            # Missing policy configuration.
             missing_policy:
 
               # Missing policy inbound direction.
               direction_in:
 
-                # Missing policy action options.
-                action: <str; "deny" | "permit"; required>
+                # Missing policy action.
+                action: <str; "deny" | "permit" | "deny-in-out"; required>
 
-                # Include community list references in missing policy decision.
+                # Include community-list references in missing policy decision.
                 include_community_list: <bool>
 
-                # Include prefix list references in missing policy decision.
+                # Include prefix-list references in missing policy decision.
                 include_prefix_list: <bool>
 
-                # Include sub route map references in missing policy decision.
+                # Include sub-route-map references in missing policy decision.
                 include_sub_route_map: <bool>
 
-                # Include all address families for missing policy configuration.
-                address_family_all: <bool; True; required>
+                # Include all address-families for missing policy configuration.
+                address_family_all: <bool; True; default=True>
 
               # Missing policy outbound direction.
               direction_out:
 
-                # Missing policy action options.
-                action: <str; "deny" | "permit"; required>
+                # Missing policy action.
+                action: <str; "deny" | "permit" | "deny-in-out"; required>
 
-                # Include community list references in missing policy decision.
+                # Include community-list references in missing policy decision.
                 include_community_list: <bool>
 
-                # Include prefix list references in missing policy decision.
+                # Include prefix-list references in missing policy decision.
                 include_prefix_list: <bool>
 
-                # Include sub route map references in missing policy decision.
+                # Include sub-route-map references in missing policy decision.
                 include_sub_route_map: <bool>
 
-                # Include all address families for missing policy configuration.
-                address_family_all: <bool; True; required>
+                # Include all address-families for missing policy configuration.
+                address_family_all: <bool; True; default=True>
             link_bandwidth:
               enabled: <bool>
 
@@ -668,44 +668,44 @@
                 maximum_routes_warning_limit: <str>
                 maximum_routes_warning_only: <bool>
 
-                # Missing policy override configuration.
+                # Missing policy configuration.
                 missing_policy:
 
                   # Missing policy inbound direction.
                   direction_in:
 
-                    # Missing policy action options.
-                    action: <str; "deny" | "permit"; required>
+                    # Missing policy action.
+                    action: <str; "deny" | "permit" | "deny-in-out"; required>
 
-                    # Include community list references in missing policy decision.
+                    # Include community-list references in missing policy decision.
                     include_community_list: <bool>
 
-                    # Include prefix list references in missing policy decision.
+                    # Include prefix-list references in missing policy decision.
                     include_prefix_list: <bool>
 
-                    # Include sub route map references in missing policy decision.
+                    # Include sub-route-map references in missing policy decision.
                     include_sub_route_map: <bool>
 
-                    # Include all address families for missing policy configuration.
-                    address_family_all: <bool; True; required>
+                    # Include all address-families for missing policy configuration.
+                    address_family_all: <bool; True; default=True>
 
                   # Missing policy outbound direction.
                   direction_out:
 
-                    # Missing policy action options.
-                    action: <str; "deny" | "permit"; required>
+                    # Missing policy action.
+                    action: <str; "deny" | "permit" | "deny-in-out"; required>
 
-                    # Include community list references in missing policy decision.
+                    # Include community-list references in missing policy decision.
                     include_community_list: <bool>
 
-                    # Include prefix list references in missing policy decision.
+                    # Include prefix-list references in missing policy decision.
                     include_prefix_list: <bool>
 
-                    # Include sub route map references in missing policy decision.
+                    # Include sub-route-map references in missing policy decision.
                     include_sub_route_map: <bool>
 
-                    # Include all address families for missing policy configuration.
-                    address_family_all: <bool; True; required>
+                    # Include all address-families for missing policy configuration.
+                    address_family_all: <bool; True; default=True>
                 link_bandwidth:
                   enabled: <bool>
 

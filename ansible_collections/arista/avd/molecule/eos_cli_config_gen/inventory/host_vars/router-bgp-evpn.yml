@@ -61,7 +61,7 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       missing_policy:
         direction_out:
-          action: permit
+          action: deny-in-out
           address_family_all: True
     - ip_address: 192.168.255.3
       allowas_in:
