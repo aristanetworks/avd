@@ -27012,6 +27012,33 @@
                             "^_.+$": {}
                           },
                           "title": "L2 Protocols"
+                        },
+                        "traffic_unprotected": {
+                          "type": "object",
+                          "properties": {
+                            "action": {
+                              "type": "string",
+                              "description": "Allow/drop the transmit/receive of unprotected traffic.",
+                              "enum": [
+                                "allow",
+                                "drop"
+                              ],
+                              "title": "Action"
+                            },
+                            "allow_active_sak": {
+                              "type": "boolean",
+                              "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                              "title": "Allow Active Sak"
+                            }
+                          },
+                          "required": [
+                            "action"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Traffic Unprotected"
                         }
                       },
                       "additionalProperties": false,
@@ -30240,6 +30267,78 @@
               "patch_panel": {
                 "type": "object",
                 "properties": {
+                  "connector": {
+                    "type": "object",
+                    "properties": {
+                      "interface": {
+                        "type": "object",
+                        "properties": {
+                          "patch": {
+                            "type": "object",
+                            "properties": {
+                              "bgp_vpws_remote_failure_errdisable": {
+                                "type": "boolean",
+                                "title": "BGP Vpws Remote Failure Errdisable"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Patch"
+                          },
+                          "recovery": {
+                            "type": "object",
+                            "properties": {
+                              "review_delay": {
+                                "type": "object",
+                                "properties": {
+                                  "min": {
+                                    "type": "integer",
+                                    "minimum": 10,
+                                    "maximum": 600,
+                                    "description": "Minimum delay.",
+                                    "title": "Min"
+                                  },
+                                  "max": {
+                                    "type": "integer",
+                                    "minimum": 15,
+                                    "maximum": 900,
+                                    "description": "Maximum delay.",
+                                    "title": "Max"
+                                  }
+                                },
+                                "required": [
+                                  "min",
+                                  "max"
+                                ],
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Review Delay"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Recovery"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Interface"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Connector"
+                  },
                   "patches": {
                     "type": "array",
                     "items": {
@@ -34829,6 +34928,11 @@
                           "^_.+$": {}
                         },
                         "title": "Bestpath"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,
@@ -36651,6 +36755,21 @@
                         },
                         "title": "Networks"
                       },
+                      "bgp": {
+                        "type": "object",
+                        "properties": {
+                          "redistribute_internal": {
+                            "type": "boolean",
+                            "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                            "title": "Redistribute Internal"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
+                      },
                       "peer_groups": {
                         "type": "array",
                         "items": {
@@ -37129,6 +37248,21 @@
                           ]
                         },
                         "title": "Networks"
+                      },
+                      "bgp": {
+                        "type": "object",
+                        "properties": {
+                          "redistribute_internal": {
+                            "type": "boolean",
+                            "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                            "title": "Redistribute Internal"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "BGP"
                       },
                       "peer_groups": {
                         "type": "array",
@@ -38461,6 +38595,21 @@
                           "description": "VRF name.",
                           "title": "Name"
                         },
+                        "bgp": {
+                          "type": "object",
+                          "properties": {
+                            "redistribute_internal": {
+                              "type": "boolean",
+                              "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                              "title": "Redistribute Internal"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "BGP"
+                        },
                         "rd": {
                           "type": "string",
                           "description": "Route distinguisher.",
@@ -39196,6 +39345,11 @@
                                     "^_.+$": {}
                                   },
                                   "title": "Additional Paths"
+                                },
+                                "redistribute_internal": {
+                                  "type": "boolean",
+                                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                                  "title": "Redistribute Internal"
                                 }
                               },
                               "additionalProperties": false,
@@ -39469,6 +39623,11 @@
                                     "^_.+$": {}
                                   },
                                   "title": "Additional Paths"
+                                },
+                                "redistribute_internal": {
+                                  "type": "boolean",
+                                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                                  "title": "Redistribute Internal"
                                 }
                               },
                               "additionalProperties": false,
@@ -48016,6 +48175,19 @@
         },
         {
           "platforms": [
+            "7010TX"
+          ],
+          "feature_support": {
+            "queue_monitor_length_notify": false,
+            "per_interface_mtu": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
             "7280R",
             "7280R2",
             "7020R"
@@ -48133,6 +48305,34 @@
             "mlag": 300,
             "non_mlag": 330
           }
+        },
+        {
+          "platforms": [
+            "AWE-5310",
+            "AWE-5510",
+            "AWE-7250R",
+            "AWE-7230R"
+          ],
+          "feature_support": {
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false,
+            "interface_storm_control": false,
+            "queue_monitor_length_notify": false
+          },
+          "management_interface": "Management1/1"
+        },
+        {
+          "platforms": [
+            "AWE-7220R"
+          ],
+          "feature_support": {
+            "bgp_update_wait_for_convergence": true,
+            "bgp_update_wait_install": false,
+            "interface_storm_control": false,
+            "queue_monitor_length_notify": false,
+            "poe": true
+          },
+          "management_interface": "Management1"
         }
       ],
       "title": "Platform Settings"

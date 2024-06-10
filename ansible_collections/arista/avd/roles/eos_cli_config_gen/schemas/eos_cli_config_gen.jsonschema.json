@@ -9954,6 +9954,33 @@
                   "^_.+$": {}
                 },
                 "title": "L2 Protocols"
+              },
+              "traffic_unprotected": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "description": "Allow/drop the transmit/receive of unprotected traffic.",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_active_sak": {
+                    "type": "boolean",
+                    "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                    "title": "Allow Active Sak"
+                  }
+                },
+                "required": [
+                  "action"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Traffic Unprotected"
               }
             },
             "additionalProperties": false,
@@ -13182,6 +13209,78 @@
     "patch_panel": {
       "type": "object",
       "properties": {
+        "connector": {
+          "type": "object",
+          "properties": {
+            "interface": {
+              "type": "object",
+              "properties": {
+                "patch": {
+                  "type": "object",
+                  "properties": {
+                    "bgp_vpws_remote_failure_errdisable": {
+                      "type": "boolean",
+                      "title": "BGP Vpws Remote Failure Errdisable"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Patch"
+                },
+                "recovery": {
+                  "type": "object",
+                  "properties": {
+                    "review_delay": {
+                      "type": "object",
+                      "properties": {
+                        "min": {
+                          "type": "integer",
+                          "minimum": 10,
+                          "maximum": 600,
+                          "description": "Minimum delay.",
+                          "title": "Min"
+                        },
+                        "max": {
+                          "type": "integer",
+                          "minimum": 15,
+                          "maximum": 900,
+                          "description": "Maximum delay.",
+                          "title": "Max"
+                        }
+                      },
+                      "required": [
+                        "min",
+                        "max"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Review Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Recovery"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Connector"
+        },
         "patches": {
           "type": "array",
           "items": {
@@ -17771,6 +17870,11 @@
                 "^_.+$": {}
               },
               "title": "Bestpath"
+            },
+            "redistribute_internal": {
+              "type": "boolean",
+              "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+              "title": "Redistribute Internal"
             }
           },
           "additionalProperties": false,
@@ -19593,6 +19697,21 @@
               },
               "title": "Networks"
             },
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "redistribute_internal": {
+                  "type": "boolean",
+                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                  "title": "Redistribute Internal"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
             "peer_groups": {
               "type": "array",
               "items": {
@@ -20071,6 +20190,21 @@
                 ]
               },
               "title": "Networks"
+            },
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "redistribute_internal": {
+                  "type": "boolean",
+                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                  "title": "Redistribute Internal"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
             },
             "peer_groups": {
               "type": "array",
@@ -21403,6 +21537,21 @@
                 "description": "VRF name.",
                 "title": "Name"
               },
+              "bgp": {
+                "type": "object",
+                "properties": {
+                  "redistribute_internal": {
+                    "type": "boolean",
+                    "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                    "title": "Redistribute Internal"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BGP"
+              },
               "rd": {
                 "type": "string",
                 "description": "Route distinguisher.",
@@ -22138,6 +22287,11 @@
                           "^_.+$": {}
                         },
                         "title": "Additional Paths"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,
@@ -22411,6 +22565,11 @@
                           "^_.+$": {}
                         },
                         "title": "Additional Paths"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,

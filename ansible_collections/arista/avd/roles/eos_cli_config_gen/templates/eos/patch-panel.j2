@@ -7,6 +7,15 @@
 {% if patch_panel is arista.avd.defined %}
 !
 patch panel
+{%     if patch_panel.connector.interface is arista.avd.defined %}
+{%         if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined and patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
+   connector interface recovery review delay {{ patch_panel.connector.interface.recovery.review_delay.min }} {{ patch_panel.connector.interface.recovery.review_delay.max }}
+{%         endif %}
+{%         if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable is arista.avd.defined(true) %}
+   connector interface patch bgp vpws remote-failure errdisable
+{%         endif %}
+   !
+{%     endif %}
 {%     for patch in patch_panel.patches | arista.avd.default([]) %}
 {%         if patch.name is arista.avd.defined %}
    patch {{ patch.name }}

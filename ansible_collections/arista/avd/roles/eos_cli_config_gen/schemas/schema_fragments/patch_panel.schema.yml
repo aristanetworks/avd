@@ -9,11 +9,44 @@ keys:
   patch_panel:
     type: dict
     keys:
+      connector:
+        type: dict
+        keys:
+          interface:
+            type: dict
+            keys:
+              patch:
+                type: dict
+                keys:
+                  bgp_vpws_remote_failure_errdisable:
+                    type: bool
+              recovery:
+                type: dict
+                keys:
+                  review_delay:
+                    type: dict
+                    keys:
+                      min:
+                        type: int
+                        required: true
+                        min: 10
+                        max: 600
+                        convert_types:
+                          - str
+                        description: Minimum delay.
+                      max:
+                        type: int
+                        required: true
+                        min: 15
+                        max: 900
+                        convert_types:
+                          - str
+                        description: Maximum delay.
       patches:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -25,7 +58,7 @@ keys:
               type: list
               primary_key: id
               convert_types:
-              - dict
+                - dict
               min_length: 2
               max_length: 2
               description: Must have exactly two connectors to a patch of which at least one must be of type "interface".
@@ -35,12 +68,12 @@ keys:
                   id:
                     type: str
                     convert_types:
-                    - int
+                      - int
                   type:
                     type: str
                     valid_values:
-                    - interface
-                    - pseudowire
+                      - interface
+                      - pseudowire
                     required: true
                   endpoint:
                     type: str

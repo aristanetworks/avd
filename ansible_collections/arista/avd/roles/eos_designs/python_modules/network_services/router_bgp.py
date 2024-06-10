@@ -196,7 +196,14 @@ class RouterBgpMixin(UtilsMixin):
                             "prefix_list_out": bgp_peer.pop("prefix_list_out", None),
                         }
                     )
-                    bgp_vrf.setdefault(address_family, {}).setdefault("neighbors", []).append(neighbor)
+
+                    append_if_not_duplicate(
+                        list_of_dicts=bgp_vrf.setdefault(address_family, {}).setdefault("neighbors", []),
+                        primary_key="ip_address",
+                        new_dict=neighbor,
+                        context="BGP peer defined under VRFs",
+                        context_keys=["ip_address"],
+                    )
 
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
                         route_map = f"RM-{vrf_name}-{peer_ip}-SET-NEXT-HOP-OUT"
@@ -208,7 +215,14 @@ class RouterBgpMixin(UtilsMixin):
                         bgp_peer.pop("set_ipv6_next_hop", None)
 
                     bgp_peer.pop("nodes", None)
-                    bgp_vrf.setdefault("neighbors", []).append({"ip_address": peer_ip, **bgp_peer})
+
+                    append_if_not_duplicate(
+                        list_of_dicts=bgp_vrf.setdefault("neighbors", []),
+                        primary_key="ip_address",
+                        new_dict={"ip_address": peer_ip, **bgp_peer},
+                        context="BGP peer defined under VRFs",
+                        context_keys=["ip_address"],
+                    )
 
                 if (
                     get(vrf, "ospf.enabled") is True

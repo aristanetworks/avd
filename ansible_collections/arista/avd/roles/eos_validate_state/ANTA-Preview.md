@@ -151,6 +151,12 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
 - (New) AvdTestAPIHttpsSSL (No Ansible tags, use the new `skipped_tests` variable instead)
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
+- (New) AvdTestIPSecurity (No Ansible tags, use the new `skipped_tests` variable instead)
+  - VerifySpecificIPSecConn: Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
+
+- (New) AvdTestStun (No Ansible tags, use the new `skipped_tests` variable instead)
+  - VerifyStunClient: Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group.
+
 ## Input variables
 
 ```yaml

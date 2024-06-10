@@ -34,6 +34,13 @@ mac security
 {%         if profile.mka.session.rekey_period is arista.avd.defined %}
       mka session rekey-period {{ profile.mka.session.rekey_period }}
 {%         endif %}
+{%         if profile.traffic_unprotected.action is arista.avd.defined %}
+{%             set traffic_unprotected_cli = "traffic unprotected " ~ profile.traffic_unprotected.action %}
+{%             if profile.traffic_unprotected.action == "allow" and profile.traffic_unprotected.allow_active_sak is arista.avd.defined(true) %}
+{%                 set traffic_unprotected_cli = traffic_unprotected_cli ~ " active-sak" %}
+{%             endif %}
+      {{ traffic_unprotected_cli }}
+{%         endif %}
 {%         if profile.sci is arista.avd.defined(true) %}
       sci
 {%         endif %}
