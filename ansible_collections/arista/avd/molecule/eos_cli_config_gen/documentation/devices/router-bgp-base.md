@@ -198,6 +198,7 @@ router bgp 65101
    neighbor 192.0.3.3 remote-as 65434
    neighbor 192.0.3.3 rib-in pre-policy retain
    neighbor 192.0.3.3 send-community standard
+   neighbor 192.0.3.3 missing-policy address-family all include community-list prefix-list sub-route-map direction in action deny
    neighbor 192.0.3.4 remote-as 65435
    neighbor 192.0.3.4 ttl maximum-hops 1
    no neighbor 192.0.3.4 rib-in pre-policy retain

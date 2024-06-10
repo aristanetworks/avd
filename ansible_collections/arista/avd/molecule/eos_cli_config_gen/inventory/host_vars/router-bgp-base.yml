@@ -232,6 +232,12 @@ router_bgp:
         all: false
       # Test no config generation
       default_originate:
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+          include_sub_route_map: true
     - ip_address: 192.0.3.4
       remote_as: 65435
       send_community: large
