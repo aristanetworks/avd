@@ -8,16 +8,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import wrap_filter
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.convert_dicts"
 
 try:
     from pyavd.j2filters.convert_dicts import convert_dicts
-
-    PYAVD_IMPORT_EXCEPTION = None
 except ImportError as e:
-    convert_dicts = None
-    PYAVD_IMPORT_EXCEPTION = e
+    convert_dicts = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -98,5 +103,5 @@ _value:
 class FilterModule(object):
     def filters(self):
         return {
-            "convert_dicts": wrap_filter("arista.avd.default", PYAVD_IMPORT_EXCEPTION)(convert_dicts),
+            "convert_dicts": wrap_filter(PLUGIN_NAME)(convert_dicts),
         }

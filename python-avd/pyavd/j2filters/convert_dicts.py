@@ -16,7 +16,7 @@ def convert_dicts(dictionary, primary_key="name", secondary_key=None):
     This filter is intended for:
 
     - Seamless data model migration from dictionaries to lists.
-    - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
+    - Improve processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
     Note: If there is a non-dictionary value with no secondary key provided, it will pass through untouched
 
