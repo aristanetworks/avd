@@ -1612,7 +1612,7 @@ keys:
         keys:
           enabled:
             type: bool
-            description: The `enabled` key is mutually exclusive with `url` and `ssl_profile`.
+            required: true
           url:
             type: str
             description: "Supported URL type:\n  - http: http://<hostname>[:<port>]\n

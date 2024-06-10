@@ -66,14 +66,14 @@ interface Management1
 | IPv4 Access-list | ACL |
 | Start limit | Infinite |
 
-#### 802.1X Dot1x supplicant
+#### 802.1X Supplicant
 
 | Attribute | Value |
 | --------- | ----- |
 | Logging | True |
 | Disconnect cached-results timeout | 79 seconds |
 
-##### 802.1X Dot1x supplicant profiles
+##### 802.1X Supplicant profiles
 
 | Profile | EAP Method | Identity | SSL Profile |
 | ------- | ---------- | -------- | ----------- |

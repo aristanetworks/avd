@@ -19473,7 +19473,6 @@
                     "properties": {
                       "enabled": {
                         "type": "boolean",
-                        "description": "The `enabled` key is mutually exclusive with `url` and `ssl_profile`.",
                         "title": "Enabled"
                       },
                       "url": {
@@ -19496,6 +19495,9 @@
                         "title": "Access List IPv4"
                       }
                     },
+                    "required": [
+                      "enabled"
+                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}

@@ -39,7 +39,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_action_reauthenticate</samp>](## "dot1x.aaa.unresponsive.recovery_action_reauthenticate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accounting_update_interval</samp>](## "dot1x.aaa.accounting_update_interval") | Integer |  |  | Min: 5<br>Max: 65535 | Interval period in seconds. |
     | [<samp>&nbsp;&nbsp;captive_portal</samp>](## "dot1x.captive_portal") | Dictionary |  |  |  | Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x.captive_portal.enabled") | Boolean |  |  |  | The `enabled` key is mutually exclusive with `url` and `ssl_profile`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x.captive_portal.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x.captive_portal.url") | String |  |  |  | Supported URL type:<br>  - http: http://<hostname>[:<port>]<br>  - https: https://<hostname>[:<port>] |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.captive_portal.ssl_profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x.captive_portal.start_limit_infinite") | Boolean |  |  |  | Set captive-portal start limit to infinte. |
@@ -130,9 +130,7 @@
 
       # Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
       captive_portal:
-
-        # The `enabled` key is mutually exclusive with `url` and `ssl_profile`.
-        enabled: <bool>
+        enabled: <bool; required>
 
         # Supported URL type:
         #   - http: http://<hostname>[:<port>]
