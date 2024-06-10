@@ -5557,6 +5557,12 @@ $defs:
             This setting can be overridden per VRF.
 
             '
+        evpn_vlan_bundle:
+          type: str
+          description: 'Name of the "evpn_vlan_bundle" defined under "evpn_vlan_bundles".
+
+            This settings enables the "evpn_vlan_bundle" setting for all l2vlans and
+            SVIs present in the tenant.'
         bgp_peer_groups:
           documentation_options:
             table: network-services-vrfs-bgp-settings
@@ -6230,6 +6236,8 @@ $defs:
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                         to inherit configuration.
 
+                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+
                         The common option "evpn_vlan_aware_bundles" is disregarded
                         for this option.
 
@@ -6901,6 +6909,8 @@ $defs:
                 type: str
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                   to inherit configuration.
+
+                  This setting overrides "evpn_vlan_bundle" set at tenant level.
 
                   The common option "evpn_vlan_aware_bundles" is disregarded for this
                   option.
