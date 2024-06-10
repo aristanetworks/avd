@@ -8,16 +8,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import wrap_filter
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.default"
 
 try:
     from pyavd.j2filters.default import default
-
-    PYAVD_IMPORT_EXCEPTION = None
 except ImportError as e:
-    default = None
-    PYAVD_IMPORT_EXCEPTION = e
+    default = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -59,5 +64,5 @@ _value:
 class FilterModule(object):
     def filters(self):
         return {
-            "default": wrap_filter("arista.avd.default", PYAVD_IMPORT_EXCEPTION)(default),
+            "default": wrap_filter(PLUGIN_NAME)(default),
         }

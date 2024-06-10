@@ -28,6 +28,7 @@ router_bgp:
       always: true
     bestpath:
       d_path: true
+    redistribute_internal: false
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24
@@ -96,6 +97,8 @@ router_bgp:
       - prefix: 172.16.0.0/12
       - prefix: 192.168.0.0/16
         route_map: RM-FOO-MATCH
+    bgp:
+      redistribute_internal: false
     peer_groups:
       - name: foo
         prefix_list_in: PL-BAR-v4-IN
@@ -134,6 +137,8 @@ router_bgp:
       - prefix: 2001:db8:100::/40
       - prefix: 2001:db8:200::/40
         route_map: RM-BAR-MATCH
+    bgp:
+      redistribute_internal: true
     peer_groups:
       - name: baz
         prefix_list_in: PL-BAR-v6-IN

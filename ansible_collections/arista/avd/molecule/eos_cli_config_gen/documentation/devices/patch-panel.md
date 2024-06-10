@@ -40,9 +40,7 @@ interface Management1
 
 ### Patch Panel Summary
 
-Patch Panel Connector Interface Recovery Review Delay Min: 10
-
-Patch Panel Connector Interface Recovery Review Delay Max: 900
+Patch Panel Connector Interface Recovery Review Delay Min: 10s - Max: 900s
 
 Patch Panel Connector Interface Path BGP VPWS Remote Failure Errdisable is enabled.
 
