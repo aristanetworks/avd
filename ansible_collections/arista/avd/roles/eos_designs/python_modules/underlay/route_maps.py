@@ -61,7 +61,7 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
-            if self.shared_utils.wan_ha:
+            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
                 sequence_numbers.append(
                     {
                         "sequence": 50,
@@ -123,8 +123,7 @@ class RouteMapsMixin(UtilsMixin):
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
             # RM-BGP-UNDERLAY-PEERS-OUT
-            # TODO @gmuloc: AVD 5.0.0 unify non HA and HA usecase
-            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
+            if self.shared_utils.wan_ha:
                 sequence_numbers = [
                     {
                         "sequence": 10,
@@ -136,39 +135,10 @@ class RouteMapsMixin(UtilsMixin):
                     {
                         "sequence": 20,
                         "type": "permit",
-                        "description": "Advertise local routes towards LAN",
-                        "match": ["route-type local"],
-                    },
-                    {
-                        "sequence": 30,
-                        "type": "permit",
-                        "description": "Advertise routes learned from WAN iBGP towards LAN",
-                        "match": ["route-type internal"],
-                    },
-                    {
-                        "sequence": 40,
-                        "type": "permit",
-                        "description": "Advertise WAN HA prefixes towards LAN",
-                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
+                        "description": "Permit every other valid route",
                     },
                 ]
-            else:
-                # These should be removed and aligned with the HA sequence numbers when moving to 5.0.0
-                sequence_numbers = [
-                    {
-                        "sequence": 10,
-                        "type": "permit",
-                        "description": "Advertise local routes towards LAN",
-                        "match": ["extcommunity ECL-EVPN-SOO"],
-                    },
-                    {
-                        "sequence": 20,
-                        "type": "permit",
-                        "description": "Advertise routes received from WAN iBGP towards LAN",
-                        "match": ["route-type internal"],
-                    },
-                ]
-            route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
+                route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
 
         if route_maps:
             return route_maps

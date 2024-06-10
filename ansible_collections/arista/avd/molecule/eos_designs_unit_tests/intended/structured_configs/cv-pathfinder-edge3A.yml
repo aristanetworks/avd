@@ -179,10 +179,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.42.6:404 additive
-  - sequence: 50
-    type: permit
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
@@ -194,14 +190,15 @@ route_maps:
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Advertise local routes towards LAN
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
   - sequence: 20
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
+    description: Permit every other valid route
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
