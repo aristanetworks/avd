@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 
 
-def convert_dicts(dictionary, primary_key="name", secondary_key=None):
+def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_key: str | None = None) -> list:
     """
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
     dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
