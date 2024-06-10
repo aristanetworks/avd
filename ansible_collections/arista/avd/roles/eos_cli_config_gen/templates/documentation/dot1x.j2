@@ -51,15 +51,11 @@
 
 | Authentication Attribute | Value |
 | ------------------------ | ----- |
-{%             if dot1x.captive_portal.url is arista.avd.defined or dot1x.captive_portal.ssl_profile is arista.avd.defined %}
-{%                 if dot1x.captive_portal.url is arista.avd.defined %}
+{%             if dot1x.captive_portal.url is arista.avd.defined %}
 | URL | {{ dot1x.captive_portal.url }} |
-{%                 endif %}
-{%                 if dot1x.captive_portal.ssl_profile is arista.avd.defined %}
+{%             endif %}
+{%             if dot1x.captive_portal.ssl_profile is arista.avd.defined %}
 | SSL profile | {{ dot1x.captive_portal.ssl_profile }} |
-{%                 endif %}
-{%             elif dot1x.captive_portal.enabled is arista.avd.defined %}
-| Captive-portal enabled | {{ dot1x.captive_portal.enabled }} |
 {%             endif %}
 {%             if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
 | IPv4 Access-list | {{ dot1x.captive_portal.access_list_ipv4 }} |
