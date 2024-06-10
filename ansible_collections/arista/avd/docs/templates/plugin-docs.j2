@@ -115,7 +115,7 @@ The below requirements are needed on the host that executes this module.
 ## Notes
 
 {%     for note in notes %}
-- {{ note | e }}
+- {{ note | e | indent(2, false) }}
 {%     endfor %}
 {% endif %}
 {% if seealso %}
