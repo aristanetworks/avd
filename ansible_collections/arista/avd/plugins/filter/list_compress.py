@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.list_compress"
 
 try:
-    from pyavd.j2filters.natural_sort import natural_sort
+    from pyavd.j2filters.list_compress import list_compress
 except ImportError as e:
     natural_sort = RaiseOnUse(
         AnsibleFilterError(
@@ -54,6 +54,7 @@ _value:
   description: Range string like "1-3,7-8"
   type: string
 """
+
 
 class FilterModule(object):
     def filters(self):

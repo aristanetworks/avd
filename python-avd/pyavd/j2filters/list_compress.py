@@ -5,9 +5,8 @@ from __future__ import annotations
 
 from itertools import count, groupby
 
-from ansible.errors import AnsibleFilterError
 
-def list_compress(list_to_compress: list) -> str:
+def list_compress(list_to_compress: list[int]) -> str:
     """
     Compresses a list of integers to a range string.
     Args:
@@ -21,8 +20,11 @@ def list_compress(list_to_compress: list) -> str:
     list2: "{{ [1,2,3,7,8] | arista.avd.list_compress }}" -> "1-3,7-8"
     """
     if not isinstance(list_to_compress, list):
-        raise AnsibleFilterError(f"Value must be of type list, got {type(list_to_compress)}")
+        raise TypeError(f"Value must be of type list, got {type(list_to_compress)}")
+
+    if not all(isinstance(item, int) for item in list_to_compress):
+        raise TypeError("All elements of the list must be integers")
 
     list_of_groups = (list(group) for key, group in groupby(sorted(list_to_compress), lambda element, iterator=count(): next(iterator) - element))
-    
+
     return ",".join("-".join(map(str, (group[0], group[-1])[: len(group)])) for group in list_of_groups)
