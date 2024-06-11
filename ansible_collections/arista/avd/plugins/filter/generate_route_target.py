@@ -9,10 +9,10 @@ from ansible.errors import AnsibleFilterError
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
 
-PLUGIN_NAME = "arista.avd.convert_dicts"
+PLUGIN_NAME = "arista.avd.generate_route_target"
 
 try:
-    from pyavd.j2filters.convert_dicts import generate_route_target
+    from pyavd.j2filters.generate_route_target import generate_route_target
 except ImportError as e:
     generate_route_target = RaiseOnUse(
         AnsibleFilterError(
