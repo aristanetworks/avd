@@ -165,6 +165,8 @@ router bgp 65101
    neighbor TEST ttl maximum-hops 42
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
+   neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
+   neighbor test-link-bandwidth1 missing-policy address-family all include community-list direction out action permit
    neighbor test-link-bandwidth1 link-bandwidth default 100G
    neighbor test-link-bandwidth2 peer group
    neighbor test-link-bandwidth2 link-bandwidth
@@ -190,10 +192,13 @@ router bgp 65101
    neighbor 192.0.3.2 default-originate route-map RM-FOO-MATCH3
    neighbor 192.0.3.2 send-community extended
    neighbor 192.0.3.2 maximum-routes 10000
+   neighbor 192.0.3.2 missing-policy address-family all include community-list prefix-list direction in action deny
+   neighbor 192.0.3.2 missing-policy address-family all include community-list direction out action permit
    neighbor 192.0.3.2 link-bandwidth
    neighbor 192.0.3.3 remote-as 65434
    neighbor 192.0.3.3 rib-in pre-policy retain
    neighbor 192.0.3.3 send-community standard
+   neighbor 192.0.3.3 missing-policy address-family all include community-list prefix-list sub-route-map direction in action deny
    neighbor 192.0.3.4 remote-as 65435
    neighbor 192.0.3.4 ttl maximum-hops 1
    no neighbor 192.0.3.4 rib-in pre-policy retain

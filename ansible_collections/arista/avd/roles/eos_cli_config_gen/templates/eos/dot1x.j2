@@ -18,8 +18,28 @@ dot1x protocol bpdu bypass
 {%     if dot1x.dynamic_authorization is arista.avd.defined(true) %}
 dot1x dynamic-authorization
 {%     endif %}
-{%     if dot1x.mac_based_authentication is arista.avd.defined or dot1x.radius_av_pair is arista.avd.defined or dot1x.aaa.unresponsive is arista.avd.defined %}
+{%     if dot1x.mac_based_authentication is arista.avd.defined or dot1x.radius_av_pair is arista.avd.defined or
+         dot1x.aaa.unresponsive is arista.avd.defined or dot1x.captive_portal is arista.avd.defined
+         or dot1x.supplicant is arista.avd.defined %}
 dot1x
+{%         for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
+   supplicant profile {{ profile.name }}
+{%             if profile.identity is arista.avd.defined %}
+      identity {{ profile.identity }}
+{%             endif %}
+{%             if profile.eap_method is arista.avd.defined %}
+      eap-method {{ profile.eap_method }}
+{%             endif %}
+{%             if profile.passphrase is arista.avd.defined %}
+      passphrase {{ profile.passphrase_type | arista.avd.default("7") }} {{ profile.passphrase | arista.avd.hide_passwords(hide_passwords) }}
+{%             endif %}
+{%             if profile.ssl_profile is arista.avd.defined %}
+      ssl profile {{ profile.ssl_profile }}
+{%             endif %}
+{%             if not loop.last %}
+   !
+{%             endif %}
+{%         endfor %}
 {%         if dot1x.aaa.unresponsive is arista.avd.defined %}
 {%             set aaa_config = "aaa unresponsive" %}
 {%             if dot1x.aaa.unresponsive.phone_action is arista.avd.defined or dot1x.aaa.unresponsive.action is arista.avd.defined %}
@@ -78,6 +98,28 @@ dot1x
 {%             if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%             endif %}
+{%         endif %}
+{%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
+   supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds
+{%         endif %}
+{%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
+{%             set captive_portal_cli = "captive-portal" %}
+{%             if dot1x.captive_portal.url is arista.avd.defined %}
+{%                 set captive_portal_cli = captive_portal_cli ~ " url " ~ dot1x.captive_portal.url %}
+{%             endif %}
+{%             if dot1x.captive_portal.ssl_profile is arista.avd.defined %}
+{%                 set captive_portal_cli = captive_portal_cli ~ " ssl profile " ~ dot1x.captive_portal.ssl_profile %}
+{%             endif %}
+   {{ captive_portal_cli }}
+{%             if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
+   captive-portal access-list ipv4 {{ dot1x.captive_portal.access_list_ipv4 }}
+{%             endif %}
+{%             if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
+   captive-portal start limit infinite
+{%             endif %}
+{%         endif %}
+{%         if dot1x.supplicant.logging is arista.avd.defined(true) %}
+   supplicant logging
 {%         endif %}
 {%     endif %}
 {% endif %}
