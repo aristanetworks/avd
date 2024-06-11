@@ -1,0 +1,1 @@
+Templates have been moved to PyAVD.

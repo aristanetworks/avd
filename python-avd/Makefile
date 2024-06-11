@@ -8,7 +8,6 @@ J2_DIR = $(VENDOR_DIR)/j2
 TESTS_ARTIFACTS = $(CURRENT_DIR)/tests/pyavd/artifacts
 TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
-EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
@@ -50,7 +49,6 @@ copy-libs: ## Copy files from Ansible AVD collection
 	mkdir -p $(VENDOR_DIR)
 	mkdir -p $(J2_DIR)
 	mkdir -p $(SCHEMAS_DIR)
-	mkdir -p $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
 	mkdir -p $(EOS_DESIGNS_MODULES_DIR)
 
 	cp $(ANSIBLE_AVD_DIR)/LICENSE $(PACKAGE_DIR)/LICENSE
@@ -58,8 +56,6 @@ copy-libs: ## Copy files from Ansible AVD collection
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/module_utils/* $(VENDOR_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/filter $(J2_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/* $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
-	rm -f $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)/avd_schema_documentation.j2
 
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/python_modules/* $(EOS_DESIGNS_MODULES_DIR)/
 	mv $(VENDOR_DIR)/eos_designs_* $(EOS_DESIGNS_MODULES_DIR)/
@@ -68,7 +64,6 @@ copy-libs: ## Copy files from Ansible AVD collection
 	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle $(SCHEMAS_DIR)/
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle $(SCHEMAS_DIR)/
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/schema/avd_meta_schema.pickle $(SCHEMAS_DIR)/
-
 	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements.txt requirements-ansible-avd.txt
 
 .PHONY: fix-libs

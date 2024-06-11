@@ -22,8 +22,8 @@ class PythonToAnsibleHandler(Handler):
     * send WARNING logs to result["warning"] for the plugins that will be display in the logs
     * send INFO logs to display.v which can be visualized using `-v` in the ansible-playbook argument
       provided the logger level is set to INFO or above
-    * send DEBUG logs to display.v which can be visualized in the debug logs of ansible provided the
-      logger level is set to INFO or above
+    * send DEBUG logs to display.debug which can be visualized in the debug logs of ansible provided the
+      logger level is set to DEBUG or above
     """
 
     def __init__(self, result: dict, display: Display) -> None:
@@ -44,6 +44,17 @@ class PythonToAnsibleHandler(Handler):
             self.result.setdefault("warnings", []).append(message)
         elif record.levelno == logging.INFO:
             self.display.v(str(message))
+        # logging.INFO is 20, logging.DEBUG is 10. There is some room
+        elif record.levelno == logging.INFO - 1:
+            self.display.vv(str(message))
+        elif record.levelno == logging.INFO - 2:
+            self.display.vvv(str(message))
+        elif record.levelno == logging.INFO - 3:
+            self.display.vvvv(str(message))
+        elif record.levelno == logging.INFO - 4:
+            self.display.vvvvv(str(message))
+        elif record.levelno == logging.INFO - 5:
+            self.display.vvvvvv(str(message))
         elif record.levelno == logging.DEBUG:
             self.display.debug(str(message))
 
