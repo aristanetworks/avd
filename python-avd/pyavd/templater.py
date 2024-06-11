@@ -6,8 +6,8 @@ from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, St
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
 from .j2filters.convert_dicts import convert_dicts
 from .j2filters.default import default
-from .j2filters.natural_sort import natural_sort
 from .j2filters.generate_route_target import generate_route_target
+from .j2filters.natural_sort import natural_sort
 
 
 class Undefined(StrictUndefined):
