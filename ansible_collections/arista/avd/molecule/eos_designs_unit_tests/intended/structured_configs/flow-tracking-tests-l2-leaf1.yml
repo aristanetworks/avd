@@ -50,7 +50,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: FLOW_TRACKING_TESTS_LEAF_MLAG_Po31
+  description: FLOW-TRACKING-TESTS-LEAF-MLAG_Po31
   type: switched
   shutdown: false
   mode: trunk

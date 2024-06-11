@@ -36,7 +36,7 @@ l3leaf:
 
 
   node_groups:
-    - group: SFLOW_TESTS_LEAF_MLAG
+    - group: sflow-tests-leaf-mlag
       bgp_as: 65105
       nodes:
         - name: sflow-tests-leaf3

@@ -336,7 +336,7 @@ ethernet_interfaces:
     id: 16
     mode: 'on'
 mlag_configuration:
-  domain_id: FLOW_TRACKING_TESTS_LEAF_MLAG
+  domain_id: flow-tracking-tests-leaf-mlag
   local_interface: Vlan4094
   peer_address: 10.254.1.72
   peer_link: Port-Channel21
