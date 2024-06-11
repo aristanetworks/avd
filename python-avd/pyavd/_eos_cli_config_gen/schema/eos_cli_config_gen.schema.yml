@@ -13122,6 +13122,22 @@ keys:
                     transit:
                       type: bool
                       description: Enable EVPN multicast transit mode.
+            evpn_multicast_gateway_dr_election_algorithm:
+              type: dict
+              keys:
+                hrw:
+                  type: bool
+                  description: Default selection based on highest random weight.
+                modulus:
+                  type: bool
+                  description: Selection based on VLAN ID modulo number of candidates.
+                preference:
+                  type: int
+                  description: Selection based on a configured preference value.
+                  min: 0
+                  max: 65535
+                  convert_types:
+                  - str
             default_route_exports:
               type: list
               primary_key: address_family
