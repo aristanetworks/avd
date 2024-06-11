@@ -56,3 +56,27 @@ interface Management1
 | Service type | Framed MTU |
 | ------------ | ---------- |
 | True | 1500 |
+
+#### 802.1X Captive-portal authentication
+
+| Authentication Attribute | Value |
+| ------------------------ | ----- |
+| URL | http://portal-nacm08/captiveredirect/ |
+| SSL profile | Profile1 |
+| IPv4 Access-list | ACL |
+| Start limit | Infinite |
+
+#### 802.1X Supplicant
+
+| Attribute | Value |
+| --------- | ----- |
+| Logging | True |
+| Disconnect cached-results timeout | 79 seconds |
+
+##### 802.1X Supplicant profiles
+
+| Profile | EAP Method | Identity | SSL Profile |
+| ------- | ---------- | -------- | ----------- |
+| Profile1 | tls | user_id1 | PF1 |
+| Profile2 | - | user_id2 | - |
+| Profile3 | - | - | PF2 |
