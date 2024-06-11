@@ -88,7 +88,7 @@ l3leaf:
       flow_tracker_type: sampled
 
   node_groups:
-    - group: flow-tracking-tests-leaf-mlag
+    - group: FLOW_TRACKING_TESTS_LEAF_MLAG
       bgp_as: 65105
       nodes:
         - name: flow-tracking-tests-leaf3

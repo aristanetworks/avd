@@ -320,7 +320,7 @@ ethernet_interfaces:
     id: 15
     mode: 'on'
 mlag_configuration:
-  domain_id: sflow-tests-leaf-mlag
+  domain_id: SFLOW_TESTS_LEAF_MLAG
   local_interface: Vlan4094
   peer_address: 10.254.1.72
   peer_link: Port-Channel11

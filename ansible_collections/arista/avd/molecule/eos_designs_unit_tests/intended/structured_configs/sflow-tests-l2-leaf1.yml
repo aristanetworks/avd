@@ -50,7 +50,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: SFLOW-TESTS-LEAF-MLAG_Po16
+  description: SFLOW_TESTS_LEAF_MLAG_Po16
   type: switched
   shutdown: false
   mode: trunk
