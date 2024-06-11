@@ -80,7 +80,7 @@ class UtilsZscalerMixin:
                     )
                 )
             device_id: str = cv_inventory_devices[0].serial_number
-            request_time = await cv_client.set_swg_device(device_id=device_id, service="zscaler", location=wan_site_location)[0]
+            request_time, cv_endpoint_config = await cv_client.set_swg_device(device_id=device_id, service="zscaler", location=wan_site_location)
             cv_endpoint_status = await cv_client.wait_for_swg_endpoint_status(device_id=device_id, service="zscaler", start_time=request_time)
 
         device_location: Location = cv_endpoint_status.device_location
