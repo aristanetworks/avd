@@ -17,7 +17,7 @@ PLUGIN_NAME = "arista.avd.list_compress"
 try:
     from pyavd.j2filters.list_compress import list_compress
 except ImportError as e:
-    natural_sort = RaiseOnUse(
+    list_compress = RaiseOnUse(
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
