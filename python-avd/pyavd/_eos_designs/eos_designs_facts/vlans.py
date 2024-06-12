@@ -7,13 +7,13 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...j2filters.convert_dicts import convert_dicts
+from ...vendor.j2.filter.list_compress import list_compress
+from ...vendor.j2.filter.range_expand import range_expand
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .eos_designs_facts import EosDesignsFacts
+    from . import EosDesignsFacts
 
 
 class VlansMixin:

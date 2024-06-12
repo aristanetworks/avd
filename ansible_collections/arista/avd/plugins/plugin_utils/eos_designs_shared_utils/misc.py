@@ -14,7 +14,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import Ar
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
 
     from .shared_utils import SharedUtils
 
