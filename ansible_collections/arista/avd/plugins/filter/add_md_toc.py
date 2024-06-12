@@ -80,6 +80,4 @@ _value:
 
 class FilterModule(object):
     def filters(self):
-        return {
-            "add_md_toc": wrap_filter(PLUGIN_NAME)(add_md_toc),
-        }
+        return {"add_md_toc": wrap_filter(PLUGIN_NAME)(add_md_toc)}

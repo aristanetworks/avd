@@ -97,8 +97,8 @@ def _get_line_info(line: str, all_anchor_ids: list[str]) -> (int, str, str):
 
     Returns
     -------
-    str
-        MD with added TOC
+    int, str, str
+        The level of the heading, the text of the heading and the anchor_id for the heading.
     """
     pounds, text = line.split(" ", maxsplit=1)
     level = len(pounds)
@@ -122,7 +122,7 @@ def _get_anchor_id(text: str, all_anchor_ids: list[str]) -> str:
     Returns
     -------
     str
-        MD with added TOC
+        The anchor ID for the text.
     """
     tmp_anchor_id = normalize("NFKD", text).encode("ascii", "ignore")
     tmp_anchor_id = re.sub(r"[^\w\s-]", "", tmp_anchor_id.decode("ascii")).strip().lower()
