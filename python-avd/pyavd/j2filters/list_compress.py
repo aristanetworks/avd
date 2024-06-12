@@ -25,6 +25,5 @@ def list_compress(list_to_compress: list[int]) -> str:
     if not all(isinstance(item, int) for item in list_to_compress):
         raise TypeError(f"All elements of the list {list_to_compress} must be integers")
 
-    list_of_groups = (list(group) for key, group in groupby(sorted(list_to_compress), lambda element, iterator=count(): next(iterator) - element))
-
-    return ",".join("-".join(map(str, (group[0], group[-1])[: len(group)])) for group in list_of_groups)
+    groups = (list(group) for key, group in groupby(sorted(list_to_compress), lambda element, iterator=count(): next(iterator) - element))
+    return ",".join("-".join(map(str, (group[0], group[-1])[: len(group)])) for group in groups)
