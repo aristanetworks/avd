@@ -14,8 +14,12 @@ ESI_SHORT_NONE = None
 ESI_SHORT_EMPTY_STR = ""
 ESI_SHORT_SINGLE_DIGIT = "3"
 
+
 class TestEsiManagementFilter:
-    @pytest.mark.parametrize("esi_short, route_target", [(ESI_SHORT, "03:03:02:02:01:01"), (ESI_SHORT_NONE, None), (ESI_SHORT_STR, "ES:I_:SH:OR"), (ESI_SHORT_EMPTY_STR, ""), (ESI_SHORT_SINGLE_DIGIT, "")])
+    @pytest.mark.parametrize(
+        "esi_short, route_target",
+        [(ESI_SHORT, "03:03:02:02:01:01"), (ESI_SHORT_NONE, None), (ESI_SHORT_STR, "ES:I_:SH:OR"), (ESI_SHORT_EMPTY_STR, ""), (ESI_SHORT_SINGLE_DIGIT, "")],
+    )
     def test_generate_route_target(self, esi_short, route_target):
         resp = generate_route_target(esi_short)
         assert resp == route_target
