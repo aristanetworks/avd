@@ -1,6 +1,6 @@
 # test arp
 arp:
-  persistent: 
+  persistent:
     enabled: true
     refresh_delay: 700
   aging:
