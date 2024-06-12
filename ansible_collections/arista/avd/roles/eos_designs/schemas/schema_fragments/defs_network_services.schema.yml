@@ -82,8 +82,7 @@ $defs:
         evpn_vlan_bundle:
           type: str
           description: |-
-            Name of the "evpn_vlan_bundle" defined under "evpn_vlan_bundles".
-            This settings enables the "evpn_vlan_bundle" setting for all l2vlans and SVIs present in the tenant.
+            Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`.
         bgp_peer_groups:
           documentation_options:
             table: network-services-vrfs-bgp-settings
