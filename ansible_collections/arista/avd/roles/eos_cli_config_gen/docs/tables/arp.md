@@ -8,8 +8,9 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>arp</samp>](## "arp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;cache_persistent</samp>](## "arp.cache_persistent") | Boolean |  |  |  | Restore the ARP cache after reboot |
-    | [<samp>&nbsp;&nbsp;persistent_refresh_delay</samp>](## "arp.persistent_refresh_delay") | Integer |  | `600` | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the ARP cache after reboot. |
+    | [<samp>&nbsp;&nbsp;persistent</samp>](## "arp.persistent") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "arp.persistent.enabled") | Boolean | Required |  |  | Restore the ARP cache after reboot |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;refresh_delay</samp>](## "arp.persistent.refresh_delay") | Integer |  | `600` | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600). |
     | [<samp>&nbsp;&nbsp;aging</samp>](## "arp.aging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeout_default</samp>](## "arp.aging.timeout_default") | Integer |  |  | Min: 60<br>Max: 65535 | Timeout in seconds. |
     | [<samp>&nbsp;&nbsp;static_entries</samp>](## "arp.static_entries") | List, items: Dictionary |  |  |  | Static ARP entries. |
@@ -21,12 +22,13 @@
 
     ```yaml
     arp:
+      persistent:
 
-      # Restore the ARP cache after reboot
-      cache_persistent: <bool>
+        # Restore the ARP cache after reboot
+        enabled: <bool; required>
 
-      # Time to wait in seconds before refreshing the ARP cache after reboot.
-      persistent_refresh_delay: <int; 600-3600; default=600>
+        # Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600).
+        refresh_delay: <int; 600-3600; default=600>
       aging:
 
         # Timeout in seconds.

@@ -4,14 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# eos - arp #}
-{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined or arp.cache_persistent is arista.avd.defined or
-    arp.persistent_refresh_delay is arista.avd.defined %}
+{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined or arp.persistent is arista.avd.defined %}
 !
-{%     if arp.cache_persistent is arista.avd.defined(true) %}
-arp cache persistent
-{%     endif %}
-{%     if arp.persistent_refresh_delay is arista.avd.defined() %}
-arp persistent refresh-delay {{ arp.persistent_refresh_delay }}
+{%     if arp.persistent.enabled is arista.avd.defined(true) %}
+{%         set persistent_cli = "arp persistent" %}
+{%         if arp.persistent.refresh_delay is arista.avd.defined %}
+{%             set persistent_cli = persistent_cli ~ " refresh-delay " ~ arp.persistent.refresh_delay %}
+{%         endif %}
+{{ persistent_cli }}
 {%     endif %}
 {%     if arp.aging.timeout_default is arista.avd.defined %}
 arp aging timeout default {{ arp.aging.timeout_default }}
