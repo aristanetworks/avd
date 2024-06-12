@@ -23,7 +23,7 @@ def list_compress(list_to_compress: list[int]) -> str:
         raise TypeError(f"Value must be of type list, got {type(list_to_compress)}")
 
     if not all(isinstance(item, int) for item in list_to_compress):
-        raise TypeError("All elements of the list must be integers")
+        raise TypeError(f"All elements of the list {list_to_compress} must be integers")
 
     list_of_groups = (list(group) for key, group in groupby(sorted(list_to_compress), lambda element, iterator=count(): next(iterator) - element))
 

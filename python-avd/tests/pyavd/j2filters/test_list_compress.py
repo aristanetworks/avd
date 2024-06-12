@@ -16,7 +16,7 @@ class TestListCompressFilter:
             ("1-3", "Value must be of type list, got <class 'str'>"),
             ({"key": "value"}, "Value must be of type list, got <class 'dict'>"),
             (33, "Value must be of type list, got <class 'int'>"),
-            (["a", "b", "c"], "All elements of the list must be integers"),
+            (["a", "b", "c"], "All elements of the list ['a', 'b', 'c'] must be integers"),
         ],
     )
     def test_list_compress_invalid(self, invalid_list_to_compress, error_msg):
