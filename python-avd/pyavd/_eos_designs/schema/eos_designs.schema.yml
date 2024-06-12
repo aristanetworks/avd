@@ -3918,6 +3918,8 @@ keys:
     - md5
     - text
   underlay_isis_authentication_key:
+    documentation_options:
+      table: isis-settings
     type: str
     description: Type-7 encrypted password.
   underlay_isis_bfd:

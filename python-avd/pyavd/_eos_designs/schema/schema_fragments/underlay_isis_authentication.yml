@@ -14,5 +14,7 @@ keys:
       - md5
       - text
   underlay_isis_authentication_key:
-      type: str
-      description: Type-7 encrypted password.
+    documentation_options:
+      table: isis-settings
+    type: str
+    description: Type-7 encrypted password.
