@@ -18,8 +18,8 @@ ipv6 neighbor cache persistent
 {%     endif %}
 {%     if ipv6_neighbor.static_entries is arista.avd.defined %}
 {%         for neighbor in ipv6_neighbor.static_entries %}
-{%             if neighbor.ipv6_address is arista.avd.defined and neighbor.interfaces is arista.avd.defined and neighbor.mac_address is arista.avd.defined %}
-{%                 set neighbor_cli = neighbor.ipv6_address ~ " " ~ interface ~ " " ~ neighbor.mac_address %}
+{%             if neighbor.ipv6_address is arista.avd.defined and neighbor.interface is arista.avd.defined and neighbor.mac_address is arista.avd.defined %}
+{%                 set neighbor_cli = neighbor.ipv6_address ~ " " ~ neighbor.interface ~ " " ~ neighbor.mac_address %}
 {%                 if neighbor.vrf is arista.avd.defined %}
 {%                     set neighbor_cli = "ipv6 neighbor vrf " ~ neighbor.vrf ~ " " ~ neighbor_cli  %}
 {%                 else %}

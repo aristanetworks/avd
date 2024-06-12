@@ -52,4 +52,6 @@ Refresh delay to restore the IPv6 neighbor cache after reboot: 1000 seconds
 !
 ipv6 neighbor cache persistent
 ipv6 neighbor persistent refresh-delay 1000
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf
 ```
