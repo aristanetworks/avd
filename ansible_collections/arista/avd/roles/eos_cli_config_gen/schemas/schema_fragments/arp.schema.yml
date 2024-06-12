@@ -9,6 +9,17 @@ keys:
   arp:
     type: dict
     keys:
+      cache_persistent:
+        type: bool
+        description: Restore the ARP cache after reboot
+      persistent_refresh_delay:
+        type: int
+        description: Time to wait in seconds before refreshing the ARP cache after reboot.
+        default: 600
+        min: 600
+        max: 3600
+        convert_types:
+          - str
       aging:
         type: dict
         keys:

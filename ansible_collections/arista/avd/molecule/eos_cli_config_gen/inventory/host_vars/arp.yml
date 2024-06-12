@@ -1,5 +1,7 @@
 # test arp
 arp:
+  cache_persistent: true
+  persistent_refresh_delay: 700
   aging:
     timeout_default: 300
   static_entries:

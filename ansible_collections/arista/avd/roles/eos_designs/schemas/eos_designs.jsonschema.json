@@ -18973,6 +18973,19 @@
               "arp": {
                 "type": "object",
                 "properties": {
+                  "cache_persistent": {
+                    "type": "boolean",
+                    "description": "Restore the ARP cache after reboot",
+                    "title": "Cache Persistent"
+                  },
+                  "persistent_refresh_delay": {
+                    "type": "integer",
+                    "description": "Time to wait in seconds before refreshing the ARP cache after reboot.",
+                    "default": 600,
+                    "minimum": 600,
+                    "maximum": 3600,
+                    "title": "Persistent Refresh Delay"
+                  },
                   "aging": {
                     "type": "object",
                     "properties": {

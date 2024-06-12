@@ -4,25 +4,34 @@
  that can be found in the LICENSE file.
 #}
 {# eos - arp #}
-{% if arp.aging.timeout_default is arista.avd.defined %}
+{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined or arp.cache_persistent is arista.avd.defined or
+    arp.persistent_refresh_delay is arista.avd.defined %}
 !
+{%     if arp.cache_persistent is arista.avd.defined(true) %}
+arp cache persistent
+{%     endif %}
+{%     if arp.persistent_refresh_delay is arista.avd.defined() %}
+arp persistent refresh-delay {{ arp.persistent_refresh_delay }}
+{%     endif %}
+{%     if arp.aging.timeout_default is arista.avd.defined %}
 arp aging timeout default {{ arp.aging.timeout_default }}
-{% endif %}
-{% if arp.static_entries is arista.avd.defined %}
+{%     endif %}
+{%     if arp.static_entries is arista.avd.defined %}
 {# TODO - remove when dropping support for ansible 2.12.6 and its jinja2 hack #}
-{%     for entry in arp.static_entries %}
-{%         if entry.vrf is not arista.avd.defined %}
-{%             do entry.update({"vrf": "default"}) %}
-{%         endif %}
-{%     endfor %}
-{%     for vrf, entries in arp.static_entries | groupby("vrf") | arista.avd.natural_sort %}
-{# TODO {%     for vrf, entries in arp.static_entries | arista.avd.default([]) | groupby("vrf", default="default") | arista.avd.natural_sort %} #}
-{%         for entry in entries | arista.avd.natural_sort("ipv4_address") %}
-{%             set arp_entry_prefix = "arp" %}
-{%             if vrf != "default" %}
-{%                 set arp_entry_prefix = arp_entry_prefix ~ " vrf " ~ vrf %}
+{%         for entry in arp.static_entries %}
+{%             if entry.vrf is not arista.avd.defined %}
+{%                 do entry.update({"vrf": "default"}) %}
 {%             endif %}
-{{ arp_entry_prefix }} {{ entry.ipv4_address }} {{ entry.mac_address }} arpa
 {%         endfor %}
-{%     endfor %}
+{%         for vrf, entries in arp.static_entries | groupby("vrf") | arista.avd.natural_sort %}
+{# TODO {%     for vrf, entries in arp.static_entries | arista.avd.default([]) | groupby("vrf", default="default") | arista.avd.natural_sort %} #}
+{%             for entry in entries | arista.avd.natural_sort("ipv4_address") %}
+{%                 set arp_entry_prefix = "arp" %}
+{%                 if vrf != "default" %}
+{%                     set arp_entry_prefix = arp_entry_prefix ~ " vrf " ~ vrf %}
+{%                 endif %}
+{{ arp_entry_prefix }} {{ entry.ipv4_address }} {{ entry.mac_address }} arpa
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 {% endif %}
