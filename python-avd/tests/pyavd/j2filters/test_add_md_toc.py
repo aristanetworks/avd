@@ -11,25 +11,23 @@ import pytest
 from pyavd.j2filters.add_md_toc import _get_anchor_id, add_md_toc
 
 DIR_PATH = Path(__file__).parent / "toc_files"
-MD_INPUTS = [DIR_PATH / "valid_file.md"]
+MD_INPUT_VALID = DIR_PATH / "valid_file.md"
 MD_INPUT_INVALID = DIR_PATH / "invalid_file.md"
 EXPECTED_TOC = DIR_PATH / "expected_toc.md"
 TOC_MARKER = "<!-- toc -->"
 SKIP_LINES_LIST = [0, 1, 2]
-TOC_LEVELS = [2]
+VALID_TOC_LEVEL = 2
 INVALID_TOC_LEVEL = 0
 
 
 class TestAddMdTocFilter:
     """Class to test add_md_toc filter."""
 
-    @pytest.mark.parametrize("md_input", MD_INPUTS)
-    @pytest.mark.parametrize("toc_level", TOC_LEVELS)
     @pytest.mark.parametrize("skip_lines", SKIP_LINES_LIST)
-    def test_add_md_toc(self, md_input, toc_level, skip_lines):
+    def test_add_md_toc(self, skip_lines):
         """Test add_md_toc success scenarii."""
-        with open(md_input, "r", encoding="UTF-8") as input_file:
-            resp = add_md_toc(input_file.read(), skip_lines=skip_lines, toc_levels=toc_level, toc_marker=TOC_MARKER)
+        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
+            resp = add_md_toc(input_file.read(), skip_lines=skip_lines, toc_levels=VALID_TOC_LEVEL, toc_marker=TOC_MARKER)
 
         with open(EXPECTED_TOC, "r", encoding="UTF-8") as input_file:
             expected_toc = input_file.read()
@@ -38,19 +36,19 @@ class TestAddMdTocFilter:
 
     def test_add_md_toc_invalid_skip_lines(self):
         """Test add_md_toc with invalid skip_lines."""
-        with open(DIR_PATH / "valid_file.md", "r", encoding="UTF-8") as input_file:
+        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
             with pytest.raises(TypeError, match="add_md_toc 'skip_lines' argument must be an integer."):
                 add_md_toc(input_file.read(), skip_lines="Not an int")
 
     def test_add_md_toc_invalid_toc_level(self):
         """Test add_md_toc with invalid toc level."""
-        with open(DIR_PATH / "valid_file.md", "r", encoding="UTF-8") as input_file:
+        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
             with pytest.raises(TypeError):
                 add_md_toc(input_file.read(), toc_levels=INVALID_TOC_LEVEL)
 
     def test_add_md_toc_invalid_toc_marker(self):
         """Test add_md_toc with invalid toc_marker."""
-        with open(DIR_PATH / "valid_file.md", "r", encoding="UTF-8") as input_file:
+        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
             with pytest.raises(TypeError, match="add_md_toc 'toc_marker' argument must be a non-empty string."):
                 add_md_toc(input_file.read(), toc_marker=["Not_as_string"])
 
@@ -78,15 +76,9 @@ class TestAddMdTocFilter:
         # Starts empty
         all_anchor_ids = []
         text = "This is my header"
-        # Call the function once, expect one anchor_id
-        _get_anchor_id(text, all_anchor_ids)
-        assert len(all_anchor_ids) == 1
-        assert "this-is-my-header" in all_anchor_ids
-        # Call the function again with the same inputs and check a new unique anchor has been added
-        _get_anchor_id(text, all_anchor_ids)
-        assert len(all_anchor_ids) == 2
-        assert "this-is-my-header-1" in all_anchor_ids
-        # Call the function a third time with the same inputs and check a new unique anchor has been added
-        _get_anchor_id(text, all_anchor_ids)
-        assert len(all_anchor_ids) == 3
-        assert "this-is-my-header-2" in all_anchor_ids
+        # Call the function three times with the same inputs and check a new unique anchor has been added
+        for i in range(3):
+            _get_anchor_id(text, all_anchor_ids)
+            assert len(all_anchor_ids) == i + 1
+            expected_anchor = f"this-is-my-header-{i}" if i > 0 else "this-is-my-header"
+            assert expected_anchor in all_anchor_ids
