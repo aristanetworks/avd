@@ -8,23 +8,22 @@
 
 ## IPv6 Neighbors
 
-{%     if ipv6_neighbor.cache is arista.avd.defined(true) %}
-IPv6 neighbor cache is enabled.
+{%     if ipv6_neighbor.cache_persistent is arista.avd.defined(true) %}
+IPv6 neighbor cache persistency is enabled.
 {%     endif %}
-{%     if ipv6_neighbor.persistent is arista.avd.defined(true) %}
-Refresh delay to restore the IPv6 neighbor cache after reboot: {{ ipv6_neighbor.refresh_delay | arista.avd.default('600') }} seconds
+{%     if ipv6_neighbor.persistent.enabled is arista.avd.defined(true) and ipv6_neighbor.persistent.refresh_delay is arista.avd.defined %}
+Refresh delay to restore the IPv6 neighbor cache after reboot: {{ ipv6_neighbor.persistent.refresh_delay }} seconds
 {%     endif %}
 {% endif %}
 {% if ipv6_neighbor.static_entries is arista.avd.defined %}
 
 ### IPv6 Static Neighbors
 
-#### IPv6 Static Neighbors Summary
-
-| VRF | IPv6 address | Exit interface | Hardware Address |
-| --- | ------------ | -------------- | ---------------- |
+| VRF | IPv6 Address | Exit Interface | MAC Address |
 {%     for neighbor in ipv6_neighbor.static_entries %}
-| {{ neighbor.vrf | arista.avd.default("-") }} | {{ neighbor.ipv6_address | arista.avd.default("-") }} | {{ neighbor.interface | arista.avd.default("-") }} | {{ neighbor.mac_address | arista.avd.default("-") }} |
+{%         if neighbor.ipv6_address is arista.avd.defined and neighbor.interface is arista.avd.defined and neighbor.mac_address is arista.avd.defined %}
+| {{ neighbor.vrf | arista.avd.default("-") }} | {{ neighbor.ipv6_address }} | {{ neighbor.interface }} | {{ neighbor.mac_address }} |
+{%         endif %}
 {%     endfor %}
 
 #### IPv6 Neighbor Configuration

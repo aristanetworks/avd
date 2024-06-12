@@ -26549,13 +26549,13 @@
                         },
                         "interface": {
                           "type": "string",
-                          "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7\n          Management 1\n          Tunnel10\n          Vlan101,102",
+                          "description": "Interface name.",
                           "title": "Interface"
                         },
                         "mac_address": {
                           "type": "string",
-                          "description": "Hardware address of neighbor.\nExample - aaaf.1234.bcbf",
-                          "pattern": "^(?:[0-9A-Fa-f]{1,4}\\.){2}[0-9A-Fa-f]{1,4}$",
+                          "description": "MAC address of neighbor like 'aa:af:12:34:bc:bf'",
+                          "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
                           "title": "MAC Address"
                         }
                       },
@@ -26571,23 +26571,36 @@
                     },
                     "title": "Static Entries"
                   },
-                  "cache": {
-                    "type": "boolean",
-                    "description": "Manage the IPv6 neighbor cache.",
-                    "title": "Cache"
-                  },
-                  "persistent": {
+                  "cache_persistent": {
                     "type": "boolean",
                     "description": "Restore the IPv6 neighbor cache after reboot.",
-                    "title": "Persistent"
+                    "title": "Cache Persistent"
                   },
-                  "refresh_delay": {
-                    "type": "integer",
-                    "description": "Time to wait in seconds before refresh.",
-                    "default": 600,
-                    "minimum": 600,
-                    "maximum": 3600,
-                    "title": "Refresh Delay"
+                  "persistent": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Restore the IPv6 neighbor cache after reboot with default refresh delay.",
+                        "title": "Enabled"
+                      },
+                      "refresh_delay": {
+                        "type": "integer",
+                        "description": "Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot.\nIt wil require to set the value of `enabled` key as true.\n",
+                        "minimum": 600,
+                        "maximum": 3600,
+                        "default": 600,
+                        "title": "Refresh Delay"
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Persistent"
                   }
                 },
                 "additionalProperties": false,

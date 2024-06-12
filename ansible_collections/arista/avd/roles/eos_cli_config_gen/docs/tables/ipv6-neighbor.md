@@ -11,11 +11,12 @@
     | [<samp>&nbsp;&nbsp;static_entries</samp>](## "ipv6_neighbor.static_entries") | List, items: Dictionary |  |  |  | Static IPv6 neighbor entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_address</samp>](## "ipv6_neighbor.static_entries.[].ipv6_address") | String | Required |  |  | IPv6 address of neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ipv6_neighbor.static_entries.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "ipv6_neighbor.static_entries.[].interface") | String | Required |  |  | Interface name.<br>Example - Ethernet4<br>          Loopback4-6<br>          Port-channel4,7<br>          Management 1<br>          Tunnel10<br>          Vlan101,102 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "ipv6_neighbor.static_entries.[].mac_address") | String | Required |  | Pattern: ^(?:[0-9A-Fa-f]{1,4}\.){2}[0-9A-Fa-f]{1,4}$ | Hardware address of neighbor.<br>Example - aaaf.1234.bcbf |
-    | [<samp>&nbsp;&nbsp;cache</samp>](## "ipv6_neighbor.cache") | Boolean |  |  |  | Manage the IPv6 neighbor cache. |
-    | [<samp>&nbsp;&nbsp;persistent</samp>](## "ipv6_neighbor.persistent") | Boolean |  |  |  | Restore the IPv6 neighbor cache after reboot. |
-    | [<samp>&nbsp;&nbsp;refresh_delay</samp>](## "ipv6_neighbor.refresh_delay") | Integer |  | `600` | Min: 600<br>Max: 3600 | Time to wait in seconds before refresh. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "ipv6_neighbor.static_entries.[].interface") | String | Required |  |  | Interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "ipv6_neighbor.static_entries.[].mac_address") | String | Required |  | Pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$ | MAC address of neighbor like 'aa:af:12:34:bc:bf' |
+    | [<samp>&nbsp;&nbsp;cache_persistent</samp>](## "ipv6_neighbor.cache_persistent") | Boolean |  |  |  | Restore the IPv6 neighbor cache after reboot. |
+    | [<samp>&nbsp;&nbsp;persistent</samp>](## "ipv6_neighbor.persistent") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_neighbor.persistent.enabled") | Boolean | Required |  |  | Restore the IPv6 neighbor cache after reboot with default refresh delay. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;refresh_delay</samp>](## "ipv6_neighbor.persistent.refresh_delay") | Integer |  | `600` | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot.<br>It wil require to set the value of `enabled` key as true.<br> |
 
 === "YAML"
 
@@ -30,24 +31,19 @@
           vrf: <str>
 
           # Interface name.
-          # Example - Ethernet4
-          #           Loopback4-6
-          #           Port-channel4,7
-          #           Management 1
-          #           Tunnel10
-          #           Vlan101,102
           interface: <str; required>
 
-          # Hardware address of neighbor.
-          # Example - aaaf.1234.bcbf
+          # MAC address of neighbor like 'aa:af:12:34:bc:bf'
           mac_address: <str; required>
 
-      # Manage the IPv6 neighbor cache.
-      cache: <bool>
-
       # Restore the IPv6 neighbor cache after reboot.
-      persistent: <bool>
+      cache_persistent: <bool>
+      persistent:
 
-      # Time to wait in seconds before refresh.
-      refresh_delay: <int; 600-3600; default=600>
+        # Restore the IPv6 neighbor cache after reboot with default refresh delay.
+        enabled: <bool; required>
+
+        # Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot.
+        # It wil require to set the value of `enabled` key as true.
+        refresh_delay: <int; 600-3600; default=600>
     ```

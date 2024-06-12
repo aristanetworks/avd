@@ -37,17 +37,14 @@ interface Management1
 
 ## IPv6 Neighbors
 
-IPv6 neighbor cache is enabled.
+IPv6 neighbor cache persistency is enabled.
 Refresh delay to restore the IPv6 neighbor cache after reboot: 1000 seconds
 
 ### IPv6 Static Neighbors
 
-#### IPv6 Static Neighbors Summary
-
-| VRF | IPv6 address | Exit interface | Hardware Address |
-| --- | ------------ | -------------- | ---------------- |
-| MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11.22.33 |
-| - | ::ffff:192.1.56.10 | Loopback99 | aaaf.1234.bcbf |
+| VRF | IPv6 Address | Exit Interface | MAC Address |
+| MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
+| - | ::ffff:192.1.56.10 | Loopback99 | aa:af:12:34:bc:bf |
 
 #### IPv6 Neighbor Configuration
 
@@ -55,6 +52,4 @@ Refresh delay to restore the IPv6 neighbor cache after reboot: 1000 seconds
 !
 ipv6 neighbor cache persistent
 ipv6 neighbor persistent refresh-delay 1000
-ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11.22.33
-ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aaaf.1234.bcbf
 ```
