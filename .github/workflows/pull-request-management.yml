@@ -232,7 +232,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - name: 'Set Ansible verbosity when debug logs are enabled'
         run: |
-          echo "ANSIBLE_VERBOSITY=4"
+          echo "ANSIBLE_VERBOSITY=4" >> $GITHUB_ENV
         if: runner.debug
       - uses: actions/checkout@v4
       - name: Build minimum requirements
@@ -356,7 +356,7 @@ jobs:
             3.12
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade --force-reinstall
       - name: 'Run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
@@ -378,7 +378,7 @@ jobs:
             3.10
       - name: 'Install Python requirements'
         run: |
-          pip install mock pytest pytest-mock pytest-xdist pyyaml -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install mock pytest pytest-mock pytest-xdist pyyaml -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade --force-reinstall
       - name: 'Run ansible-test units test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -402,7 +402,7 @@ jobs:
             3.12
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade --force-reinstall
       - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -426,7 +426,7 @@ jobs:
             3.12
       - name: 'Install Python & Ansible requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt -r ansible_collections/arista/avd/requirements.txt --upgrade --force-reinstall
           ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
       - name: 'Run ansible-test integration test cases'
         run: |
