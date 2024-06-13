@@ -121,7 +121,7 @@ def _get_anchor_id(text: str, all_anchor_ids: list[str]) -> str:
 
     Returns
     -------
-    str
+    str:
         The anchor ID for the text.
     """
     tmp_anchor_id = normalize("NFKD", text).encode("ascii", "ignore")
