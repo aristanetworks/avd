@@ -7,6 +7,7 @@ from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
 from .j2filters.add_md_toc import add_md_toc
 from .j2filters.convert_dicts import convert_dicts
 from .j2filters.default import default
+from .j2filters.generate_esi import generate_esi
 from .j2filters.generate_route_target import generate_route_target
 from .j2filters.hide_passwords import hide_passwords
 from .j2filters.list_compress import list_compress
@@ -73,6 +74,7 @@ class Templar:
                 "arista.avd.decrypt": decrypt,
                 "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,
+                "arista.avd.generate_esi": generate_esi,
                 "arista.avd.generate_route_target": generate_route_target,
                 "arista.avd.hide_passwords": hide_passwords,
                 "arista.avd.list_compress": list_compress,

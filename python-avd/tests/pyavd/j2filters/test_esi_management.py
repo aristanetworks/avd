@@ -6,6 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
+from pyavd.j2filters.generate_esi import generate_esi
 from pyavd.j2filters.generate_route_target import generate_route_target
 
 ESI_TO_RT_TEST_CASES = [
@@ -17,9 +18,22 @@ ESI_TO_RT_TEST_CASES = [
     ("3", ""),
 ]
 
+DEFAULT_ESI_PREFIX = "0000:0000:"
+GENERATE_ESI_TEST_CASES = [
+    # (<esi_short>, <esi_prefix>, <esi>)
+    ("0303:0202:0101", "", "0000:0000:0303:0202:0101"),  # without prefix
+    ("0303:0202:0101", "1111:1111:", "1111:1111:0303:0202:0101"),  # with prefix
+]
+
 
 class TestEsiManagementFilter:
     @pytest.mark.parametrize("esi_short, route_target", ESI_TO_RT_TEST_CASES)
     def test_generate_route_target(self, esi_short, route_target):
         resp = generate_route_target(esi_short)
         assert resp == route_target
+
+    @pytest.mark.parametrize("esi_short, esi_prefix, esi", GENERATE_ESI_TEST_CASES)
+    def test_generate_esi(self, esi_short, esi_prefix, esi):
+        esi_prefix = esi_prefix if esi_prefix else DEFAULT_ESI_PREFIX
+        resp = generate_esi(esi_short, esi_prefix)
+        assert resp == esi
