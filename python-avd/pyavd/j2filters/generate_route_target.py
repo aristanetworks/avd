@@ -17,7 +17,7 @@ def generate_route_target(esi_short: str | None) -> str | None:
 
     Returns
     -------
-    str
+    str:
         String based on route-target format like 03:03:02:02:01:01
     """
     if esi_short is None:
