@@ -6,7 +6,7 @@ default_node_types:
     match_hostnames:
       - ".*l3leaf-."
 
-fabric_name: fabric_invalid_uplink_port_channel_id_2
+fabric_name: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_2
 
 l3leaf:
   defaults:

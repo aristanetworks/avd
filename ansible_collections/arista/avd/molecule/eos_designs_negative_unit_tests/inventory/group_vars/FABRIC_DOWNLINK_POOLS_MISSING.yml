@@ -1,5 +1,5 @@
 ---
-fabric_name: fabric_downlink_pools_missing
+fabric_name: FABRIC_DOWNLINK_POOLS_MISSING
 
 default_node_types:
   - node_type: spine
