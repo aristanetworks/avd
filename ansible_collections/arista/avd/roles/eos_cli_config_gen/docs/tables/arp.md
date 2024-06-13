@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>arp</samp>](## "arp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;persistent</samp>](## "arp.persistent") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "arp.persistent.enabled") | Boolean | Required |  |  | Restore the ARP cache after reboot |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "arp.persistent.enabled") | Boolean | Required |  |  | Restore the ARP cache after reboot. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;refresh_delay</samp>](## "arp.persistent.refresh_delay") | Integer |  |  | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600). |
     | [<samp>&nbsp;&nbsp;aging</samp>](## "arp.aging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeout_default</samp>](## "arp.aging.timeout_default") | Integer |  |  | Min: 60<br>Max: 65535 | Timeout in seconds. |
@@ -24,7 +24,7 @@
     arp:
       persistent:
 
-        # Restore the ARP cache after reboot
+        # Restore the ARP cache after reboot.
         enabled: <bool; required>
 
         # Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600).

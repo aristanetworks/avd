@@ -1119,7 +1119,7 @@
           "properties": {
             "enabled": {
               "type": "boolean",
-              "description": "Restore the ARP cache after reboot",
+              "description": "Restore the ARP cache after reboot.",
               "title": "Enabled"
             },
             "refresh_delay": {
