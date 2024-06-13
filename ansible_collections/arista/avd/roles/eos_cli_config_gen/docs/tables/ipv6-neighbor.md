@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;cache_persistent</samp>](## "ipv6_neighbor.cache_persistent") | Boolean |  |  |  | Restore the IPv6 neighbor cache after reboot. |
     | [<samp>&nbsp;&nbsp;persistent</samp>](## "ipv6_neighbor.persistent") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ipv6_neighbor.persistent.enabled") | Boolean | Required |  |  | Restore the IPv6 neighbor cache after reboot with default refresh delay. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;refresh_delay</samp>](## "ipv6_neighbor.persistent.refresh_delay") | Integer |  | `600` | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot.<br>It wil require to set the value of `enabled` key as true.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;refresh_delay</samp>](## "ipv6_neighbor.persistent.refresh_delay") | Integer |  |  | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).<br>It requires `enabled` to be true.<br> |
 
 === "YAML"
 
@@ -43,7 +43,7 @@
         # Restore the IPv6 neighbor cache after reboot with default refresh delay.
         enabled: <bool; required>
 
-        # Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot.
-        # It wil require to set the value of `enabled` key as true.
-        refresh_delay: <int; 600-3600; default=600>
+        # Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).
+        # It requires `enabled` to be true.
+        refresh_delay: <int; 600-3600>
     ```

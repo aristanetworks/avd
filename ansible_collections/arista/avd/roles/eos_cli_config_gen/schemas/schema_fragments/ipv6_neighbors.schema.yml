@@ -43,10 +43,9 @@ keys:
           refresh_delay:
             type: int
             description: |
-              Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot.
-              It wil require to set the value of `enabled` key as true.
+              Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).
+              It requires `enabled` to be true.
             min: 600
             max: 3600
-            default: 600
             convert_types:
               - str
