@@ -232,7 +232,7 @@ jobs:
       - name: 'Set Ansible verbosity when debug logs are enabled'
         run: |
           echo "ANSIBLE_VERBOSITY=4"
-        if: runner.debug == "1"
+        if: runner.debug
       - uses: actions/checkout@v4
       - name: Build minimum requirements
         run: |
