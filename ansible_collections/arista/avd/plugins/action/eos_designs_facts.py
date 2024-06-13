@@ -23,7 +23,7 @@ PLUGIN_NAME = "arista.avd.eos_designs_facts"
 try:
     from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
 except ImportError as e:
-    convert_dicts = RaiseOnUse(
+    EosDesignsFacts = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
