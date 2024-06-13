@@ -8,7 +8,7 @@ import re
 
 def generate_route_target(esi_short: str | None) -> str | None:
     """
-    generate_route_target Transform 3 octets ESI like 0303:0202:0101 to route-target
+    generate_route_target transforms 3 octets ESI like 0303:0202:0101 to route-target
 
     Parameters
     ----------
