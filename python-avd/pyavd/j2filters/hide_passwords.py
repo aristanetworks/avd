@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 
-def hide_passwords(value: str, hide_passwords: bool = False) -> str:
+def hide_passwords(value: list | dict | str | int | None, hide_passwords: bool = False) -> str:
     """
     hide_passwords replaces the input data by "<removed>" if the hide_passwords parameter is true
 
     Args:
-        value (str): Value to be hidden
+        value (list | dict | str | int | None): Value to be hidden
         hide_passwords(bool) : Enable/disable hide_passwords
     Returns:
         str: "<removed>" or value
@@ -17,4 +17,4 @@ def hide_passwords(value: str, hide_passwords: bool = False) -> str:
     """
     if not isinstance(hide_passwords, bool):
         raise TypeError(f"{hide_passwords} in hide_passwords filter is not of type bool")
-    return "<removed>" if hide_passwords and value else value
+    return "<removed>" if hide_passwords else value

@@ -8,27 +8,27 @@ __metaclass__ = type
 import pytest
 from pyavd.j2filters.hide_passwords import hide_passwords
 
-VLAID_INPUT_HIDE_PASSWORDS = [
+VALID_INPUT_HIDE_PASSWORDS = [
     ("dummy", False, "dummy"),
     ("dummy", True, "<removed>"),
     ([1, 2, 3], True, "<removed>"),
     (1233456, True, "<removed>"),
     ({"key": "value"}, True, "<removed>"),
-    (None, True, None),
+    (None, True, "<removed>"),
 ]
 
-INVLAID_INPUT_HIDE_PASSWORDS = [("password", "wrong_type_flag", "wrong_type_flag in hide_passwords filter is not of type bool")]
+INVALID_INPUT_HIDE_PASSWORDS = [("password", "wrong_type_flag", "wrong_type_flag in hide_passwords filter is not of type bool")]
 
 
 class TestHidePasswordsFilter:
-    @pytest.mark.parametrize("value, hide_passwords_flag, hidden_password", VLAID_INPUT_HIDE_PASSWORDS)
+    @pytest.mark.parametrize("value, hide_passwords_flag, hidden_password", VALID_INPUT_HIDE_PASSWORDS)
     def test_hide_passwords_valid(self, value, hide_passwords_flag, hidden_password):
         """
         Test hide_passwords
         """
         assert hide_passwords(value, hide_passwords_flag) == hidden_password
 
-    @pytest.mark.parametrize("value, hide_passwords_flag, error_msg", INVLAID_INPUT_HIDE_PASSWORDS)
+    @pytest.mark.parametrize("value, hide_passwords_flag, error_msg", INVALID_INPUT_HIDE_PASSWORDS)
     def test_hide_passwords_invalid(self, value, hide_passwords_flag, error_msg):
         with pytest.raises(TypeError) as exc_info:
             hide_passwords(value, hide_passwords_flag)
