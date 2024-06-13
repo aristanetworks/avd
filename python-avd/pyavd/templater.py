@@ -6,6 +6,7 @@ from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, St
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
 from .j2filters.convert_dicts import convert_dicts
 from .j2filters.default import default
+from .j2filters.generate_route_target import generate_route_target
 from .j2filters.list_compress import list_compress
 from .j2filters.natural_sort import natural_sort
 
@@ -74,6 +75,7 @@ class Templar:
                 "arista.avd.list_compress": list_compress,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
+                "arista.avd.generate_route_target": generate_route_target,
             }
         )
         self.environment.tests.update(

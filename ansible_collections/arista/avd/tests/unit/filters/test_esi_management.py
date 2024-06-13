@@ -7,8 +7,6 @@ __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
 from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import generate_lacp_id
-from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
-from ansible_collections.arista.avd.tests.unit.filters.filter_utils import convert_esi_short_to_route_target_format
 
 ESI_SHORT = "0303:0202:0101"
 ESI_PREFIX = "1111:1111"
@@ -30,10 +28,3 @@ class TestEsiManagementFilter:
         resp = generate_lacp_id(ESI_SHORT_1)
         assert ":" not in resp
         assert "." in resp
-
-    def test_generate_route_target(self):
-        route_target_format_esi = convert_esi_short_to_route_target_format(ESI_SHORT)
-        resp = generate_route_target(ESI_SHORT)
-        assert resp == route_target_format_esi
-        resp1 = generate_route_target(None)
-        assert resp1 is None
