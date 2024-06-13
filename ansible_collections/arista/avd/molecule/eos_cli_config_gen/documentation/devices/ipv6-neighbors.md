@@ -4,8 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IPv6 Neighbors](#ipv6-neighbors-1)
-  - [IPv6 Static Neighbors](#ipv6-static-neighbors)
+- [Routing](#routing)
+  - [IPv6 Neighbors](#ipv6-neighbors-1)
 
 ## Management
 
@@ -35,14 +35,16 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## IPv6 Neighbors
+## Routing
 
-IPv6 neighbor cache persistency is enabled.
-Refresh delay to restore the IPv6 neighbor cache after reboot: 1000 seconds
+### IPv6 Neighbors
 
-### IPv6 Static Neighbors
+IPv6 neighbor cache persistency is enabled. The refresh-delay is 1000 seconds after reboot.
+
+#### IPv6 Static Neighbors
 
 | VRF | IPv6 Address | Exit Interface | MAC Address |
+| --- | ------------ | -------------- | ----------- |
 | MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
 | - | ::ffff:192.1.56.10 | Loopback99 | aa:af:12:34:bc:bf |
 
@@ -50,7 +52,6 @@ Refresh delay to restore the IPv6 neighbor cache after reboot: 1000 seconds
 
 ```eos
 !
-ipv6 neighbor cache persistent
 ipv6 neighbor persistent refresh-delay 1000
 ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
 ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf

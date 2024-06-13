@@ -7,7 +7,6 @@ ipv6_neighbor:
     - ipv6_address: ::ffff:192.1.56.10
       interface: Loopback99
       mac_address: aa:af:12:34:bc:bf
-  cache_persistent: true
   persistent:
     enabled: true
     refresh_delay: 1000

@@ -5141,23 +5141,19 @@ keys:
               required: true
               description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
               pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
-      cache_persistent:
-        type: bool
-        description: Restore the IPv6 neighbor cache after reboot.
       persistent:
         type: dict
         keys:
           enabled:
             type: bool
-            description: Restore the IPv6 neighbor cache after reboot with default
-              refresh delay.
             required: true
+            description: Restore the IPv6 neighbor cache after reboot.
           refresh_delay:
             type: int
             description: 'Time to wait in seconds before refreshing the IPv6 neighbor
               cache after reboot (EOS default 600).
 
-              It requires `enabled` to be true.
+              It will require setting the `enabled` key to true.
 
               '
             min: 600
