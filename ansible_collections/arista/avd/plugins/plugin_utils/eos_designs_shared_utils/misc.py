@@ -397,7 +397,7 @@ class MiscMixin:
             entry["destination"] = self._get_ipv4_acl_field_with_substitution(destination_field, ip_replacements, f"{err_context}.destination", interface_name)
 
         if ipv4_acl != org_ipv4_acl:
-            ipv4_acl["name"] += f"_{interface_name}"
+            ipv4_acl["name"] += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
     @staticmethod
