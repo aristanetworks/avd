@@ -3,8 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-
 __metaclass__ = type
 
 import cProfile
@@ -14,7 +12,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
 
@@ -22,8 +20,9 @@ PLUGIN_NAME = "arista.avd.eos_designs_facts"
 
 try:
     from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+    from pyavd.vendor.errors.errors import AristaAvdMissingVariableError
 except ImportError as e:
-    EosDesignsFacts = RaiseOnUse(
+    AristaAvdMissingVariableError = EosDesignsFacts = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
