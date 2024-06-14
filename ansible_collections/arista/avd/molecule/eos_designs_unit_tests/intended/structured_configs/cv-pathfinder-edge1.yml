@@ -213,12 +213,14 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.3/31
-- name: Ethernet1
+- name: Ethernet1/49.3
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  type: l3dot1q
   description: Inmrasat_S511
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1/49.3
+  encapsulation_dot1q_vlan: 3
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: dhcp
@@ -235,6 +237,10 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   ip_nat:
     service_profile: IE-DIRECT-NAT
+- name: Ethernet1/49
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -304,6 +310,25 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1/49.3
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 172.24.49.3
+  - action: permit
+    protocol: ip
+    source: 172.24.49.2
+    destination: 172.24.49.3
+- name: ALLOW-ALL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -495,7 +520,7 @@ router_path_selection:
   - name: Satellite
     id: 104
     local_interfaces:
-    - name: Ethernet1
+    - name: Ethernet1/49.3
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
@@ -624,14 +649,6 @@ application_traffic_recognition:
       prefix_values:
       - 192.168.144.2/32
       - 192.168.144.3/32
-ip_access_lists:
-- name: ALLOW-ALL
-  entries:
-  - sequence: 10
-    action: permit
-    protocol: ip
-    source: any
-    destination: any
 ip_nat:
   profiles:
   - name: IE-DIRECT-NAT
@@ -913,7 +930,7 @@ metadata:
     zone: AVD_Land_East-ZONE
     site: Site511
     interfaces:
-    - name: Ethernet1
+    - name: Ethernet1/49.3
       carrier: Inmrasat
       circuit_id: S511
       pathgroup: Satellite
@@ -955,7 +972,7 @@ metadata:
       tags:
       - name: Type
         value: lan
-    - interface: Ethernet1
+    - interface: Ethernet1/49.3
       tags:
       - name: Type
         value: wan
@@ -979,6 +996,10 @@ metadata:
         value: ATT
       - name: Circuit
         value: '404'
+    - interface: Ethernet1/49
+      tags:
+      - name: Type
+        value: lan
 flow_tracking:
   hardware:
     trackers:
