@@ -6,13 +6,25 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions import AvdInterfaceDescriptions
+from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
+
+PLUGIN_NAME = "arista.avd.eos_designs"
+try:
+    from pyavd._eos_designs.interface_descriptions import AvdInterfaceDescriptions
+except ImportError as e:
+    AvdInterfaceDescriptions = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME = "AvdInterfaceDescriptions"
 
