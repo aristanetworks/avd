@@ -9,7 +9,7 @@ from ....j2filters.list_compress import list_compress
 from ....vendor.avdfacts import AvdFacts
 from ....vendor.strip_empties import strip_empties_from_dict
 from ....vendor.utils import default, get
-from ..interface_descriptions import InterfaceDescriptionData
+from ...interface_descriptions import InterfaceDescriptionData
 
 
 class AvdStructuredConfigMlag(AvdFacts):

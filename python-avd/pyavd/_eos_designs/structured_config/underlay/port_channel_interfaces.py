@@ -10,7 +10,7 @@ from ....j2filters.generate_esi import generate_esi
 from ....j2filters.generate_route_target import generate_route_target
 from ....vendor.j2.filter.generate_lacp_id import generate_lacp_id
 from ....vendor.utils import get
-from ..interface_descriptions.models import InterfaceDescriptionData
+from ...interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from ....vendor.errors import AristaAvdMissingVariableError
 from ....vendor.utils import get
-from ..interface_descriptions.models import InterfaceDescriptionData
+from ...interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

@@ -11,7 +11,7 @@ from ....vendor.errors import AristaAvdError
 from ....vendor.j2.filter.range_expand import range_expand
 from ....vendor.strip_empties import strip_empties_from_dict
 from ....vendor.utils import default, get, get_item
-from ..interface_descriptions import InterfaceDescriptionData
+from ...interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlay

@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from ....j2filters.natural_sort import natural_sort
 from ....vendor.utils import append_if_not_duplicate, get
-from ..interface_descriptions import InterfaceDescriptionData
+from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
