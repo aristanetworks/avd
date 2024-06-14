@@ -6,5 +6,16 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-def generate_esi(esi_short: str, esi_prefix: str = "0000:0000:") -> str:
-    return esi_prefix + esi_short
+def generate_esi(short_esi: str, esi_prefix: str = "0000:0000:") -> str:
+    """
+    Transforms short_esi to EVPN ESI format.
+    0303:0202:0101 (short_esi) -> 0000:0000:0303:0202:0101 (EVPN ESI).
+
+    Args:
+        esi_short (str): Short ESI value as per AVD definition in eos_designs
+        esi_prefix (str): ESI prefix value, will be concatenated with the `short_esi`
+    Returns:
+        str: Concatenated string of `esi_prefix` and `short_esi` like `0000:0000:0303:0202:0101`
+
+    """
+    return esi_prefix + short_esi
