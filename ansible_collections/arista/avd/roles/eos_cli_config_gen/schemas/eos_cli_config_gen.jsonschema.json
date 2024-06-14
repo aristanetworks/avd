@@ -8695,6 +8695,80 @@
       "type": "boolean",
       "title": "IPv6 ICMP Redirect"
     },
+    "ipv6_neighbor": {
+      "type": "object",
+      "properties": {
+        "static_entries": {
+          "type": "array",
+          "description": "Static IPv6 neighbor entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv6_address": {
+                "type": "string",
+                "description": "IPv6 address of neighbor.",
+                "title": "IPv6 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "interface": {
+                "type": "string",
+                "description": "Interface name.",
+                "title": "Interface"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "MAC address of neighbor like 'aa:af:12:34:bc:bf'",
+                "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv6_address",
+              "interface",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
+        },
+        "persistent": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Restore the IPv6 neighbor cache after reboot.",
+              "title": "Enabled"
+            },
+            "refresh_delay": {
+              "type": "integer",
+              "description": "Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).\nIt will require setting the `enabled` key to true.\n",
+              "minimum": 600,
+              "maximum": 3600,
+              "title": "Refresh Delay"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Persistent"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IPv6 Neighbor"
+    },
     "ipv6_prefix_lists": {
       "type": "array",
       "items": {
