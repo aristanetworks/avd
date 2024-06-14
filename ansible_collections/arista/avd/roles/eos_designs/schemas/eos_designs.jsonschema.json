@@ -18973,6 +18973,31 @@
               "arp": {
                 "type": "object",
                 "properties": {
+                  "persistent": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "description": "Restore the ARP cache after reboot.",
+                        "title": "Enabled"
+                      },
+                      "refresh_delay": {
+                        "type": "integer",
+                        "description": "Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600).",
+                        "minimum": 600,
+                        "maximum": 3600,
+                        "title": "Refresh Delay"
+                      }
+                    },
+                    "required": [
+                      "enabled"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Persistent"
+                  },
                   "aging": {
                     "type": "object",
                     "properties": {
