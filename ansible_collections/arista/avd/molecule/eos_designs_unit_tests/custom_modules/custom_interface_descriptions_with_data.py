@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from functools import cached_property
 
+from pyavd._eos_designs.interface_descriptions import AvdInterfaceDescriptions, InterfaceDescriptionData
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions, InterfaceDescriptionData
 
 
 class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):

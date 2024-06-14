@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from functools import cached_property
 
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
+from pyavd._eos_designs.ip_addressing import AvdIpAddressing
 
 
 class CustomAvdIpAddressing(AvdIpAddressing):

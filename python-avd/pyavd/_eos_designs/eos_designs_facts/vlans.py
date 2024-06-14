@@ -178,11 +178,11 @@ class VlansMixin:
         if not self.shared_utils.filter_only_vlans_in_use:
             return set()
 
-        endpoint_vlans, endpoint_trunk_groups = self._endpoint_vlans_and_trunk_groups
+        endpoint_vlans, _ = self._endpoint_vlans_and_trunk_groups
         if not self.shared_utils.mlag:
             return endpoint_vlans
 
-        mlag_endpoint_vlans, mlag_endpoint_trunk_groups = self._mlag_peer_endpoint_vlans_and_trunk_groups
+        mlag_endpoint_vlans, _ = self._mlag_peer_endpoint_vlans_and_trunk_groups
 
         return endpoint_vlans.union(mlag_endpoint_vlans)
 
@@ -205,11 +205,11 @@ class VlansMixin:
         if not self.shared_utils.filter_only_vlans_in_use:
             return set()
 
-        endpoint_vlans, endpoint_trunk_groups = self._endpoint_vlans_and_trunk_groups
+        _, endpoint_trunk_groups = self._endpoint_vlans_and_trunk_groups
         if not self.shared_utils.mlag:
             return endpoint_trunk_groups
 
-        mlag_endpoint_vlans, mlag_endpoint_trunk_groups = self._mlag_peer_endpoint_vlans_and_trunk_groups
+        _, mlag_endpoint_trunk_groups = self._mlag_peer_endpoint_vlans_and_trunk_groups
         return endpoint_trunk_groups.union(mlag_endpoint_trunk_groups)
 
     @cached_property
@@ -220,7 +220,7 @@ class VlansMixin:
         This is a subset of endpoint_trunk_groups which is used for filtering.
         """
         if self.shared_utils.only_local_vlan_trunk_groups:
-            local_endpoint_vlans, local_endpoint_trunk_groups = self._local_endpoint_vlans_and_trunk_groups
+            _, local_endpoint_trunk_groups = self._local_endpoint_vlans_and_trunk_groups
             return list(local_endpoint_trunk_groups)
 
         return []
