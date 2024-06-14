@@ -148,7 +148,7 @@ TODO
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
+See the source code [here](../../../../../python-avd/pyavd/_eos_designs/eos_designs_facts/__init__.py)
 
 ```mermaid
 classDiagram
