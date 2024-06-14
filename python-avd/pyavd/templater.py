@@ -4,6 +4,7 @@
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
+from .j2filters.add_md_toc import add_md_toc
 from .j2filters.convert_dicts import convert_dicts
 from .j2filters.default import default
 from .j2filters.generate_route_target import generate_route_target
@@ -67,15 +68,16 @@ class Templar:
 
         self.environment.filters.update(
             {
-                "arista.avd.default": default,
+                "arista.avd.add_md_toc": add_md_toc,
                 "arista.avd.convert_dicts": convert_dicts,
                 "arista.avd.decrypt": decrypt,
+                "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,
+                "arista.avd.generate_route_target": generate_route_target,
                 "arista.avd.hide_passwords": hide_passwords,
                 "arista.avd.list_compress": list_compress,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
-                "arista.avd.generate_route_target": generate_route_target,
             }
         )
         self.environment.tests.update(
