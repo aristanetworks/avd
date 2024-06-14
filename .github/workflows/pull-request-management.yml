@@ -400,7 +400,7 @@ jobs:
             3.12
       - name: 'Install Python requirements'
         run: |
-          pip install ansible-core<2.18.0 -r .github/requirements-ci.txt --upgrade
+          pip install "ansible-core<2.18.0" -r .github/requirements-ci.txt --upgrade
       - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
