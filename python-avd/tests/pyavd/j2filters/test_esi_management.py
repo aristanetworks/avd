@@ -34,6 +34,6 @@ class TestEsiManagementFilter:
 
     @pytest.mark.parametrize("esi_short, esi_prefix, esi", GENERATE_ESI_TEST_CASES)
     def test_generate_esi(self, esi_short, esi_prefix, esi):
-        esi_prefix = esi_prefix if esi_prefix else DEFAULT_ESI_PREFIX
+        esi_prefix = esi_prefix or DEFAULT_ESI_PREFIX
         resp = generate_esi(esi_short, esi_prefix)
         assert resp == esi
