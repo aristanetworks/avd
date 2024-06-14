@@ -7,15 +7,15 @@ __metaclass__ = type
 
 import json
 import logging
+from functools import partial
 from pathlib import Path
 
-from functools import partial
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, cprofile, get_templar, template, PythonToAnsibleContextFilter
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, cprofile, get_templar, template
 
 try:
     from yaml import CLoader as YamlLoader
@@ -102,7 +102,6 @@ class ActionModule(ActionBase):
             LOGGER.info("Validating structured configuration [done].")
         except Exception as e:
             LOGGER.error(e)
-            raise e
             return result
 
         if validation_result.failed:
@@ -118,7 +117,9 @@ class ActionModule(ActionBase):
             LOGGER.info("Rendering configuration [done].")
 
             if has_custom_templates:
+                LOGGER.info("Rendering config custom templates...")
                 device_config += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                LOGGER.info("Rendering config custom templates [done].")
 
             result["changed"] = self.write_file(device_config, validated_args["config_filename"])
 
@@ -127,7 +128,9 @@ class ActionModule(ActionBase):
                 device_doc = get_device_doc(task_vars, add_md_toc=False)
 
                 if has_custom_templates:
+                    LOGGER.info("Rendering documentation custom templates...")
                     device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
+                    LOGGER.info("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
@@ -144,9 +147,7 @@ class ActionModule(ActionBase):
 
     def validate_args(self) -> dict:
         """Get task arguments and validate them."""
-        # Ignoring validation_result as Ansible code will raise in case of failure
-        _, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
-
+        validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
 
         # Converting to json and back to remove any AnsibeUnsafe types
@@ -193,7 +194,6 @@ class ActionModule(ActionBase):
 
         # Get updated templar instance to be passed along to our simplified "templater"
         if not hasattr(self, "ansible_templar"):
-            LOGGER.info("Adding Ansible templar")
             self.ansible_templar = get_templar(self, task_vars)
 
         return template(templatefile, task_vars, self.ansible_templar)
