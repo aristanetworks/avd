@@ -12,10 +12,10 @@ def generate_esi(short_esi: str, esi_prefix: str = "0000:0000:") -> str:
     0303:0202:0101 (short_esi) -> 0000:0000:0303:0202:0101 (EVPN ESI).
 
     Args:
-        esi_short (str): Short ESI value as per AVD definition in eos_designs
-        esi_prefix (str): ESI prefix value, will be concatenated with the `short_esi`
+        esi_short: Short ESI value as per AVD definition in eos_designs
+        esi_prefix: ESI prefix value, will be concatenated with the `short_esi`
     Returns:
-        str: Concatenated string of `esi_prefix` and `short_esi` like `0000:0000:0303:0202:0101`
+        Concatenated string of `esi_prefix` and `short_esi` like `0000:0000:0303:0202:0101`
 
     """
     return esi_prefix + short_esi
