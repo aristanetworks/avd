@@ -6,25 +6,12 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible.errors import AnsibleActionFail
-
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
-
-PLUGIN_NAME = "arista.avd.eos_designs"
-try:
-    from pyavd._eos_designs.ip_addressing import AvdIpAddressing
-except ImportError as e:
-    EosDesignsFacts = RaiseOnUse(
-        AnsibleActionFail(
-            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
-            orig_exc=e,
-        )
-    )
 
 DEFAULT_AVD_IP_ADDRESSING_PYTHON_CLASS_NAME = "AvdIpAddressing"
 
