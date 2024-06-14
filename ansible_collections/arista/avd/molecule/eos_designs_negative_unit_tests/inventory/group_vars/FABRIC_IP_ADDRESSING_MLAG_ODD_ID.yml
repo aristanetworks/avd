@@ -1,10 +1,10 @@
 ---
-fabric_name: fabric_ip_addressing_mlag_same_subnet
+fabric_name: FABRIC_IP_ADDRESSING_MLAG_ODD_ID
 mlag_support: true
 type: l3leaf
 fabric_ip_addressing:
   mlag:
-    algorithm: "same_subnet"
+    algorithm: "odd_id"
 l3leaf:
   defaults:
     mlag_peer_ipv4_pool: 10.10.255.0/24
@@ -15,14 +15,14 @@ l3leaf:
     platform: vEOS-LAB
     mlag_interfaces: [Ethernet5, Ethernet6]
   node_groups:
-    - group: fabric_ip_addressing_mlag_same_subnet
+    - group: fabric_ip_addressing_mlag_odd_id_oddodd
       bgp_as: 923
       nodes:
-        - name: mlag_same_subnet_1
+        - name: mlag_odd_id_oddodd1
           id: 1
           mgmt_ip: 192.168.201.116/24
-        - name: mlag_same_subnet_2
-          id: 2
+        - name: mlag_odd_id_oddodd2
+          id: 3
           mgmt_ip: 192.168.201.117/24
 
-expected_error_message: "Unexpected failure during module execution: MLAG same_subnet addressing requires the pool to be a /31"
+expected_error_message: "Unexpected failure during module execution: MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID"
