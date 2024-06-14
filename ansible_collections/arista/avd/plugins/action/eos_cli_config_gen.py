@@ -105,9 +105,19 @@ class ActionModule(ActionBase):
             return result
 
         if validation_result.failed:
-            # TODO nicer logging for validation_errors
-            for validation_error in validation_result.validation_error:
-                LOGGER.error(validation_error)
+            # TODO nicer logging for validation_errors and probably can be written in a better way.
+            validation_mode = validated_args.get("validation_mode", "warning")
+            for validation_error in validation_result.validation_errors:
+                if validation_mode == "error":
+                    LOGGER.error(validation_error)
+                elif validation_mode == "warning":
+                    LOGGER.warning(validation_error)
+                elif validation_mode == "info":
+                    LOGGER.info(validation_error)
+                elif validation_mode == "debug":
+                    LOGGER.debug(validation_error)
+                elif validation_mode == "disabled":
+                    pass
             return result
 
         try:
