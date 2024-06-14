@@ -219,7 +219,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   description: Inmrasat_S511
-  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1/49.3
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1_49.3
   encapsulation_dot1q_vlan: 3
 - name: Ethernet2
   peer_type: l3_interface
@@ -311,7 +311,7 @@ agents:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
 ip_access_lists:
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1/49.3
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1_49.3
   entries:
   - sequence: 15
     action: deny
