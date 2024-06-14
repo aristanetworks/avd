@@ -12,6 +12,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
@@ -20,9 +21,9 @@ PLUGIN_NAME = "arista.avd.eos_designs_facts"
 
 try:
     from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
-    from pyavd.vendor.errors.errors import AristaAvdMissingVariableError
+    from pyavd.vendor.errors.errors import AristaAvdMissingVariableError as PyavdMissingVariableError
 except ImportError as e:
-    AristaAvdMissingVariableError = EosDesignsFacts = RaiseOnUse(
+    EosDesignsFacts = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
@@ -203,7 +204,7 @@ class ActionModule(ActionBase):
         for host in avd_switch_facts_instances:
             try:
                 rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
-            except AristaAvdMissingVariableError as e:
+            except (AristaAvdMissingVariableError, PyavdMissingVariableError) as e:
                 raise AnsibleActionFail(f"{e} is required but was not found for host '{host}'") from e
 
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
