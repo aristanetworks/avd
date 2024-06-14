@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
+from __future__ import annotations
 
 import re
 from unicodedata import normalize
@@ -97,8 +97,8 @@ def _get_line_info(line: str, all_anchor_ids: list[str]) -> (int, str, str):
 
     Returns
     -------
-    str
-        MD with added TOC
+    int, str, str:
+        The level of the heading, the text of the heading and the anchor_id for the heading.
     """
     pounds, text = line.split(" ", maxsplit=1)
     level = len(pounds)
@@ -121,8 +121,8 @@ def _get_anchor_id(text: str, all_anchor_ids: list[str]) -> str:
 
     Returns
     -------
-    str
-        MD with added TOC
+    str:
+        The anchor ID for the text.
     """
     tmp_anchor_id = normalize("NFKD", text).encode("ascii", "ignore")
     tmp_anchor_id = re.sub(r"[^\w\s-]", "", tmp_anchor_id.decode("ascii")).strip().lower()

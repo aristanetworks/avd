@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
 from ..api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest
+from ..api.arista.time import TimeBounds
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -39,10 +40,7 @@ class InventoryMixin:
         Returns:
             Device objects.
         """
-        request = DeviceStreamRequest(
-            partial_eq_filter=[],
-            time=time,
-        )
+        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
         if devices:
             for serial_number, system_mac_address, hostname in devices:
                 request.partial_eq_filter.append(

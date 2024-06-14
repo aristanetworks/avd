@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 
@@ -43,7 +44,7 @@ class SwgMixin:
         service: Literal["zscaler"],
         location: str,
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> EndpointConfig:
+    ) -> tuple[datetime, EndpointConfig]:
         """
         Set SWG Endpoints using arista.swg.v1.EndpointStatusService.Set API
 
@@ -55,7 +56,7 @@ class SwgMixin:
             timeout: Timeout in seconds.
 
         Returns:
-            EndpointConfig including any server-generated values.
+            Tuple of timestamp for set request and EndpointConfig including any server-generated values.
         """
         request = EndpointConfigSetRequest(
             value=EndpointConfig(
@@ -68,7 +69,7 @@ class SwgMixin:
         try:
             LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
+            return response.time, response.value
 
         except Exception as e:
             raise get_cv_client_exception(e, f"set_swg_device: Device ID '{device_id}', service '{service}', location '{location}'") or e
@@ -77,6 +78,7 @@ class SwgMixin:
         self: CVClient,
         device_id: str,
         service: Literal["zscaler"],
+        start_time: datetime | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> EndpointStatus:
         """
@@ -85,11 +87,14 @@ class SwgMixin:
         Parameters:
             device_id: Unique identifier of the Device - typically serial number.
             service: SWG service. Currently only supporting "zscaler".
+            start_time: Timestamp of earliest timestamp to fetch. `now()` if not set.
             timeout: Timeout in seconds.
 
         Returns:
             EndpointStatus object matching the device_id
         """
+        if start_time is None:
+            start_time = datetime().now()
         request = EndpointStatusStreamRequest(
             partial_eq_filter=[
                 EndpointStatus(
@@ -102,6 +107,10 @@ class SwgMixin:
         try:
             responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
+                if response.time < start_time:
+                    LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")
+                    continue
+
                 LOGGER.info("wait_for_swg_endpoint_status: Got SWG endpoints: %s", response.value)
                 return response.value
 

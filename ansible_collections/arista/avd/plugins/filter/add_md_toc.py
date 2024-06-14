@@ -17,7 +17,7 @@ PLUGIN_NAME = "arista.avd.add_md_toc"
 try:
     from pyavd.j2filters.add_md_toc import add_md_toc
 except ImportError as e:
-    convert_dicts = RaiseOnUse(
+    add_md_toc = RaiseOnUse(
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
@@ -80,6 +80,4 @@ _value:
 
 class FilterModule(object):
     def filters(self):
-        return {
-            "add_md_toc": wrap_filter(PLUGIN_NAME)(add_md_toc),
-        }
+        return {"add_md_toc": wrap_filter(PLUGIN_NAME)(add_md_toc)}
