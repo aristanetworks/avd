@@ -2,4 +2,4 @@
 ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/ip-extended-community-lists-regexp.md
 ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/generate-default-config.md
 ansible_collections/arista/avd/molecule/eos_cli_config_gen_deprecated_vars/documentation/devices/host1.md
-ansible_collections/arista/avd/tests/unit/filters/toc_files/
+python-avd/tests/pyavd/j2filters/toc_files/
