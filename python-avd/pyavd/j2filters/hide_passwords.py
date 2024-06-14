@@ -6,7 +6,7 @@ from __future__ import annotations
 
 def hide_passwords(value: str, hide_passwords: bool = False) -> str:
     """
-    Replaces the input data with "<removed>" if the hide_passwords parameter is true. 
+    Replaces the input data with "<removed>" if the hide_passwords parameter is true.
 
     Args:
         value (str): Value to be hidden
