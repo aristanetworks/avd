@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 
+from ._eos_designs.eos_designs_facts import EosDesignsFacts
+
 
 def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
     """
@@ -69,7 +71,6 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
             ```
     """
     # pylint: disable=import-outside-toplevel
-    from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts
     from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
 
     # pylint: enable=import-outside-toplevel

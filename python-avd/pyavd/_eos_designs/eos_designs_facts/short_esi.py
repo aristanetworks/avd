@@ -8,10 +8,10 @@ from functools import cached_property
 from hashlib import sha256
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ...vendor.utils import default, get
 
 if TYPE_CHECKING:
-    from .eos_designs_facts import EosDesignsFacts
+    from . import EosDesignsFacts
 
 
 class ShortEsiMixin:

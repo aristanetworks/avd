@@ -6,10 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .eos_designs_facts import EosDesignsFacts
+    from . import EosDesignsFacts
 
 
 class OverlayMixin:
