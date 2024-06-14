@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 
-def hide_passwords(value: list | dict | str | int | None, hide_passwords: bool = False) -> str:
+def hide_passwords(value: str, hide_passwords: bool = False) -> str:
     """
     hide_passwords replaces the input data by "<removed>" if the hide_passwords parameter is true
 
     Args:
-        value (list | dict | str | int | None): Value to be hidden
+        value (str): Value to be hidden
         hide_passwords(bool) : Enable/disable hide_passwords
     Returns:
         str: "<removed>" or value
