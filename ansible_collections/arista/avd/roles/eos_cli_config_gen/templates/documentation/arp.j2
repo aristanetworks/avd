@@ -4,9 +4,17 @@
  that can be found in the LICENSE file.
 #}
 {# doc - arp #}
-{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined %}
+{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined or arp.persistent is arista.avd.defined %}
 
 ### ARP
+{%     if arp.persistent.enabled is arista.avd.defined(true) %}
+{%         set persistent_doc = "ARP cache persistency is enabled." %}
+{%         if arp.persistent.refresh_delay is arista.avd.defined %}
+{%             set persistent_doc = persistent_doc ~ " The refresh-delay is " ~ arp.persistent.refresh_delay ~ " seconds after reboot." %}
+{%         endif %}
+
+{{ persistent_doc }}
+{%     endif %}
 {%     if arp.aging.timeout_default is arista.avd.defined %}
 
 Global ARP timeout: {{ arp.aging.timeout_default }}

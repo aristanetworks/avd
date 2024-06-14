@@ -11,6 +11,7 @@
        or ipv6_unicast_routing is arista.avd.defined
        or static_routes is arista.avd.defined
        or ipv6_static_routes is arista.avd.defined
+       or ipv6_neighbor is arista.avd.defined
        or arp is arista.avd.defined
        or router_general is arista.avd.defined
        or router_service_insertion is arista.avd.defined
@@ -36,6 +37,8 @@
 {%     include 'documentation/static-routes.j2' %}
 {## IPv6 Static Routes #}
 {%     include 'documentation/ipv6-static-routes.j2' %}
+{## IPv6 Neighbors #}
+{%     include 'documentation/ipv6-neighbors.j2' %}
 {## ARP #}
 {%     include 'documentation/arp.j2' %}
 {## Router Adaptive Virtual Topology #}

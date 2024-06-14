@@ -1,11 +1,11 @@
-# arp
+# ipv6-neighbors
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [ARP](#arp-1)
+  - [IPv6 Neighbors](#ipv6-neighbors-1)
 
 ## Management
 
@@ -37,33 +37,22 @@ interface Management1
 
 ## Routing
 
-### ARP
+### IPv6 Neighbors
 
-ARP cache persistency is enabled. The refresh-delay is 700 seconds after reboot.
+IPv6 neighbor cache persistency is enabled. The refresh-delay is 1000 seconds after reboot.
 
-Global ARP timeout: 300
+#### IPv6 Static Neighbors
 
-#### ARP Static Entries
+| VRF | IPv6 Address | Exit Interface | MAC Address |
+| --- | ------------ | -------------- | ----------- |
+| MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
+| - | ::ffff:192.1.56.10 | Loopback99 | aa:af:12:34:bc:bf |
 
-| VRF | IPv4 address | MAC address |
-| --- | ------------ | ----------- |
-| BLAH | 42.42.42.42 | DEAD.BEEF.CAFE |
-| defauls | 42.42.42.42 | DEAD.BEEF.CAFE |
-| default | 41.42.42.42 | DEAD.BEEF.CAFE |
-| default | 42.42.42.42 | DEAD.BEEF.CAFE |
-| default | 43.42.42.42 | DEAD.BEEF.CAFE |
-| defaulu | 42.42.42.42 | DEAD.BEEF.CAFE |
-
-#### ARP Device Configuration
+#### IPv6 Neighbor Configuration
 
 ```eos
 !
-arp persistent refresh-delay 700
-arp aging timeout default 300
-arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
-arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa
-arp 41.42.42.42 DEAD.BEEF.CAFE arpa
-arp 42.42.42.42 DEAD.BEEF.CAFE arpa
-arp 43.42.42.42 DEAD.BEEF.CAFE arpa
-arp vrf defaulu 42.42.42.42 DEAD.BEEF.CAFE arpa
+ipv6 neighbor persistent refresh-delay 1000
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf
 ```
