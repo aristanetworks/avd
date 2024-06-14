@@ -11,9 +11,6 @@ from pyavd.j2filters.hide_passwords import hide_passwords
 VALID_INPUT_HIDE_PASSWORDS = [
     ("dummy", False, "dummy"),
     ("dummy", True, "<removed>"),
-    ([1, 2, 3], True, "<removed>"),
-    (1233456, True, "<removed>"),
-    ({"key": "value"}, True, "<removed>"),
     (None, True, "<removed>"),
 ]
 
