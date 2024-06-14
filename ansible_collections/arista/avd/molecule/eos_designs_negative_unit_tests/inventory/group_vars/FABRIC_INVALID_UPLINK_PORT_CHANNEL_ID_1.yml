@@ -6,7 +6,7 @@ default_node_types:
     match_hostnames:
       - ".*l3leaf-."
 
-fabric_name: fabric_invalid_uplink_port_channel_id_3
+fabric_name: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_1
 
 l3leaf:
   defaults:
@@ -30,6 +30,7 @@ l2leaf:
     mlag_interfaces: [Ethernet3-4]
     uplink_interfaces: [Ethernet1-2]
     uplink_switches: [invalid-uplink-port-channel-id-l3leaf-1, invalid-uplink-port-channel-id-l3leaf-2]
+    uplink_port_channel_id: 2001 #<<<<< invalid ID
   node_groups:
     - group: MLAG_PAIR
       nodes:
@@ -37,9 +38,8 @@ l2leaf:
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
           id: 1
         - name: invalid-uplink-port-channel-id-l2leaf-2
-          uplink_port_channel_id: 1234 #<<<<< valid ID but set to a different value than primary node
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
           id: 2
 
 expected_error_message: >-
-  Unexpected failure during module execution: 'uplink_port_channel_id' on 'invalid-uplink-port-channel-id-l2leaf-2' is set to 1234 and is not matching 1 set on MLAG peer. The 'uplink_port_channel_id' must be matching on MLAG peers.
+  Unexpected failure during module execution: 'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '2001' on 'invalid-uplink-port-channel-id-l2leaf-1'.
