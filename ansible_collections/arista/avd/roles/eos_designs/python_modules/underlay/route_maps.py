@@ -130,31 +130,7 @@ class RouteMapsMixin(UtilsMixin):
                 )
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
-            # RM-BGP-UNDERLAY-PEERS-OUT
-            sequence_numbers = [
-                {
-                    "sequence": 10,
-                    "type": "permit",
-                    "description": "Advertise local routes towards LAN",
-                    "match": ["extcommunity ECL-EVPN-SOO"],
-                },
-                {
-                    "sequence": 20,
-                    "type": "permit",
-                    "description": "Advertise routes received from WAN iBGP towards LAN",
-                    "match": ["route-type internal"],
-                },
-            ]
-            if self.shared_utils.wan_ha:
-                sequence_numbers.append(
-                    {
-                        "sequence": 30,
-                        "type": "permit",
-                        "description": "Advertise WAN HA prefixes towards LAN",
-                        "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
-                    },
-                )
-            route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
+            # TODO: No RM-BGP-UNDERLAY-PEERS-OUT, sending everything out. There will be one added for HA support in a future PR
 
         if route_maps:
             return route_maps

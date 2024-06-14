@@ -18,7 +18,7 @@ ESI_TO_RT_TEST_CASES = [
 ]
 
 
-class TestEsiManagementFilter:
+class TestGenerateRouteTargetFilter:
     @pytest.mark.parametrize("esi_short, route_target", ESI_TO_RT_TEST_CASES)
     def test_generate_route_target(self, esi_short, route_target):
         resp = generate_route_target(esi_short)
