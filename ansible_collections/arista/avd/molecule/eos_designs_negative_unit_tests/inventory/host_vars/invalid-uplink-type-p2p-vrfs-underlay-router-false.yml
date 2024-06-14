@@ -1,5 +1,5 @@
 ---
-fabric_name: fabric_p2p_vrfs
+fabric_name: FABRIC_P2P_VRFS
 
 default_node_types:
   - node_type: not_underlay_router
