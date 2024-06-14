@@ -243,7 +243,8 @@ router_bgp:
       rd: "192.168.255.3:11"
       evpn_multicast: true
       evpn_multicast_gateway_dr_election_algorithm:
-        preference: 10000
+        election_parameter: preference
+        preference_value: 10000
       default_route_exports:
         - address_family: evpn
       route_targets:

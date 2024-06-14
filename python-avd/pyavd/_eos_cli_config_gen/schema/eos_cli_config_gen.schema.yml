@@ -13125,15 +13125,18 @@ keys:
             evpn_multicast_gateway_dr_election_algorithm:
               type: dict
               keys:
-                hrw:
-                  type: bool
-                  description: Default selection based on highest random weight.
-                modulus:
-                  type: bool
-                  description: Selection based on VLAN ID modulo number of candidates.
-                preference:
+                election_parameter:
+                  type: str
+                  description: "DR election parameters:\n  hrw: Default selection
+                    based on highest random weight.\n  modulus: Selection based on
+                    VLAN ID modulo number of candidates.\n  preference: Selection
+                    based on a configured preference value."
+                  valid_values:
+                  - hrw
+                  - modulus
+                  - preference
+                preference_value:
                   type: int
-                  description: Selection based on a configured preference value.
                   min: 0
                   max: 65535
                   convert_types:

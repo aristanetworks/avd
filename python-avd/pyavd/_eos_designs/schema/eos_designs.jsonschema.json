@@ -39944,22 +39944,21 @@
                         "evpn_multicast_gateway_dr_election_algorithm": {
                           "type": "object",
                           "properties": {
-                            "hrw": {
-                              "type": "boolean",
-                              "description": "Default selection based on highest random weight.",
-                              "title": "Hrw"
+                            "election_parameter": {
+                              "type": "string",
+                              "description": "DR election parameters:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
+                              "enum": [
+                                "hrw",
+                                "modulus",
+                                "preference"
+                              ],
+                              "title": "Election Parameter"
                             },
-                            "modulus": {
-                              "type": "boolean",
-                              "description": "Selection based on VLAN ID modulo number of candidates.",
-                              "title": "Modulus"
-                            },
-                            "preference": {
+                            "preference_value": {
                               "type": "integer",
-                              "description": "Selection based on a configured preference value.",
                               "minimum": 0,
                               "maximum": 65535,
-                              "title": "Preference"
+                              "title": "Preference Value"
                             }
                           },
                           "additionalProperties": false,
