@@ -701,6 +701,8 @@ keys:
     description: Define the CV Pathfinder hierarchy.
     type: list
     primary_key: name
+    unique_keys:
+    - id
     items:
       type: dict
       $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
@@ -719,6 +721,8 @@ keys:
           description: All sites are placed in a default zone "<region_name>-ZONE"
             with ID 1.
           primary_key: name
+          unique_keys:
+          - id
           items:
             type: dict
             $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
