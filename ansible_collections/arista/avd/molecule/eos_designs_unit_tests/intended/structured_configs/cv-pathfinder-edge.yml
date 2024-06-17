@@ -229,7 +229,7 @@ ethernet_interfaces:
   type: routed
   description: Colt_10555
   ip_nat:
-    service_profile: IE-DIRECT-NAT
+    service_profile: NAT-IE-DIRECT
 - name: Ethernet2/1
   peer_type: l3_interface
   ip_address: 172.15.5.6/31
@@ -237,7 +237,7 @@ ethernet_interfaces:
   type: routed
   description: Colt_10555
   ip_nat:
-    service_profile: IE-DIRECT-NAT
+    service_profile: NAT-IE-DIRECT
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
@@ -653,7 +653,24 @@ application_traffic_recognition:
       prefix_values:
       - 192.168.144.1/32
 ip_access_lists:
-- name: ALLOW-ALL
+- name: ACL-NAT-IE-DIRECT
+  entries:
+  - sequence: 10
+    action: deny
+    protocol: ip
+    source: 172.15.5.5
+    destination: any
+  - sequence: 20
+    action: deny
+    protocol: ip
+    source: 172.15.5.6
+    destination: any
+  - sequence: 30
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+- name: ACL-NAT-IE-ZSCALER
   entries:
   - sequence: 10
     action: permit
@@ -662,15 +679,15 @@ ip_access_lists:
     destination: any
 ip_nat:
   profiles:
-  - name: IE-DIRECT-NAT
+  - name: NAT-IE-DIRECT
     source:
       dynamic:
-      - access_list: ALLOW-ALL
+      - access_list: ACL-NAT-IE-DIRECT
         nat_type: overload
-  - name: IE-ZSCALER-NAT
+  - name: NAT-IE-ZSCALER
     source:
       dynamic:
-      - access_list: ALLOW-ALL
+      - access_list: ACL-NAT-IE-ZSCALER
         pool_name: PORT-ONLY-POOL
         nat_type: pool
   pools:
@@ -760,7 +777,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.37.121.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: IE-ZSCALER-NAT
+  nat_profile: NAT-IE-ZSCALER
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
@@ -769,7 +786,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.39.77.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: IE-ZSCALER-NAT
+  nat_profile: NAT-IE-ZSCALER
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
@@ -778,7 +795,7 @@ tunnel_interfaces:
   source_interface: Ethernet3
   destination: 10.50.9.1
   ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
-  nat_profile: IE-ZSCALER-NAT
+  nat_profile: NAT-IE-ZSCALER
 monitor_connectivity:
   interface_sets:
   - name: SET-Ethernet2
