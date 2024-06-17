@@ -115,8 +115,9 @@ repos:
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
         types: [python]
+        files: ansible_collections/arista/avd/
         args:
-          - ansible_collections/arista/avd/
+          - --rcfile=ansible_collections/arista/avd/pylintrc
           # Suppress duplicate code for modules header
           - -d duplicate-code
 
