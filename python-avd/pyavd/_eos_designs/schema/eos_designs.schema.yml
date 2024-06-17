@@ -703,6 +703,7 @@ keys:
     primary_key: name
     unique_keys:
     - id
+    - sites.name
     items:
       type: dict
       $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
