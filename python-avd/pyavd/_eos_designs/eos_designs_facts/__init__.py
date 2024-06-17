@@ -98,7 +98,8 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
                 raise AristaAvdError(
                     "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
                 )
-            elif self.shared_utils.mlag is True:
+
+            if self.shared_utils.mlag is True:
                 peer_eos_designs_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
                 if self.shared_utils.overlay_rd_type_admin_subfield == peer_eos_designs_facts.shared_utils.overlay_rd_type_admin_subfield:
                     raise AristaAvdError(

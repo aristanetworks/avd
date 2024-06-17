@@ -70,7 +70,7 @@ class UplinksMixin:
 
         # produce an error if the switch is MLAG and port-channel ID is above 2000
         if self.shared_utils.mlag:
-            if not (1 <= uplink_port_channel_id <= 2000):
+            if not 1 <= uplink_port_channel_id <= 2000:
                 raise AristaAvdError(
                     f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}' on '{self.shared_utils.hostname}'."
                 )
@@ -113,7 +113,7 @@ class UplinksMixin:
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(self.shared_utils.uplink_switches[0], required=True)
 
         if uplink_switch_facts.shared_utils.mlag:
-            if not (1 <= uplink_switch_port_channel_id <= 2000):
+            if not 1 <= uplink_switch_port_channel_id <= 2000:
                 raise AristaAvdError(
                     f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}' on"
                     f" '{self.shared_utils.hostname}'."
@@ -250,7 +250,13 @@ class UplinksMixin:
 
         return uplink
 
-    def _get_l2_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
+    def _get_l2_uplink(
+        self: EosDesignsFacts,
+        uplink_index: int,  # pylint: disable=unused-argument
+        uplink_interface: str,
+        uplink_switch: str,
+        uplink_switch_interface: str,
+    ) -> dict:
         """
         Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and TODO lan-port-channel.
         """
