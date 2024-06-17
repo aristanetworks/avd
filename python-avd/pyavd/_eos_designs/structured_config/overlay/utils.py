@@ -272,7 +272,7 @@ class UtilsMixin:
         return f"{path_group_name}-{wan_route_server_name}-{sanitized_interface_name}"
 
     @cached_property
-    def _stun_server_profiles(self) -> dict:
+    def _stun_server_profiles(self: AvdStructuredConfigOverlay) -> dict:
         """
         Return a dictionary of _stun_server_profiles with ip_address per local path_group
         """
