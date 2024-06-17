@@ -41,11 +41,11 @@ class Undefined(StrictUndefined):
 
 class Templar:
     def __init__(self, searchpaths: list[str] = None):
-        if RUNNING_FROM_SRC:
+        if not RUNNING_FROM_SRC:
             self.loader = ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH)
         else:
             searchpaths = searchpaths or []
-            searchpaths.extends(JINJA2_TEMPLATE_PATHS)
+            searchpaths.extend(JINJA2_TEMPLATE_PATHS)
             # TODO optimize ChoiceLoader to recompile changed templates
             self.loader = ChoiceLoader(
                 [
