@@ -65,7 +65,7 @@ options:
           - An optional list of specific tests in the category to skip (e.g., `VerifyRoutingProtocolModel` in `AvdTestBGP`).
           - If not specified, all tests in the category are considered.
           - For a complete list of available tests,
-            see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/ANTA-Preview.html#test-categories).
+            see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/anta_integration.html#test-categories).
   cprofile_file:
     description:
       - The filename for storing cProfile data, useful for debugging performance issues.

@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_validate_state - Preview Integration with ANTA
+title: Ansible Collection Role eos_validate_state - Integration with ANTA
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -9,10 +9,6 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
   -->
 
 # eos_validate_state - Preview Integration with ANTA
-
-!!! warning
-    eos_validate_state integration with ANTA is in preview. Everything is subject to change.
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
 
 !!! warning
     ANTA version has been bumped to **0.14.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
@@ -38,10 +34,10 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
 !!! note
     Subject to change. No commitments implied.
 
-- Add more tests generated from the structured configuration
+- Add more ANTA tests generated from the structured configuration
 
 !!! tip
-    You can now provide your own custom ANTA catalogs to the AVD `eos_validate_state` role! Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
+    You can provide your own custom ANTA catalogs to the AVD `eos_validate_state` role. Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
 
 ## Expected changes
 
@@ -64,13 +60,7 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
 
 ## How to run eos_validate_state in ANTA mode
 
-- Install the "anta" Python package (this is *not* part of the `requirements.txt`):
-
-  ```shell
-  pip3 install '
-  --8<-- "roles/eos_validate_state/preview_requirements.txt:4:4"
-  '
-  ```
+- The "anta" Python package is now part of the `requirements.txt` file. Please refer to the [AVD Additional Python Libraries required](https://avd.sh/en/stable/docs/installation/collection-installation.html#required-python-libraries) section to proceed.
 
 - Run eos_validate_state playbook by setting the variable `use_anta=true`.
 

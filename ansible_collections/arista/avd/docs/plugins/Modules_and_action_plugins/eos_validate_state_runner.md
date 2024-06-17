@@ -42,7 +42,7 @@ The plugin offers the following capabilities:
 | <samp>custom_anta_catalogs_dir</samp> | any | optional | None |  | The directory where custom ANTA test catalogs are stored.<br>Files must be named after the device hostname or the Ansible group name and have a `.yml` or `.yaml` extension. |
 | <samp>skipped_tests</samp> | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key `category` and can optionally include a `tests` key. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;category</samp> | str | optional | None |  | The name of an AvdTest category (e.g., `AvdTestHardware`). |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;tests</samp> | list | optional | None |  | An optional list of specific tests in the category to skip (e.g., `VerifyRoutingProtocolModel` in `AvdTestBGP`).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/ANTA-Preview.html#test-categories). |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;tests</samp> | list | optional | None |  | An optional list of specific tests in the category to skip (e.g., `VerifyRoutingProtocolModel` in `AvdTestBGP`).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/anta_integration.html#test-categories). |
 | <samp>cprofile_file</samp> | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
