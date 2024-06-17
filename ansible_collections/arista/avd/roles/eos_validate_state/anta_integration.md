@@ -8,10 +8,7 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
   ~ that can be found in the LICENSE file.
   -->
 
-# eos_validate_state - Preview Integration with ANTA
-
-!!! warning
-    ANTA version has been bumped to **0.14.0**. Please make sure you are running this exact version! For more details, please see the [installation section](#how-to-run-eos_validate_state-in-anta-mode).
+# eos_validate_state - Integration with ANTA
 
 # Overview
 
@@ -201,7 +198,6 @@ only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(fa
 
 
 # Variable to enable ANTA eos_validate_state
-# Defaults to false as ANTA is currently in preview
 use_anta: false
 
 # Save each device test catalog to 'test_catalogs_dir'. Defaults to false.
