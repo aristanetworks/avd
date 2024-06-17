@@ -38,7 +38,7 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 # Avoid duplicate logs in debug files
 LOGGER.propagate = False
 
-# Trying stuff
+# Trying stuff - probably need to go in another PR
 setattr(LOGGER, "vv", partial(LOGGER.log, 19))
 setattr(LOGGER, "vvv", partial(LOGGER.log, 18))
 setattr(LOGGER, "vvvv", partial(LOGGER.log, 17))
@@ -76,8 +76,6 @@ class ActionModule(ActionBase):
         # Setup module logging
         hostname = task_vars["inventory_hostname"]
         setup_module_logging(hostname, result)
-        LOGGER.vv("test2")
-        LOGGER.vvv("test3")
 
         result = self.main(task_vars, result)
 
@@ -128,8 +126,13 @@ class ActionModule(ActionBase):
 
             if has_custom_templates:
                 LOGGER.info("Rendering config custom templates...")
-                device_config += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
                 LOGGER.info("Rendering config custom templates [done].")
+                # Need to handle if `end` has been rendered already
+                if device_config.endswith("!\nend\n"):
+                    device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
+                else:
+                    device_config += rendered_custom_templates
 
             result["changed"] = self.write_file(device_config, validated_args["config_filename"])
 
