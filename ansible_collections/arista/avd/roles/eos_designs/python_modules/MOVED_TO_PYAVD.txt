@@ -1,0 +1,1 @@
+All Python modules have been moved to PyAVD in the folder /python-avd/pyavd/_eos_designs/structured_config/
