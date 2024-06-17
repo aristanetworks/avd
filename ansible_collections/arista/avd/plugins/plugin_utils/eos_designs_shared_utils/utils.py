@@ -11,7 +11,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, template_var
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
 
     from .shared_utils import SharedUtils
 

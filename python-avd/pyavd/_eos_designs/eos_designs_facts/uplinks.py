@@ -7,13 +7,13 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, unique
+from ...j2filters.list_compress import list_compress
+from ...vendor.errors import AristaAvdError
+from ...vendor.j2.filter.range_expand import range_expand
+from ...vendor.utils import append_if_not_duplicate, get, unique
 
 if TYPE_CHECKING:
-    from .eos_designs_facts import EosDesignsFacts
+    from . import EosDesignsFacts
 
 
 class UplinksMixin:
