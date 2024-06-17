@@ -626,6 +626,21 @@ keys:
   arp:
     type: dict
     keys:
+      persistent:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Restore the ARP cache after reboot.
+          refresh_delay:
+            type: int
+            description: Time to wait in seconds before refreshing the ARP cache after
+              reboot (EOS default 600).
+            min: 600
+            max: 3600
+            convert_types:
+            - str
       aging:
         type: dict
         keys:
@@ -1605,6 +1620,73 @@ keys:
             min: 5
             max: 65535
             description: Interval period in seconds.
+      captive_portal:
+        type: dict
+        description: Web authentication feature authenticates a supplicant through
+          a web page, referred to as a captive portal.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          url:
+            type: str
+            description: "Supported URL type:\n  - http: http://<hostname>[:<port>]\n
+              \ - https: https://<hostname>[:<port>]"
+          ssl_profile:
+            type: str
+          start_limit_infinite:
+            type: bool
+            description: Set captive-portal start limit to infinte.
+          access_list_ipv4:
+            type: str
+            description: Standard access-list name.
+      supplicant:
+        type: dict
+        keys:
+          profiles:
+            description: Dot1x supplicant profiles.
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                eap_method:
+                  type: str
+                  description: "Extensible Authentication Protocol method:\n  - EAP
+                    Flexible Authentication via Secure Tunneling.\n  - EAP with Transport
+                    Layer Security."
+                  valid_values:
+                  - fast
+                  - tls
+                identity:
+                  type: str
+                  description: User identity.
+                passphrase_type:
+                  type: str
+                  convert_types:
+                  - int
+                  valid_values:
+                  - '0'
+                  - '7'
+                  - 8a
+                  default: '7'
+                passphrase:
+                  type: str
+                  description: Extensible Authentication Protocol password.
+                ssl_profile:
+                  type: str
+          logging:
+            type: bool
+            description: Enable supplicant logging.
+          disconnect_cached_results_timeout:
+            type: int
+            convert_types:
+            - str
+            min: 60
+            max: 65535
+            description: Timeout in seconds for removing a disconnected supplicant.
   dps_interfaces:
     type: list
     primary_key: name
@@ -5050,6 +5132,49 @@ keys:
                       name.
   ipv6_icmp_redirect:
     type: bool
+  ipv6_neighbor:
+    type: dict
+    keys:
+      static_entries:
+        type: list
+        description: Static IPv6 neighbor entries.
+        items:
+          type: dict
+          keys:
+            ipv6_address:
+              type: str
+              required: true
+              description: IPv6 address of neighbor.
+            vrf:
+              type: str
+            interface:
+              type: str
+              required: true
+              description: Interface name.
+            mac_address:
+              type: str
+              required: true
+              description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
+              pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+      persistent:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Restore the IPv6 neighbor cache after reboot.
+          refresh_delay:
+            type: int
+            description: 'Time to wait in seconds before refreshing the IPv6 neighbor
+              cache after reboot (EOS default 600).
+
+              It will require setting the `enabled` key to true.
+
+              '
+            min: 600
+            max: 3600
+            convert_types:
+            - str
   ipv6_prefix_lists:
     type: list
     primary_key: name
@@ -10837,6 +10962,58 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
+            missing_policy:
+              type: dict
+              description: Missing policy configuration for all address-families.
+              keys:
+                direction_in:
+                  description: Missing policy inbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                      - deny
+                      - permit
+                      - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy
+                        decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy
+                        decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy
+                        decision.
+                direction_out:
+                  description: Missing policy outbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                      - deny
+                      - permit
+                      - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy
+                        decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy
+                        decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy
+                        decision.
             link_bandwidth:
               type: dict
               keys:
@@ -11053,6 +11230,58 @@ keys:
               - int
             maximum_routes_warning_only:
               type: bool
+            missing_policy:
+              type: dict
+              description: Missing policy configuration for all address-families.
+              keys:
+                direction_in:
+                  description: Missing policy inbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                      - deny
+                      - permit
+                      - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy
+                        decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy
+                        decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy
+                        decision.
+                direction_out:
+                  description: Missing policy outbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                      - deny
+                      - permit
+                      - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy
+                        decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy
+                        decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy
+                        decision.
             allowas_in:
               type: dict
               keys:
@@ -11179,9 +11408,17 @@ keys:
             advertise_map:
               type: str
               description: Route-map name.
+              deprecation:
+                removed: true
+                warning: true
+                remove_in_version: v4.9.0
             supress_map:
               type: str
               description: Route-map name.
+              deprecation:
+                removed: true
+                warning: true
+                remove_in_version: v4.9.0
             summary_only:
               type: bool
             attribute_map:
@@ -13212,9 +13449,17 @@ keys:
                   advertise_map:
                     type: str
                     description: Route-map name.
+                    deprecation:
+                      removed: true
+                      warning: true
+                      remove_in_version: v4.9.0
                   supress_map:
                     type: str
                     description: Route-map name.
+                    deprecation:
+                      removed: true
+                      warning: true
+                      remove_in_version: v4.9.0
                   summary_only:
                     type: bool
                   attribute_map:

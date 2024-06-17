@@ -30,7 +30,6 @@ class RouteMapsMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
-            sequence_numbers = []
             sequence_10 = {
                 "sequence": 10,
                 "type": "permit",
@@ -39,8 +38,7 @@ class RouteMapsMixin(UtilsMixin):
             if self.shared_utils.wan_role:
                 sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
-            sequence_numbers.append(sequence_10)
-
+            sequence_numbers = [sequence_10]
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
             if self.shared_utils.underlay_ipv6 is True:

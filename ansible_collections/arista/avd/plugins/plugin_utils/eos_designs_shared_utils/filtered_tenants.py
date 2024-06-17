@@ -96,6 +96,11 @@ class FilteredTenantsMixin:
             return []
 
         l2vlans: list[dict] = natural_sort(convert_dicts(tenant["l2vlans"], "id"), "id")
+
+        if tenant_evpn_vlan_bundle := get(tenant, "evpn_vlan_bundle"):
+            for l2vlan in l2vlans:
+                l2vlan["evpn_vlan_bundle"] = get(l2vlan, "evpn_vlan_bundle", default=tenant_evpn_vlan_bundle)
+
         l2vlans = [
             # Copy and set tenant key on all l2vlans
             {**l2vlan, "tenant": tenant["name"]}
@@ -266,6 +271,10 @@ class FilteredTenantsMixin:
 
             if vrf["svis"] or vrf["l3_interfaces"] or vrf["loopbacks"] or self.is_forced_vrf(vrf):
                 filtered_vrfs.append(vrf)
+
+            if tenant_evpn_vlan_bundle := get(tenant, "evpn_vlan_bundle"):
+                for svi in vrf["svis"]:
+                    svi["evpn_vlan_bundle"] = get(svi, "evpn_vlan_bundle", default=tenant_evpn_vlan_bundle)
 
         return filtered_vrfs
 

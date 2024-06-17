@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: test-hosts
+  hosts: test_hosts
   gather_facts: false
   connection: local
   tasks:

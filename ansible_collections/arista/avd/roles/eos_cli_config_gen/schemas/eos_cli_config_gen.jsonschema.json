@@ -1114,6 +1114,31 @@
     "arp": {
       "type": "object",
       "properties": {
+        "persistent": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Restore the ARP cache after reboot.",
+              "title": "Enabled"
+            },
+            "refresh_delay": {
+              "type": "integer",
+              "description": "Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600).",
+              "minimum": 600,
+              "maximum": 3600,
+              "title": "Refresh Delay"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Persistent"
+        },
         "aging": {
           "type": "object",
           "properties": {
@@ -2408,6 +2433,119 @@
             "^_.+$": {}
           },
           "title": "AAA"
+        },
+        "captive_portal": {
+          "type": "object",
+          "description": "Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "url": {
+              "type": "string",
+              "description": "Supported URL type:\n  - http: http://<hostname>[:<port>]\n  - https: https://<hostname>[:<port>]",
+              "title": "URL"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "title": "SSL Profile"
+            },
+            "start_limit_infinite": {
+              "type": "boolean",
+              "description": "Set captive-portal start limit to infinte.",
+              "title": "Start Limit Infinite"
+            },
+            "access_list_ipv4": {
+              "type": "string",
+              "description": "Standard access-list name.",
+              "title": "Access List IPv4"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Captive Portal"
+        },
+        "supplicant": {
+          "type": "object",
+          "properties": {
+            "profiles": {
+              "description": "Dot1x supplicant profiles.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "eap_method": {
+                    "type": "string",
+                    "description": "Extensible Authentication Protocol method:\n  - EAP Flexible Authentication via Secure Tunneling.\n  - EAP with Transport Layer Security.",
+                    "enum": [
+                      "fast",
+                      "tls"
+                    ],
+                    "title": "Eap Method"
+                  },
+                  "identity": {
+                    "type": "string",
+                    "description": "User identity.",
+                    "title": "Identity"
+                  },
+                  "passphrase_type": {
+                    "type": "string",
+                    "enum": [
+                      "0",
+                      "7",
+                      "8a"
+                    ],
+                    "default": "7",
+                    "title": "Passphrase Type"
+                  },
+                  "passphrase": {
+                    "type": "string",
+                    "description": "Extensible Authentication Protocol password.",
+                    "title": "Passphrase"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "title": "SSL Profile"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Profiles"
+            },
+            "logging": {
+              "type": "boolean",
+              "description": "Enable supplicant logging.",
+              "title": "Logging"
+            },
+            "disconnect_cached_results_timeout": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 65535,
+              "description": "Timeout in seconds for removing a disconnected supplicant.",
+              "title": "Disconnect Cached Results Timeout"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Supplicant"
         }
       },
       "additionalProperties": false,
@@ -8556,6 +8694,80 @@
     "ipv6_icmp_redirect": {
       "type": "boolean",
       "title": "IPv6 ICMP Redirect"
+    },
+    "ipv6_neighbor": {
+      "type": "object",
+      "properties": {
+        "static_entries": {
+          "type": "array",
+          "description": "Static IPv6 neighbor entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv6_address": {
+                "type": "string",
+                "description": "IPv6 address of neighbor.",
+                "title": "IPv6 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "interface": {
+                "type": "string",
+                "description": "Interface name.",
+                "title": "Interface"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "MAC address of neighbor like 'aa:af:12:34:bc:bf'",
+                "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv6_address",
+              "interface",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
+        },
+        "persistent": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Restore the IPv6 neighbor cache after reboot.",
+              "title": "Enabled"
+            },
+            "refresh_delay": {
+              "type": "integer",
+              "description": "Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).\nIt will require setting the `enabled` key to true.\n",
+              "minimum": 600,
+              "maximum": 3600,
+              "title": "Refresh Delay"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Persistent"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IPv6 Neighbor"
     },
     "ipv6_prefix_lists": {
       "type": "array",
@@ -18027,6 +18239,95 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
+              "missing_policy": {
+                "type": "object",
+                "description": "Missing policy configuration for all address-families.",
+                "properties": {
+                  "direction_in": {
+                    "description": "Missing policy inbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction In"
+                  },
+                  "direction_out": {
+                    "description": "Missing policy outbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Missing Policy"
+              },
               "link_bandwidth": {
                 "type": "object",
                 "properties": {
@@ -18342,6 +18643,95 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
+              "missing_policy": {
+                "type": "object",
+                "description": "Missing policy configuration for all address-families.",
+                "properties": {
+                  "direction_in": {
+                    "description": "Missing policy inbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction In"
+                  },
+                  "direction_out": {
+                    "description": "Missing policy outbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Missing Policy"
+              },
               "allowas_in": {
                 "type": "object",
                 "properties": {
@@ -18565,16 +18955,6 @@
               "as_set": {
                 "type": "boolean",
                 "title": "As Set"
-              },
-              "advertise_map": {
-                "type": "string",
-                "description": "Route-map name.",
-                "title": "Advertise Map"
-              },
-              "supress_map": {
-                "type": "string",
-                "description": "Route-map name.",
-                "title": "Supress Map"
               },
               "summary_only": {
                 "type": "boolean",
@@ -22049,16 +22429,6 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
-                    },
-                    "advertise_map": {
-                      "type": "string",
-                      "description": "Route-map name.",
-                      "title": "Advertise Map"
-                    },
-                    "supress_map": {
-                      "type": "string",
-                      "description": "Route-map name.",
-                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",

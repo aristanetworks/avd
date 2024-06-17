@@ -27,6 +27,19 @@ cv_pathfinder_regions:
         id: 511
         location: Miami
 
+ipv4_acls:
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
+
 bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
@@ -125,11 +138,15 @@ wan_router:
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
-            - name: Ethernet1
+            # Testing on sub-interface
+            - name: Ethernet1/49.3
               wan_carrier: Inmrasat
               wan_circuit_id: S511
               dhcp_accept_default_route: false
               ip_address: dhcp
+              dhcp_ip: 172.24.49.3
+              peer_ip: 172.24.49.2
+              ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
             - name: Ethernet2
               wan_carrier: AWS-1
               wan_circuit_id: 212
@@ -385,9 +402,9 @@ wan_carriers:
   - name: Comcast-5G
     path_group: LTE
     trusted: true
+  # Testing a not trusted carrier
   - name: Inmrasat
     path_group: Satellite
-    trusted: true
   - name: AWS-1
     path_group: AWS
     trusted: true

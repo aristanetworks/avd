@@ -47,9 +47,9 @@ class RouterBgpMixin(UtilsMixin):
             peer_group["route_map_in"] = "RM-BGP-UNDERLAY-PEERS-IN"
             if self.shared_utils.wan_ha:
                 peer_group["route_map_out"] = "RM-BGP-UNDERLAY-PEERS-OUT"
-            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
-                # For HA need to add allowas_in 1
-                peer_group["allowas_in"] = {"enabled": True, "times": 1}
+                if self.shared_utils.use_uplinks_for_wan_ha:
+                    # For HA need to add allowas_in 1
+                    peer_group["allowas_in"] = {"enabled": True, "times": 1}
 
         router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
