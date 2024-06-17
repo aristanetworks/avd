@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
-from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH, JINJA2_TEMPLATE_PATHS
+from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH, JINJA2_TEMPLATE_PATHS, RUNNING_FROM_SRC
 from .j2filters.add_md_toc import add_md_toc
 from .j2filters.convert_dicts import convert_dicts
 from .j2filters.default import default
@@ -41,16 +41,18 @@ class Undefined(StrictUndefined):
 
 class Templar:
     def __init__(self, searchpaths: list[str] = None):
-        if searchpaths is not None:
-            searchpaths.extends(JINJA2_TEMPLATE_PATHS)
+        if RUNNING_FROM_SRC:
+            self.loader = ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH)
         else:
-            searchpaths = JINJA2_TEMPLATE_PATHS
-        self.loader = ChoiceLoader(
-            [
-                ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),
-                FileSystemLoader(searchpaths),
-            ]
-        )
+            searchpaths = searchpaths or []
+            searchpaths.extends(JINJA2_TEMPLATE_PATHS)
+            # TODO optimize ChoiceLoader to recompile changed templates
+            self.loader = ChoiceLoader(
+                [
+                    ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),
+                    FileSystemLoader(searchpaths),
+                ]
+            )
 
         # Accepting SonarLint issue: No autoescaping is ok, since we are not using this for a website, so XSS is not applicable.
         self.environment = Environment(  # NOSONAR
