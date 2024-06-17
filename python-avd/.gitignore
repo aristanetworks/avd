@@ -12,6 +12,6 @@ __pycache__/
 /pyavd/version.py
 *.prof
 /site/
-/pyavd/j2templates/compiled_templates
+/pyavd/_eos_cli_config_gen/j2templates/compiled_templates
 
 requirements-ansible-avd.txt

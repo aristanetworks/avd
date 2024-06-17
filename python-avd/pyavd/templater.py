@@ -59,6 +59,10 @@ class Templar:
             undefined=Undefined,
             trim_blocks=True,
         )
+        # Backward-compatible compilation for Jinja 3.0.0 to 3.1.x
+        if not hasattr(self.environment, "concat"):
+            self.environment.concat = "".join
+
         self.import_filters_and_tests()
 
     def import_filters_and_tests(self) -> None:
@@ -97,7 +101,6 @@ class Templar:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, searchpaths: list[str]) -> None:
-        print(JINJA2_PRECOMPILED_TEMPLATE_PATH)
         self.environment.loader = FileSystemLoader(searchpaths)
         self.environment.compile_templates(
             zip=None,
