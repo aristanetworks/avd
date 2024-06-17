@@ -681,7 +681,7 @@ A direct link is configured between the two HA peers
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
-- the uplink interfaces are used as HA interfaces by defaul by default.
+- the uplink interfaces are used as HA interfaces by default.
 - the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
 - BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet over the LAN as well as learning WAN routes from other sites (as backup in case all WAN links are lost).
 - the Underlay peer group is configured with one inbound route-map
