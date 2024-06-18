@@ -36,6 +36,28 @@ ethernet_interfaces:
     switchport:
       port_security:
         enabled: true
+      enabled: false
+      trunk:
+        allowed_vlans: 10-11
+        native_vlan: 5
+        native_vlan_tag: true
+        groups:
+          - g1
+          - g2
+        private_vlan_secondary: true
+      access_vlan: 200
+      phone:
+        vlan: 110
+        trunk: tagged
+      mode: dot1q-tunnel
+      pvlan_mapping: 20-30
+      vlan_translations:
+        - from: 23-37
+          to: 45
+          direction: in
+        - from: 23-37
+          to: 45
+          direction: out
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1

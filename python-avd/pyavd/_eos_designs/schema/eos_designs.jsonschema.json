@@ -11247,6 +11247,11 @@
               "switchport": {
                 "type": "object",
                 "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].type = routed`.",
+                    "title": "Enabled"
+                  },
                   "port_security": {
                     "type": "object",
                     "properties": {
@@ -11340,6 +11345,134 @@
                       "^_.+$": {}
                     },
                     "title": "Port Security"
+                  },
+                  "trunk": {
+                    "type": "object",
+                    "properties": {
+                      "allowed_vlans": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                        "title": "Allowed VLANs"
+                      },
+                      "native_vlan": {
+                        "type": "integer",
+                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "title": "Native VLAN"
+                      },
+                      "native_vlan_tag": {
+                        "type": "boolean",
+                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                        "title": "Native VLAN Tag"
+                      },
+                      "private_vlan_secondary": {
+                        "type": "boolean",
+                        "description": "Enable secondary VLAN mapping for a private vlan.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.",
+                        "title": "Private VLAN Secondary"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Trunk group name.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`."
+                        },
+                        "title": "Groups"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Trunk"
+                  },
+                  "access_vlan": {
+                    "type": "integer",
+                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                    "title": "Access VLAN"
+                  },
+                  "phone": {
+                    "type": "object",
+                    "properties": {
+                      "vlan": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.",
+                        "title": "VLAN"
+                      },
+                      "trunk": {
+                        "type": "string",
+                        "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`",
+                        "enum": [
+                          "tagged",
+                          "tagged phone",
+                          "untagged",
+                          "untagged phone"
+                        ],
+                        "title": "Trunk"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Phone"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "access",
+                      "dot1q-tunnel",
+                      "trunk",
+                      "trunk phone"
+                    ],
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].mode`",
+                    "title": "Mode"
+                  },
+                  "pvlan_mapping": {
+                    "type": "string",
+                    "description": "Secondary VLAN IDs of the private VLAN mapping.\nWarning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.",
+                    "title": "PVLAN Mapping"
+                  },
+                  "vlan_translations": {
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "description": "VLAN ID or range of VLAN IDs to map from.",
+                          "title": "From"
+                        },
+                        "to": {
+                          "type": "integer",
+                          "description": "VLAN ID to map to.",
+                          "title": "To"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "in",
+                            "out",
+                            "both"
+                          ],
+                          "default": "both",
+                          "title": "Direction"
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to",
+                        "direction"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "VLAN Translations"
                   }
                 },
                 "additionalProperties": false,
@@ -17119,6 +17252,11 @@
               "switchport": {
                 "type": "object",
                 "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].type = routed`.",
+                    "title": "Enabled"
+                  },
                   "port_security": {
                     "type": "object",
                     "properties": {
@@ -17212,6 +17350,134 @@
                       "^_.+$": {}
                     },
                     "title": "Port Security"
+                  },
+                  "trunk": {
+                    "type": "object",
+                    "properties": {
+                      "allowed_vlans": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                        "title": "Allowed VLANs"
+                      },
+                      "native_vlan": {
+                        "type": "integer",
+                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "title": "Native VLAN"
+                      },
+                      "native_vlan_tag": {
+                        "type": "boolean",
+                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                        "title": "Native VLAN Tag"
+                      },
+                      "private_vlan_secondary": {
+                        "type": "boolean",
+                        "description": "Enable secondary VLAN mapping for a private vlan.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.",
+                        "title": "Private VLAN Secondary"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Trunk group name.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`."
+                        },
+                        "title": "Groups"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Trunk"
+                  },
+                  "access_vlan": {
+                    "type": "integer",
+                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                    "title": "Access VLAN"
+                  },
+                  "phone": {
+                    "type": "object",
+                    "properties": {
+                      "vlan": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.",
+                        "title": "VLAN"
+                      },
+                      "trunk": {
+                        "type": "string",
+                        "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`",
+                        "enum": [
+                          "tagged",
+                          "tagged phone",
+                          "untagged",
+                          "untagged phone"
+                        ],
+                        "title": "Trunk"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Phone"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "access",
+                      "dot1q-tunnel",
+                      "trunk",
+                      "trunk phone"
+                    ],
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].mode`",
+                    "title": "Mode"
+                  },
+                  "pvlan_mapping": {
+                    "type": "string",
+                    "description": "Secondary VLAN IDs of the private VLAN mapping.\nWarning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.",
+                    "title": "PVLAN Mapping"
+                  },
+                  "vlan_translations": {
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "description": "VLAN ID or range of VLAN IDs to map from.",
+                          "title": "From"
+                        },
+                        "to": {
+                          "type": "integer",
+                          "description": "VLAN ID to map to.",
+                          "title": "To"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "in",
+                            "out",
+                            "both"
+                          ],
+                          "default": "both",
+                          "title": "Direction"
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to",
+                        "direction"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "VLAN Translations"
                   }
                 },
                 "additionalProperties": false,
@@ -23835,6 +24101,11 @@
                     "switchport": {
                       "type": "object",
                       "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "Warning: This should not be combined with `ethernet_interfaces[].type = routed`.",
+                          "title": "Enabled"
+                        },
                         "port_security": {
                           "type": "object",
                           "properties": {
@@ -23928,6 +24199,134 @@
                             "^_.+$": {}
                           },
                           "title": "Port Security"
+                        },
+                        "trunk": {
+                          "type": "object",
+                          "properties": {
+                            "allowed_vlans": {
+                              "type": "string",
+                              "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                              "title": "Allowed VLANs"
+                            },
+                            "native_vlan": {
+                              "type": "integer",
+                              "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                              "minimum": 1,
+                              "maximum": 4094,
+                              "title": "Native VLAN"
+                            },
+                            "native_vlan_tag": {
+                              "type": "boolean",
+                              "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                              "title": "Native VLAN Tag"
+                            },
+                            "private_vlan_secondary": {
+                              "type": "boolean",
+                              "description": "Enable secondary VLAN mapping for a private vlan.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.",
+                              "title": "Private VLAN Secondary"
+                            },
+                            "groups": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "description": "Trunk group name.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`."
+                              },
+                              "title": "Groups"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Trunk"
+                        },
+                        "access_vlan": {
+                          "type": "integer",
+                          "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                          "title": "Access VLAN"
+                        },
+                        "phone": {
+                          "type": "object",
+                          "properties": {
+                            "vlan": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 4094,
+                              "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.",
+                              "title": "VLAN"
+                            },
+                            "trunk": {
+                              "type": "string",
+                              "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`",
+                              "enum": [
+                                "tagged",
+                                "tagged phone",
+                                "untagged",
+                                "untagged phone"
+                              ],
+                              "title": "Trunk"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Phone"
+                        },
+                        "mode": {
+                          "type": "string",
+                          "enum": [
+                            "access",
+                            "dot1q-tunnel",
+                            "trunk",
+                            "trunk phone"
+                          ],
+                          "description": "Warning: This should not be combined with `ethernet_interfaces[].mode`",
+                          "title": "Mode"
+                        },
+                        "pvlan_mapping": {
+                          "type": "string",
+                          "description": "Secondary VLAN IDs of the private VLAN mapping.\nWarning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.",
+                          "title": "PVLAN Mapping"
+                        },
+                        "vlan_translations": {
+                          "description": "Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "from": {
+                                "type": "string",
+                                "description": "VLAN ID or range of VLAN IDs to map from.",
+                                "title": "From"
+                              },
+                              "to": {
+                                "type": "integer",
+                                "description": "VLAN ID to map to.",
+                                "title": "To"
+                              },
+                              "direction": {
+                                "type": "string",
+                                "enum": [
+                                  "in",
+                                  "out",
+                                  "both"
+                                ],
+                                "default": "both",
+                                "title": "Direction"
+                              }
+                            },
+                            "required": [
+                              "from",
+                              "to",
+                              "direction"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "VLAN Translations"
                         }
                       },
                       "additionalProperties": false,
@@ -55856,6 +56255,11 @@
               "switchport": {
                 "type": "object",
                 "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].type = routed`.",
+                    "title": "Enabled"
+                  },
                   "port_security": {
                     "type": "object",
                     "properties": {
@@ -55949,6 +56353,134 @@
                       "^_.+$": {}
                     },
                     "title": "Port Security"
+                  },
+                  "trunk": {
+                    "type": "object",
+                    "properties": {
+                      "allowed_vlans": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                        "title": "Allowed VLANs"
+                      },
+                      "native_vlan": {
+                        "type": "integer",
+                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "title": "Native VLAN"
+                      },
+                      "native_vlan_tag": {
+                        "type": "boolean",
+                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                        "title": "Native VLAN Tag"
+                      },
+                      "private_vlan_secondary": {
+                        "type": "boolean",
+                        "description": "Enable secondary VLAN mapping for a private vlan.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.",
+                        "title": "Private VLAN Secondary"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Trunk group name.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`."
+                        },
+                        "title": "Groups"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Trunk"
+                  },
+                  "access_vlan": {
+                    "type": "integer",
+                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                    "title": "Access VLAN"
+                  },
+                  "phone": {
+                    "type": "object",
+                    "properties": {
+                      "vlan": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.",
+                        "title": "VLAN"
+                      },
+                      "trunk": {
+                        "type": "string",
+                        "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`",
+                        "enum": [
+                          "tagged",
+                          "tagged phone",
+                          "untagged",
+                          "untagged phone"
+                        ],
+                        "title": "Trunk"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Phone"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "access",
+                      "dot1q-tunnel",
+                      "trunk",
+                      "trunk phone"
+                    ],
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].mode`",
+                    "title": "Mode"
+                  },
+                  "pvlan_mapping": {
+                    "type": "string",
+                    "description": "Secondary VLAN IDs of the private VLAN mapping.\nWarning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.",
+                    "title": "PVLAN Mapping"
+                  },
+                  "vlan_translations": {
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "description": "VLAN ID or range of VLAN IDs to map from.",
+                          "title": "From"
+                        },
+                        "to": {
+                          "type": "integer",
+                          "description": "VLAN ID to map to.",
+                          "title": "To"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "in",
+                            "out",
+                            "both"
+                          ],
+                          "default": "both",
+                          "title": "Direction"
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to",
+                        "direction"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "VLAN Translations"
                   }
                 },
                 "additionalProperties": false,
