@@ -342,7 +342,7 @@ keys:
           type: str
           valid_values:
           - nat
-          description: 'NAT based reflexive ACL.
+          description: 'Permit response traffic automatically based on NAT translations.
 
             Minimum EOS version requirement 4.32.2F.'
         sequence_numbers:
