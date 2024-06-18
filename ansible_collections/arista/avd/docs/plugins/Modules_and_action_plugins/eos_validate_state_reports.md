@@ -13,9 +13,6 @@ title: arista.avd.eos_validate_state_reports
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.eos_validate_state_reports` when using this plugin.
 
-!!! warning "This module is in **preview** mode"
-    This module is not guaranteed to have a backwards compatible interface.
-
 Generates validation reports for the eos_validate_state role
 
 ## Synopsis
