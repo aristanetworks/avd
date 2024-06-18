@@ -853,3 +853,12 @@ wan_virtual_topologies:
           - names: [internet]
             preference: alternate
 ```
+
+### WAN Validation
+
+| AVD Test Class | ANTA Test Name | Description |
+| -------------- | -------------- | ----------- |
+| AvdTestInterfacesState | VerifyInterfacesStatus | Validate the DPS interface status. |
+| AvdTestBGP | VerifyBGPSpecificPeers | Validate the different BGP Address Families Identifiers (AFI) and Subsequent Address Family Identifiers (SAFI) sessions state |
+| AvdTestIPSecurity | VerifySpecificIPSecConn | Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration. |
+| AvdTestStun | VerifyStunClient | Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group. |
