@@ -13081,8 +13081,9 @@ keys:
                     transit:
                       type: bool
                       description: Enable EVPN multicast transit mode.
-            default_route_export:
+            default_route_exports:
               type: list
+              primary_key: address_family
               description: Enable default-originate per VRF/address family.
               items:
                 type: dict

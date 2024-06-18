@@ -21969,7 +21969,7 @@
                 },
                 "title": "EVPN Multicast Address Family"
               },
-              "default_route_export": {
+              "default_route_exports": {
                 "type": "array",
                 "description": "Enable default-originate per VRF/address family.",
                 "items": {
@@ -22001,9 +22001,12 @@
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "address_family"
+                  ]
                 },
-                "title": "Default Route Export"
+                "title": "Default Route Exports"
               },
               "route_targets": {
                 "type": "object",
