@@ -206,7 +206,7 @@ use_anta: <bool; default=True>
 save_catalog: <bool; default=False>
 
 # Logging level for the ANTA libraries.
-logging_level: <str; "WARNING" | "DEBUG"; default="WARNING">
+logging_level: <str; "INFO" | "WARNING" | "ERROR" | "CRITICAL" | "DEBUG"; default="WARNING">
 
 # The variable `skipped_tests` can be used for running/skipping test categories.
 skipped_tests:
