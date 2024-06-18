@@ -11,7 +11,7 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 # eos_validate_state - Integration with ANTA
 
 !!! note
-    [ANTA v1.0.0](https://anta.arista.com/stable/) is out!
+    [ANTA](https://anta.arista.com/stable/) will be the future default framework leveraged by AVD for network testing and validation. Since it introduces small [breaking changes](#breaking-changes), you have to opt-in to leverage ANTA with `eos_validate_state` by configuring: `use_anta: true`.
 
 # Overview
 
@@ -24,10 +24,11 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 - Compares the actual states against the desired state.
 - Generates CSV and Markdown reports of the results.
 
-## Known limitations
+## Breaking changes
 
 - Loose mode to ignore playbook errors is no longer supported in ANTA mode.
 - ANTA mode exclusively supports the newer "list-of-dicts" data models in the structured configuration file input. For further details, consult the AVD 4.x.x [porting guides](https://avd.sh/en/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts).
+- Changes to csv report headers from `test_id,node,test_category,test_description,test,result,failure_reason` to `"id", "dut", "categories", "test", "description", "inputs", "result", "messages"`
 
 ## Roadmap
 
@@ -90,7 +91,7 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 !!! info
     ANTA mode also supports other functionalities. For more details, please refer to the [input variables](#input-variables) below.
 
-## Test Categories
+## Test categories
 
 !!! note
     New tests are marked with the (New) string.
@@ -150,77 +151,76 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 ## Input variables
 
 ```yaml
-# Root directory
-root_dir: "{{ inventory_dir }}"
+# Root directory.
+root_dir: <str; | default="{{ inventory_dir }}">
 
-# AVD configurations output
-# Main output directory
-output_dir_name: "intended"
-output_dir: "{{ root_dir }}/{{ output_dir_name }}"
+# Output directory.
+output_dir_name: <str; | default="intended">
+output_dir: <str; | default="{{ root_dir }}/{{ output_dir_name }}">
 
-# Output for test catalog YAML files if save_catalog is set to true
-test_catalogs_dir_name: "test_catalogs"
-test_catalogs_dir: "{{ output_dir }}/{{ test_catalogs_dir_name }}"
+# Output for test catalog YAML files if save_catalog is set to true.
+test_catalogs_dir_name: "<str; | default="test_catalogs">
+test_catalogs_dir: <str; | default="{{ output_dir }}/{{ test_catalogs_dir_name }}">
 
-# Output directory for eos_validate_state reports
-eos_validate_state_name: "reports"
-eos_validate_state_dir: "{{ root_dir }}/{{ eos_validate_state_name }}"
+# Output directory for eos_validate_state reports.
+eos_validate_state_name: <str; | default="reports">
+eos_validate_state_dir: <str; | default="{{ root_dir }}/{{ eos_validate_state_name }}">
 
-# Output for test results JSON files if save_results is set to true
-test_results_dir_name: "test_results"
-test_results_dir: "{{ eos_validate_state_dir }}/{{ test_results_dir_name }}"
+# Output for test results JSON files if save_results is set to true.
+test_results_dir_name: <str; | default="test_results">
+test_results_dir: <str; | default="{{ eos_validate_state_dir }}/{{ test_results_dir_name }}">
 
-# Fabric name used in the reports name
-fabric_name: "all"
+# Fabric name used in the reports name.
+fabric_name: <str; | default="all">
 
-# Reports name
-eos_validate_state_md_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md"
-eos_validate_state_csv_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv"
+# Reports name.
+eos_validate_state_md_report_path: <str; | default="{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md">
+eos_validate_state_csv_report_path: <str; | default="{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv">
 
-# Input directory for custom ANTA catalogs:
-custom_anta_catalogs_dir_name: "custom_anta_catalogs"
-custom_anta_catalogs_dir: "{{ root_dir }}/{{ custom_anta_catalogs_dir_name }}"
+# Input directory for custom ANTA catalogs.
+custom_anta_catalogs_dir_name: <str; | default="custom_anta_catalogs">
+custom_anta_catalogs_dir: <str; | default="{{ root_dir }}/{{ custom_anta_catalogs_dir_name }}">
 
-# Allow different manufacturers
-accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
+# Allow different manufacturers.
+accepted_xcvr_manufacturers: <list; | default="['Arastra, Inc.', 'Arista Networks']">
 
-# Allow different states for power supplies
-accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok']) }}"
+# Allow different states for power supplies.
+accepted_pwr_supply_states: <list; default=['ok']>
 
-# Allow different states for fans
-accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
+# Allow different states for fans.
+accepted_fan_states: <list; default=['ok']">
 
-# Generate CSV results file
-validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
+# Generate CSV results file.
+validation_report_csv: <bool; default=True>
 
-# Generate MD results file
-validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+# Generate MD results file.
+validation_report_md: <bool; default=True>
 
-# Print only FAILED tests
-only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
+# Print only FAILED tests.
+only_failed_tests: <bool; default=False>
 
+# Variable to enable ANTA eos_validate_state.
+use_anta: <bool; default=True>
 
-# Variable to enable ANTA eos_validate_state
-use_anta: false
+# Save each device test catalog to 'test_catalogs_dir'.
+save_catalog: <bool; default=False>
 
-# Save each device test catalog to 'test_catalogs_dir'. Defaults to false.
-save_catalog: false
+# Logging level for the ANTA libraries.
+logging_level: <str; "WARNING" | "DEBUG"; default="WARNING">
 
-# Logging level for the ANTA libraries. Defaults to "WARNING".
-logging_level: "WARNING"
-
-# The variable `skipped_tests` can be used for running/skipping test categories
+# The variable `skipped_tests` can be used for running/skipping test categories.
 skipped_tests:
-  - category: AvdTestHardware
+  - category: <str; "Test category, i.e 'AvdTestHardware'">
 
-# You can also decide to skip specific subtests (ANTA test name) for more granularity
+# You can also decide to skip specific subtests (ANTA test name) for more granularity.
 skipped_tests:
-  - category: AvdTestBGP
+  - category: <str; "Test category, i.e 'AvdTestHardware'">
     tests:
-      - VerifyRoutingProtocolModel
-  - category: AvdTestHardware
+      - <str; "Test sub-category, i.e 'VerifyEnvironmentCooling'">
+      - <str; "Test sub-category, i.e 'VerifyTemperature'">
+  - category: <str; "Test category, i.e 'AvdTestBGP'">
     tests:
-      - VerifyEnvironmentCooling
+      - <str; "Test sub-category, i.e 'VerifyBGPSpecificPeers'">
 ```
 
 ## Custom ANTA catalog
@@ -238,7 +238,7 @@ When specifying a group, it must be a group from the Ansible inventory. The cust
 !!! info
     The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests with the same inputs will be automatically removed. Therefore, dynamically generated tests by AVD will never be overwritten. To overwrite them, you should first skip them using the `skipped_tests` variable and provide your own tests with inputs via a custom catalog.
 
-## Example Playbook
+## Example playbook
 
 ```yaml
 ---
