@@ -538,6 +538,14 @@
             "type": "boolean",
             "title": "Counters Per Entry"
           },
+          "permit_response_traffic": {
+            "type": "string",
+            "enum": [
+              "nat"
+            ],
+            "description": "NAT based reflexive ACL.\nMinimum EOS version requirement 4.32.2F.",
+            "title": "Permit Response Traffic"
+          },
           "sequence_numbers": {
             "type": "array",
             "items": {
