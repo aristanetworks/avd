@@ -79,14 +79,24 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: TODO TODO TODO Generate device configuration in structured format
-  arista.avd.eos_cli_config_gen:
-    templates:
-      - template: "custom_templates/custom_feature1.j2"
-      - template: "custom_templates/custom_feature2.j2"
-        options:
-          list_merge: replace
-          strip_empty_keys: false
-  check_mode: no
-  changed_when: False
+- name: Generate eos intended configuration and device documentation
+    arista.avd.eos_cli_config_gen:
+      structured_config_filename: "{{ structured_config_filename }}"
+      config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+      documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+      read_structured_config_from_file: true
+    delegate_to: localhost
+    vars:
+      structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+- name: Generate device documentation only
+    arista.avd.eos_cli_config_gen:
+      structured_config_filename: "{{ structured_config_filename }}"
+      config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+      documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+      read_structured_config_from_file: true
+      generate_device_config: false
+      device_doc_toc: true
+    delegate_to: localhost
+    vars:
+      structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 """

@@ -22,8 +22,9 @@ except ImportError:
     from yaml import YamlLoader
 
 try:
-    from pyavd import ValidationResult, get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc, validate_structured_config
     from pyavd.j2filters.add_md_toc import add_md_toc
+    from pyavd.validation_result import ValidationResult
 
     HAS_PYAVD = True
 except ImportError:
@@ -44,6 +45,7 @@ ARGUMENT_SPEC = {
     "read_structured_config_from_file": {"type": "bool", "default": True},
     "conversion_mode": {"type": "str", "default": "debug"},
     "validation_mode": {"type": "str", "default": "warning"},
+    "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
     "cprofile_file": {"type": "str"},
@@ -121,22 +123,23 @@ class ActionModule(ActionBase):
             return result
 
         try:
-            has_custom_templates = bool(task_vars.get("custom_templates"))
-            LOGGER.debug("Rendering configuration...")
-            device_config = get_device_config(task_vars)
+            if validated_args["generate_device_config"]:
+                has_custom_templates = bool(task_vars.get("custom_templates"))
+                LOGGER.debug("Rendering configuration...")
+                device_config = get_device_config(task_vars)
 
-            if has_custom_templates:
-                LOGGER.debug("Rendering config custom templates...")
-                rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
-                LOGGER.debug("Rendering config custom templates [done].")
-                # Need to handle if `end` has been rendered already
-                if device_config.endswith("!\nend\n"):
-                    device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
-                else:
-                    device_config += rendered_custom_templates
+                if has_custom_templates:
+                    LOGGER.debug("Rendering config custom templates...")
+                    rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                    LOGGER.debug("Rendering config custom templates [done].")
+                    # Need to handle if `end` has been rendered already
+                    if device_config.endswith("!\nend\n"):
+                        device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
+                    else:
+                        device_config += rendered_custom_templates
 
-            LOGGER.debug("Rendering configuration [done].")
-            result["changed"] = self.write_file(device_config, validated_args["config_filename"])
+                LOGGER.debug("Rendering configuration [done].")
+                result["changed"] = self.write_file(device_config, validated_args["config_filename"])
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
@@ -255,8 +258,27 @@ def setup_module_logging(hostname: str, result: dict) -> None:
 
 
 def read_vars(filename: Path | str) -> dict:
+    """Read the file at filename and return the content as dict.
+
+    The function supports either `json` or `yaml` format.
+
+    Parameters
+    ----------
+        filename: The path to the file to read as a string or a Path.
+
+    Returns
+    -------
+        dict: The content of the file as dict or an empty dict if the file does not exist.
+
+    Raises
+    ------
+        NotImplementedError: If the file extension is not json, yml or yaml.
+    """
     if not isinstance(filename, Path):
         filename = Path(filename)
+
+    if not filename.exists():
+        return {}
 
     with filename.open(mode="r", encoding="UTF-8") as stream:
         if filename.suffix in [".yml", ".yaml"]:

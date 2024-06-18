@@ -15,18 +15,18 @@
   register: avd_requirements
 
 - name: Generate eos intended configuration and device documentation
-  # TODO this loses the capability to only generate documentation
-  tags: [build, provision]
+  tags: [build, provision, documentation]
   arista.avd.eos_cli_config_gen:
     structured_config_filename: "{{ structured_config_filename }}"
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-    read_structured_config_from_file: "{{ structured_config is not arista.avd.defined and lookup('first_found', structured_config_filename, skip=True, errors='ignore') is not arista.avd.defined([]) }}"
+    read_structured_config_from_file: "{{ structured_config is not arista.avd.defined }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
-    generate_device_doc: "{{ generate_device_documentation | arista.avd.default(true) and 'documentation' not in ansible_skip_tags }}"
+    generate_device_config: "{{ ansible_run_tags is arista.avd.contains(['all', 'build', 'provision']) and ansible_skip_tags is not arista.avd.contains(['build', 'provision']) }}"
+    generate_device_doc: "{{ generate_device_documentation | arista.avd.default(true) and ansible_run_tags is arista.avd.contains(['all', 'documentation'])  and 'documentation' not in ansible_skip_tags }}"
     device_doc_toc: true
-    #cprofile_file: "device_config_and_doc-{{inventory_hostname}}.prof"
+    cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
   delegate_to: localhost
   vars:
     structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
