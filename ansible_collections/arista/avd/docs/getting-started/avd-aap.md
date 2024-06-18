@@ -10,7 +10,7 @@ This guide will walk you through the steps required to get up and running with A
 
 ## Requirements to get started
 
-Please note, that this guide leverages AAP version 2.4. The workflows should be similar in newer versions; if there are any questions, please see the official [AAP documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4).
+Please note, that this guide leverages AAP version 2.4. The workflows should be similar in newer versions; if there are any questions, please see the official [AAP documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4). If you seen any errors in this guide, please open an [issue](https://github.com/aristanetworks/avd/issues).
 
 - An accessible lab topology running Arista EOS.
 - An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../examples/single-dc-l3ls/README.md).
@@ -20,7 +20,7 @@ Please note, that this guide leverages AAP version 2.4. The workflows should be 
 
 ## Topology
 
-Our topology leverages two spines and four leaf nodes to create a layer three leaf spine topology. The topology is managed by Arista CloudVision Portal (CVP). In our case, the EOS nodes are constantly streaming to CVP and gives us the ability to provision the nodes with CVP. AAP will act as our controller to communicate any updates to CVP, which can then push the updates to our topology.
+Our topology leverages two spines and four leaf nodes to create a layer three leaf spine topology. The topology is managed by Arista CloudVision (CV). In our case, the EOS nodes are constantly streaming to CV and gives us the ability to provision the nodes with CV. AAP will act as our controller to communicate any updates to CV, which can then push the updates to our topology.
 
 ![Topology leveraging Ansible Automation Platform to communicate with CloudVision](../_media/getting-started/aap-avd/aap-cvp-eos.svg)
 
@@ -262,7 +262,7 @@ There are a few locations to view the inventory, but for simplicity, we can view
 
 ## Job templates and workflow templates
 
-One thing that may need some clarification is the naming of "job templates." These map to playbooks within our project. There is also an option to build workflow templates: a series of job templates with some control logic built-in. For this example, we will use a job template to build and deploy our node configurations with CVP.
+One thing that may need some clarification is the naming of "job templates." These map to playbooks within our project. There is also an option to build workflow templates: a series of job templates with some control logic built-in. For this example, we will use a job template to build and deploy our node configurations with CV.
 
 === "Click on Templates"
 
@@ -288,7 +288,7 @@ One thing that may need some clarification is the naming of "job templates." The
 
 ### Surveys
 
-With most jobs, we need a way to authenticate to our CVP instance or EOS nodes. AAP provides a multitude of ways to define credentials. Some options are credentials for Network devices, Container registries, HashiCorp Vault, etc. Feel free to explore any option you need for your environment. For this guide, we will leverage a survey secret. Surveys allow us to ask users for information we require for a job to execute correctly. We will leverage a survey with a default secret value (this is the credential used to connect to our nodes).
+With most jobs, we need a way to authenticate to our CV instance or EOS nodes. AAP provides a multitude of ways to define credentials. Some options are credentials for Network devices, Container registries, HashiCorp Vault, etc. Feel free to explore any option you need for your environment. For this guide, we will leverage a survey secret. Surveys allow us to ask users for information we require for a job to execute correctly. We will leverage a survey with a default secret value (this is the credential used to connect to our nodes).
 
 === "Surveys"
 
@@ -300,19 +300,22 @@ With most jobs, we need a way to authenticate to our CVP instance or EOS nodes. 
 
     - On the center pane, select `Add`.
     - Set `Question` to an appropriate value.
-    - Set `Answer variable name` to any valid variable name, here we use `lab_pass`.
+    - Set `Answer variable name` to any valid variable name, here we use `CV_TOKEN`.
     - `Answer type` is set to `Password` and the default value is set.
     - Click `Save` when done.
 
     ![Survey save](../_media/getting-started/aap-avd/survey-save.png)
 
-    The `lab_pass` variable or whichever name you would prefer can be used in your project by assigning the correct variable value to the `ansible_password` variable.
+    The `CV_TOKEN` variable will be leveraged when provisioning the fabric with the `cv_deploy` role.
 
     ```yaml
-    vars:
-      ansible_user: arista
-      ansible_password: "{{ lab_pass }}"
-      ansible_network_os: arista.eos.eos
+    tasks:
+      - name: Provision CV with AVD configuration
+        import_role:
+          name: cv_deploy
+        vars:
+          cv_server: <CV or CVaaS URL>
+          cv_token: "{{ CV_TOKEN }}"
     ```
 
 === "Surveys - Enable"
@@ -321,9 +324,9 @@ With most jobs, we need a way to authenticate to our CVP instance or EOS nodes. 
 
     ![Survey enable](../_media/getting-started/aap-avd/survey-enabled.png)
 
-### Running the Template with CVP
+### Running the Template with CV
 
-Below is an example of the playbook we are leveraging to build and deploy our configurations with CVP.
+Below is an example of the playbook we are leveraging to build and deploy our configurations with CV.
 
 ```yaml
 ---
@@ -345,24 +348,19 @@ Below is an example of the playbook we are leveraging to build and deploy our co
       import_role:
         name: eos_cli_config_gen
 
-- name: Configuration deployment with CVP
-  hosts: cv_servers
-  connection: local
-  gather_facts: false
-  collections:
-    - arista.avd
-  tasks:
-    - name: Provision CVP with AVD configuration
+    - name: Provision nodes with CV
       import_role:
-        name: eos_config_deploy_cvp
+        name: cv_deploy
       vars:
-        container_root: 'ATD_FABRIC'
-        configlets_prefix: 'AVD'
-        state: present
-        execute_tasks: true
+        cv_server: <CV or CVaaS URL>
+        cv_token: "{{ CV_TOKEN }}"
+
 ```
 
 We have everything we need to run our job template now.
+
+!!! note
+    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role required additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/roles/cv_deploy/index.html) for the most up-to-date settings.
 
 === "Templates Run"
 
@@ -386,12 +384,12 @@ We have everything we need to run our job template now.
 
     ![Job output](../_media/getting-started/aap-avd/job-output.png)
 
-=== "CVP View"
+=== "CV View"
 
-    From CVP's perspective, we can see a new container topology is created, and our change control workflow has been completed for us when leveraging the CVP Ansible collection.
+    From CV's perspective, we can see a new container topology is created, and our change control workflow has been completed for us when leveraging the CV Ansible collection.
 
-    ![CVP topology](../_media/getting-started/aap-avd/cvp-topo.png)
-    ![CVP Change Controls](../_media/getting-started/aap-avd/cvp-cc.png)
+    ![CV topology](../_media/getting-started/aap-avd/cvp-topo.png)
+    ![CV Change Controls](../_media/getting-started/aap-avd/cvp-cc.png)
 
 ## References
 
