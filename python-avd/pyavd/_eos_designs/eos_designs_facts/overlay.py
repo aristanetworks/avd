@@ -44,8 +44,7 @@ class OverlayMixin:
         if self.shared_utils.underlay_router is True:
             if self.evpn_role == "client":
                 return get(self.shared_utils.switch_data_combined, "evpn_route_servers", default=self.shared_utils.uplink_switches)
-            else:
-                return get(self.shared_utils.switch_data_combined, "evpn_route_servers")
+            return get(self.shared_utils.switch_data_combined, "evpn_route_servers")
         return []
 
     @cached_property

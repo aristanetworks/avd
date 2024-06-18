@@ -11,6 +11,7 @@ SCRIPTS_DIR = $(CURRENT_DIR)/scripts
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
+EOS_DESIGNS_IMPORT = $(PACKAGE_DIR)._eos_designs
 # export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
 
 .PHONY: help
@@ -57,7 +58,6 @@ copy-libs: ## Copy files from Ansible AVD collection
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/filter $(J2_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
 
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/python_modules/* $(EOS_DESIGNS_MODULES_DIR)/
 	mv $(VENDOR_DIR)/eos_designs_* $(EOS_DESIGNS_MODULES_DIR)/
 
 	$(SCRIPTS_DIR)/build-schemas.py
@@ -96,7 +96,10 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.list_compress/$(PYAVD_FILTER_IMPORT)\.list_compress/g' {} +
 
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter/$(VENDOR_IMPORT)\.j2\.filter/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.roles\.eos_designs\.python_modules/$(VENDOR_IMPORT)\.eos_designs/g' {} +
+
+# Only remaining python_modules are ip_addressing and interface_descriptions referred in eos_designs_shared_utils.
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.roles\.eos_designs\.python_modules/$(EOS_DESIGNS_IMPORT)/g' {} +
+
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible\.utils\.display/from $(VENDOR_IMPORT)\.utils\.display/g' {} +
 
 	cp -r $(CURRENT_DIR)/vendor_overrides/* $(VENDOR_DIR)/

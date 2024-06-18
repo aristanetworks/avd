@@ -147,7 +147,7 @@ class ActionModule(ActionBase):
         if debug:
             avd_yaml_templates_to_facts_debug = task_vars.get("avd_yaml_templates_to_facts_debug", [])
 
-        # template_list can contain templates or python_modules
+        # template_list can contain templates or python modules
         for template_item in template_list:
             if debug:
                 debug_item = template_item
