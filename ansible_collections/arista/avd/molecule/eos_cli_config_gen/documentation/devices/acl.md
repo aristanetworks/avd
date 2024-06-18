@@ -140,8 +140,8 @@ ACL has counting mode `counters per-entry` enabled!
 | 20 | permit ip 10.0.0.0/8 any |
 | 30 | permit ip 192.0.2.0/24 any |
 
-
 ACL has permit response traffic rule `permit response traffic nat` enabled!
+
 ##### ACL-03
 
 | Sequence | Action |
