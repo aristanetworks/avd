@@ -26,7 +26,7 @@ keys:
           valid_values:
             - nat
           description: |-
-            NAT based reflexive ACL.
+            Permit response traffic automatically based on NAT translations.
             Minimum EOS version requirement 4.32.2F.
         sequence_numbers:
           type: list
