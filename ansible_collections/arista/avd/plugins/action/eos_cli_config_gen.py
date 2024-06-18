@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
+from __future__ import annotations, absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -29,6 +29,9 @@ try:
     HAS_PYAVD = True
 except ImportError:
     HAS_PYAVD = False
+    import typing
+
+    ValidationResult = typing.Any
 
 
 CUSTOM_TEMPLATES_CFG_TEMPLATE = "eos/custom-templates.j2"
@@ -75,27 +78,6 @@ class ActionModule(ActionBase):
 
         return result
 
-    def _log_validation_errors(self, validation_results: ValidationResult, validation_mode: str) -> None:
-        """Log validation results depending on the validation_mode
-
-        Parameters
-        ----------
-        validation_result: The ValidationResult object containing the errors.
-        validation_mode: A validated string containing one of the possible validation_mode
-            in [error, warning, info, debug, disabled]
-
-        """
-        for validation_error in validation_results.validation_errors:
-            if validation_mode == "debug":
-                LOGGER.debug(validation_error)
-            elif validation_mode == "error":
-                LOGGER.error(validation_error)
-            elif validation_mode == "info":
-                LOGGER.info(validation_error)
-            elif validation_mode == "warning":
-                LOGGER.warning(validation_error)
-            # otherwise the validation_mode is disabled
-
     def main(self, task_vars: dict, result: dict) -> dict:
         """Main function in charge of validating the input variables and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
@@ -122,24 +104,24 @@ class ActionModule(ActionBase):
             self._log_validation_errors(validation_result, validation_mode)
             return result
 
+        has_custom_templates = bool(task_vars.get("custom_templates"))
         try:
             if validated_args["generate_device_config"]:
-                has_custom_templates = bool(task_vars.get("custom_templates"))
                 LOGGER.debug("Rendering configuration...")
                 device_config = get_device_config(task_vars)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
                     rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
-                    LOGGER.debug("Rendering config custom templates [done].")
                     # Need to handle if `end` has been rendered already
                     if device_config.endswith("!\nend\n"):
                         device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
                     else:
                         device_config += rendered_custom_templates
+                    LOGGER.debug("Rendering config custom templates [done].")
 
-                LOGGER.debug("Rendering configuration [done].")
                 result["changed"] = self.write_file(device_config, validated_args["config_filename"])
+                LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
@@ -153,9 +135,9 @@ class ActionModule(ActionBase):
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
-                LOGGER.debug("Rendering documentation [done].")
                 file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
                 result["changed"] = result["changed"] or file_changed
+                LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
@@ -177,13 +159,17 @@ class ActionModule(ActionBase):
 
         Parameters
         ----------
-          task_vars: Dictionary of task variables
-          structured_config_filename: The filename where the structured_config for the device is stored.
-          read_structured_config_from_file: Flag to indicate whether or not the structured_config_filname should be read.
+            task_vars: Dictionary of task variables
+            structured_config_filename: The filename where the structured_config for the device is stored.
+            read_structured_config_from_file: Flag to indicate whether or not the structured_config_filname should be read.
 
         Returns
         -------
-          dict: Task vars updated with the structured_config content if read and all inline Jinja rendered.
+            dict: Task vars updated with the structured_config content if read and all inline Jinja rendered.
+
+        Raises
+        ------
+            AnsibleActionFail: If templating fails.
 
         """
 
@@ -221,9 +207,14 @@ class ActionModule(ActionBase):
         """
         This function writes the file only if the content has changed.
 
+        Parameters
+        ----------
+            content: The content to write
+            filename: Target filename
+
         Returns
         -------
-          bool: to indicate if file was changed.
+            bool: Indicate if the content of filename has changed.
         """
         path = Path(filename)
         if path.exists():
@@ -238,6 +229,27 @@ class ActionModule(ActionBase):
 
         path.write_text(content, encoding="UTF-8")
         return True
+
+    def _log_validation_errors(self, validation_results: ValidationResult, validation_mode: str) -> None:
+        """Log validation results depending on the validation_mode
+
+        Parameters
+        ----------
+        validation_result: The ValidationResult object containing the errors.
+        validation_mode: A validated string containing one of the possible validation_mode
+            in [error, warning, info, debug, disabled]
+
+        """
+        for validation_error in validation_results.validation_errors:
+            if validation_mode == "debug":
+                LOGGER.debug(validation_error)
+            elif validation_mode == "error":
+                LOGGER.error(validation_error)
+            elif validation_mode == "info":
+                LOGGER.info(validation_error)
+            elif validation_mode == "warning":
+                LOGGER.warning(validation_error)
+            # otherwise the validation_mode is disabled
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
