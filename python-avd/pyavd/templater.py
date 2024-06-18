@@ -46,7 +46,6 @@ class Templar:
         else:
             searchpaths = searchpaths or []
             searchpaths.extend(JINJA2_TEMPLATE_PATHS)
-            # TODO optimize ChoiceLoader to recompile changed templates
             self.loader = ChoiceLoader(
                 [
                     ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),

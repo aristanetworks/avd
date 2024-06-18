@@ -96,21 +96,21 @@ class ActionModule(ActionBase):
 
     def main(self, task_vars: dict, result: dict) -> dict:
         """Main function in charge of validating the input variables and generating the device configuration and documentation."""
-        LOGGER.info("Validating task arguments...")
+        LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
-        LOGGER.info("Validating task arguments [done].")
+        LOGGER.debug("Validating task arguments [done].")
 
         try:
             # Read structured config from file or task_vars and run templating to handle inline jinja.
-            LOGGER.info("Preparing task vars...")
+            LOGGER.debug("Preparing task vars...")
             task_vars = self.prepare_task_vars(
                 task_vars, validated_args["structured_config_filename"], read_structured_config_from_file=validated_args["read_structured_config_from_file"]
             )
-            LOGGER.info("Preparing task vars [done].")
+            LOGGER.debug("Preparing task vars [done].")
 
-            LOGGER.info("Validating structured configuration...")
+            LOGGER.debug("Validating structured configuration...")
             validation_result = validate_structured_config(task_vars)
-            LOGGER.info("Validating structured configuration [done].")
+            LOGGER.debug("Validating structured configuration [done].")
         except Exception as e:
             LOGGER.error(e)
             return result
@@ -122,34 +122,35 @@ class ActionModule(ActionBase):
 
         try:
             has_custom_templates = bool(task_vars.get("custom_templates"))
-            LOGGER.info("Rendering configuration...")
+            LOGGER.debug("Rendering configuration...")
             device_config = get_device_config(task_vars)
-            LOGGER.info("Rendering configuration [done].")
 
             if has_custom_templates:
-                LOGGER.info("Rendering config custom templates...")
+                LOGGER.debug("Rendering config custom templates...")
                 rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
-                LOGGER.info("Rendering config custom templates [done].")
+                LOGGER.debug("Rendering config custom templates [done].")
                 # Need to handle if `end` has been rendered already
                 if device_config.endswith("!\nend\n"):
                     device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
                 else:
                     device_config += rendered_custom_templates
 
+            LOGGER.debug("Rendering configuration [done].")
             result["changed"] = self.write_file(device_config, validated_args["config_filename"])
 
             if validated_args["generate_device_doc"]:
-                LOGGER.info("Rendering documentation...")
+                LOGGER.debug("Rendering documentation...")
                 device_doc = get_device_doc(task_vars, add_md_toc=False)
 
                 if has_custom_templates:
-                    LOGGER.info("Rendering documentation custom templates...")
+                    LOGGER.debug("Rendering documentation custom templates...")
                     device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
-                    LOGGER.info("Rendering documentation custom templates [done].")
+                    LOGGER.debug("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
+                LOGGER.debug("Rendering documentation [done].")
                 file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
                 result["changed"] = result["changed"] or file_changed
 
@@ -250,8 +251,7 @@ def setup_module_logging(hostname: str, result: dict) -> None:
     python_to_ansible_handler.addFilter(python_to_ansible_filter)
     LOGGER.addHandler(python_to_ansible_handler)
     # TODO mechanism to manipulate the logger globally for pyavd
-    # NOTE: level is kept at INFO to avoid security disclosures caused by certain libraries when using DEBUG
-    LOGGER.setLevel(logging.INFO)
+    LOGGER.setLevel(logging.DEBUG)
 
 
 def read_vars(filename: Path | str) -> dict:

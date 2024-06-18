@@ -1,1 +1,1 @@
-Most of the eos_cli_config_gen templates have been moved to PyAVD in the folder  `/python-avd/pyavd/_eos_cli_config_gen/j2templates"
+Most of the eos_cli_config_gen templates have been moved to PyAVD in the folder  "/python-avd/pyavd/_eos_cli_config_gen/j2templates"
