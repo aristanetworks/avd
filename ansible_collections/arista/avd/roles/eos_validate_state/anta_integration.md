@@ -139,13 +139,13 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 - AvdTestReloadCause (Ansible tags: `reload_cause`, `optional`, `never`)
   - VerifyReloadCause: Validate last reload cause. (Optional)
 
-- (New) AvdTestAPIHttpsSSL (No Ansible tags, use the new `skipped_tests` variable instead)
+- (New) AvdTestAPIHttpsSSL (No Ansible tags, use the new `skip_tests` variable instead)
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
-- (New) AvdTestIPSecurity (No Ansible tags, use the new `skipped_tests` variable instead)
+- (New) AvdTestIPSecurity (No Ansible tags, use the new `skip_tests` variable instead)
   - VerifySpecificIPSecConn: Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
 
-- (New) AvdTestStun (No Ansible tags, use the new `skipped_tests` variable instead)
+- (New) AvdTestStun (No Ansible tags, use the new `skip_tests` variable instead)
   - VerifyStunClient: Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group.
 
 ## Input variables
@@ -208,12 +208,12 @@ save_catalog: <bool; default=False>
 # Logging level for the ANTA libraries.
 logging_level: <str; "INFO" | "WARNING" | "ERROR" | "CRITICAL" | "DEBUG"; default="WARNING">
 
-# The variable `skipped_tests` can be used for running/skipping test categories.
-skipped_tests:
+# The variable `skip_tests` can be used for running/skipping test categories.
+skip_tests:
   - category: <str; "Test category, i.e 'AvdTestHardware'">
 
 # You can also decide to skip specific subtests (ANTA test name) for more granularity.
-skipped_tests:
+skip_tests:
   - category: <str; "Test category, i.e 'AvdTestHardware'">
     tests:
       - <str; "Test sub-category, i.e 'VerifyEnvironmentCooling'">
@@ -233,10 +233,10 @@ You can provide custom ANTA catalogs to the AVD `eos_validate_state` role. By de
 When specifying a group, it must be a group from the Ansible inventory. The custom tests will then be added to all devices that are part of this group. You can also use the `all` group to target all the devices in your inventory. The directory where the custom catalogs are stored can be changed with the `custom_anta_catalogs_dir` variable.
 
 !!! warning
-    The `skipped_tests` variable will ONLY skip the dynamically generated tests from the AVD validate state role. It will **not** skip tests added from custom catalogs.
+    The `skip_tests` variable will ONLY skip the dynamically generated tests from the AVD validate state role. It will **not** skip tests added from custom catalogs.
 
 !!! info
-    The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests with the same inputs will be automatically removed. Therefore, dynamically generated tests by AVD will never be overwritten. To overwrite them, you should first skip them using the `skipped_tests` variable and provide your own tests with inputs via a custom catalog.
+    The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests with the same inputs will be automatically removed. Therefore, dynamically generated tests by AVD will never be overwritten. To overwrite them, you should first skip them using the `skip_tests` variable and provide your own tests with inputs via a custom catalog.
 
 ## Example playbook
 

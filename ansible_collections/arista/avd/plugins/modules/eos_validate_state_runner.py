@@ -48,7 +48,7 @@ options:
     description:
     - The directory where custom ANTA test catalogs are stored.
     - Files must be named after the device hostname or the Ansible group name and have a `.yml` or `.yaml` extension.
-  skipped_tests:
+  skip_tests:
     description:
       - A list of dictionaries specifying categories and, optionally, tests to skip.
       - Each dictionary must have a key `category` and can optionally include a `tests` key.
@@ -92,7 +92,7 @@ EXAMPLES = r"""
     device_catalog_path: "/my_avd_project/intended/test_catalogs/{{ inventory_hostname }}-catalog.yml"
     test_results_dir: "/my_avd_project/reports/test_results"
     custom_anta_catalogs_dir: "/my_avd_project/custom_anta_catalogs"
-    skipped_tests:
+    skip_tests:
       - category: AvdTestHardware
       - category: AvdTestBGP
         tests:
