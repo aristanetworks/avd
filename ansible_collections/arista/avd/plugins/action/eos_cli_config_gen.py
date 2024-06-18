@@ -278,6 +278,7 @@ def read_vars(filename: Path | str) -> dict:
         filename = Path(filename)
 
     if not filename.exists():
+        LOGGER.debug("File %s does not exist, skipping reading variables...", filename)
         return {}
 
     with filename.open(mode="r", encoding="UTF-8") as stream:
