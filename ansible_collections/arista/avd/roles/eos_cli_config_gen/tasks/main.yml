@@ -15,6 +15,7 @@
   register: avd_requirements
 
 - name: Generate eos intended configuration and device documentation
+  tags: [always]
   arista.avd.eos_cli_config_gen:
     structured_config_filename: "{{ structured_config_filename }}"
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
