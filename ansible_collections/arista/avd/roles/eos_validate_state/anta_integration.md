@@ -10,8 +10,8 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 
 # eos_validate_state - Integration with ANTA
 
-!!! note "Integration with ANTA"
-    :boom: ANTA v1.0.0 is out! :boom:
+!!! note
+    [ANTA v1.0.0](https://anta.arista.com/stable/) is out!
 
 # Overview
 
