@@ -73,7 +73,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def _log_validation_error(self, validation_results: ValidationResult, validation_mode: str) -> None:
+    def _log_validation_errors(self, validation_results: ValidationResult, validation_mode: str) -> None:
         """Log validation results depending on the validation_mode
 
         Parameters
