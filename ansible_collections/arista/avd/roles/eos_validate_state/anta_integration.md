@@ -200,7 +200,7 @@ validation_report_md: <bool; default=True>
 only_failed_tests: <bool; default=False>
 
 # Variable to enable ANTA eos_validate_state.
-use_anta: <bool; default=True>
+use_anta: <bool; default=False>
 
 # Save each device test catalog to 'test_catalogs_dir'.
 save_catalog: <bool; default=False>
