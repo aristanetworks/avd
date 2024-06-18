@@ -6,15 +6,15 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, unique
+from ...j2filters.convert_dicts import convert_dicts
+from ...j2filters.natural_sort import natural_sort
+from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.j2.filter.range_expand import range_expand
+from ...vendor.merge import merge
+from ...vendor.utils import default, get, get_item, unique
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class FilteredTenantsMixin:
@@ -456,5 +456,3 @@ class FilteredTenantsMixin:
                     ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
                 if ospf_keys:
                     svi_config.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
-
-        return None

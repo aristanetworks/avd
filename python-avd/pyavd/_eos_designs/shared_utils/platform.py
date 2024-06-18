@@ -7,10 +7,10 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ...vendor.utils import default, get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 # Campus platforms are separated out by their ability to support "trident_forwarding_table_partition".
 # This is required for EVPN multicast, currently only supported on all 720XP platforms.
