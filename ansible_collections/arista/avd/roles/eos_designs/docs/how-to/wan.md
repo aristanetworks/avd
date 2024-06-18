@@ -652,9 +652,21 @@ The following design points are used:
   - WAN, LAN and local static routes are sent to the HA peer to cater for various failure scenarii.
   - The routes received from the HA peer are made less preferred than routes received from the LAN or from the WAN.
 
+<!-- ![Figure 1: WAN LAN Common design](../../../media/wan_lan_common.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_lan_common.png" alt="WAN LAN Common design"/>
+</div>
+
 #### Direct HA
 
 A direct link is configured between the two HA peers
+
+<!-- ![Figure 2: WAN Direct HA](../../../media/wan_direct_ha_no_lan.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_direct_ha_no_lan.png" alt="WAN Direct HA"/>
+</div>
 
 !!! warning
 
@@ -673,6 +685,12 @@ A direct link is configured between the two HA peers
     - the Underlay peer group (towards the LAN) is not configured with any outbound route-map.
     - For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
 
+<!-- ![Figure 3: WAN eBGP LAN Single Router](../../../media/wan_ebgp_lan_single_router.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
+</div>
+
 ##### HA (PREVIEW)
 
 !!! warning "PREVIEW: Changes ahead"
@@ -681,7 +699,7 @@ A direct link is configured between the two HA peers
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
-- the uplink interfaces are used as HA interfaces by default.
+- the uplink interfaces are used as HA interfaces  by default.
 - the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
 - BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet over the LAN as well as learning WAN routes from other sites (as backup in case all WAN links are lost).
 - the Underlay peer group is configured with one inbound route-map
@@ -690,9 +708,19 @@ for eBGP LAN routing protocol the following is done to enable HA:
     - Match all WAN routes using AS path and set no-advertise community. This will be used as backup routes to the WAN in case this router looses all WAN connections.
     - Match anything else (LAN prefixes) and mark with the SoO `<bgp_as>:<wan_site_id>` to export to EVPN.
 
-!!! warning
+<!-- ![Figure 4: WAN eBGP LAN with HA](../../../media/wan_ebgp_lan_ha.png) -->
 
-    To Be Continued
+<div style="text-align:center">
+  <img src="../../../../media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
+</div>
+
+##### HA with Direct Link (PREVIEW)
+
+<!-- ![Figure 5: WAN eBGP LAN with Direct HA link](../../../media/wan_ebgp_lan_ha_direct.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_ebgp_lan_ha_direct.png" alt="WAN eBGP LAN with Direct HA link"/>
+</div>
 
 #### OSPF LAN (NOT SUPPORTED)
 
