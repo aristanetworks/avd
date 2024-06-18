@@ -1,6 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import os
+from pathlib import Path
+from typing import Sequence
+
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH, JINJA2_TEMPLATE_PATHS, RUNNING_FROM_SRC
@@ -102,7 +106,15 @@ class Templar:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, searchpaths: list[str]) -> None:
-        self.environment.loader = FileSystemLoader(searchpaths)
+        """Compile the Jinja2 templates in the path.
+        The FileSystemLoader tries to compile any file in the path no matter the extension so
+        this uses a custom one.
+
+        Parameters
+        ----------
+            searchpaths: The list of path to search templates in.
+        """
+        self.environment.loader = ExtensionFileSystemLoader(searchpaths)
         self.environment.compile_templates(
             zip=None,
             log_function=print,
@@ -110,3 +122,22 @@ class Templar:
             ignore_errors=False,
         )
         self.environment.loader = self.loader
+
+
+class ExtensionFileSystemLoader(FileSystemLoader):
+    """Custom Jinja2 loader that filters on extensions."""
+
+    def __init__(
+        self,
+        searchpath: str | os.PathLike[str] | Sequence[str | os.PathLike[str]],
+        encoding: str = "utf-8",
+        followlinks: bool = False,
+        extensions: list[str] | None = None,
+    ) -> None:
+        self.extensions = extensions or [".j2"]
+        super().__init__(searchpath, encoding, followlinks)
+
+    def list_templates(self) -> list[str]:
+        """Filter found files from FileSystemLoader using extensions."""
+        found = super().list_templates()
+        return [file for file in found if Path(file).suffix in self.extensions]

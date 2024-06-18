@@ -220,8 +220,7 @@ repos:
         name: Precompile eos_cli_config_gen Jinja2
         entry: sh -c 'exec python-avd/scripts/compile_templates.py'
         language: python
-        files: python-avd/pyavd/_eos_cli_config_gen/j2templates/.*\.j2
-        exclude: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates
+        files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
         pass_filenames: false
         additional_dependencies: ['Jinja2>=3.0.0']
 
