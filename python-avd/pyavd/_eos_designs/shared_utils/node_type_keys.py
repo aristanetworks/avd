@@ -6,12 +6,12 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...j2filters.convert_dicts import convert_dicts
+from ...vendor.errors import AristaAvdMissingVariableError
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 # NOTE: There is a static list of default node_type_keys in the fabric documentation templates
 DEFAULT_NODE_TYPE_KEYS = {

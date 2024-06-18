@@ -6,10 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ...vendor.utils import get, get_item
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 DEFAULT_PTP_PROFILES = [
     {
