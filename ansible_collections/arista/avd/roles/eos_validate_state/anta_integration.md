@@ -10,6 +10,9 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 
 # eos_validate_state - Integration with ANTA
 
+!!! note "Integration with ANTA"
+    :boom: ANTA v1.0.0 is out! :boom:
+
 # Overview
 
 **eos_validate_state** is a role leveraged to validate Arista EOS devices' operational states.
@@ -34,7 +37,7 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 - Add more ANTA tests generated from the structured configuration
 
 !!! tip
-    You can provide your own custom ANTA catalogs to the AVD `eos_validate_state` role. Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
+    You can provide your own custom ANTA catalogs using any of the available [ANTA tests](https://anta.arista.com/stable/api/tests/) to the AVD `eos_validate_state` role. Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
 
 ## Expected changes
 
@@ -222,7 +225,7 @@ skipped_tests:
 
 ## Custom ANTA catalog
 
-You can now provide custom ANTA catalogs to the AVD `eos_validate_state` role. By default, AVD will search for catalog YAML files in the `custom_anta_catalogs` directory and incorporate these tests into the existing dynamically created catalog from AVD. The custom catalog files must be named as follows:
+You can provide custom ANTA catalogs to the AVD `eos_validate_state` role. By default, AVD will search for catalog YAML files in the `custom_anta_catalogs` directory and incorporate these tests into the existing dynamically created catalog from AVD. The custom catalog files must be named as follows:
 
 - `<hostname>.yml` or `<hostname>.yaml`
 - `<group>.yml` or `<group>.yaml`
