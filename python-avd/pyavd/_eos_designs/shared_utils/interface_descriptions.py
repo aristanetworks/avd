@@ -6,12 +6,12 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
+from ...vendor.merge import merge
+from ...vendor.utils import get, load_python_class
+from ..interface_descriptions import AvdInterfaceDescriptions
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME = "AvdInterfaceDescriptions"
 
@@ -54,5 +54,5 @@ class InterfaceDescriptionsMixin:
         node_type_templates = get(self.node_type_key_data, "interface_descriptions", default={})
         if hostvar_templates or node_type_templates:
             return merge(hostvar_templates, node_type_templates, list_merge="replace", destructive_merge=False)
-        else:
-            return {}
+
+        return {}

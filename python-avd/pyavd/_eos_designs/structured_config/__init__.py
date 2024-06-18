@@ -7,9 +7,9 @@ from collections import ChainMap
 
 from ...avd_schema_tools import AvdSchemaTools
 from ...vendor.avdfacts import AvdFacts
-from ...vendor.eos_designs.eos_designs_shared_utils import SharedUtils
 from ...vendor.merge import merge
 from ...vendor.utils import get
+from ..shared_utils import SharedUtils
 from .base import AvdStructuredConfigBase
 from .connected_endpoints import AvdStructuredConfigConnectedEndpoints
 from .core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge

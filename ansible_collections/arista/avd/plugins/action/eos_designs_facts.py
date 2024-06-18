@@ -11,7 +11,6 @@ import pstats
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
@@ -21,9 +20,10 @@ PLUGIN_NAME = "arista.avd.eos_designs_facts"
 
 try:
     from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.shared_utils import SharedUtils
     from pyavd.vendor.errors.errors import AristaAvdMissingVariableError as PyavdMissingVariableError
 except ImportError as e:
-    EosDesignsFacts = RaiseOnUse(
+    EosDesignsFacts = SharedUtils = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,

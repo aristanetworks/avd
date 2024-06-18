@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ...vendor.eos_designs.eos_designs_shared_utils import SharedUtils
+    from ..shared_utils import SharedUtils
 
 
 class InterfaceDescriptionData:

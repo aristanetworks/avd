@@ -6,13 +6,13 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_ip_from_pool, get_item
+from ...j2filters.natural_sort import natural_sort
+from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.strip_empties import strip_empties_from_dict
+from ...vendor.utils import default, get, get_ip_from_pool, get_item
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class WanMixin:
@@ -42,15 +42,15 @@ class WanMixin:
         return wan_role
 
     @cached_property
-    def is_wan_router(self) -> bool:
+    def is_wan_router(self: SharedUtils) -> bool:
         return bool(self.wan_role)
 
     @cached_property
-    def is_wan_server(self) -> bool:
+    def is_wan_server(self: SharedUtils) -> bool:
         return self.wan_role == "server"
 
     @cached_property
-    def is_wan_client(self) -> bool:
+    def is_wan_client(self: SharedUtils) -> bool:
         return self.wan_role == "client"
 
     @cached_property
@@ -179,7 +179,7 @@ class WanMixin:
         return list(local_path_groups_dict.values())
 
     @cached_property
-    def wan_local_path_group_names(self) -> list:
+    def wan_local_path_group_names(self: SharedUtils) -> list:
         """
         Return a list of wan_local_path_group names to be used by HA peer and in various places
         """
@@ -282,9 +282,7 @@ class WanMixin:
         if node_defined_region is None:
             return None
 
-        regions = get(
-            self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
-        )
+        regions = get(self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.")
 
         # Verify that site names are unique across all regions.
         site_names = [site["name"] for region in regions for site in region["sites"]]
@@ -350,8 +348,7 @@ class WanMixin:
 
                 if vtep_ip is None:
                     raise AristaAvdMissingVariableError(
-                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
-                        " facts."
+                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer" " facts."
                     )
                 if wan_path_groups is None:
                     raise AristaAvdMissingVariableError(
@@ -489,21 +486,21 @@ class WanMixin:
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
 
     @cached_property
-    def configured_wan_ha_interfaces(self) -> set:
+    def configured_wan_ha_interfaces(self: SharedUtils) -> set:
         """
         Read the device wan_ha.ha_interfaces node settings
         """
         return get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])
 
     @cached_property
-    def vrf_default_uplinks(self) -> list:
+    def vrf_default_uplinks(self: SharedUtils) -> list:
         """
         Return the uplinkss in VRF default
         """
         return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
 
     @cached_property
-    def vrf_default_uplink_interfaces(self) -> list:
+    def vrf_default_uplink_interfaces(self: SharedUtils) -> list:
         """
         Return the uplink interfaces in VRF default
         """

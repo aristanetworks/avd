@@ -6,14 +6,13 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, template_var
+from ...vendor.errors import AristaAvdError
+from ...vendor.merge import merge
+from ...vendor.utils import get, get_item, template_var
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
-
-    from .shared_utils import SharedUtils
+    from ...eos_designs_facts import EosDesignsFacts
+    from . import SharedUtils
 
 
 class UtilsMixin:

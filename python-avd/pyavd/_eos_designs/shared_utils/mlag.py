@@ -8,14 +8,13 @@ from ipaddress import ip_interface
 from re import findall
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.j2.filter.range_expand import range_expand
+from ...vendor.utils import default, get
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
-
-    from .shared_utils import SharedUtils
+    from ...eos_designs_facts import EosDesignsFacts
+    from . import SharedUtils
 
 
 class MlagMixin:
@@ -84,7 +83,7 @@ class MlagMixin:
         if self.mlag:
             if self.switch_data_node_group_nodes[0]["name"] == self.hostname:
                 return "primary"
-            elif self.switch_data_node_group_nodes[1]["name"] == self.hostname:
+            if self.switch_data_node_group_nodes[1]["name"] == self.hostname:
                 return "secondary"
             raise AristaAvdError("Unable to detect MLAG role")
         return None
@@ -145,7 +144,7 @@ class MlagMixin:
         """
         if self.mlag_role == "primary":
             return self.ip_addressing.mlag_ip_primary()
-        elif self.mlag_role == "secondary":
+        if self.mlag_role == "secondary":
             return self.ip_addressing.mlag_ip_secondary()
 
     @cached_property
@@ -157,7 +156,7 @@ class MlagMixin:
             return None
         if self.mlag_role == "primary":
             return self.ip_addressing.mlag_l3_ip_primary()
-        elif self.mlag_role == "secondary":
+        if self.mlag_role == "secondary":
             return self.ip_addressing.mlag_l3_ip_secondary()
 
     @cached_property
@@ -170,7 +169,7 @@ class MlagMixin:
             if self.id is None:
                 raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self.id, "secondary": self.mlag_peer_id}
-        elif self.mlag_role == "secondary":
+        if self.mlag_role == "secondary":
             if self.id is None:
                 raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self.mlag_peer_id, "secondary": self.id}
