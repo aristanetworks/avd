@@ -300,13 +300,15 @@ With most jobs, we need a way to authenticate to our CV instance or EOS nodes. A
 
     - On the center pane, select `Add`.
     - Set `Question` to an appropriate value.
-    - Set `Answer variable name` to any valid variable name, here we use `CV_TOKEN`.
+    - Set `Answer variable name` to any valid variable name, here we use `lab_token`.
     - `Answer type` is set to `Password` and the default value is set.
+    - Set `Maximum length` to 2000 to fit the Service account token for CV provisioning.
+    - Enter your `Default answer`.
     - Click `Save` when done.
 
     ![Survey save](../_media/getting-started/aap-avd/survey-save.png)
 
-    The `CV_TOKEN` variable will be leveraged when provisioning the fabric with the `cv_deploy` role.
+    The `lab_token` variable will be leveraged when provisioning the fabric with the `cv_deploy` role.
 
     ```yaml
     tasks:
@@ -315,8 +317,12 @@ With most jobs, we need a way to authenticate to our CV instance or EOS nodes. A
           name: cv_deploy
         vars:
           cv_server: <CV or CVaaS URL>
-          cv_token: "{{ CV_TOKEN }}"
+          cv_token: "{{ lab_token }}"
+          cv_run_change_control: true
     ```
+
+    !!! note
+        This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/roles/cv_deploy/index.html) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default it `false`. This allows the change control to be executed automatically.
 
 === "Surveys - Enable"
 
@@ -353,14 +359,15 @@ Below is an example of the playbook we are leveraging to build and deploy our co
         name: cv_deploy
       vars:
         cv_server: <CV or CVaaS URL>
-        cv_token: "{{ CV_TOKEN }}"
+        cv_token: "{{ lab_token }}"
+        cv_run_change_control: true
 
 ```
 
 We have everything we need to run our job template now.
 
 !!! note
-    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role required additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/roles/cv_deploy/index.html) for the most up-to-date settings.
+    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/roles/cv_deploy/index.html) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default it `false`. This allows the change control to be executed automatically.
 
 === "Templates Run"
 
@@ -370,7 +377,6 @@ We have everything we need to run our job template now.
     - In the `Launch` pane, click `Launch`.
 
     ![Run job](../_media/getting-started/aap-avd/run-job.png)
-    ![Launch job](../_media/getting-started/aap-avd/launch-job.png)
 
 === "Jobs"
 
@@ -386,9 +392,8 @@ We have everything we need to run our job template now.
 
 === "CV View"
 
-    From CV's perspective, we can see a new container topology is created, and our change control workflow has been completed for us when leveraging the CV Ansible collection.
+    From CV's perspective, we can see our change control workflow has been completed for us when leveraging the `cv_deploy` role.
 
-    ![CV topology](../_media/getting-started/aap-avd/cvp-topo.png)
     ![CV Change Controls](../_media/getting-started/aap-avd/cvp-cc.png)
 
 ## References
