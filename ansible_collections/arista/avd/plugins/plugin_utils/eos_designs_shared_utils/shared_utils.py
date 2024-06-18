@@ -52,7 +52,7 @@ class SharedUtils(
     FlowTrackingMixin,
 ):
     """
-    Class with commonly used methods / cached_properties to be shared between all the python_modules
+    Class with commonly used methods / cached_properties to be shared between all the python modules
     loaded in eos_designs.
 
     This class is instantiated in 'EosDesignsFacts' class and set as 'shared_utils' property.

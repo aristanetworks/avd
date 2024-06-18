@@ -22,7 +22,7 @@ if version_info >= (3, 10):
 class NoAliasDumper(yaml.Dumper):
     """Dump YAML without generating aliases and anchors for reused ids"""
 
-    def ignore_aliases(self, data):
+    def ignore_aliases(self, _):
         return True
 
 
