@@ -7,10 +7,10 @@ from collections import defaultdict
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class FlowTrackingMixin:
