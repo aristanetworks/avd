@@ -100,9 +100,6 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter/$(VENDOR_IMPORT)\.j2\.filter/g' {} +
 
-# Only remaining python_modules are ip_addressing and interface_descriptions referred in eos_designs_shared_utils.
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.roles\.eos_designs\.python_modules/$(EOS_DESIGNS_IMPORT)/g' {} +
-
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible\.utils\.display/from $(VENDOR_IMPORT)\.utils\.display/g' {} +
 
 	cp -r $(CURRENT_DIR)/vendor_overrides/* $(VENDOR_DIR)/
