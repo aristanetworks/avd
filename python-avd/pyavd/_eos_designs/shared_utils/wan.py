@@ -282,7 +282,9 @@ class WanMixin:
         if node_defined_region is None:
             return None
 
-        regions = get(self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.")
+        regions = get(
+            self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
+        )
 
         # Verify that site names are unique across all regions.
         site_names = [site["name"] for region in regions for site in region["sites"]]
@@ -348,7 +350,8 @@ class WanMixin:
 
                 if vtep_ip is None:
                     raise AristaAvdMissingVariableError(
-                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer" " facts."
+                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                        " facts."
                     )
                 if wan_path_groups is None:
                     raise AristaAvdMissingVariableError(
