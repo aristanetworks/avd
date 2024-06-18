@@ -855,10 +855,11 @@ wan_virtual_topologies:
 ```
 
 ### WAN Validation
-`eos_validate_state` is being enriched to support new tests for WAN designs. The tests listed below are specific to WAN.
 
-| AVD Test Class | ANTA Test Name | Description |
-| -------------- | -------------- | ----------- |
+`eos_validate_state` is being enriched to support new tests for WAN designs. The tests listed below are validating WAN designs.
+
+| AVD Test Class | ANTA Test Class | Description |
+| -------------- | --------------- | ----------- |
 | AvdTestInterfacesState | VerifyInterfacesStatus | Validate the DPS interface status. |
 | AvdTestBGP | VerifyBGPSpecificPeers | Validate the different BGP Address Families Identifiers (AFI) and Subsequent Address Family Identifiers (SAFI) sessions state. |
 | AvdTestIPSecurity | VerifySpecificIPSecConn | Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration. |
