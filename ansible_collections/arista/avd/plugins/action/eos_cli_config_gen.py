@@ -7,7 +7,6 @@ __metaclass__ = type
 
 import json
 import logging
-from functools import partial
 from pathlib import Path
 
 import yaml
@@ -23,7 +22,7 @@ except ImportError:
     from yaml import YamlLoader
 
 try:
-    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc, validate_structured_config, ValidationResult
     from pyavd.j2filters.add_md_toc import add_md_toc
 
     HAS_PYAVD = True
@@ -37,13 +36,6 @@ CUSTOM_TEMPLATES_DOC_TEMPLATE = "documentation/custom-templates.j2"
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 # Avoid duplicate logs in debug files
 LOGGER.propagate = False
-
-# Trying stuff - probably need to go in another PR
-setattr(LOGGER, "vv", partial(LOGGER.log, 19))
-setattr(LOGGER, "vvv", partial(LOGGER.log, 18))
-setattr(LOGGER, "vvvv", partial(LOGGER.log, 17))
-setattr(LOGGER, "vvvvv", partial(LOGGER.log, 16))
-setattr(LOGGER, "vvvvvv", partial(LOGGER.log, 15))
 
 ARGUMENT_SPEC = {
     "structured_config_filename": {"type": "str", "required": True},
@@ -81,11 +73,32 @@ class ActionModule(ActionBase):
 
         return result
 
+    def _log_validation_error(self, validation_results: ValidationResult, validation_mode: str) -> None:
+        """Log validation results depending on the validation_mode
+
+        Parameters
+        ----------
+        validation_result: The ValidationResult object containing the errors.
+        validation_mode: A validated string containing one of the possible validation_mode
+            in [error, warning, info, debug, disabled]
+
+        """
+        for validation_error in validation_results.validation_errors:
+            if validation_mode == "debug":
+                LOGGER.debug(validation_error)
+            elif validation_mode == "error":
+                LOGGER.error(validation_error)
+            elif validation_mode == "info":
+                LOGGER.info(validation_error)
+            elif validation_mode == "warning":
+                LOGGER.warning(validation_error)
+            # otherwise the validation_mode is disabled
+
     def main(self, task_vars: dict, result: dict) -> dict:
         """Main function in charge of validating the input variables and generating the device configuration and documentation."""
-        LOGGER.vvvv("Validating task arguments...")
+        LOGGER.info("Validating task arguments...")
         validated_args = self.validate_args()
-        LOGGER.vvvv("Validating task arguments [done].")
+        LOGGER.info("Validating task arguments [done].")
 
         try:
             # Read structured config from file or task_vars and run templating to handle inline jinja.
@@ -103,19 +116,8 @@ class ActionModule(ActionBase):
             return result
 
         if validation_result.failed:
-            # TODO nicer logging for validation_errors and probably can be written in a better way.
             validation_mode = validated_args.get("validation_mode", "warning")
-            for validation_error in validation_result.validation_errors:
-                if validation_mode == "error":
-                    LOGGER.error(validation_error)
-                elif validation_mode == "warning":
-                    LOGGER.warning(validation_error)
-                elif validation_mode == "info":
-                    LOGGER.info(validation_error)
-                elif validation_mode == "debug":
-                    LOGGER.debug(validation_error)
-                elif validation_mode == "disabled":
-                    pass
+            self._log_validation_errors(validation_result, validation_mode)
             return result
 
         try:
@@ -249,8 +251,7 @@ def setup_module_logging(hostname: str, result: dict) -> None:
     LOGGER.addHandler(python_to_ansible_handler)
     # TODO mechanism to manipulate the logger globally for pyavd
     # NOTE: level is kept at INFO to avoid security disclosures caused by certain libraries when using DEBUG
-    # well here 15 is vvvvvv to get them all
-    LOGGER.setLevel(15)
+    LOGGER.setLevel(logging.INFO)
 
 
 def read_vars(filename: Path | str) -> dict:
