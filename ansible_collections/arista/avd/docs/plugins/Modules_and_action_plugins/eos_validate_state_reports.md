@@ -49,7 +49,7 @@ The plugin offers the following functionalities:
 
 ## See Also
 
-- ANTA website: [https://anta.ninja](https://anta.ninja)<br>Documentation for the ANTA test framework
+- ANTA website: [https://anta.arista.com](https://anta.arista.com)<br>Documentation for the ANTA test framework
 
 ## Examples
 

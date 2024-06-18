@@ -54,7 +54,7 @@ options:
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
-    link: https://anta.ninja
+    link: https://anta.arista.com
 notes:
   - Enabling the cProfile feature for performance profiling may impact the plugin's performance, especially in production environments.
   - Hosts with `is_deployed` is False are automatically skipped, and no test results are processed for these hosts.

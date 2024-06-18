@@ -68,7 +68,7 @@ options:
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
-    link: https://anta.ninja
+    link: https://anta.arista.com
 notes:
   - Enabling the cProfile feature for performance profiling may impact the plugin's performance, especially in production environments.
   - The plugin manages the creation of JSON files, which are used for storing test results.
