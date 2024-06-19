@@ -209,18 +209,24 @@ save_catalog: <bool; default=False>
 logging_level: <str; "INFO" | "WARNING" | "ERROR" | "CRITICAL" | "DEBUG"; default="WARNING">
 
 # The variable `skip_tests` can be used for running/skipping test categories.
+# Examples
+# skip_tests:
+#   - category: AvdTestHardware
+#
+# or to skip specific tests (ANTA test names) in a given category for more granularity:
+# skip_tests:
+#  - category: AvdTestHardware
+#    tests:
+#      - VerifyEnvironmentCooling
+#      - VerifyTemperature
+#  - category: AvdTestBGP
+#    tests:
+#      - VerifyBGPSpecificPeers
 skip_tests:
-  - category: <str; "Test category, i.e 'AvdTestHardware'">
-
-# You can also decide to skip specific subtests (ANTA test name) for more granularity.
-skip_tests:
-  - category: <str; "Test category, i.e 'AvdTestHardware'">
+  - category: <str; "Test category">
+    # Optional tests
     tests:
-      - <str; "Test sub-category, i.e 'VerifyEnvironmentCooling'">
-      - <str; "Test sub-category, i.e 'VerifyTemperature'">
-  - category: <str; "Test category, i.e 'AvdTestBGP'">
-    tests:
-      - <str; "Test sub-category, i.e 'VerifyBGPSpecificPeers'">
+      -  <str; "Test name">
 ```
 
 ## Custom ANTA catalog
