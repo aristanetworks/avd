@@ -8,8 +8,8 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ....j2filters.range_expand import range_expand
 from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.j2.filter.range_expand import range_expand
 from ....vendor.strip_empties import strip_null_from_data
 from ....vendor.utils import append_if_not_duplicate, default, get, replace_or_append_item
 from ...interface_descriptions import InterfaceDescriptionData

@@ -11,7 +11,8 @@ from typing import TYPE_CHECKING
 from ....j2filters.generate_esi import generate_esi
 from ....j2filters.generate_lacp_id import generate_lacp_id
 from ....j2filters.generate_route_target import generate_route_target
-from ....vendor.j2.filter.range_expand import range_expand
+from ....j2filters.range_expand import range_expand
+from ....vendor.j2.filter.generate_lacp_id import generate_lacp_id
 from ....vendor.strip_empties import strip_null_from_data
 from ....vendor.utils import append_if_not_duplicate, get
 from ...interface_descriptions import InterfaceDescriptionData

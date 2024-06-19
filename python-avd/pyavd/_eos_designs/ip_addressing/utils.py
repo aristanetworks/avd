@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ...j2filters.range_expand import range_expand
 from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
 from ...vendor.utils import get
 
 if TYPE_CHECKING:
