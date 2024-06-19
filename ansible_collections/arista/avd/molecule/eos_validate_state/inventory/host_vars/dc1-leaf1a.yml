@@ -15,3 +15,17 @@ custom_structured_configuration_router_path_selection:
       id: 210
       local_interfaces:
         - name: Ethernet3
+
+# Custom inputs for the hardware tests
+accepted_xcvr_manufacturers:
+  - "Arastra, Inc."
+  - "Arista Networks"
+  - "Cisco"
+
+accepted_pwr_supply_states:
+  - "ok"
+  - "Not Present"
+
+accepted_fan_states:
+  - "ok"
+  - "Not Present"

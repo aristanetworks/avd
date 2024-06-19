@@ -299,23 +299,26 @@ anta.tests.greent:
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     result_overwrite:
-      custom_field: 'Accepted States: ''ok'''
+      custom_field: 'Accepted States: ''ok'', ''Not Present'''
     states:
     - ok
+    - Not Present
 - VerifyEnvironmentCooling:
     result_overwrite:
-      custom_field: 'Accepted States: ''ok'''
+      custom_field: 'Accepted States: ''ok'', ''Not Present'''
     states:
     - ok
+    - Not Present
 - VerifyTemperature: null
 - VerifyTransceiversManufacturers:
     manufacturers:
-    - Arista Networks
     - Arastra, Inc.
+    - Arista Networks
+    - Cisco
     - Not Present
     result_overwrite:
-      custom_field: 'Accepted Manufacturers: ''Arista Networks'', ''Arastra, Inc.'',
-        ''Not Present'''
+      custom_field: 'Accepted Manufacturers: ''Arastra, Inc.'', ''Arista Networks'',
+        ''Cisco'', ''Not Present'''
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Not Present

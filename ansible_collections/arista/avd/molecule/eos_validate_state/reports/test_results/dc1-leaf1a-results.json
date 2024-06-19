@@ -450,7 +450,7 @@
       "hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays.",
-    "custom_field": "Accepted States: 'ok'"
+    "custom_field": "Accepted States: 'ok', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",
@@ -467,7 +467,7 @@
       "hardware"
     ],
     "description": "Verifies the power supplies status.",
-    "custom_field": "Accepted States: 'ok'"
+    "custom_field": "Accepted States: 'ok', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",
@@ -508,7 +508,7 @@
       "hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers.",
-    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+    "custom_field": "Accepted Manufacturers: 'Arastra, Inc.', 'Arista Networks', 'Cisco', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",

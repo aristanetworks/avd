@@ -170,12 +170,16 @@ eos_validate_state_dir: <str; | default="{{ root_dir }}/{{ eos_validate_state_na
 test_results_dir_name: <str; | default="test_results">
 test_results_dir: <str; | default="{{ eos_validate_state_dir }}/{{ test_results_dir_name }}">
 
-# Fabric name used in the reports name.
-fabric_name: <str; | default="all">
-
 # Reports name.
 eos_validate_state_md_report_path: <str; | default="{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md">
 eos_validate_state_csv_report_path: <str; | default="{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv">
+
+# Input directory for structured configuration files.
+structured_dir_name: <str; | default="structured_configs">
+structured_dir: <str; | default="{{ output_dir }}/{{ structured_dir_name }}">
+
+# Structured configuration files format.
+avd_structured_config_file_format: "yml"
 
 # Input directory for custom ANTA catalogs.
 custom_anta_catalogs_dir_name: <str; | default="custom_anta_catalogs">
