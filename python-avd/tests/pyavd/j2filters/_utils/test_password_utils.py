@@ -6,7 +6,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-
 from pyavd._utils.password_utils.password_utils import cbc_check_password, cbc_decrypt, cbc_encrypt
 
 # password used is "arista"
