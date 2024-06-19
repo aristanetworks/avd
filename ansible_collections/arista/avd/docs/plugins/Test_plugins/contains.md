@@ -43,7 +43,7 @@ vars:
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | boolean | Returns `False` if either the passed value or the test_values are `Undefined` or `none`.<br>Returns `True` if the passed list contains one or more of the supplied test_values. `False` otherwise. |
+| _value | boolean | Returns `False` if either the passed value or the test_values are `Undefined` or `None`.<br>Returns `True` if the passed list contains one or more of the supplied test_values. `False` otherwise. |
 
 ## Authors
 
