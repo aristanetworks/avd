@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ...._utils import get, get_item
 from ....j2filters.natural_sort import natural_sort
 from ....j2filters.range_expand import range_expand
-from ....vendor.utils import get, get_item
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

@@ -2,8 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pyavd import validate_structured_config
+from pyavd._errors import AvdValidationError  # pylint: disable=no-name-in-module
 from pyavd.avd_schema_tools import AvdSchemaTools
-from pyavd.vendor.errors import AvdValidationError  # pylint: disable=no-name-in-module
 
 SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
 

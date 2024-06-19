@@ -7,7 +7,7 @@ from collections import defaultdict
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ...vendor.utils import get
+from ..._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils

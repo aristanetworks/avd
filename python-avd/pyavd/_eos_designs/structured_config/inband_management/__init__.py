@@ -6,11 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_network
 
+from ...._errors import AristaAvdMissingVariableError
+from ...._utils import get, strip_empties_from_dict
 from ....j2filters.natural_sort import natural_sort
-from ....vendor.avdfacts import AvdFacts
-from ....vendor.errors.errors import AristaAvdMissingVariableError
-from ....vendor.strip_empties import strip_empties_from_dict
-from ....vendor.utils import get
+from ...avdfacts import AvdFacts
 
 
 class AvdStructuredConfigInbandManagement(AvdFacts):

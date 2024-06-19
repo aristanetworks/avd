@@ -15,5 +15,4 @@ def unique(in_list):
         Unique list items
     """
 
-    list_set = set(in_list)
-    return list(list_set)
+    return list(set(in_list))

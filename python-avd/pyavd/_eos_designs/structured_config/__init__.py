@@ -5,10 +5,9 @@ from __future__ import annotations
 
 from collections import ChainMap
 
-from ..._utils.merge import merge
+from ..._utils import get, merge
 from ...avd_schema_tools import AvdSchemaTools
-from ...vendor.avdfacts import AvdFacts
-from ...vendor.utils import get
+from ..avdfacts import AvdFacts
 from ..shared_utils import SharedUtils
 from .base import AvdStructuredConfigBase
 from .connected_endpoints import AvdStructuredConfigConnectedEndpoints

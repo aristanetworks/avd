@@ -6,11 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ...._errors import AristaAvdError
+from ...._utils import default, get, get_item, strip_empties_from_dict
 from ....j2filters.natural_sort import natural_sort
 from ....j2filters.range_expand import range_expand
-from ....vendor.errors import AristaAvdError
-from ....vendor.strip_empties import strip_empties_from_dict
-from ....vendor.utils import default, get, get_item
 from ...interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:

@@ -5,8 +5,23 @@ from __future__ import annotations
 
 import logging
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, log_message
+from ansible.errors import AnsibleActionFail
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import log_message
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._errors import AristaAvdMissingVariableError
+    from pyavd._utils import default, get, get_item
+except ImportError as e:
+    AristaAvdMissingVariableError = get = get_item = default = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 LOGGER = logging.getLogger(__name__)
 

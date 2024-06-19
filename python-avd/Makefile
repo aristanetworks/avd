@@ -13,6 +13,7 @@ EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
 PYAVD_TEST_IMPORT = $(PACKAGE_DIR).j2tests
 EOS_DESIGNS_IMPORT = $(PACKAGE_DIR)._eos_designs
+
 # export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
 
 .PHONY: help
@@ -73,7 +74,7 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	find $(PACKAGE_DIR) -name '__pycache__' -exec rm -rf {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/^from __future__ import.*/from __future__ import annotations/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e '/^__metaclass__ = type/d' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible.errors import /from $(VENDOR_IMPORT).errors import /g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible.errors import /from pyavd._errors import /g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleFilterError/AristaAvdError/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleError/AristaAvdError/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleActionFail/AristaAvdError/g' {} +

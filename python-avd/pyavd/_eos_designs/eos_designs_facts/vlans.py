@@ -7,10 +7,10 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ..._utils import get
 from ...j2filters.convert_dicts import convert_dicts
 from ...j2filters.list_compress import list_compress
 from ...j2filters.range_expand import range_expand
-from ...vendor.utils import get
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts

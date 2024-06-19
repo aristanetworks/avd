@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ...._utils import get
 from ....j2filters.natural_sort import natural_sort
-from ....vendor.utils import get
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigOverlay

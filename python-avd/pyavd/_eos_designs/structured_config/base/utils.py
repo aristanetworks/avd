@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.utils import get
+from ...._errors import AristaAvdError, AristaAvdMissingVariableError
+from ...._utils import get
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBase

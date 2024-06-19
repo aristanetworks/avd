@@ -3,8 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdDuplicateDataError
-
+from .._errors import AristaAvdDuplicateDataError
 from .compare_dicts import compare_dicts
 from .get import get
 from .get_item import get_item

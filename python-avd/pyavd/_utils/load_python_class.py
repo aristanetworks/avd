@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import importlib
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from .._errors import AristaAvdError, AristaAvdMissingVariableError
 
 
 def load_python_class(module_path: str, class_name: str, parent_class: type | None = None) -> type:

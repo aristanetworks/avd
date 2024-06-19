@@ -9,11 +9,11 @@ from re import findall
 from typing import TYPE_CHECKING
 
 from ...j2filters.range_expand import range_expand
-from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.utils import default, get
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get
 
 if TYPE_CHECKING:
-    from ...eos_designs_facts import EosDesignsFacts
+    from ..eos_designs_facts import EosDesignsFacts
     from . import SharedUtils
 
 

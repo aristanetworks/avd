@@ -6,10 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, NoReturn
 
+from ...._errors import AristaAvdError, AristaAvdMissingVariableError
+from ...._utils import append_if_not_duplicate, default, get, get_item, unique
 from ....j2filters.natural_sort import natural_sort
 from ....j2filters.range_expand import range_expand
-from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.utils import append_if_not_duplicate, default, get, get_item, unique
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

@@ -7,14 +7,14 @@ from copy import deepcopy
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get, get_item
 from ...j2filters.convert_dicts import convert_dicts
 from ...j2filters.natural_sort import natural_sort
 from ...j2filters.range_expand import range_expand
-from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.utils import default, get, get_item
 
 if TYPE_CHECKING:
-    from ...eos_designs_facts import EosDesignsFacts
+    from ..eos_designs_facts import EosDesignsFacts
     from . import SharedUtils
 
 

@@ -7,10 +7,10 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ..._errors import AristaAvdError
+from ..._utils import append_if_not_duplicate, get, unique
 from ...j2filters.list_compress import list_compress
 from ...j2filters.range_expand import range_expand
-from ...vendor.errors import AristaAvdError
-from ...vendor.utils import append_if_not_duplicate, get, unique
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts

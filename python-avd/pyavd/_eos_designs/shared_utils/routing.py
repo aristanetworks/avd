@@ -7,8 +7,8 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...j2filters.range_expand import range_expand
-from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.utils import get
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils

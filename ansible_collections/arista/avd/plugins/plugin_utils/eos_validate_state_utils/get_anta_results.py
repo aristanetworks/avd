@@ -7,12 +7,26 @@ import logging
 from asyncio import run
 from typing import TYPE_CHECKING
 
+from ansible.errors import AnsibleActionFail
 from yaml import CSafeLoader, YAMLError, dump, load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge_catalogs
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._errors import AristaAvdError
+    from pyavd._utils import get_item
+except ImportError as e:
+    AristaAvdError = get_item = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 if TYPE_CHECKING:
     from pathlib import Path

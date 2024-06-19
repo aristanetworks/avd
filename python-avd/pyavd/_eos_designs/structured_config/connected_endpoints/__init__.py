@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ....vendor.avdfacts import AvdFacts
+from ...avdfacts import AvdFacts
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .monitor_sessions import MonitorSessionsMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin

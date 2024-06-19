@@ -16,12 +16,12 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
 try:
+    from pyavd._utils import get, strip_empties_from_dict
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
     from pyavd._cv.workflows.models import (
         CloudVision,

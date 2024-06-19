@@ -6,8 +6,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generator
 
 if TYPE_CHECKING:
+    from ._errors import AvdDeprecationWarning
     from .validation_result import ValidationResult
-    from .vendor.errors import AvdDeprecationWarning
 
 
 class AvdSchemaTools:
@@ -43,7 +43,7 @@ class AvdSchemaTools:
         Returns:
             List of AvdDeprecationWarnings
         """
-        from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning  # pylint: disable=import-outside-toplevel
+        from ._errors import AvdConversionWarning, AvdDeprecationWarning  # pylint: disable=import-outside-toplevel
 
         # avdschema.convert returns a Generator, so we have to iterate through it to perform the actual conversions.
         exceptions: Generator = self.avdschema.convert(data)
@@ -77,8 +77,8 @@ class AvdSchemaTools:
             Validation result object with any validation errors or deprecation warnings.
         """
         # pylint: disable=import-outside-toplevel
+        from ._errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
         from .validation_result import ValidationResult
-        from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
 
         # pylint: enable=import-outside-toplevel
 

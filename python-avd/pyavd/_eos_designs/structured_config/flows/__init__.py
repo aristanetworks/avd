@@ -5,11 +5,10 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ...._errors import AristaAvdMissingVariableError
+from ...._utils import get, get_item, strip_null_from_data
 from ....j2filters.natural_sort import natural_sort
-from ....vendor.avdfacts import AvdFacts
-from ....vendor.errors import AristaAvdMissingVariableError
-from ....vendor.strip_empties import strip_null_from_data
-from ....vendor.utils import get, get_item
+from ...avdfacts import AvdFacts
 
 
 class AvdStructuredConfigFlows(AvdFacts):
