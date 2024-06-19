@@ -8,9 +8,10 @@ import yaml
 from deepmerge import always_merger
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 from pyavd._schema.avdschemaresolver import AvdSchemaResolver
-from pyavd._schema.constants import SCHEMA_PATHS
-from pyavd._schema.store import create_store
 from pyavd.vendor.errors import AvdValidationError
+
+from schema_tools.constants import SCHEMA_PATHS
+from schema_tools.store import create_store
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
