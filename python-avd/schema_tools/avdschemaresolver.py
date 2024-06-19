@@ -5,8 +5,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from pyavd.vendor.errors.errors import AvdSchemaError  # pylint: disable=no-name-in-module
-from pyavd.vendor.merge import merge  # pylint: disable=no-name-in-module
+from pyavd._utils.merge import merge
 from referencing import Registry, Specification
 from referencing.exceptions import PointerToNowhere
 from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
@@ -65,7 +64,7 @@ class AvdSchemaResolver:
         try:
             resolved = self.resolver.lookup(resolved_schema["$ref"])
         except PointerToNowhere:
-            raise AvdSchemaError(
+            raise RuntimeError(
                 (
                     f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
                     "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$'."

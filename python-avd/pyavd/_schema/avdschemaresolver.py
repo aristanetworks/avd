@@ -9,8 +9,8 @@ from referencing import Registry, Specification
 from referencing.exceptions import PointerToNowhere
 from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
 
+from .._utils.merge import merge
 from ..vendor.errors.errors import AvdSchemaError
-from ..vendor.merge import merge
 
 
 class AvdSchemaResolver:
