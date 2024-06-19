@@ -7,16 +7,15 @@ from copy import deepcopy
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ...j2filters.convert_dicts import convert_dicts
+from ...j2filters.natural_sort import natural_sort
+from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.j2.filter.range_expand import range_expand
+from ...vendor.utils import default, get, get_item
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
-
-    from .shared_utils import SharedUtils
+    from ...eos_designs_facts import EosDesignsFacts
+    from . import SharedUtils
 
 
 class MiscMixin:
@@ -364,10 +363,7 @@ class MiscMixin:
 
         TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
         """
-        if self.uplink_type == "p2p-vrfs":
-            default_value = True
-        else:
-            default_value = False
+        default_value = bool(self.uplink_type == "p2p-vrfs")
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
 
     @cached_property

@@ -8,11 +8,11 @@ from ipaddress import ip_address
 from re import fullmatch
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class OverlayMixin:
@@ -152,9 +152,9 @@ class OverlayMixin:
                 return f"{self.router_id}:{self.wan_site['id']}"
             if self.is_first_ha_peer:
                 return f"{self.router_id}:{self.wan_site['id']}"
-            else:
-                peer_fact = self.get_peer_facts(self.wan_ha_peer, required=True)
-                return f"{peer_fact['router_id']}:{self.wan_site['id']}"
+
+            peer_fact = self.get_peer_facts(self.wan_ha_peer, required=True)
+            return f"{peer_fact['router_id']}:{self.wan_site['id']}"
 
         if self.overlay_vtep:
             return f"{self.vtep_ip}:1"
