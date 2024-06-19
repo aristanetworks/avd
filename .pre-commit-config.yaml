@@ -218,11 +218,14 @@ repos:
 
       - id: compile-templates
         name: Precompile eos_cli_config_gen Jinja2
-        entry: sh -c 'exec python-avd/scripts/compile_templates.py'
+        # Workaround because pyavd.vendor is still needed for now - this also rebuilds the schemas so it is a bit wasteful
+        entry: sh -c 'cd python-avd; make dep'
+        # entry: sh -c 'python-avd/scripts/compile_templates.py'
         language: python
         files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
+        # additional_dependencies: ['Jinja2>=3.0.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.41.0
