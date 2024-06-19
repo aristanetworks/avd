@@ -138,7 +138,7 @@ notes:
   - |-
     When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
     `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
-    To see the full list of regional URLs, please visit the [cv_deploy](../../../roles/cv_deploy/README.md#cloudvision-server-configuration)
+    To see the full list of regional URLs, please visit the [cv_deploy](../../../roles/cv_deploy/README.md#overview)
     role documentation.
   - |-
     To generate service accounts check [cv_deploy](../../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision)
