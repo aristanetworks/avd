@@ -8,8 +8,14 @@ from typing import Generator
 from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AvdDeprecationWarning
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AvdDeprecationWarning
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+
+try:
+    from pyavd._schema.avdschema import AvdSchema
+except ImportError as e:
+    AvdSchema = RaiseOnUse(AnsibleActionFail("The 'arista.avd' collection requires the 'pyavd' Python library. Got import error", orig_exc=e))
+
 
 VALID_CONVERSION_MODES = ["disabled", "error", "warning", "info", "debug", "quiet"]
 DEFAULT_CONVERSION_MODE = "debug"

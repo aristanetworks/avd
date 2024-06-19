@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+    from pyavd._schema.avdschema import AvdSchema
 
 try:
     from deepmerge import STRATEGY_END

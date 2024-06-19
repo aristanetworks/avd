@@ -1,32 +1,20 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, annotations, division, print_function
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AvdSchemaError
-
-__metaclass__ = type
+from __future__ import annotations
 
 from copy import deepcopy
 
-try:
-    from referencing import Registry, Specification
-    from referencing.exceptions import PointerToNowhere
-    from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
+from referencing import Registry, Specification
+from referencing.exceptions import PointerToNowhere
+from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
 
-    HAS_REFERENCING = True
-except ImportError:
-    HAS_REFERENCING = False
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ..vendor.errors.errors import AvdSchemaError
+from ..vendor.merge import merge
 
 
 class AvdSchemaResolver:
     def __init__(self, base_schema_name: str, store: dict):
-        if not HAS_REFERENCING:
-            raise AristaAvdError('Python library "referencing" must be installed to use this plugin')
-
         self.resolver = self.create_resolver(store, base_uri=base_schema_name)
 
     def resolve(self, resolved_schema: dict):

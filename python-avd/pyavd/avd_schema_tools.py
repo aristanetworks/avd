@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generator
 
+from ._schema.avdschema import AvdSchema
 from .validation_result import ValidationResult
 
 if TYPE_CHECKING:
@@ -25,8 +26,6 @@ class AvdSchemaTools:
             schema_id:
                 Name of AVD Schema to use for conversion and validation.
         """
-        from .vendor.schema.avdschema import AvdSchema  # pylint: disable=import-outside-toplevel
-
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
     def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
