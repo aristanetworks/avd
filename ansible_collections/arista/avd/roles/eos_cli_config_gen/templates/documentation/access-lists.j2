@@ -22,10 +22,10 @@ ACL has counting mode `counters per-entry` enabled!
 {%         for sequence in access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
 {%         endfor %}
-
 {%         if access_list.permit_response_traffic is arista.avd.defined %}
 | - | permit response traffic nat |
 {%         endif %}
+
 {%     endfor %}
 #### Extended Access-lists Device Configuration
 
