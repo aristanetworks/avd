@@ -40,6 +40,8 @@ router_bgp:
         activate: false
   vrfs:
     - name: VRF01
+      bgp:
+        redistribute_internal: false
       address_family_ipv4:
         bgp:
           missing_policy:
@@ -50,6 +52,7 @@ router_bgp:
             receive: true
             send:
               ecmp_limit: 4
+          redistribute_internal: false
         neighbors:
           - ip_address: 1.2.3.4
             activate: true
@@ -79,6 +82,7 @@ router_bgp:
             receive: true
             send:
               any: true
+          redistribute_internal: false
         neighbors:
           - ip_address: aa::1
             activate: true

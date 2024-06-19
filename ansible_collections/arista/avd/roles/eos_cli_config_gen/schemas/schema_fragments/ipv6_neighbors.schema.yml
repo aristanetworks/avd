@@ -1,0 +1,48 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipv6_neighbor:
+    type: dict
+    keys:
+      static_entries:
+        type: list
+        description: Static IPv6 neighbor entries.
+        items:
+          type: dict
+          keys:
+            ipv6_address:
+              type: str
+              required: true
+              description: IPv6 address of neighbor.
+            vrf:
+              type: str
+            interface:
+              type: str
+              required: true
+              description: Interface name.
+            mac_address:
+              type: str
+              required: true
+              description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
+              pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+      persistent:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Restore the IPv6 neighbor cache after reboot.
+          refresh_delay:
+            type: int
+            description: |
+              Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).
+              It will require setting the `enabled` key to true.
+            min: 600
+            max: 3600
+            convert_types:
+              - str

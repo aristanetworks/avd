@@ -1,5 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+ci:
+  autoupdate_commit_msg: "Bump: pre-commit autoupdate"
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -103,10 +105,19 @@ repos:
     rev: "v3.1.1"
     hooks:
       - id: pylint # Use pylintrc file in repository
-        name: Check for Linting errors on Python files with settings defined in `pylintrc`.
+        name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
         args:
+          # Suppress duplicate code for modules header
+          - -d duplicate-code
+      - id: pylint # Use pylintrc file in Ansible collection
+        name: Check for Linting errors on Python files in the Ansible collection.
+        description: This hook runs pylint.
+        types: [python]
+        files: ansible_collections/arista/avd/
+        args:
+          - --rcfile=ansible_collections/arista/avd/pylintrc
           # Suppress duplicate code for modules header
           - -d duplicate-code
 

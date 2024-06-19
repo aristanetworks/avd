@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_vrf_id_base</samp>](## "<network_services_keys.name>.[].mac_vrf_id_base") | Integer |  |  | Min: 0<br>Max: 16770000 | If not set, "mac_vrf_vni_base" will be used.<br>Base number for MAC VRF RD/RT ID (Required unless mac_vrf_vni_base is set)<br>ID is derived from the base number with simple addition.<br>i.e. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_aware_bundle_number_base</samp>](## "<network_services_keys.name>.[].vlan_aware_bundle_number_base") | Integer |  | `0` |  | Base number for VLAN aware bundle RD/RT.<br>The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_uplink_subnets_vrfs</samp>](## "<network_services_keys.name>.[].redistribute_uplink_subnets_vrfs") | Boolean |  | `False` |  | Redistribute the connected subnet for the uplunk per VRF into overlay BGP.<br>By default the uplink subnets are not redistributed into the overlay routing protocol per VRF.<br>Setting `redistribute_uplink_subnets_vrfs: true` under a tenant will change this default and allow redistribution of these subnets for all VRFs in the tenant.<br>This setting can be overridden per VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].evpn_vlan_bundle") | String |  |  |  | Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].evpn_l2_multi_domain") | Boolean |  | `True` |  | Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains. |
 
 === "YAML"
@@ -45,6 +46,9 @@
         # Setting `redistribute_uplink_subnets_vrfs: true` under a tenant will change this default and allow redistribution of these subnets for all VRFs in the tenant.
         # This setting can be overridden per VRF.
         redistribute_uplink_subnets_vrfs: <bool; default=False>
+
+        # Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`.
+        evpn_vlan_bundle: <str>
 
         # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
         evpn_l2_multi_domain: <bool; default=True>

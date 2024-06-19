@@ -16,7 +16,6 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -45,10 +44,14 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
-  - ip_address: 192.168.144.1
+  - ip_address: 192.168.144.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    peer: cv-pathfinder-pathfinder1
+    description: cv-pathfinder-pathfinder1
+  - ip_address: 192.168.144.3
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2
   vrfs:
   - name: IT
     router_id: 192.168.42.2
@@ -209,12 +212,14 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 666
   mtu: 9214
   ip_address: 172.17.0.3/31
-- name: Ethernet1
+- name: Ethernet1/49.3
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  type: l3dot1q
   description: Inmrasat_S511
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1_49.3
+  encapsulation_dot1q_vlan: 3
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: dhcp
@@ -231,6 +236,10 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   ip_nat:
     service_profile: IE-DIRECT-NAT
+- name: Ethernet1/49
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -267,18 +276,6 @@ route_maps:
     description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.42.2:511 additive
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Advertise local routes towards LAN
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -312,6 +309,25 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1_49.3
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 172.24.49.3
+  - action: permit
+    protocol: ip
+    source: 172.24.49.2
+    destination: 172.24.49.3
+- name: ALLOW-ALL
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -503,7 +519,7 @@ router_path_selection:
   - name: Satellite
     id: 104
     local_interfaces:
-    - name: Ethernet1
+    - name: Ethernet1/49.3
     dynamic_peers:
       enabled: true
     ipsec_profile: CP-PROFILE
@@ -522,16 +538,19 @@ router_path_selection:
     - name: Ethernet3
       stun:
         server_profiles:
-        - INET-cv-pathfinder-pathfinder-Ethernet1
-        - INET-cv-pathfinder-pathfinder-Ethernet3
+        - INET-cv-pathfinder-pathfinder1-Ethernet1
+        - INET-cv-pathfinder-pathfinder2-Ethernet1
     dynamic_peers:
       enabled: true
     static_peers:
-    - router_ip: 192.168.144.1
-      name: cv-pathfinder-pathfinder
+    - router_ip: 192.168.144.2
+      name: cv-pathfinder-pathfinder1
       ipv4_addresses:
-      - 172.17.7.7
-      - 10.9.9.9
+      - 10.8.8.8
+    - router_ip: 192.168.144.3
+      name: cv-pathfinder-pathfinder2
+      ipv4_addresses:
+      - 10.9.9.6
     ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
@@ -570,11 +589,11 @@ router_traffic_engineering:
 stun:
   client:
     server_profiles:
-    - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 172.17.7.7
+    - name: INET-cv-pathfinder-pathfinder1-Ethernet1
+      ip_address: 10.8.8.8
       ssl_profile: profileA
-    - name: INET-cv-pathfinder-pathfinder-Ethernet3
-      ip_address: 10.9.9.9
+    - name: INET-cv-pathfinder-pathfinder2-Ethernet1
+      ip_address: 10.9.9.6
       ssl_profile: profileA
 application_traffic_recognition:
   application_profiles:
@@ -627,15 +646,8 @@ application_traffic_recognition:
       - 6.6.6.0/24
     - name: PFX-PATHFINDERS
       prefix_values:
-      - 192.168.144.1/32
-ip_access_lists:
-- name: ALLOW-ALL
-  entries:
-  - sequence: 10
-    action: permit
-    protocol: ip
-    source: any
-    destination: any
+      - 192.168.144.2/32
+      - 192.168.144.3/32
 ip_nat:
   profiles:
   - name: IE-DIRECT-NAT
@@ -917,7 +929,7 @@ metadata:
     zone: AVD_Land_East-ZONE
     site: Site511
     interfaces:
-    - name: Ethernet1
+    - name: Ethernet1/49.3
       carrier: Inmrasat
       circuit_id: S511
       pathgroup: Satellite
@@ -930,7 +942,8 @@ metadata:
       circuit_id: '404'
       pathgroup: INET
     pathfinders:
-    - vtep_ip: 192.168.144.1
+    - vtep_ip: 192.168.144.2
+    - vtep_ip: 192.168.144.3
   cv_tags:
     device_tags:
     - name: Role
@@ -958,7 +971,7 @@ metadata:
       tags:
       - name: Type
         value: lan
-    - interface: Ethernet1
+    - interface: Ethernet1/49.3
       tags:
       - name: Type
         value: wan
@@ -982,6 +995,10 @@ metadata:
         value: ATT
       - name: Circuit
         value: '404'
+    - interface: Ethernet1/49
+      tags:
+      - name: Type
+        value: lan
 flow_tracking:
   hardware:
     trackers:
