@@ -4,19 +4,23 @@
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parents[2]
-EOS_DESIGNS_SCHEMA_DIR = REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_designs/schemas")
+PYAVD_DIR = REPO_ROOT.joinpath("python-avd/pyavd")
+
+EOS_DESIGNS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/schema")
 EOS_DESIGNS_SCHEMA_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.yml")
 EOS_DESIGNS_FRAGMENTS_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("schema_fragments")
 EOS_DESIGNS_PICKLED_SCHEMA_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.pickle")
 EOS_DESIGNS_JSONSCHEMA_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.jsonschema.json")
+EOS_DESIGNS_DOCS_PATH = REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_designs/docs")
 
-EOS_CLI_CONFIG_GEN_SCHEMA_DIR = REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas")
+EOS_CLI_CONFIG_GEN_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_cli_config_gen/schema")
 EOS_CLI_CONFIG_GEN_SCHEMA_PATH = EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos_cli_config_gen.schema.yml")
 EOS_CLI_CONFIG_GEN_FRAGMENTS_PATH = EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("schema_fragments")
 EOS_CLI_CONFIG_GEN_PICKLED_SCHEMA_PATH = EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos_cli_config_gen.schema.pickle")
 EOS_CLI_CONFIG_GEN_JSONSCHEMA_PATH = EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos_cli_config_gen.jsonschema.json")
+EOS_CLI_CONFIG_GEN_DOCS_PATH = REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/docs")
 
-METASCHEMA_DIR = REPO_ROOT.joinpath("ansible_collections/arista/avd/plugins/plugin_utils/schema")
+METASCHEMA_DIR = PYAVD_DIR.joinpath("_schema")
 METASCHEMA_PATH = METASCHEMA_DIR.joinpath("avd_meta_schema.json")
 METASCHEMA_PICKLED_SCHEMA_PATH = METASCHEMA_DIR.joinpath("avd_meta_schema.pickle")
 
@@ -37,5 +41,9 @@ PICKLED_SCHEMAS = {
 JSONSCHEMA_PATHS = {
     "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_JSONSCHEMA_PATH,
     "eos_designs": EOS_DESIGNS_JSONSCHEMA_PATH,
+}
+DOCS_PATHS = {
+    "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_DOCS_PATH,
+    "eos_designs": EOS_DESIGNS_DOCS_PATH,
 }
 LICENSE_HEADER = REPO_ROOT.joinpath("development/license-short.txt").read_text(encoding="UTF-8").strip()

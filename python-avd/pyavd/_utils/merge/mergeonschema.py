@@ -5,17 +5,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError
-
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
+    from pyavd._schema.avdschema import AvdSchema
 
-try:
-    from deepmerge import STRATEGY_END
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
+from deepmerge import STRATEGY_END
 
 
 class MergeOnSchema:
@@ -27,9 +20,6 @@ class MergeOnSchema:
     """
 
     def __init__(self, schema: AvdSchema = None):
-        if DEEPMERGE_IMPORT_ERROR:
-            raise AristaAvdError("AVD requires python deepmerge to be installed") from DEEPMERGE_IMPORT_ERROR
-
         self.schema = schema
 
     def strategy(self, config, path: list, base: list, nxt: list):
@@ -44,7 +34,7 @@ class MergeOnSchema:
         # Skip if we cannot load subschema for path
         try:
             schema = self.schema.subschema(path)
-        except AvdSchemaError:
+        except Exception:  # pylint: disable=broad-exception-caught
             return STRATEGY_END
 
         # Skip if the schema for this list is not having "primary_key"
@@ -78,8 +68,8 @@ class MergeOnSchema:
                     base[base_index] = config.value_strategy(path, base_item, nxt_item)
 
         except Exception as e:
-            raise AristaAvdError(
-                f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} " f"using primary key '{primary_key}'"
+            raise RuntimeError(
+                f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} using primary key '{primary_key}'"
             ) from e
 
         # If all nxt items got merged, we can just return the updated base.
@@ -94,7 +84,7 @@ class MergeOnSchema:
                 del nxt[merged_nxt_index]
 
         except Exception as e:
-            raise AristaAvdError(
+            raise RuntimeError(
                 f"An issue occurred after schema-based deepmerge for the schema path {path} using primary key '{primary_key}', "
                 f"while preparing remaining items with to be merged with regular strategies. Merged indexes were {merged_nxt_indexes}"
             ) from e

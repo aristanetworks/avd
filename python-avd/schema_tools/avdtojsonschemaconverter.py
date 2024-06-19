@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
+from .key_to_display_name import key_to_display_name
 
 
 def get_deprecation(schema: dict) -> tuple[str, str]:
@@ -96,7 +96,7 @@ class AvdToJsonSchemaConverter:
 
         return output
 
-    def convert_type(self, type: str, parent_schema: dict) -> dict:
+    def convert_type(self, type: str, _) -> dict:
         TYPE_MAP = {
             "str": "string",
             "int": "integer",
@@ -142,16 +142,16 @@ class AvdToJsonSchemaConverter:
 
         return output
 
-    def convert_max(self, max: int, parent_schema: dict) -> dict:
+    def convert_max(self, max: int, _) -> dict:
         return {"maximum": max}
 
-    def convert_min(self, min: int, parent_schema: dict) -> dict:
+    def convert_min(self, min: int, _) -> dict:
         return {"minimum": min}
 
-    def convert_valid_values(self, valid_values: list, parent_schema: dict) -> dict:
+    def convert_valid_values(self, valid_values: list, _) -> dict:
         return {"enum": valid_values}
 
-    def convert_format(self, format: str, parent_schema: dict) -> dict:
+    def convert_format(self, format: str, _) -> dict:
         FORMAT_MAP = {
             "ipv4": "ipv4",
             "ipv4_cidr": None,
@@ -182,10 +182,10 @@ class AvdToJsonSchemaConverter:
             return {"minItems": min}
         return {}
 
-    def convert_pattern(self, pattern: str, parent_schema: dict) -> dict:
+    def convert_pattern(self, pattern: str, _) -> dict:
         return {"pattern": pattern}
 
-    def convert_default(self, default, parent_schema: dict) -> dict:
+    def convert_default(self, default, _) -> dict:
         return {"default": default}
 
     def convert_items(self, items: dict, parent_schema: dict) -> dict:
@@ -198,12 +198,12 @@ class AvdToJsonSchemaConverter:
                 output["items"]["required"].append(primary_key)
         return output
 
-    def convert_display_name(self, display_name: str, parent_schema: dict) -> dict:
+    def convert_display_name(self, display_name: str, _) -> dict:
         return {"title": display_name}
 
     def convert_description(self, description: str, parent_schema: dict) -> dict:
         if "deprecation" in parent_schema:
-            label, deprecation_text = get_deprecation(parent_schema)
+            _, deprecation_text = get_deprecation(parent_schema)
             if deprecation_text is not None:
                 return {
                     "description": f"{description}\n{deprecation_text}",

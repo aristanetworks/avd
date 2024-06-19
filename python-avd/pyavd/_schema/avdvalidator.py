@@ -3,27 +3,20 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
+import jsonschema
+import jsonschema._types
+import jsonschema.validators
 
+from ..vendor.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
+
+# Special handling of jsonschema <4.18 vs. >=4.18
 try:
-    import jsonschema
-    import jsonschema._types
-    import jsonschema.validators
-
-    # Special handling of jsonschema <4.18 vs. >=4.18
-    try:
-        import jsonschema._validators as jsonschema_validators
-    except ImportError:
-        import jsonschema._keywords as jsonschema_validators
-
-except ImportError as imp_exc:
-    JSONSCHEMA_IMPORT_ERROR = imp_exc
-else:
-    JSONSCHEMA_IMPORT_ERROR = None
+    import jsonschema._validators as jsonschema_validators
+except ImportError:
+    import jsonschema._keywords as jsonschema_validators
 
 
-def _unique_keys_validator(validator, unique_keys: list[str], instance: list, schema: dict):
+def _unique_keys_validator(validator, unique_keys: list[str], instance: list, _schema: dict):
     if not validator.is_type(unique_keys, "list"):
         return
 
@@ -126,7 +119,7 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
         )
 
 
-def _dynamic_keys_validator(validator, dynamic_keys: dict, instance: dict, schema: dict):
+def _dynamic_keys_validator(validator, _dynamic_keys: dict, instance: dict, schema: dict):
     """
     This function triggers the regular "keys" validator in case only dynamic_keys is set.
     """
@@ -138,7 +131,7 @@ def _ref_validator(validator, ref, instance: dict, schema: dict):
     raise NotImplementedError("$ref must be resolved before using AvdValidator")
 
 
-def _valid_values_validator(validator, valid_values, instance, schema: dict):
+def _valid_values_validator(_validator, valid_values, instance, _schema: dict):
     """
     This function validates if the instance conforms to the "valid_values"
     """
@@ -146,7 +139,7 @@ def _valid_values_validator(validator, valid_values, instance, schema: dict):
         yield jsonschema.ValidationError(f"'{instance}' is not one of {valid_values}")
 
 
-def _is_dict(validator, instance):
+def _is_dict(_validator, instance):
     return isinstance(instance, (dict, ChainMap))
 
 
@@ -159,9 +152,6 @@ class AvdValidator:
         We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
         since the same TypeChecker is used by the validators themselves.
         """
-        if JSONSCHEMA_IMPORT_ERROR:
-            raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-
         ValidatorClass = jsonschema.validators.create(
             meta_schema=store["avd_meta_schema"],
             validators={
