@@ -8,7 +8,6 @@ J2_DIR = $(VENDOR_DIR)/j2
 TESTS_ARTIFACTS = $(CURRENT_DIR)/tests/pyavd/artifacts
 TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
-EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
@@ -53,15 +52,12 @@ copy-libs: ## Copy files from Ansible AVD collection
 	mkdir -p $(VENDOR_DIR)
 	mkdir -p $(J2_DIR)
 	mkdir -p $(SCHEMAS_DIR)
-	mkdir -p $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
 
 	cp $(ANSIBLE_AVD_DIR)/LICENSE $(PACKAGE_DIR)/LICENSE
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/* $(VENDOR_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/module_utils/* $(VENDOR_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/filter $(J2_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/* $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
-	rm -f $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)/avd_schema_documentation.j2
 
 	rm -rf $(VENDOR_DIR)/eos_designs_*
 
@@ -89,6 +85,7 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.add_md_toc/$(PYAVD_FILTER_IMPORT)\.add_md_toc/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.convert_dicts/$(PYAVD_FILTER_IMPORT)\.convert_dicts/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.default/$(PYAVD_FILTER_IMPORT)\.default/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.is_in_filter/$(PYAVD_FILTER_IMPORT)\.is_in_filter/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.natural_sort/$(PYAVD_FILTER_IMPORT)\.natural_sort/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_esi/$(PYAVD_FILTER_IMPORT)\.generate_esi/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_route_target/$(PYAVD_FILTER_IMPORT)\.generate_route_target/g' {} +
