@@ -474,7 +474,7 @@ jobs:
       needs.file-changes.outputs.pyavd == 'true'
     strategy:
       matrix:
-        python: [3.9, 3.10, 3.11, 3.12]
+        python: ["3.9", "3.10", "3.11", "3.12"]
     steps:
       - name: 'Set environment variables'
         run: |
@@ -487,7 +487,7 @@ jobs:
       - name: 'Install tox'
         run: |
           pip install tox tox-gh-actions --upgrade
-      - name: 'Run tox'
+      - name: "Run pytest via tox for ${{ matrix.python }}"
         working-directory: python-avd
         run: |
           tox
