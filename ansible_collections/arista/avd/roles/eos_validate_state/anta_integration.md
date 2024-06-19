@@ -226,7 +226,7 @@ skip_tests:
   - category: <str; "Test category">
     # Optional tests
     tests:
-      -  <str; "Test name">
+      - <str; "Test name">
 ```
 
 ## Custom ANTA catalog
