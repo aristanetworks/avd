@@ -4,14 +4,6 @@
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
-from .j2filters.add_md_toc import add_md_toc
-from .j2filters.convert_dicts import convert_dicts
-from .j2filters.default import default
-from .j2filters.generate_esi import generate_esi
-from .j2filters.generate_route_target import generate_route_target
-from .j2filters.hide_passwords import hide_passwords
-from .j2filters.list_compress import list_compress
-from .j2filters.natural_sort import natural_sort
 
 
 class Undefined(StrictUndefined):
@@ -23,18 +15,18 @@ class Undefined(StrictUndefined):
     "{% if var is arista.avd.undefined or var.key is arista.avd.undefined or var.key.subkey is arista.avd.undefined %}"
     """
 
-    def __getattr__(self, name):
+    def __getattr__(self, _name):
         # Return original Undefined object to preserve the first failure context
         return self
 
-    def __getitem__(self, key):
+    def __getitem__(self, _key):
         # Return original Undefined object to preserve the first failure context
         return self
 
     def __repr__(self):
         return f"Undefined(hint={self._undefined_hint}, obj={self._undefined_obj}, name={self._undefined_name})"
 
-    def __contains__(self, item):
+    def __contains__(self, _item):
         # Return original Undefined object to preserve the first failure context
         return self
 
@@ -59,6 +51,14 @@ class Templar:
 
     def import_filters_and_tests(self) -> None:
         # pylint: disable=import-outside-toplevel
+        from .j2filters.add_md_toc import add_md_toc
+        from .j2filters.convert_dicts import convert_dicts
+        from .j2filters.default import default
+        from .j2filters.generate_esi import generate_esi
+        from .j2filters.generate_route_target import generate_route_target
+        from .j2filters.hide_passwords import hide_passwords
+        from .j2filters.list_compress import list_compress
+        from .j2filters.natural_sort import natural_sort
         from .vendor.j2.filter.decrypt import decrypt
         from .vendor.j2.filter.encrypt import encrypt
         from .vendor.j2.filter.range_expand import range_expand
