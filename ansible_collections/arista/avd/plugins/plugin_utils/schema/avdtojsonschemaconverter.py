@@ -82,6 +82,7 @@ class AvdToJsonSchemaConverter:
             "default": self.convert_default,
             "items": self.convert_items,
             "keys": self.convert_keys,
+            "pattern_keys": self.convert_pattern_keys,
             # "dynamic_keys": self.convert_dynamic_keys,
         }
 
@@ -103,11 +104,17 @@ class AvdToJsonSchemaConverter:
             "bool": "boolean",
             "list": "array",
             "dict": "object",
+            "any": None,
         }
-        return {"type": TYPE_MAP[type]}
+        if json_type := TYPE_MAP[type]:
+            return {"type": json_type}
+        return {}
 
     def convert_keys(self, keys: dict, parent_schema: dict) -> dict:
         return self.__convert_keys(keys, parent_schema, "properties")
+
+    def convert_pattern_keys(self, pattern_keys: dict, parent_schema: dict) -> dict:
+        return self.__convert_keys(pattern_keys, parent_schema, "patternProperties", ignore_required=True)
 
     def __convert_keys(self, keys: dict, parent_schema: dict, output_key: str, ignore_required: str = False) -> dict:
         """

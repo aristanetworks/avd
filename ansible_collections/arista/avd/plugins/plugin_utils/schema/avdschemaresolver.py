@@ -60,6 +60,15 @@ class AvdSchemaResolver:
 
             self.resolve(resolved_schema["dynamic_keys"][key])
 
+    def _pattern_keys(self, resolved_schema: dict):
+        for key in resolved_schema["pattern_keys"]:
+            # Resolve the child schema
+            # Repeat in case new refs inherited from the first ref.
+            while "$ref" in resolved_schema["pattern_keys"][key]:
+                self._ref_on_child(resolved_schema["pattern_keys"][key])
+
+            self.resolve(resolved_schema["pattern_keys"][key])
+
     def _items(self, resolved_schema: dict):
         # Resolve the child schema
         # Repeat in case new refs inherited from the first ref.
@@ -119,6 +128,8 @@ class AvdSchemaResolver:
                 yield from schema["keys"].values()
             if "dynamic_keys" in schema and schema["dynamic_keys"]:
                 yield from schema["dynamic_keys"].values()
+            if "pattern_keys" in schema and schema["pattern_keys"]:
+                yield from schema["pattern_keys"].values()
             if "$defs" in schema and schema["$defs"]:
                 yield from schema["$defs"].values()
             if "items" in schema:

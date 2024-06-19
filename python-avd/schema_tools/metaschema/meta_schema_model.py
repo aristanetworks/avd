@@ -10,8 +10,26 @@ from typing import Annotated, Any, ClassVar, Generator, List, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, constr
 
-from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
-from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
+from ..generate_docs.tablerowgen import (
+    TableRow,
+    TableRowGenAny,
+    TableRowGenBase,
+    TableRowGenBool,
+    TableRowGenDict,
+    TableRowGenInt,
+    TableRowGenList,
+    TableRowGenStr,
+)
+from ..generate_docs.yamllinegen import (
+    YamlLine,
+    YamlLineGenAny,
+    YamlLineGenBase,
+    YamlLineGenBool,
+    YamlLineGenDict,
+    YamlLineGenInt,
+    YamlLineGenList,
+    YamlLineGenStr,
+)
 from .resolvemodel import merge_schema_from_ref
 
 """
@@ -206,6 +224,24 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """
         # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
         yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
+
+
+class AvdSchemaAny(AvdSchemaBaseModel):
+    """
+    Pydantic model for AvdSchema fields of type "any".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal attributes and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
+    # AvdSchema field properties
+    type: Literal["any"]
+
+    # Type of schema docs generators to use for this schema field.
+    _table_row_generator = TableRowGenAny
+    _yaml_line_generator = YamlLineGenAny
 
 
 class AvdSchemaInt(AvdSchemaBaseModel):
@@ -488,6 +524,12 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     `schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema.
     Note that this is building the schema from values in the _data_ being validated!
     """
+    pattern_keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
+    """
+    Dictionary in the format `{<regex>: {<schema>}}`.
+    `regex` is a regex string used for matching keys in the data. Regular expressions are anchored, meaning they must match the full key name.
+    `schema` is the schema used for validating those keys. This is a recursive schema, so the value must conform to AVD Schema.
+    """
     allow_other_keys: bool | None = False
     """Allow keys in the dictionary which are not defined in the schema."""
     documentation_options: DocumentationOptions | None = None
@@ -521,6 +563,10 @@ class AvdSchemaDict(AvdSchemaBaseModel):
             for childschema in self.dynamic_keys.values():
                 descendant_tables.add(childschema._table)
                 descendant_tables.update(childschema._descendant_tables)
+        if self.pattern_keys:
+            for childschema in self.pattern_keys.values():
+                descendant_tables.add(childschema._table)
+                descendant_tables.update(childschema._descendant_tables)
 
         return descendant_tables
 
@@ -541,6 +587,11 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         if self.dynamic_keys:
             for key, childschema in self.dynamic_keys.items():
                 childschema._key = f"<{key}>"
+                childschema._parent_schema = self
+
+        if self.pattern_keys:
+            for key, childschema in self.pattern_keys.items():
+                childschema._key = key
                 childschema._parent_schema = self
 
         return super().model_post_init(__context)
@@ -573,5 +624,5 @@ class AristaAvdSchema(AvdSchemaDict):
         return []
 
 
-AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict
+AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict | AvdSchemaAny
 """Alias for any of the AvdSchema field types"""

@@ -61086,5 +61086,10 @@
   "required": [
     "fabric_name"
   ],
-  "additionalProperties": true
+  "additionalProperties": true,
+  "patternProperties": {
+    "custom_structured_configuration_.+": {
+      "title": "Custom Structured Configuration"
+    }
+  }
 }

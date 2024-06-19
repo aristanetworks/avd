@@ -170,6 +170,7 @@ class TableRowGenBase(ABC):
             "bool": "Boolean",
             "dict": "Dictionary",
             "list": "List",
+            "any": "Any",
         }
         return type_converters[self.schema.type]
 
@@ -186,7 +187,7 @@ class TableRowGenBase(ABC):
         """
         Should render markdown for "default" field.
         """
-        if self.schema.default is not None:
+        if hasattr(self.schema, "default") and self.schema.default is not None:
             if isinstance(self.schema.default, (list, dict)) and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40):
                 return "See (+) on YAML tab"
 
@@ -237,6 +238,10 @@ class TableRowGenBase(ABC):
                 restrictions.extend(f"- <code>{valid_value}</code>" for valid_value in valid_values)
 
         return restrictions
+
+
+class TableRowGenAny(TableRowGenBase):
+    pass
 
 
 class TableRowGenBool(TableRowGenBase):
@@ -347,6 +352,12 @@ class TableRowGenDict(TableRowGenBase):
 
         if self.schema.dynamic_keys:
             for child_schema in self.schema.dynamic_keys.values():
+                yield from child_schema._generate_table_rows(
+                    target_table=self.target_table,
+                )
+
+        if self.schema.pattern_keys:
+            for child_schema in self.schema.pattern_keys.values():
                 yield from child_schema._generate_table_rows(
                     target_table=self.target_table,
                 )
