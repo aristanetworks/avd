@@ -75,6 +75,7 @@ class Templar:
         from .j2filters.is_in_filter import is_in_filter
         from .j2filters.list_compress import list_compress
         from .j2filters.natural_sort import natural_sort
+        from .j2filters.snmp_hash import snmp_hash
         from .j2tests.contains import contains
         from .vendor.j2.filter.decrypt import decrypt
         from .vendor.j2.filter.encrypt import encrypt
@@ -97,6 +98,7 @@ class Templar:
                 "arista.avd.list_compress": list_compress,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
+                "arista.avd.snmp_hash": snmp_hash,
             }
         )
         self.environment.tests.update(
