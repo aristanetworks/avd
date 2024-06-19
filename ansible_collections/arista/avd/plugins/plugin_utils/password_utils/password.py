@@ -4,6 +4,8 @@
 """
 Used by Encrypt / Decrypt filters
 """
+from __future__ import annotations
+
 import random
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
@@ -257,7 +259,7 @@ def simple_7_decrypt(data: str) -> str:
     """
     salt = int(data[0:2])
     secret = bytearray.fromhex(data[2:])
-    return bytes(char ^ (SIMPLE_7_SEED[salt + i % 53]) for i, char in enumerate(secret)).decode("UTF-8")
+    return bytes(char ^ (SIMPLE_7_SEED[(salt + i) % 53]) for i, char in enumerate(secret)).decode("UTF-8")
 
 
 def simple_7_encrypt(data: str, salt: int | None = None) -> str:
@@ -271,6 +273,7 @@ def simple_7_encrypt(data: str, salt: int | None = None) -> str:
     Returns the encrypted password as a string.
     """
     if salt is None:
-        salt = random.randint(0, 15)
+        # Accepting SonarLint issue: Pseudo random is ok since this is simply creating a visible salt
+        salt = random.randint(0, 15)  # NOSONAR
     cleartext = data.encode("UTF-8")
-    return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[salt + i % 53]) for i, char in enumerate(cleartext)).hex().upper()
+    return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[(salt + i) % 53]) for i, char in enumerate(cleartext)).hex().upper()

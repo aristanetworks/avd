@@ -34,13 +34,20 @@ mac security
 {%         if profile.mka.session.rekey_period is arista.avd.defined %}
       mka session rekey-period {{ profile.mka.session.rekey_period }}
 {%         endif %}
+{%         if profile.traffic_unprotected.action is arista.avd.defined %}
+{%             set traffic_unprotected_cli = "traffic unprotected " ~ profile.traffic_unprotected.action %}
+{%             if profile.traffic_unprotected.action == "allow" and profile.traffic_unprotected.allow_active_sak is arista.avd.defined(true) %}
+{%                 set traffic_unprotected_cli = traffic_unprotected_cli ~ " active-sak" %}
+{%             endif %}
+      {{ traffic_unprotected_cli }}
+{%         endif %}
 {%         if profile.sci is arista.avd.defined(true) %}
       sci
 {%         endif %}
-{%         if profile.l2_protocols.ethernet_flow_control is arista.avd.defined %}
+{%         if profile.l2_protocols.ethernet_flow_control.mode is arista.avd.defined %}
       l2-protocol ethernet-flow-control {{ profile.l2_protocols.ethernet_flow_control.mode }}
 {%         endif %}
-{%         if profile.l2_protocols.lldp is arista.avd.defined %}
+{%         if profile.l2_protocols.lldp.mode is arista.avd.defined %}
       l2-protocol lldp {{ profile.l2_protocols.lldp.mode }}
 {%         endif %}
 {%     endfor %}

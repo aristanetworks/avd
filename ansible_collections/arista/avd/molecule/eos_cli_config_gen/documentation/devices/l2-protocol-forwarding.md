@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [L2 Protocol Forwarding](#l2-protocol-forwarding)
+- [L2 Protocol Forwarding](#l2-protocol-forwarding-1)
   - [Forwarding Profiles](#forwarding-profiles)
   - [L2 Protocol Forwarding Device Configuration](#l2-protocol-forwarding-device-configuration)
 - [Interfaces](#interfaces)

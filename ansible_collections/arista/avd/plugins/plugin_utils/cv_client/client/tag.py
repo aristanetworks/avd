@@ -26,6 +26,7 @@ from ..api.arista.tag.v2 import (
     TagServiceStub,
     TagStreamRequest,
 )
+from ..api.arista.time import TimeBounds
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -87,7 +88,7 @@ class TagMixin:
                 key=TagKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
                 creator_type=CREATOR_TYPE_MAP[creator_type],
             ),
-            time=time,
+            time=TimeBounds(start=None, end=time),
         )
         client = TagServiceStub(self._channel)
         try:
@@ -108,7 +109,7 @@ class TagMixin:
                 # This time fetch for the actual workspace we are interested in.
                 key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
             ),
-            time=time,
+            time=TimeBounds(start=None, end=time),
         )
         client = TagConfigServiceStub(self._channel)
         try:
@@ -207,7 +208,7 @@ class TagMixin:
                 key=TagAssignmentKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
                 tag_creator_type=CREATOR_TYPE_MAP[creator_type],
             ),
-            time=time,
+            time=TimeBounds(start=None, end=time),
         )
         client = TagAssignmentServiceStub(self._channel)
         try:
@@ -228,7 +229,7 @@ class TagMixin:
                 # This time fetch for the actual workspace we are interested in.
                 key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
             ),
-            time=time,
+            time=TimeBounds(start=None, end=time),
         )
         client = TagAssignmentConfigServiceStub(self._channel)
         try:

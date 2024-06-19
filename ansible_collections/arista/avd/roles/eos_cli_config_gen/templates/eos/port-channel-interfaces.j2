@@ -64,7 +64,7 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
    switchport
 {%     endif %}
-{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("access") %}
+{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode in ["access", "dot1q-tunnel"] %}
    switchport access vlan {{ port_channel_interface.vlans }}
 {%     endif %}
 {%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
@@ -364,6 +364,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
+{%     if port_channel_interface.ptp.mpass is arista.avd.defined(true) %}
+   ptp mpass
+{%     endif %}
 {%     if port_channel_interface.ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ port_channel_interface.ptp.announce.interval }}
 {%     endif %}
@@ -448,6 +451,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.isis_enable is arista.avd.defined %}
    isis enable {{ port_channel_interface.isis_enable }}
+{%     endif %}
+{%     if port_channel_interface.isis_bfd is arista.avd.defined(true) %}
+   isis bfd
 {%     endif %}
 {%     if port_channel_interface.isis_circuit_type is arista.avd.defined %}
    isis circuit-type {{ port_channel_interface.isis_circuit_type }}

@@ -140,3 +140,79 @@ keys:
                     type: bool
               recovery_action_reauthenticate:
                 type: bool
+          accounting_update_interval:
+            type: int
+            convert_types:
+              - str
+            min: 5
+            max: 65535
+            description: Interval period in seconds.
+      captive_portal:
+        type: dict
+        description: Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          url:
+            type: str
+            description: |-
+              Supported URL type:
+                - http: http://<hostname>[:<port>]
+                - https: https://<hostname>[:<port>]
+          ssl_profile:
+            type: str
+          start_limit_infinite:
+            type: bool
+            description: Set captive-portal start limit to infinte.
+          access_list_ipv4:
+            type: str
+            description: Standard access-list name.
+      supplicant:
+        type: dict
+        keys:
+          profiles:
+            description: Dot1x supplicant profiles.
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                eap_method:
+                  type: str
+                  description: |-
+                    Extensible Authentication Protocol method:
+                      - EAP Flexible Authentication via Secure Tunneling.
+                      - EAP with Transport Layer Security.
+                  valid_values:
+                    - "fast"
+                    - "tls"
+                identity:
+                  type: str
+                  description: User identity.
+                passphrase_type:
+                  type: str
+                  convert_types:
+                    - int
+                  valid_values:
+                    - "0"
+                    - "7"
+                    - "8a"
+                  default: "7"
+                passphrase:
+                  type: str
+                  description: Extensible Authentication Protocol password.
+                ssl_profile:
+                  type: str
+          logging:
+            type: bool
+            description: Enable supplicant logging.
+          disconnect_cached_results_timeout:
+            type: int
+            convert_types:
+              - "str"
+            min: 60
+            max: 65535
+            description: Timeout in seconds for removing a disconnected supplicant.

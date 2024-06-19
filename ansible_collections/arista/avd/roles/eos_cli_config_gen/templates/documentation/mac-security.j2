@@ -28,13 +28,17 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
 {%             set cipher = profile.cipher | arista.avd.default('-') %}
 {%             set key_server_priority = profile.mka.key_server_priority | arista.avd.default('-') %}
 {%             set rekey_period = profile.mka.session.rekey_period | arista.avd.default('-') %}
 {%             set sci = profile.sci | arista.avd.default('-') %}
-| {{ cipher }} | {{ key_server_priority }} | {{ rekey_period }} | {{ sci }} |
+{%             set traffic_unprotected = profile.traffic_unprotected.action | arista.avd.default('-') %}
+{%             if traffic_unprotected == "allow" and profile.traffic_unprotected.allow_active_sak is arista.avd.defined(true) %}
+{%                 set traffic_unprotected = traffic_unprotected ~ " active-sak" %}
+{%             endif %}
+| {{ cipher }} | {{ key_server_priority }} | {{ rekey_period }} | {{ sci }} | {{ traffic_unprotected }} |
 {%             if profile.connection_keys is arista.avd.defined %}
 
 ###### Keys

@@ -173,9 +173,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.254.1.64/31
   no_autostate: true
   mtu: 9214
+  ip_address: 10.254.1.64/31
 - name: Vlan11
   tenant: PTP
   description: VLAN11
@@ -238,6 +238,24 @@ port_channel_interfaces:
   mode: trunk
   vlans: '11'
   mlag: 14
+- name: Port-Channel6
+  description: Endpoint-with-mpass
+  type: switched
+  shutdown: false
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+    mpass: true
+  mode: access
+  vlans: '11'
+  mlag: 6
 ethernet_interfaces:
 - name: Ethernet9
   peer: ptp-tests-leaf2
@@ -364,6 +382,16 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+- name: Ethernet6
+  peer: Endpoint-with-mpass
+  peer_interface: PCI1
+  peer_type: server
+  description: Endpoint-with-mpass_PCI1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 6
+    mode: active
 - name: Ethernet3
   peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3

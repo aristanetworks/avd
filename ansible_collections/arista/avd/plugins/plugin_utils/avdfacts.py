@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+    from pyavd._eos_designs.shared_utils import SharedUtils
 
 
 class AvdFacts:

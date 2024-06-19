@@ -29,6 +29,10 @@ ethernet_interfaces:
     bgp:
       session_tracker: ST1
     ip_verify_unicast_source_reachable_via: rx
+    tcp_mss_ceiling:
+      ipv4_segment_size: 70
+      ipv6_segment_size: 75
+      direction: egress
     switchport:
       port_security:
         enabled: true
@@ -66,6 +70,9 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
+    tcp_mss_ceiling:
+      ipv4_segment_size: 70
+      direction: ingress
     multicast:
       ipv4:
         static: true
@@ -128,6 +135,8 @@ ethernet_interfaces:
     priority_flow_control:
       enabled: false
     spanning_tree_guard: root
+    tcp_mss_ceiling:
+      ipv6_segment_size: 65
     switchport:
       port_security:
         mac_address_maximum:
@@ -155,6 +164,8 @@ ethernet_interfaces:
     priority_flow_control:
       enabled: true
     spanning_tree_guard: disabled
+    tcp_mss_ceiling:
+      ipv4_segment_size: 65
     multicast:
       ipv4:
         static: true
@@ -192,6 +203,7 @@ ethernet_interfaces:
           count: 2.5
           interval: 10
     isis_enable: ISIS_TEST
+    isis_bfd: true
     isis_passive: false
     isis_metric: 99
     isis_network_point_to_point: true
@@ -997,3 +1009,17 @@ ethernet_interfaces:
         ipv4:
           address: 100.64.0.1
           version: 3
+# Transceiver Frequency
+  - name: Ethernet67
+    description: Custom_Transceiver_Frequency
+    shutdown: false
+    transceiver:
+      frequency: 190050
+  - name: Ethernet68
+    description: Custom_Transceiver_Frequency
+    shutdown: false
+    transceiver:
+      frequency: 190080
+      frequency_unit: ghz
+      media:
+        override: 100gbase-ar4

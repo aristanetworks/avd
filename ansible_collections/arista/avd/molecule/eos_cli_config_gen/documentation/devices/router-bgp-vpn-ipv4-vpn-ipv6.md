@@ -82,15 +82,17 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 | - | - |
+| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 | - | - |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
 
 #### Router BGP VPN-IPv6 Address Family
 
@@ -98,15 +100,17 @@ ASN Notation: asplain
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 | - | - |
+| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 | - | - |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
 
 #### Router BGP Device Configuration
 
@@ -137,9 +141,13 @@ router bgp 65103
       neighbor MPLS-IBGP-PEERS activate
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN4 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT4 out
+      neighbor Test_RCF rcf in Address_Family_VPN_IPV4_In()
+      neighbor Test_RCF rcf out Address_Family_VPN_IPV4_Out()
       neighbor 192.168.255.4 activate
       neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-IN4 in
       neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-OUT4 out
+      neighbor 192.168.255.5 rcf in Address_Family_VPN_IPV4_In()
+      neighbor 192.168.255.5 rcf out Address_Family_VPN_IPV4_Out()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       route import match-failure action discard
    !
@@ -148,9 +156,13 @@ router bgp 65103
       neighbor MPLS-IBGP-PEERS activate
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN6 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT6 out
+      neighbor Test_RCF rcf in Address_Family_VPN_IPV6_In()
+      neighbor Test_RCF rcf out Address_Family_VPN_IPV6_Out()
       neighbor 2001:cafe:192:168::4 activate
       neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-IN6 in
       neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-OUT6 out
+      neighbor 2001:cafe:192:168::5 rcf in Address_Family_VPN_IPV6_In()
+      neighbor 2001:cafe:192:168::5 rcf out Address_Family_VPN_IPV6_Out()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       route import match-failure action discard
 ```

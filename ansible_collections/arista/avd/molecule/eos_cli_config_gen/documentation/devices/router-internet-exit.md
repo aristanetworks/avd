@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Router Internet Exit](#router-internet-exit)
+  - [Router Internet Exit](#router-internet-exit-1)
 
 ## Management
 

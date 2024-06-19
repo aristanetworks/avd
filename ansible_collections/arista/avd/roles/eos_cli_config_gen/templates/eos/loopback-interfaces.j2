@@ -39,6 +39,9 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.isis_enable is arista.avd.defined %}
    isis enable {{ loopback_interface.isis_enable }}
 {%     endif %}
+{%     if loopback_interface.isis_bfd is arista.avd.defined %}
+   isis bfd
+{%     endif %}
 {%     if loopback_interface.isis_passive is arista.avd.defined(true) %}
    isis passive
 {%     endif %}

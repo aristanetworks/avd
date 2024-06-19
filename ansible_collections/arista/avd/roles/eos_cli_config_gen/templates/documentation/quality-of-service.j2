@@ -22,7 +22,8 @@
        or policy_maps.qos is arista.avd.defined
        or qos_profiles is arista.avd.defined
        or ethernet_interfaces_qos | length > 0 is arista.avd.defined
-       or port_channel_interfaces_qos | length > 0 %}
+       or port_channel_interfaces_qos | length > 0
+       or policy_maps.copp_system_policy is arista.avd.defined %}
 
 ## Quality Of Service
 {## QOS #}
@@ -35,4 +36,6 @@
 {%     include 'documentation/qos-profiles.j2' %}
 {## QOS Interfaces #}
 {%     include 'documentation/qos-interfaces.j2' %}
+{## Control-plane Policy Map #}
+{%     include 'documentation/policy-maps-copp.j2' %}
 {% endif %}

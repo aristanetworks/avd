@@ -25,6 +25,10 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -69,6 +73,8 @@ ntp:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
+  - name: 2001:db8::3
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackE DC1-L2LEAF1A
@@ -109,9 +115,9 @@ vlan_interfaces:
 - name: Vlan4091
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.14/31
   no_autostate: true
-  mtu: 1500
+  mtu: 1498
+  ip_address: 10.255.252.14/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_DC1-L2LEAF1B_Po3
@@ -127,6 +133,13 @@ port_channel_interfaces:
   mode: trunk
   vlans: 110-112,120-121,130-131,160-161
   mlag: 1
+- name: Port-Channel5
+  description: server03_ESI_L2LEAF_PortChanne1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
+  mlag: 5
 ethernet_interfaces:
 - name: Ethernet3
   peer: DC1-L2LEAF1B
@@ -171,6 +184,17 @@ ethernet_interfaces:
   type: port-channel-member
   channel_group:
     id: 1
+    mode: active
+- name: Ethernet5
+  peer: server03_ESI_L2LEAF
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: TENANT_A_B
+  description: server03_ESI_L2LEAF_Eth1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 5
     mode: active
 mlag_configuration:
   domain_id: DC1_L2LEAF1

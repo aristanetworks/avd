@@ -80,7 +80,7 @@ $defs:
         ipv4_acl_in:
           description: |-
             Name of the IPv4 access-list to be assigned in the ingress direction.
-            The access-list must be defined under `ipv4_acls`.
+            The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
             Required for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.
           type: str
           convert_types:
@@ -88,7 +88,7 @@ $defs:
         ipv4_acl_out:
           description: |-
             Name of the IPv4 Access-list to be assigned in the egress direction.
-            The access-list must be defined under `ipv4_acls`.
+            The access-list must be defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
           type: str
           convert_types:
             - int
@@ -141,17 +141,21 @@ $defs:
                     description: Internet-exit policy name.
                   tunnel_interface_numbers:
                     type: str
-                    required: true
                     description: |-
                       Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
                       Examples: '1-3' or '100,200,300'
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.
+        flow_tracking:
+          type: dict
+          $ref: "eos_designs#/$defs/flow_tracking_link"
+          description: |-
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
         structured_config:
           type: dict
           documentation_options:
             hide_keys: true
           description: |-
             Custom structured config for the Ethernet interface.
-          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

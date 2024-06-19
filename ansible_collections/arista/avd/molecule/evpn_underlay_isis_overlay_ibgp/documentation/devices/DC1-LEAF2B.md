@@ -293,12 +293,12 @@ vlan 4094
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -311,6 +311,7 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.17/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -322,6 +323,7 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.19/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -333,6 +335,7 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.21/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -344,6 +347,7 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.23/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis circuit-type level-2
    isis metric 50
    isis network point-to-point
@@ -458,9 +462,9 @@ interface Loopback10
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
+| --------- | ------------- | -------- | ----------- | ---- |
+| Vlan4093 | EVPN_UNDERLAY | True | 50 | point-to-point |
 
 #### VLAN Interfaces Device Configuration
 
@@ -472,6 +476,7 @@ interface Vlan4093
    mtu 1500
    ip address 10.255.251.3/31
    isis enable EVPN_UNDERLAY
+   isis bfd
    isis metric 50
    isis network point-to-point
 !

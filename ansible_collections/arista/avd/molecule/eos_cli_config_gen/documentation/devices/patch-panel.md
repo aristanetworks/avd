@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Patch Panel](#patch-panel)
+- [Patch Panel](#patch-panel-1)
   - [Patch Panel Summary](#patch-panel-summary)
   - [Patch Panel Device Configuration](#patch-panel-device-configuration)
 
@@ -40,6 +40,12 @@ interface Management1
 
 ### Patch Panel Summary
 
+Patch Panel Connector Interface Recovery Review Delay Min: 10s - Max: 900s
+
+Patch Panel Connector Interface Path BGP VPWS Remote Failure Errdisable is enabled.
+
+#### Patch Panel Connections
+
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
 | TEN_B_site2_site5_eline | True | Interface | Ethernet5 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline |
@@ -50,6 +56,9 @@ interface Management1
 ```eos
 !
 patch panel
+   connector interface recovery review delay 10 900
+   connector interface patch bgp vpws remote-failure errdisable
+   !
    patch TEN_B_site2_site5_eline
       connector 1 interface Ethernet5
       connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline

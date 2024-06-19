@@ -128,11 +128,13 @@ router_bgp:
     remote_as: '65110'
     peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
+    shutdown: true
   - ip_address: 172.31.255.161
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
     peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
+    shutdown: true
   - ip_address: 10.10.101.9
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
@@ -198,11 +200,13 @@ router_bgp:
     peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A
     remote_as: '65110'
+    shutdown: true
   - ip_address: 192.168.255.22
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     remote_as: '65111'
+    shutdown: true
   - ip_address: 192.168.255.33
     peer_group: EVPN-OVERLAY-PEERS
     peer: MH-LEAF1A
@@ -258,6 +262,10 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
+  vrf: MGMT
 spanning_tree:
   mode: none
 local_users:
@@ -298,6 +306,8 @@ ntp:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
+  - name: 2001:db8::3
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE1

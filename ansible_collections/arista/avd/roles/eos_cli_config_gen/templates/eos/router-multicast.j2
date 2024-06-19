@@ -21,6 +21,9 @@ router multicast
 {%         if router_multicast.ipv4.counters.rate_period_decay is arista.avd.defined %}
       counters rate period decay {{ router_multicast.ipv4.counters.rate_period_decay }} seconds
 {%         endif %}
+{%         if router_multicast.ipv4.activity_polling_interval is arista.avd.defined %}
+      activity polling-interval {{ router_multicast.ipv4.activity_polling_interval }}
+{%         endif %}
 {%         if router_multicast.ipv4.routing is arista.avd.defined(true) %}
       routing
 {%         endif %}
@@ -29,6 +32,13 @@ router multicast
 {%         endif %}
 {%         if router_multicast.ipv4.software_forwarding is arista.avd.defined %}
       software-forwarding {{ router_multicast.ipv4.software_forwarding }}
+{%         endif %}
+{%     endif %}
+{%     if router_multicast.ipv6 is arista.avd.defined %}
+   !
+   ipv6
+{%         if router_multicast.ipv6.activity_polling_interval is arista.avd.defined %}
+      activity polling-interval {{ router_multicast.ipv6.activity_polling_interval }}
 {%         endif %}
 {%     endif %}
 {%     for vrf in router_multicast.vrfs | arista.avd.natural_sort('name') %}

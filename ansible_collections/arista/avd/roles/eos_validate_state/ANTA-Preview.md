@@ -151,6 +151,12 @@ title: Ansible Collection Role eos_validate_state - Preview Integration with ANT
 - (New) AvdTestAPIHttpsSSL (No Ansible tags, use the new `skipped_tests` variable instead)
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
+- (New) AvdTestIPSecurity (No Ansible tags, use the new `skipped_tests` variable instead)
+  - VerifySpecificIPSecConn: Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
+
+- (New) AvdTestStun (No Ansible tags, use the new `skipped_tests` variable instead)
+  - VerifyStunClient: Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group.
+
 ## Input variables
 
 ```yaml
@@ -260,3 +266,7 @@ When specifying a group, it must be a group from the Ansible inventory. The cust
         # To save catalogs
         save_catalog: true
 ```
+
+## Known issues
+
+- `[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.` This issue affects OSX users only and is covered in Ansible documentation: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node.

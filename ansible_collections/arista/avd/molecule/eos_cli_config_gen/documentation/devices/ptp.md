@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [PTP](#ptp)
+  - [PTP](#ptp-1)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -150,6 +150,7 @@ interface Port-Channel5
    switchport mode trunk
    mlag 5
    ptp enable
+   ptp mpass
    ptp delay-mechanism e2e
    ptp sync-message interval 1
    ptp role dynamic

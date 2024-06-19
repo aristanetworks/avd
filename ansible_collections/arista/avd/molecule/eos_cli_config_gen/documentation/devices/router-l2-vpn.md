@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Router L2 VPN](#router-l2-vpn)
+- [Router L2 VPN](#router-l2-vpn-1)
   - [Router L2 VPN Summary](#router-l2-vpn-summary)
   - [Router L2 VPN Device Configuration](#router-l2-vpn-device-configuration)
 

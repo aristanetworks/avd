@@ -79,6 +79,10 @@ $defs:
             By default the iBGP peering subnet is redistributed into the overlay routing protocol per VRF.
             Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a tenant will change this default to prevent redistribution of these subnets for all VRFs in the tenant.
             This setting can be overridden per VRF.
+        evpn_vlan_bundle:
+          type: str
+          description: |-
+            Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`.
         bgp_peer_groups:
           documentation_options:
             table: network-services-vrfs-bgp-settings
@@ -105,6 +109,46 @@ $defs:
                 description: |
                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                   If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+              address_family_ipv4:
+                type: dict
+                keys:
+                  activate:
+                    type: bool
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name.
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name.
+                  default_originate:
+                    type: dict
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate"
+                  next_hop:
+                    type: dict
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop"
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name.
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name.
+              address_family_ipv6:
+                type: dict
+                keys:
+                  activate:
+                    type: bool
+                  route_map_in:
+                    type: str
+                    description: Inbound route-map name.
+                  route_map_out:
+                    type: str
+                    description: Outbound route-map name.
+                  prefix_list_in:
+                    type: str
+                    description: Inbound prefix-list name.
+                  prefix_list_out:
+                    type: str
+                    description: Outbound prefix-list name.
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -571,7 +615,8 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
+                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
                       primary_key: node
@@ -701,12 +746,17 @@ $defs:
                       keys:
                         enabled:
                           type: bool
+                    flow_tracking:
+                      type: dict
+                      $ref: "eos_designs#/$defs/flow_tracking_link"
+                      description: |-
+                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                     structured_config:
                       type: dict
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                       documentation_options:
                         hide_keys: true
-                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
+                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
                     raw_eos_cli:
                       type: str
                       description: |
@@ -849,6 +899,7 @@ $defs:
                   table: network-services-vrfs-bgp-settings
                 type: list
                 primary_key: ip_address
+                allow_duplicate_primary_key: True
                 convert_types:
                   - dict
                 description: |
@@ -972,7 +1023,7 @@ $defs:
                     description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
                     documentation_options:
                       hide_keys: true
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/"
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items"
               bgp_peer_groups:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -996,6 +1047,46 @@ $defs:
                       description: |
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    address_family_ipv4:
+                      type: dict
+                      keys:
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Inbound route-map name.
+                        route_map_out:
+                          type: str
+                          description: Outbound route-map name.
+                        default_originate:
+                          type: dict
+                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/default_originate"
+                        next_hop:
+                          type: dict
+                          $ref: "eos_cli_config_gen#/keys/router_bgp/keys/address_family_ipv4/keys/peer_groups/items/keys/next_hop"
+                        prefix_list_in:
+                          type: str
+                          description: Inbound prefix-list name.
+                        prefix_list_out:
+                          type: str
+                          description: Outbound prefix-list name.
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        activate:
+                          type: bool
+                        route_map_in:
+                          type: str
+                          description: Inbound route-map name.
+                        route_map_out:
+                          type: str
+                          description: Outbound route-map name.
+                        prefix_list_in:
+                          type: str
+                          description: Inbound prefix-list name.
+                        prefix_list_out:
+                          type: str
+                          description: Outbound prefix-list name.
               additional_route_targets:
                 documentation_options:
                   table: network-services-vrfs-settings
@@ -1026,7 +1117,7 @@ $defs:
                 description: Custom structured config for eos_cli_config_gen.
                 documentation_options:
                   hide_keys: true
-                $ref: "eos_cli_config_gen#/"
+                $ref: "eos_cli_config_gen#"
         l2vlans:
           documentation_options:
             table: network-services-l2vlans-settings
@@ -1107,7 +1198,8 @@ $defs:
                 type: str
                 description: |
                   Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                  To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
+                  This setting overrides "evpn_vlan_bundle" set at tenant level.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               trunk_groups:
                 type: list
                 items:
@@ -1167,7 +1259,7 @@ $defs:
                       This configuration will not be applied to vlan aware bundles.
                     documentation_options:
                       hide_keys: true
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/"
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items"
                   raw_eos_cli:
                     type: str
                     description: |

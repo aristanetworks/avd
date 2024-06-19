@@ -1114,6 +1114,31 @@
     "arp": {
       "type": "object",
       "properties": {
+        "persistent": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Restore the ARP cache after reboot.",
+              "title": "Enabled"
+            },
+            "refresh_delay": {
+              "type": "integer",
+              "description": "Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600).",
+              "minimum": 600,
+              "maximum": 3600,
+              "title": "Refresh Delay"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Persistent"
+        },
         "aging": {
           "type": "object",
           "properties": {
@@ -1967,6 +1992,50 @@
             "type": "string",
             "title": "DNS Domain Name IPv6"
           },
+          "dns_servers_ipv4": {
+            "type": "array",
+            "minItems": 1,
+            "description": "List of DNS servers for IPv4 clients.",
+            "items": {
+              "type": "string",
+              "description": "IPv4 address of DNS server."
+            },
+            "title": "DNS Servers IPv4"
+          },
+          "dns_servers_ipv6": {
+            "type": "array",
+            "minItems": 1,
+            "description": "List of DNS servers for IPv6 clients.",
+            "items": {
+              "type": "string",
+              "description": "IPv6 address of DNS server."
+            },
+            "title": "DNS Servers IPv6"
+          },
+          "tftp_server": {
+            "type": "object",
+            "properties": {
+              "file_ipv4": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "description": "Name of TFTP file for IPv4 clients.",
+                "title": "File IPv4"
+              },
+              "file_ipv6": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "description": "Name of TFTP file for IPv6 clients.",
+                "title": "File IPv6"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Tftp Server"
+          },
           "ipv4_vendor_options": {
             "type": "array",
             "items": {
@@ -2350,6 +2419,13 @@
                 "^_.+$": {}
               },
               "title": "Unresponsive"
+            },
+            "accounting_update_interval": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 65535,
+              "description": "Interval period in seconds.",
+              "title": "Accounting Update Interval"
             }
           },
           "additionalProperties": false,
@@ -2357,6 +2433,119 @@
             "^_.+$": {}
           },
           "title": "AAA"
+        },
+        "captive_portal": {
+          "type": "object",
+          "description": "Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "url": {
+              "type": "string",
+              "description": "Supported URL type:\n  - http: http://<hostname>[:<port>]\n  - https: https://<hostname>[:<port>]",
+              "title": "URL"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "title": "SSL Profile"
+            },
+            "start_limit_infinite": {
+              "type": "boolean",
+              "description": "Set captive-portal start limit to infinte.",
+              "title": "Start Limit Infinite"
+            },
+            "access_list_ipv4": {
+              "type": "string",
+              "description": "Standard access-list name.",
+              "title": "Access List IPv4"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Captive Portal"
+        },
+        "supplicant": {
+          "type": "object",
+          "properties": {
+            "profiles": {
+              "description": "Dot1x supplicant profiles.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "eap_method": {
+                    "type": "string",
+                    "description": "Extensible Authentication Protocol method:\n  - EAP Flexible Authentication via Secure Tunneling.\n  - EAP with Transport Layer Security.",
+                    "enum": [
+                      "fast",
+                      "tls"
+                    ],
+                    "title": "Eap Method"
+                  },
+                  "identity": {
+                    "type": "string",
+                    "description": "User identity.",
+                    "title": "Identity"
+                  },
+                  "passphrase_type": {
+                    "type": "string",
+                    "enum": [
+                      "0",
+                      "7",
+                      "8a"
+                    ],
+                    "default": "7",
+                    "title": "Passphrase Type"
+                  },
+                  "passphrase": {
+                    "type": "string",
+                    "description": "Extensible Authentication Protocol password.",
+                    "title": "Passphrase"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "title": "SSL Profile"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Profiles"
+            },
+            "logging": {
+              "type": "boolean",
+              "description": "Enable supplicant logging.",
+              "title": "Logging"
+            },
+            "disconnect_cached_results_timeout": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 65535,
+              "description": "Timeout in seconds for removing a disconnected supplicant.",
+              "title": "Disconnect Cached Results Timeout"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Supplicant"
         }
       },
       "additionalProperties": false,
@@ -3243,11 +3432,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3280,8 +3470,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -3378,11 +3567,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -3415,8 +3605,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -3785,6 +3974,37 @@
             },
             "title": "MAC Security"
           },
+          "tcp_mss_ceiling": {
+            "type": "object",
+            "description": "The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header\nof TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.",
+            "properties": {
+              "ipv4_segment_size": {
+                "type": "integer",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv4 Segment Size"
+              },
+              "ipv6_segment_size": {
+                "type": "integer",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv6 Segment Size"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "egress",
+                  "ingress"
+                ],
+                "title": "Direction"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "TCP Mss Ceiling"
+          },
           "channel_group": {
             "type": "object",
             "properties": {
@@ -3812,6 +4032,11 @@
             "type": "string",
             "description": "ISIS instance.",
             "title": "ISIS Enable"
+          },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
           },
           "isis_passive": {
             "type": "boolean",
@@ -4757,6 +4982,19 @@
           "transceiver": {
             "type": "object",
             "properties": {
+              "frequency": {
+                "type": "string",
+                "description": "Transceiver Laser Frequency in GHz (min 190000, max 200000).",
+                "title": "Frequency"
+              },
+              "frequency_unit": {
+                "type": "string",
+                "enum": [
+                  "ghz"
+                ],
+                "description": "Unit of Transceiver Laser Frequency.",
+                "title": "Frequency Unit"
+              },
               "media": {
                 "type": "object",
                 "properties": {
@@ -5523,8 +5761,35 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to execute.\n",
+            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
+            "deprecated": true,
             "title": "Action"
+          },
+          "actions": {
+            "type": "object",
+            "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
+            "properties": {
+              "bash_command": {
+                "type": "string",
+                "description": "Define BASH command action. Command could be multiline also.",
+                "title": "Bash Command"
+              },
+              "log": {
+                "type": "boolean",
+                "description": "Log a message when the event is triggered.",
+                "title": "Log"
+              },
+              "increment_device_health_metric": {
+                "type": "string",
+                "description": "Name of device-health metric.",
+                "title": "Increment Device Health Metric"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Actions"
           },
           "delay": {
             "type": "integer",
@@ -5536,11 +5801,97 @@
             "description": "Configure event trigger condition.\n",
             "enum": [
               "on-boot",
+              "on-counters",
+              "on-intf",
               "on-logging",
+              "on-maintenance",
               "on-startup-config",
-              "on-maintenance"
+              "vm-tracer vm"
             ],
             "title": "Trigger"
+          },
+          "trigger_on_counters": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "type": "string",
+                "description": "Set the logical expression to evaluate.",
+                "title": "Condition"
+              },
+              "granularity_per_source": {
+                "type": "boolean",
+                "description": "Set the granularity of event counting for a wildcarded condition.\nExample -\n  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )\n  [* wildcard is used here]",
+                "title": "Granularity Per Source"
+              },
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Counters"
+          },
+          "trigger_on_logging": {
+            "type": "object",
+            "properties": {
+              "poll_interval": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000000,
+                "description": "Set the polling interval in seconds.",
+                "title": "Poll Interval"
+              },
+              "regex": {
+                "type": "string",
+                "description": "Regular expression to use for searching log messages.",
+                "title": "Regex"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Logging"
+          },
+          "trigger_on_intf": {
+            "type": "object",
+            "description": "Trigger condition occurs on specified interface changes.\nNote: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.",
+            "properties": {
+              "interface": {
+                "type": "string",
+                "description": "Interface name.\nExample - Ethernet4\n          Loopback4-6\n          Port-channel4,7",
+                "title": "Interface"
+              },
+              "ip": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface IP address assignment.",
+                "title": "IP"
+              },
+              "ipv6": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface ipv6 address assignment.",
+                "title": "IPv6"
+              },
+              "operstatus": {
+                "type": "boolean",
+                "description": "Action is triggered upon changes to interface operStatus.",
+                "title": "Operstatus"
+              }
+            },
+            "required": [
+              "interface"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Trigger On Intf"
           },
           "trigger_on_maintenance": {
             "description": "Settings required for trigger 'on-maintenance'.",
@@ -5610,7 +5961,8 @@
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
+            "deprecated": true,
             "title": "Regex"
           },
           "asynchronous": {
@@ -6247,6 +6599,7 @@
                   "qos dual-rate-policer",
                   "route",
                   "routed-port",
+                  "segment-security",
                   "subinterface",
                   "tapagg",
                   "traffic-class",
@@ -6677,6 +7030,16 @@
     "ip_dhcp_relay": {
       "type": "object",
       "properties": {
+        "always_on": {
+          "type": "boolean",
+          "description": "DhcpRelay Agent will be in always-on mode.",
+          "title": "Always On"
+        },
+        "all_subnets": {
+          "type": "boolean",
+          "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
+          "title": "All Subnets"
+        },
         "information_option": {
           "type": "boolean",
           "description": "Insert Option-82 information.",
@@ -7272,11 +7635,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7309,8 +7673,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -7407,11 +7770,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -7444,8 +7808,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -8238,6 +8601,51 @@
         }
       }
     },
+    "ipv6_dhcp_relay": {
+      "type": "object",
+      "properties": {
+        "always_on": {
+          "type": "boolean",
+          "description": "DhcpRelay Agent will be in always-on mode, off by default.",
+          "title": "Always On"
+        },
+        "all_subnets": {
+          "type": "boolean",
+          "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
+          "title": "All Subnets"
+        },
+        "option": {
+          "type": "object",
+          "description": "Insert DHCP Option.",
+          "properties": {
+            "link_layer_address": {
+              "type": "boolean",
+              "description": "Add Option 79 (Link Layer Address Option).",
+              "title": "Link Layer Address"
+            },
+            "remote_id_format": {
+              "type": "string",
+              "enum": [
+                "%m:%i",
+                "%m:%p"
+              ],
+              "description": "Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).",
+              "title": "Remote ID Format"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Option"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IPv6 DHCP Relay"
+    },
     "ipv6_hardware": {
       "type": "object",
       "properties": {
@@ -8286,6 +8694,80 @@
     "ipv6_icmp_redirect": {
       "type": "boolean",
       "title": "IPv6 ICMP Redirect"
+    },
+    "ipv6_neighbor": {
+      "type": "object",
+      "properties": {
+        "static_entries": {
+          "type": "array",
+          "description": "Static IPv6 neighbor entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv6_address": {
+                "type": "string",
+                "description": "IPv6 address of neighbor.",
+                "title": "IPv6 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "interface": {
+                "type": "string",
+                "description": "Interface name.",
+                "title": "Interface"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "MAC address of neighbor like 'aa:af:12:34:bc:bf'",
+                "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv6_address",
+              "interface",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
+        },
+        "persistent": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Restore the IPv6 neighbor cache after reboot.",
+              "title": "Enabled"
+            },
+            "refresh_delay": {
+              "type": "integer",
+              "description": "Time to wait in seconds before refreshing the IPv6 neighbor cache after reboot (EOS default 600).\nIt will require setting the `enabled` key to true.\n",
+              "minimum": 600,
+              "maximum": 3600,
+              "title": "Refresh Delay"
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Persistent"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IPv6 Neighbor"
     },
     "ipv6_prefix_lists": {
       "type": "array",
@@ -9123,6 +9605,50 @@
             "^_.+$": {}
           },
           "title": "Event"
+        },
+        "level": {
+          "type": "array",
+          "description": "Configure logging severity.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "facility": {
+                "type": "string",
+                "title": "Facility"
+              },
+              "severity": {
+                "type": "string",
+                "description": "Severity of facility. Below are the supported severites.\nemergencies    System is unusable                (severity=0)\nalerts         Immediate action needed           (severity=1)\ncritical       Critical conditions               (severity=2)\nerrors         Error conditions                  (severity=3)\nwarnings       Warning conditions                (severity=4)\nnotifications  Normal but significant conditions (severity=5)\ninformational  Informational messages            (severity=6)\ndebugging      Debugging messages                (severity=7)\n<0-7>          Severity level value",
+                "enum": [
+                  "alerts",
+                  "critical",
+                  "debugging",
+                  "emergencies",
+                  "errors",
+                  "informational",
+                  "notifications",
+                  "warnings",
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7"
+                ],
+                "title": "Severity"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "facility"
+            ]
+          },
+          "title": "Level"
         }
       },
       "additionalProperties": false,
@@ -9212,6 +9738,11 @@
             "type": "string",
             "description": "ISIS instance name.",
             "title": "ISIS Enable"
+          },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
           },
           "isis_passive": {
             "type": "boolean",
@@ -9522,6 +10053,33 @@
                   "^_.+$": {}
                 },
                 "title": "L2 Protocols"
+              },
+              "traffic_unprotected": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "description": "Allow/drop the transmit/receive of unprotected traffic.",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_active_sak": {
+                    "type": "boolean",
+                    "description": "Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.",
+                    "title": "Allow Active Sak"
+                  }
+                },
+                "required": [
+                  "action"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Traffic Unprotected"
               }
             },
             "additionalProperties": false,
@@ -10474,7 +11032,7 @@
               },
               "cipher_list": {
                 "type": "string",
-                "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
+                "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string.\n",
                 "title": "Cipher List"
               },
               "trust_certificate": {
@@ -10592,6 +11150,116 @@
             }
           },
           "title": "SSL Profiles"
+        },
+        "shared_secret_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "string",
+                "title": "Profile"
+              },
+              "secrets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "secret": {
+                      "type": "string",
+                      "title": "Secret"
+                    },
+                    "secret_type": {
+                      "type": "string",
+                      "default": "7",
+                      "enum": [
+                        "0",
+                        "7",
+                        "8a"
+                      ],
+                      "title": "Secret Type"
+                    },
+                    "receive_lifetime": {
+                      "type": "object",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Receive Lifetime"
+                    },
+                    "transmit_lifetime": {
+                      "type": "object",
+                      "properties": {
+                        "infinite": {
+                          "type": "boolean",
+                          "title": "Infinite"
+                        },
+                        "start_date_time": {
+                          "type": "string",
+                          "description": "Start date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "Start Date Time"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "description": "End date and time of lifetime of the secret. End date should be greater than start date.\nFormats supported:\n1. mm/dd/yyyy hh:mm:ss\n2. yyyy-mm-dd hh:mm:ss\ne.g 2024-12-20 10:00:00",
+                          "title": "End Date Time"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Transmit Lifetime"
+                    },
+                    "local_time": {
+                      "type": "boolean",
+                      "description": "Configuring secret using the local timezone from system clock. Default is UTC.",
+                      "title": "Local Time"
+                    }
+                  },
+                  "required": [
+                    "secret",
+                    "receive_lifetime",
+                    "transmit_lifetime",
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Secrets"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "profile"
+            ]
+          },
+          "title": "Shared Secret Profiles"
         }
       },
       "additionalProperties": false,
@@ -11151,6 +11819,10 @@
               "type": "string",
               "title": "SSL Profile"
             },
+            "address": {
+              "type": "string",
+              "title": "Address"
+            },
             "pathfinders": {
               "type": "array",
               "items": {
@@ -11161,6 +11833,9 @@
                     "title": "Vtep IP"
                   }
                 },
+                "required": [
+                  "vtep_ip"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -11245,6 +11920,9 @@
                     "title": "Imported Carriers"
                   }
                 },
+                "required": [
+                  "name"
+                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -11417,6 +12095,121 @@
                 }
               },
               "title": "VRFs"
+            },
+            "internet_exit_policies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "Type"
+                  },
+                  "city": {
+                    "type": "string",
+                    "title": "City"
+                  },
+                  "country": {
+                    "type": "string",
+                    "title": "Country"
+                  },
+                  "upload_bandwidth": {
+                    "type": "integer",
+                    "title": "Upload Bandwidth"
+                  },
+                  "download_bandwidth": {
+                    "type": "integer",
+                    "title": "Download Bandwidth"
+                  },
+                  "firewall": {
+                    "type": "boolean",
+                    "title": "Firewall"
+                  },
+                  "ips_control": {
+                    "type": "boolean",
+                    "title": "Ips Control"
+                  },
+                  "acceptable_use_policy": {
+                    "type": "boolean",
+                    "title": "Acceptable Use Policy"
+                  },
+                  "vpn_credentials": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "fqdn": {
+                          "type": "string",
+                          "title": "Fqdn"
+                        },
+                        "vpn_type": {
+                          "type": "string",
+                          "title": "VPN Type"
+                        },
+                        "pre_shared_key": {
+                          "type": "string",
+                          "title": "Pre Shared Key"
+                        }
+                      },
+                      "required": [
+                        "fqdn",
+                        "vpn_type",
+                        "pre_shared_key"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "VPN Credentials"
+                  },
+                  "tunnels": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "preference": {
+                          "type": "string",
+                          "title": "Preference"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "preference"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Tunnels"
+                  }
+                },
+                "required": [
+                  "name",
+                  "type",
+                  "city",
+                  "country",
+                  "firewall",
+                  "ips_control",
+                  "acceptable_use_policy",
+                  "vpn_credentials",
+                  "tunnels"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Internet Exit Policies"
             }
           },
           "additionalProperties": false,
@@ -11452,7 +12245,7 @@
         },
         "peer_address": {
           "type": "string",
-          "description": "IPv4 Address.",
+          "description": "IPv4 or IPv6 Address.",
           "title": "Peer Address"
         },
         "peer_address_heartbeat": {
@@ -11460,7 +12253,7 @@
           "properties": {
             "peer_ip": {
               "type": "string",
-              "description": "IPv4 Address.",
+              "description": "IPv4 or IPv6 Address.",
               "title": "Peer IP"
             },
             "vrf": {
@@ -11730,6 +12523,11 @@
               "type": "boolean",
               "description": "Enable transceiver SMBus fail and reset logging.",
               "title": "Communication"
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "Some platforms support only the `logging transceiver` command. `enabled` key configures this command.",
+              "title": "Enabled"
             }
           },
           "additionalProperties": false,
@@ -11898,6 +12696,388 @@
       },
       "title": "Monitor Sessions"
     },
+    "monitor_telemetry_influx": {
+      "type": "object",
+      "properties": {
+        "vrf": {
+          "type": "string",
+          "title": "VRF"
+        },
+        "destinations": {
+          "type": "array",
+          "description": "Configure telemetry output destinations.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "InfluxDB connection name.",
+                "title": "Name"
+              },
+              "database": {
+                "type": "string",
+                "description": "Set name of the database.",
+                "title": "Database"
+              },
+              "data_retention_policy": {
+                "type": "string",
+                "title": "Data Retention Policy"
+              },
+              "url": {
+                "type": "string",
+                "description": "It only accepts http(s), udp and unix domain destination URL.",
+                "pattern": "(http(s)?|udp|unix)://.+",
+                "title": "URL"
+              },
+              "username": {
+                "type": "string",
+                "title": "Username"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
+              },
+              "password_type": {
+                "type": "string",
+                "enum": [
+                  "0",
+                  "7",
+                  "8a"
+                ],
+                "default": "7",
+                "title": "Password Type"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Destinations"
+        },
+        "source_group_standard_disabled": {
+          "type": "boolean",
+          "description": "Disable standard set of telemetry.",
+          "title": "Source Group Standard Disabled"
+        },
+        "source_sockets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Label of the socket connection.",
+                "title": "Name"
+              },
+              "connection_limit": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295,
+                "title": "Connection Limit"
+              },
+              "url": {
+                "type": "string",
+                "description": "It only accepts http(s), udp and unix domain socket URL.",
+                "pattern": "(http(s)?|udp|unix)://.+",
+                "title": "URL"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Source Sockets"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Extra tags added to the telemetry output.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Key of the global tag pair.",
+                "title": "Name"
+              },
+              "value": {
+                "type": "string",
+                "description": "Value of the global tag pair.",
+                "title": "Value"
+              }
+            },
+            "required": [
+              "value",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Tags"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Telemetry Influx"
+    },
+    "monitor_telemetry_postcard_policy": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable the postcard telemetry feature.",
+          "title": "Disabled"
+        },
+        "ingress": {
+          "type": "object",
+          "properties": {
+            "collection": {
+              "type": "object",
+              "description": "Collector configuration.",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "description": "Source IP address of GRE tunnel.",
+                  "title": "Source"
+                },
+                "destination": {
+                  "type": "string",
+                  "description": "Destination IP address of GRE tunnel.",
+                  "title": "Destination"
+                },
+                "version": {
+                  "type": "integer",
+                  "description": "Postcard version.",
+                  "enum": [
+                    1,
+                    2
+                  ],
+                  "title": "Version"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Collection"
+            },
+            "sample": {
+              "type": "object",
+              "description": "Sampling parameters.",
+              "properties": {
+                "rate": {
+                  "type": "integer",
+                  "description": "Sampling rate. `rate` is preferred when both `rate` and `tcp_udp_checksum` are defined.",
+                  "enum": [
+                    16384,
+                    32768,
+                    65536
+                  ],
+                  "title": "Rate"
+                },
+                "tcp_udp_checksum": {
+                  "type": "object",
+                  "description": "TCP/UDP parameters.",
+                  "properties": {
+                    "value": {
+                      "type": "integer",
+                      "description": "TCP/UDP checksum or IP ID value.",
+                      "minimum": 0,
+                      "maximum": 65535,
+                      "title": "Value"
+                    },
+                    "mask": {
+                      "type": "string",
+                      "description": "16 bit hexadecimal mask for TCP/UDP or IP ID with atmost 2 unset bits.",
+                      "title": "Mask"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "TCP UDP Checksum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Sample"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Ingress"
+        },
+        "marker_vxlan": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable vxlan marking using default bit 0.",
+              "title": "Enabled"
+            },
+            "header_word_zero_bit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 31,
+              "title": "Header Word Zero Bit"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Marker VxLAN"
+        },
+        "profiles": {
+          "type": "array",
+          "description": "Postcard telemetry profiles.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Profile name.",
+                "title": "Name"
+              },
+              "ingress_sample_policy": {
+                "type": "string",
+                "title": "Ingress Sample Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "sample_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "match_rules": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "IP address version.",
+                      "enum": [
+                        "ipv4",
+                        "ipv6"
+                      ],
+                      "title": "Type"
+                    },
+                    "destination_prefix": {
+                      "type": "string",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.\neg. 10.3.3.0/24",
+                      "title": "Destination Prefix"
+                    },
+                    "source_prefix": {
+                      "type": "string",
+                      "description": "IPv4 Network/Mask or IPv6 Network/Mask. Host part of prefix must be zero.\neg. 10.3.3.0/24",
+                      "title": "Source Prefix"
+                    },
+                    "protocols": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "protocol": {
+                            "type": "string",
+                            "enum": [
+                              "tcp",
+                              "udp"
+                            ],
+                            "title": "Protocol"
+                          },
+                          "source_ports": {
+                            "type": "array",
+                            "description": "A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\" ]\n  [ \"www\" ]",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Source Ports"
+                          },
+                          "destination_ports": {
+                            "type": "array",
+                            "description": "A list of port numbers or port range or port name. Combination of port numbers or range and port name is not supported on EOS. The port numbers should be in range of 0-65535.\ne.g.\n  [ \"12\", \"14-20\", \"80\" ]\n  [ \"https\" ]",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Destination Ports"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "protocol"
+                        ]
+                      },
+                      "title": "Protocols"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Match Rules"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Sample Policies"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Telemetry Postcard Policy"
+    },
     "mpls": {
       "type": "object",
       "properties": {
@@ -12001,7 +13181,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org.",
+                "description": "IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.",
                 "title": "Name"
               },
               "burst": {
@@ -12128,6 +13308,78 @@
     "patch_panel": {
       "type": "object",
       "properties": {
+        "connector": {
+          "type": "object",
+          "properties": {
+            "interface": {
+              "type": "object",
+              "properties": {
+                "patch": {
+                  "type": "object",
+                  "properties": {
+                    "bgp_vpws_remote_failure_errdisable": {
+                      "type": "boolean",
+                      "title": "BGP Vpws Remote Failure Errdisable"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Patch"
+                },
+                "recovery": {
+                  "type": "object",
+                  "properties": {
+                    "review_delay": {
+                      "type": "object",
+                      "properties": {
+                        "min": {
+                          "type": "integer",
+                          "minimum": 10,
+                          "maximum": 600,
+                          "description": "Minimum delay.",
+                          "title": "Min"
+                        },
+                        "max": {
+                          "type": "integer",
+                          "minimum": 15,
+                          "maximum": 900,
+                          "description": "Maximum delay.",
+                          "title": "Max"
+                        }
+                      },
+                      "required": [
+                        "min",
+                        "max"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Review Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Recovery"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Connector"
+        },
         "patches": {
           "type": "array",
           "items": {
@@ -12851,6 +14103,60 @@
             ]
           },
           "title": "QOS"
+        },
+        "copp_system_policy": {
+          "type": "object",
+          "description": "Control-plane policy configuration.",
+          "properties": {
+            "classes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "shape": {
+                    "type": "integer",
+                    "description": "Maximum rate limit.",
+                    "minimum": 0,
+                    "maximum": 10000000,
+                    "title": "Shape"
+                  },
+                  "bandwidth": {
+                    "type": "integer",
+                    "description": "Minimum bandwidth.",
+                    "minimum": 0,
+                    "maximum": 10000000,
+                    "title": "Bandwidth"
+                  },
+                  "rate_unit": {
+                    "type": "string",
+                    "description": "The `rate_unit` must be defined for `shape` and `bandwidth`.",
+                    "enum": [
+                      "pps",
+                      "kbps"
+                    ],
+                    "title": "Rate Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Classes"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Copp System Policy"
         }
       },
       "additionalProperties": false,
@@ -13507,6 +14813,11 @@
             "description": "ISIS instance.",
             "title": "ISIS Enable"
           },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
+          },
           "isis_passive": {
             "type": "boolean",
             "title": "ISIS Passive"
@@ -13790,6 +15101,11 @@
                   "layer2"
                 ],
                 "title": "Transport"
+              },
+              "mpass": {
+                "type": "boolean",
+                "description": "When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.\nArista PTP enabled devices always place PTP messages on the same physical link within the port-channel.\nHence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.",
+                "title": "Mpass"
               }
             },
             "additionalProperties": false,
@@ -13884,11 +15200,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -13921,8 +15238,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -14019,11 +15335,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -14056,8 +15373,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -16061,6 +17377,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16086,6 +17403,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16111,6 +17429,7 @@
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[A-Za-z0-9_.:{}\\[\\]-]+$",
               "title": "Name"
             },
             "id": {
@@ -16650,6 +17969,11 @@
                 "^_.+$": {}
               },
               "title": "Bestpath"
+            },
+            "redistribute_internal": {
+              "type": "boolean",
+              "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+              "title": "Redistribute Internal"
             }
           },
           "additionalProperties": false,
@@ -16915,6 +18239,95 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
+              "missing_policy": {
+                "type": "object",
+                "description": "Missing policy configuration for all address-families.",
+                "properties": {
+                  "direction_in": {
+                    "description": "Missing policy inbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction In"
+                  },
+                  "direction_out": {
+                    "description": "Missing policy outbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Missing Policy"
+              },
               "link_bandwidth": {
                 "type": "object",
                 "properties": {
@@ -17003,6 +18416,35 @@
               "session_tracker": {
                 "type": "string",
                 "title": "Session Tracker"
+              },
+              "shared_secret": {
+                "type": "object",
+                "properties": {
+                  "profile": {
+                    "type": "string",
+                    "description": "Name of profile defined under `management_security`.",
+                    "title": "Profile"
+                  },
+                  "hash_algorithm": {
+                    "type": "string",
+                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                    "enum": [
+                      "aes-128-cmac-96",
+                      "hmac-sha-256",
+                      "hmac-sha1-96"
+                    ],
+                    "title": "Hash Algorithm"
+                  }
+                },
+                "required": [
+                  "profile",
+                  "hash_algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shared Secret"
               },
               "ttl_maximum_hops": {
                 "type": "integer",
@@ -17201,6 +18643,95 @@
                 "type": "boolean",
                 "title": "Maximum Routes Warning Only"
               },
+              "missing_policy": {
+                "type": "object",
+                "description": "Missing policy configuration for all address-families.",
+                "properties": {
+                  "direction_in": {
+                    "description": "Missing policy inbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction In"
+                  },
+                  "direction_out": {
+                    "description": "Missing policy outbound direction.",
+                    "type": "object",
+                    "properties": {
+                      "action": {
+                        "description": "Missing policy action.",
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "permit",
+                          "deny-in-out"
+                        ],
+                        "title": "Action"
+                      },
+                      "include_community_list": {
+                        "type": "boolean",
+                        "description": "Include community-list references in missing policy decision.",
+                        "title": "Include Community List"
+                      },
+                      "include_prefix_list": {
+                        "type": "boolean",
+                        "description": "Include prefix-list references in missing policy decision.",
+                        "title": "Include Prefix List"
+                      },
+                      "include_sub_route_map": {
+                        "type": "boolean",
+                        "description": "Include sub-route-map references in missing policy decision.",
+                        "title": "Include Sub Route Map"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Direction Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Missing Policy"
+              },
               "allowas_in": {
                 "type": "object",
                 "properties": {
@@ -17315,6 +18846,35 @@
                 "type": "string",
                 "title": "Session Tracker"
               },
+              "shared_secret": {
+                "type": "object",
+                "properties": {
+                  "profile": {
+                    "type": "string",
+                    "description": "Name of profile defined under `management_security`.",
+                    "title": "Profile"
+                  },
+                  "hash_algorithm": {
+                    "type": "string",
+                    "description": "Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above.",
+                    "enum": [
+                      "aes-128-cmac-96",
+                      "hmac-sha-256",
+                      "hmac-sha1-96"
+                    ],
+                    "title": "Hash Algorithm"
+                  }
+                },
+                "required": [
+                  "profile",
+                  "hash_algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shared Secret"
+              },
               "ttl_maximum_hops": {
                 "type": "integer",
                 "minimum": 0,
@@ -17396,16 +18956,6 @@
                 "type": "boolean",
                 "title": "As Set"
               },
-              "advertise_map": {
-                "type": "string",
-                "description": "Route-map name.",
-                "title": "Advertise Map"
-              },
-              "supress_map": {
-                "type": "string",
-                "description": "Route-map name.",
-                "title": "Supress Map"
-              },
               "summary_only": {
                 "type": "boolean",
                 "title": "Summary Only"
@@ -17438,15 +18988,44 @@
             "properties": {
               "source_protocol": {
                 "type": "string",
+                "enum": [
+                  "attached-host",
+                  "bgp",
+                  "connected",
+                  "dynamic",
+                  "isis",
+                  "ospf",
+                  "ospfv3",
+                  "rip",
+                  "static",
+                  "user"
+                ],
                 "title": "Source Protocol"
               },
               "route_map": {
                 "type": "string",
                 "title": "Route Map"
               },
+              "rcf": {
+                "type": "string",
+                "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                "title": "RCF"
+              },
               "include_leaked": {
                 "type": "boolean",
                 "title": "Include Leaked"
+              },
+              "ospf_route_type": {
+                "type": "string",
+                "enum": [
+                  "external",
+                  "internal",
+                  "nssa-external",
+                  "nssa-external 1",
+                  "nssa-external 2"
+                ],
+                "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                "title": "OSPF Route Type"
               }
             },
             "additionalProperties": false,
@@ -18004,6 +19583,16 @@
                   "activate": {
                     "type": "boolean",
                     "title": "Activate"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -18039,6 +19628,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   },
                   "domain_remote": {
                     "type": "boolean",
@@ -18176,6 +19775,10 @@
                   "type": "boolean",
                   "title": "Import Ethernet Segment IP Mass Withdraw"
                 },
+                "import_overlay_index_gateway": {
+                  "type": "boolean",
+                  "title": "Import Overlay Index Gateway"
+                },
                 "export_ethernet_segment_ip_mass_withdraw": {
                   "type": "boolean",
                   "title": "Export Ethernet Segment IP Mass Withdraw"
@@ -18190,6 +19793,87 @@
             "next_hop_unchanged": {
               "type": "boolean",
               "title": "Next Hop Unchanged"
+            },
+            "bgp_additional_paths": {
+              "type": "object",
+              "description": "BGP additional-paths commands.",
+              "properties": {
+                "receive": {
+                  "type": "boolean",
+                  "description": "Receive multiple paths.",
+                  "title": "Receive"
+                },
+                "send": {
+                  "type": "object",
+                  "description": "Send multiple paths.",
+                  "properties": {
+                    "any": {
+                      "type": "boolean",
+                      "description": "Any eligible path.",
+                      "title": "Any"
+                    },
+                    "backup": {
+                      "type": "boolean",
+                      "description": "Best path and installed backup path.",
+                      "title": "Backup"
+                    },
+                    "ecmp": {
+                      "type": "boolean",
+                      "description": "All paths in best path ECMP group.",
+                      "title": "ECMP"
+                    },
+                    "ecmp_limit": {
+                      "type": "integer",
+                      "description": "Amount of ECMP paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "ECMP Limit"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Amount of paths to send.",
+                      "minimum": 2,
+                      "maximum": 64,
+                      "title": "Limit"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Send"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP Additional Paths"
+            },
+            "layer_2_fec_in_place_update": {
+              "type": "object",
+              "description": "BGP layer-2 in-place FEC operation.",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "timeout": {
+                  "type": "integer",
+                  "description": "In-place FEC update tracking timeout in seconds.",
+                  "minimum": 0,
+                  "maximum": 300,
+                  "title": "Timeout"
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Layer 2 Fec In Place Update"
             }
           },
           "additionalProperties": false,
@@ -18280,6 +19964,21 @@
               },
               "title": "Networks"
             },
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "redistribute_internal": {
+                  "type": "boolean",
+                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                  "title": "Redistribute Internal"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
             "peer_groups": {
               "type": "array",
               "items": {
@@ -18303,6 +20002,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   },
                   "default_originate": {
                     "type": "object",
@@ -18402,6 +20111,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -18440,6 +20159,64 @@
                 ]
               },
               "title": "Neighbors"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "enum": [
+                      "attached-host",
+                      "bgp",
+                      "connected",
+                      "dynamic",
+                      "isis",
+                      "ospf",
+                      "ospfv3",
+                      "rip",
+                      "static",
+                      "user"
+                    ],
+                    "title": "Source Protocol"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "description": "Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                    "title": "RCF"
+                  },
+                  "ospf_route_type": {
+                    "type": "string",
+                    "enum": [
+                      "external",
+                      "internal",
+                      "nssa-external",
+                      "nssa-external 1",
+                      "nssa-external 2"
+                    ],
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                    "title": "OSPF Route Type"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,
@@ -18532,6 +20309,28 @@
                   "route_map": {
                     "type": "string",
                     "title": "Route Map"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "description": "Only applicable if `source_protocol` is `isis`.",
+                    "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                    "title": "RCF"
+                  },
+                  "ospf_route_type": {
+                    "type": "string",
+                    "enum": [
+                      "external",
+                      "internal",
+                      "nssa-external",
+                      "nssa-external 1",
+                      "nssa-external 2"
+                    ],
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                    "title": "OSPF Route Type"
                   }
                 },
                 "additionalProperties": false,
@@ -18659,6 +20458,21 @@
               },
               "title": "Networks"
             },
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "redistribute_internal": {
+                  "type": "boolean",
+                  "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                  "title": "Redistribute Internal"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
             "peer_groups": {
               "type": "array",
               "items": {
@@ -18682,6 +20496,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   },
                   "prefix_list_in": {
                     "type": "string",
@@ -18727,6 +20551,16 @@
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
                   },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
+                  },
                   "prefix_list_in": {
                     "type": "string",
                     "description": "Inbound prefix-list name.",
@@ -18764,6 +20598,23 @@
                   "include_leaked": {
                     "type": "boolean",
                     "title": "Include Leaked"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.",
+                    "title": "RCF"
+                  },
+                  "ospf_route_type": {
+                    "type": "string",
+                    "enum": [
+                      "external",
+                      "internal",
+                      "nssa-external",
+                      "nssa-external 1",
+                      "nssa-external 2"
+                    ],
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospfv3'.\n",
+                    "title": "OSPF Route Type"
                   }
                 },
                 "additionalProperties": false,
@@ -18921,6 +20772,59 @@
                 ]
               },
               "title": "Networks"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "enum": [
+                      "connected",
+                      "isis",
+                      "ospf",
+                      "ospfv3",
+                      "static"
+                    ],
+                    "title": "Source Protocol"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "description": "Only applicable if `source_protocol` is `isis`.",
+                    "title": "Include Leaked"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  },
+                  "rcf": {
+                    "type": "string",
+                    "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                    "title": "RCF"
+                  },
+                  "ospf_route_type": {
+                    "type": "string",
+                    "enum": [
+                      "external",
+                      "internal",
+                      "nssa-external",
+                      "nssa-external 1",
+                      "nssa-external 2"
+                    ],
+                    "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                    "title": "OSPF Route Type"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
             }
           },
           "additionalProperties": false,
@@ -19652,6 +21556,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19703,6 +21617,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19766,6 +21690,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19817,6 +21751,16 @@
                     "type": "string",
                     "description": "Outbound route-map name.",
                     "title": "Route Map Out"
+                  },
+                  "rcf_in": {
+                    "type": "string",
+                    "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF In"
+                  },
+                  "rcf_out": {
+                    "type": "string",
+                    "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                    "title": "RCF Out"
                   }
                 },
                 "additionalProperties": false,
@@ -19859,6 +21803,21 @@
                 "type": "string",
                 "description": "VRF name.",
                 "title": "Name"
+              },
+              "bgp": {
+                "type": "object",
+                "properties": {
+                  "redistribute_internal": {
+                    "type": "boolean",
+                    "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                    "title": "Redistribute Internal"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BGP"
               },
               "rd": {
                 "type": "string",
@@ -19916,7 +21875,18 @@
                         },
                         "route_map": {
                           "type": "string",
+                          "description": "Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
                           "title": "Route Map"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "RCF"
+                        },
+                        "vpn_route_filter_rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "VPN Route Filter RCF"
                         }
                       },
                       "additionalProperties": false,
@@ -19947,7 +21917,18 @@
                         },
                         "route_map": {
                           "type": "string",
+                          "description": "Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
                           "title": "Route Map"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "RCF"
+                        },
+                        "vpn_route_filter_rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.\nExample: MyFunction(myarg).\nOnly applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.",
+                          "title": "VPN Route Filter RCF"
                         }
                       },
                       "additionalProperties": false,
@@ -20402,6 +22383,23 @@
                     "include_leaked": {
                       "type": "boolean",
                       "title": "Include Leaked"
+                    },
+                    "rcf": {
+                      "type": "string",
+                      "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
+                      "title": "RCF"
+                    },
+                    "ospf_route_type": {
+                      "type": "string",
+                      "enum": [
+                        "external",
+                        "internal",
+                        "nssa-external",
+                        "nssa-external 1",
+                        "nssa-external 2"
+                      ],
+                      "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                      "title": "OSPF Route Type"
                     }
                   },
                   "additionalProperties": false,
@@ -20431,16 +22429,6 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
-                    },
-                    "advertise_map": {
-                      "type": "string",
-                      "description": "Route-map name.",
-                      "title": "Advertise Map"
-                    },
-                    "supress_map": {
-                      "type": "string",
-                      "description": "Route-map name.",
-                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",
@@ -20556,6 +22544,11 @@
                           "^_.+$": {}
                         },
                         "title": "Additional Paths"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,
@@ -20586,6 +22579,16 @@
                           "type": "string",
                           "description": "Outbound route-map name.",
                           "title": "Route Map Out"
+                        },
+                        "rcf_in": {
+                          "type": "string",
+                          "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF In"
+                        },
+                        "rcf_out": {
+                          "type": "string",
+                          "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF Out"
                         },
                         "prefix_list_in": {
                           "type": "string",
@@ -20663,6 +22666,63 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "bgp",
+                            "connected",
+                            "dynamic",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "rip",
+                            "static",
+                            "user"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
+                          "title": "RCF"
+                        },
+                        "ospf_route_type": {
+                          "type": "string",
+                          "enum": [
+                            "external",
+                            "internal",
+                            "nssa-external",
+                            "nssa-external 1",
+                            "nssa-external 2"
+                          ],
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                          "title": "OSPF Route Type"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -20762,6 +22822,11 @@
                           "^_.+$": {}
                         },
                         "title": "Additional Paths"
+                      },
+                      "redistribute_internal": {
+                        "type": "boolean",
+                        "description": "Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.",
+                        "title": "Redistribute Internal"
                       }
                     },
                     "additionalProperties": false,
@@ -20792,6 +22857,16 @@
                           "type": "string",
                           "description": "Outbound route-map name.",
                           "title": "Route Map Out"
+                        },
+                        "rcf_in": {
+                          "type": "string",
+                          "description": "Inbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF In"
+                        },
+                        "rcf_out": {
+                          "type": "string",
+                          "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                          "title": "RCF Out"
                         },
                         "prefix_list_in": {
                           "type": "string",
@@ -20838,6 +22913,62 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "bgp",
+                            "connected",
+                            "dhcp",
+                            "dynamic",
+                            "isis",
+                            "ospfv3",
+                            "static",
+                            "user"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.",
+                          "title": "RCF"
+                        },
+                        "ospf_route_type": {
+                          "type": "string",
+                          "enum": [
+                            "external",
+                            "internal",
+                            "nssa-external",
+                            "nssa-external 1",
+                            "nssa-external 2"
+                          ],
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospfv3'.\n",
+                          "title": "OSPF Route Type"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -20959,6 +23090,60 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "attached-host",
+                            "connected",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "static"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "description": "Only applicable if `source_protocol` is `isis`.",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                          "title": "RCF"
+                        },
+                        "ospf_route_type": {
+                          "type": "string",
+                          "enum": [
+                            "external",
+                            "internal",
+                            "nssa-external",
+                            "nssa-external 1",
+                            "nssa-external 2"
+                          ],
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                          "title": "OSPF Route Type"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -21080,6 +23265,59 @@
                       ]
                     },
                     "title": "Networks"
+                  },
+                  "redistribute_routes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "source_protocol": {
+                          "type": "string",
+                          "enum": [
+                            "connected",
+                            "isis",
+                            "ospf",
+                            "ospfv3",
+                            "static"
+                          ],
+                          "title": "Source Protocol"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        },
+                        "include_leaked": {
+                          "type": "boolean",
+                          "description": "Only applicable if `source_protocol` is `isis`.",
+                          "title": "Include Leaked"
+                        },
+                        "rcf": {
+                          "type": "string",
+                          "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).\n`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.\nOnly applicable if `source_protocol` is `isis`.",
+                          "title": "RCF"
+                        },
+                        "ospf_route_type": {
+                          "type": "string",
+                          "enum": [
+                            "external",
+                            "internal",
+                            "nssa-external",
+                            "nssa-external 1",
+                            "nssa-external 2"
+                          ],
+                          "description": "Routes learned by the OSPF protocol.\nThe `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.\n",
+                          "title": "OSPF Route Type"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "source_protocol"
+                      ]
+                    },
+                    "title": "Redistribute Routes"
                   }
                 },
                 "additionalProperties": false,
@@ -21550,6 +23788,44 @@
             ]
           },
           "title": "VRFs"
+        },
+        "control_functions": {
+          "type": "object",
+          "description": "Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.\nWarning:\nThis configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.\nThe configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.",
+          "properties": {
+            "code_units": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the code unit.",
+                    "title": "Name"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "Content of route control function.\ne.g.\nfunction ACCEPT_ALL() {\n  return true;\n  }\nEOF",
+                    "title": "Content"
+                  }
+                },
+                "required": [
+                  "content",
+                  "name"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Code Units"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Control Functions"
         }
       },
       "additionalProperties": false,
@@ -22564,10 +24840,17 @@
           "properties": {
             "interval": {
               "type": "integer",
-              "minimum": 1,
-              "maximum": 300,
-              "description": "Maximum interval between two SPFs in seconds.",
+              "description": "Maximum interval between two SPFs in seconds or milliseconds.\nRange in seconds: <1-300>\nRange in milliseconds: <1-300000>",
               "title": "Interval"
+            },
+            "interval_unit": {
+              "type": "string",
+              "enum": [
+                "seconds",
+                "milliseconds"
+              ],
+              "description": "If interval unit is not defined EOS takes `seconds` by default.",
+              "title": "Interval Unit"
             },
             "wait_interval": {
               "type": "integer",
@@ -22575,6 +24858,13 @@
               "maximum": 300000,
               "description": "Initial wait interval for SPF in milliseconds.",
               "title": "Wait Interval"
+            },
+            "hold_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300000,
+              "description": "Hold interval between the first and second SPF runs in milliseconds.",
+              "title": "Hold Interval"
             }
           },
           "additionalProperties": false,
@@ -23098,6 +25388,13 @@
         "ipv4": {
           "type": "object",
           "properties": {
+            "activity_polling_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "description": "MFIB entry activity polling interval.",
+              "title": "Activity Polling Interval"
+            },
             "counters": {
               "type": "object",
               "properties": {
@@ -23203,6 +25500,23 @@
             "^_.+$": {}
           },
           "title": "IPv4"
+        },
+        "ipv6": {
+          "type": "object",
+          "properties": {
+            "activity_polling_interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "description": "MFIB entry activity polling interval.",
+              "title": "Activity Polling Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "IPv6"
         },
         "vrfs": {
           "type": "array",
@@ -24422,6 +26736,231 @@
         "^_.+$": {}
       },
       "title": "Router PIM Sparse Mode"
+    },
+    "router_segment_security": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "policies": {
+          "type": "array",
+          "description": "Customised application policies.\nUsing the Application Traffic Recognition L4 profiles, custom policies can be defined. The built-in application 'app-match-all' can be used to match any packets.\nNote that this is stateless, so both the source and destination flows need to be considered.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "sequence_numbers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sequence": {
+                      "type": "integer",
+                      "description": "Sequence ID.",
+                      "minimum": 1,
+                      "maximum": 1023,
+                      "title": "Sequence"
+                    },
+                    "application": {
+                      "type": "string",
+                      "description": "The name of the application.",
+                      "title": "Application"
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "The action to take - note that platform support for the redirect action is limited. The \"redirect\" action also requires the 'next_hop' to be configured.",
+                      "enum": [
+                        "forward",
+                        "drop",
+                        "redirect"
+                      ],
+                      "title": "Action"
+                    },
+                    "log": {
+                      "type": "boolean",
+                      "description": "Enable logging - note that platform support is limited.",
+                      "title": "Log"
+                    },
+                    "stateless": {
+                      "type": "boolean",
+                      "description": "Take action, regardless of state. Should be set to 'true' for MSS-G.",
+                      "default": true,
+                      "title": "Stateless"
+                    },
+                    "next_hop": {
+                      "type": "string",
+                      "description": "When the action is 'redirect', this indicates the IPv4 next hop to redirect to.",
+                      "title": "Next Hop"
+                    }
+                  },
+                  "required": [
+                    "application",
+                    "action",
+                    "sequence"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Sequence Numbers"
+              }
+            },
+            "required": [
+              "sequence_numbers",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "description": "The name of the VRF that the segments and policies are defined in.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "segments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Segment name.",
+                      "title": "Name"
+                    },
+                    "definition": {
+                      "type": "object",
+                      "properties": {
+                        "interfaces": {
+                          "type": "array",
+                          "description": "The names of the source interface e.g. Port-Channel1 - note that platform support is limited.",
+                          "minItems": 1,
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        },
+                        "match_lists": {
+                          "type": "array",
+                          "description": "The set of lists that define the segment. These can be a mix of IPv4 and IPv6 prefix or match lists.",
+                          "maxItems": 2,
+                          "minItems": 1,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "address_family": {
+                                "type": "string",
+                                "description": "Indicate which address-family the match list belongs to e.g. ipv4 or ipv6.",
+                                "enum": [
+                                  "ipv4",
+                                  "ipv6"
+                                ],
+                                "title": "Address Family"
+                              },
+                              "covered_prefix_list": {
+                                "type": "string",
+                                "description": "The name of the prefix-list. You can have a maximum of one per address-family. Mutually exclusive to the use of match_list.  If both are configured prefix takes precedence.",
+                                "title": "Covered Prefix List"
+                              },
+                              "prefix": {
+                                "type": "string",
+                                "description": "The name of the match-list. You can have a maximum of one per address-family. Mutually exclusive to the use of covered_prefix_list. If both are configured prefix takes precedence.",
+                                "title": "Prefix"
+                              }
+                            },
+                            "required": [
+                              "address_family"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            }
+                          },
+                          "title": "Match Lists"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Definition"
+                    },
+                    "policies": {
+                      "type": "array",
+                      "description": "The policies controlling traffic into the segment.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "from": {
+                            "type": "string",
+                            "description": "The name of the source segment or 'forwarding-segments' for all segments.",
+                            "title": "From"
+                          },
+                          "policy": {
+                            "type": "string",
+                            "description": "The name of the policy to apply. The built-in policies are 'policy-forward-all' and 'policy-drop-all'.",
+                            "title": "Policy"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "from"
+                        ]
+                      },
+                      "title": "Policies"
+                    },
+                    "fallback_policy": {
+                      "type": "string",
+                      "description": "Only supported on the R3 series platforms, this allows a per-segment default policy to be specified by name.",
+                      "title": "Fallback Policy"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Segments"
+              }
+            },
+            "required": [
+              "segments",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Segment Security"
     },
     "router_service_insertion": {
       "type": "object",
@@ -27185,6 +29724,11 @@
             },
             "title": "IP Helpers"
           },
+          "ip_dhcp_relay_all_subnets": {
+            "type": "boolean",
+            "description": "Allow forwarding requests with secondary IP addresses in the gateway address \"giaddr\" field.",
+            "title": "IP DHCP Relay All Subnets"
+          },
           "ip_nat": {
             "type": "object",
             "properties": {
@@ -27258,11 +29802,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27295,8 +29840,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -27393,11 +29937,12 @@
                         },
                         "original_ip": {
                           "type": "string",
-                          "description": "IPv4 address.",
+                          "description": "IPv4 address. The combination of `original_ip` and `original_port` must be unique.",
                           "title": "Original IP"
                         },
                         "original_port": {
                           "type": "integer",
+                          "description": "TCP/UDP port. The combination of `original_ip` and `original_port` must be unique.",
                           "minimum": 1,
                           "maximum": 65535,
                           "title": "Original Port"
@@ -27430,8 +29975,7 @@
                         }
                       },
                       "required": [
-                        "translated_ip",
-                        "original_ip"
+                        "translated_ip"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
@@ -27505,6 +30049,41 @@
           "ipv6_nd_managed_config_flag": {
             "type": "boolean",
             "title": "IPv6 ND Managed Config Flag"
+          },
+          "ipv6_nd_other_config_flag": {
+            "type": "boolean",
+            "description": "Set the \"other stateful configuration\" flag in IPv6 router advertisements.",
+            "title": "IPv6 ND Other Config Flag"
+          },
+          "ipv6_nd_cache": {
+            "type": "object",
+            "description": "IPv6 neighbor cache options.",
+            "properties": {
+              "dynamic_capacity": {
+                "type": "integer",
+                "description": "Capacity of dynamic cache entries.",
+                "minimum": 0,
+                "maximum": 4294967295,
+                "title": "Dynamic Capacity"
+              },
+              "expire": {
+                "type": "integer",
+                "description": "Cache entries expirery in seconds.",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "Expire"
+              },
+              "refresh_always": {
+                "type": "boolean",
+                "description": "Force refresh on cache expiry.",
+                "title": "Refresh Always"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IPv6 ND Cache"
           },
           "ipv6_nd_prefixes": {
             "type": "array",
@@ -27580,6 +30159,11 @@
               ]
             },
             "title": "IPv6 DHCP Relay Destinations"
+          },
+          "ipv6_dhcp_relay_all_subnets": {
+            "type": "boolean",
+            "description": "Allow forwarding requests with additional IPv6 addresses in the gateway address \"giaddr\" field.",
+            "title": "IPv6 DHCP Relay All Subnets"
           },
           "access_group_in": {
             "type": "string",
@@ -27870,6 +30454,11 @@
             "type": "string",
             "description": "ISIS instance name.",
             "title": "ISIS Enable"
+          },
+          "isis_bfd": {
+            "type": "boolean",
+            "description": "Enable BFD for ISIS.",
+            "title": "ISIS BFD"
           },
           "isis_passive": {
             "type": "boolean",

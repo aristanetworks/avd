@@ -112,9 +112,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.5/31
   no_autostate: true
   mtu: 9214
+  ip_address: 10.255.252.5/31
   pim:
     ipv4:
       sparse_mode: true
@@ -220,7 +220,7 @@ prefix_lists:
 router_msdp:
   originator_id_local_interface: Loopback0
   peers:
-  - ipv4_address: 192.168.255.6
+  - ipv4_address: 192.168.255.5
     local_interface: Loopback0
     description: UNDERLAY-MULTICAST-L3LEAF2A
     mesh_groups:

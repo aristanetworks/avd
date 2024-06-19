@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [ARP](#arp)
+  - [ARP](#arp-1)
 
 ## Management
 
@@ -39,6 +39,8 @@ interface Management1
 
 ### ARP
 
+ARP cache persistency is enabled. The refresh-delay is 700 seconds after reboot.
+
 Global ARP timeout: 300
 
 #### ARP Static Entries
@@ -56,6 +58,7 @@ Global ARP timeout: 300
 
 ```eos
 !
+arp persistent refresh-delay 700
 arp aging timeout default 300
 arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa

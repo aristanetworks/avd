@@ -23,3 +23,25 @@ dot1x:
         traffic_allow: true
         apply_alternate: true
       recovery_action_reauthenticate: true
+    accounting_update_interval: 6
+  captive_portal:
+    enabled: true
+    url: http://portal-nacm08/captiveredirect/
+    ssl_profile: Profile1
+    start_limit_infinite: true
+    access_list_ipv4: ACL
+  supplicant:
+    profiles:
+      - name: Profile1
+        eap_method: tls
+        identity: user_id1
+        passphrase_type: 0
+        passphrase: 1048080A02
+        ssl_profile: PF1
+      - name: Profile2
+        identity: user_id2
+        passphrase: 1048080A01
+      - name: Profile3
+        ssl_profile: PF2
+    logging: true
+    disconnect_cached_results_timeout: 79
