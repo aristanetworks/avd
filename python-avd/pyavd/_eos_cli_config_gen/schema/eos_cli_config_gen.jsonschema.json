@@ -19593,6 +19593,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   }
                 },
                 "additionalProperties": false,
@@ -21971,7 +21994,7 @@
               },
               "default_route_exports": {
                 "type": "array",
-                "description": "Enable default-originate per VRF/address family.",
+                "description": "Enable default-originate per VRF/address-family.",
                 "items": {
                   "type": "object",
                   "properties": {

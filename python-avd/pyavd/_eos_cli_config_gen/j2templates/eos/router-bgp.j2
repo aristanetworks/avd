@@ -1475,12 +1475,13 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.default_route_exports is arista.avd.defined %}
 {%             for default_route_export in vrf.default_route_exports %}
 {%                 set vrf_default_route_export_cli = "default-route export " ~ default_route_export.address_family %}
+{%                 if default_route_export.always is arista.avd.defined(true) %}
+{%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " always" %}
+{%                 endif %}
 {%                 if default_route_export.rcf is arista.avd.defined %}
 {%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " rcf " ~ default_route_export.rcf %}
 {%                 elif default_route_export.route_map is arista.avd.defined %}
 {%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " route-map " ~ default_route_export.route_map %}
-{%                 elif default_route_export.always is arista.avd.defined(true) %}
-{%                     set vrf_default_route_export_cli = vrf_default_route_export_cli ~ " always" %}
 {%                 endif %}
       {{ vrf_default_route_export_cli }}
 {%             endfor %}

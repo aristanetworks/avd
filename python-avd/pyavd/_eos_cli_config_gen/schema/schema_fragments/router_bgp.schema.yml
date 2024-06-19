@@ -1115,6 +1115,18 @@ keys:
                   description: |-
                     Outbound RCF function name with parenthesis.
                     Example: MyFunction(myarg).
+                default_route:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    rcf:
+                      type: str
+                      description: |-
+                        RCF function name with parenthesis.
+                        Example: MyFunction(myarg).
+                    route_map:
+                      type: str
           peer_groups:
             type: list
             primary_key: name
@@ -2406,7 +2418,7 @@ keys:
             default_route_exports:
               type: list
               primary_key: address_family
-              description: Enable default-originate per VRF/address family.
+              description: Enable default-originate per VRF/address-family.
               items:
                 type: dict
                 keys:

@@ -285,6 +285,7 @@ router_bgp:
           transit: true
       default_route_exports:
         - address_family: evpn
+          always: true
           route_map: TENANT_A_PROJECT03_RM_DEFAULT
       route_targets:
         import:
