@@ -28,6 +28,26 @@ The available identification depends on the configured AVD variables.
 
 The API to CloudVision is using gRPC over encrypted HTTP/2.
 
+!!! Note
+
+    Please note that in case of using CVaaS, the correct regional URL where the CVaaS tenant is deployed must be used
+    for the `cv_server` var. The following are the cluster URLs used in production:
+
+    | Region | URL |
+    |--------|-----|
+    | United States 1a | `www.arista.io` |
+    | United States 1b | `www.cv-prod-us-central1-b.arista.io`|
+    | United States 1c | `www.cv-prod-us-central1-c.arista.io`|
+    | Canada | `www.cv-prod-na-northeast1-b.arista.io` |
+    | Europe West 2| `www.cv-prod-euwest-2.arista.io` |
+    | Japan| `www.cv-prod-apnortheast-1.arista.io` |
+    | Australia | `www.cv-prod-ausoutheast-1.arista.io` |
+    | United Kingdon | `www.cv-prod-uk-1.arista.io` |
+
+!!! Warning
+
+    URLs without `www` are not supported.
+
 ## Limitations
 
 - It is not possible to authenticate with username/password.
@@ -49,6 +69,27 @@ This feature is still under development, so several planned features are not imp
 - Add automatic testing.
 - Add required CloudVision versions once the APIs are generally available.
 - Update AVD examples.
+
+## Steps to create service accounts on CloudVision
+
+1. Go to Settings and Tools --> Access Control --> Service Accounts --> click `+ New Service Account`
+
+```text
+Account name: AVD
+Description: "Automation with AVD"
+Give a description under "Generated Service Account Token"
+Specify the "valid until" date.
+Make sure to copy the generated password. You only get view it once.
+Click "Save" to exit the dialogue box.
+```
+
+![Figure: 1](../../media/serviceaccount1.png)
+![Figure: 2](../../media/serviceaccount2.png)
+![Figure: 3](../../media/serviceaccount3.png)
+
+!!! note
+    The name of the service account must match a username configured to be authorized on
+    EOS, otherwise device interactive API calls might fail due to authorization denial.
 
 ## Example
 
@@ -117,45 +158,6 @@ For test and lab usage the certificate verification can be disabled.
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: false
 ```
-
-Please note that in case of using CVaaS, the correct regional URL where the CVaaS tenant is deployed must be used
-for the `cv_server` var. The following are the cluster URLs used in production:
-
-| Region | URL |
-|--------|-----|
-| United States 1a | `www.arista.io` |
-| United States 1b | `www.cv-prod-us-central1-b.arista.io`|
-| United States 1c | `www.cv-prod-us-central1-c.arista.io`|
-| Canada | `www.cv-prod-na-northeast1-b.arista.io` |
-| Europe West 2| `www.cv-prod-euwest-2.arista.io` |
-| Japan| `www.cv-prod-apnortheast-1.arista.io` |
-| Australia | `www.cv-prod-ausoutheast-1.arista.io` |
-| United Kingdon | `www.cv-prod-uk-1.arista.io` |
-
-!!! Warning
-
-    URLs without `www` are not supported.
-
-##### Steps to create service accounts on CloudVision
-
-1. Go to Settings and Tools --> Access Control --> Service Accounts --> click `+ New Service Account`
-
-```text
-Account name: AVD
-Description: "Automation with AVD"
-Give a description under "Generated Service Account Token"
-Specify the "valid until" date.
-Make sure to copy the generated password. You only get view it once.
-Click "Save" to exit the dialogue box.
-```
-
-![Figure: 1](../../media/serviceaccount1.png)
-![Figure: 2](../../media/serviceaccount2.png)
-![Figure: 3](../../media/serviceaccount3.png)
-
-!!! note
-    The name of the service account must match a username configured to be authorized on
-    EOS, otherwise device interactive API calls might fail due to authorization denial.
 
 #### EOS Devices configuration
 
