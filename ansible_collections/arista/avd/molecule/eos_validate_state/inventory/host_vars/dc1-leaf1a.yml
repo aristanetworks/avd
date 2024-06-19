@@ -20,7 +20,7 @@ custom_structured_configuration_router_path_selection:
 accepted_xcvr_manufacturers:
   - "Arastra, Inc."
   - "Arista Networks"
-  - "Cisco"
+  - "Generic"
 
 accepted_pwr_supply_states:
   - "ok"

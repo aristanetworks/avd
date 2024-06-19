@@ -508,7 +508,7 @@
       "hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers.",
-    "custom_field": "Accepted Manufacturers: 'Arastra, Inc.', 'Arista Networks', 'Cisco', 'Not Present'"
+    "custom_field": "Accepted Manufacturers: 'Arastra, Inc.', 'Arista Networks', 'Generic', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",

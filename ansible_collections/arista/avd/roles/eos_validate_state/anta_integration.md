@@ -28,7 +28,12 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 
 - Loose mode to ignore playbook errors is no longer supported in ANTA mode.
 - ANTA mode exclusively supports the newer "list-of-dicts" data models in the structured configuration file input. For further details, consult the AVD 4.x.x [porting guides](https://avd.sh/en/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts).
-- Changes to csv report headers from `test_id,node,test_category,test_description,test,result,failure_reason` to `"id", "dut", "categories", "test", "description", "inputs", "result", "messages"`
+- Inputs for hardware tests have been updated. See [Input variables](#input-variables) below.
+- Changes to CSV and Markdown reports:
+  - Hardware tests are now collapsed.
+  - Sorting of test results is now done per device as opposed to per category.
+  - Test categories, descriptions and inputs have been improved to follow ANTA.
+  - CSV report headers updated from `test_id,node,test_category,test_description,test,result,failure_reason` to `id,dut,categories,test,description,inputs,result,messages`
 
 ## Roadmap
 
@@ -43,9 +48,6 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 ## Expected changes
 
 - You should expect faster execution, and if not please report on the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
-- Hardware tests are now collapsed.
-- Some description of tests have been updated to be more precise.
-- Sorting of the test results is now done per device as opposed to per category.
 - Tests skipped by ANTA will be marked as `SKIPPED` in the final reports.
 - All tests will be removed from the catalog for a device flagged as undeployed using the host level variable [`is_deployed: false`](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#flagging-a-device-as-not-deployed). Additionally, all tests take into account the `is_deployed` variable value and remove tests accordingly.
 
@@ -227,10 +229,10 @@ logging_level: <str; "INFO" | "WARNING" | "ERROR" | "CRITICAL" | "DEBUG"; defaul
 #    tests:
 #      - VerifyBGPSpecificPeers
 skip_tests:
-  - category: <str; "Test category">
+  - category: <str>
     # Optional tests
     tests:
-      - <str; "Test name">
+      - <str>
 ```
 
 ## Custom ANTA catalog

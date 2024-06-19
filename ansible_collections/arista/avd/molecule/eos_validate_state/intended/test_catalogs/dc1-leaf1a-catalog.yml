@@ -314,11 +314,11 @@ anta.tests.hardware:
     manufacturers:
     - Arastra, Inc.
     - Arista Networks
-    - Cisco
+    - Generic
     - Not Present
     result_overwrite:
       custom_field: 'Accepted Manufacturers: ''Arastra, Inc.'', ''Arista Networks'',
-        ''Cisco'', ''Not Present'''
+        ''Generic'', ''Not Present'''
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Not Present
