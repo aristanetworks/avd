@@ -97,7 +97,7 @@ def _get_line_info(line: str, all_anchor_ids: list[str]) -> (int, str, str):
 
     Returns
     -------
-    int, str, str
+    int, str, str:
         The level of the heading, the text of the heading and the anchor_id for the heading.
     """
     pounds, text = line.split(" ", maxsplit=1)
