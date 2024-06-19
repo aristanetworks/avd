@@ -24,7 +24,7 @@
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
     generate_device_config: "{{ ansible_run_tags is arista.avd.contains(['all', 'build', 'provision']) and ansible_skip_tags is not arista.avd.contains(['build', 'provision']) }}"
-    generate_device_doc: "{{ generate_device_documentation | arista.avd.default(true) and ansible_run_tags is arista.avd.contains(['all', 'build', 'provision', 'documentation']) and ansible_skip_tags is not arista.avd.contains(['build', 'provision', 'documentation'])}}"
+    generate_device_doc: "{{ generate_device_documentation | arista.avd.default(true) and ansible_run_tags is arista.avd.contains(['all', 'build', 'provision', 'documentation']) and ansible_skip_tags is not arista.avd.contains(['build', 'provision', 'documentation']) }}"
     device_doc_toc: true
     cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
   delegate_to: localhost
