@@ -5,10 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generator
 
-from ._schema.avdschema import AvdSchema
-from .validation_result import ValidationResult
-
 if TYPE_CHECKING:
+    from .validation_result import ValidationResult
     from .vendor.errors import AvdDeprecationWarning
 
 
@@ -26,6 +24,11 @@ class AvdSchemaTools:
             schema_id:
                 Name of AVD Schema to use for conversion and validation.
         """
+        # pylint: disable=import-outside-toplevel
+        from ._schema.avdschema import AvdSchema
+
+        # pylint: enable=import-outside-toplevel
+
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
     def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
@@ -73,7 +76,11 @@ class AvdSchemaTools:
         Returns:
             Validation result object with any validation errors or deprecation warnings.
         """
-        from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from .validation_result import ValidationResult
+        from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
+
+        # pylint: enable=import-outside-toplevel
 
         result = ValidationResult(failed=False)
 
