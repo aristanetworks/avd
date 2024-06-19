@@ -35,6 +35,7 @@ requires = [
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
+    "eval-type-backport>=0.2.0", # Only needed for 3.9
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
