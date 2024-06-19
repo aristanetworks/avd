@@ -11,8 +11,6 @@ It is used  in the encrypt and decrypt filters
 
 import base64
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-
 try:
     from cryptography.hazmat.backends import default_backend
     from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -181,13 +179,13 @@ def cbc_encrypt(key: bytes, data: bytes) -> bytes:
     Encrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
     """
     if not HAS_CRYPTOGRAPHY:
-        raise AristaAvdError("AVD could not import the required 'cryptography' Python library")
+        raise ImportError("AVD could not import the required 'cryptography' Python library")
 
     hashed_key = hashkey(key)
     padding = (8 - ((len(data) + 4) % 8)) % 8
     ciphertext = ENC_SIG + bytes([padding * 16 + 0xE]) + data + bytes(padding)
 
-    # Accepting SonarLint issue: Insecure algorithm is ok since this is simply matching the algorithm of EOS.
+    # Accepting SonarLint issue: The insecure algorithm is ok since this simply matches the algorithm of EOS.
     cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
     encryptor = cipher.encryptor()
     result = encryptor.update(ciphertext)
@@ -201,10 +199,10 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     Decrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
     raises:
-      * ValueError: if the length of the provided data is not a multiple of the block length.
+      * TypeError: if the length of the provided data is not a multiple of the block length.
     """
     if not HAS_CRYPTOGRAPHY:
-        raise AristaAvdError("AVD could not import the required 'cryptography' Python library")
+        raise ImportError("AVD could not import the required 'cryptography' Python library")
 
     data = base64.b64decode(data)
     hashed_key = hashkey(key)
@@ -218,7 +216,7 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     # Checking the decrypted string
     pad = result[3] >> 4
     if result[:3] != ENC_SIG or pad >= 8 or len(result[4:]) < pad:
-        raise ValueError("Invalid Encrypted String")
+        raise TypeError("Invalid Encrypted String")
     password_len = len(result) - pad
     return result[4:password_len]
 
@@ -228,8 +226,9 @@ def cbc_check_password(key: bytes, data: bytes) -> bool:
     This function is used to verify if an encrypted password is decryptable.
     It does not return the password but only raise an error if the password cannot be decrypted
     """
+    # pylint: disable=W0718
     if not HAS_CRYPTOGRAPHY:
-        raise AristaAvdError("AVD could not import the required 'cryptography' Python library")
+        raise ImportError("AVD could not import the required 'cryptography' Python library")
 
     try:
         cbc_decrypt(key, data)

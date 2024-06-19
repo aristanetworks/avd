@@ -8,8 +8,6 @@ from __future__ import annotations
 
 import random
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-
 from .password_utils import cbc_decrypt, cbc_encrypt
 
 
@@ -17,17 +15,17 @@ def _validate_password_and_key(password: str, key: str) -> None:
     """
     Validates the password and key values
 
-    Raises AristaAvdMissingVariableError if one is missinge
-    Raises AristaAvdError if Password is not a string
+    Raises ValueError if one is missing
+    Raises TypeError if Password is not a string
     """
     if not key:
-        raise AristaAvdMissingVariableError("Key is required for encryption")
+        raise ValueError("Key is required for encryption")
 
     if not password:
-        raise AristaAvdMissingVariableError("Password is required for encryption")
+        raise ValueError("Password is required for encryption")
 
     if not isinstance(password, str):
-        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
+        raise TypeError(f"Password MUST be of type 'str' but is of type {type(password)}")
 
 
 ##############
@@ -61,7 +59,7 @@ def ospf_simple_decrypt(password: str, key: str) -> str:
 
     Returns the decrypted password as a string
 
-    Raises AristaAvdError is decryption fails
+    Raises ValueError if decryption fails
     """
     _validate_password_and_key(password, key)
 
@@ -71,7 +69,7 @@ def ospf_simple_decrypt(password: str, key: str) -> str:
     try:
         return cbc_decrypt(key_b, data).decode()
     except Exception as exc:
-        raise AristaAvdError("OSPF password decryption failed - check the input parameters") from exc
+        raise ValueError("OSPF password decryption failed - check the input parameters") from exc
 
 
 OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS = ["md5", "sha1", "sha256", "sha384", "sha512"]
@@ -91,9 +89,9 @@ def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str = N
     """
     _validate_password_and_key(password, key)
     if hash_algorithm is None or key_id is None:
-        raise AristaAvdMissingVariableError("For OSPF message digest keys, both hash_algorithm and key_id are required")
+        raise ValueError("For OSPF message digest keys, both hash_algorithm and key_id are required")
     if hash_algorithm not in OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS:
-        raise AristaAvdError(f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}")
+        raise ValueError(f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}")
 
     data = bytes(password, encoding="UTF-8")
     key_b = bytes(f"{key}_{hash_algorithm}Key_{key_id}", encoding="UTF-8")
@@ -113,13 +111,13 @@ def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str = N
 
     Returns the decrypted password as a string
 
-    Raises AristaAvdError is decryption fails
+    Raises ValueError if decryption fails
     """
     _validate_password_and_key(password, key)
     if hash_algorithm is None or key_id is None:
-        raise AristaAvdMissingVariableError("For OSPF message digest keys, both hash_algorithm and key_id are required")
+        raise ValueError("For OSPF message digest keys, both hash_algorithm and key_id are required")
     if hash_algorithm not in OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS:
-        raise AristaAvdError(f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}")
+        raise ValueError(f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}")
 
     data = bytes(password, encoding="UTF-8")
     key_b = bytes(f"{key}_{hash_algorithm}Key_{key_id}", encoding="UTF-8")
@@ -127,7 +125,7 @@ def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str = N
     try:
         return cbc_decrypt(key_b, data).decode()
     except Exception as exc:
-        raise AristaAvdError("OSPF password decryption failed - check the input parameters") from exc
+        raise ValueError("OSPF password decryption failed - check the input parameters") from exc
 
 
 ##############
@@ -153,7 +151,7 @@ def bgp_decrypt(password: str, key) -> str:
 
     Returns the decrypted password as a string
 
-    Raises AristaAvdError is decryption fails
+    Raises ValueError if decryption fails
     """
     _validate_password_and_key(password, key)
 
@@ -163,7 +161,7 @@ def bgp_decrypt(password: str, key) -> str:
     try:
         return cbc_decrypt(key, data).decode()
     except Exception as exc:
-        raise AristaAvdError("BGP password decryption failed - check the input parameters") from exc
+        raise ValueError("BGP password decryption failed - check the input parameters") from exc
 
 
 ##############
@@ -184,19 +182,19 @@ _ISIS_MODE_MAP = {
 
 def _validate_isis_args(password: str, key: str, mode: str):
     if not password:
-        raise AristaAvdError("Password is required for encryption/decryption")
+        raise ValueError("Password is required for encryption/decryption")
 
     if not isinstance(password, str):
-        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
+        raise TypeError(f"Password MUST be of type 'str' but is of type {type(password)}")
 
     if not isinstance(key, str):
-        raise AristaAvdError(f"Key MUST be of type 'str' but is of type {type(key)}")
+        raise TypeError(f"Key MUST be of type 'str' but is of type {type(key)}")
 
     if not isinstance(mode, str):
-        raise AristaAvdError(f"Mode MUST be a string with one of the following options: {list(_ISIS_MODE_MAP)}. Got '{mode}'.")
+        raise TypeError(f"Mode MUST be a string with one of the following options: {list(_ISIS_MODE_MAP)}. Got '{mode}'.")
 
     if not mode:
-        raise AristaAvdError("Mode is required for encryption/decryption")
+        raise ValueError("Mode is required for encryption/decryption")
 
 
 def _get_isis_key(key: str, mode: str) -> bytes:
@@ -230,7 +228,7 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
 
     Returns the decrypted password as a string.
 
-    Raises AristaAvdError is decryption fails
+    Raises ValueError if decryption fails
     """
     _validate_isis_args(password, key, mode)
 
@@ -239,7 +237,7 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
     try:
         return cbc_decrypt(_get_isis_key(key, mode), data).decode()
     except Exception as exc:
-        raise AristaAvdError("ISIS password decryption failed - check the input parameters") from exc
+        raise ValueError("ISIS password decryption failed - check the input parameters") from exc
 
 
 ###############
