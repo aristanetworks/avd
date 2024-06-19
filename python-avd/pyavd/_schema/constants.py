@@ -46,4 +46,3 @@ DOCS_PATHS = {
     "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_DOCS_PATH,
     "eos_designs": EOS_DESIGNS_DOCS_PATH,
 }
-LICENSE_HEADER = REPO_ROOT.joinpath("development/license-short.txt").read_text(encoding="UTF-8").strip()
