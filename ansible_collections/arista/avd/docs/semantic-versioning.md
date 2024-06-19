@@ -51,7 +51,7 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Filter: `range_expand` | ✅ | ✅ | |
 | Filter: `snmp_hash` | ✅ | ✅ | |
 | Filter: `status_render` | ✅ | ✅ | |
-| Action: `batch_template` | ✘| ✘ | Internal plugin, not intended for external use. |
+| Action: `batch_template` | ✅ | ✅ | |
 | Action: `configlet_build_config` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `cv_workflow` | ✅ | ✅ | The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug. |
 | Action: `eos_designs_facts` | ✘ | ✘ | Internal plugin, not intended for external use.  |
@@ -59,7 +59,7 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Action: `eos_validate_state_reports` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `eos_validate_state_runner` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `inventory_to_container` | ✘ | ✘ | Internal plugin, not intended for external use. |
-| Action: `set_vars` | ✘ | ✘ | Internal plugin, not intended for external use. |
+| Action: `set_vars` | ✅ | ✅ | |
 | Action: `validate_and_template` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `verify_requirements` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `yaml_templates_to_facts` | ✘ | ✘ | Internal plugin, not intended for external use. |
