@@ -150,6 +150,9 @@ keys:
             keys:
               d_path:
                 type: bool
+          redistribute_internal:
+            type: bool
+            description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
       listen_ranges:
         type: list
         description: |
@@ -328,6 +331,52 @@ keys:
                 - int
             maximum_routes_warning_only:
               type: bool
+            missing_policy:
+              type: dict
+              description: Missing policy configuration for all address-families.
+              keys:
+                direction_in:
+                  description: Missing policy inbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                        - deny
+                        - permit
+                        - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy decision.
+                direction_out:
+                  description: Missing policy outbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                        - deny
+                        - permit
+                        - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy decision.
             link_bandwidth:
               type: dict
               keys:
@@ -531,6 +580,52 @@ keys:
                 - int
             maximum_routes_warning_only:
               type: bool
+            missing_policy:
+              type: dict
+              description: Missing policy configuration for all address-families.
+              keys:
+                direction_in:
+                  description: Missing policy inbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                        - deny
+                        - permit
+                        - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy decision.
+                direction_out:
+                  description: Missing policy outbound direction.
+                  type: dict
+                  keys:
+                    action:
+                      description: Missing policy action.
+                      type: str
+                      required: true
+                      valid_values:
+                        - deny
+                        - permit
+                        - deny-in-out
+                    include_community_list:
+                      type: bool
+                      description: Include community-list references in missing policy decision.
+                    include_prefix_list:
+                      type: bool
+                      description: Include prefix-list references in missing policy decision.
+                    include_sub_route_map:
+                      type: bool
+                      description: Include sub-route-map references in missing policy decision.
             allowas_in:
               type: dict
               keys:
@@ -656,9 +751,17 @@ keys:
             advertise_map:
               type: str
               description: Route-map name.
+              deprecation:
+                removed: true
+                warning: true
+                remove_in_version: v4.9.0
             supress_map:
               type: str
               description: Route-map name.
+              deprecation:
+                removed: true
+                warning: true
+                remove_in_version: v4.9.0
             summary_only:
               type: bool
             attribute_map:
@@ -1210,6 +1313,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+          bgp:
+            type: dict
+            keys:
+              redistribute_internal:
+                type: bool
+                description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
           peer_groups:
             type: list
             primary_key: name
@@ -1490,6 +1599,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+          bgp:
+            type: dict
+            keys:
+              redistribute_internal:
+                type: bool
+                description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
           peer_groups:
             type: list
             primary_key: name
@@ -2207,6 +2322,12 @@ keys:
               description: VRF name.
               convert_types:
                 - int
+            bgp:
+              type: dict
+              keys:
+                redistribute_internal:
+                  type: bool
+                  description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
             rd:
               type: str
               description: Route distinguisher.
@@ -2612,9 +2733,17 @@ keys:
                   advertise_map:
                     type: str
                     description: Route-map name.
+                    deprecation:
+                      removed: true
+                      warning: true
+                      remove_in_version: v4.9.0
                   supress_map:
                     type: str
                     description: Route-map name.
+                    deprecation:
+                      removed: true
+                      warning: true
+                      remove_in_version: v4.9.0
                   summary_only:
                     type: bool
                   attribute_map:
@@ -2674,6 +2803,9 @@ keys:
                                 - str
                               min: 2
                               max: 64
+                    redistribute_internal:
+                      type: bool
+                      description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -2829,6 +2961,9 @@ keys:
                                 - str
                               min: 2
                               max: 64
+                    redistribute_internal:
+                      type: bool
+                      description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
                 neighbors:
                   type: list
                   primary_key: ip_address

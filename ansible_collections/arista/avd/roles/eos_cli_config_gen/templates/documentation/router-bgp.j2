@@ -65,6 +65,9 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         elif router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(false) %}
 | no bgp default ipv4-unicast transport ipv6 |
 {%         endif %}
+{%         if router_bgp.bgp.redistribute_internal is arista.avd.defined(false) %}
+| no bgp redistribute-internal |
+{%         endif %}
 {%         if router_bgp.distance.external_routes is arista.avd.defined %}
 {%             set distance_cli = "distance bgp " ~ router_bgp.distance.external_routes %}
 {%             if router_bgp.distance.internal_routes is arista.avd.defined and router_bgp.distance.local_routes is arista.avd.defined %}
@@ -489,16 +492,14 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | -------------- |
 {%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set as_set = true %}
 {%             else %}
 {%                 set as_set = false %}
 {%             endif %}
-{%             set advertise_map = aggregate_address.advertise_map | arista.avd.default('-') %}
-{%             set supress_map = aggregate_address.supress_map | arista.avd.default('-') %}
 {%             if aggregate_address.summary_only is arista.avd.defined(true) %}
 {%                 set summary_only = true %}
 {%             else %}
@@ -511,7 +512,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             else %}
 {%                 set advertise_only = false %}
 {%             endif %}
-| {{ aggregate_address.prefix }} | {{ as_set }} | {{ advertise_map }} | {{ supress_map }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
+| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}

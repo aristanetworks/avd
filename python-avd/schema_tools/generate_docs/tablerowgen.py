@@ -93,8 +93,8 @@ class TableRowGenBase(ABC):
             # TODO: Remove legacy output
             if LEGACY_OUTPUT:
                 return i * (indentation_count - 2) + "-" + " "  # Using space as last indentation to match legacy behavior
-            else:
-                return i * (indentation_count - 2) + "-" + i
+
+            return i * (indentation_count - 2) + "-" + i
 
         return i * indentation_count
 

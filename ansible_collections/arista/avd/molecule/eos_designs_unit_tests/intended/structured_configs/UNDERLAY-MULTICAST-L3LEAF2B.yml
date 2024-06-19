@@ -220,7 +220,7 @@ prefix_lists:
 router_msdp:
   originator_id_local_interface: Loopback0
   peers:
-  - ipv4_address: 192.168.255.6
+  - ipv4_address: 192.168.255.5
     local_interface: Loopback0
     description: UNDERLAY-MULTICAST-L3LEAF2A
     mesh_groups:

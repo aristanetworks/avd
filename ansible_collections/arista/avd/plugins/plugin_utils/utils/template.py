@@ -1,9 +1,6 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ansible.module_utils._text import to_text
-
-
 def template(template_file, template_vars, templar):
     """
     Run Ansible Templar with template file.
@@ -30,6 +27,14 @@ def template(template_file, template_vars, templar):
     str
         The rendered template
     """
+    if templar is None:
+        raise NotImplementedError("Jinja Templating is not implemented in pyavd")
+
+    # We only get here when running from Ansible, so it is safe to import from ansible.
+    # pylint: disable=import-outside-toplevel
+    from ansible.module_utils._text import to_text
+
+    # pylint: enable=import-outside-toplevel
 
     dataloader = templar._loader
     searchpath = templar.environment.loader.searchpath

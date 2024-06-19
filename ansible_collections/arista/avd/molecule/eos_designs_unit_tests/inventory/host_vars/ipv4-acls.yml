@@ -28,6 +28,14 @@ spine:
           ip_address: 172.19.19.0/31
           ipv4_acl_in: TEST-IPV4-ACL-WITH-NO-FIELDS-IN
           ipv4_acl_out: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
+        - name: Ethernet5/1
+          ip_address: 172.20.20.0/31
+          ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+          peer_ip: 172.20.20.1/30
+        - name: Ethernet6/6.6
+          ip_address: 172.21.21.0/31
+          ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+          peer_ip: 172.21.21.1/30
 
 ipv4_acls:
 # ip_access_lists:

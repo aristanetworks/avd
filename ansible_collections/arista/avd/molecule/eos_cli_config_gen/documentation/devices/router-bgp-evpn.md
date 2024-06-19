@@ -182,20 +182,24 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password shared-secret profile profile2 algorithm aes-128-cmac-96
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-PEERS missing-policy address-family all direction out action permit
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 <removed>
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000 warning-limit 80 percent warning-only
+   neighbor MLAG-IPv4-UNDERLAY-PEER missing-policy address-family all direction in action deny
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 allowas-in 5
    neighbor 192.168.255.1 password shared-secret profile profile1 algorithm aes-128-cmac-96
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 missing-policy address-family all direction out action deny-in-out
    neighbor 192.168.255.3 allowas-in 5
    neighbor 192.168.255.3 maximum-routes 52000 warning-limit 2000 warning-only
+   neighbor 192.168.255.3 missing-policy address-family all direction in action deny
    !
    vlan 2488
       rd 145.245.21.0:1

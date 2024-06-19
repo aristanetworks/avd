@@ -45,6 +45,48 @@
 {%             set framed_mtu = dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') %}
 | {{ radius_av_pair_service }} | {{ framed_mtu }} |
 {%         endif %}
+{%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
+
+#### 802.1X Captive-portal authentication
+
+| Authentication Attribute | Value |
+| ------------------------ | ----- |
+{%             if dot1x.captive_portal.url is arista.avd.defined %}
+| URL | {{ dot1x.captive_portal.url }} |
+{%             endif %}
+{%             if dot1x.captive_portal.ssl_profile is arista.avd.defined %}
+| SSL profile | {{ dot1x.captive_portal.ssl_profile }} |
+{%             endif %}
+{%             if dot1x.captive_portal.access_list_ipv4 is arista.avd.defined %}
+| IPv4 Access-list | {{ dot1x.captive_portal.access_list_ipv4 }} |
+{%             endif %}
+{%             if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
+| Start limit | Infinite |
+{%             endif %}
+{%         endif %}
+{%         if dot1x.supplicant is arista.avd.defined %}
+
+#### 802.1X Supplicant
+
+| Attribute | Value |
+| --------- | ----- |
+{%             if dot1x.supplicant.logging is arista.avd.defined %}
+| Logging | {{ dot1x.supplicant.logging }} |
+{%             endif %}
+{%             if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
+| Disconnect cached-results timeout | {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds |
+{%             endif %}
+{%             if dot1x.supplicant.profiles is arista.avd.defined %}
+
+##### 802.1X Supplicant profiles
+
+| Profile | EAP Method | Identity | SSL Profile |
+| ------- | ---------- | -------- | ----------- |
+{%                 for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
+| {{ profile.name }} | {{ profile.eap_method | arista.avd.default("-") }} | {{ profile.identity | arista.avd.default("-") }} | {{ profile.ssl_profile | arista.avd.default("-") }} |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interfaces_dot1x | length > 0 %}
 
