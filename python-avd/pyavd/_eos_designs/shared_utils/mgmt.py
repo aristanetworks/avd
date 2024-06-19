@@ -6,11 +6,11 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ...vendor.errors import AristaAvdMissingVariableError
+from ...vendor.utils import default, get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class MgmtMixin:
@@ -70,7 +70,7 @@ class MgmtMixin:
 
             return default_mgmt_method
 
-        elif default_mgmt_method == "inband":
+        if default_mgmt_method == "inband":
             # Check for missing interface
             if self.inband_mgmt_interface is None:
                 raise AristaAvdMissingVariableError("'default_mgmt_method: inband' requires 'inband_mgmt_interface' to be set.")
@@ -83,7 +83,7 @@ class MgmtMixin:
     def default_mgmt_protocol_vrf(self: SharedUtils) -> str | None:
         if self.default_mgmt_method == "oob":
             return self.mgmt_interface_vrf
-        elif self.default_mgmt_method == "inband":
+        if self.default_mgmt_method == "inband":
             # inband_mgmt_vrf returns None for vrf default.
             return self.inband_mgmt_vrf or "default"
 
@@ -93,7 +93,7 @@ class MgmtMixin:
     def default_mgmt_protocol_interface(self: SharedUtils) -> str | None:
         if self.default_mgmt_method == "oob":
             return self.mgmt_interface
-        elif self.default_mgmt_method == "inband":
+        if self.default_mgmt_method == "inband":
             return self.inband_mgmt_interface
 
         return None

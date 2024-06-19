@@ -179,7 +179,7 @@ classDiagram
 
 ### SharedUtils
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/shared_utils)
 
 ```mermaid
 classDiagram

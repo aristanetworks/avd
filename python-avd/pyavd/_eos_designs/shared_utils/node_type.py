@@ -7,11 +7,11 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...vendor.errors import AristaAvdMissingVariableError
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class NodeTypeMixin:
@@ -28,13 +28,13 @@ class NodeTypeMixin:
         """
         if (node_type := get(self.hostvars, "type")) is not None:
             return node_type
-        elif self.default_node_type:
+        if self.default_node_type:
             return self.default_node_type
 
         raise AristaAvdMissingVariableError(f"'type' for host {self.hostname}")
 
     @cached_property
-    def default_node_type(self: SharedUtils) -> str:
+    def default_node_type(self: SharedUtils) -> str | None:
         """
         default_node_type set based on hostname, returning
         first node type matching a regex in default_node_types

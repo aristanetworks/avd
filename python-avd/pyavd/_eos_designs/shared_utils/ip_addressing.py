@@ -6,12 +6,12 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
+from ...vendor.merge import merge
+from ...vendor.utils import get, load_python_class
+from ..ip_addressing import AvdIpAddressing
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 DEFAULT_AVD_IP_ADDRESSING_PYTHON_CLASS_NAME = "AvdIpAddressing"
 
@@ -58,8 +58,8 @@ class IpAddressingMixin:
         """
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
-        else:
-            return self.ip_addressing.vtep_ip()
+
+        return self.ip_addressing.vtep_ip()
 
     @cached_property
     def vtep_vvtep_ip(self: SharedUtils) -> str | None:
@@ -96,5 +96,5 @@ class IpAddressingMixin:
         node_type_templates = get(self.node_type_key_data, "ip_addressing", default={})
         if hostvar_templates or node_type_templates:
             return merge(hostvar_templates, node_type_templates, list_merge="replace", destructive_merge=False)
-        else:
-            return {}
+
+        return {}

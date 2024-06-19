@@ -6,13 +6,13 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ...j2filters.natural_sort import natural_sort
+from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.strip_empties import strip_empties_from_dict
+from ...vendor.utils import default, get, get_item
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class WanMixin:
@@ -484,7 +484,7 @@ class WanMixin:
             return None
         if self.is_first_ha_peer:
             return self.switch_data_node_group_nodes[1]["name"]
-        elif self.switch_data_node_group_nodes[1]["name"] == self.hostname:
+        if self.switch_data_node_group_nodes[1]["name"] == self.hostname:
             return self.switch_data_node_group_nodes[0]["name"]
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
 

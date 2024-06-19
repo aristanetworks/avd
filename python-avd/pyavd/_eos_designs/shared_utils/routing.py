@@ -6,12 +6,12 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
+from ...vendor.j2.filter.range_expand import range_expand
+from ...vendor.utils import get
 
 if TYPE_CHECKING:
-    from .shared_utils import SharedUtils
+    from . import SharedUtils
 
 
 class RoutingMixin:
@@ -103,21 +103,19 @@ class RoutingMixin:
         if self.bgp:
             if get(self.hostvars, "bgp_as") is not None:
                 return str(get(self.hostvars, "bgp_as"))
-            else:
-                bgp_as_range_expanded = range_expand(str(get(self.switch_data_combined, "bgp_as", required=True)))
-                try:
-                    if len(bgp_as_range_expanded) == 1:
-                        return bgp_as_range_expanded[0]
-                    elif self.mlag:
-                        return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
-                    else:
-                        if self.id is None:
-                            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'")
-                        return bgp_as_range_expanded[self.id - 1]
-                except IndexError as exc:
-                    raise AristaAvdError(
-                        f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
-                    ) from exc
+
+            bgp_as_range_expanded = range_expand(str(get(self.switch_data_combined, "bgp_as", required=True)))
+            try:
+                if len(bgp_as_range_expanded) == 1:
+                    return bgp_as_range_expanded[0]
+                if self.mlag:
+                    return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
+
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'")
+                return bgp_as_range_expanded[self.id - 1]
+            except IndexError as exc:
+                raise AristaAvdError(f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device") from exc
 
     @cached_property
     def always_configure_ip_routing(self: SharedUtils) -> bool:
