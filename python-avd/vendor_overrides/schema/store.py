@@ -4,7 +4,7 @@
 from functools import lru_cache
 from pickle import load
 
-from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS
+from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS  # pylint: disable=no-name-in-module
 
 
 @lru_cache

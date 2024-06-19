@@ -37,6 +37,20 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: true
   vrfs:
+  - name: research1
+    router_id: 10.10.0.3
+    rd: 10.10.0.3:654556
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 654556:654556
+      export:
+      - address_family: evpn
+        route_targets:
+        - 654556:654556
+    redistribute_routes:
+    - source_protocol: connected
   - name: SIT2
     router_id: 10.10.0.3
     rd: 10.10.0.3:654789
@@ -99,6 +113,22 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 70,80
+  - name: bundle5
+    rd: 1.1.1.1:555
+    route_targets:
+      both:
+      - 405:555
+    redistribute_routes:
+    - learned
+    vlan: 120,1017
+  - name: bundle6
+    rd: 1.1.1.1:666
+    route_targets:
+      both:
+      - 406:666
+    redistribute_routes:
+    - learned
+    vlan: 110,1016
   - name: SIT2
     rd: 10.10.0.3:655089
     route_targets:
@@ -150,6 +180,9 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: research1
+  tenant: research
+  ip_routing: true
 - name: SIT2
   tenant: SIT
   ip_routing: true
@@ -204,6 +237,18 @@ vlans:
 - id: 80
   name: vstorage
   tenant: FABRIC
+- id: 1016
+  name: SVI_9
+  tenant: research
+- id: 1017
+  name: SVI_10
+  tenant: research
+- id: 110
+  name: research1
+  tenant: research
+- id: 120
+  name: research2
+  tenant: research
 - id: 1011
   name: SVI_4
   tenant: SIT
@@ -243,6 +288,20 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
 vlan_interfaces:
+- name: Vlan1016
+  tenant: research
+  tags:
+  - research
+  description: SVI_9
+  shutdown: false
+  vrf: research1
+- name: Vlan1017
+  tenant: research
+  tags:
+  - research
+  description: SVI_10
+  shutdown: false
+  vrf: research1
 - name: Vlan1011
   tenant: SIT
   tags:
@@ -314,6 +373,14 @@ vxlan_interface:
         vni: 10070
       - id: 80
         vni: 10080
+      - id: 1016
+        vni: 11016
+      - id: 1017
+        vni: 11017
+      - id: 110
+        vni: 10110
+      - id: 120
+        vni: 10120
       - id: 1011
         vni: 21011
       - id: 1012
@@ -339,6 +406,8 @@ vxlan_interface:
       - id: 20
         vni: 10020
       vrfs:
+      - name: research1
+        vni: 654556
       - name: SIT2
         vni: 654789
       - name: SIT3

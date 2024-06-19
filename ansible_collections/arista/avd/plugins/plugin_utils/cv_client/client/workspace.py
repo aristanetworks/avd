@@ -218,7 +218,6 @@ class WorkspaceMixin:
         self: CVClient,
         workspace_id: str,
         request_id: str,
-        time: datetime | None = None,
         timeout: float = 3600.0,
     ) -> tuple[Response, Workspace]:
         """
@@ -228,7 +227,6 @@ class WorkspaceMixin:
         Parameters:
             workspace_id: Unique identifier the Workspace.
             request_id: Unique identifier for the Request.
-            time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds for the Workspace to build.
 
         Returns:
@@ -240,7 +238,6 @@ class WorkspaceMixin:
                     key=WorkspaceKey(workspace_id=workspace_id),
                 )
             ],
-            time=time,
         )
         client = WorkspaceServiceStub(self._channel)
         try:

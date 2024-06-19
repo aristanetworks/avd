@@ -16,7 +16,6 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
