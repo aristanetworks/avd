@@ -11,6 +11,7 @@ SCRIPTS_DIR = $(CURRENT_DIR)/scripts
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
+PYAVD_TEST_IMPORT = $(PACKAGE_DIR).j2tests
 EOS_DESIGNS_IMPORT = $(PACKAGE_DIR)._eos_designs
 # export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
 
