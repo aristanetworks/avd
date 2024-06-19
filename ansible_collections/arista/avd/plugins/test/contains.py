@@ -75,7 +75,7 @@ RETURN = r"""
 ---
 _value:
   description:
-    - Returns `False` if either the passed value or the test_values are `Undefined` or `None`.
+    - Returns `False` if either the passed value or the test_values are `Undefined` or `none`.
     - Returns `True` if the passed list contains one or more of the supplied test_values. `False` otherwise.
   type: boolean
 """
