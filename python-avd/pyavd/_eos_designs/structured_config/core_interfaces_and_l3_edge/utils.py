@@ -255,6 +255,7 @@ class UtilsMixin:
                         "isis_hello_padding": p2p_link.get("isis_hello_padding", True),
                         "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type),
                         "isis_authentication_mode": get(p2p_link, "isis_authentication_mode", default=get(self._hostvars, "underlay_isis_authentication_mode")),
+                        "isis_authentication_parameters": get(p2p_link, "isis_authentication_parameters"),
                         "isis_authentication_key": get(p2p_link, "isis_authentication_key", default=get(self._hostvars, "underlay_isis_authentication_key")),
                     }
                 )

@@ -33,8 +33,27 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code><br>- <code>sha</code><br>- <code>shared-secret</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_parameters</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters") | Dictionary |  |  |  | Required when `isis_authentication_mode` is `sha` or `shared-secret`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.both") | Dictionary |  |  |  | This setting is preferred over `level_1` and `level_2`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.both.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.both.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.both.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.both.shared_secret.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.both.shared_secret.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_1") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_1.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_1.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_1.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_1.shared_secret.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_1.shared_secret.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_2") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_2.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_2.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_2.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_2.shared_secret.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_parameters.level_2.shared_secret.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "core_interfaces.p2p_links_profiles.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
@@ -79,8 +98,27 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links.[].isis_hello_padding") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code><br>- <code>sha</code><br>- <code>shared-secret</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_parameters</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters") | Dictionary |  |  |  | Required when `isis_authentication_mode` is `sha` or `shared-secret`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.both") | Dictionary |  |  |  | This setting is preferred over `level_1` and `level_2`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.both.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.both.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.both.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.both.shared_secret.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.both.shared_secret.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_1") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_1.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_1.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_1.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_1.shared_secret.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_1.shared_secret.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_2") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_2.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_2.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_2.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_2.shared_secret.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "core_interfaces.p2p_links.[].isis_authentication_parameters.level_2.shared_secret.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "core_interfaces.p2p_links.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
@@ -176,10 +214,45 @@
           isis_hello_padding: <bool; default=False>
           isis_metric: <int>
           isis_circuit_type: <str; "level-1" | "level-2" | "level-1-2">
-          isis_authentication_mode: <str; "md5" | "text">
+          isis_authentication_mode: <str; "md5" | "text" | "sha" | "shared-secret">
 
           # Type-7 encrypted password.
           isis_authentication_key: <str>
+
+          # Required when `isis_authentication_mode` is `sha` or `shared-secret`.
+          isis_authentication_parameters:
+
+            # This setting is preferred over `level_1` and `level_2`.
+            both:
+
+              # Required settings for authentication mode 'sha'.
+              sha:
+                key_id: <int; 1-65535; required>
+
+              # Required settings for authentication mode 'shared_secret'.
+              shared_secret:
+                profile: <str; required>
+                algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+            level_1:
+
+              # Required settings for authentication mode 'sha'.
+              sha:
+                key_id: <int; 1-65535; required>
+
+              # Required settings for authentication mode 'shared_secret'.
+              shared_secret:
+                profile: <str; required>
+                algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+            level_2:
+
+              # Required settings for authentication mode 'sha'.
+              sha:
+                key_id: <int; 1-65535; required>
+
+              # Required settings for authentication mode 'shared_secret'.
+              shared_secret:
+                profile: <str; required>
+                algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
 
           # MPLS parameters. Default value is true if switch.mpls_lsr is true.
           mpls_ip: <bool>
@@ -298,10 +371,45 @@
           isis_hello_padding: <bool; default=False>
           isis_metric: <int>
           isis_circuit_type: <str; "level-1" | "level-2" | "level-1-2">
-          isis_authentication_mode: <str; "md5" | "text">
+          isis_authentication_mode: <str; "md5" | "text" | "sha" | "shared-secret">
 
           # Type-7 encrypted password.
           isis_authentication_key: <str>
+
+          # Required when `isis_authentication_mode` is `sha` or `shared-secret`.
+          isis_authentication_parameters:
+
+            # This setting is preferred over `level_1` and `level_2`.
+            both:
+
+              # Required settings for authentication mode 'sha'.
+              sha:
+                key_id: <int; 1-65535; required>
+
+              # Required settings for authentication mode 'shared_secret'.
+              shared_secret:
+                profile: <str; required>
+                algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+            level_1:
+
+              # Required settings for authentication mode 'sha'.
+              sha:
+                key_id: <int; 1-65535; required>
+
+              # Required settings for authentication mode 'shared_secret'.
+              shared_secret:
+                profile: <str; required>
+                algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+            level_2:
+
+              # Required settings for authentication mode 'sha'.
+              sha:
+                key_id: <int; 1-65535; required>
+
+              # Required settings for authentication mode 'shared_secret'.
+              shared_secret:
+                profile: <str; required>
+                algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
 
           # MPLS parameters. Default value is true if switch.mpls_lsr is true.
           mpls_ip: <bool>

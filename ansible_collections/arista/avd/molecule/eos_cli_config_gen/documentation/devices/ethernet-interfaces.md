@@ -312,7 +312,7 @@ sFlow is disabled.
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | md5 |
+| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | shared-secret |
 
 ##### EVPN Multihoming
 
@@ -475,8 +475,8 @@ interface Ethernet5
    isis metric 99
    no isis hello padding
    isis network point-to-point
-   isis authentication mode md5
    isis authentication key 7 <removed>
+   isis authentication mode shared-secret profile profile1 algorithm sha-1
    spanning-tree guard loop
 !
 interface Ethernet6
