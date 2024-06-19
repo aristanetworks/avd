@@ -1,21 +1,16 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 import os
 
 import pytest
 import yaml
 from deepmerge import always_merger
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdValidationError
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import DEFAULT_SCHEMA, AvdSchema
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.default_schemas import DEFAULT_SCHEMAS
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
+from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
+from pyavd._schema.avdschemaresolver import AvdSchemaResolver
+from pyavd.vendor.errors import AvdValidationError  # pylint: disable=no-name-in-module
+from schema_tools.constants import SCHEMA_PATHS
+from schema_tools.store import create_store
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
@@ -122,86 +117,82 @@ class TestAvdSchema:
         assert isinstance(avdschema, AvdSchema)
         assert avdschema._schema == DEFAULT_SCHEMA
 
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    def test_avd_schema_init_with_schema(self, TEST_SCHEMA):
-        avdschema = AvdSchema(TEST_SCHEMA)
+    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
+    def test_avd_schema_init_with_schema(self, test_schema):
+        avdschema = AvdSchema(test_schema)
         assert isinstance(avdschema, AvdSchema)
-        assert avdschema._schema == TEST_SCHEMA
+        assert avdschema._schema == test_schema
 
     def test_avd_schema_init_with_invalid_schema(self):
         with pytest.raises(AvdValidationError):
             AvdSchema(INVALID_SCHEMA)
 
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    def test_avd_schema_validate_schema(self, TEST_SCHEMA):
+    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
+    def test_avd_schema_validate_schema(self, test_schema):
         try:
-            for validation_error in AvdSchema().validate_schema(TEST_SCHEMA):
+            for validation_error in AvdSchema().validate_schema(test_schema):
                 assert False, f"Validation Error '{validation_error.message}' returned"
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema().validate_schema(TEST_SCHEMA) raised an exception: {e}"
-        assert True
 
     def test_avd_schema_validate_invalid_schema(self):
         try:
             for validation_error in AvdSchema().validate_schema(INVALID_SCHEMA):
                 assert isinstance(validation_error, AvdValidationError)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema().validate_schema(INVALID_SCHEMA) raised an exception: {e}"
 
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_validate_without_schema(self, TEST_DATA):
+    @pytest.mark.parametrize("test_data", TEST_DATA_SETS)
+    def test_avd_schema_validate_without_schema(self, test_data):
         try:
-            for validation_error in AvdSchema().validate(TEST_DATA):
-                pass
-        except Exception as e:
+            list(AvdSchema().validate(test_data))
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema().validate(TEST_DATA) raised an exception: {e}"
-        assert True
 
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_validate_with_loaded_schema(self, TEST_SCHEMA, TEST_DATA):
+    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
+    @pytest.mark.parametrize("test_data", TEST_DATA_SETS)
+    def test_avd_schema_validate_with_loaded_schema(self, test_schema, test_data):
         try:
-            for validation_error in AvdSchema(TEST_SCHEMA).validate(TEST_DATA):
+            for validation_error in AvdSchema(test_schema).validate(test_data):
                 assert False, f"Validation Error '{validation_error.message}' returned"
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema(TEST_SCHEMA).validate(TEST_DATA) raised an exception: {e}"
-        assert True
 
-    @pytest.mark.parametrize("INVALID_DATA", INVALID_ACL_DATA)
-    def test_avd_schema_validate_with_invalid_data(self, INVALID_DATA):
+    @pytest.mark.parametrize("invalid_data", INVALID_ACL_DATA)
+    def test_avd_schema_validate_with_invalid_data(self, invalid_data):
         try:
-            for validation_error in AvdSchema(combined_schema).validate(INVALID_DATA):
+            for validation_error in AvdSchema(combined_schema).validate(invalid_data):
                 assert isinstance(validation_error, AvdValidationError)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema(combined_schema).validate(INVALID_DATA) raised an exception: {e}"
 
     def test_avd_schema_validate_with_missing_data(self):
         with pytest.raises(TypeError):
-            AvdSchema().validate()
+            AvdSchema().validate()  # pylint: disable=no-value-for-parameter
 
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    def test_avd_schema_load_valid_schema(self, TEST_SCHEMA):
+    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
+    def test_avd_schema_load_valid_schema(self, test_schema):
         try:
             avdschema = AvdSchema()
-            avdschema.load_schema(TEST_SCHEMA)
-        except Exception as e:
+            avdschema.load_schema(test_schema)
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"load_schema(TEST_SCHEMA) raised an exception: {e}"
-        assert avdschema._schema == TEST_SCHEMA
+        assert avdschema._schema == test_schema
 
     def test_avd_schema_load_invalid_schema(self):
         with pytest.raises(AvdValidationError):
             avdschema = AvdSchema()
             avdschema.load_schema(INVALID_SCHEMA)
 
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    def test_avd_schema_extend_valid_schema(self, TEST_SCHEMA):
+    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
+    def test_avd_schema_extend_valid_schema(self, test_schema):
         expected_schema = {}
         expected_schema = always_merger.merge(expected_schema, DEFAULT_SCHEMA)
-        expected_schema = always_merger.merge(expected_schema, TEST_SCHEMA)
+        expected_schema = always_merger.merge(expected_schema, test_schema)
         try:
             avdschema = AvdSchema()
-            avdschema.extend_schema(TEST_SCHEMA)
-        except Exception as e:
+            avdschema.extend_schema(test_schema)
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"extend_schema(TEST_SCHEMA) raised an exception: {e}"
         assert avdschema._schema == expected_schema
 
@@ -210,21 +201,21 @@ class TestAvdSchema:
             avdschema = AvdSchema()
             avdschema.extend_schema(INVALID_SCHEMA)
 
-    @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
-    def test_avd_schema_subschema_with_loaded_schema(self, TEST_PATH):
+    @pytest.mark.parametrize("test_path", TEST_DATA_PATHS)
+    def test_avd_schema_subschema_with_loaded_schema(self, test_path):
         try:
             avdschema = AvdSchema(combined_schema)
-            subschema = avdschema.subschema(TEST_PATH)
-        except Exception as e:
+            subschema = avdschema.subschema(test_path)
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"subschema(TEST_PATH) raised an exception: {e}"
-        if len(TEST_PATH) == 0:
+        if len(test_path) == 0:
             assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
         else:
-            assert subschema == EXPECTED_SUBSCHEMAS[".".join(TEST_PATH)]
+            assert subschema == EXPECTED_SUBSCHEMAS[".".join(test_path)]
 
     def test_avd_schema_subschema_with_ref_to_store_schemas(self):
         test_schema = {"type": "dict", "keys": {}}
-        for id in DEFAULT_SCHEMAS:
+        for id in SCHEMA_PATHS:
             if id == "avd_meta_schema":
                 continue
             test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#"}
@@ -235,33 +226,32 @@ class TestAvdSchema:
         resolved_test_schema = AvdSchemaResolver("", store).resolve(test_schema)
 
         avdschema = AvdSchema(resolved_test_schema)
-        for id in DEFAULT_SCHEMAS:
+        for id in SCHEMA_PATHS:
             if id == "avd_meta_schema":
                 continue
             subschema = avdschema.subschema([id])
             assert subschema.get("type") == "dict"
             assert subschema.get("keys") is not None
 
-    @pytest.mark.parametrize("TEST_SCHEMA", UNIQUE_KEYS_SCHEMAS)
-    @pytest.mark.parametrize("TEST_DATA", UNIQUE_KEYS_VALID_DATA)
-    def test_avd_schema_validate_unique_keys_valid_data(self, TEST_SCHEMA, TEST_DATA):
+    @pytest.mark.parametrize("test_schema", UNIQUE_KEYS_SCHEMAS)
+    @pytest.mark.parametrize("test_data", UNIQUE_KEYS_VALID_DATA)
+    def test_avd_schema_validate_unique_keys_valid_data(self, test_schema, test_data):
         try:
-            for validation_error in AvdSchema(TEST_SCHEMA).validate(TEST_DATA):
+            for validation_error in AvdSchema(test_schema).validate(test_data):
                 assert False, f"Validation Error '{validation_error.message}' returned"
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema(UNIQUE_KEYS_SCHEMAS).validate(UNIQUE_KEYS_VALID_DATA) raised an exception: {e}"
-        assert True
 
-    @pytest.mark.parametrize("TEST_SCHEMA", UNIQUE_KEYS_SCHEMAS)
-    @pytest.mark.parametrize("INVALID_DATA", UNIQUE_KEYS_INVALID_DATA)
-    def test_avd_schema_validate_unique_keys_invalid_data(self, TEST_SCHEMA, INVALID_DATA):
+    @pytest.mark.parametrize("test_schema", UNIQUE_KEYS_SCHEMAS)
+    @pytest.mark.parametrize("invalid_data", UNIQUE_KEYS_INVALID_DATA)
+    def test_avd_schema_validate_unique_keys_invalid_data(self, test_schema, invalid_data):
         try:
-            validation_errors = tuple(AvdSchema(TEST_SCHEMA).validate(INVALID_DATA))
+            validation_errors = tuple(AvdSchema(test_schema).validate(invalid_data))
             if not validation_errors:
                 assert False, "did NOT fail validation"
             for validation_error in validation_errors:
                 assert isinstance(validation_error, AvdValidationError)
                 assert validation_error.path.endswith((".key", ".nested_list_key"))
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema(UNIQUE_KEYS_SCHEMAS).validate(UNIQUE_KEYS_INVALID_DATA) raised an exception: {e}"

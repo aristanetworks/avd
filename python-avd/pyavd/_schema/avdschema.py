@@ -6,25 +6,14 @@ from __future__ import annotations
 from copy import deepcopy
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError, AvdValidationError
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avddataconverter import AvdDataConverter
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AvdValidator
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
+import jsonschema
+from deepmerge import always_merger
 
-try:
-    import jsonschema
-except ImportError as imp_exc:
-    JSONSCHEMA_IMPORT_ERROR = imp_exc
-else:
-    JSONSCHEMA_IMPORT_ERROR = None
-
-try:
-    from deepmerge import always_merger
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
+from ..vendor.errors import AristaAvdError, AvdSchemaError, AvdValidationError
+from .avddataconverter import AvdDataConverter
+from .avdschemaresolver import AvdSchemaResolver
+from .avdvalidator import AvdValidator
+from .store import create_store
 
 DEFAULT_SCHEMA = {
     "type": "dict",
@@ -49,11 +38,6 @@ class AvdSchema:
     """
 
     def __init__(self, schema: dict = None, schema_id: str = None, load_store_from_yaml=False):
-        if JSONSCHEMA_IMPORT_ERROR:
-            raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-        if DEEPMERGE_IMPORT_ERROR:
-            raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
-
         self.store = create_store(load_from_yaml=load_store_from_yaml)
         self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
         self.load_schema(schema, schema_id)
@@ -117,7 +101,7 @@ class AvdSchema:
         try:
             for validation_error in validation_errors:
                 yield self._error_handler(validation_error)
-        except Exception as error:
+        except Exception as error:  # pylint: disable=broad-exception-caught
             yield self._error_handler(error)
 
     def convert(self, data):
@@ -126,7 +110,7 @@ class AvdSchema:
         try:
             for conversion_error in conversion_errors:
                 yield self._error_handler(conversion_error)
-        except Exception as error:
+        except Exception as error:  # pylint: disable=broad-exception-caught
             yield self._error_handler(error)
 
     @cached_property

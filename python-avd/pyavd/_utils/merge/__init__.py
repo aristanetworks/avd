@@ -6,35 +6,28 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from deepmerge import Merger
 
 from .mergeonschema import MergeOnSchema
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
-
-try:
-    from deepmerge import Merger
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
+    from ..._schema.avdschema import AvdSchema
 
 
-def _strategy_keep(config, path, base, nxt):
+def _strategy_keep(_config, _path, base, nxt):
     """prefer base, otherwise nxt"""
     if base is not None:
         return base
     return nxt
 
 
-def _strategy_prepend_unique(config, path, base, nxt):
+def _strategy_prepend_unique(_config, _path, base, nxt):
     """prepend nxt items without duplicates in base to base."""
     nxt_as_set = set(nxt)
     return nxt + [n for n in base if n not in nxt_as_set]
 
 
-def _strategy_must_match(config, path, base, nxt):
+def _strategy_must_match(_config, path, base, nxt):
     if base != nxt:
         raise ValueError(f"Values of {'.'.join(path)} do not match: {base} != {nxt}")
     return base
@@ -79,14 +72,11 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", same_key_strateg
         An instance of AvdSchema can be passed to merge, to allow merging lists of dictionaries using the "primary_key" defined in the schema.
     """
 
-    if DEEPMERGE_IMPORT_ERROR:
-        raise AristaAvdError("AVD requires python deepmerge to be installed") from DEEPMERGE_IMPORT_ERROR
-
     if not destructive_merge:
         base = deepcopy(base)
 
     if list_merge not in MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY:
-        raise AristaAvdError(f"merge: 'list_merge' argument can only be equal to one of {list(MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.keys())}")
+        raise ValueError(f"merge: 'list_merge' argument can only be equal to one of {list(MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.keys())}")
 
     list_strategies = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
 
