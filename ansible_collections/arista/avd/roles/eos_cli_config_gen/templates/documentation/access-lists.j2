@@ -24,8 +24,7 @@ ACL has counting mode `counters per-entry` enabled!
 {%         endfor %}
 
 {%         if access_list.permit_response_traffic is arista.avd.defined %}
-
-ACL has permit response traffic rule `permit response traffic nat` enabled!
+| - | permit response traffic nat |
 {%         endif %}
 {%     endfor %}
 #### Extended Access-lists Device Configuration
