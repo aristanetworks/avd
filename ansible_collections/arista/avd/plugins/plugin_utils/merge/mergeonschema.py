@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 if TYPE_CHECKING:
     from pyavd._schema.avdschema import AvdSchema
@@ -16,6 +16,11 @@ except ImportError as imp_exc:
     DEEPMERGE_IMPORT_ERROR = imp_exc
 else:
     DEEPMERGE_IMPORT_ERROR = None
+
+try:
+    from pyavd.vendor.errors.errors import AvdSchemaError
+except ImportError:
+    from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdSchemaError
 
 
 class MergeOnSchema:
