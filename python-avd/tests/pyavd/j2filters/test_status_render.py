@@ -6,7 +6,7 @@ from __future__ import annotations
 import pytest
 from pyavd.j2filters.status_render import status_render
 
-STATE_STRINGS = [("PASS", "github", ":white_check_mark:"), ("FAIL", "test", "FAIL")]
+STATE_STRINGS = [("PASS", "github", ":white_check_mark:"), ("fail", "github", ":x:"), ("FAIL", "test", "FAIL")]
 
 
 class TestMarkdownRenderingFilter:
