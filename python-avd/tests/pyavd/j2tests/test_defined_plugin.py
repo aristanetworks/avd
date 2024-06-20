@@ -7,7 +7,6 @@ __metaclass__ = type
 
 import pytest
 from jinja2.runtime import Undefined
-
 from pyavd.j2tests.defined import defined
 
 VALUE_LIST = ["ab", None, 1, True, {"key": "value"}]
