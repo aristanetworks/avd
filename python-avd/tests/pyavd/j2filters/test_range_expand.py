@@ -9,7 +9,6 @@ from __future__ import absolute_import, division, print_function
 import pytest
 from pyavd.j2filters.range_expand import range_expand
 
-
 RANGE_TO_EXPAND_INVALID_VALUES = [
     pytest.param(True, TypeError, "value must be of type list or str, got <class 'bool'>", id="Wrong input type - bool"),
     pytest.param({"key": "value"}, TypeError, "value must be of type list or str, got <class 'dict'>", id="Wrong input type - dict"),
