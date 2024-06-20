@@ -23,7 +23,7 @@ ACL has counting mode `counters per-entry` enabled!
 | {{ sequence.sequence }} | {{ sequence.action }} |
 {%         endfor %}
 {%         if access_list.permit_response_traffic is arista.avd.defined %}
-| - | permit response traffic nat |
+| - | permit response traffic {{ access_list.permit_response_traffic }} |
 {%         endif %}
 
 {%     endfor %}
