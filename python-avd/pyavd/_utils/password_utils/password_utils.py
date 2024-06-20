@@ -216,7 +216,7 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     # Checking the decrypted string
     pad = result[3] >> 4
     if result[:3] != ENC_SIG or pad >= 8 or len(result[4:]) < pad:
-        raise TypeError("Invalid Encrypted String")
+        raise ValueError("Invalid Encrypted String")
     password_len = len(result) - pad
     return result[4:password_len]
 
