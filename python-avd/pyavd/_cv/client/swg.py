@@ -94,7 +94,7 @@ class SwgMixin:
             EndpointStatus object matching the device_id
         """
         if start_time is None:
-            start_time = datetime().now()
+            start_time = datetime.now()
         request = EndpointStatusStreamRequest(
             partial_eq_filter=[
                 EndpointStatus(
