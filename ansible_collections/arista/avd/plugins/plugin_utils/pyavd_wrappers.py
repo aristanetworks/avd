@@ -23,7 +23,7 @@ class RaiseOnUse:
     def __init__(self, exception: Exception):
         self.exception = exception
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         raise self.exception
 
 
