@@ -24,7 +24,6 @@ except ImportError as e:
         )
     )
 
-from ansible.errors import AnsibleFilterError
 
 DOCUMENTATION = r"""
 ---
