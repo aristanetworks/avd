@@ -20,10 +20,4 @@ def test_get_device_config(hostname: str, all_inputs: dict, configs: dict):
     assert isinstance(device_config, str)
     # assert f"hostname {hostname}\n" in eos_config
 
-    # Hack to insert newline if the config is empty.
-    # This is to match the jinja generated output from Ansible, where Ansible has a special output function
-    # adding this extra newline if the config is empty.
-    if not device_config:
-        device_config = "\n"
-
     assert device_config == expected_config

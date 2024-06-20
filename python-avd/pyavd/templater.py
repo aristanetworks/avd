@@ -1,17 +1,15 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
+import os
+from pathlib import Path
+from typing import Sequence
+
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
-from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
-from .j2filters.add_md_toc import add_md_toc
-from .j2filters.convert_dicts import convert_dicts
-from .j2filters.default import default
-from .j2filters.generate_esi import generate_esi
-from .j2filters.generate_route_target import generate_route_target
-from .j2filters.hide_passwords import hide_passwords
-from .j2filters.list_compress import list_compress
-from .j2filters.natural_sort import natural_sort
+from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH, JINJA2_TEMPLATE_PATHS, RUNNING_FROM_SRC
 
 
 class Undefined(StrictUndefined):
@@ -23,30 +21,35 @@ class Undefined(StrictUndefined):
     "{% if var is arista.avd.undefined or var.key is arista.avd.undefined or var.key.subkey is arista.avd.undefined %}"
     """
 
-    def __getattr__(self, name):
+    def __getattr__(self, _name):
         # Return original Undefined object to preserve the first failure context
         return self
 
-    def __getitem__(self, key):
+    def __getitem__(self, _key):
         # Return original Undefined object to preserve the first failure context
         return self
 
     def __repr__(self):
         return f"Undefined(hint={self._undefined_hint}, obj={self._undefined_obj}, name={self._undefined_name})"
 
-    def __contains__(self, item):
+    def __contains__(self, _item):
         # Return original Undefined object to preserve the first failure context
         return self
 
 
 class Templar:
     def __init__(self, searchpaths: list[str] = None):
-        self.loader = ChoiceLoader(
-            [
-                ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),
-                FileSystemLoader(searchpaths or []),
-            ]
-        )
+        if not RUNNING_FROM_SRC:
+            self.loader = ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH)
+        else:
+            searchpaths = searchpaths or []
+            searchpaths.extend(JINJA2_TEMPLATE_PATHS)
+            self.loader = ChoiceLoader(
+                [
+                    ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),
+                    FileSystemLoader(searchpaths),
+                ]
+            )
 
         # Accepting SonarLint issue: No autoescaping is ok, since we are not using this for a website, so XSS is not applicable.
         self.environment = Environment(  # NOSONAR
@@ -55,14 +58,28 @@ class Templar:
             undefined=Undefined,
             trim_blocks=True,
         )
+        # Backward-compatible compilation for Jinja 3.0.0 to 3.1.x
+        if not hasattr(self.environment, "concat"):
+            self.environment.concat = "".join
+
         self.import_filters_and_tests()
 
     def import_filters_and_tests(self) -> None:
         # pylint: disable=import-outside-toplevel
+        from .j2filters.add_md_toc import add_md_toc
+        from .j2filters.convert_dicts import convert_dicts
+        from .j2filters.default import default
+        from .j2filters.generate_esi import generate_esi
+        from .j2filters.generate_route_target import generate_route_target
+        from .j2filters.hide_passwords import hide_passwords
+        from .j2filters.is_in_filter import is_in_filter
+        from .j2filters.list_compress import list_compress
+        from .j2filters.natural_sort import natural_sort
+        from .j2filters.snmp_hash import snmp_hash
+        from .j2tests.contains import contains
         from .vendor.j2.filter.decrypt import decrypt
         from .vendor.j2.filter.encrypt import encrypt
         from .vendor.j2.filter.range_expand import range_expand
-        from .vendor.j2.test.contains import contains
         from .vendor.j2.test.defined import defined
 
         # pylint: enable=import-outside-toplevel
@@ -77,9 +94,11 @@ class Templar:
                 "arista.avd.generate_esi": generate_esi,
                 "arista.avd.generate_route_target": generate_route_target,
                 "arista.avd.hide_passwords": hide_passwords,
+                "arista.avd.is_in_filter": is_in_filter,
                 "arista.avd.list_compress": list_compress,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
+                "arista.avd.snmp_hash": snmp_hash,
             }
         )
         self.environment.tests.update(
@@ -93,8 +112,15 @@ class Templar:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, searchpaths: list[str]) -> None:
-        print(JINJA2_PRECOMPILED_TEMPLATE_PATH)
-        self.environment.loader = FileSystemLoader(searchpaths)
+        """Compile the Jinja2 templates in the path.
+        The FileSystemLoader tries to compile any file in the path no matter the extension so
+        this uses a custom one.
+
+        Parameters
+        ----------
+            searchpaths: The list of path to search templates in.
+        """
+        self.environment.loader = ExtensionFileSystemLoader(searchpaths)
         self.environment.compile_templates(
             zip=None,
             log_function=print,
@@ -102,3 +128,22 @@ class Templar:
             ignore_errors=False,
         )
         self.environment.loader = self.loader
+
+
+class ExtensionFileSystemLoader(FileSystemLoader):
+    """Custom Jinja2 loader that filters on extensions."""
+
+    def __init__(
+        self,
+        searchpath: str | os.PathLike[str] | Sequence[str | os.PathLike[str]],
+        encoding: str = "utf-8",
+        followlinks: bool = False,
+        extensions: list[str] | None = None,
+    ) -> None:
+        self.extensions = extensions or [".j2"]
+        super().__init__(searchpath, encoding, followlinks)
+
+    def list_templates(self) -> list[str]:
+        """Filter found files from FileSystemLoader using extensions."""
+        found = super().list_templates()
+        return [file for file in found if Path(file).suffix in self.extensions]

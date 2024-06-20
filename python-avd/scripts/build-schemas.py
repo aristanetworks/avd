@@ -15,14 +15,11 @@ from yaml import load as yaml_load
 # Override global path to load schema from source instead of any installed version.
 path.insert(0, str(Path(__file__).parents[1]))
 
-from schema_tools.constants import JSONSCHEMA_PATHS, LICENSE_HEADER, REPO_ROOT, SCHEMA_FRAGMENTS_PATHS, SCHEMA_PATHS
+from schema_tools.avdtojsonschemaconverter import AvdToJsonSchemaConverter
+from schema_tools.constants import DOCS_PATHS, JSONSCHEMA_PATHS, LICENSE_HEADER, SCHEMA_FRAGMENTS_PATHS, SCHEMA_PATHS
 from schema_tools.generate_docs.mdtabsgen import get_md_tabs
 from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
-
-path.insert(0, str(REPO_ROOT))
-
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
+from schema_tools.store import create_store
 
 FRAGMENTS_PATTERN = "*.yml"
 
@@ -65,13 +62,13 @@ def convert_to_jsonschema(schema_store):
 
 
 def build_schema_tables(schema_store):
-    for schema_name, schema_path in SCHEMA_PATHS.items():
+    for schema_name in SCHEMA_PATHS:
         if schema_name not in SCHEMA_FRAGMENTS_PATHS:
             continue
 
         schema = AristaAvdSchema(**schema_store[schema_name])
         table_names = sorted(schema._descendant_tables)
-        output_dir = schema_path.parents[1].joinpath("docs/tables")
+        output_dir = DOCS_PATHS[schema_name].joinpath("tables")
         for table_name in table_names:
             print(f"Building table: {table_name} from schema {schema_name}")
             table_file = output_dir.joinpath(f"{table_name}.md")
