@@ -77,6 +77,21 @@ router_bgp:
         enable: true
         inter_domain: true
     domain_identifier: "65101:0"
+    neighbors:
+      - ip_address: 10.100.100.1
+        activate: true
+        default_route:
+          enabled: true
+      - ip_address: 10.100.100.2
+        activate: true
+        default_route:
+          enabled: true
+          route_map: RM_DEFAULT_ROUTE
+      - ip_address: 10.100.100.3
+        activate: true
+        default_route:
+          enabled: true
+          rcf: RCF_DEFAULT_ROUTE()
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true

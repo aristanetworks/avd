@@ -726,6 +726,15 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.rcf_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}
 {%             endif %}
+{%             if neighbor.default_route.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_default_route_cli = "neighbor " ~ neighbor.ip_address ~ " default-route" %}
+{%                 if neighbor.default_route.rcf is arista.avd.defined %}
+{%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " rcf " ~ neighbor.default_route.rcf %}
+{%                 elif neighbor.default_route.route_map is arista.avd.defined %}
+{%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " route-map " ~ neighbor.default_route.route_map %}
+{%                 endif %}
+      {{ neighbor_default_route_cli }}
+{%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}
       next-hop resolution disabled

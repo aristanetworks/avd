@@ -275,6 +275,12 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor 10.100.100.1 activate
+      neighbor 10.100.100.1 default-route
+      neighbor 10.100.100.2 activate
+      neighbor 10.100.100.2 default-route route-map RM_DEFAULT_ROUTE
+      neighbor 10.100.100.3 activate
+      neighbor 10.100.100.3 default-route rcf RCF_DEFAULT_ROUTE()
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import ethernet-segment ip mass-withdraw
