@@ -6,9 +6,9 @@
 #
 from __future__ import absolute_import, division, print_function
 
-from ansible.errors import AnsibleFilterError
-
 __metaclass__ = type
+
+from ansible.errors import AnsibleFilterError
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
 
