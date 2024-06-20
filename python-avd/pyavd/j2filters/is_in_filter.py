@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 
-def is_in_filter(hostname: str, hostname_filter: list | None):
+def is_in_filter(hostname: str, hostname_filter: list | None) -> bool:
     """
     Check if device is part of the filter or not.
 
