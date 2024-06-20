@@ -6,9 +6,8 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 
-from ansible_collections.arista.avd.plugins.filter.decrypt import simple_7_decrypt
-
-from ...utils.get import get, get_v2
+from ..._utils.password_utils.password import simple_7_decrypt
+from ...vendor.utils.get import get, get_v2
 from ..api.arista.studio.v1 import InputSchema
 from ..client import CVClient
 from ..client.exceptions import CVResourceNotFound
