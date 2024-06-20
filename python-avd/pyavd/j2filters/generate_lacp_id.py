@@ -14,5 +14,4 @@ def generate_lacp_id(esi_short: str) -> str:
         str: LACP ID
 
     """
-    if isinstance(esi_short, str):
-        return esi_short.replace(":", ".")
+    return esi_short.replace(":", ".")
