@@ -338,6 +338,13 @@ keys:
           - int
         counters_per_entry:
           type: bool
+        permit_response_traffic:
+          type: str
+          valid_values:
+          - nat
+          description: 'Permit response traffic automatically based on NAT translations.
+
+            Minimum EOS version requirement 4.32.2F.'
         sequence_numbers:
           type: list
           required: true
