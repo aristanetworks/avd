@@ -38,6 +38,9 @@ try:
     HAS_PYAVD = True
 except ImportError:
     HAS_PYAVD = False
+    import typing
+
+    CVTimeOuts = typing.Any
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
