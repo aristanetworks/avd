@@ -6,7 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from pyavd.j2filters.markdown_rendering import status_render
+from pyavd.j2filters.status_render import status_render
 
 STATE_STRINGS = [("PASS", "github", ":white_check_mark:"), ("FAIL", "test", "FAIL")]
 
