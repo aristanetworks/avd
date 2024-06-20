@@ -158,8 +158,8 @@ repos:
             ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
             ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
-            ansible_collections/arista/avd/roles/.*/schemas/.*schema\.yml| # Exclude YAML schemas file
-            ansible_collections/arista/avd/roles/.*/schemas/.*jsonschema\.json| # Exclude JSON schemas file
+            python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
+            python-avd/pyavd/.*/schema/.*jsonschema\.json| # Exclude JSON schemas file
             ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for CV API
             ansible_collections/arista/avd/plugins/plugin_utils/cv_client/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
@@ -212,9 +212,20 @@ repos:
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build-schemas.py'
         language: python
-        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
+        files: python-avd/pyavd/[a-z_]+/schema
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
+
+      - id: compile-templates
+        name: Precompile eos_cli_config_gen Jinja2
+        # Workaround because pyavd.vendor is still needed for now - this also rebuilds the schemas so it is a bit wasteful
+        entry: sh -c 'cd python-avd; make dep'
+        # entry: sh -c 'python-avd/scripts/compile_templates.py'
+        language: python
+        files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
+        pass_filenames: false
+        additional_dependencies: ['Jinja2>=3.0.0', 'deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0', 'cryptography>=38.0.4']
+        # additional_dependencies: ['Jinja2>=3.0.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.41.0

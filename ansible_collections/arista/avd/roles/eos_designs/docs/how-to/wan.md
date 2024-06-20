@@ -56,7 +56,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Internet-exit for Zscaler is in PREVIEW
 - `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
-    These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
+    These new tests are added only in the [ANTA integration](../../../eos_validate_state/anta_integration.md) mode.
 
 ### Known limitations
 
