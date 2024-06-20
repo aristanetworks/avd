@@ -342,7 +342,6 @@ route_maps:
     - metric 50
   - sequence: 20
     type: permit
-    description: Permit every other valid route
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10

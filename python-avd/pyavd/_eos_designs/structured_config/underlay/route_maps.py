@@ -137,7 +137,6 @@ class RouteMapsMixin(UtilsMixin):
                     {
                         "sequence": 20,
                         "type": "permit",
-                        "description": "Permit every other valid route",
                     },
                 ]
                 route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
