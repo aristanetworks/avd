@@ -31,7 +31,7 @@ RANGE_TO_EXPAND_INVALID_VALUES = [
     ),
     pytest.param(
         "Ethernet4/2-1/4",
-        Exception,
+        ValueError,
         "Range Ethernet4/2-1/4 could not be expanded because the first interface 2 is larger than last interface 1 in the range.",
         id="Wrong parent interface range",
     ),

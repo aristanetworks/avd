@@ -11,7 +11,6 @@ from ...._utils.password_utils.password import simple_7_encrypt
 from ....j2filters.natural_sort import natural_sort
 from ....j2filters.range_expand import range_expand
 from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.password_utils.password import simple_7_encrypt
 from ....vendor.utils import default, get, get_item
 from .utils_zscaler import UtilsZscalerMixin
 
