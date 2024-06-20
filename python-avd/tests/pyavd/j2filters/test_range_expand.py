@@ -2,7 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from __future__ import absolute_import, division, print_function
+from __future__ import annotations
 
 import pytest
 from pyavd.j2filters.range_expand import range_expand
