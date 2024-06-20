@@ -15,4 +15,7 @@ ip access-list {{ access_list.name }}
    {{ sequence.sequence }} {{ sequence.action }}
 {%         endif %}
 {%     endfor %}
+{%     if access_list.permit_response_traffic is arista.avd.defined %}
+   permit response traffic {{ access_list.permit_response_traffic }}
+{%     endif %}
 {% endfor %}
