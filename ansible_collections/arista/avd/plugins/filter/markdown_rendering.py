@@ -5,6 +5,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.status_render"
+
+try:
+    from pyavd.j2filters.markdown_rendering import status_render
+except ImportError as e:
+    status_render = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -38,33 +53,6 @@ _value:
 
 
 class FilterModule(object):
-    # STATIC EMOJI CODE
-    GH_CODE = {}
-    # Github MD code for Emoji checked box
-    GH_CODE["PASS"] = ":white_check_mark:"
-    # GH MD code for Emoji Fail
-    GH_CODE["FAIL"] = ":x:"
-
-    def status_render(self, state_string, rendering):
-        """
-        status_render Convert Text to EMOJI code
-
-        Parameters
-        ----------
-        state_string : str
-            Text to convert in EMOJI
-        rendering : string
-            Markdown Flavor to use for Emoji rendering.
-
-        Returns
-        -------
-        str
-            Value to render in markdown
-        """
-        if rendering == "github":
-            return self.GH_CODE[state_string.upper()]
-        else:
-            return state_string
 
     def filters(self):
-        return {"status_render": self.status_render}
+        return {"status_render": wrap_filter(PLUGIN_NAME)(status_render)}
