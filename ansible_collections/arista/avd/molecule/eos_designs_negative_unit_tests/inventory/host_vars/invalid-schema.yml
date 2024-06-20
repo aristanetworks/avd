@@ -1,4 +1,4 @@
-fabric_name: fabric_invalid_schema
+fabric_name: FABRIC_INVALID_SCHEMA
 
 type: l2leaf
 l2leaf:

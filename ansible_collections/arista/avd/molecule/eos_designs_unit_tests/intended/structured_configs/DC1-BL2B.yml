@@ -215,11 +215,16 @@ router_bgp:
       neighbors:
       - ip_address: 1.1.1.1
         activate: true
+      - ip_address: 2.2.2.3
+        activate: true
     neighbors:
     - ip_address: 1.1.1.1
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_description
       route_map_out: RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
+    - ip_address: 2.2.2.3
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      description: test_duplicate_peer_ip_address
     - ip_address: BEBA::C0CA:C07A
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_ipv6

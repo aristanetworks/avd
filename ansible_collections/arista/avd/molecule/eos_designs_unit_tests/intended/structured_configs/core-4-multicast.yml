@@ -29,23 +29,23 @@ router_bgp:
     route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 100.64.48.19
-    remote_as: None
+    remote_as: '65002'
     peer: peer1
     description: peer1
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: None
+    local_as: '65001'
   - ip_address: 100.64.48.21
-    remote_as: None
+    remote_as: '65003'
     peer: peer2
     description: peer2
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: None
+    local_as: '65001'
   - ip_address: 100.64.48.23
-    remote_as: None
+    remote_as: '65004'
     peer: peer3
     description: peer3
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: None
+    local_as: '65001'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

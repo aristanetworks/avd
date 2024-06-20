@@ -1,0 +1,47 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - patch panel #}
+{% if patch_panel is arista.avd.defined %}
+
+## Patch Panel
+
+### Patch Panel Summary
+{%     if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined and patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
+
+Patch Panel Connector Interface Recovery Review Delay Min: {{ patch_panel.connector.interface.recovery.review_delay.min }}s - Max: {{ patch_panel.connector.interface.recovery.review_delay.max }}s
+{%     endif %}
+{%     if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable is arista.avd.defined(true) %}
+
+Patch Panel Connector Interface Path BGP VPWS Remote Failure Errdisable is enabled.
+{%     endif %}
+
+#### Patch Panel Connections
+
+| Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
+| ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
+{%     for patch in patch_panel.patches | arista.avd.default([]) %}
+{%         if patch.name is arista.avd.defined %}
+{%             set patch_panel_patch = namespace() %}
+{%             set patch_panel_patch.enabled = patch.enabled | arista.avd.default(true) %}
+{%             for connector in patch.connectors | arista.avd.default([]) %}
+{%                 if loop.first %}
+{%                     set patch_panel_patch.connector_a_type = connector.type | capitalize %}
+{%                     set patch_panel_patch.connector_a_endpoint = connector.endpoint %}
+{%                 else %}
+{%                     set patch_panel_patch.connector_b_type = connector.type | capitalize %}
+{%                     set patch_panel_patch.connector_b_endpoint = connector.endpoint %}
+{%                 endif %}
+{%             endfor %}
+| {{ patch.name }} | {{ patch_panel_patch.enabled }} | {{ patch_panel_patch.connector_a_type }} | {{ patch_panel_patch.connector_a_endpoint }} | {{ patch_panel_patch.connector_b_type }} | {{ patch_panel_patch.connector_b_endpoint }} |
+{%         endif %}
+{%     endfor %}
+
+### Patch Panel Device Configuration
+
+```eos
+{%     include 'eos/patch-panel.j2' %}
+```
+{% endif %}

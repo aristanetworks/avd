@@ -929,6 +929,8 @@ mpls ldp
 
 ### Patch Panel Summary
 
+#### Patch Panel Connections
+
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
 | TEN_A_site2_site5_eline_port_based | True | Interface | Ethernet7 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based |

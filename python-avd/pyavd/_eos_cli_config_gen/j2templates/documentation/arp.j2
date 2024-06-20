@@ -1,0 +1,46 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - arp #}
+{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined or arp.persistent is arista.avd.defined %}
+
+### ARP
+{%     if arp.persistent.enabled is arista.avd.defined(true) %}
+{%         set persistent_doc = "ARP cache persistency is enabled." %}
+{%         if arp.persistent.refresh_delay is arista.avd.defined %}
+{%             set persistent_doc = persistent_doc ~ " The refresh-delay is " ~ arp.persistent.refresh_delay ~ " seconds after reboot." %}
+{%         endif %}
+
+{{ persistent_doc }}
+{%     endif %}
+{%     if arp.aging.timeout_default is arista.avd.defined %}
+
+Global ARP timeout: {{ arp.aging.timeout_default }}
+{%     endif %}
+{%     if arp.static_entries is arista.avd.defined %}
+{# TODO - remove when dropping support for ansible 2.12.6 and its jinja2 hack #}
+{%         for entry in arp.static_entries %}
+{%             if entry.vrf is not arista.avd.defined %}
+{%                 do entry.update({"vrf": "default"}) %}
+{%             endif %}
+{%         endfor %}
+
+#### ARP Static Entries
+
+| VRF | IPv4 address | MAC address |
+| --- | ------------ | ----------- |
+{%         for vrf, entries in arp.static_entries | groupby("vrf") | arista.avd.natural_sort %}
+{%             for entry in entries | arista.avd.natural_sort("ipv4_address") %}
+| {{ vrf }} | {{ entry.ipv4_address }} | {{ entry.mac_address }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+#### ARP Device Configuration
+
+```eos
+{%     include 'eos/arp.j2' %}
+```
+{% endif %}

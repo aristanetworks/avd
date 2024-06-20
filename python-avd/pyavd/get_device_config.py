@@ -1,8 +1,6 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .constants import JINJA2_CONFIG_TEMPLATE
-from .templater import Templar
 
 
 def get_device_config(structured_config: dict) -> str:
@@ -16,6 +14,11 @@ def get_device_config(structured_config: dict) -> str:
     Returns:
         Device configuration in EOS CLI format.
     """
+    # pylint: disable=import-outside-toplevel
+    from .constants import JINJA2_CONFIG_TEMPLATE
+    from .templater import Templar
+
+    # pylint: enable=import-outside-toplevel
 
     templar = Templar()
     return templar.render_template_from_file(JINJA2_CONFIG_TEMPLATE, structured_config)

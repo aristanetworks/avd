@@ -72,7 +72,7 @@ class ActionModule(ActionBase):
             logging_level = get_validated_value(
                 data=self._task.args, key="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS
             )
-            skipped_tests = get_validated_value(data=self._task.args, key="skipped_tests", expected_type=list, default_value=[])
+            skip_tests = get_validated_value(data=self._task.args, key="skip_tests", expected_type=list, default_value=[])
             save_catalog = get_validated_value(data=self._task.args, key="save_catalog", expected_type=bool, default_value=False)
             catalog_path = get_validated_path(path_input=self._task.args.get("device_catalog_path"), parent=True) if save_catalog else None
             test_results_dir = get_validated_path(path_input=self._task.args.get("test_results_dir"), parent=False)
@@ -91,7 +91,7 @@ class ActionModule(ActionBase):
                 anta_device=anta_device,
                 config_manager=config_manager,
                 logging_level=logging_level,
-                skipped_tests=skipped_tests,
+                skip_tests=skip_tests,
                 ansible_tags=ansible_tags,
                 save_catalog_name=catalog_path,
                 custom_anta_catalogs=custom_anta_catalogs,

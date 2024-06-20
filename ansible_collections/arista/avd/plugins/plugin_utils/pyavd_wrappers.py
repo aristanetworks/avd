@@ -5,37 +5,51 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
-from functools import wraps
-from typing import Callable
+from functools import partial, wraps
+from typing import Callable, Literal
 
-from ansible.errors import AnsibleFilterError, AnsibleUndefinedVariable
+from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleTemplateError, AnsibleUndefinedVariable
 from ansible.module_utils.basic import to_native
 from jinja2.exceptions import UndefinedError
 
-from ansible_collections.arista.avd.plugins.action.verify_requirements import _get_running_collection_version
+
+class RaiseOnUse:
+    """
+    Class that will delay raises of errors until the instance is called.
+
+    Used with Ansible try/except import logic to not fail on import of plugins, but instead fail on first use.
+    """
+
+    def __init__(self, exception: Exception):
+        self.exception = exception
+
+    def __call__(self, *args, **kwargs):
+        raise self.exception
 
 
-def wrap_filter(name: str, pyavd_import_error: Exception | None) -> Callable:
-    def wrap_filter_decorator(func: Callable | None) -> Callable:
+def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
+    plugin_map = {
+        "filter": AnsibleFilterError,
+        "test": AnsibleTemplateError,
+    }
+
+    if plugin_type not in plugin_map:
+        raise AnsibleInternalError(f"Wrong plugin type {plugin_type} passed to wrap_plugin.")
+
+    def wrap_plugin_decorator(func: Callable) -> Callable:
         @wraps(func)
-        def filter_wrapper(*args, **kwargs):
-            if pyavd_import_error:
-                result = {}
-                _get_running_collection_version("arista.avd", result)
-                version = result["collection"]["version"]
-                raise AnsibleFilterError(
-                    f"Filter '{name}' was not imported correctly. Check PyAVD is installed correctly with version '{version}' "
-                    f"and that all PyAVD dependencies are also installed correctly. Got import error: '{to_native(pyavd_import_error)}'",
-                    orig_exc=pyavd_import_error,
-                )
-
+        def plugin_wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
             except UndefinedError as e:
-                raise AnsibleUndefinedVariable(f"Filter '{name}' failed: {to_native(e)}", orig_exc=e) from e
+                raise AnsibleUndefinedVariable(f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
             except Exception as e:
-                raise AnsibleFilterError(f"Filter '{name}' failed: {to_native(e)}", orig_exc=e) from e
+                raise plugin_map[plugin_type](f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
 
-        return filter_wrapper
+        return plugin_wrapper
 
-    return wrap_filter_decorator
+    return wrap_plugin_decorator
+
+
+wrap_filter = partial(wrap_plugin, "filter")
+wrap_test = partial(wrap_plugin, "test")

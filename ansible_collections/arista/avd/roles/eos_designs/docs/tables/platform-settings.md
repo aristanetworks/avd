@@ -162,6 +162,14 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
+        - feature_support:
+            per_interface_mtu: false
+            queue_monitor_length_notify: false
+          platforms:
+          - 7010TX
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
         - lag_hardware_only: true
           platforms:
           - 7280R

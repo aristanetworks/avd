@@ -1100,10 +1100,10 @@ ASN Notation: asplain
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | - | - | False | - | - | True |
-| 2.2.1.0/24 | False | - | - | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | True |
+| 2.2.1.0/24 | False | False | - | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -1667,17 +1667,17 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | True | - |
 
 ##### Profile A2
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | - | - |
 
 ###### Keys
 
