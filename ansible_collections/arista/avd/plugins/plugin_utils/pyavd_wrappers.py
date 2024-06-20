@@ -5,11 +5,13 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
+import warnings
 from functools import partial, wraps
 from typing import Callable, Literal
 
 from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleTemplateError, AnsibleUndefinedVariable
 from ansible.module_utils.basic import to_native
+from ansible.utils.display import Display
 from jinja2.exceptions import UndefinedError
 
 
@@ -53,3 +55,19 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
 
 wrap_filter = partial(wrap_plugin, "filter")
 wrap_test = partial(wrap_plugin, "test")
+
+
+def warning_wrapper(func):
+    def wrapper(*args, **kwargs):
+        with warnings.catch_warnings(record=True) as w:
+            # Cause all warnings to always be triggered.
+            warnings.simplefilter("always")
+            result = func(*args, **kwargs)
+
+        # Check if any warnings were issued.
+        if w:
+            for warning in w:
+                Display().warning(str(warning.message))  # Print the warning message
+        return result
+
+    return wrapper

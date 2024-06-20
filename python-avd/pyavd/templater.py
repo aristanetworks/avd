@@ -81,8 +81,8 @@ class Templar:
         from .j2filters.snmp_hash import snmp_hash
         from .j2filters.status_render import status_render
         from .j2tests.contains import contains
+        from .j2tests.defined import defined
         from .vendor.j2.filter.range_expand import range_expand
-        from .vendor.j2.test.defined import defined
 
         # pylint: enable=import-outside-toplevel
 
