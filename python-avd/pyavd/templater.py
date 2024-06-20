@@ -79,6 +79,7 @@ class Templar:
         from .j2filters.list_compress import list_compress
         from .j2filters.natural_sort import natural_sort
         from .j2filters.snmp_hash import snmp_hash
+        from .j2filters.status_render import status_render
         from .j2tests.contains import contains
         from .vendor.j2.filter.range_expand import range_expand
         from .vendor.j2.test.defined import defined
@@ -101,6 +102,7 @@ class Templar:
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
                 "arista.avd.snmp_hash": snmp_hash,
+                "arista.avd.status_render": status_render,
             }
         )
         self.environment.tests.update(
