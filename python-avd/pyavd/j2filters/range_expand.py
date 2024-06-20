@@ -89,7 +89,7 @@ def range_expand(range_to_expand):
                         result = []
                         if last_subinterface is not None:
                             if first_subinterface > last_subinterface:
-                                raise Exception(
+                                raise ValueError(
                                     f"Range {one_range} could not be expanded because the first subinterface {first_subinterface} is larger than last"
                                     f" subinterface {last_subinterface} in the range."
                                 )
@@ -102,7 +102,7 @@ def range_expand(range_to_expand):
                     def expand_interfaces(interface_string):
                         result = []
                         if first_interface > last_interface:
-                            raise Exception(
+                            raise ValueError(
                                 f"Range {one_range} could not be expanded because the first interface {first_interface} is larger than last interface"
                                 f" {last_interface} in the range."
                             )
@@ -115,7 +115,7 @@ def range_expand(range_to_expand):
                         result = []
                         if last_parent_interface:
                             if first_parent_interface > last_parent_interface:
-                                raise Exception(
+                                raise ValueError(
                                     f"Range {one_range} could not be expanded because the first interface {first_parent_interface} is larger than last"
                                     f" interface {last_parent_interface} in the range."
                                 )
@@ -131,7 +131,7 @@ def range_expand(range_to_expand):
                         result = []
                         if last_module:
                             if first_module > last_module:
-                                raise Exception(
+                                raise ValueError(
                                     f"Range {one_range} could not be expanded because the first module {first_module} is larger than last module"
                                     f" {last_module} in the range."
                                 )
@@ -146,6 +146,6 @@ def range_expand(range_to_expand):
                     result.extend(expand_module(prefix))
 
                 else:
-                    raise Exception(f"Invalid range, got {one_range} and found {search_result.groups()}")
+                    raise ValueError(f"Invalid range, got {one_range} and found {search_result.groups()}")
 
     return result
