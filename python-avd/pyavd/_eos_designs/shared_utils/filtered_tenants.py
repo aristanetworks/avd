@@ -11,7 +11,6 @@ from ...j2filters.convert_dicts import convert_dicts
 from ...j2filters.natural_sort import natural_sort
 from ...j2filters.range_expand import range_expand
 from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
 from ...vendor.utils import default, get, get_item, unique
 
 if TYPE_CHECKING:
