@@ -16,20 +16,28 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client import deploy_to_cv
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.workflows.models import (
-    CloudVision,
-    CVChangeControl,
-    CVDevice,
-    CVDeviceTag,
-    CVEosConfig,
-    CVInterfaceTag,
-    CVPathfinderMetadata,
-    CVTimeOuts,
-    CVWorkspace,
-)
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get
+
+PLUGIN_NAME = "arista.avd.cv_workflow"
+
+try:
+    from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
+    from pyavd._cv.workflows.models import (
+        CloudVision,
+        CVChangeControl,
+        CVDevice,
+        CVDeviceTag,
+        CVEosConfig,
+        CVInterfaceTag,
+        CVPathfinderMetadata,
+        CVTimeOuts,
+        CVWorkspace,
+    )
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
@@ -83,6 +91,9 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
+
+        if not HAS_PYAVD:
+            raise AnsibleActionFail("The Python library 'pyavd' was not found. Install using 'pip3 install'.")
 
         # Setup module logging
         setup_module_logging(result)
