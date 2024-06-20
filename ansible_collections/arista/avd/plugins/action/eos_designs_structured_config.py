@@ -14,7 +14,6 @@ from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
@@ -24,8 +23,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import template a
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
+    from pyavd._utils.merge import merge
 except ImportError as e:
-    get_structured_config = RaiseOnUse(
+    get_structured_config = merge = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,

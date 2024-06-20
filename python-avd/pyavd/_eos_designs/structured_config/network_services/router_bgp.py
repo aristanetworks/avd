@@ -9,10 +9,10 @@ from itertools import groupby as itertools_groupby
 from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING
 
+from ...._utils.merge import merge
 from ....j2filters.list_compress import list_compress
 from ....j2filters.natural_sort import natural_sort
 from ....vendor.errors import AristaAvdMissingVariableError
-from ....vendor.merge import merge
 from ....vendor.strip_empties import strip_empties_from_dict
 from ....vendor.utils import append_if_not_duplicate, default, get, get_item
 from .utils import UtilsMixin
