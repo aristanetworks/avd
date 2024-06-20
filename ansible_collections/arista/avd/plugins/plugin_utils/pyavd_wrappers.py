@@ -42,7 +42,14 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
         @wraps(func)
         def plugin_wrapper(*args, **kwargs):
             try:
-                return func(*args, **kwargs)
+                with warnings.catch_warnings(record=True) as w:
+                    # Cause all warnings to always be triggered.
+                    warnings.simplefilter("always")
+                    result = func(*args, **kwargs)
+                if w:
+                    for warning in w:
+                        Display().warning(str(warning.message))
+                return result
             except UndefinedError as e:
                 raise AnsibleUndefinedVariable(f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
             except Exception as e:
@@ -55,19 +62,3 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
 
 wrap_filter = partial(wrap_plugin, "filter")
 wrap_test = partial(wrap_plugin, "test")
-
-
-def warning_wrapper(func):
-    def wrapper(*args, **kwargs):
-        with warnings.catch_warnings(record=True) as w:
-            # Cause all warnings to always be triggered.
-            warnings.simplefilter("always")
-            result = func(*args, **kwargs)
-
-        # Check if any warnings were issued.
-        if w:
-            for warning in w:
-                Display().warning(str(warning.message))  # Print the warning message
-        return result
-
-    return wrapper
