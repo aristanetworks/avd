@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generator
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdConversionWarning, AvdDeprecationWarning
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
+from ..j2filters.convert_dicts import convert_dicts
+from ..vendor.errors import AvdConversionWarning, AvdDeprecationWarning
+from ..vendor.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
     "str": str,
@@ -60,7 +60,7 @@ class AvdDataConverter:
             # Converters will do inplace update of data. Any returns will be yielded conversion messages.
             yield from converter(schema[key], data, schema, path)
 
-    def convert_keys(self, keys: dict, data: dict, schema: dict, path: list[str]):
+    def convert_keys(self, keys: dict, data: dict, _, path: list[str]):
         """
         This function performs conversion on each key with the relevant subschema
         """
@@ -100,7 +100,7 @@ class AvdDataConverter:
         # Reuse convert_keys to perform the actual conversion on the resolved dynamic keys
         yield from self.convert_keys(keys, data, schema, path)
 
-    def convert_items(self, items: dict, data: list, schema: dict, path: list[str]):
+    def convert_items(self, items: dict, data: list, _, path: list[str]):
         """
         This function performs conversion on each item with the items subschema
         """
@@ -150,7 +150,7 @@ class AvdDataConverter:
                 if schema_type in SIMPLE_CONVERTERS:
                     try:
                         data[index] = SIMPLE_CONVERTERS[schema_type](value)
-                    except Exception:
+                    except Exception:  # pylint: disable=broad-exception-caught
                         # Ignore errors
                         # TODO: Log message
                         return
@@ -160,7 +160,7 @@ class AvdDataConverter:
                 elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
                     try:
                         data[index] = convert_dicts(value, schema["primary_key"], secondary_key=schema.get("secondary_key"))
-                    except Exception:
+                    except Exception:  # pylint: disable=broad-exception-caught
                         # Ignore errors
                         # TODO: Log message
                         return
@@ -174,7 +174,7 @@ class AvdDataConverter:
                 elif convert_type == "dict" and schema_type == "list":
                     try:
                         data[index] = list(value)
-                    except Exception:
+                    except Exception:  # pylint: disable=broad-exception-caught
                         # Ignore errors
                         # TODO: Log message
                         return
@@ -184,14 +184,14 @@ class AvdDataConverter:
                 elif convert_type == "str" and schema_type == "list":
                     try:
                         data[index] = list(map(str.strip, value.split(",")))
-                    except Exception:
+                    except Exception:  # pylint: disable=broad-exception-caught
                         # Ignore errors
                         # TODO: Log message
                         return
 
                     yield AvdConversionWarning(key=path, oldtype=convert_type, newtype=schema_type)
 
-    def deprecation(self, deprecation: dict, data, schema: dict, path: list):
+    def deprecation(self, deprecation: dict, _, __, path: list):
         """
         deprecation:
           warning: bool, default = True

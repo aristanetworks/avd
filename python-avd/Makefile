@@ -20,7 +20,7 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dep
-dep: copy-libs fix-libs ## Copy and Fix Ansible AVD python files
+dep: copy-libs fix-libs compile-schemas ## Copy and Fix Ansible AVD python files & compile schemas
 
 .PHONY: test-dep
 test-dep: copy-test-data ## Copy and Fix Ansible AVD test files
@@ -44,6 +44,7 @@ publish: ## Publish pyavd package to PyPI (build first)
 
 .PHONY: compile-schemas
 compile-schemas:
+	$(SCRIPTS_DIR)/build-schemas.py
 
 .PHONY: copy-libs
 copy-libs: ## Copy files from Ansible AVD collection
@@ -60,10 +61,6 @@ copy-libs: ## Copy files from Ansible AVD collection
 
 	rm -rf $(VENDOR_DIR)/eos_designs_*
 
-	$(SCRIPTS_DIR)/build-schemas.py
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle $(SCHEMAS_DIR)/
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle $(SCHEMAS_DIR)/
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/schema/avd_meta_schema.pickle $(SCHEMAS_DIR)/
 	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements.txt requirements-ansible-avd.txt
 
 .PHONY: fix-libs
@@ -106,6 +103,7 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	$(SCRIPTS_DIR)/compile_templates.py
 
 	grep "ansible-core" $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements-dev.txt >> requirements-ansible-avd.txt
+
 
 .PHONY: copy-test-data
 copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.

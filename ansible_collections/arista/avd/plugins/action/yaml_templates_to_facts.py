@@ -18,7 +18,6 @@ from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
@@ -31,8 +30,9 @@ PLUGIN_NAME = "arista.avd.yaml_templates_to_facts"
 
 try:
     from pyavd._eos_designs.shared_utils import SharedUtils
+    from pyavd._utils.merge import merge
 except ImportError as e:
-    SharedUtils = RaiseOnUse(
+    SharedUtils = merge = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,

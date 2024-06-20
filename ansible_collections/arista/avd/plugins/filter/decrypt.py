@@ -10,7 +10,7 @@ PLUGIN_NAME = "arista.avd.decrypt"
 try:
     from pyavd.j2filters.decrypt import decrypt
 except ImportError as e:
-    encrypt = RaiseOnUse(
+    decrypt = RaiseOnUse(
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
