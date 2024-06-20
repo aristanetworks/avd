@@ -68,7 +68,9 @@ class Templar:
         # pylint: disable=import-outside-toplevel
         from .j2filters.add_md_toc import add_md_toc
         from .j2filters.convert_dicts import convert_dicts
+        from .j2filters.decrypt import decrypt
         from .j2filters.default import default
+        from .j2filters.encrypt import encrypt
         from .j2filters.generate_esi import generate_esi
         from .j2filters.generate_lacp_id import generate_lacp_id
         from .j2filters.generate_route_target import generate_route_target
@@ -78,8 +80,6 @@ class Templar:
         from .j2filters.natural_sort import natural_sort
         from .j2filters.snmp_hash import snmp_hash
         from .j2tests.contains import contains
-        from .vendor.j2.filter.decrypt import decrypt
-        from .vendor.j2.filter.encrypt import encrypt
         from .vendor.j2.filter.range_expand import range_expand
         from .vendor.j2.test.defined import defined
 
