@@ -46,11 +46,11 @@ def get(dictionary, key, default=None, required=False, org_key=None, separator="
         if required is True:
             raise AristaAvdMissingVariableError(org_key)
         return default
-    else:
-        if len(keys) > 1:
-            return get(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
-        else:
-            return value
+
+    if len(keys) > 1:
+        return get(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
+
+    return value
 
 
 def get_v2(dict_or_object, key_or_attribute, default=None, required=False, org_key=None, separator="."):
@@ -94,12 +94,13 @@ def get_v2(dict_or_object, key_or_attribute, default=None, required=False, org_k
         value = dict_or_object.get(keys[0])
     else:
         value = getattr(dict_or_object, keys[0], None)
+
     if value is None:
         if required is True:
             raise AristaAvdMissingVariableError(org_key)
         return default
-    else:
-        if len(keys) > 1:
-            return get_v2(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
-        else:
-            return value
+
+    if len(keys) > 1:
+        return get_v2(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
+
+    return value
