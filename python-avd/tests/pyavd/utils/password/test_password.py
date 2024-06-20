@@ -1,18 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
-from contextlib import nullcontext as does_not_raise
+from __future__ import annotations
 
 import pytest
-
-from ansible_collections.arista.avd.plugins.filter.decrypt import decrypt
-from ansible_collections.arista.avd.plugins.filter.encrypt import encrypt
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import (
+from pyavd._utils.password_utils import (
     bgp_decrypt,
     bgp_encrypt,
     isis_decrypt,
@@ -63,6 +55,7 @@ BGP_MOLECULE_PASSWORDS_TEST = [
     ("RR-OVERLAY-PEERS", "arista123", "04FdfTXWrEfpDTUc3mlSjg=="),
     ("MLAG_PEER", "arista123", "arwUnrq9ydqIhjfTwRhAlg=="),
 ]
+OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS = ["md5", "sha1", "sha256", "sha384", "sha512"]
 
 
 @pytest.mark.parametrize("key, password, expected", BGP_INPUT_DICT_ENCRYPT_EXPECTED)
@@ -86,7 +79,7 @@ def test_bgp_decrypt_failure(key, password):
     """
     Test bgp_decrypt failure cases
     """
-    with pytest.raises(AristaAvdError):
+    with pytest.raises(ValueError):
         bgp_decrypt(password, key=key)
 
 
@@ -154,7 +147,7 @@ def test_ospf_simple_decrypt_failure(key, password):
     """
     Test ospf_simple_decrypt failure cases
     """
-    with pytest.raises(AristaAvdError):
+    with pytest.raises(ValueError):
         ospf_simple_decrypt(password, key=key)
 
 
@@ -179,8 +172,13 @@ def test_ospf_message_digest_decrypt_failure(key, password, hash_algorithm, key_
     """
     Test ospf_message_digest_decrypt failure cases
     """
-    with pytest.raises(AristaAvdError):
-        ospf_message_digest_decrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id)
+
+    if hash_algorithm is None or key_id is None:
+        with pytest.raises(ValueError, match="For OSPF message digest keys, both hash_algorithm and key_id are required"):
+            ospf_message_digest_encrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id)
+    elif hash_algorithm not in OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS:
+        with pytest.raises(ValueError, match=f"For OSPF message digest keys, `hash_algorithm` must be in {'|'.join(OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS)}"):
+            ospf_message_digest_encrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id)
 
 
 ##########
@@ -235,52 +233,5 @@ def test_isis_decrypt_failure(key, mode, password):
     """
     Test isis_decrypt failure cases
     """
-    with pytest.raises(AristaAvdError):
+    with pytest.raises(ValueError):
         isis_decrypt(password, key=key, mode=mode)
-
-
-##########
-# GENERIC
-##########
-@pytest.mark.parametrize(
-    "password, passwd_type, key, kwargs, expected_raise",
-    [
-        pytest.param("dummy", None, "dummy", {}, pytest.raises(AristaAvdMissingVariableError), id="Missing Type"),
-        pytest.param("dummy", "eigrp", "dummy", {}, pytest.raises(AristaAvdError), id="Wrong Type"),
-        pytest.param(42, "bgp", "42.42.42.42", {}, does_not_raise(), id="Password is not a string"),
-        pytest.param("arista", "bgp", "42.42.42.42", {}, does_not_raise(), id="Implemented Type BPG"),
-        pytest.param("arista", "ospf_simple", "Ethernet1", {}, does_not_raise(), id="Implemented Type OSPF simple"),
-        pytest.param("arista", "ospf_message_digest", "Ethernet1", {"hash_algorithm": "sha512", "key_id": 66}, does_not_raise(), id="Implemented Type OSPF MD"),
-    ],
-)
-def test_encrypt(password, passwd_type, key, kwargs, expected_raise):
-    """
-    Test encrypt method for non existing and existing type
-    """
-    with expected_raise:
-        encrypt(password, passwd_type=passwd_type, key=key, **kwargs)
-
-
-@pytest.mark.parametrize(
-    "password, passwd_type, key, kwargs, expected_raise",
-    [
-        pytest.param("dummy", None, "dummy", {}, pytest.raises(AristaAvdMissingVariableError), id="Missing Type"),
-        pytest.param("dummy", "eigrp", "dummy", {}, pytest.raises(AristaAvdError), id="Wrong Type"),
-        pytest.param("3QGcqpU2YTwKh2jVQ4Vj/A==", "bgp", "42.42.42.42", {}, does_not_raise(), id="Implemented Type BGP"),
-        pytest.param("qCTcuwOSntAmLZaW2QjKcA==", "ospf_simple", "Ethernet1", {}, does_not_raise(), id="Implemented Type OSPF simple"),
-        pytest.param(
-            "tDvJjUyf8///ktvy/xpfeQ==",
-            "ospf_message_digest",
-            "Ethernet1",
-            {"hash_algorithm": "sha512", "key_id": 66},
-            does_not_raise(),
-            id="Implemented Type OSPF MD",
-        ),
-    ],
-)
-def test_decrypt(password, passwd_type, key, kwargs, expected_raise):
-    """
-    Test decrypt method for non existing and existing type
-    """
-    with expected_raise:
-        decrypt(password, passwd_type=passwd_type, key=key, **kwargs)

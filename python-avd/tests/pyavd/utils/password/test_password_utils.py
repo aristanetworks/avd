@@ -1,13 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 import pytest
-
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password_utils import cbc_check_password, cbc_decrypt, cbc_encrypt
+from pyavd._utils.password_utils.password_utils import cbc_check_password, cbc_decrypt, cbc_encrypt
 
 # password used is "arista"
 VALID_PASSWORD_KEY_PAIRS = [("42.42.42.42", b"3QGcqpU2YTwKh2jVQ4Vj/A=="), ("AVD-TEST", b"bM7t58t04qSqLHAfZR/Szg==")]

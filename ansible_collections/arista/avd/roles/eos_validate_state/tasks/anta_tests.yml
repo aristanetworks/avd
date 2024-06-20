@@ -9,7 +9,7 @@
 - name: Run eos_validate_state_runner leveraging ANTA
   arista.avd.eos_validate_state_runner:
     logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
-    skipped_tests: "{{ skipped_tests | arista.avd.default([]) }}"
+    skip_tests: "{{ skip_tests | arista.avd.default([]) }}"
     save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
     device_catalog_path: "{{ test_catalogs_dir }}/{{ inventory_hostname }}-catalog.yml"
     test_results_dir: "{{ test_results_dir }}"
