@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 
-def generate_lacp_id(esi_short: str):
+def generate_lacp_id(esi_short: str) -> str:
     """
     Transforms short_esi `0303:0202:0101` to LACP ID format `0303.0202.0101`
 
