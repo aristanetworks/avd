@@ -132,14 +132,14 @@
 | 49 | dc1-leaf1a | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
 | 50 | dc1-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
 | 51 | dc1-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
-| 52 | dc1-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
+| 52 | dc1-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok', 'Not Present' | NOT RUN | - |
 | 53 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 54 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 54 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok', 'Not Present' | NOT RUN | - |
 | 55 | dc1-leaf1a | Hardware | VerifyEnvironmentSystemCooling | Verifies the system cooling status. | - | NOT RUN | - |
 | 56 | dc1-leaf1a | Hardware | VerifyTemperature | Verifies the device temperature. | - | NOT RUN | - |
 | 57 | dc1-leaf1a | Hardware | VerifyTemperature | Verifies the device temperature. | - | NOT RUN | - |
 | 58 | dc1-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
-| 59 | dc1-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
+| 59 | dc1-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arastra, Inc.', 'Arista Networks', 'Generic', 'Not Present' | NOT RUN | - |
 | 60 | dc1-leaf1a | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
 | 61 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1 = 'up' | NOT RUN | - |
 | 62 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1 = 'up' | NOT RUN | - |
