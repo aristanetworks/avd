@@ -2418,10 +2418,11 @@ keys:
             evpn_multicast_gateway_dr_election_algorithm:
               type: dict
               keys:
-                election_parameter:
+                election_algorithm:
                   type: str
+                  required: true
                   description: |-
-                    DR election parameters:
+                    DR election algorithms:
                       hrw: Default selection based on highest random weight.
                       modulus: Selection based on VLAN ID modulo number of candidates.
                       preference: Selection based on a configured preference value.
@@ -2431,6 +2432,7 @@ keys:
                     - preference
                 preference_value:
                   type: int
+                  description: Required when `election_algorithm` is `preference`.
                   min: 0
                   max: 65535
                   convert_types:

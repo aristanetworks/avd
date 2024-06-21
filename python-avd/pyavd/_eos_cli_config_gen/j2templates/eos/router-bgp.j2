@@ -1473,12 +1473,13 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if vrf.evpn_multicast is arista.avd.defined(true) %}
       evpn multicast
-{%             if vrf.evpn_multicast_gateway_dr_election_algorithm.election_parameter is arista.avd.defined %}
-{%                 set election_cli = "gateway dr election algorithm" ~ " " ~ vrf.evpn_multicast_gateway_dr_election_algorithm.election_parameter %}
-{%                 if vrf.evpn_multicast_gateway_dr_election_algorithm.election_parameter == "preference" and vrf.evpn_multicast_gateway_dr_election_algorithm.preference_value is arista.avd.defined %}
+{%             if vrf.evpn_multicast_gateway_dr_election_algorithm.election_algorithm is arista.avd.defined %}
+{%                 set election_cli = "gateway dr election algorithm " ~ vrf.evpn_multicast_gateway_dr_election_algorithm.election_algorithm %}
+{%                 if vrf.evpn_multicast_gateway_dr_election_algorithm.election_algorithm == "preference" and vrf.evpn_multicast_gateway_dr_election_algorithm.preference_value is arista.avd.defined %}
 {%                     set election_cli = election_cli ~ " " ~ vrf.evpn_multicast_gateway_dr_election_algorithm.preference_value %}
 {%                 endif %}
          {{ election_cli }}
+         !
 {%             endif %}
 {%             if vrf.evpn_multicast_address_family.ipv4 is arista.avd.defined
                    and vrf.evpn_multicast_address_family.ipv4.transit is arista.avd.defined(true) %}
