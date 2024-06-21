@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.add_md_toc"
 
 try:
-    from pyavd.j2filters.add_md_toc import add_md_toc
+    from pyavd.j2filters import add_md_toc
 except ImportError as e:
     add_md_toc = RaiseOnUse(
         AnsibleFilterError(

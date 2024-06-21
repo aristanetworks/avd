@@ -9,9 +9,8 @@ import re
 from contextlib import contextmanager
 
 import pytest
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from pyavd._errors import AristaAvdError
+from pyavd._utils import get
 
 
 @contextmanager

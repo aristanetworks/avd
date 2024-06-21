@@ -135,7 +135,7 @@ The base class has a few important methods:
 - `get(key, default=None)` returns the value of the requested "key" (`cached_property`) if the "key" is in the list returned by `keys()`.
   Otherwise the default value is returned.
 
-See the source code [here](../../plugins/plugin_utils/avdfacts.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/avdfacts.py)
 
 ### get_structured_config
 

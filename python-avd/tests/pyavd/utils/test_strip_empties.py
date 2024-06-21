@@ -6,8 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
+from pyavd._utils import strip_null_from_data
 
 STRIP_EMPTIES_LIST = {
     "None": ["string1", "string2", "string3", None],

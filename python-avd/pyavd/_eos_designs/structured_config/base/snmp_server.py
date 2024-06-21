@@ -7,11 +7,9 @@ from functools import cached_property
 from hashlib import sha1
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
-from ....j2filters.snmp_hash import snmp_hash
-from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.strip_empties import strip_null_from_data
-from ....vendor.utils import get, replace_or_append_item
+from ...._errors import AristaAvdError, AristaAvdMissingVariableError
+from ...._utils import get, replace_or_append_item, strip_null_from_data
+from ....j2filters import natural_sort, snmp_hash
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

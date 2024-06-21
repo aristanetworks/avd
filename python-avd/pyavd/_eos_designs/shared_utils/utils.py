@@ -6,9 +6,8 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import TYPE_CHECKING
 
-from ..._utils.merge import merge
-from ...vendor.errors import AristaAvdError
-from ...vendor.utils import get, get_item, template_var
+from ..._errors import AristaAvdError
+from ..._utils import get, get_item, merge, template_var
 
 if TYPE_CHECKING:
     from ...eos_designs_facts import EosDesignsFacts

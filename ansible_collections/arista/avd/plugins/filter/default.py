@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.default"
 
 try:
-    from pyavd.j2filters.default import default
+    from pyavd.j2filters import default
 except ImportError as e:
     default = RaiseOnUse(
         AnsibleFilterError(

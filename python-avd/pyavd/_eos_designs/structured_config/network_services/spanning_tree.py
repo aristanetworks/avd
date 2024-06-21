@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.list_compress import list_compress
-from ....vendor.utils import get
+from ...._utils import get
+from ....j2filters import list_compress
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

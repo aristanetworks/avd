@@ -9,7 +9,7 @@ from functools import cached_property
 import jsonschema
 from deepmerge import always_merger
 
-from ..vendor.errors import AristaAvdError, AvdSchemaError, AvdValidationError
+from .._errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from .avddataconverter import AvdDataConverter
 from .avdschemaresolver import AvdSchemaResolver
 from .avdvalidator import AvdValidator

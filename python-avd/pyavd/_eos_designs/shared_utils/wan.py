@@ -6,10 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ...j2filters.natural_sort import natural_sort
-from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.strip_empties import strip_empties_from_dict
-from ...vendor.utils import default, get, get_ip_from_pool, get_item
+from ...j2filters import natural_sort
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get, get_item, get_ip_from_pool, strip_empties_from_dict
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -280,9 +279,7 @@ class WanMixin:
         if node_defined_region is None:
             return None
 
-        regions = get(
-            self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
-        )
+        regions = get(self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.")
 
         return get_item(
             regions,
@@ -337,8 +334,7 @@ class WanMixin:
 
                 if vtep_ip is None:
                     raise AristaAvdMissingVariableError(
-                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
-                        " facts."
+                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer" " facts."
                     )
                 if wan_path_groups is None:
                     raise AristaAvdMissingVariableError(
