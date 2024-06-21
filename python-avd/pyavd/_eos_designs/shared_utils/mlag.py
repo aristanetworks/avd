@@ -8,9 +8,9 @@ from ipaddress import ip_interface
 from re import findall
 from typing import TYPE_CHECKING
 
-from ...j2filters.range_expand import range_expand
 from ..._errors import AristaAvdError, AristaAvdMissingVariableError
 from ..._utils import default, get
+from ...j2filters.range_expand import range_expand
 
 if TYPE_CHECKING:
     from ..eos_designs_facts import EosDesignsFacts

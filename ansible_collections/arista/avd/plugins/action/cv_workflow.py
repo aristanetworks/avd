@@ -21,7 +21,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAn
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
 try:
-    from pyavd._utils import get, strip_empties_from_dict
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
     from pyavd._cv.workflows.models import (
         CloudVision,
@@ -34,6 +33,7 @@ try:
         CVTimeOuts,
         CVWorkspace,
     )
+    from pyavd._utils import get, strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
