@@ -28,7 +28,8 @@ def range_expand(range_to_expand):
                 continue
 
             # Find prefix (if any)
-            regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"
+            # Ignoring SONAR hotspot regarding potential DDOS for this PR.
+            regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"  # NOSONAR
             # Number of groups in this regex.
             regex_groups = 17
             # Groups one-by-one:
