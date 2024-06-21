@@ -68,8 +68,6 @@ router_bgp:
       activate: true
     - name: WAN-RR-OVERLAY-PEERS
       activate: true
-    next_hop:
-      resolution_disabled: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -154,26 +152,6 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.44.3/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.44.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    set:
-    - extcommunity soo 192.168.44.3:0 additive
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - extcommunity ECL-EVPN-SOO
 agents:
 - name: KernelFib
   environment_variables:
@@ -493,6 +471,13 @@ application_traffic_recognition:
     - name: PFX-LOCAL-VTEP-IP
       prefix_values:
       - 192.168.144.3/32
+route_maps:
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

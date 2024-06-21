@@ -60303,6 +60303,12 @@
       "type": "string",
       "title": "Vtep Vvtep IP"
     },
+    "wan_advertise_wan_servers_loopbacks_in_default_vrf": {
+      "description": "PREVIEW: The `wan_advertise_wan_servers_loopbacks_in_default_vrf` key is currently not supported\n\nAdvertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers when set to true.\nBy default, this is not done to speed up convergence. The consequence is that Loopback0 IPs from\nWAN route servers are not reachable over the WAN from the WAN routers.",
+      "type": "boolean",
+      "default": false,
+      "title": "Wan Advertise Wan Servers Loopbacks In Default VRF"
+    },
     "wan_carriers": {
       "description": "List of carriers used for the WAN configuration and their mapping to path-groups.",
       "type": "array",

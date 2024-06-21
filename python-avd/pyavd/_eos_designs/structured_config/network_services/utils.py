@@ -530,7 +530,6 @@ class UtilsMixin(UtilsZscalerMixin):
         """
         If no policy is defined for a VRF under 'wan_virtual_topologies.vrfs', a default policy named DEFAULT-POLICY is used
         where all traffic is matched in the default category and distributed amongst all path-groups.
-
         Returning policy containing all path groups not excluded from default policy.
         """
 

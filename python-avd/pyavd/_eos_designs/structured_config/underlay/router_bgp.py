@@ -187,4 +187,5 @@ class RouterBgpMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol == "none" or not self.shared_utils.underlay_filter_redistribute_connected:
             return [{"source_protocol": "connected"}]
 
+        # TODO - RM-CONN-2-BGP could now be empty
         return [{"source_protocol": "connected", "route_map": "RM-CONN-2-BGP"}]

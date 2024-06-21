@@ -4106,6 +4106,22 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_advertise_wan_servers_loopbacks_in_default_vrf:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: The `wan_advertise_wan_servers_loopbacks_in_default_vrf`
+      key is currently not supported
+
+
+      Advertise Loopback0 in EVPN and enable next-hop-resolution for WAN route servers
+      when set to true.
+
+      By default, this is not done to speed up convergence. The consequence is that
+      Loopback0 IPs from
+
+      WAN route servers are not reachable over the WAN from the WAN routers.'
+    type: bool
+    default: false
   wan_carriers:
     documentation_options:
       table: wan-path-groups-and-carriers
