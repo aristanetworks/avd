@@ -65,7 +65,7 @@ class ActionModule(ActionBase):
             task_vars = {}
 
         if not HAS_PYAVD:
-            raise AnsibleActionFail("The Python library 'pyavd' was not found. Install using 'pip3 install'.")
+            raise AnsibleActionFail("The arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error")
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
