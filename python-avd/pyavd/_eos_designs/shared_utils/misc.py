@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING
 
 from ...j2filters.convert_dicts import convert_dicts
 from ...j2filters.natural_sort import natural_sort
+from ...j2filters.range_expand import range_expand
 from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
 from ...vendor.utils import default, get, get_item
 
 if TYPE_CHECKING:

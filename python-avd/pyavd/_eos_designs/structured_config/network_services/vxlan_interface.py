@@ -7,8 +7,8 @@ from functools import cached_property
 from typing import TYPE_CHECKING, NoReturn
 
 from ....j2filters.natural_sort import natural_sort
+from ....j2filters.range_expand import range_expand
 from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.j2.filter.range_expand import range_expand
 from ....vendor.utils import append_if_not_duplicate, default, get, get_item, unique
 from .utils import UtilsMixin
 
