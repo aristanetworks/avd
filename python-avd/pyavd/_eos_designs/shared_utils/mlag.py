@@ -8,8 +8,8 @@ from ipaddress import ip_interface
 from re import findall
 from typing import TYPE_CHECKING
 
+from ...j2filters.range_expand import range_expand
 from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
 from ...vendor.utils import default, get
 
 if TYPE_CHECKING:
