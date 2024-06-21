@@ -8708,9 +8708,8 @@ $defs:
                   enabled.
               ha_interfaces:
                 description: "Local WAN HA interfaces\nOverwrite the default behavior
-                  which is to pick all the `uplink_interfaces`.\nEach list item supports
-                  range syntax that can be expanded into a list of interfaces.\nCan
-                  be used to filter uplink interfaces when there are multiple uplinks.\nLimitations:\n
+                  which is to pick all the `uplink_interfaces`.\nCan be used to filter
+                  uplink interfaces when there are multiple uplinks.\nLimitations:\n
                   \ Either all interfaces must be uplinks or all interfaces must not
                   be uplinks.\n  Only one interface is supported for non uplinks."
                 type: list
