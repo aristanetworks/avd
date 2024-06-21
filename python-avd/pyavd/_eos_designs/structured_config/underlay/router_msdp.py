@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...._utils import get, get_item
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import natural_sort
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

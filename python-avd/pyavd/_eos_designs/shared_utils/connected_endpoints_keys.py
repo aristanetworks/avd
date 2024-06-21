@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ..._utils import get
-from ...j2filters.convert_dicts import convert_dicts
+from ...j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import SharedUtils

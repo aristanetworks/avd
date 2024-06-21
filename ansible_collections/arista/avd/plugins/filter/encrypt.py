@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.encrypt"
 
 try:
-    from pyavd.j2filters.encrypt import encrypt
+    from pyavd.j2filters import encrypt
 except ImportError as e:
     encrypt = RaiseOnUse(
         AnsibleFilterError(

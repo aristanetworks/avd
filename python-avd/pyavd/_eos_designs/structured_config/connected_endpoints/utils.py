@@ -10,9 +10,7 @@ from typing import TYPE_CHECKING
 
 from ...._errors import AristaAvdError
 from ...._utils import get, get_item
-from ....j2filters.convert_dicts import convert_dicts
-from ....j2filters.generate_esi import generate_esi
-from ....j2filters.generate_route_target import generate_route_target
+from ....j2filters import convert_dicts, generate_esi, generate_route_target
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigConnectedEndpoints

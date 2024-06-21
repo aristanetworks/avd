@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 
 from ...._errors import AristaAvdMissingVariableError
 from ...._utils import default, get, get_item, merge
-from ....j2filters.convert_dicts import convert_dicts
+from ....j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3Edge

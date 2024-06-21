@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from ..._errors import AristaAvdError, AristaAvdMissingVariableError
 from ..._utils import get
-from ...j2filters.range_expand import range_expand
+from ...j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils

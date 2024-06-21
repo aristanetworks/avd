@@ -23,7 +23,7 @@ except ImportError:
 try:
     from pyavd import get_device_config, get_device_doc, validate_structured_config
     from pyavd._utils import strip_empties_from_dict, template
-    from pyavd.j2filters.add_md_toc import add_md_toc
+    from pyavd.j2filters import add_md_toc
     from pyavd.validation_result import ValidationResult
 
     HAS_PYAVD = True

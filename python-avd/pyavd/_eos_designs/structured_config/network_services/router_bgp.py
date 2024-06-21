@@ -11,8 +11,7 @@ from typing import TYPE_CHECKING
 
 from ...._errors import AristaAvdMissingVariableError
 from ...._utils import append_if_not_duplicate, default, get, get_item, merge, strip_empties_from_dict
-from ....j2filters.list_compress import list_compress
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import list_compress, natural_sort
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

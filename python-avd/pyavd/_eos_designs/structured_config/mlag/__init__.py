@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ...._utils import default, get, strip_empties_from_dict
-from ....j2filters.list_compress import list_compress
+from ....j2filters import list_compress
 from ...avdfacts import AvdFacts
 from ...interface_descriptions import InterfaceDescriptionData
 

@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.range_expand"
 
 try:
-    from pyavd.j2filters.range_expand import range_expand
+    from pyavd.j2filters import range_expand
 except ImportError as e:
     range_expand = RaiseOnUse(
         AnsibleFilterError(

@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.list_compress"
 
 try:
-    from pyavd.j2filters.list_compress import list_compress
+    from pyavd.j2filters import list_compress
 except ImportError as e:
     list_compress = RaiseOnUse(
         AnsibleFilterError(

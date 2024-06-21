@@ -7,7 +7,7 @@ from functools import cached_property
 
 from ...._errors import AristaAvdMissingVariableError
 from ...._utils import get, get_item, strip_null_from_data
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import natural_sort
 from ...avdfacts import AvdFacts
 
 

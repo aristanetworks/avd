@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...._utils import get
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigOverlay

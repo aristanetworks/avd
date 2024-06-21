@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 from ...._errors import AristaAvdError, AristaAvdMissingVariableError
 from ...._utils import append_if_not_duplicate, default, get, replace_or_append_item, strip_null_from_data
-from ....j2filters.range_expand import range_expand
+from ....j2filters import range_expand
 from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 

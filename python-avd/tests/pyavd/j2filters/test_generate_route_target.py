@@ -6,7 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from pyavd.j2filters.generate_route_target import generate_route_target
+from pyavd.j2filters import generate_route_target
 
 ESI_TO_RT_TEST_CASES = [
     # (<esi_short>, <route_target>)

@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.generate_route_target"
 
 try:
-    from pyavd.j2filters.generate_route_target import generate_route_target
+    from pyavd.j2filters import generate_route_target
 except ImportError as e:
     generate_route_target = RaiseOnUse(
         AnsibleFilterError(

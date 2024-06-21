@@ -7,9 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...._utils import get
-from ....j2filters.generate_esi import generate_esi
-from ....j2filters.generate_lacp_id import generate_lacp_id
-from ....j2filters.generate_route_target import generate_route_target
+from ....j2filters import generate_esi, generate_lacp_id, generate_route_target
 from ...interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 

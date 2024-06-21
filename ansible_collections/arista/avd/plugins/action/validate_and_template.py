@@ -19,7 +19,7 @@ PLUGIN_NAME = "arista.avd.validate_and_template"
 
 try:
     from pyavd._utils import template
-    from pyavd.j2filters.add_md_toc import add_md_toc
+    from pyavd.j2filters import add_md_toc
 except ImportError as e:
     add_md_toc = template = RaiseOnUse(
         AnsibleActionFail(

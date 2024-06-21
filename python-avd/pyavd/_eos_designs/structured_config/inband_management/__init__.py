@@ -8,7 +8,7 @@ from ipaddress import ip_network
 
 from ...._errors import AristaAvdMissingVariableError
 from ...._utils import get, strip_empties_from_dict
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import natural_sort
 from ...avdfacts import AvdFacts
 
 
