@@ -50,7 +50,7 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
 
 ## Limitations
 
-- It is not possible to authenticate with username/password.
+- It is not possible to authenticate with username/password. See the [instructions below](#steps-to-create-service-accounts-on-cloudvision) on how to create a service account on CloudVision.
 - Configuration deployment is based on the "Static Configuration Studio" which is still a Beta feature on CloudVision.
   - This role is **only** supported on **CloudVision as a Service (CVaaS)** or "on-prem" **CloudVision 2024.1.0** or later.
   - Make sure to enable "Studios - End-to-End Provisioning" under Settings, Features.
@@ -69,27 +69,6 @@ This feature is still under development, so several planned features are not imp
 - Add automatic testing.
 - Add required CloudVision versions once the APIs are generally available.
 - Update AVD examples.
-
-## Steps to create service accounts on CloudVision
-
-1. Go to Settings and Tools --> Access Control --> Service Accounts --> click `+ New Service Account`
-
-```text
-Account name: AVD
-Description: "Automation with AVD"
-Give a description under "Generated Service Account Token"
-Specify the "valid until" date.
-Make sure to copy the generated password. You only get view it once.
-Click "Save" to exit the dialogue box.
-```
-
-![Figure: 1](../../media/serviceaccount1.png)
-![Figure: 2](../../media/serviceaccount2.png)
-![Figure: 3](../../media/serviceaccount3.png)
-
-!!! note
-    The name of the service account must match a username configured to be authorized on
-    EOS, otherwise device interactive API calls might fail due to authorization denial.
 
 ## Example
 
@@ -275,6 +254,27 @@ The directories are configured with the same variables as for the other AVD role
 roles/cv_deploy/defaults/main/directories.yml
 --8<--
 ```
+
+## Steps to create service accounts on CloudVision
+
+1. Go to Settings and Tools --> Access Control --> Service Accounts --> click `+ New Service Account`
+
+```text
+Account name: AVD
+Description: "Automation with AVD"
+Give a description under "Generated Service Account Token"
+Specify the "valid until" date.
+Make sure to copy the generated password. You only get view it once.
+Click "Save" to exit the dialogue box.
+```
+
+![Figure: 1](../../media/serviceaccount1.png)
+![Figure: 2](../../media/serviceaccount2.png)
+![Figure: 3](../../media/serviceaccount3.png)
+
+!!! note
+    The name of the service account must match a username configured to be authorized on
+    EOS, otherwise device interactive API calls might fail due to authorization denial.
 
 ## License
 
