@@ -1,18 +1,7 @@
 CURRENT_DIR = $(shell pwd)
-PACKAGE_DIR = pyavd
 ANSIBLE_AVD_DIR ?= ..
-VENDOR = vendor
-VENDOR_DIR = $(PACKAGE_DIR)/$(VENDOR)
-VENDOR_IMPORT = $(PACKAGE_DIR).$(VENDOR)
-J2_DIR = $(VENDOR_DIR)/j2
 TESTS_ARTIFACTS = $(CURRENT_DIR)/tests/pyavd/artifacts
-TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
-SCHEMAS_DIR = $(VENDOR_DIR)/schemas
-EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
-PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
-PYAVD_TEST_IMPORT = $(PACKAGE_DIR).j2tests
-EOS_DESIGNS_IMPORT = $(PACKAGE_DIR)._eos_designs
 
 # export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
 
@@ -21,14 +10,10 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dep
-dep: update-requirements-and-templates compile-schemas ## Copy and Fix Ansible AVD python files & compile schemas
+dep: compile-templates compile-schemas ## compile Jinja templates & AVD schemas
 
 .PHONY: test-dep
 test-dep: copy-test-data ## Copy and Fix Ansible AVD test files
-
-.PHONY: clean
-clean: ## Delete vendor dir
-	rm -rf $(VENDOR_DIR)
 
 .PHONY: build
 build: ## Build pyavd package
@@ -47,13 +32,9 @@ publish: ## Publish pyavd package to PyPI (build first)
 compile-schemas:
 	$(SCRIPTS_DIR)/build-schemas.py
 
-.PHONY: update-requirements-and-templates
-update-requirements-and-templates:
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements.txt requirements-ansible-avd.txt
-	grep "ansible-core" $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements-dev.txt >> requirements-ansible-avd.txt
+.PHONY: compile-templates
+compile-templates:
 	$(SCRIPTS_DIR)/compile_templates.py
-
-
 
 .PHONY: copy-test-data
 copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
