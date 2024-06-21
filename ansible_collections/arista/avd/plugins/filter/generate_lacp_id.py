@@ -5,6 +5,22 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.generate_lacp_id"
+
+try:
+    from pyavd.j2filters import generate_lacp_id
+except ImportError as e:
+    generate_lacp_id = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
+
 DOCUMENTATION = r"""
 ---
 name: generate_lacp_id
@@ -34,12 +50,8 @@ _value:
 """
 
 
-def generate_lacp_id(esi_short):
-    return esi_short.replace(":", ".")
-
-
 class FilterModule(object):
     def filters(self):
         return {
-            "generate_lacp_id": generate_lacp_id,
+            "generate_lacp_id": wrap_filter(PLUGIN_NAME)(generate_lacp_id),
         }

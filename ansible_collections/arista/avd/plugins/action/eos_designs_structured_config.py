@@ -14,12 +14,22 @@ from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_templar
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.get_structured_config import get_structured_config
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
+
+PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
+try:
+    from pyavd._eos_designs.structured_config import get_structured_config
+    from pyavd._utils import get, merge, strip_null_from_data
+    from pyavd._utils import template as templater
+except ImportError as e:
+    get_structured_config = get = merge = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 
 class ActionModule(ActionBase):
@@ -79,7 +89,7 @@ class ActionModule(ActionBase):
             plugin_name="arista.avd.eos_cli_config_gen",
         )
 
-        # Get Structured Config from builtin eos_designs python_modules
+        # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         try:
             output = get_structured_config(
                 vars=dict(task_vars),
@@ -101,7 +111,7 @@ class ActionModule(ActionBase):
         # Any var assignments will end up in output, so all other objects are protected.
         template_vars = ChainMap(output, task_vars)
 
-        # eos_designs_custom_templates can contain a list of jinja templates to run after the builtin eos_designs python_modules
+        # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         for template_item in eos_designs_custom_templates:
             template_options = template_item.get("options", {})
             list_merge = template_options.get("list_merge", "append_rp")

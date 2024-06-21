@@ -1,8 +1,21 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils import METHODS_DIR
+from ansible.errors import AnsibleFilterError
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.decrypt"
+
+try:
+    from pyavd.j2filters import decrypt
+except ImportError as e:
+    decrypt = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -72,21 +85,8 @@ _value:
 """
 
 
-def decrypt(value, passwd_type=None, key=None, **kwargs) -> str:
-    """
-    Umbrella function to execute the correct decrypt method based on the input type
-    """
-    if not passwd_type:
-        raise AristaAvdMissingVariableError("type keyword must be present to use this test")
-    try:
-        decrypt_method = METHODS_DIR[passwd_type][1]
-    except KeyError as exc:
-        raise AristaAvdError(f"Type {passwd_type} is not supported for the decrypt filter") from exc
-    return decrypt_method(str(value), key=key, **kwargs)
-
-
 class FilterModule(object):
     def filters(self):
         return {
-            "decrypt": decrypt,
+            "decrypt": wrap_filter(PLUGIN_NAME)(decrypt),
         }

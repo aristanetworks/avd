@@ -1,7 +1,7 @@
 ---
 wan_mode: autovpn
 type: wan_router
-fabric_name: fabric_wan_role_overlay_routing_protocol
+fabric_name: FABRIC_WAN_ROLE_OVERLAY_ROUTING_PROTOCOL
 
 # Not ibgp
 overlay_routing_protocol: none

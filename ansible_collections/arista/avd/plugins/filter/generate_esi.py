@@ -5,6 +5,23 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from ansible.errors import AnsibleFilterError
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.generate_esi"
+
+try:
+    from pyavd.j2filters import generate_esi
+except ImportError as e:
+    generate_esi = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
+
+
 DOCUMENTATION = r"""
 ---
 name: generate_esi
@@ -38,12 +55,8 @@ _value:
 """
 
 
-def generate_esi(esi_short, esi_prefix="0000:0000:"):
-    return esi_prefix + esi_short
-
-
 class FilterModule(object):
     def filters(self):
         return {
-            "generate_esi": generate_esi,
+            "generate_esi": wrap_filter(PLUGIN_NAME)(generate_esi),
         }

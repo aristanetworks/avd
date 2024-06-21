@@ -3,7 +3,7 @@ ARG FROM_VARIANT
 
 FROM ${FROM_IMAGE}:${FROM_VARIANT}
 
-ARG ANSIBLE_CORE_VERSION
+ARG PYAVD_INSTALL_LOCATION
 ARG ANSIBLE_INSTALL_LOCATION
 ARG USERNAME
 
@@ -11,8 +11,7 @@ ARG USERNAME
 USER ${USERNAME}
 ENV PATH=$PATH:/home/${USERNAME}/.local/bin
 # Install Ansible AVD collection.
-RUN pip3 install "${ANSIBLE_CORE_VERSION}" \
+RUN pip install "pyavd[ansible] @ ${PYAVD_INSTALL_LOCATION}" \
     && ansible-galaxy collection install ${ANSIBLE_INSTALL_LOCATION} \
-    && pip3 install -r /home/${USERNAME}/.ansible/collections/ansible_collections/arista/avd/requirements.txt \
     # install community.general to support callback plugins in ansible.cfg, etc.
     && ansible-galaxy collection install community.general

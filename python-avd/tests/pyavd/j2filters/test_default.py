@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import pytest
 from jinja2.runtime import Undefined
-from pyavd.j2filters.default import default
+from pyavd.j2filters import default
 
 PRIMARY_VALUE_LIST = [1, "ABC", None, Undefined, {}, {"key": "value"}, [1, 2]]
 DEFAULT_VALUE_LIST = [["default"], [None, 1], [None, "abc"], [None, None, "2"], [{"key": "value"}]]

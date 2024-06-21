@@ -56,7 +56,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Internet-exit for Zscaler is in PREVIEW
 - `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
-    These new tests are added only in the [ANTA preview](../../../eos_validate_state/ANTA-Preview.md) mode.
+    These new tests are added only in the [ANTA integration](../../../eos_validate_state/anta_integration.md) mode.
 
 ### Known limitations
 
@@ -67,6 +67,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - The name of the AVT policies and AVT profiles are configurable in the input variables. The Load Balance policies are named `LB-<profile_name>` and are not configurable.
 - LAN support is limited to single L2 using `uplink_type: lan` and eBGP L3 using `uplink_type: p2p-vrfs` in conjunction of `underlay_routing_protocol: ebgp`.
 - All the WAN routers must have a common path-group with at least one WAN route server to be able to inject the default control-plane match statement in the VRF default WAN policy.
+- For the default VRF, routes received over BGP peering configured under tenants in `network_services` will not be automatically advertised to the WAN (they will be advertised toward the LAN if eBGP is used). To advertise them towards the WAN, they need to be injected in EVPN and this can be achieved by adding a route-map to mark them with the site SOO.
 
 ### Future work
 
@@ -639,13 +640,11 @@ The following LAN scenarios are in PREVIEW:
 - the Site of Origin (SoO) extended community is configured as <router_id>:<site_id>
     note: site id is unique per zone (only a default zone supported today).
 - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SoO.
-- the Underlay peer group (towards the LAN) is configured with two route-maps reused from existing designed but configured differently
-  - one outbound route-map `RM-BGP-UNDERLAY-PEERS-OUT`:
-    - advertised the local routes tagged with the SoO extended community.
-    - advertised the routes received from iBGP (WAN) towards the LAN also marked with the SoO community.
+- the Underlay peer group (towards the LAN) is configured with one inbound route-map
   - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
     - deny routes received from LAN that already contain the WAN AS in the path.
     - accept routes coming from the LAN and set the SoO extended community on them.
+- the Underlay peer group (towards the LAN) is not configured with any outbound route-map.
 - For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
 
 ##### HA (PREVIEW)
@@ -659,17 +658,12 @@ for eBGP LAN routing protocol the following is done to enable HA:
 - the uplink interfaces are used as HA interfaces.
 - the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
 BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet over the LAN as well as learning WAN routes from other sites (as backup in case all WAN links are lost).
-- the Underlay peer group is configured with two route-maps
-  - one inbound route-map `RM-UNDERLAY-PEERS-IN`
+- the Underlay peer group is configured with one inbound route-map
+  - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`
     - Match HA peer's uplink subnets (not marked) to be able to form HA tunnel (not exported to EVPN).
     - Match HA peer's originated prefixes, set longer AS path and mark with SoO to export to EVPN. These will be used as backup from other sites to destinations on HA Peer Router in case all WAN connections on Peer are down.
     - Match all WAN routes using AS path and set no-advertise community. This will be used as backup routes to the WAN in case this router looses all WAN connections.
     - Match anything else (LAN prefixes) and mark with the SoO `<bgp_as>:<wan_site_id>` to export to EVPN.
-  - one outbound route-map `RM-UNDERLAY-PEERS-OUT`
-    - allowing local routes marked with SoO (routes/interfaces defined via tenants + router-id)
-    - allowing subnets of uplink interfaces.
-    - allow all routes learned from iBGP (WAN)
-    - Implicitly denying other routes which could be learned from BGP towards a WAN provider or redistributed without marking with SoO.
 
 #### OSPF LAN (NOT SUPPORTED)
 
@@ -859,3 +853,18 @@ wan_virtual_topologies:
           - names: [internet]
             preference: alternate
 ```
+
+### WAN Validation
+
+`eos_validate_state` is being enriched to support new tests for WAN designs. The tests listed below are validating WAN designs.
+
+| AVD Test Class | ANTA Test Class | Description |
+| -------------- | --------------- | ----------- |
+| AvdTestInterfacesState | VerifyInterfacesStatus | Validate the DPS interface status. |
+| AvdTestBGP | VerifyBGPSpecificPeers | Validate the state of BGP Address Family sessions, including `Path-Selection` for AutoVPN, `Link-State` and `IPv4/IPv6 SR-TE` for CV Pathfinder. |
+| AvdTestIPSecurity | VerifySpecificIPSecConn | Validate the establishment of IP security connections for each static peer under the `router path-selection` section of the configuration. |
+| AvdTestStun | VerifyStunClient | Validate the presence of a STUN client translation for a given source IPv4 address and port. The list of expected translations for each device is built by searching local interfaces in each path-group. |
+
+!!! note
+    More WAN-related tests are available directly in ANTA and can be added using custom catalogs.
+    They will be progressively added to `eos_validate_state`.

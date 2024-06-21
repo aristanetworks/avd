@@ -182,20 +182,24 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password shared-secret profile profile2 algorithm aes-128-cmac-96
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-PEERS missing-policy address-family all direction out action permit
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 <removed>
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000 warning-limit 80 percent warning-only
+   neighbor MLAG-IPv4-UNDERLAY-PEER missing-policy address-family all direction in action deny
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 allowas-in 5
    neighbor 192.168.255.1 password shared-secret profile profile1 algorithm aes-128-cmac-96
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 missing-policy address-family all direction out action deny-in-out
    neighbor 192.168.255.3 allowas-in 5
    neighbor 192.168.255.3 maximum-routes 52000 warning-limit 2000 warning-only
+   neighbor 192.168.255.3 missing-policy address-family all direction in action deny
    !
    vlan 2488
       rd 145.245.21.0:1
@@ -266,10 +270,17 @@ router bgp 65101
       neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
       neighbor ADDITIONAL-PATH-PG-6 activate
       no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
+      neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor 10.100.100.1 activate
+      neighbor 10.100.100.1 default-route
+      neighbor 10.100.100.2 activate
+      neighbor 10.100.100.2 default-route route-map RM_DEFAULT_ROUTE
+      neighbor 10.100.100.3 activate
+      neighbor 10.100.100.3 default-route rcf RCF_DEFAULT_ROUTE()
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import ethernet-segment ip mass-withdraw
@@ -283,6 +294,7 @@ router bgp 65101
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
       evpn multicast
+      default-route export evpn
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.3
@@ -293,6 +305,7 @@ router bgp 65101
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12
+      default-route export evpn always
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.3
@@ -306,6 +319,7 @@ router bgp 65101
       evpn multicast
          address-family ipv4
             transit
+      default-route export evpn always route-map TENANT_A_PROJECT03_RM_DEFAULT
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.3
@@ -313,6 +327,7 @@ router bgp 65101
    vrf TENANT_A_PROJECT04
       rd 192.168.255.3:14
       evpn multicast
+      default-route export evpn rcf TENANT_A_PROJECT03_RCF_DEFAULT()
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.3

@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 from collections import ChainMap
 
 
@@ -69,8 +71,8 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
             ```
     """
     # pylint: disable=import-outside-toplevel
-    from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts
-    from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
+    from ._eos_designs.eos_designs_facts import EosDesignsFacts
+    from ._eos_designs.shared_utils import SharedUtils
 
     # pylint: enable=import-outside-toplevel
 

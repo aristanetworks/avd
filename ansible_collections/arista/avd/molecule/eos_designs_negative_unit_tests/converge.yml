@@ -99,7 +99,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: fabric_invalid_uplink_port_channel_id_1
+  hosts: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_1
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -120,7 +120,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: fabric_invalid_uplink_port_channel_id_2
+  hosts: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_2
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -141,7 +141,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: fabric_invalid_uplink_port_channel_id_3
+  hosts: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_3
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -162,7 +162,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: fabric_p2p_vrfs
+  hosts: FABRIC_P2P_VRFS
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -183,7 +183,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: fabric_downlink_pools_duplicate
+  hosts: FABRIC_DOWNLINK_POOLS_DUPLICATE
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -204,7 +204,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: fabric_downlink_pools_missing
+  hosts: FABRIC_DOWNLINK_POOLS_MISSING
   connection: local
   tasks:
     - name: Run failure scenario Test

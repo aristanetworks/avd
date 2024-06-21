@@ -7,10 +7,10 @@ __pycache__/
 /pyavd.egg-info/
 /pyavd/eos_cli_config_gen.templates.zip
 /pyavd/j2cache/
-/pyavd/LICENSE
 /pyavd/vendor/
 /pyavd/version.py
 *.prof
 /site/
+/pyavd/_eos_cli_config_gen/j2templates/compiled_templates
 
 requirements-ansible-avd.txt

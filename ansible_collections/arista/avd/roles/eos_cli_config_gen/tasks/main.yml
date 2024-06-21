@@ -14,53 +14,19 @@
   run_once: true
   register: avd_requirements
 
-- name: Create required output directories if not present
-  tags: [build, provision]
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0775
-  loop:
-    - "{{ structured_dir }}"
-    - "{{ documentation_dir }}"
-    - "{{ eos_config_dir }}"
-    - "{{ devices_dir }}"
+- name: Generate eos intended configuration and device documentation
+  tags: [always]
+  arista.avd.eos_cli_config_gen:
+    structured_config_filename: "{{ structured_config_filename }}"
+    config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+    read_structured_config_from_file: "{{ structured_config is not arista.avd.defined }}"
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
+    generate_device_config: "{{ ansible_run_tags is arista.avd.contains(['all', 'build', 'provision']) and ansible_skip_tags is not arista.avd.contains(['build', 'provision']) }}"
+    generate_device_doc: "{{ generate_device_documentation | arista.avd.default(true) and ansible_run_tags is arista.avd.contains(['all', 'build', 'provision', 'documentation']) and ansible_skip_tags is not arista.avd.contains(['build', 'provision', 'documentation']) }}"
+    device_doc_toc: true
+    cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
   delegate_to: localhost
-  run_once: true
-
-- name: Include device intended structure configuration variables
-  tags: [build, provision]
-  ansible.builtin.include_vars:
-    file: "{{ filename }}"
-  delegate_to: localhost
-  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
   vars:
-    filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-
-- name: Generate eos intended configuration
-  tags: [build, provision]
-  arista.avd.validate_and_template:
-    template: eos-intended-config.j2
-    dest: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
-    mode: 0664
-    schema_id: "{{ role_name }}"
-    conversion_mode: "{{ avd_data_conversion_mode }}"
-    validation_mode: "{{ avd_data_validation_mode }}"
-    #cprofile_file: "config-{{inventory_hostname}}.prof"
-  delegate_to: localhost
-  register: eosconfig
-
-- name: Generate device documentation
-  tags: [build, provision, documentation]
-  arista.avd.validate_and_template:
-    template: "eos-device-documentation.j2"
-    dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-    mode: 0664
-    schema_id: "{{ role_name }}"
-    conversion_mode: "{{ avd_data_conversion_mode }}"
-    validation_mode: "{{ avd_data_validation_mode }}"
-    add_md_toc: true
-    md_toc_skip_lines: 3
-    #cprofile_file: "docs-{{inventory_hostname}}.prof"
-  delegate_to: localhost
-  when: generate_device_documentation | arista.avd.default(true)
+    structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"

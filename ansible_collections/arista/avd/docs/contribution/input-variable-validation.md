@@ -125,15 +125,15 @@ This fragment will be merged with other fragments during development, to form th
 
 For reference, the full Role Schemas can be found here:
 
-- [`eos_designs` AVD Schema, not ready yet](../../roles/eos_designs/schemas/eos_designs.schema.yml)
-- [`eos_cli_config_gen` AVD Schema](../../roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml)
+- [`eos_designs` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/eos_designs/schema/eos_designs.schema.yml)
+- [`eos_cli_config_gen` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
 
 The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned
 above can address the usability aspect by helping the user with common mistakes.
 
 The supported schema options for AVD Schema are described in a meta-schema using JSON Schema Draft-7 format. The meta-schema
-can be seen [here](../../plugins/plugin_utils/schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
+can be seen [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_schema/avd_meta_schema.json). In addition, below is a more detailed description of the supported
 schema options per variable type.
 
 All schema options (ex. `type`, `max`, `valid_values`) are validated individually, and to pass the validation, the data must
