@@ -1311,6 +1311,37 @@ $defs:
                 type: bool
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is enabled.
+              ha_interfaces:
+                description: |-
+                  Local WAN HA interfaces
+                  Overwrite the default behavior which is to pick all the `uplink_interfaces`.
+                  Can be used to filter uplink interfaces when there are multiple uplinks.
+                  Limitations:
+                    Either all interfaces must be uplinks or all interfaces must not be uplinks.
+                    Only one interface is supported for non uplinks.
+                type: list
+                items:
+                  type: str
+                  pattern: "Ethernet[\\d/]+"
+              ha_ipv4_pool:
+                description: |-
+                  IP address pool used for WAN HA connectivity.
+                  IP is derived from the node ID.
+                  Not used for uplink interfaces.
+                type: str
+                format: ipv4_cidr
+              max_ha_interfaces:
+                type: int
+                convert_types:
+                  - str
+                description: |-
+                  Number of parallel links towards HA switches.
+                  Can be used to reserve IP addresses for future parallel HA links.
+              flow_tracking:
+                type: dict
+                $ref: "eos_designs#/$defs/flow_tracking_link"
+                description: |-
+                  Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

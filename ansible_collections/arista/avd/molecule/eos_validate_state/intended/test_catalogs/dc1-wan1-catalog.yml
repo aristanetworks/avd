@@ -194,6 +194,13 @@ anta.tests.routing.bgp:
       custom_field: 'BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.20)'
 - VerifyBGPSpecificPeers:
     address_families:
+    - afi: evpn
+      peers:
+      - 10.255.1.2
+    result_overwrite:
+      custom_field: 'BGP EVPN Peer: dc1-wan2 (IP: 10.255.1.2)'
+- VerifyBGPSpecificPeers:
+    address_families:
     - afi: path-selection
       peers:
       - 10.255.255.10

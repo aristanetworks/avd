@@ -80,6 +80,15 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: dc1-wan1 (IP: 10.255.1.1)"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 SR-TE Peer: dc1-leaf1a (IP: 10.255.255.10)"
   },
   {

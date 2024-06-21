@@ -126,7 +126,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         ha_path_group.update(
             {
                 # This should be the LAN interface over which a DPS tunnel is built
-                "local_interfaces": [{"name": interface["interface"]} for interface in self._wan_ha_interfaces()],
+                "local_interfaces": [{"name": interface} for interface in self.shared_utils.wan_ha_interfaces],
                 "static_peers": [
                     {
                         "router_ip": self._wan_ha_peer_vtep_ip(),
