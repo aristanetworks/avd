@@ -9,7 +9,6 @@ The test checks if a list contains any of the value(s) passed in test_value.
 from __future__ import annotations
 
 import warnings
-from typing import Any
 
 from jinja2.runtime import Undefined
 
