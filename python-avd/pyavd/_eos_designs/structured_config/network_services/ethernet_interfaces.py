@@ -7,9 +7,9 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
-from ....vendor.errors import AristaAvdError
-from ....vendor.utils import append_if_not_duplicate, get
+from ...._errors import AristaAvdError
+from ...._utils import append_if_not_duplicate, get
+from ....j2filters import natural_sort
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

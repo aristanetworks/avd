@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import pytest
-from pyavd.j2filters.range_expand import range_expand
+from pyavd.j2filters import range_expand
 
 RANGE_TO_EXPAND_INVALID_VALUES = [
     pytest.param(True, TypeError, "value must be of type list or str, got <class 'bool'>", id="Wrong input type - bool"),

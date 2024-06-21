@@ -19,9 +19,9 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
     """
     # pylint: disable=import-outside-toplevel
     from ._eos_designs.structured_config import get_structured_config
+    from ._errors import AristaAvdError
     from .avd_schema_tools import AvdSchemaTools
     from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
-    from .vendor.errors import AristaAvdError
 
     # pylint: enable=import-outside-toplevel
     #

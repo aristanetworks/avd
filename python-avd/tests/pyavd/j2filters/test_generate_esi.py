@@ -6,7 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from pyavd.j2filters.generate_esi import generate_esi
+from pyavd.j2filters import generate_esi
 
 DEFAULT_ESI_PREFIX = "0000:0000:"
 GENERATE_ESI_TEST_CASES = [

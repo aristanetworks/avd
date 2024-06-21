@@ -6,9 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.errors import AristaAvdMissingVariableError
-from ....vendor.strip_empties import strip_empties_from_dict
-from ....vendor.utils import append_if_not_duplicate, default, get
+from ...._errors import AristaAvdMissingVariableError
+from ...._utils import append_if_not_duplicate, default, get, strip_empties_from_dict
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

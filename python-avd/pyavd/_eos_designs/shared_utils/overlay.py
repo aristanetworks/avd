@@ -8,8 +8,8 @@ from ipaddress import ip_address
 from re import fullmatch
 from typing import TYPE_CHECKING
 
-from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.utils import get
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils

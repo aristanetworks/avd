@@ -13,8 +13,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, cprofile, get_templar, template
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, cprofile, get_templar
 
 try:
     from yaml import CLoader as YamlLoader
@@ -23,7 +22,8 @@ except ImportError:
 
 try:
     from pyavd import get_device_config, get_device_doc, validate_structured_config
-    from pyavd.j2filters.add_md_toc import add_md_toc
+    from pyavd._utils import strip_empties_from_dict, template
+    from pyavd.j2filters import add_md_toc
     from pyavd.validation_result import ValidationResult
 
     HAS_PYAVD = True
@@ -65,7 +65,7 @@ class ActionModule(ActionBase):
             task_vars = {}
 
         if not HAS_PYAVD:
-            raise AnsibleActionFail("The Python library 'pyavd' was not found. Install using 'pip3 install'.")
+            raise AnsibleActionFail("The arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error")
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect

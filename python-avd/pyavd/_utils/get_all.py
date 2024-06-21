@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Any, Generator
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from .._errors import AristaAvdMissingVariableError
 
 
 def get_all(data, path: str, required: bool = False, org_path=None):
@@ -48,7 +48,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
 
         return output
 
-    elif isinstance(data, dict):
+    if isinstance(data, dict):
         value = data.get(path_elements[0])
 
         if value is None:
@@ -60,8 +60,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
         if len(path_elements) > 1:
             return get_all(value, ".".join(path_elements[1:]), required=required, org_path=org_path)
 
-        else:
-            return [value]
+        return [value]
 
     return []
 
@@ -105,7 +104,4 @@ def get_all_with_path(data, path: str, _current_path: list[str | int] | None = N
             yield from get_all_with_path(value, ".".join(path_elements[1:]), _current_path=[*_current_path, path_elements[0]])
             return
 
-        else:
-            yield (_current_path, value)
-
-    return
+        yield (_current_path, value)

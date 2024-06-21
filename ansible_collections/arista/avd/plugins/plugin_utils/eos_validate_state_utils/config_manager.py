@@ -8,8 +8,22 @@ from functools import cached_property
 from ipaddress import ip_interface
 from typing import Mapping
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible.errors import AnsibleActionFail
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._errors import AristaAvdError
+    from pyavd._utils import get, get_item
+except ImportError as e:
+    AristaAvdError = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 LOGGER = logging.getLogger(__name__)
 

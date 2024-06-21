@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ....vendor.avdfacts import AvdFacts
-from ....vendor.strip_empties import strip_empties_from_dict
+from ...._utils import strip_empties_from_dict
+from ...avdfacts import AvdFacts
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
 

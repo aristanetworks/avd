@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.is_in_filter"
 
 try:
-    from pyavd.j2filters.is_in_filter import is_in_filter
+    from pyavd.j2filters import is_in_filter
 except ImportError as e:
     is_in_filter = RaiseOnUse(
         AnsibleFilterError(

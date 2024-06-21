@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.generate_lacp_id"
 
 try:
-    from pyavd.j2filters.generate_lacp_id import generate_lacp_id
+    from pyavd.j2filters import generate_lacp_id
 except ImportError as e:
     generate_lacp_id = RaiseOnUse(
         AnsibleFilterError(
