@@ -14,6 +14,8 @@ from ansible.module_utils.basic import to_native
 from ansible.utils.display import Display
 from jinja2.exceptions import UndefinedError
 
+display = Display()
+
 
 class RaiseOnUse:
     """
@@ -41,14 +43,16 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
     def wrap_plugin_decorator(func: Callable) -> Callable:
         @wraps(func)
         def plugin_wrapper(*args, **kwargs):
+            """Wrapper function for plugins.
+
+            NOTE: if the same warning is raised multiple times, Ansible Display() will print only one
+            """
             try:
                 with warnings.catch_warnings(record=True) as w:
-                    # Cause all warnings to always be triggered.
-                    warnings.simplefilter("always")
                     result = func(*args, **kwargs)
                 if w:
                     for warning in w:
-                        Display().warning(str(warning.message))
+                        display.warning(str(warning.message))
                 return result
             except UndefinedError as e:
                 raise AnsibleUndefinedVariable(f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
