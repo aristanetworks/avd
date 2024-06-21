@@ -48,7 +48,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
 
         return output
 
-    elif isinstance(data, dict):
+    if isinstance(data, dict):
         value = data.get(path_elements[0])
 
         if value is None:
@@ -60,8 +60,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
         if len(path_elements) > 1:
             return get_all(value, ".".join(path_elements[1:]), required=required, org_path=org_path)
 
-        else:
-            return [value]
+        return [value]
 
     return []
 

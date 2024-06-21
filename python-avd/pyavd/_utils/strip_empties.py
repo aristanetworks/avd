@@ -20,7 +20,7 @@ def strip_null_from_data(data, strip_values_tuple=(None,)):
     """
     if isinstance(data, dict):
         return strip_empties_from_dict(data, strip_values_tuple)
-    elif isinstance(data, list):
+    if isinstance(data, list):
         return strip_empties_from_list(data, strip_values_tuple)
     return data
 
