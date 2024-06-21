@@ -1,6 +1,0 @@
-aristaproto>=0.1.1
-cryptography>=38.0.4
-deepmerge>=1.1.0
-jinja2>=3.0
-jsonschema>=4.10.3
-requests>=2.27.0
