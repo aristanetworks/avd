@@ -71,8 +71,7 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         elif str(fail_action).lower() == "error":
             if var_name is not None:
                 raise ValueError(f"{var_name} was expected but not set!")
-            else:
-                raise ValueError("A variable was expected but not set!")
+            raise ValueError("A variable was expected but not set!")
         if run_tests:
             return False, warnings_count
         return False
@@ -92,8 +91,7 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         elif str(fail_action).lower() == "error":
             if var_name is not None:
                 raise ValueError(f"{var_name} was set to {value} but we expected {test_value}!")
-            else:
-                raise ValueError(f"A variable was set to {value} but we expected {test_value}!")
+            raise ValueError(f"A variable was set to {value} but we expected {test_value}!")
         if run_tests:
             return False, warnings_count
         return False
@@ -112,8 +110,7 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         elif str(fail_action).lower() == "error":
             if var_name is not None:
                 raise ValueError(f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
-            else:
-                raise ValueError(f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
+            raise ValueError(f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
         if run_tests:
             return False, warnings_count
         return False
