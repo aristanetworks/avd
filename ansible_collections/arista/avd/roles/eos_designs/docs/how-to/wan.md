@@ -50,11 +50,9 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - WAN HA is in PREVIEW
 
   - While HA is in preview, it is required to either enable or disable HA if exactly two WAN routers are in one node group.
-  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default.
-  - It is not yet supported to disable HA on a specific LAN interface on the device, nor is it supported to add HA configuration on a non-uplink interface.
+  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default or the interfaces defined under `wan_ha.ha_interfaces` node settings. This key can be used either to select only some `uplink_interfaces` available for establishing the HA tunnel OR to select one interface that is not an `uplink_interfaces`, for instance for direct HA connectivity.
   - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in PREVIEW
-- `flow_tracking_settings` is in PREVIEW as the model will change in the next release.
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
     These new tests are added only in the [ANTA integration](../../../eos_validate_state/anta_integration.md) mode.
 
@@ -71,7 +69,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 ### Future work
 
-- HA support out of PREVIEW
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
 - HA for AutoVPN
 - WAN Internet exit for other type than Zscaler
@@ -630,22 +627,111 @@ The following LAN scenarios are supported:
 
 - Single Router L3 EBGP LAN
 - Single Router L2 LAN
-
-The following LAN scenarios are in PREVIEW:
-
 - Dual Router L3 EBGP LAN with HA
+- Dual Router using one directed connected HA interface.
+
+Some design points:
+
+- The Site of Origin (SOO) extended community is configured as `<router_id>:<site_id>`
+    note: site id is unique per zone (only a default zone supported today).
+    for HA site, the SOO is set as `<router1_id>:<site_id>` where `router1` is
+    the first router defined in the group.
+- HA is not supported for more than two routers for CV Pathfinders.
+- The routes to be advertised towards the WAN must be marked with the site SOO.
+  - The connected routes and static routes are marked with the SOO when
+    redistributed in BGP
+    - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SOO.
+    - the routes redistributed into BGP via the route-map `RM-STATIC-2-BGP` are tagged with the SOO.
+  - the routes received from LAN are marked with the SOO when received from
+        the LAN over BGP or when redistributed into BGP from the LAN protocol.
+        note: For other connection (e.g. L3 interface with a BGP peering, the
+        user must mark them with the SOO)
+- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SOO.
+- Routes received from the WAN with the local SOO are dropped.
+- Routes received from the WAN are redistributed / advertised towards the LAN.
+- For HA, an iBGP session using EVPN Gateway is used to share the routes from
+    one peer to the other.
+  - WAN, LAN and local static routes are sent to the HA peer to cater for various failure scenarii.
+  - The routes received from the HA peer are made less preferred than routes received from the LAN or from the WAN.
+
+The following diagram represents the various redistribution occurring for default
+and non-default VRFs in the common case. This indicates the route-maps on each
+interaction to help understand how everything fits together. This diagram
+represents the common scenario for a single router, without any LAN. It will be
+reused when adding LAN protocols to help understand the changes.
+
+<!-- ![Figure 1: WAN LAN Common design](../../../media/wan_lan_common.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_lan_common.png" alt="WAN LAN Common design"/>
+</div>
+
+#### LAN HA common configuration
+
+EOS (and hence AVD) supports maximum 2 routers for HA. To establish LAN HA the requirements are the following:
+
+- The HA tunnels can be established only in the default VRF (EOS limitation)
+- The HA interfaces must be able to establish IPSec tunnels between each other. This implies that if the interfaces are on different subnet, the LAN must be able to route traffic between each interface.
+- EVPN Gateway is used to exchange the routes between the HA peers configured as follow - the advantage is that it caters for all VRFs and the default VRF export route-map is still valid.
+
+By default, AVD uses the uplinks as the HA links. It is possible to override this by setting a single interface to be used as the *Direct HA link*:
+
+```yaml
+wan_router:
+  node_groups:
+    - group: Site42
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site42
+      wan_ha:
+        enabled: true
+        ha_interfaces: [Ethernet52] # (1)!
+        ha_ipv4_pool: 10.10.10.0/24 # (2)!
+```
+
+1. Select the interface for HA, it can either be a way to select ONE interface for Direct HA, or to filter some of the uplink HA interfaces.
+2. Prefix to use to allocate the IP address for the direct HA link.
+
+!!! warning
+
+    Only one interface can be used for Direct HA today in AVD.
+
+From a configuration standpoint:
+
+- The routes sent to the HA peers are applied a route-map to make the routes less preferred than the one received from the WAN or from the LAN
+  - The sent routes are set with a local-preference of 75 if they originate directly from the local HA peer or 50 if they are received from the WAN.
+- On the other end, all the received routes are tagged to be able to influence the redistribution towards the LAN of the HA routes when required. A tag of 50 is used to mark the routes received from the HA peer.
+- The two levels of Local Preference exist to be able to always select the remote VTEP in a scenario where an HA site receives routes from another HA site:
+  - The routes received directly from a given remote VTEP are received with LP 100
+  - The same routes received from the HA peer of the remote VTEP are received with LP 75
+  - The same routes received from the local HA peer that went through the LAN are received with LP 50
+  - This hierarchy allows selecting the correct best destination VTEP first and avoid decap and re-encap at EVPN level. Then DPS kicks in and can select a path that goes over the local or remote HA peer but targeting the correct best VTEP.
+
+The following diagram represents this scenario:
+
+<!-- ![Figure 2: WAN Direct HA](../../../media/wan_direct_ha_no_lan.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_direct_ha_no_lan.png" alt="WAN Direct HA"/>
+</div>
 
 #### EBGP LAN
 
-- the Site of Origin (SoO) extended community is configured as <router_id>:<site_id>
-    note: site id is unique per zone (only a default zone supported today).
 - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SoO.
 - the Underlay peer group (towards the LAN) is configured with one inbound route-map
   - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`:
-    - deny routes received from LAN that already contain the WAN AS in the path.
     - accept routes coming from the LAN and set the SoO extended community on them.
-- the Underlay peer group (towards the LAN) is not configured with any outbound route-map.
-- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
+
+!!! warning
+    - the Underlay peer group (towards the LAN) is not configured with any outbound route-map.
+    - For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SoO.
+
+The following diagram shows the additional route-maps configured to support eBGP on LAN:
+
+<!-- ![Figure 3: WAN eBGP LAN Single Router](../../../media/wan_ebgp_lan_single_router.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
+</div>
 
 ##### HA (PREVIEW)
 
@@ -655,15 +741,32 @@ The following LAN scenarios are in PREVIEW:
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
-- the uplink interfaces are used as HA interfaces.
+- the uplink interfaces are used as HA interfaces by default.
 - the subnets of the HA interfaces are redistributed to BGP via the `RM-CONN-2-BGP` route-map
-BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet over the LAN as well as learning WAN routes from other sites (as backup in case all WAN links are lost).
+- BGP underlay peer group is configured with `allowas-in 1` to be able to learn the HA peer uplink interface subnet over the LAN as well as learning WAN routes from other sites (as backup in case all WAN links are lost).
 - the Underlay peer group is configured with one inbound route-map
   - one inbound route-map `RM-BGP-UNDERLAY-PEERS-IN`
-    - Match HA peer's uplink subnets (not marked) to be able to form HA tunnel (not exported to EVPN).
-    - Match HA peer's originated prefixes, set longer AS path and mark with SoO to export to EVPN. These will be used as backup from other sites to destinations on HA Peer Router in case all WAN connections on Peer are down.
-    - Match all WAN routes using AS path and set no-advertise community. This will be used as backup routes to the WAN in case this router looses all WAN connections.
-    - Match anything else (LAN prefixes) and mark with the SoO `<bgp_as>:<wan_site_id>` to export to EVPN.
+    - Match HA peer's uplink subnets to be able to form HA tunnel (not exported to EVPN).
+    - Deny any other route from the HA peer as they are already shared over EVPN.
+    - Match anything else (LAN prefixes) and mark with the SOO `<bgp_as>:<wan_site_id>` to export to EVPN.
+
+This is described in the following diagram:
+
+<!-- ![Figure 4: WAN eBGP LAN with HA](../../../media/wan_ebgp_lan_ha.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
+</div>
+
+##### HA with Direct Link (PREVIEW)
+
+In the situation where the LAN is EBGP but HA is configured over a direct link, there is no peering with the HA peer required via the LAN and the configuration is simplified as follow:
+
+<!-- ![Figure 5: WAN eBGP LAN with Direct HA link](../../../media/wan_ebgp_lan_ha_direct.png) -->
+
+<div style="text-align:center">
+  <img src="../../../../media/wan_ebgp_lan_ha_direct.png" alt="WAN eBGP LAN with Direct HA link"/>
+</div>
 
 #### OSPF LAN (NOT SUPPORTED)
 

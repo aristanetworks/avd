@@ -1349,6 +1349,10 @@ keys:
         description: Enable flow-tracking on all dps_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
+      direct_wan_ha_links:
+        description: Enable flow-tracking on all direct WAN HA links.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
   fabric_ip_addressing:
     type: dict
     keys:
@@ -8702,6 +8706,36 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              ha_interfaces:
+                description: "Local WAN HA interfaces\nOverwrite the default behavior
+                  which is to pick all the `uplink_interfaces`.\nCan be used to filter
+                  uplink interfaces when there are multiple uplinks.\nLimitations:\n
+                  \ Either all interfaces must be uplinks or all interfaces must not
+                  be uplinks.\n  Only one interface is supported for non uplinks."
+                type: list
+                items:
+                  type: str
+                  pattern: Ethernet[\d/]+
+              ha_ipv4_pool:
+                description: 'IP address pool used for WAN HA connectivity.
+
+                  IP is derived from the node ID.
+
+                  Not used for uplink interfaces.'
+                type: str
+                format: ipv4_cidr
+              max_ha_interfaces:
+                type: int
+                convert_types:
+                - str
+                description: 'Number of parallel links towards HA switches.
+
+                  Can be used to reserve IP addresses for future parallel HA links.'
+              flow_tracking:
+                type: dict
+                $ref: eos_designs#/$defs/flow_tracking_link
+                description: Configures flow-tracking on the HA interfaces. Overrides
+                  `fabric_flow_tracking.wan_ha_links` setting.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration
