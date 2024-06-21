@@ -111,7 +111,7 @@ def _compile_schemas() -> dict:
 
             # Update the .sha1 file with the new hash of the yaml schema file.
             schema_file = SCHEMA_PATHS[schema_name]
-            new_hash = sha1(schema_file.read_bytes(), usedforsecurity=False).hexdigest()
+            new_hash = sha1(schema_file.read_bytes(), usedforsecurity=False).hexdigest()  # NOSONAR
             schema_file.with_suffix(".sha1").write_text(new_hash, encoding="UTF-8")
         except PermissionError:
             # Ignoring PermissionError so we can operate in read-only environments

@@ -20,24 +20,24 @@ collection-build: ## Build arista.avd collection locally.
 #########################################
 .PHONY: pyavd-build
 pyavd-build: ## Build PyAVD Python package locally.
-	cd python-avd && $(MAKE) clean build
+	cd python-avd && $(MAKE) build
 
 .PHONY: pyavd-test
 pyavd-test: ## Test PyAVD Python code with tox.
-	cd python-avd && $(MAKE) clean && tox -r
+	cd python-avd && $(MAKE) && tox -r
 
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
-	cd python-avd && $(MAKE) clean build publish
+	cd python-avd && $(MAKE) build publish
 
 .PHONY: pyavd-install
 pyavd-install: pyavd-build ## Build and install PyAVD Python package.
-	pip install python-avd/dist/*
+	pip install python-avd/dist/* --force-reinstall
 
 # The editable_mode=compat is required for pylance to pick up the editable install.
 .PHONY: pyavd-editable-install
 pyavd-editable-install: ## Build and install PyAVD as editable
-	pip install -e python-avd --config-settings editable_mode=compat
+	pip install -e python-avd --config-settings editable_mode=compat --force-reinstall
 
 #########################################
 # Code Validation using ansible-test 	#

@@ -47,3 +47,7 @@ keys:
         description: Enable flow-tracking on all dps_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
+      direct_wan_ha_links:
+        description: Enable flow-tracking on all direct WAN HA links.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link

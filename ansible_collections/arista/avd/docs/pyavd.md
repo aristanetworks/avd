@@ -61,23 +61,17 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 Install the `pyavd` Python package:
 
 ```sh
-pip3 install pyavd
+pip install pyavd
 ```
 
-Requirements (automatically installed with above command):
-
-```ini
-jinja2>=3.0
-jsonschema>=4.10.3
-deepmerge>=1.1.0
-```
+Python dependencies are automatically installed with above command.
 
 ### Optional requirements
 
 To install Ansible [AVD collection additional Python requirements](installation/collection-installation.md#additional-python-libraries-required) install with extra `ansible`:
 
 ```sh
-pip3 install pyavd[ansible]
+pip install pyavd[ansible]
 ```
 
 ## Reference

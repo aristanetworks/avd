@@ -48,10 +48,11 @@ class RouterBgpMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.is_cv_pathfinder_router:
             peer_group["route_map_in"] = "RM-BGP-UNDERLAY-PEERS-IN"
-            # TODO: no RM-BGP-UNDERLAY-PEERS-OUT route-map, one will be added in a future PR for HA.
             if self.shared_utils.wan_ha:
-                # For HA need to add allowas_in 1
-                peer_group["allowas_in"] = {"enabled": True, "times": 1}
+                peer_group["route_map_out"] = "RM-BGP-UNDERLAY-PEERS-OUT"
+                if self.shared_utils.use_uplinks_for_wan_ha:
+                    # For HA need to add allowas_in 1
+                    peer_group["allowas_in"] = {"enabled": True, "times": 1}
 
         router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
