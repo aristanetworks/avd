@@ -68,18 +68,20 @@ class Templar:
         # pylint: disable=import-outside-toplevel
         from .j2filters.add_md_toc import add_md_toc
         from .j2filters.convert_dicts import convert_dicts
+        from .j2filters.decrypt import decrypt
         from .j2filters.default import default
+        from .j2filters.encrypt import encrypt
         from .j2filters.generate_esi import generate_esi
+        from .j2filters.generate_lacp_id import generate_lacp_id
         from .j2filters.generate_route_target import generate_route_target
         from .j2filters.hide_passwords import hide_passwords
         from .j2filters.is_in_filter import is_in_filter
         from .j2filters.list_compress import list_compress
         from .j2filters.natural_sort import natural_sort
+        from .j2filters.range_expand import range_expand
         from .j2filters.snmp_hash import snmp_hash
+        from .j2filters.status_render import status_render
         from .j2tests.contains import contains
-        from .vendor.j2.filter.decrypt import decrypt
-        from .vendor.j2.filter.encrypt import encrypt
-        from .vendor.j2.filter.range_expand import range_expand
         from .vendor.j2.test.defined import defined
 
         # pylint: enable=import-outside-toplevel
@@ -92,6 +94,7 @@ class Templar:
                 "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,
                 "arista.avd.generate_esi": generate_esi,
+                "arista.avd.generate_lacp_id": generate_lacp_id,
                 "arista.avd.generate_route_target": generate_route_target,
                 "arista.avd.hide_passwords": hide_passwords,
                 "arista.avd.is_in_filter": is_in_filter,
@@ -99,6 +102,7 @@ class Templar:
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
                 "arista.avd.snmp_hash": snmp_hash,
+                "arista.avd.status_render": status_render,
             }
         )
         self.environment.tests.update(
