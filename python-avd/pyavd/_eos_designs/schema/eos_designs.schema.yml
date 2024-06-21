@@ -8708,9 +8708,9 @@ $defs:
                   enabled.
               ha_interfaces:
                 description: "Local WAN HA interfaces\nOverwrite the default behavior
-                  which is to pick all the interfaces.\nEach list item supports range
-                  syntax that can be expanded into a list of interfaces.\nCan be used
-                  to filter uplink interfaces when there are multiple uplinks.\nLimitations:\n
+                  which is to pick all the `uplink_interfaces`.\nEach list item supports
+                  range syntax that can be expanded into a list of interfaces.\nCan
+                  be used to filter uplink interfaces when there are multiple uplinks.\nLimitations:\n
                   \ Either all interfaces must be uplinks or all interfaces must not
                   be uplinks.\n  Only one interface is supported for non uplinks."
                 type: list
@@ -8720,7 +8720,7 @@ $defs:
               ha_ipv4_pool:
                 description: 'IP address pool used for WAN HA connectivity.
 
-                  IP is derived from the node id.
+                  IP is derived from the node ID.
 
                   Not used for uplink interfaces.'
                 type: str
@@ -8731,13 +8731,11 @@ $defs:
                 - str
                 description: 'Number of parallel links towards HA switches.
 
-                  Can be used to reserve interfaces for future parallel HA links.
-
-                  '
+                  Can be used to reserve IP addresses for future parallel HA links.'
               flow_tracking:
                 type: dict
                 $ref: eos_designs#/$defs/flow_tracking_link
-                description: Configures flow-tracking on the interfaces. Overrides
+                description: Configures flow-tracking on the HA interfaces. Overrides
                   `fabric_flow_tracking.wan_ha_links` setting.
           dps_mss_ipv4:
             documentation_options:
