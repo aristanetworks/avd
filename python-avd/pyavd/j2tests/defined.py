@@ -114,6 +114,5 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         if run_tests:
             return False, warnings_count
         return False
-    else:
-        # Valid value and is matching optional argument if provided - return true
-        return True
+    # Valid value and is matching optional argument if provided - return true
+    return True
