@@ -192,7 +192,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "ethernet_interfaces.[].isis_hello_padding") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "ethernet_interfaces.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>text</code><br>- <code>md5</code><br>- <code>sha</code><br>- <code>shared-secret</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "ethernet_interfaces.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_parameters</samp>](## "ethernet_interfaces.[].isis_authentication_parameters") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_parameters</samp>](## "ethernet_interfaces.[].isis_authentication_parameters") | Dictionary |  |  |  | Required when `isis_authentication_mode` is `sha` or `shared-secret`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "ethernet_interfaces.[].isis_authentication_parameters.both") | Dictionary |  |  |  | This setting is preferred over `level_1` and `level_2`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "ethernet_interfaces.[].isis_authentication_parameters.both.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "ethernet_interfaces.[].isis_authentication_parameters.both.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
@@ -779,6 +779,8 @@
 
         # Type-7 encrypted password.
         isis_authentication_key: <str>
+
+        # Required when `isis_authentication_mode` is `sha` or `shared-secret`.
         isis_authentication_parameters:
 
           # This setting is preferred over `level_1` and `level_2`.

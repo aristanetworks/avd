@@ -557,6 +557,7 @@ keys:
           description: Type-7 encrypted password.
         isis_authentication_parameters:
           type: dict
+          description: Required when `isis_authentication_mode` is `sha` or `shared-secret`.
           keys:
             both:
               type: dict
