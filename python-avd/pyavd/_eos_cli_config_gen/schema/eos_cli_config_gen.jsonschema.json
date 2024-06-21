@@ -19601,6 +19601,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   }
                 },
                 "additionalProperties": false,
@@ -19646,6 +19669,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   },
                   "domain_remote": {
                     "type": "boolean",
@@ -21574,6 +21620,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   }
                 },
                 "additionalProperties": false,
@@ -21635,6 +21704,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   }
                 },
                 "additionalProperties": false,
@@ -21708,6 +21800,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   }
                 },
                 "additionalProperties": false,
@@ -21769,6 +21884,29 @@
                     "type": "string",
                     "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                     "title": "RCF Out"
+                  },
+                  "default_route": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "rcf": {
+                        "type": "string",
+                        "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                        "title": "RCF"
+                      },
+                      "route_map": {
+                        "type": "string",
+                        "title": "Route Map"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Default Route"
                   }
                 },
                 "additionalProperties": false,
@@ -21861,6 +21999,45 @@
                   "^_.+$": {}
                 },
                 "title": "EVPN Multicast Address Family"
+              },
+              "default_route_exports": {
+                "type": "array",
+                "description": "Enable default-originate per VRF/address-family.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address_family": {
+                      "type": "string",
+                      "enum": [
+                        "evpn",
+                        "vpn-ipv4",
+                        "vpn-ipv6"
+                      ],
+                      "title": "Address Family"
+                    },
+                    "always": {
+                      "type": "boolean",
+                      "title": "Always"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "title": "Route Map"
+                    },
+                    "rcf": {
+                      "type": "string",
+                      "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                      "title": "RCF"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "address_family"
+                  ]
+                },
+                "title": "Default Route Exports"
               },
               "route_targets": {
                 "type": "object",
