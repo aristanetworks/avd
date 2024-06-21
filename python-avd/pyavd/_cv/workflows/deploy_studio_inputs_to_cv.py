@@ -6,7 +6,7 @@ from __future__ import annotations
 from asyncio import gather
 from logging import getLogger
 
-from ...utils import batch
+from ..._utils import batch
 from ..client import CVClient
 from .models import CVStudioInputs, DeployToCvResult
 

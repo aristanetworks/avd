@@ -28,6 +28,7 @@ from ..api.arista.configlet.v1 import (
 )
 from ..api.arista.time import TimeBounds
 from ..api.fmp import RepeatedString
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -53,7 +54,7 @@ class ConfigletMixin:
         workspace_id: str,
         container_ids: list[str] | None = None,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignment]:
         """
         Get Configlet Containers (a.k.a. Assignments) using arista.configlet.v1.ConfigletAssignmentServiceStub.GetAll API.
@@ -97,7 +98,7 @@ class ConfigletMixin:
         query: str | None = None,
         child_assignment_ids: list[str] | None = None,
         match_policy: Literal["match_first", "match_all"] = "match_all",
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletAssignmentConfig:
         """
         Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
@@ -135,7 +136,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignmentKey]:
         """
         Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
@@ -180,7 +181,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         assignment_id: str,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletAssignmentConfig:
         """
         Delete a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
@@ -211,7 +212,7 @@ class ConfigletMixin:
         workspace_id: str,
         configlet_ids: list[str] | None = None,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Configlet]:
         """
         Get Configlets using arista.configlet.v1.ConfigletServiceStub.GetAll API.
@@ -252,7 +253,7 @@ class ConfigletMixin:
         display_name: str | None = None,
         description: str | None = None,
         body: str | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletConfig:
         """
         Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
@@ -291,7 +292,7 @@ class ConfigletMixin:
         file: str,
         display_name: str | None = None,
         description: str | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletConfig:
         """
         Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
@@ -327,7 +328,7 @@ class ConfigletMixin:
         self: CVClient,
         workspace_id: str,
         configlet_ids: list[str],
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletKey]:
         """
         Delete a Configlet using arista.configlet.v1.ConfigletServiceStub.SetSome API.
