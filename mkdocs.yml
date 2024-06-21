@@ -184,6 +184,7 @@ nav:
   - Release Notes: docs/release-notes/4.x.x.md
   - Porting Guide: docs/porting-guides/4.x.x.md
   - PyAVD: docs/pyavd.md
+  - Versioning: docs/semantic-versioning.md
   - AVD Dev Containers:
       - Overview: docs/containers/overview.md
   - About:
