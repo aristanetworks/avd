@@ -1314,7 +1314,7 @@ $defs:
               ha_interfaces:
                 description: |-
                   Local WAN HA interfaces
-                  Overwrite the default behavior which is to pick all the interfaces.
+                  Overwrite the default behavior which is to pick all the `uplink_interfaces`.
                   Each list item supports range syntax that can be expanded into a list of interfaces.
                   Can be used to filter uplink interfaces when there are multiple uplinks.
                   Limitations:
@@ -1327,7 +1327,7 @@ $defs:
               ha_ipv4_pool:
                 description: |-
                   IP address pool used for WAN HA connectivity.
-                  IP is derived from the node id.
+                  IP is derived from the node ID.
                   Not used for uplink interfaces.
                 type: str
                 format: ipv4_cidr
@@ -1335,14 +1335,14 @@ $defs:
                 type: int
                 convert_types:
                   - str
-                description: |
+                description: |-
                   Number of parallel links towards HA switches.
-                  Can be used to reserve interfaces for future parallel HA links.
+                  Can be used to reserve IP addresses for future parallel HA links.
               flow_tracking:
                 type: dict
                 $ref: "eos_designs#/$defs/flow_tracking_link"
                 description: |-
-                  Configures flow-tracking on the interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
+                  Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

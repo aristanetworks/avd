@@ -584,6 +584,7 @@ class WanMixin:
         Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
 
         local: When true, request the first IP address else request the remote peer IP.
+        TODO: Move this to ip_addressing module to allow for custom logic.
         """
         wan_ha_ipv4_pool = get(
             self.switch_data_combined,
