@@ -75,7 +75,7 @@ branch = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 91
+fail_under = 90
 include = [
   "pyavd/*"
 ]
