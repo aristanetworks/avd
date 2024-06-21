@@ -17,7 +17,7 @@ from .yaml_loader import YamlLoader
 try:
     from pyavd._utils import get, template, template_var
 except ImportError as e:
-    get, template, template_var = RaiseOnUse(
+    get = template = template_var = RaiseOnUse(
         ImportError(
             "The 'arista.avd' collection requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
