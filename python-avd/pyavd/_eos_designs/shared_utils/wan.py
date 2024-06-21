@@ -6,10 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ...j2filters.natural_sort import natural_sort
-from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.strip_empties import strip_empties_from_dict
-from ...vendor.utils import default, get, get_item
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get, get_item, strip_empties_from_dict
+from ...j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -269,8 +268,6 @@ class WanMixin:
         """
         WAN region for CV Pathfinder
 
-        Also checking if site names are unique across all regions.
-
         The region is required for edges, but optional for pathfinders
         """
         node_defined_region = get(
@@ -285,17 +282,6 @@ class WanMixin:
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
         )
-
-        # Verify that site names are unique across all regions.
-        site_names = [site["name"] for region in regions for site in region["sites"]]
-        if len(site_names) != len(set(site_names)):
-            # We have some site names that are not unique
-            # Now find them (slow so no need to do if we don't have duplicates)
-            duplicate_site_names = [site_name for site_name in site_names if site_names.count(site_name) > 1]
-            raise AristaAvdError(
-                "WAN Site names must be unique across all regions. "
-                f"Found the following duplicate site name(s) under 'cv_pathfinder_regions.[].sites. {duplicate_site_names}"
-            )
 
         return get_item(
             regions,

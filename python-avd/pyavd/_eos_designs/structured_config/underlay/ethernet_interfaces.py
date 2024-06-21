@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
-from ....vendor.utils import append_if_not_duplicate, get
+from ...._utils import append_if_not_duplicate, get
+from ....j2filters import natural_sort
 from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 

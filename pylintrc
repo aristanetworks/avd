@@ -1,8 +1,9 @@
 [MASTER]
 ignore-paths=
   # We will Pylint for ansible_collections separately since it uses it's own pylintrc in the collection root.
-  ansible_collections
-
+  ansible_collections,
+  # The cv_client api is generated from proto files, so it should not be linted.
+  python-avd/pyavd/_cv/api
 
 [MESSAGES CONTROL]
 disable=

@@ -8,14 +8,14 @@ from functools import cached_property
 from logging import getLogger
 from typing import TYPE_CHECKING
 
-from ....vendor.cv_client.client import CVClient
-from ....vendor.cv_client.workflows.models import CVDevice
-from ....vendor.cv_client.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
-from ....vendor.errors import AristaAvdError
-from ....vendor.utils import get
+from ...._cv.client import CVClient
+from ...._cv.workflows.models import CVDevice
+from ...._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
+from ...._errors import AristaAvdError
+from ...._utils import get
 
 if TYPE_CHECKING:
-    from ....vendor.cv_client.api.arista.swg.v1 import Location, VpnEndpoint
+    from ...._cv.api.arista.swg.v1 import Location, VpnEndpoint
     from . import AvdStructuredConfigNetworkServices
 
 LOGGER = getLogger(__name__)

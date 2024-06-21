@@ -6,12 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...j2filters.convert_dicts import convert_dicts
-from ...j2filters.natural_sort import natural_sort
-from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
-from ...vendor.merge import merge
-from ...vendor.utils import default, get, get_item, unique
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get, get_item, merge, unique
+from ...j2filters import convert_dicts, natural_sort, range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils

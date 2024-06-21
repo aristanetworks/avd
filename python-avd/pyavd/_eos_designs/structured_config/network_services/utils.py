@@ -7,11 +7,10 @@ import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Tuple
 
-from ....j2filters.natural_sort import natural_sort
-from ....vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ....vendor.j2.filter.range_expand import range_expand
-from ....vendor.password_utils.password import simple_7_encrypt
-from ....vendor.utils import default, get, get_item
+from ...._errors import AristaAvdError, AristaAvdMissingVariableError
+from ...._utils import default, get, get_item
+from ...._utils.password_utils.password import simple_7_encrypt
+from ....j2filters import natural_sort, range_expand
 from .utils_zscaler import UtilsZscalerMixin
 
 if TYPE_CHECKING:

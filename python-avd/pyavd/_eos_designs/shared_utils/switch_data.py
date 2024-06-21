@@ -6,9 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...j2filters.convert_dicts import convert_dicts
-from ...vendor.merge import merge
-from ...vendor.utils import get
+from ..._utils import get, merge
+from ...j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import SharedUtils

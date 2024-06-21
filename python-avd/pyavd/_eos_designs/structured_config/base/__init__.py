@@ -5,12 +5,10 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ....j2filters.convert_dicts import convert_dicts
-from ....j2filters.natural_sort import natural_sort
-from ....vendor.avdfacts import AvdFacts
-from ....vendor.errors import AristaAvdMissingVariableError
-from ....vendor.strip_empties import strip_null_from_data
-from ....vendor.utils import get
+from ...._errors import AristaAvdMissingVariableError
+from ...._utils import get, strip_null_from_data
+from ....j2filters import convert_dicts, natural_sort
+from ...avdfacts import AvdFacts
 from .ntp import NtpMixin
 from .snmp_server import SnmpServerMixin
 

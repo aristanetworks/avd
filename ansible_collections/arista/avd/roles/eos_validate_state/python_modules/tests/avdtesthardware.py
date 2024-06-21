@@ -29,9 +29,9 @@ class AvdTestHardware(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        pwr_supply_states = get(self.structured_config, "validation_role.pwr_supply_states", ["ok"])
-        fan_states = get(self.structured_config, "validation_role.fan_states", ["ok"])
-        xcvr_manufacturers = get(self.structured_config, "validation_role.xcvr_own_manufacturers", ["Arista Networks", "Arastra, Inc."])
+        pwr_supply_states = get(self.structured_config, "accepted_pwr_supply_states", ["ok"])
+        fan_states = get(self.structured_config, "accepted_fan_states", ["ok"])
+        xcvr_manufacturers = get(self.structured_config, "accepted_xcvr_manufacturers", ["Arista Networks", "Arastra, Inc."])
         xcvr_manufacturers.append("Not Present")
 
         anta_tests = [

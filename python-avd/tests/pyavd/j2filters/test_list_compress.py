@@ -6,7 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from pyavd.j2filters.list_compress import list_compress
+from pyavd.j2filters import list_compress
 
 LIST_COMPRESS_INVALID_TESTS = [
     ("1-3", "Value must be of type list, got <class 'str'>"),

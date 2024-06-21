@@ -7,7 +7,7 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING
 
-from ...vendor.utils import default, get
+from ..._utils import default, get
 
 if TYPE_CHECKING:
     from . import SharedUtils

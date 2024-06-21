@@ -5,12 +5,16 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
+import warnings
 from functools import partial, wraps
 from typing import Callable, Literal
 
 from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleTemplateError, AnsibleUndefinedVariable
 from ansible.module_utils.basic import to_native
+from ansible.utils.display import Display
 from jinja2.exceptions import UndefinedError
+
+display = Display()
 
 
 class RaiseOnUse:
@@ -23,7 +27,7 @@ class RaiseOnUse:
     def __init__(self, exception: Exception):
         self.exception = exception
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         raise self.exception
 
 
@@ -39,8 +43,17 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
     def wrap_plugin_decorator(func: Callable) -> Callable:
         @wraps(func)
         def plugin_wrapper(*args, **kwargs):
+            """Wrapper function for plugins.
+
+            NOTE: if the same warning is raised multiple times, Ansible Display() will print only one
+            """
             try:
-                return func(*args, **kwargs)
+                with warnings.catch_warnings(record=True) as w:
+                    result = func(*args, **kwargs)
+                    if w:
+                        for warning in w:
+                            display.warning(str(warning.message))
+                return result
             except UndefinedError as e:
                 raise AnsibleUndefinedVariable(f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
             except Exception as e:

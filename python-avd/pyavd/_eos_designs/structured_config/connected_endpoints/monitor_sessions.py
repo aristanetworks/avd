@@ -7,10 +7,8 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.j2.filter.range_expand import range_expand
-from ....vendor.merge import merge
-from ....vendor.strip_empties import strip_null_from_data
-from ....vendor.utils import append_if_not_duplicate, get, groupby
+from ...._utils import append_if_not_duplicate, get, groupby, merge, strip_null_from_data
+from ....j2filters import range_expand
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ...vendor.avdfacts import AvdFacts
-from ...vendor.errors import AristaAvdError
-from ...vendor.utils import get
+from ..._errors import AristaAvdError
+from ..._utils import get
+from ..avdfacts import AvdFacts
 from .mlag import MlagMixin
 from .overlay import OverlayMixin
 from .short_esi import ShortEsiMixin

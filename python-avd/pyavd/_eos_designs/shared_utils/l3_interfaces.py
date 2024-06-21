@@ -6,8 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...vendor.merge import merge
-from ...vendor.utils import get, get_item
+from ..._utils import get, get_item, merge
 
 if TYPE_CHECKING:
     from . import SharedUtils

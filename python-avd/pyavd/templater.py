@@ -10,16 +10,6 @@ from typing import Sequence
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH, JINJA2_TEMPLATE_PATHS, RUNNING_FROM_SRC
-from .j2filters.add_md_toc import add_md_toc
-from .j2filters.convert_dicts import convert_dicts
-from .j2filters.default import default
-from .j2filters.generate_esi import generate_esi
-from .j2filters.generate_route_target import generate_route_target
-from .j2filters.hide_passwords import hide_passwords
-from .j2filters.is_in_filter import is_in_filter
-from .j2filters.list_compress import list_compress
-from .j2filters.natural_sort import natural_sort
-from .j2tests.contains import contains
 
 
 class Undefined(StrictUndefined):
@@ -31,18 +21,18 @@ class Undefined(StrictUndefined):
     "{% if var is arista.avd.undefined or var.key is arista.avd.undefined or var.key.subkey is arista.avd.undefined %}"
     """
 
-    def __getattr__(self, name):
+    def __getattr__(self, _name):
         # Return original Undefined object to preserve the first failure context
         return self
 
-    def __getitem__(self, key):
+    def __getitem__(self, _key):
         # Return original Undefined object to preserve the first failure context
         return self
 
     def __repr__(self):
         return f"Undefined(hint={self._undefined_hint}, obj={self._undefined_obj}, name={self._undefined_name})"
 
-    def __contains__(self, item):
+    def __contains__(self, _item):
         # Return original Undefined object to preserve the first failure context
         return self
 
@@ -76,10 +66,25 @@ class Templar:
 
     def import_filters_and_tests(self) -> None:
         # pylint: disable=import-outside-toplevel
-        from .vendor.j2.filter.decrypt import decrypt
-        from .vendor.j2.filter.encrypt import encrypt
-        from .vendor.j2.filter.range_expand import range_expand
-        from .vendor.j2.test.defined import defined
+        from .j2filters import (
+            add_md_toc,
+            convert_dicts,
+            decrypt,
+            default,
+            encrypt,
+            generate_esi,
+            generate_lacp_id,
+            generate_route_target,
+            hide_passwords,
+            is_in_filter,
+            list_compress,
+            natural_sort,
+            range_expand,
+            snmp_hash,
+            status_render,
+        )
+        from .j2tests.contains import contains
+        from .j2tests.defined import defined
 
         # pylint: enable=import-outside-toplevel
 
@@ -91,12 +96,15 @@ class Templar:
                 "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,
                 "arista.avd.generate_esi": generate_esi,
+                "arista.avd.generate_lacp_id": generate_lacp_id,
                 "arista.avd.generate_route_target": generate_route_target,
                 "arista.avd.hide_passwords": hide_passwords,
                 "arista.avd.is_in_filter": is_in_filter,
                 "arista.avd.list_compress": list_compress,
                 "arista.avd.natural_sort": natural_sort,
                 "arista.avd.range_expand": range_expand,
+                "arista.avd.snmp_hash": snmp_hash,
+                "arista.avd.status_render": status_render,
             }
         )
         self.environment.tests.update(

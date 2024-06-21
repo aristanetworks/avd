@@ -4,7 +4,7 @@
 from __future__ import absolute_import, division, print_function
 
 import pytest
-from pyavd.j2filters.convert_dicts import convert_dicts
+from pyavd.j2filters import convert_dicts
 
 DEFAULT_PRIMARY_KEY = "name"
 NESTED_LIST_OF_DICT = {

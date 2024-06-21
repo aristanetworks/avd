@@ -16,8 +16,6 @@ from ansible.module_utils.compat.importlib import import_module
 from ansible.plugins.action import ActionBase, display
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-
 try:
     # Relying on packaging installed by ansible
     from packaging.requirements import InvalidRequirement, Requirement
@@ -95,7 +93,7 @@ def _validate_python_requirements(requirements: list, info: dict) -> bool:
         try:
             req = Requirement(raw_req)
         except InvalidRequirement as exc:
-            raise AristaAvdError(f"Wrong format for requirement {raw_req}") from exc
+            raise AnsibleActionFail(f"Wrong format for requirement {raw_req}") from exc
 
         try:
             installed_version = version(req.name)

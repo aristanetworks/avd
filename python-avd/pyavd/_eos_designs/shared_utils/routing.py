@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
-from ...vendor.utils import get
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import get
+from ...j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils
