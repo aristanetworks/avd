@@ -75,12 +75,12 @@ branch = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 88
+fail_under = 91
 include = [
   "pyavd/*"
 ]
 omit = [
-  "pyavd/vendor/cv_client/*"
+  "pyavd/_cv/api/*"
 ]
 # Regexes for lines to exclude from consideration
 exclude_also = [
