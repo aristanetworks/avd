@@ -245,12 +245,6 @@ loopback_interfaces:
   description: Router_ID
   shutdown: false
   ip_address: 192.168.42.2/32
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: '65000'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
