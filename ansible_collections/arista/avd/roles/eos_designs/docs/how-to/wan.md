@@ -853,3 +853,18 @@ wan_virtual_topologies:
           - names: [internet]
             preference: alternate
 ```
+
+### WAN Validation
+
+`eos_validate_state` is being enriched to support new tests for WAN designs. The tests listed below are validating WAN designs.
+
+| AVD Test Class | ANTA Test Class | Description |
+| -------------- | --------------- | ----------- |
+| AvdTestInterfacesState | VerifyInterfacesStatus | Validate the DPS interface status. |
+| AvdTestBGP | VerifyBGPSpecificPeers | Validate the state of BGP Address Family sessions, including `Path-Selection` for AutoVPN, `Link-State` and `IPv4/IPv6 SR-TE` for CV Pathfinder. |
+| AvdTestIPSecurity | VerifySpecificIPSecConn | Validate the establishment of IP security connections for each static peer under the `router path-selection` section of the configuration. |
+| AvdTestStun | VerifyStunClient | Validate the presence of a STUN client translation for a given source IPv4 address and port. The list of expected translations for each device is built by searching local interfaces in each path-group. |
+
+!!! note
+    More WAN-related tests are available directly in ANTA and can be added using custom catalogs.
+    They will be progressively added to `eos_validate_state`.
