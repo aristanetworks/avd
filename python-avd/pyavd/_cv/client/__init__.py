@@ -94,8 +94,8 @@ class CVClient(
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.verify_mode = ssl.CERT_NONE  # NOSONAR
             context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE  # NOSONAR
             context.set_alpn_protocols(["h2"])
         else:
             context = True
