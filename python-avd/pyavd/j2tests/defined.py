@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 """AVD Jinja2 test defined.
 
-The test checks if a list contains any of the value(s) passed in test_value.
+The test checks if a passed variable is defined, and if specified, its value and its type.
 """
 
 from __future__ import annotations
