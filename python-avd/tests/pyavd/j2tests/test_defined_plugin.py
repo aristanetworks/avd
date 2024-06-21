@@ -1,15 +1,13 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
+from __future__ import annotations
 
-__metaclass__ = type
+import warnings
 
 import pytest
-from ansible.errors import AnsibleError
 from jinja2.runtime import Undefined
-
-from ansible_collections.arista.avd.plugins.test.defined import TestModule, defined
+from pyavd.j2tests.defined import defined
 
 VALUE_LIST = ["ab", None, 1, True, {"key": "value"}]
 TEST_VALUE_LIST = [None, "ab", True, 1, True]
@@ -18,20 +16,22 @@ VAR_NAME_LIST = ["ab", None, 1]
 VAR_TYPE_LIST = ["int", "str", "integer", "aaa", None, dict]
 INVALID_FAIL_ACTION_LIST = [None, "aaaa"]
 
-f = TestModule()
-
 
 class TestDefinedPlugin:
     def defined_function(self, value, test_value=None, var_type=None, fail_action=None, var_name=None, err_msg=None, warn_msg=None):
         if str(fail_action).lower() == "warning":
-            resp, warning = defined(value, test_value=test_value, var_type=var_type, fail_action=fail_action, var_name=var_name, run_tests=True)
+            with warnings.catch_warnings(record=True) as w:
+                resp, warning = defined(value, test_value=test_value, var_type=var_type, fail_action=fail_action, var_name=var_name, run_tests=True)
+            assert len(w) == 1
+            assert isinstance(w[0].message, UserWarning)
             if warn_msg:
                 assert warning is not None
                 warn = str(list(warning.keys())[0]).replace("[WARNING]: ", "").strip().replace("\n", " ")
                 assert warn == warn_msg
-                assert resp is False
+                assert str(w[0].message) == warn_msg
+            assert resp is False
         elif str(fail_action).lower() == "error":
-            with pytest.raises(AnsibleError) as e:
+            with pytest.raises(ValueError) as e:
                 resp, warning = defined(value, test_value=test_value, var_type=var_type, fail_action=fail_action, var_name=var_name, run_tests=True)
             assert str(e.value) == err_msg
 

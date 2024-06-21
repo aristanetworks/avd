@@ -84,7 +84,7 @@ class Templar:
             status_render,
         )
         from .j2tests.contains import contains
-        from .vendor.j2.test.defined import defined
+        from .j2tests.defined import defined
 
         # pylint: enable=import-outside-toplevel
 
