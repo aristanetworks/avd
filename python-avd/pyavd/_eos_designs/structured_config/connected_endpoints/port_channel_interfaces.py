@@ -8,12 +8,8 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.generate_esi import generate_esi
-from ....j2filters.generate_lacp_id import generate_lacp_id
-from ....j2filters.generate_route_target import generate_route_target
-from ....j2filters.range_expand import range_expand
-from ....vendor.strip_empties import strip_null_from_data
-from ....vendor.utils import append_if_not_duplicate, get
+from ...._utils import append_if_not_duplicate, get, strip_null_from_data
+from ....j2filters import generate_esi, generate_lacp_id, generate_route_target, range_expand
 from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 

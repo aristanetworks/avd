@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 
-from ...vendor.avdfacts import AvdFacts
+from ..avdfacts import AvdFacts
 from .models import InterfaceDescriptionData
 from .utils import UtilsMixin
 

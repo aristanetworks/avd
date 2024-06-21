@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import ip_interface
 from typing import TYPE_CHECKING
 
-from ....vendor.utils import get
+from ...._utils import get
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

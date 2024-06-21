@@ -14,7 +14,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.snmp_hash"
 
 try:
-    from pyavd.j2filters.snmp_hash import snmp_hash
+    from pyavd.j2filters import snmp_hash
 except ImportError as e:
     snmp_hash = RaiseOnUse(
         AnsibleFilterError(

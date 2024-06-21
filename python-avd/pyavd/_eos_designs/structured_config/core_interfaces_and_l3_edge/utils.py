@@ -10,10 +10,9 @@ from ipaddress import ip_network
 from itertools import islice
 from typing import TYPE_CHECKING
 
-from ...._utils.merge import merge
-from ....j2filters.convert_dicts import convert_dicts
-from ....vendor.errors import AristaAvdMissingVariableError
-from ....vendor.utils import default, get, get_item
+from ...._errors import AristaAvdMissingVariableError
+from ...._utils import default, get, get_item, merge
+from ....j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3Edge

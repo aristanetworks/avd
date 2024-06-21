@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import IPv4Network
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import natural_sort
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.status_render"
 
 try:
-    from pyavd.j2filters.status_render import status_render
+    from pyavd.j2filters import status_render
 except ImportError as e:
     status_render = RaiseOnUse(
         AnsibleFilterError(

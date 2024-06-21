@@ -1,12 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-try:
-    import jsonschema
-except ImportError as imp_exc:
-    JSONSCHEMA_IMPORT_ERROR = imp_exc
-else:
-    JSONSCHEMA_IMPORT_ERROR = None
+import jsonschema
 
 
 class AristaAvdError(Exception):
@@ -33,9 +28,6 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 class AvdSchemaError(AristaAvdError):
     def __init__(self, message="Schema Error", error=None):
-        if JSONSCHEMA_IMPORT_ERROR:
-            raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-
         if isinstance(error, jsonschema.SchemaError):
             self.message = f"'Schema Error: {self._json_path_to_string(error.absolute_path)}': {error.message}"
         else:
@@ -45,9 +37,6 @@ class AvdSchemaError(AristaAvdError):
 
 class AvdValidationError(AristaAvdError):
     def __init__(self, message: str = "Schema Error", error=None):
-        if JSONSCHEMA_IMPORT_ERROR:
-            raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-
         if isinstance(error, (jsonschema.ValidationError)):
             self.path = self._json_path_to_string(error.absolute_path)
             self.message = f"'Validation Error: {self.path}': {error.message}"

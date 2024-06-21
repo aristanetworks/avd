@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.generate_esi"
 
 try:
-    from pyavd.j2filters.generate_esi import generate_esi
+    from pyavd.j2filters import generate_esi
 except ImportError as e:
     generate_esi = RaiseOnUse(
         AnsibleFilterError(

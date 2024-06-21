@@ -11,9 +11,22 @@ import pstats
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, template
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
+
+PLUGIN_NAME = "arista.avd.validate_and_template"
+
+try:
+    from pyavd._utils import template
+    from pyavd.j2filters import add_md_toc
+except ImportError as e:
+    add_md_toc = template = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 
 class ActionModule(ActionBase):

@@ -16,8 +16,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -34,6 +33,7 @@ try:
         CVTimeOuts,
         CVWorkspace,
     )
+    from pyavd._utils import get, strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
@@ -95,7 +95,7 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         if not HAS_PYAVD:
-            raise AnsibleActionFail("The Python library 'pyavd' was not found. Install using 'pip3 install'.")
+            raise AnsibleActionFail("The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error")
 
         # Setup module logging
         setup_module_logging(result)

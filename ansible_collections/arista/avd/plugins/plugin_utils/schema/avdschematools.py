@@ -11,12 +11,11 @@ from ansible.utils.display import Display
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
 try:
+    from pyavd._errors import AristaAvdError, AvdDeprecationWarning
     from pyavd._schema.avdschema import AvdSchema
-    from pyavd.vendor.errors.errors import AristaAvdError, AvdDeprecationWarning
 except ImportError as e:
-    from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AvdDeprecationWarning
-
     AvdSchema = RaiseOnUse(AnsibleActionFail("The 'arista.avd' collection requires the 'pyavd' Python library. Got import error", orig_exc=e))
+    AristaAvdError = AvdDeprecationWarning = ImportError
 
 
 VALID_CONVERSION_MODES = ["disabled", "error", "warning", "info", "debug", "quiet"]

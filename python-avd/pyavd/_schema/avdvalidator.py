@@ -7,7 +7,7 @@ import jsonschema
 import jsonschema._types
 import jsonschema.validators
 
-from ..vendor.utils import get_all, get_all_with_path, get_indices_of_duplicate_items
+from .._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
 # Special handling of jsonschema <4.18 vs. >=4.18
 try:

@@ -11,8 +11,8 @@ from typing import TYPE_CHECKING
 from ...._cv.client import CVClient
 from ...._cv.workflows.models import CVDevice
 from ...._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
-from ....vendor.errors import AristaAvdError
-from ....vendor.utils import get
+from ...._errors import AristaAvdError
+from ...._utils import get
 
 if TYPE_CHECKING:
     from ...._cv.api.arista.swg.v1 import Location, VpnEndpoint

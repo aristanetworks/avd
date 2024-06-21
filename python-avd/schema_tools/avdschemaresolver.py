@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from pyavd._utils.merge import merge
+from pyavd._utils import merge
 from referencing import Registry, Specification
 from referencing.exceptions import PointerToNowhere
 from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies

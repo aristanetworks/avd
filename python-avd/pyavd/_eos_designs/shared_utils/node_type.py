@@ -7,8 +7,8 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING
 
-from ...vendor.errors import AristaAvdMissingVariableError
-from ...vendor.utils import get
+from ..._errors import AristaAvdMissingVariableError
+from ..._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils

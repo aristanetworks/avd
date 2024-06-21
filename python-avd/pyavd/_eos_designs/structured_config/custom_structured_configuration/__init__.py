@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ....vendor.avdfacts import AvdFacts
-from ....vendor.utils import get
+from ...._utils import get
+from ...avdfacts import AvdFacts
 
 CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS = ["custom_structured_configuration_prefix", "custom_structured_configuration_list_merge"]
 

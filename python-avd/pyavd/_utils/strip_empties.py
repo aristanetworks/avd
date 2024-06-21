@@ -1,14 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8 -*-
-#
 # Copyright (c) 2019-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-
-
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 
 def strip_null_from_data(data, strip_values_tuple=(None,)):
@@ -27,20 +20,12 @@ def strip_null_from_data(data, strip_values_tuple=(None,)):
     """
     if isinstance(data, dict):
         return strip_empties_from_dict(data, strip_values_tuple)
-    elif isinstance(data, list):
+    if isinstance(data, list):
         return strip_empties_from_list(data, strip_values_tuple)
     return data
 
 
-def strip_empties_from_list(
-    data,
-    strip_values_tuple=(
-        None,
-        "",
-        [],
-        {},
-    ),
-):
+def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {})):
     """
     strip_empties_from_list Remove entries with null value from a list
 
@@ -67,15 +52,7 @@ def strip_empties_from_list(
     return new_data
 
 
-def strip_empties_from_dict(
-    data,
-    strip_values_tuple=(
-        None,
-        "",
-        [],
-        {},
-    ),
-):
+def strip_empties_from_dict(data, strip_values_tuple=(None, "", [], {})):
     """
     strip_empties_from_dict Remove entries with null value from a dict
 

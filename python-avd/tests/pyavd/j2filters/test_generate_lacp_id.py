@@ -2,7 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import pytest
-from pyavd.j2filters.generate_lacp_id import generate_lacp_id
+from pyavd.j2filters import generate_lacp_id
 
 ESI_SHORT_VALID_INPUT = [
     ("0404:0202:0101", "0404.0202.0101"),

@@ -6,8 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils.merge import merge
-from ...vendor.utils import get, load_python_class
+from ..._utils import get, load_python_class, merge
 from ..interface_descriptions import AvdInterfaceDescriptions
 
 if TYPE_CHECKING:
