@@ -12,7 +12,7 @@ This document describes which attributes and APIs are stable and follow SemVer a
 
 ## Ansible Collection (arista.avd)
 
-All roles input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice in the previous release. Keys will then be documented as removed in the next major release.
+All roles input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice in the previous release, except for the ones resulting from a bug fix that will be documented in the release notes. Keys will then be documented as removed in the next major release.
 
 ### Roles
 
@@ -69,7 +69,7 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 
 ## PyAVD
 
-All functions input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice in the previous release. Keys will then be documented as removed in the next major release.
+All functions input variables follow SemVer. Any breaking changes will, at a minimum, be communicated with a deprecation notice in the previous release, except for the ones resulting from a bug fix that will be documented in the release notes. Keys will then be documented as removed in the next major release.
 
 !!! warning
 
