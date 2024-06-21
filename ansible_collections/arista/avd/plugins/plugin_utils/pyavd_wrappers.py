@@ -50,9 +50,9 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
             try:
                 with warnings.catch_warnings(record=True) as w:
                     result = func(*args, **kwargs)
-                if w:
-                    for warning in w:
-                        display.warning(str(warning.message))
+                    if w:
+                        for warning in w:
+                             display.warning(str(warning.message))
                 return result
             except UndefinedError as e:
                 raise AnsibleUndefinedVariable(f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
