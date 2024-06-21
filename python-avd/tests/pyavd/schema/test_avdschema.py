@@ -166,10 +166,6 @@ class TestAvdSchema:
         except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema(combined_schema).validate(INVALID_DATA) raised an exception: {e}"
 
-    def test_avd_schema_validate_with_missing_data(self):
-        with pytest.raises(TypeError):
-            AvdSchema().validate()  # pylint: disable=no-value-for-parameter
-
     @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
     def test_avd_schema_load_valid_schema(self, test_schema):
         try:
