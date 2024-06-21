@@ -8,10 +8,10 @@ J2_DIR = $(VENDOR_DIR)/j2
 TESTS_ARTIFACTS = $(CURRENT_DIR)/tests/pyavd/artifacts
 TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
-EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
 PYAVD_FILTER_IMPORT = $(PACKAGE_DIR).j2filters
+PYAVD_TEST_IMPORT = $(PACKAGE_DIR).j2tests
 EOS_DESIGNS_IMPORT = $(PACKAGE_DIR)._eos_designs
 # export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
 
@@ -20,7 +20,7 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dep
-dep: copy-libs fix-libs ## Copy and Fix Ansible AVD python files
+dep: copy-libs fix-libs compile-schemas ## Copy and Fix Ansible AVD python files & compile schemas
 
 .PHONY: test-dep
 test-dep: copy-test-data ## Copy and Fix Ansible AVD test files
@@ -44,6 +44,7 @@ publish: ## Publish pyavd package to PyPI (build first)
 
 .PHONY: compile-schemas
 compile-schemas:
+	$(SCRIPTS_DIR)/build-schemas.py
 
 .PHONY: copy-libs
 copy-libs: ## Copy files from Ansible AVD collection
@@ -51,22 +52,14 @@ copy-libs: ## Copy files from Ansible AVD collection
 	mkdir -p $(VENDOR_DIR)
 	mkdir -p $(J2_DIR)
 	mkdir -p $(SCHEMAS_DIR)
-	mkdir -p $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
 
 	cp $(ANSIBLE_AVD_DIR)/LICENSE $(PACKAGE_DIR)/LICENSE
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/* $(VENDOR_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/module_utils/* $(VENDOR_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/filter $(J2_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/* $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)
-	rm -f $(EOS_CLI_CONFIG_GEN_TEMPLATE_DIR)/avd_schema_documentation.j2
 
 	rm -rf $(VENDOR_DIR)/eos_designs_*
-
-	$(SCRIPTS_DIR)/build-schemas.py
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle $(SCHEMAS_DIR)/
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle $(SCHEMAS_DIR)/
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/schema/avd_meta_schema.pickle $(SCHEMAS_DIR)/
 
 	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements.txt requirements-ansible-avd.txt
 
@@ -92,11 +85,17 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.add_md_toc/$(PYAVD_FILTER_IMPORT)\.add_md_toc/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.convert_dicts/$(PYAVD_FILTER_IMPORT)\.convert_dicts/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.default/$(PYAVD_FILTER_IMPORT)\.default/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.decrypt/$(PYAVD_FILTER_IMPORT)\.decrypt/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.encrypt/$(PYAVD_FILTER_IMPORT)\.encrypt/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.is_in_filter/$(PYAVD_FILTER_IMPORT)\.is_in_filter/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.natural_sort/$(PYAVD_FILTER_IMPORT)\.natural_sort/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_esi/$(PYAVD_FILTER_IMPORT)\.generate_esi/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_lacp_id/$(PYAVD_FILTER_IMPORT)\.generate_lacp_id/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_route_target/$(PYAVD_FILTER_IMPORT)\.generate_route_target/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.hide_passwords/$(PYAVD_FILTER_IMPORT)\.hide_passwords/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.list_compress/$(PYAVD_FILTER_IMPORT)\.list_compress/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.range_expand/$(PYAVD_FILTER_IMPORT)\.range_expand/g' {} +
+	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.status_render/$(PYAVD_FILTER_IMPORT)\.status_render/g' {} +
 
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter/$(VENDOR_IMPORT)\.j2\.filter/g' {} +
 
@@ -107,6 +106,7 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 	$(SCRIPTS_DIR)/compile_templates.py
 
 	grep "ansible-core" $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements-dev.txt >> requirements-ansible-avd.txt
+
 
 .PHONY: copy-test-data
 copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
@@ -120,7 +120,7 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 
 ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
 ## Excluding custom-templates since there is no jinja support in pyavd
-	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
+	ANSIBLE_COLLECTIONS_PATH="..:/usr/share/ansible/collections" ansible-playbook \
 		--limit 'all:!prompt:!custom-templates' \
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
 		$(SCRIPTS_DIR)/export_test_vars.yml \
@@ -135,7 +135,7 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 
 ## EOS_DESIGNS
 
-	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
+	ANSIBLE_COLLECTIONS_PATH="..:/usr/share/ansible/collections" ansible-playbook \
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml $(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_designs_unit_tests \
 		-f 10
