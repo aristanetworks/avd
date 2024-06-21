@@ -6,7 +6,7 @@ import os
 import pytest
 import yaml
 from deepmerge import always_merger
-from pyavd._errors import AvdValidationError  # pylint: disable=no-name-in-module
+from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 from pyavd._schema.avdschemaresolver import AvdSchemaResolver
 from schema_tools.constants import SCHEMA_PATHS
