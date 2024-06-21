@@ -5,7 +5,7 @@ from .append_if_not_duplicate import append_if_not_duplicate
 from .batch import batch
 from .compare_dicts import compare_dicts
 from .default import default
-from .get import get
+from .get import get, get_v2
 from .get_all import get_all, get_all_with_path
 from .get_indices_of_duplicate_items import get_indices_of_duplicate_items
 from .get_ip_from_pool import get_ip_from_pool
@@ -30,6 +30,7 @@ __all__ = [
     "get_ip_from_pool",
     "get_item",
     "get",
+    "get_v2",
     "groupby",
     "load_python_class",
     "merge",

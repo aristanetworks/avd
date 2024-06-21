@@ -52,54 +52,21 @@ copy-libs: ## Copy files from Ansible AVD collection
 	rm -rf $(VENDOR_DIR)
 	mkdir -p $(VENDOR_DIR)
 	mkdir -p $(J2_DIR)
-	mkdir -p $(SCHEMAS_DIR)
 
 	cp $(ANSIBLE_AVD_DIR)/LICENSE $(PACKAGE_DIR)/LICENSE
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/plugin_utils/* $(VENDOR_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/module_utils/* $(VENDOR_DIR)
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/filter $(J2_DIR)
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
 
-	rm -rf $(VENDOR_DIR)/eos_designs_*
+	rm -f $(J2_DIR)/test/contains.py
 
 	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements.txt requirements-ansible-avd.txt
 
 .PHONY: fix-libs
 fix-libs: ## Fix/remove various Ansible specifics things from python files
-	rm -f $(VENDOR_DIR)/schema/avdschematools.py
-	rm -f $(VENDOR_DIR)/utils/yaml_dumper.py
-	rm -f $(VENDOR_DIR)/utils/yaml_loader.py
-	rm -f $(VENDOR_DIR)/pyavd_wrappers.py
-	sed -i -e '/Yaml/d' $(VENDOR_DIR)/utils/__init__.py
 	find $(PACKAGE_DIR) -name '__pycache__' -exec rm -rf {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/^from __future__ import.*/from __future__ import annotations/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e '/^__metaclass__ = type/d' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible.errors import /from pyavd._errors import /g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleFilterError/AristaAvdError/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleError/AristaAvdError/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleActionFail/AristaAvdError/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.plugin_utils\.schema\.avdschematools/pyavd.avd_schema_tools/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.plugin_utils/$(VENDOR_IMPORT)/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.module_utils/$(VENDOR_IMPORT)/g' {} +
-
-# For each moved filter make sure to override the default translation.
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.add_md_toc/$(PYAVD_FILTER_IMPORT)\.add_md_toc/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.convert_dicts/$(PYAVD_FILTER_IMPORT)\.convert_dicts/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.default/$(PYAVD_FILTER_IMPORT)\.default/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.decrypt/$(PYAVD_FILTER_IMPORT)\.decrypt/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.encrypt/$(PYAVD_FILTER_IMPORT)\.encrypt/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.is_in_filter/$(PYAVD_FILTER_IMPORT)\.is_in_filter/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.natural_sort/$(PYAVD_FILTER_IMPORT)\.natural_sort/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_esi/$(PYAVD_FILTER_IMPORT)\.generate_esi/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_lacp_id/$(PYAVD_FILTER_IMPORT)\.generate_lacp_id/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.generate_route_target/$(PYAVD_FILTER_IMPORT)\.generate_route_target/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.hide_passwords/$(PYAVD_FILTER_IMPORT)\.hide_passwords/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.list_compress/$(PYAVD_FILTER_IMPORT)\.list_compress/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.range_expand/$(PYAVD_FILTER_IMPORT)\.range_expand/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter.status_render/$(PYAVD_FILTER_IMPORT)\.status_render/g' {} +
-
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/ansible_collections\.arista\.avd\.plugins\.filter/$(VENDOR_IMPORT)\.j2\.filter/g' {} +
-
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible\.utils\.display/from $(VENDOR_IMPORT)\.utils\.display/g' {} +
 
 	cp -r $(CURRENT_DIR)/vendor_overrides/* $(VENDOR_DIR)/
