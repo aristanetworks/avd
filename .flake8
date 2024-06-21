@@ -8,4 +8,4 @@ max-line-length = 160
 
 exclude =
   # The cv_client api is generated from proto files, so it should not be linted.
-  ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api
+  python-avd/pyavd/_cv/api

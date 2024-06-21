@@ -5,10 +5,10 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
-from functools import wraps
-from typing import Callable
+from functools import partial, wraps
+from typing import Callable, Literal
 
-from ansible.errors import AnsibleFilterError, AnsibleUndefinedVariable
+from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleTemplateError, AnsibleUndefinedVariable
 from ansible.module_utils.basic import to_native
 from jinja2.exceptions import UndefinedError
 
@@ -23,21 +23,33 @@ class RaiseOnUse:
     def __init__(self, exception: Exception):
         self.exception = exception
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         raise self.exception
 
 
-def wrap_filter(name: str) -> Callable:
-    def wrap_filter_decorator(func: Callable | None) -> Callable:
+def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
+    plugin_map = {
+        "filter": AnsibleFilterError,
+        "test": AnsibleTemplateError,
+    }
+
+    if plugin_type not in plugin_map:
+        raise AnsibleInternalError(f"Wrong plugin type {plugin_type} passed to wrap_plugin.")
+
+    def wrap_plugin_decorator(func: Callable) -> Callable:
         @wraps(func)
-        def filter_wrapper(*args, **kwargs):
+        def plugin_wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
             except UndefinedError as e:
-                raise AnsibleUndefinedVariable(f"Filter '{name}' failed: {to_native(e)}", orig_exc=e) from e
+                raise AnsibleUndefinedVariable(f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
             except Exception as e:
-                raise AnsibleFilterError(f"Filter '{name}' failed: {to_native(e)}", orig_exc=e) from e
+                raise plugin_map[plugin_type](f"{plugin_type.capitalize()} '{name}' failed: {to_native(e)}", orig_exc=e) from e
 
-        return filter_wrapper
+        return plugin_wrapper
 
-    return wrap_filter_decorator
+    return wrap_plugin_decorator
+
+
+wrap_filter = partial(wrap_plugin, "filter")
+wrap_test = partial(wrap_plugin, "test")

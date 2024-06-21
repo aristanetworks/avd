@@ -8,9 +8,9 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ....j2filters.generate_esi import generate_esi
+from ....j2filters.generate_lacp_id import generate_lacp_id
 from ....j2filters.generate_route_target import generate_route_target
 from ....j2filters.natural_sort import natural_sort
-from ....vendor.j2.filter.generate_lacp_id import generate_lacp_id
 from ....vendor.utils import append_if_not_duplicate, get
 from .utils import UtilsMixin
 

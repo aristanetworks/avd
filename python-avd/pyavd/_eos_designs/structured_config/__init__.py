@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from collections import ChainMap
 
+from ..._utils.merge import merge
 from ...avd_schema_tools import AvdSchemaTools
 from ...vendor.avdfacts import AvdFacts
-from ...vendor.merge import merge
 from ...vendor.utils import get
 from ..shared_utils import SharedUtils
 from .base import AvdStructuredConfigBase

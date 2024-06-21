@@ -5,9 +5,6 @@ from __future__ import annotations
 
 from collections import ChainMap
 
-from ._eos_designs.eos_designs_facts import EosDesignsFacts
-from ._eos_designs.shared_utils import SharedUtils
-
 
 def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
     """
@@ -73,6 +70,12 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
             }
             ```
     """
+    # pylint: disable=import-outside-toplevel
+    from ._eos_designs.eos_designs_facts import EosDesignsFacts
+    from ._eos_designs.shared_utils import SharedUtils
+
+    # pylint: enable=import-outside-toplevel
+
     avd_switch_facts = {}
     for hostname, hostvars in all_inputs.items():
         # Set 'inventory_hostname' on the input variables, to keep compatibility with Ansible focused code.
