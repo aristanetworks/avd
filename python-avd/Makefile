@@ -21,7 +21,7 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dep
-dep: copy-libs fix-libs compile-schemas ## Copy and Fix Ansible AVD python files & compile schemas
+dep: update-requirements-and-templates compile-schemas ## Copy and Fix Ansible AVD python files & compile schemas
 
 .PHONY: test-dep
 test-dep: copy-test-data ## Copy and Fix Ansible AVD test files
@@ -47,33 +47,12 @@ publish: ## Publish pyavd package to PyPI (build first)
 compile-schemas:
 	$(SCRIPTS_DIR)/build-schemas.py
 
-.PHONY: copy-libs
-copy-libs: ## Copy files from Ansible AVD collection
-	rm -rf $(VENDOR_DIR)
-	mkdir -p $(VENDOR_DIR)
-	mkdir -p $(J2_DIR)
-
-	cp $(ANSIBLE_AVD_DIR)/LICENSE $(PACKAGE_DIR)/LICENSE
-	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/plugins/test $(J2_DIR)
-
-	rm -f $(J2_DIR)/test/contains.py
-
+.PHONY: update-requirements-and-templates
+update-requirements-and-templates:
 	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements.txt requirements-ansible-avd.txt
-
-.PHONY: fix-libs
-fix-libs: ## Fix/remove various Ansible specifics things from python files
-	find $(PACKAGE_DIR) -name '__pycache__' -exec rm -rf {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/^from __future__ import.*/from __future__ import annotations/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e '/^__metaclass__ = type/d' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible.errors import /from pyavd._errors import /g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/AnsibleError/AristaAvdError/g' {} +
-	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/from ansible\.utils\.display/from $(VENDOR_IMPORT)\.utils\.display/g' {} +
-
-	cp -r $(CURRENT_DIR)/vendor_overrides/* $(VENDOR_DIR)/
-
+	grep "ansible-core" $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements-dev.txt >> requirements-ansible-avd.txt
 	$(SCRIPTS_DIR)/compile_templates.py
 
-	grep "ansible-core" $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/requirements-dev.txt >> requirements-ansible-avd.txt
 
 
 .PHONY: copy-test-data
