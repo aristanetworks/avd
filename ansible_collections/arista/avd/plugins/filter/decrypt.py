@@ -16,17 +16,6 @@ except ImportError as e:
             orig_exc=e,
         )
     )
-# TODO: Remove the below import once cv_client plugin utils have been moved to pyavd
-try:
-    from pyavd._utils.password_utils.password import simple_7_decrypt  # noqa: F401; pylint: disable=unused-import
-except ImportError as e:
-    simple_7_decrypt = RaiseOnUse(
-        AnsibleFilterError(
-            "The 'simple_7_decrypt' plugin utils requires the 'pyavd' Python library. Got import error",
-            orig_exc=e,
-        )
-    )
-
 
 DOCUMENTATION = r"""
 ---
