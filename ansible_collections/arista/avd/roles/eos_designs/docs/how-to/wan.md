@@ -865,4 +865,6 @@ wan_virtual_topologies:
 | AvdTestIPSecurity | VerifySpecificIPSecConn | VValidates the establishment of IP security connections for each static peer under the `router path-selection` section of the configuration. |
 | AvdTestStun | VerifyStunClient | Validates the presence of a STUN client translation for a given source IPv4 address and port. The list of expected translations for each device is built by searching local interfaces in each path-group. |
 
-    More tests are coming soon.
+!!! note
+    More WAN-related tests are available directly in ANTA and can be added using custom catalogs.
+    They will be progressively added to `eos_validate_state`.
