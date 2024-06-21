@@ -1315,7 +1315,6 @@ $defs:
                 description: |-
                   Local WAN HA interfaces
                   Overwrite the default behavior which is to pick all the `uplink_interfaces`.
-                  Each list item supports range syntax that can be expanded into a list of interfaces.
                   Can be used to filter uplink interfaces when there are multiple uplinks.
                   Limitations:
                     Either all interfaces must be uplinks or all interfaces must not be uplinks.
