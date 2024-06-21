@@ -27,7 +27,7 @@ __metaclass__ = type
 
 from ansible.errors import AnsibleTemplateError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, warning_wrapper, wrap_test
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_test
 
 PLUGIN_NAME = "arista.avd.defined"
 
