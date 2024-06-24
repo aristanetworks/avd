@@ -18,7 +18,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAn
 try:
     from yaml import CLoader as YamlLoader
 except ImportError:
-    from yaml import YamlLoader
+    from yaml import Loader as YamlLoader
 
 try:
     from pyavd import get_device_config, get_device_doc, validate_structured_config
