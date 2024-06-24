@@ -8,7 +8,6 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...._utils import get, get_item
-
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

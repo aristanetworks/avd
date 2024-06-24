@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get, get_item, merge
 from ..._errors import AristaAvdMissingVariableError
+from ..._utils import get, get_item, merge
 from ..interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
