@@ -50,6 +50,7 @@ class ConfigManager:
         self.structured_config = self.get_host_structured_config(host=device_name)
         self.loopback0_mapping = self.get_loopback0_mapping()
         self.vtep_mapping = self.get_vtep_mapping()
+        self.dps_mapping = self.get_dps_mapping()
 
     def get_host_structured_config(self, host: str) -> Mapping:
         """Get a specified host's structured configuration from the hostvars.
@@ -84,6 +85,10 @@ class ConfigManager:
         """Get the vtep_mapping list."""
         return self._get_loopback_mappings["vtep_mapping"]
 
+    def get_dps_mapping(self) -> list[tuple[str, str]]:
+        """Get the vtep_mapping list."""
+        return self._get_loopback_mappings["dps_mapping"]
+
     @cached_property
     def _get_loopback_mappings(self) -> dict:
         """Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
@@ -95,7 +100,7 @@ class ConfigManager:
             - "vtep_mapping": A list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
 
         """
-        results = {"loopback0_mapping": [], "vtep_mapping": []}
+        results = {"loopback0_mapping": [], "vtep_mapping": [], "dps_mapping": []}
 
         for host in self.hostvars:
             host_struct_cfg = self.get_host_structured_config(host)
@@ -117,4 +122,12 @@ class ConfigManager:
                     LOGGER.warning("Host '%s' variable 'ip_address' of interface '%s' is missing.", host, vtep_interface)
                 else:
                     results["vtep_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
+            if vtep_interface is not None and "Dps" in vtep_interface:
+                dps_interfaces = host_struct_cfg.get("dps_interfaces", [])
+                if (dps_interface := get_item(dps_interfaces, "name", vtep_interface)) is None:
+                    LOGGER.warning("Host '%s' interface '%s' is missing.", host, vtep_interface)
+                elif (dps_ip := dps_interface.get("ip_address")) is None:
+                    LOGGER.warning("Host '%s' variable 'ip_address' of interface '%s' is missing.", host, vtep_interface)
+                else:
+                    results["dps_mapping"].append((host, str(ip_interface(dps_ip).ip)))
         return results
