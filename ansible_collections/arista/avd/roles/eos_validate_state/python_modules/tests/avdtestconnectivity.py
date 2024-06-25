@@ -30,11 +30,10 @@ class AvdTestBaseReachability(AvdTestBase):
         self, custom_msg: str, src_ip: str, mapping: list[tuple[str, str]], vrf: str = "default", dst_interface: str = "Loopback0"
     ) -> list[dict]:
         """Create reachability tests for a given interface type and source IP."""
-        src_ip_str = str(ip_interface(src_ip).ip)
         return [
             {
                 "VerifyReachability": {
-                    "hosts": [{"source": src_ip_str, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
+                    "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
                     "result_overwrite": {"custom_field": f"{custom_msg} (IP: {src_ip}) - Destination: {dst_node} {dst_interface} (IP: {dst_ip})"},
                 }
             }
@@ -186,8 +185,9 @@ class AvdTestDpsReachability(AvdTestBaseReachability):
         dps_ip = self.get_interface_ip("dps_interfaces", dps_source_interface)
         if not dps_ip:
             return None
+        src_ip = str(ip_interface(dps_ip).ip)
         custom_msg = f"Source: {dps_source_interface}"
-        anta_tests = self.create_reachability_tests(custom_msg, dps_ip, self.dps_mapping, dst_interface=dps_source_interface)
+        anta_tests = self.create_reachability_tests(custom_msg, src_ip, self.dps_mapping, dst_interface=dps_source_interface)
         return {self.anta_module: anta_tests} if anta_tests else None
 
 

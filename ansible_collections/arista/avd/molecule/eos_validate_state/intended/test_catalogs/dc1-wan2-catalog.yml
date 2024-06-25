@@ -244,8 +244,8 @@ anta.tests.connectivity:
       source: 10.255.1.2
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Dps1 (IP: 10.255.1.2/32) - Destination: dc1-wan1 Dps1
-        (IP: 10.255.1.1)'
+      custom_field: 'Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan1 Dps1 (IP:
+        10.255.1.1)'
 - VerifyReachability:
     hosts:
     - destination: 10.255.1.2
@@ -253,8 +253,8 @@ anta.tests.connectivity:
       source: 10.255.1.2
       vrf: default
     result_overwrite:
-      custom_field: 'Source: Dps1 (IP: 10.255.1.2/32) - Destination: dc1-wan2 Dps1
-        (IP: 10.255.1.2)'
+      custom_field: 'Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan2 Dps1 (IP:
+        10.255.1.2)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null

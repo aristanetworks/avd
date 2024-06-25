@@ -53,7 +53,7 @@ class AvdTestBase(DeviceUtilsMixin, ValidationMixin):
 
     @property
     def dps_mapping(self) -> list[tuple[str, str]]:
-        """Return the vtep_mapping from the ConfigManager instance."""
+        """Return the dps_mapping from the ConfigManager instance."""
         return self.config_manager.dps_mapping
 
     def render(self) -> dict:

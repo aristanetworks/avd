@@ -1222,8 +1222,8 @@
 | 1139 | dc1-wan1 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled | - | NOT RUN | - |
 | 1140 | dc1-wan1 | Connectivity | VerifyLLDPNeighbors | Verifies that the provided LLDP neighbors are connected properly. | Local: Ethernet1 - Remote: dc1-leaf1a Ethernet6 | NOT RUN | - |
 | 1141 | dc1-wan1 | Connectivity | VerifyLLDPNeighbors | Verifies that the provided LLDP neighbors are connected properly. | Local: Ethernet2 - Remote: dc1-leaf1b Ethernet6 | NOT RUN | - |
-| 1142 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.1/32) - Destination: dc1-wan1 Dps1 (IP: 10.255.1.1) | NOT RUN | - |
-| 1143 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.1/32) - Destination: dc1-wan2 Dps1 (IP: 10.255.1.2) | NOT RUN | - |
+| 1142 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.1) - Destination: dc1-wan1 Dps1 (IP: 10.255.1.1) | NOT RUN | - |
+| 1143 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.1) - Destination: dc1-wan2 Dps1 (IP: 10.255.1.2) | NOT RUN | - |
 | 1144 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Loopback0 (IP: 10.255.2.1) - Destination: dc1-leaf1a Loopback0 (IP: 10.255.0.3) | NOT RUN | - |
 | 1145 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Loopback0 (IP: 10.255.2.1) - Destination: dc1-leaf1b Loopback0 (IP: 10.255.0.4) | NOT RUN | - |
 | 1146 | dc1-wan1 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Loopback0 (IP: 10.255.2.1) - Destination: dc1-leaf2a Loopback0 (IP: 10.255.0.5) | NOT RUN | - |
@@ -1334,8 +1334,8 @@
 | 1251 | dc1-wan2 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled | - | NOT RUN | - |
 | 1252 | dc1-wan2 | Connectivity | VerifyLLDPNeighbors | Verifies that the provided LLDP neighbors are connected properly. | Local: Ethernet1 - Remote: dc1-leaf1a Ethernet7 | NOT RUN | - |
 | 1253 | dc1-wan2 | Connectivity | VerifyLLDPNeighbors | Verifies that the provided LLDP neighbors are connected properly. | Local: Ethernet2 - Remote: dc1-leaf1b Ethernet7 | NOT RUN | - |
-| 1254 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.2/32) - Destination: dc1-wan1 Dps1 (IP: 10.255.1.1) | NOT RUN | - |
-| 1255 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.2/32) - Destination: dc1-wan2 Dps1 (IP: 10.255.1.2) | NOT RUN | - |
+| 1254 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan1 Dps1 (IP: 10.255.1.1) | NOT RUN | - |
+| 1255 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan2 Dps1 (IP: 10.255.1.2) | NOT RUN | - |
 | 1256 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Loopback0 (IP: 10.255.2.2) - Destination: dc1-leaf1a Loopback0 (IP: 10.255.0.3) | NOT RUN | - |
 | 1257 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Loopback0 (IP: 10.255.2.2) - Destination: dc1-leaf1b Loopback0 (IP: 10.255.0.4) | NOT RUN | - |
 | 1258 | dc1-wan2 | Connectivity | VerifyReachability | Test the network reachability to one or many destination IP(s). | Source: Loopback0 (IP: 10.255.2.2) - Destination: dc1-leaf2a Loopback0 (IP: 10.255.0.5) | NOT RUN | - |

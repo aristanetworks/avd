@@ -86,7 +86,7 @@ class ConfigManager:
         return self._get_loopback_mappings["vtep_mapping"]
 
     def get_dps_mapping(self) -> list[tuple[str, str]]:
-        """Get the vtep_mapping list."""
+        """Get the dps_mapping list."""
         return self._get_loopback_mappings["dps_mapping"]
 
     @cached_property
@@ -114,7 +114,6 @@ class ConfigManager:
             # If the host is a VTEP, add the VTEP IP to the mapping
             vtep_interface = get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface")
 
-            # NOTE: For now we exclude WAN VTEPs from the vtep_mapping
             if vtep_interface is not None and "Dps" not in vtep_interface:
                 if (loopback_interface := get_item(loopback_interfaces, "name", vtep_interface)) is None:
                     LOGGER.warning("Host '%s' interface '%s' is missing.", host, vtep_interface)
