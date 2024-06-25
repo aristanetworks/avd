@@ -55384,6 +55384,8 @@
     },
     "ptp": {
       "type": "object",
+      "description": "The `ptp` setting is deprecated and it will be removed in version 5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings` takes precedence when both `ptp` and `ptp_settings` are set.\nThis key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.",
+      "deprecated": true,
       "properties": {
         "enabled": {
           "type": "boolean",
@@ -55525,6 +55527,42 @@
         }
       ],
       "title": "PTP Profiles"
+    },
+    "ptp_settings": {
+      "type": "object",
+      "description": "The `ptp` setting is deprecated and it will be removed in version 5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings` takes precedence when both `ptp` and `ptp_settings` are set.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "aes67",
+            "smpte2059-2",
+            "aes67-r16-2016"
+          ],
+          "default": "aes67-r16-2016",
+          "title": "Profile"
+        },
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Domain"
+        },
+        "auto_clock_identity": {
+          "type": "boolean",
+          "default": true,
+          "title": "Auto Clock Identity"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PTP Settings"
     },
     "queue_monitor_length": {
       "type": "object",

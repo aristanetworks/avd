@@ -1,0 +1,11 @@
+---
+
+# Test `ptp_settings` key.
+ptp_settings:
+  enabled: true
+  auto_clock_identity: true
+
+# Test `ptp_settings` takes precedence to `ptp` setting.
+ptp:
+  enabled: false
+  auto_clock_identity: false

@@ -36,3 +36,11 @@ l2leaf:
         enabled: true
       uplink_ptp:
         enable: false
+
+    - name: ptp-tests-l2leaf2-ptp-settings-key
+      id: 4
+      uplink_switch_interfaces:
+        - Ethernet16
+        - Ethernet16
+      ptp:
+        enabled: true

@@ -3182,25 +3182,14 @@ keys:
 
             '
   ptp:
+    deprecation:
+      warning: true
+      new_key: ptp_settings
+      remove_in_version: v5.0.0
     documentation_options:
       table: ptp
     type: dict
-    keys:
-      enabled:
-        type: bool
-      profile:
-        type: str
-        valid_values:
-        - aes67
-        - smpte2059-2
-        - aes67-r16-2016
-        default: aes67-r16-2016
-      domain:
-        type: int
-        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
-      auto_clock_identity:
-        type: bool
-        default: true
+    $ref: eos_designs#/keys/ptp_settings
   ptp_profiles:
     documentation_options:
       table: ptp
@@ -3272,6 +3261,29 @@ keys:
       sync_message:
         interval: 0
       transport: ipv4
+  ptp_settings:
+    documentation_options:
+      table: ptp_settings
+    type: dict
+    description: The `ptp` setting is deprecated and it will be removed in version
+      5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings`
+      takes precedence when both `ptp` and `ptp_settings` are set.
+    keys:
+      enabled:
+        type: bool
+      profile:
+        type: str
+        valid_values:
+        - aes67
+        - smpte2059-2
+        - aes67-r16-2016
+        default: aes67-r16-2016
+      domain:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
+      auto_clock_identity:
+        type: bool
+        default: true
   queue_monitor_length:
     documentation_options:
       table: system-settings
