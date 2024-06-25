@@ -13,7 +13,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, cprofile, get_templar, YamlLoard
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoard, cprofile, get_templar
 
 try:
     from pyavd import get_device_config, get_device_doc, validate_structured_config
