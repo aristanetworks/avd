@@ -26,14 +26,16 @@ class AvdTestBaseReachability(AvdTestBase):
         """Check if the host is a WAN VTEP by verifying the DPS source interface."""
         return "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface", "")
 
-    def create_reachability_tests(self, custom_msg: str, src_ip: str, mapping: list[tuple[str, str]], vrf: str = "default") -> list[dict]:
+    def create_reachability_tests(
+        self, custom_msg: str, src_ip: str, mapping: list[tuple[str, str]], vrf: str = "default", dst_interface: str = "Loopback0"
+    ) -> list[dict]:
         """Create reachability tests for a given interface type and source IP."""
         src_ip_str = str(ip_interface(src_ip).ip)
         return [
             {
                 "VerifyReachability": {
                     "hosts": [{"source": src_ip_str, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
-                    "result_overwrite": {"custom_field": f"{custom_msg} (IP: {src_ip}) - Destination: {dst_node} Loopback0 (IP: {dst_ip})"},
+                    "result_overwrite": {"custom_field": f"{custom_msg} (IP: {src_ip}) - Destination: {dst_node} {dst_interface} (IP: {dst_ip})"},
                 }
             }
             for dst_node, dst_ip in mapping
@@ -185,7 +187,7 @@ class AvdTestDpsReachability(AvdTestBaseReachability):
         if not dps_ip:
             return None
         custom_msg = f"Source: {dps_source_interface}"
-        anta_tests = self.create_reachability_tests(custom_msg, dps_ip, self.dps_mapping)
+        anta_tests = self.create_reachability_tests(custom_msg, dps_ip, self.dps_mapping, dst_interface=dps_source_interface)
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
