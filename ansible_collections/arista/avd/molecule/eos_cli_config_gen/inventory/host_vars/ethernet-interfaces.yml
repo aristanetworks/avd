@@ -58,6 +58,13 @@ ethernet_interfaces:
         - from: 23-37
           to: 45
           direction: out
+      backup_link_interface: Ethernet5
+      backup:
+        dest_macaddr: 01:00:00:00:00:00
+        mac_move_burst: 20
+        mac_move_burst_interval: 30
+        initial_mac_move_delay: 10
+        preemption_delay: 35
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1

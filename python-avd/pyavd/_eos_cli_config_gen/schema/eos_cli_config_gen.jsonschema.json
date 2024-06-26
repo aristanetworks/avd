@@ -6021,6 +6021,55 @@
                   }
                 },
                 "title": "VLAN Translations"
+              },
+              "backup_link_interface": {
+                "type": "string",
+                "description": "Backup interface. Example - Ethernet4, Vlan10 etc.",
+                "title": "Backup Link Interface"
+              },
+              "backup": {
+                "type": "object",
+                "description": "The `backup_link_interface` is required to set this config.",
+                "properties": {
+                  "dest_macaddr": {
+                    "type": "string",
+                    "description": "Destination MAC address for MAC move updates.",
+                    "title": "Dest Macaddr"
+                  },
+                  "initial_mac_move_delay": {
+                    "type": "integer",
+                    "description": "Initial MAC move delay in milliseconds.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "Initial MAC Move Delay"
+                  },
+                  "mac_move_burst": {
+                    "type": "integer",
+                    "description": "Size of MAC move bursts in milliseconds.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "MAC Move Burst"
+                  },
+                  "mac_move_burst_interval": {
+                    "type": "integer",
+                    "description": "MAC move burst interval in milliseconds.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "MAC Move Burst Interval"
+                  },
+                  "preemption_delay": {
+                    "type": "integer",
+                    "description": "Preemption delay in milliseconds.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "Preemption Delay"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Backup"
               }
             },
             "additionalProperties": false,

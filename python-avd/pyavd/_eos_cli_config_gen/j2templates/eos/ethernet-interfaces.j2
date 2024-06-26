@@ -202,6 +202,24 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.pvlan_mapping is arista.avd.defined %}
    switchport pvlan mapping {{ ethernet_interface.switchport.pvlan_mapping }}
 {%     endif %}
+{%     if ethernet_interface.switchport.backup_link_interface is arista.avd.defined %}
+   switchport backup-link {{ ethernet_interface.switchport.backup_link_interface }}
+{%         if ethernet_interface.switchport.backup.preemption_delay is arista.avd.defined %}
+   switchport backup preemption-delay {{ ethernet_interface.switchport.backup.preemption_delay }}
+{%         endif %}
+{%         if ethernet_interface.switchport.backup.mac_move_burst is arista.avd.defined %}
+   switchport backup mac-move-burst {{ ethernet_interface.switchport.backup.mac_move_burst }}
+{%         endif %}
+{%         if ethernet_interface.switchport.backup.mac_move_burst_interval is arista.avd.defined %}
+   switchport backup mac-move-burst-interval {{ ethernet_interface.switchport.backup.mac_move_burst_interval }}
+{%         endif %}
+{%         if ethernet_interface.switchport.backup.initial_mac_move_delay is arista.avd.defined %}
+   switchport backup initial-mac-move-delay {{ ethernet_interface.switchport.backup.initial_mac_move_delay }}
+{%         endif %}
+{%         if ethernet_interface.switchport.backup.dest_macaddr is arista.avd.defined %}
+   switchport backup dest-macaddr {{ ethernet_interface.switchport.backup.dest_macaddr }}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ ethernet_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%     endif %}

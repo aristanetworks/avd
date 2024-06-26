@@ -3661,6 +3661,44 @@ keys:
                     - out
                     - both
                     default: both
+            backup_link_interface:
+              type: str
+              description: Backup interface. Example - Ethernet4, Vlan10 etc.
+            backup:
+              type: dict
+              description: The `backup_link_interface` is required to set this config.
+              keys:
+                dest_macaddr:
+                  type: str
+                  description: Destination MAC address for MAC move updates.
+                initial_mac_move_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Initial MAC move delay in milliseconds.
+                  min: 0
+                  max: 65535
+                mac_move_burst:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Size of MAC move bursts in milliseconds.
+                  min: 0
+                  max: 65535
+                mac_move_burst_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  description: MAC move burst interval in milliseconds.
+                  min: 0
+                  max: 65535
+                preemption_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Preemption delay in milliseconds.
+                  min: 0
+                  max: 65535
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
