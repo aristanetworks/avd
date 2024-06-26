@@ -22033,10 +22033,10 @@
                 },
                 "title": "EVPN Multicast Address Family"
               },
-              "evpn_multicast_gateway_dr_election_algorithm": {
+              "evpn_multicast_gateway_dr_election": {
                 "type": "object",
                 "properties": {
-                  "election_algorithm": {
+                  "algorithm": {
                     "type": "string",
                     "description": "DR election algorithms:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
                     "enum": [
@@ -22044,7 +22044,7 @@
                       "modulus",
                       "preference"
                     ],
-                    "title": "Election Algorithm"
+                    "title": "Algorithm"
                   },
                   "preference_value": {
                     "type": "integer",
@@ -22055,13 +22055,13 @@
                   }
                 },
                 "required": [
-                  "election_algorithm"
+                  "algorithm"
                 ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
                 },
-                "title": "EVPN Multicast Gateway DR Election Algorithm"
+                "title": "EVPN Multicast Gateway DR Election"
               },
               "default_route_exports": {
                 "type": "array",

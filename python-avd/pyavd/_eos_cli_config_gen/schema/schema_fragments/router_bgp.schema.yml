@@ -2415,10 +2415,10 @@ keys:
                     transit:
                       type: bool
                       description: Enable EVPN multicast transit mode.
-            evpn_multicast_gateway_dr_election_algorithm:
+            evpn_multicast_gateway_dr_election:
               type: dict
               keys:
-                election_algorithm:
+                algorithm:
                   type: str
                   required: true
                   description: |-
