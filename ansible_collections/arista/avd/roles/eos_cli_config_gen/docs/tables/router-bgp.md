@@ -628,6 +628,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast_gateway_dr_election_algorithm</samp>](## "router_bgp.vrfs.[].evpn_multicast_gateway_dr_election_algorithm") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;election_algorithm</samp>](## "router_bgp.vrfs.[].evpn_multicast_gateway_dr_election_algorithm.election_algorithm") | String | Required |  | Valid Values:<br>- <code>hrw</code><br>- <code>modulus</code><br>- <code>preference</code> | DR election algorithms:<br>  hrw: Default selection based on highest random weight.<br>  modulus: Selection based on VLAN ID modulo number of candidates.<br>  preference: Selection based on a configured preference value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference_value</samp>](## "router_bgp.vrfs.[].evpn_multicast_gateway_dr_election_algorithm.preference_value") | Integer |  |  | Min: 0<br>Max: 65535 | Required when `election_algorithm` is `preference`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route_exports</samp>](## "router_bgp.vrfs.[].default_route_exports") | List, items: Dictionary |  |  |  | Enable default-originate per VRF/address-family. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address_family</samp>](## "router_bgp.vrfs.[].default_route_exports.[].address_family") | String | Required, Unique |  | Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.vrfs.[].default_route_exports.[].always") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].default_route_exports.[].route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].default_route_exports.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_targets</samp>](## "router_bgp.vrfs.[].route_targets") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import</samp>](## "router_bgp.vrfs.[].route_targets.import") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address_family</samp>](## "router_bgp.vrfs.[].route_targets.import.[].address_family") | String | Required, Unique |  |  |  |
@@ -2076,14 +2081,14 @@
               transit: <bool>
           evpn_multicast_gateway_dr_election_algorithm:
 
-            # Default selection based on highest random weight.
-            hrw: <bool>
+            # DR election algorithms:
+            #   hrw: Default selection based on highest random weight.
+            #   modulus: Selection based on VLAN ID modulo number of candidates.
+            #   preference: Selection based on a configured preference value.
+            election_algorithm: <str; "hrw" | "modulus" | "preference"; required>
 
-            # Selection based on VLAN ID modulo number of candidates.
-            modulus: <bool>
-
-            # Selection based on a configured preference value.
-            preference: <int; 0-65535>
+            # Required when `election_algorithm` is `preference`.
+            preference_value: <int; 0-65535>
 
           # Enable default-originate per VRF/address-family.
           default_route_exports:
