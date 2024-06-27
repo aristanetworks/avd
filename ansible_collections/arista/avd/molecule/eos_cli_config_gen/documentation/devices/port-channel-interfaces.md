@@ -517,8 +517,10 @@ interface Port-Channel100
    switchport phone trunk tagged
    switchport trunk allowed vlan 10-11
    switchport mode dot1q-tunnel
+   switchport vlan forwarding accept all
    switchport trunk group g1
    switchport trunk group g2
+   switchport source-interface tx multicast
    switchport vlan translation in 23-37 45
    switchport vlan translation out 23-37 45
    switchport trunk private-vlan secondary
