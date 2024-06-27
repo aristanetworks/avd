@@ -108,6 +108,66 @@ interface {{ port_channel_interface.name }}
    {{ vlan_translation_cli }}
 {%         endif %}
 {%     endfor %}
+{%     if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
+   switchport access vlan {{ port_channel_interface.switchport.access_vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
+   switchport trunk native vlan tag
+{%     elif port_channel_interface.switchport.trunk.native_vlan is arista.avd.defined %}
+   switchport trunk native vlan {{ port_channel_interface.switchport.trunk.native_vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.phone.vlan is arista.avd.defined %}
+   switchport phone vlan {{ port_channel_interface.switchport.phone.vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.phone.trunk is arista.avd.defined %}
+   switchport phone trunk {{ port_channel_interface.switchport.phone.trunk }}
+{%     endif %}
+{%     if port_channel_interface.switchport.trunk.allowed_vlans is arista.avd.defined %}
+   switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlans }}
+{%     endif %}
+{%     if port_channel_interface.switchport.mode is arista.avd.defined %}
+   switchport mode {{ port_channel_interface.switchport.mode }}
+{%     endif %}
+{%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort %}
+   switchport trunk group {{ trunk_group }}
+{%     endfor %}
+{%     if port_channel_interface.switchport.enabled is arista.avd.defined(false) %}
+   no switchport
+{%     endif %}
+{%     for vlan_translation in port_channel_interface.switchport.vlan_translations | arista.avd.natural_sort('direction') %}
+{%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%             set vlan_translation_cli = 'switchport vlan translation' %}
+{%             if vlan_translation.direction | arista.avd.default in ['in', 'out'] %}
+{%                 set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.direction %}
+{%             endif %}
+{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.from ~ ' ' ~ vlan_translation.to %}
+   {{ vlan_translation_cli }}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
+   switchport trunk private-vlan secondary
+{%     endif %}
+{%     if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined %}
+   switchport pvlan mapping {{ port_channel_interface.switchport.pvlan_mapping }}
+{%     endif %}
+{%     if port_channel_interface.switchport.backup_link_interface is arista.avd.defined %}
+   switchport backup-link {{ port_channel_interface.switchport.backup_link_interface }}
+{%         if port_channel_interface.switchport.backup.preemption_delay is arista.avd.defined %}
+   switchport backup preemption-delay {{ port_channel_interface.switchport.backup.preemption_delay }}
+{%         endif %}
+{%         if port_channel_interface.switchport.backup.mac_move_burst is arista.avd.defined %}
+   switchport backup mac-move-burst {{ port_channel_interface.switchport.backup.mac_move_burst }}
+{%         endif %}
+{%         if port_channel_interface.switchport.backup.mac_move_burst_interval is arista.avd.defined %}
+   switchport backup mac-move-burst-interval {{ port_channel_interface.switchport.backup.mac_move_burst_interval }}
+{%         endif %}
+{%         if port_channel_interface.switchport.backup.initial_mac_move_delay is arista.avd.defined %}
+   switchport backup initial-mac-move-delay {{ port_channel_interface.switchport.backup.initial_mac_move_delay }}
+{%         endif %}
+{%         if port_channel_interface.switchport.backup.dest_macaddr is arista.avd.defined %}
+   switchport backup dest-macaddr {{ port_channel_interface.switchport.backup.dest_macaddr }}
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%     endif %}
