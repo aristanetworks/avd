@@ -16,19 +16,20 @@ description: |-
   - Optionallu generates device documentation and saves it to file
 options:
   structured_config_filename:
-    description: The path of the structured config to load if read_structured_config_from_file is true.
+    description: The path of the structured config to load. Required if read_structured_config_from_file is true.
     type: str
-    required: true
   config_filename:
-    description: The path to save the generated config to.
+    description: The path to save the generated config to. Required if generate_device_config is true.
     type: str
-    required: true
   documentation_filename:
-    description: The path to save the generated documentation to if generate_device_doc is true.
+    description: The path to save the generated documentation. Required if generate_device_doc is true.
     type: str
-    required: true
   read_structured_config_from_file:
     description: Flag to indicate if the structured config should be read from a file or not.
+    type: bool
+    default: true
+  generate_device_config:
+    description: Flag to generate the device configuration.
     type: bool
     default: true
   generate_device_doc:
