@@ -11351,19 +11351,19 @@
                     "properties": {
                       "allowed_vlans": {
                         "type": "string",
-                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
                         "title": "Allowed VLANs"
                       },
                       "native_vlan": {
                         "type": "integer",
-                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan`.",
                         "minimum": 1,
                         "maximum": 4094,
                         "title": "Native VLAN"
                       },
                       "native_vlan_tag": {
                         "type": "boolean",
-                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.",
                         "title": "Native VLAN Tag"
                       },
                       "private_vlan_secondary": {
@@ -17691,19 +17691,19 @@
                     "properties": {
                       "allowed_vlans": {
                         "type": "string",
-                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
                         "title": "Allowed VLANs"
                       },
                       "native_vlan": {
                         "type": "integer",
-                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan`.",
                         "minimum": 1,
                         "maximum": 4094,
                         "title": "Native VLAN"
                       },
                       "native_vlan_tag": {
                         "type": "boolean",
-                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.",
                         "title": "Native VLAN Tag"
                       },
                       "private_vlan_secondary": {
@@ -24589,19 +24589,19 @@
                           "properties": {
                             "allowed_vlans": {
                               "type": "string",
-                              "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                              "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
                               "title": "Allowed VLANs"
                             },
                             "native_vlan": {
                               "type": "integer",
-                              "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                              "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan`.",
                               "minimum": 1,
                               "maximum": 4094,
                               "title": "Native VLAN"
                             },
                             "native_vlan_tag": {
                               "type": "boolean",
-                              "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                              "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.",
                               "title": "Native VLAN Tag"
                             },
                             "private_vlan_secondary": {
@@ -57364,19 +57364,19 @@
                     "properties": {
                       "allowed_vlans": {
                         "type": "string",
-                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interface.mode = trunk`.",
+                        "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
                         "title": "Allowed VLANs"
                       },
                       "native_vlan": {
                         "type": "integer",
-                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan`.",
+                        "description": "Set native VLAN when interface is in trunking mode.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan`.",
                         "minimum": 1,
                         "maximum": 4094,
                         "title": "Native VLAN"
                       },
                       "native_vlan_tag": {
                         "type": "boolean",
-                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.",
+                        "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nWarning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.",
                         "title": "Native VLAN Tag"
                       },
                       "private_vlan_secondary": {

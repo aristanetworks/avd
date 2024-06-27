@@ -3565,7 +3565,7 @@ keys:
                   type: str
                   description: 'VLAN ID or range of VLAN IDs.
 
-                    Warning: This should not be combined with `ethernet_interface.mode
+                    Warning: This should not be combined with `ethernet_interfaces[].mode
                     = trunk`.'
                 native_vlan:
                   type: int
@@ -3573,7 +3573,7 @@ keys:
                   - str
                   description: 'Set native VLAN when interface is in trunking mode.
 
-                    Warning: This should not be combined with `ethernet_interfacse[].native_vlan`.'
+                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.'
                   min: 1
                   max: 4094
                 native_vlan_tag:
@@ -3581,7 +3581,7 @@ keys:
                   description: 'If setting both native_vlan and native_vlan_tag, native_vlan_tag
                     takes precedence.
 
-                    Warning: This should not be combined with `ethernet_interfacse[].native_vlan_tag`.'
+                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.'
                 private_vlan_secondary:
                   type: bool
                   description: 'Enable secondary VLAN mapping for a private vlan.
