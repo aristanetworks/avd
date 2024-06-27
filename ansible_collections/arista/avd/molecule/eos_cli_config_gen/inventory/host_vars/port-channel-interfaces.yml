@@ -130,6 +130,7 @@ port_channel_interfaces:
         trunk: tagged
       mode: dot1q-tunnel
       pvlan_mapping: 20-30
+      source_interface: tx multicast
       vlan_translations:
         - from: 23-37
           to: 45
@@ -137,7 +138,9 @@ port_channel_interfaces:
         - from: 23-37
           to: 45
           direction: out
-      backup_link_interface: Ethernet5
+      vlan_forwarding_accept_all: true
+      backup_link:
+        interface: Ethernet5
       backup:
         dest_macaddr: 01:00:00:00:00:00
         mac_move_burst: 20

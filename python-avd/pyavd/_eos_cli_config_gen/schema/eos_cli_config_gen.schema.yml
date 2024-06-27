@@ -3594,10 +3594,21 @@ keys:
                     description: 'Trunk group name.
 
                       Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.'
+            source_interface:
+              type: str
+              description: 'tx: Allow bridged packets to go out on the source interface.
+
+                tx multicast: Allow multicast packets only to go out on the source
+                inteface.'
+              valid_values:
+              - tx
+              - tx multicast
             access_vlan:
               type: int
               convert_types:
               - str
+              min: 1
+              max: 4094
               description: 'Set VLAN when interface is in access mode.
 
                 Warning: This should not be combined withe `ethernet_interfaces[].mode
@@ -3661,9 +3672,21 @@ keys:
                     - out
                     - both
                     default: both
-            backup_link_interface:
-              type: str
-              description: Backup interface. Example - Ethernet4, Vlan10 etc.
+            vlan_forwarding_accept_all:
+              type: bool
+            backup_link:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  description: Backup interface. Example - Ethernet4, Vlan10 etc.
+                prefer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: VLANs to carry on the backup interface.
             backup:
               type: dict
               description: The `backup_link_interface` is required to set this config.
@@ -9780,10 +9803,21 @@ keys:
                     description: 'Trunk group name.
 
                       Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.'
+            source_interface:
+              type: str
+              description: 'tx: Allow bridged packets to go out on the source interface.
+
+                tx multicast: Allow multicast packets only to go out on the source
+                inteface.'
+              valid_values:
+              - tx
+              - tx multicast
             access_vlan:
               type: int
               convert_types:
               - str
+              min: 1
+              max: 4094
               description: 'Set VLAN when interface is in access mode.
 
                 Warning: This should not be combined withe `port_channel_interfaces[].mode
@@ -9847,9 +9881,21 @@ keys:
                     - out
                     - both
                     default: both
-            backup_link_interface:
-              type: str
-              description: Backup interface. Example - Ethernet4, Vlan10 etc.
+            vlan_forwarding_accept_all:
+              type: bool
+            backup_link:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  description: Backup interface. Example - Ethernet4, Vlan10 etc.
+                prefer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: VLANs to carry on the backup interface.
             backup:
               type: dict
               description: The `backup_link_interface` is required to set this config.

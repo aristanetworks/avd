@@ -180,11 +180,17 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.mode is arista.avd.defined %}
    switchport mode {{ ethernet_interface.switchport.mode }}
 {%     endif %}
+{%     if ethernet_interface.switchport.vlan_forwarding_accept_all is arista.avd.defined(true) %}
+   switchport vlan forwarding accept all
+{%     endif %}
 {%     for trunk_group in ethernet_interface.switchport.trunk.groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%     endfor %}
 {%     if ethernet_interface.switchport.enabled is arista.avd.defined(false) %}
    no switchport
+{%     endif %}
+{%     if ethernet_interface.switchport.source_interface is arista.avd.defined %}
+   switchport source-interface {{ ethernet_interface.switchport.source_interface }}
 {%     endif %}
 {%     for vlan_translation in ethernet_interface.switchport.vlan_translations | arista.avd.natural_sort('direction') %}
 {%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
@@ -202,8 +208,12 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.pvlan_mapping is arista.avd.defined %}
    switchport pvlan mapping {{ ethernet_interface.switchport.pvlan_mapping }}
 {%     endif %}
-{%     if ethernet_interface.switchport.backup_link_interface is arista.avd.defined %}
-   switchport backup-link {{ ethernet_interface.switchport.backup_link_interface }}
+{%     if ethernet_interface.switchport.backup_link.interface is arista.avd.defined %}
+{%         set backup_link_cli = "switchport backup-link " ~ ethernet_interface.switchport.backup_link.interface %}
+{%         if ethernet_interface.switchport.backup_link.prefer_vlan is arista.avd.defined %}
+{%             set backup_link_cli = backup_link_cli ~ " prefer vlan " ~ ethernet_interface.switchport.backup_link.prefer_vlan %}
+{%         endif %}
+   {{ backup_link_cli }}
 {%         if ethernet_interface.switchport.backup.preemption_delay is arista.avd.defined %}
    switchport backup preemption-delay {{ ethernet_interface.switchport.backup.preemption_delay }}
 {%         endif %}

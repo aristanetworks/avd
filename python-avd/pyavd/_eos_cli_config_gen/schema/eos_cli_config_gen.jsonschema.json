@@ -5934,8 +5934,19 @@
                 },
                 "title": "Trunk"
               },
+              "source_interface": {
+                "type": "string",
+                "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                "enum": [
+                  "tx",
+                  "tx multicast"
+                ],
+                "title": "Source Interface"
+              },
               "access_vlan": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 4094,
                 "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
                 "title": "Access VLAN"
               },
@@ -6022,10 +6033,31 @@
                 },
                 "title": "VLAN Translations"
               },
-              "backup_link_interface": {
-                "type": "string",
-                "description": "Backup interface. Example - Ethernet4, Vlan10 etc.",
-                "title": "Backup Link Interface"
+              "vlan_forwarding_accept_all": {
+                "type": "boolean",
+                "title": "VLAN Forwarding Accept All"
+              },
+              "backup_link": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "description": "Backup interface. Example - Ethernet4, Vlan10 etc.",
+                    "title": "Interface"
+                  },
+                  "prefer_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "description": "VLANs to carry on the backup interface.",
+                    "title": "Prefer VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Backup Link"
               },
               "backup": {
                 "type": "object",
@@ -16530,8 +16562,19 @@
                 },
                 "title": "Trunk"
               },
+              "source_interface": {
+                "type": "string",
+                "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                "enum": [
+                  "tx",
+                  "tx multicast"
+                ],
+                "title": "Source Interface"
+              },
               "access_vlan": {
                 "type": "integer",
+                "minimum": 1,
+                "maximum": 4094,
                 "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
                 "title": "Access VLAN"
               },
@@ -16618,10 +16661,31 @@
                 },
                 "title": "VLAN Translations"
               },
-              "backup_link_interface": {
-                "type": "string",
-                "description": "Backup interface. Example - Ethernet4, Vlan10 etc.",
-                "title": "Backup Link Interface"
+              "vlan_forwarding_accept_all": {
+                "type": "boolean",
+                "title": "VLAN Forwarding Accept All"
+              },
+              "backup_link": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "description": "Backup interface. Example - Ethernet4, Vlan10 etc.",
+                    "title": "Interface"
+                  },
+                  "prefer_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "description": "VLANs to carry on the backup interface.",
+                    "title": "Prefer VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Backup Link"
               },
               "backup": {
                 "type": "object",

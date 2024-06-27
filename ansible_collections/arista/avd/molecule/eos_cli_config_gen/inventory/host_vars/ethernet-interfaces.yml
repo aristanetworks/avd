@@ -58,7 +58,11 @@ ethernet_interfaces:
         - from: 23-37
           to: 45
           direction: out
-      backup_link_interface: Ethernet5
+      vlan_forwarding_accept_all: true
+      source_interface: tx
+      backup_link:
+        interface: Ethernet5
+        prefer_vlan: 10
       backup:
         dest_macaddr: 01:00:00:00:00:00
         mac_move_burst: 20
