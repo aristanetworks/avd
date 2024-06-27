@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp</samp>](## "ptp") <span style="color:red">deprecated</span> | Dictionary |  |  |  | The `ptp` setting is deprecated and it will be removed in version 5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings` takes precedence when both `ptp` and `ptp_settings` are set.<span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
+    | [<samp>ptp</samp>](## "ptp") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Common PTP settings.<br>`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.<span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "ptp.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- <code>aes67</code><br>- <code>smpte2059-2</code><br>- <code>aes67-r16-2016</code> |  |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
@@ -25,7 +25,8 @@
 === "YAML"
 
     ```yaml
-    # The `ptp` setting is deprecated and it will be removed in version 5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings` takes precedence when both `ptp` and `ptp_settings` are set.
+    # Common PTP settings.
+    # `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.
     # This key is deprecated.
     # Support will be removed in AVD version v5.0.0.
     # Use <samp>ptp_settings</samp> instead.

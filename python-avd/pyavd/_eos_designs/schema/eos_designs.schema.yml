@@ -3265,9 +3265,9 @@ keys:
     documentation_options:
       table: ptp_settings
     type: dict
-    description: The `ptp` setting is deprecated and it will be removed in version
-      5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings`
-      takes precedence when both `ptp` and `ptp_settings` are set.
+    description: 'Common PTP settings.
+
+      `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.'
     keys:
       enabled:
         type: bool

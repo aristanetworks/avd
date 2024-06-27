@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp_settings</samp>](## "ptp_settings") | Dictionary |  |  |  | The `ptp` setting is deprecated and it will be removed in version 5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings` takes precedence when both `ptp` and `ptp_settings` are set. |
+    | [<samp>ptp_settings</samp>](## "ptp_settings") | Dictionary |  |  |  | Common PTP settings.<br>`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence. |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "ptp_settings.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp_settings.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- <code>aes67</code><br>- <code>smpte2059-2</code><br>- <code>aes67-r16-2016</code> |  |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp_settings.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
@@ -16,7 +16,8 @@
 === "YAML"
 
     ```yaml
-    # The `ptp` setting is deprecated and it will be removed in version 5.0.0 to avoid conflict with `ptp` setting in eos_cli_config_gen. `ptp_settings` takes precedence when both `ptp` and `ptp_settings` are set.
+    # Common PTP settings.
+    # `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.
     ptp_settings:
       enabled: <bool>
       profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
