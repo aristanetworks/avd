@@ -46,7 +46,6 @@ router_isis:
     maximum_paths: 4
     fast_reroute_ti_lfa:
       mode: node-protection
-  authentication: null
   mpls_ldp_sync_default: true
   timers:
     local_convergence:

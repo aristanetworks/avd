@@ -46,7 +46,6 @@ router_isis:
     maximum_paths: 4
     fast_reroute_ti_lfa:
       mode: link-protection
-  authentication: null
   mpls_ldp_sync_default: true
   timers:
     local_convergence:
@@ -108,7 +107,6 @@ ethernet_interfaces:
   isis_network_point_to_point: true
   isis_hello_padding: true
   isis_circuit_type: level-1
-  isis_authentication_key: $1c$sTNAlR6rKSw=
   mpls:
     ip: true
     ldp:

@@ -93,7 +93,6 @@ core_interfaces:
       isis_circuit_type: level-1
       isis_metric: 60
       qos_profile: test_qos_profile
-      isis_authentication_key: $1c$sTNAlR6rKSw=
 
     # Normal link with profile
     - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
