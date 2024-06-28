@@ -99,6 +99,30 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if self.shared_utils.underlay_ospf is True:
                     ethernet_interface["ospf_network_point_to_point"] = True
                     ethernet_interface["ospf_area"] = self.shared_utils.underlay_ospf_area
+                    ospf_authentication = get(self._hostvars, "underlay_ospf_authentication")
+                    if ospf_authentication == "simple" and (ospf_simple_auth_key := get(self._hostvars, "underlay_ospf_simple_auth_key")) is not None:
+                        ethernet_interface["ospf_authentication"] = ospf_authentication
+                        ethernet_interface["ospf_authentication_key"] = ospf_simple_auth_key
+                    elif (
+                        ospf_authentication == "message-digest"
+                        and (ospf_message_digest_keys := get(self._hostvars, "underlay_ospf_message_digest_keys")) is not None
+                    ):
+                        ospf_keys = []
+                        for ospf_key in ospf_message_digest_keys:
+                            if not ("id" in ospf_key and "key" in ospf_key):
+                                continue
+
+                            ospf_keys.append(
+                                {
+                                    "id": ospf_key["id"],
+                                    "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
+                                    "key": ospf_key["key"],
+                                }
+                            )
+
+                        if ospf_keys:
+                            ethernet_interface["ospf_authentication"] = ospf_authentication
+                            ethernet_interface["ospf_message_digest_keys"] = ospf_keys
 
                 if self.shared_utils.underlay_isis is True:
                     ethernet_interface.update(
