@@ -713,8 +713,9 @@ class UtilsMixin(UtilsZscalerMixin):
                         interface_name = interface
                         interface_idx = l3_interface["interfaces"].index(interface_name)
                         interface_ip: str | None = l3_interface["ip_addresses"][interface_idx]
-                        if interface_ip is not None and "/" in interface_ip:
-                            interface_ip = interface_ip.split("/", maxsplit=1)[0]
+                        if interface_ip is None:
+                            continue
+                        interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
 
                         if ipv4_acl_in is not None:
                             l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
