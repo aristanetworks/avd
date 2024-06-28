@@ -62,6 +62,7 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
+  authentication: null
   advertise:
     passive_only: false
   segment_routing_mpls:

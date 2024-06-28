@@ -2567,43 +2567,9 @@ keys:
           valid_values:
           - text
           - md5
-          - sha
-          - shared-secret
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password.
-        isis_authentication_parameters:
-          type: dict
-          description: Required when `isis_authentication_mode` is `sha` or `shared-secret`.
-          keys:
-            both:
-              type: dict
-              description: This setting is preferred over `level_1` and `level_2`.
-              keys:
-                sha:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/sha
-                shared_secret:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/shared_secret
-            level_1:
-              type: dict
-              keys:
-                sha:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/sha
-                shared_secret:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/shared_secret
-            level_2:
-              type: dict
-              keys:
-                sha:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/sha
-                shared_secret:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/shared_secret
         poe:
           type: dict
           keys:

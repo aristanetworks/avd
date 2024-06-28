@@ -1,4 +1,2 @@
 ---
 underlay_routing_protocol: isis-sr-ldp
-underlay_isis_authentication_mode: md5
-underlay_isis_authentication_key: $1c$mNvaIXPetcSA2UnFwIaxwA==

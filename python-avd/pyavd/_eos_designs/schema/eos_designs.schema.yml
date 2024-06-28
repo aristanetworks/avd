@@ -3910,18 +3910,12 @@ keys:
       '
     type: bool
     default: false
-  underlay_isis_authentication_key:
+  underlay_isis_authentication:
     documentation_options:
       table: isis-settings
-    type: str
-    description: Type-7 encrypted password.
-  underlay_isis_authentication_mode:
-    documentation_options:
-      table: isis-settings
-    type: str
-    valid_values:
-    - md5
-    - text
+    type: dict
+    description: Only `md5` and `text` authentication modes are supported for `eos_designs`.
+    $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
   underlay_isis_bfd:
     documentation_options:
       table: isis-settings
@@ -9192,15 +9186,9 @@ $defs:
           valid_values:
           - md5
           - text
-          - sha
-          - shared-secret
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password.
-        isis_authentication_parameters:
-          type: dict
-          description: Required when `isis_authentication_mode` is `sha` or `shared-secret`.
-          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/isis_authentication_parameters
         mpls_ip:
           type: bool
           description: MPLS parameters. Default value is true if switch.mpls_lsr is

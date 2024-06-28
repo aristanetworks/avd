@@ -93,12 +93,6 @@ core_interfaces:
       isis_circuit_type: level-1
       isis_metric: 60
       qos_profile: test_qos_profile
-      isis_authentication_mode: "shared-secret"
-      isis_authentication_parameters:
-        both:
-          shared_secret:
-            profile: "profile1"
-            algorithm: "sha-1"
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
     # Normal link with profile

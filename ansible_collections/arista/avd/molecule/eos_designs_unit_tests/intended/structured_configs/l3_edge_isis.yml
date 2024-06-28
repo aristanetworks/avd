@@ -32,6 +32,12 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
+  authentication:
+    both:
+      key_type: '0'
+      key: password
+      mode: md5
+      rx_disabled: true
 ethernet_interfaces:
 - name: ethernet1
   peer: peer1
