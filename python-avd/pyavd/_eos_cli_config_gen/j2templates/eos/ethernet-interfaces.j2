@@ -748,9 +748,6 @@ interface {{ ethernet_interface.name }}
           ethernet_interface.isis_authentication_mode in ["text", "md5"] %}
    isis authentication mode {{ ethernet_interface.isis_authentication_mode }}
 {%     endif %}
-{%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
-{%     endif %}
 {%     if ethernet_interface.isis_authentication_mode is arista.avd.defined and ethernet_interface.isis_authentication_mode in ["sha","shared-secret"] %}
 {%         set auth_cli = "isis authentication mode " ~ ethernet_interface.isis_authentication_mode %}
 {%         if ethernet_interface.isis_authentication_parameters.both.sha.key_id is arista.avd.defined %}
@@ -773,6 +770,9 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
    {{ auth_cli }}
+{%     endif %}
+{%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
+   isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if ethernet_interface.spanning_tree_portfast is arista.avd.defined('edge') %}
    spanning-tree portfast
