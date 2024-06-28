@@ -4,7 +4,7 @@ keys:
     documentation_options:
       table: isis-settings
     type: dict
-    description: 
+    description:
       # TODO AVD5.0: Add support for `sha` and `shared_secret` authentication modes.
       Only `md5` and `text` authentication modes are supported for `eos_designs`.
     $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication"
