@@ -9,7 +9,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...._utils import append_if_not_duplicate, get, strip_null_from_data
-from ....j2filters import generate_esi, generate_lacp_id, generate_route_target, range_expand
+from ....j2filters import range_expand
 from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
@@ -171,7 +171,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         if (short_esi := self._get_short_esi(adapter, channel_group_id)) is not None:
             port_channel_interface["evpn_ethernet_segment"] = self._get_adapter_evpn_ethernet_segment_cfg(adapter, short_esi, node_index, connected_endpoint)
             if port_channel_mode == "active":
-                port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
+                port_channel_interface["lacp_id"] = short_esi.replace(":", ".")
 
         # Set MLAG ID on port-channel if connection is multi-homed and this switch is running MLAG
         elif self.shared_utils.mlag and len(set(adapter["switches"])) > 1:
@@ -218,8 +218,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
             short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.get("short_esi"), hash_extra_value=str(subinterface["number"]))
         ) is not None:
             port_channel_interface["evpn_ethernet_segment"] = {
-                "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
-                "route_target": generate_route_target(short_esi),
+                "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
+                "route_target": re.sub(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})", r"\1:\2:\3:\4:\5:\6", short_esi),
             }
 
         return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))

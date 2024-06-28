@@ -35,6 +35,12 @@ options:
     description: Short ESI value as per AVD definition in eos_designs.
     type: string
     required: true
+deprecated:
+    removed_in: "5.0.0"
+    why: This filter is no longer used by AVD and is very simple to replace with a generic Jinja filter.
+    alternative: |-
+      Use the builtin `ansible.builtin.regex_replace` filter instead like
+      `{{ <short_esi> | ansible.builtin.regex_replace('(\\d{2})(\\d{2}):(\\d{2})(\\d{2}):(\\d{2})(\\d{2})', '\\1:\\2:\\3:\\4:\\5:\\6') }}`
 """
 
 EXAMPLES = r"""

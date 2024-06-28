@@ -7,6 +7,18 @@ plugin_routing:
       deprecation:
         removal_version: 5.0.0
         warning_text: Use arista.avd.snmp_hash instead
+    generate_esi:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use Jinja string concatenation instead like `{{ <esi_prefix> ~ <short_esi> }}`
+    generate_lacp_id:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use the builtin `replace` filter instead like `{{ <short_esi> | replace(':', '.') }}`
+    generate_route_target:
+      deprecation:
+        removal_version: 5.0.0
+        warning_test: Use the builtin `ansible.builtin.regex_replace` filter instead like `{{ <short_esi> | ansible.builtin.regex_replace('(\\d{2})(\\d{2}):(\\d{2})(\\d{2}):(\\d{2})(\\d{2})', '\\1:\\2:\\3:\\4:\\5:\\6') }}`
   modules:
     deploy_to_cv:
       deprecation:
@@ -15,6 +27,24 @@ plugin_routing:
           The preview module 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_workflow'.
           The module will be redirected automatically until AVD version 5.0.0 after which it will be removed.
       redirect: arista.avd.cv_workflow
+    batch_template:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.batch_template' action plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
+    validate_and_template:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.validate_and_template' action plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
+    yaml_templates_to_facts:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.yaml_templates_to_facts' action plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
   action:
     deploy_to_cv:
       deprecation:
@@ -23,3 +53,21 @@ plugin_routing:
           The preview module 'arista.avd.deploy_to_cv' has been released under the new name 'arista.avd.cv_workflow'.
           The module will be redirected automatically until AVD version 5.0.0 after which it will be removed.
       redirect: arista.avd.cv_workflow
+    batch_template:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.batch_template' action plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
+    validate_and_template:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.validate_and_template' action plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
+    yaml_templates_to_facts:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.yaml_templates_to_facts' action plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
