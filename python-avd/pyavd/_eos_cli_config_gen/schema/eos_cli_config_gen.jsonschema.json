@@ -5934,6 +5934,32 @@
                 },
                 "title": "Trunk"
               },
+              "dot1q": {
+                "type": "object",
+                "properties": {
+                  "ethertype": {
+                    "type": "integer",
+                    "minimum": 1536,
+                    "maximum": 65535,
+                    "description": "Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames.",
+                    "title": "Ethertype"
+                  },
+                  "vlan_tag": {
+                    "type": "string",
+                    "description": "Allow/disallow VLAN tagged Frames.",
+                    "enum": [
+                      "disallowed",
+                      "required"
+                    ],
+                    "title": "VLAN Tag"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dot1Q"
+              },
               "source_interface": {
                 "type": "string",
                 "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
@@ -16561,6 +16587,31 @@
                   "^_.+$": {}
                 },
                 "title": "Trunk"
+              },
+              "dot1q": {
+                "type": "object",
+                "properties": {
+                  "ethertype": {
+                    "type": "integer",
+                    "minimum": 1536,
+                    "maximum": 65535,
+                    "description": "Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames.",
+                    "title": "Ethertype"
+                  },
+                  "vlan_tag": {
+                    "type": "string",
+                    "enum": [
+                      "disallowed",
+                      "required"
+                    ],
+                    "title": "VLAN Tag"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dot1Q"
               },
               "source_interface": {
                 "type": "string",

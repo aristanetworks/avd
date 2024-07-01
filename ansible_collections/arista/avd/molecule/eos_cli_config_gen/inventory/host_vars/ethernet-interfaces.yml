@@ -51,6 +51,8 @@ ethernet_interfaces:
         trunk: tagged
       mode: dot1q-tunnel
       pvlan_mapping: 20-30
+      dot1q:
+        ethertype: 1536
       vlan_translations:
         - from: 23-37
           to: 45

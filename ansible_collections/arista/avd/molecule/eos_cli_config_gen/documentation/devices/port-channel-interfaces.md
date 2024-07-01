@@ -515,6 +515,7 @@ interface Port-Channel100
    switchport trunk native vlan tag
    switchport phone vlan 110
    switchport phone trunk tagged
+   switchport dot1q vlan tag required
    switchport trunk allowed vlan 10-11
    switchport mode dot1q-tunnel
    switchport vlan forwarding accept all

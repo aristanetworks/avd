@@ -368,6 +368,7 @@ interface Ethernet1
    switchport phone trunk tagged
    switchport trunk allowed vlan 10-11
    switchport mode dot1q-tunnel
+   switchport dot1q ethertype 1536
    switchport vlan forwarding accept all
    switchport trunk group g1
    switchport trunk group g2

@@ -122,11 +122,17 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.phone.trunk is arista.avd.defined %}
    switchport phone trunk {{ port_channel_interface.switchport.phone.trunk }}
 {%     endif %}
+{%     if port_channel_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
+   switchport dot1q vlan tag {{ port_channel_interface.switchport.dot1q.vlan_tag }}
+{%     endif %}
 {%     if port_channel_interface.switchport.trunk.allowed_vlans is arista.avd.defined %}
    switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlans }}
 {%     endif %}
 {%     if port_channel_interface.switchport.mode is arista.avd.defined %}
    switchport mode {{ port_channel_interface.switchport.mode }}
+{%     endif %}
+{%     if port_channel_interface.switchport.dot1q.ethertype is arista.avd.defined %}
+   switchport dot1q ethertype {{ port_channel_interface.switchport.dot1q.ethertype }}
 {%     endif %}
 {%     if port_channel_interface.switchport.vlan_forwarding_accept_all is arista.avd.defined(true) %}
    switchport vlan forwarding accept all

@@ -130,6 +130,8 @@ port_channel_interfaces:
         trunk: tagged
       mode: dot1q-tunnel
       pvlan_mapping: 20-30
+      dot1q:
+        vlan_tag: required
       source_interface: tx multicast
       vlan_translations:
         - from: 23-37

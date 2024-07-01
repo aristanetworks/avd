@@ -3594,6 +3594,23 @@ keys:
                     description: 'Trunk group name.
 
                       Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.'
+            dot1q:
+              type: dict
+              keys:
+                ethertype:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1536
+                  max: 65535
+                  description: Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged
+                    frames.
+                vlan_tag:
+                  type: str
+                  description: Allow/disallow VLAN tagged Frames.
+                  valid_values:
+                  - disallowed
+                  - required
             source_interface:
               type: str
               description: 'tx: Allow bridged packets to go out on the source interface.
@@ -9803,6 +9820,22 @@ keys:
                     description: 'Trunk group name.
 
                       Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.'
+            dot1q:
+              type: dict
+              keys:
+                ethertype:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1536
+                  max: 65535
+                  description: Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged
+                    frames.
+                vlan_tag:
+                  type: str
+                  valid_values:
+                  - disallowed
+                  - required
             source_interface:
               type: str
               description: 'tx: Allow bridged packets to go out on the source interface.
