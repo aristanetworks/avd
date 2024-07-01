@@ -60755,51 +60755,53 @@
       "title": "Underlay OSPF Area"
     },
     "underlay_ospf_authentication": {
-      "type": "string",
-      "enum": [
-        "simple",
-        "message-digest"
-      ],
-      "title": "Underlay OSPF Authentication"
-    },
-    "underlay_ospf_simple_auth_key": {
-      "type": "string",
-      "description": "Password used with simple authentication.",
-      "title": "Underlay OSPF Simple Auth Key"
-    },
-    "underlay_ospf_message_digest_keys": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "title": "ID"
-          },
-          "hash_algorithm": {
-            "type": "string",
-            "enum": [
-              "md5",
-              "sha1",
-              "sha256",
-              "sha384",
-              "sha512"
-            ],
-            "default": "sha512",
-            "title": "Hash Algorithm"
-          },
-          "key": {
-            "type": "string",
-            "description": "Key password.",
-            "title": "Key"
-          }
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enabled"
         },
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
+        "message_digest_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "title": "ID"
+              },
+              "hash_algorithm": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha1",
+                  "sha256",
+                  "sha384",
+                  "sha512"
+                ],
+                "default": "sha512",
+                "title": "Hash Algorithm"
+              },
+              "key": {
+                "type": "string",
+                "description": "Key password\nOnly plaintext passwords are supported here as the password will ned to be encrypted for every underlay interface.\nTo protect the password at rest it is recommended to make use of Ansible Vault or similar.\n",
+                "title": "Key"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Message Digest Keys"
         }
       },
-      "title": "Underlay OSPF Message Digest Keys"
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Underlay OSPF Authentication"
     },
     "underlay_ospf_bfd_enable": {
       "type": "boolean",

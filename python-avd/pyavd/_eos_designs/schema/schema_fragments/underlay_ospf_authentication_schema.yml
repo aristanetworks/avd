@@ -7,31 +7,32 @@
 type: dict
 keys:
   underlay_ospf_authentication:
-    type: str
-    valid_values:
-    - simple
-    - message-digest
-  underlay_ospf_simple_auth_key:
-    type: str
-    description: Password used with simple authentication.
-  underlay_ospf_message_digest_keys:
-    type: list
-    items:
-      type: dict
-      keys:
-        id:
-          type: int
-          convert_types:
-          - str
-        hash_algorithm:
-          type: str
-          valid_values:
-          - md5
-          - sha1
-          - sha256
-          - sha384
-          - sha512
-          default: sha512
-        key:
-          type: str
-          description: Key password.
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        default: false
+      message_digest_keys:
+        type: list
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - md5
+              - sha1
+              - sha256
+              - sha384
+              - sha512
+              default: sha512
+            key:
+              type: str
+              description: |
+                Key password
+                Only plaintext passwords are supported here as the password will ned to be encrypted for every underlay interface.
+                To protect the password at rest it is recommended to make use of Ansible Vault or similar.

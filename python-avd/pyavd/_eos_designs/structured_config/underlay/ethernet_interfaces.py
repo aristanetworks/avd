@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ...._errors import AristaAvdError
 from ...._utils import append_if_not_duplicate, get
-from ....j2filters import natural_sort
+from ....j2filters import encrypt, natural_sort
 from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
@@ -99,14 +100,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if self.shared_utils.underlay_ospf is True:
                     ethernet_interface["ospf_network_point_to_point"] = True
                     ethernet_interface["ospf_area"] = self.shared_utils.underlay_ospf_area
-                    ospf_authentication = get(self._hostvars, "underlay_ospf_authentication")
-                    if ospf_authentication == "simple" and (ospf_simple_auth_key := get(self._hostvars, "underlay_ospf_simple_auth_key")) is not None:
-                        ethernet_interface["ospf_authentication"] = ospf_authentication
-                        ethernet_interface["ospf_authentication_key"] = ospf_simple_auth_key
-                    elif (
-                        ospf_authentication == "message-digest"
-                        and (ospf_message_digest_keys := get(self._hostvars, "underlay_ospf_message_digest_keys")) is not None
-                    ):
+                    ospf_authentication = get(self._hostvars, "underlay_ospf_authentication.enabled")
+                    ospf_message_digest_keys = get(self._hostvars, "underlay_ospf_authentication.message_digest_keys")
+                    if ospf_authentication is True and ospf_message_digest_keys is not None:
                         ospf_keys = []
                         for ospf_key in ospf_message_digest_keys:
                             if not ("id" in ospf_key and "key" in ospf_key):
@@ -116,13 +112,21 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 {
                                     "id": ospf_key["id"],
                                     "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
-                                    "key": ospf_key["key"],
+                                    "key": encrypt(
+                                        ospf_key["key"],
+                                        passwd_type="ospf_message_digest",
+                                        key=ethernet_interface["name"],
+                                        hash_algorithm=ospf_key.get("hash_algorithm", "sha512"),
+                                        key_id=ospf_key["id"],
+                                    ),
                                 }
                             )
 
-                        if ospf_keys:
-                            ethernet_interface["ospf_authentication"] = ospf_authentication
+                        if len(ospf_keys) > 0:
+                            ethernet_interface["ospf_authentication"] = "message-digest"
                             ethernet_interface["ospf_message_digest_keys"] = ospf_keys
+                        else:
+                            raise AristaAvdError("'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined.")
 
                 if self.shared_utils.underlay_isis is True:
                     ethernet_interface.update(
