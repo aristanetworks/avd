@@ -13138,7 +13138,7 @@ keys:
                   - preference
                 preference_value:
                   type: int
-                  description: Required when `election_algorithm` is `preference`.
+                  description: Required when `algorithm` is `preference`.
                   min: 0
                   max: 65535
                   convert_types:

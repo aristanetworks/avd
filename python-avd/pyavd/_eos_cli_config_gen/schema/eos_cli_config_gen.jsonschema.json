@@ -22048,7 +22048,7 @@
                   },
                   "preference_value": {
                     "type": "integer",
-                    "description": "Required when `election_algorithm` is `preference`.",
+                    "description": "Required when `algorithm` is `preference`.",
                     "minimum": 0,
                     "maximum": 65535,
                     "title": "Preference Value"
