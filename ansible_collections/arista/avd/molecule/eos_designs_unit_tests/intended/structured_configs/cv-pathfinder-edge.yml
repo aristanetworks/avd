@@ -258,6 +258,10 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 66.66.66.0/24
+- name: PL-UPLINK-SUBNETS-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.1/32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -302,6 +306,14 @@ route_maps:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
     set:
     - extcommunity soo 192.168.42.1:511 additive
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 15
+    type: deny
+    match:
+    - ip address prefix-list PL-UPLINK-SUBNETS-VRFS
+  - sequence: 20
+    type: permit
 static_routes:
 - destination_address_prefix: 172.16.0.0/16
   gateway: 172.16.5.4

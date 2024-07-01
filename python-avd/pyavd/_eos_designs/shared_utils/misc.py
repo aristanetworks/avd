@@ -365,6 +365,9 @@ class MiscMixin:
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
 
     @cached_property
+    def uplinks(self) -> list:
+        return get(self.hostvars, "switch.uplinks")
+
     def ipv4_acls(self: SharedUtils) -> list:
         return get(self.hostvars, "ipv4_acls", default=[])
 

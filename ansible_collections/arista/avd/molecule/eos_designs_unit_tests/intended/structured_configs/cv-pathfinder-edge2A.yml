@@ -321,6 +321,12 @@ prefix_lists:
     action: permit 172.17.0.8/31
   - sequence: 20
     action: permit 172.17.0.10/31
+- name: PL-UPLINK-SUBNETS-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.5/32
+  - sequence: 20
+    action: permit 172.17.0.7/32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -404,6 +410,14 @@ route_maps:
     type: permit
     match:
     - extcommunity ECL-EVPN-SOO
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 15
+    type: deny
+    match:
+    - ip address prefix-list PL-UPLINK-SUBNETS-VRFS
+  - sequence: 20
+    type: permit
 agents:
 - name: KernelFib
   environment_variables:

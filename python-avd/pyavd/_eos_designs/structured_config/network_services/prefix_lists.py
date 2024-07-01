@@ -40,6 +40,15 @@ class PrefixListsMixin(UtilsMixin):
 
             prefix_lists.append(prefix_list)
 
+        # Add prefix-list for VRFs where uplink subnets should not be redistributed
+        if uplink_prefixes := self._uplink_subnets_without_redistribution:
+            prefix_list = {"name": "PL-UPLINK-SUBNETS-VRFS", "sequence_numbers": []}
+            for index, uplink_prefix in enumerate(uplink_prefixes):
+                sequence = 10 * (index + 1)
+                prefix_list["sequence_numbers"].append({"sequence": sequence, "action": f"permit {uplink_prefix}"})
+
+            prefix_lists.append(prefix_list)
+
         if prefix_lists:
             return prefix_lists
 
@@ -96,3 +105,24 @@ class PrefixListsMixin(UtilsMixin):
                 mlag_prefixes.add(str(IPv4Network(mlag_ip_address, strict=False)))
 
         return natural_sort(mlag_prefixes)
+
+    @cached_property
+    def _uplink_subnets_without_redistribution(self) -> list:
+        """
+        Return sorted list of uplink subnets for VRFs that should not be redistributed
+        """
+        uplink_prefixes = set()
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                if self._uplink_subnets_redistribute(vrf, tenant):
+                    # By default the uplink subnet is not redistributed, we only need the prefix-list for the false case.
+                    continue
+
+                if (uplink_subnets := self._get_uplink_subnets_for_vrf(vrf)) is None:
+                    continue
+
+                # Convert mlag_ip_address to network prefix string and add to set.
+                for subnet in uplink_subnets:
+                    uplink_prefixes.add(str(IPv4Network(subnet, strict=False)))
+
+        return natural_sort(uplink_prefixes)
