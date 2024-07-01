@@ -205,9 +205,13 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return IP address for Router ID
 
+        If "loopback_ipv4_address" is set, it is used.
         Default pool is "loopback_ipv4_pool"
         Default offset from pool is `id + loopback_ipv4_offset`
         """
+        if self._loopback_ipv4_address:
+            return self._loopback_ipv4_address
+
         if template_path := self.shared_utils.ip_addressing_templates.get("router_id"):
             return self._template(
                 template_path,
@@ -261,9 +265,13 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return IP address for VTEP for MLAG Leaf
 
+        If "vtep_loopback_ipv4_address" is set, it is used.
         Default pool is "vtep_loopback_ipv4_pool"
         Default offset from pool is `id + loopback_ipv4_offset`
         """
+        if self._vtep_loopback_ipv4_address:
+            return self._vtep_loopback_ipv4_address
+
         if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip"):
             return self._template(
                 template_path,

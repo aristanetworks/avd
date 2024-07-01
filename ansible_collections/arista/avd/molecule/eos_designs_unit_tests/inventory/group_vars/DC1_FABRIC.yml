@@ -110,6 +110,9 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
+          # Test setting loopback0 and the VTEP loopback manually
+          loopback_ipv4_address: 192.168.42.42
+          vtep_loopback_ipv4_address: 192.168.43.43
     - group: DC1_LEAF2
       bgp_as: 65102
       rack: "rackD"
