@@ -13,12 +13,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, cprofile, get_templar
-
-try:
-    from yaml import CLoader as YamlLoader
-except ImportError:
-    from yaml import YamlLoader
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar
 
 try:
     from pyavd import get_device_config, get_device_doc, validate_structured_config
@@ -42,9 +37,9 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
-    "structured_config_filename": {"type": "str", "required": True},
-    "config_filename": {"type": "str", "required": True},
-    "documentation_filename": {"type": "str", "required": True},
+    "structured_config_filename": {"type": "str"},
+    "config_filename": {"type": "str"},
+    "documentation_filename": {"type": "str"},
     "read_structured_config_from_file": {"type": "bool", "default": True},
     "conversion_mode": {"type": "str", "default": "debug"},
     "validation_mode": {"type": "str", "default": "warning"},
@@ -88,7 +83,7 @@ class ActionModule(ActionBase):
             # Read structured config from file or task_vars and run templating to handle inline jinja.
             LOGGER.debug("Preparing task vars...")
             task_vars = self.prepare_task_vars(
-                task_vars, validated_args["structured_config_filename"], read_structured_config_from_file=validated_args["read_structured_config_from_file"]
+                task_vars, validated_args.get("structured_config_filename"), read_structured_config_from_file=validated_args["read_structured_config_from_file"]
             )
             LOGGER.debug("Preparing task vars [done].")
 
@@ -148,7 +143,14 @@ class ActionModule(ActionBase):
 
     def validate_args(self) -> dict:
         """Get task arguments and validate them."""
-        validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        validation_result, validated_args = self.validate_argument_spec(
+            ARGUMENT_SPEC,
+            required_if=[
+                ("read_structured_config_from_file", True, ("structured_config_filename",)),
+                ("generate_device_config", True, ("config_filename",)),
+                ("generate_device_doc", True, ("documentation_filename",)),
+            ],
+        )
         validated_args = strip_empties_from_dict(validated_args)
 
         # Converting to json and back to remove any AnsibeUnsafe types
