@@ -7612,7 +7612,7 @@ $defs:
 
               When set, it takes precedence over `loopback_ipv4_pool`.
 
-              NOTE: AVD does not check for validity of the IPv4 address and does not
+              Note: AVD does not check for validity of the IPv4 address and does not
               catch duplicates.'
             type: str
           vtep_loopback_ipv4_pool:
@@ -7630,7 +7630,7 @@ $defs:
 
               When set, it takes precedence over `vtep_loopback_ipv4_pool`.
 
-              NOTE: AVD does not check for validity of the IPv4 address and does not
+              Note: AVD does not check for validity of the IPv4 address and does not
               catch duplicates.'
             type: str
           loopback_ipv4_offset:
