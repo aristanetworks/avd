@@ -1474,10 +1474,10 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.evpn_multicast is arista.avd.defined(true) %}
       evpn multicast
 {%             if vrf.evpn_multicast_gateway_dr_election.algorithm is arista.avd.defined %}
-{%                 if vrf.evpn_multicast_gateway_dr_election.algorithm in ["hrw", "modulus"] %}
-{%                     set election_cli = "gateway dr election algorithm " ~ vrf.evpn_multicast_gateway_dr_election.algorithm %}
-{%                 elif vrf.evpn_multicast_gateway_dr_election.algorithm == "preference" and vrf.evpn_multicast_gateway_dr_election.preference_value is arista.avd.defined %}
+{%                 if vrf.evpn_multicast_gateway_dr_election.algorithm == "preference" and vrf.evpn_multicast_gateway_dr_election.preference_value is arista.avd.defined %}
 {%                     set election_cli = "gateway dr election algorithm preference " ~ vrf.evpn_multicast_gateway_dr_election.preference_value %}
+{%                 else %}
+{%                     set election_cli = "gateway dr election algorithm " ~ vrf.evpn_multicast_gateway_dr_election.algorithm %}
 {%                 endif %}
          {{ election_cli }}
          !
