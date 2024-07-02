@@ -166,7 +166,7 @@ port_channel_interfaces:
   trunk_groups:
   - MLAG
 - name: Port-Channel1
-  description: DC1_LEAF2_Po11
+  description: DC1_LEAF2_Po30
   type: switched
   shutdown: false
   mode: trunk
@@ -195,9 +195,9 @@ ethernet_interfaces:
     mode: active
 - name: Ethernet1
   peer: DC1-LEAF2B
-  peer_interface: Ethernet12
+  peer_interface: Ethernet31
   peer_type: l3leaf
-  description: DC1-LEAF2B_Ethernet12
+  description: DC1-LEAF2B_Ethernet31
   shutdown: false
   type: port-channel-member
   channel_group:

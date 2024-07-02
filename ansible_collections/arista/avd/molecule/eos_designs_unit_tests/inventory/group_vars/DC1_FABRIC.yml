@@ -376,12 +376,12 @@ l2leaf:
           id: 16
           mgmt_ip: 192.168.200.122/24
           uplink_switches: [ DC1-LEAF2A ]
-          uplink_switch_interfaces: [ Ethernet11 ]
+          uplink_switch_interfaces: [ Ethernet30 ]
         - name: DC1.L2LEAF6B
           id: 17
           mgmt_ip: 192.168.200.123/24
           uplink_switches: [ DC1-LEAF2B ]
-          uplink_switch_interfaces: [ Ethernet12 ]
+          uplink_switch_interfaces: [ Ethernet31 ]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
