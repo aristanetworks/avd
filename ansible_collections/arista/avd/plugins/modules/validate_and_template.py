@@ -84,7 +84,7 @@ options:
 deprecated:
   removed_in: "5.0.0"
   why: The internal 'arista.avd.validate_and_template' action plugin is no longer used by AVD.
-  alternatives: The plugin is released as open source, so it can be copied and reused according to the license and copyright.
+  alternative: The plugin is released as open source, so it can be copied and reused according to the license and copyright.
 """
 
 EXAMPLES = r"""
