@@ -3,10 +3,10 @@
 # that can be found in the LICENSE file.
 DOCUMENTATION = r"""
 ---
-module: emit_warning
+module: _emit_warning
 version_added: "4.9.0"
 author: EMEA AS Team (@aristanetworks)
-short_description: Emit a warning in a task.
+short_description: Internal module - DO NOT USE - Emit a warning in a task.
 description:
   - Emit a warning in a task.
 options:
@@ -17,8 +17,8 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: Enit a warning
-  arista.avd.emit_warning:
+- name: Emit a warning
+  arista.avd._emit_warning:
     message |-
       The warning message.
   delegate_to: localhost

@@ -12,7 +12,7 @@ title: Ansible Collection Role eos_validate_state
 
 !!! warning
     Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior (same as setting `use_anta: true` in older versions).
-    Please review the changes described on the  [ANTA integration page](./anta_integration.md)
+    Please review the changes described on the [ANTA integration page](./anta_integration.md)
 
 ## Overview
 

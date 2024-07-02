@@ -5,8 +5,8 @@
 #####################################
 ##  Run ansible eos_validate_state  ##
 #####################################
-- name: Generate variables for testing
-  arista.avd.emit_warning:
+- name: "Warning when not using 'use_anta: true'"
+  arista.avd._emit_warning:
     message: |-
       Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior (same as setting `use_anta: true` in older versions).
       Please review the changes described on the ANTA integration page on https://avd.arista.com.
