@@ -179,6 +179,7 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
               peer_ip: 172.31.0.1
+              dhcp_ip: 10.0.0.145
               cv_pathfinder_internet_exit:
                 policies:
                   - name: ZSCALER-EXIT-POLICY-1
