@@ -35,6 +35,6 @@ keys:
             key:
               type: str
               description: |
-                Key password
-                Only plaintext passwords are supported here as the password will ned to be encrypted for every underlay interface.
+                Key password.
+                Only plaintext passwords are supported here as the password will need to be encrypted for every underlay interface.
                 To protect the password at rest it is recommended to make use of Ansible Vault or similar.
