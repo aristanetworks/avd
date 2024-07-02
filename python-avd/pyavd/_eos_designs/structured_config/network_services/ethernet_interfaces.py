@@ -78,9 +78,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                             if get(self._l3_interface_acls, self.shared_utils.hostname):
                                 interface.update(
                                     {
-                                "access_group_in": get(self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}.ipv4_acl_in.name"),
-                                "access_group_out": get(self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}.ipv4_acl_out.name"),
-                                }
+                                        "access_group_in": get(self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}.ipv4_acl_in.name"),
+                                        "access_group_out": get(self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}.ipv4_acl_out.name"),
+                                    }
                                 )
 
                             if "." in interface_name:
