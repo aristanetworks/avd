@@ -110,7 +110,7 @@ class L3InterfacesMixin:
                 neighbor["set_no_advertise"] = True
 
             # The inbound route-map is only used if there is a prefix list or no-advertise
-            if neighbor["ipv4_prefix_list_in"] or neighbor["set_no_advertise"]:
+            if neighbor["ipv4_prefix_list_in"] or neighbor.get("set_no_advertise") is True:
                 neighbor["route_map_in"] = f"RM-BGP-{neighbor['ip_address']}-IN"
             neighbor["route_map_out"] = f"RM-BGP-{neighbor['ip_address']}-OUT"
 
