@@ -3192,7 +3192,7 @@ keys:
     $ref: eos_designs#/keys/ptp_settings
   ptp_profiles:
     documentation_options:
-      table: ptp
+      table: ptp_settings
     type: list
     items:
       type: dict
