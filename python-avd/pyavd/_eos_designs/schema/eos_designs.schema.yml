@@ -7606,9 +7606,7 @@ $defs:
           loopback_ipv4_address:
             documentation_options:
               table: node-type-loopback-vtep-configuration
-            description: 'IPv4 address for Loopback0.
-
-              It must be given without a mask.
+            description: 'IPv4 address without mask for Loopback0.
 
               When set, it takes precedence over `loopback_ipv4_pool`.
 
@@ -7624,9 +7622,7 @@ $defs:
           vtep_loopback_ipv4_address:
             documentation_options:
               table: node-type-loopback-vtep-configuration
-            description: 'IPv4 address for VTEP-Loopback.
-
-              It must be given without a mask.
+            description: 'IPv4 address without mask for VTEP-Loopback.
 
               When set, it takes precedence over `vtep_loopback_ipv4_pool`.
 
