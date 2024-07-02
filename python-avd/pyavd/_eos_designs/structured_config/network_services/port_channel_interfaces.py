@@ -7,7 +7,7 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get
+from ...._utils import append_if_not_duplicate, get, short_esi_to_route_target
 from ....j2filters import natural_sort
 from .utils import UtilsMixin
 
@@ -68,7 +68,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                     {
                                         "evpn_ethernet_segment": {
                                             "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
-                                            "route_target": re.sub(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})", r"\1:\2:\3:\4:\5:\6", short_esi),
+                                            "route_target": short_esi_to_route_target(short_esi),
                                         }
                                     }
                                 )
@@ -124,7 +124,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                     {
                                         "evpn_ethernet_segment": {
                                             "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
-                                            "route_target": re.sub(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})", r"\1:\2:\3:\4:\5:\6", short_esi),
+                                            "route_target": short_esi_to_route_target(short_esi),
                                         }
                                     }
                                 )

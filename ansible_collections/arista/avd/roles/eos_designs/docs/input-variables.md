@@ -1019,9 +1019,9 @@ Both data models support variable inheritance from profiles defined under [`port
     To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
     `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
 
-    Transformation from abstraction to network values provides the following result:
+    The abstracted `short_esi: "0303:0202:0101"` is transformed into the following network values:
 
-    - *EVPN ESI*: 000:000:0303:0202:0101
+    - *EVPN ESI*: 0000:0000:0303:0202:0101
     - *LACP ID*: 0303.0202.0101
     - *Route Target*: 03:03:02:02:01:01
 

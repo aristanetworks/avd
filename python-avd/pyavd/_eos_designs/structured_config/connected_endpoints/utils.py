@@ -9,7 +9,7 @@ from hashlib import sha256
 from typing import TYPE_CHECKING
 
 from ...._errors import AristaAvdError
-from ...._utils import get, get_item
+from ...._utils import get, get_item, short_esi_to_route_target
 from ....j2filters import convert_dicts
 
 if TYPE_CHECKING:
@@ -159,7 +159,7 @@ class UtilsMixin:
         evpn_ethernet_segment = {
             "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
             "redundancy": adapter_ethernet_segment.get("redundancy", default_redundancy),
-            "route_target": re.sub(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})", r"\1:\2:\3:\4:\5:\6", short_esi),
+            "route_target": short_esi_to_route_target(short_esi),
         }
         if (designated_forwarder_algorithm := adapter_ethernet_segment.get("designated_forwarder_algorithm", default_df_algo)) is None:
             return evpn_ethernet_segment

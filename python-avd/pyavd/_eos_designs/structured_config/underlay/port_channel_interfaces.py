@@ -3,11 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
+from ...._utils import get, short_esi_to_route_target
 from ...interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
@@ -73,7 +72,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             if (short_esi := link.get("short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
                     "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
-                    "route_target": re.sub(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})", r"\1:\2:\3:\4:\5:\6", short_esi),
+                    "route_target": short_esi_to_route_target(short_esi),
                 }
                 port_channel_interface["lacp_id"] = short_esi.replace(":", ".")
 
