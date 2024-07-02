@@ -797,7 +797,7 @@ class UtilsMixin(UtilsZscalerMixin):
             if (ip_address := wan_interface.get("ip_address")) == "dhcp":
                 if not (ip_address := wan_interface.get("dhcp_ip")):
                     raise AristaAvdMissingVariableError(
-                        f"{wan_interface['name']}.dhcp_ip needs to be set, when using wan interface for direct type internet exit."
+                        f"{wan_interface['name']} 'dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, 'dhcp_ip' is used in the NAT ACL."
                     )
 
             sanitized_interface_name = self.shared_utils.sanitize_interface_name(wan_interface["name"])

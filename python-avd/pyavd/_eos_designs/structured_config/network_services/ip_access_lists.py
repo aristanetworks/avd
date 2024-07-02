@@ -85,7 +85,7 @@ class IpAccesslistsMixin(UtilsMixin):
             # ACL doesn't need replacement
             return [acl]
 
-        # We still have one nat for all interfaces, need to also add logic to make nat per interface
+        # TODO: We still have one nat for all interfaces, need to also add logic to make nat per interface
         # if acl needs substitution
         raise AristaAvdError(f"ipv4_acls[name={acl_name}] field substitution is not supported for internet exit access lists")
 
