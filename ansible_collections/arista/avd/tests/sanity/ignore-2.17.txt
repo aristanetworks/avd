@@ -12,4 +12,4 @@ plugins/modules/eos_validate_state_runner.py validate-modules:missing-gplv3-lice
 plugins/modules/eos_validate_state_reports.py validate-modules:missing-gplv3-license
 plugins/modules/cv_workflow.py validate-modules:missing-gplv3-license
 plugins/modules/eos_cli_config_gen.py validate-modules:missing-gplv3-license
-plugins/modules/emit_warning.py validate-modules:missing-gplv3-license
+plugins/modules/_emit_warning.py validate-modules:missing-gplv3-license
