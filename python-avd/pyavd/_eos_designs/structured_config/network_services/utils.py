@@ -705,26 +705,25 @@ class UtilsMixin(UtilsZscalerMixin):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for l3_interface in vrf["l3_interfaces"]:
-                    for interface in l3_interface["interfaces"]:
+                    for interface_idx, interface in enumerate(l3_interface["interfaces"]):
                         ipv4_acl_in = get(l3_interface, "ipv4_acl_in")
                         ipv4_acl_out = get(l3_interface, "ipv4_acl_out")
                         if ipv4_acl_in is None and ipv4_acl_out is None:
                             continue
                         interface_name = interface
-                        interface_idx = l3_interface["interfaces"].index(interface_name)
                         interface_ip: str | None = l3_interface["ip_addresses"][interface_idx]
-                        if interface_ip is None:
-                            continue
                         interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
-
+                        node = l3_interface["nodes"][interface_idx]
+                        if node not in l3_interface_acls.keys():
+                            l3_interface_acls[node] = {}
                         if ipv4_acl_in is not None:
-                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                            l3_interface_acls[node].setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
                                 name=ipv4_acl_in,
                                 interface_name=interface_name,
                                 interface_ip=interface_ip,
                             )
                         if ipv4_acl_out is not None:
-                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                            l3_interface_acls[node].setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
                                 name=ipv4_acl_out,
                                 interface_name=interface_name,
                                 interface_ip=interface_ip,

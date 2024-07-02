@@ -470,8 +470,6 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test-DC1-BL1A
-  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet10
-  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet10
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet11
@@ -579,13 +577,6 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: 10.10.20.20
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet10
-  entries:
-  - sequence: 15
-    action: deny
-    protocol: ip
-    source: any
-    destination: 10.10.30.10
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet8
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -599,13 +590,6 @@ ip_access_lists:
   - action: permit
     protocol: ip
     source: 10.10.20.20
-    destination: any
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet10
-  entries:
-  - remark: Some remark will not require source and destination fields.
-  - action: permit
-    protocol: ip
-    source: 10.10.30.10
     destination: any
 ip_igmp_snooping:
   globally_enabled: true

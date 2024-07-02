@@ -70,12 +70,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "mtu": l3_interface.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                                 "shutdown": not l3_interface.get("enabled", True),
                                 "description": interface_description,
-                                "access_group_in": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in.name"),
-                                "access_group_out": get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_out.name"),
                                 "eos_cli": l3_interface.get("raw_eos_cli"),
                                 "struct_cfg": l3_interface.get("structured_config"),
                                 "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
+
+                            if get(self._l3_interface_acls, self.shared_utils.hostname):
+                                interface.update(
+                                    {
+                                "access_group_in": get(self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}.ipv4_acl_in.name"),
+                                "access_group_out": get(self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}.ipv4_acl_out.name"),
+                                }
+                                )
 
                             if "." in interface_name:
                                 # This is a subinterface so we need to ensure that the parent is created

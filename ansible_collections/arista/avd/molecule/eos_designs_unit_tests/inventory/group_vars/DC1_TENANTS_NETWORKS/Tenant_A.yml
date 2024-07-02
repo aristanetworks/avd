@@ -248,8 +248,6 @@ tenant_a:
             ip_addresses: [10.10.30.10/24, 10.10.40.20/24]
             nodes: [DC1-BL1A, DC1-BL1B]
             mtu: 9000
-            ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
-            ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
             enabled: True
             descriptions: ["test-DC1-BL1A", "test-DC1-BL1B"]
           - interfaces: [Ethernet11, Ethernet11]
