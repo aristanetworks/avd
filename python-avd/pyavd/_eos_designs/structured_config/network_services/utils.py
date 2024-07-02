@@ -588,57 +588,6 @@ class UtilsMixin(UtilsZscalerMixin):
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
         ]
 
-    def get_internet_exit_nat_profile_name(self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]) -> str:
-        if internet_exit_policy_type == "zscaler":
-            return "IE-ZSCALER-NAT"
-
-        return "IE-DIRECT-NAT"
-
-    def get_internet_exit_nat_pool_and_profile(
-        self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]
-    ) -> Tuple[dict | None, dict | None]:
-        if internet_exit_policy_type == "zscaler":
-            pool = {
-                "name": "PORT-ONLY-POOL",
-                "type": "port-only",
-                "ranges": [
-                    {
-                        "first_port": 1500,
-                        "last_port": 65535,
-                    }
-                ],
-            }
-
-            profile = {
-                "name": self.get_internet_exit_nat_profile_name(internet_exit_policy_type),
-                "source": {
-                    "dynamic": [
-                        {
-                            "access_list": "ALLOW-ALL",
-                            "pool_name": "PORT-ONLY-POOL",
-                            "nat_type": "pool",
-                        }
-                    ]
-                },
-            }
-            return pool, profile
-
-        if internet_exit_policy_type == "direct":
-            profile = {
-                "name": self.get_internet_exit_nat_profile_name(internet_exit_policy_type),
-                "source": {
-                    "dynamic": [
-                        {
-                            "access_list": "ALLOW-ALL",
-                            "nat_type": "overload",
-                        }
-                    ]
-                },
-            }
-            return None, profile
-
-        return None, None
-
     @cached_property
     def _svi_acls(self: AvdStructuredConfigNetworkServices) -> dict[str, dict[str, dict]] | None:
         """
@@ -681,6 +630,61 @@ class UtilsMixin(UtilsZscalerMixin):
                         )
 
         return svi_acls
+
+    def get_internet_exit_nat_profile_name(self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]) -> str:
+        if internet_exit_policy_type == "zscaler":
+            return "NAT-IE-ZSCALER"
+        return "NAT-IE-DIRECT"
+
+    def get_internet_exit_nat_acl_name(self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]) -> str:
+        return f"ACL-{self.get_internet_exit_nat_profile_name(internet_exit_policy_type)}"
+
+    def get_internet_exit_nat_pool_and_profile(
+        self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]
+    ) -> Tuple[dict | None, dict | None]:
+        if internet_exit_policy_type == "zscaler":
+            pool = {
+                "name": "PORT-ONLY-POOL",
+                "type": "port-only",
+                "ranges": [
+                    {
+                        "first_port": 1500,
+                        "last_port": 65535,
+                    }
+                ],
+            }
+
+            profile = {
+                "name": self.get_internet_exit_nat_profile_name(internet_exit_policy_type),
+                "source": {
+                    "dynamic": [
+                        {
+                            "access_list": self.get_internet_exit_nat_acl_name(internet_exit_policy_type),
+                            "pool_name": "PORT-ONLY-POOL",
+                            "nat_type": "pool",
+                        }
+                    ]
+                },
+            }
+            return pool, profile
+        if internet_exit_policy_type == "direct":
+            profile_name = self.get_internet_exit_nat_profile_name(internet_exit_policy_type)
+            profile = {
+                "name": profile_name,
+                "source": {
+                    "dynamic": [
+                        {
+                            "access_list": self.get_internet_exit_nat_acl_name(internet_exit_policy_type),
+                            "nat_type": "overload",
+                        }
+                    ]
+                },
+            }
+            return None, profile
+
+    @cached_property
+    def _filtered_internet_exit_policy_types(self: AvdStructuredConfigNetworkServices) -> list:
+        return sorted(set(internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies))
 
     @cached_property
     def _filtered_internet_exit_policies(self: AvdStructuredConfigNetworkServices) -> list:
@@ -788,11 +792,21 @@ class UtilsMixin(UtilsZscalerMixin):
                     f"{wan_interface['name']} peer_ip needs to be set. When using wan interface "
                     "for direct type internet exit, peer_ip is used for nexthop, and connectivity monitoring."
                 )
+
+            # wan interface ip will be used for acl, hence raise error if ip is not available
+            if (ip_address := wan_interface.get("ip_address")) == "dhcp":
+                if not (ip_address := wan_interface.get("dhcp_ip")):
+                    raise AristaAvdMissingVariableError(
+                        f"{wan_interface['name']} 'dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, "
+                        "'dhcp_ip' is used in the NAT ACL."
+                    )
+
             sanitized_interface_name = self.shared_utils.sanitize_interface_name(wan_interface["name"])
             connections.append(
                 {
                     "type": "ethernet",
                     "name": f"IE-{sanitized_interface_name}",
+                    "source_interface_ip_address": ip_address,
                     "monitor_name": f"IE-{sanitized_interface_name}",
                     "monitor_host": wan_interface["peer_ip"],
                     "next_hop": wan_interface["peer_ip"],

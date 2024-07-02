@@ -29,9 +29,7 @@ class IpNatMixin(UtilsMixin):
 
         ip_nat = defaultdict(list)
 
-        policy_types = sorted(set(internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies))
-
-        for policy_type in policy_types:
+        for policy_type in self._filtered_internet_exit_policy_types:
             pool, profile = self.get_internet_exit_nat_pool_and_profile(policy_type)
             if pool:
                 ip_nat["pools"].append(pool)
