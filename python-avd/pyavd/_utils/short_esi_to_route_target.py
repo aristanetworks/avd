@@ -4,8 +4,8 @@
 import re
 
 MATCH_PATTERN = re.compile(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})")
-REPLACE_PATTERN = re.compile(r"\1:\2:\3:\4:\5:\6")
+REPL = r"\1:\2:\3:\4:\5:\6"
 
 
 def short_esi_to_route_target(short_esi: str) -> str:
-    return re.sub(MATCH_PATTERN, REPLACE_PATTERN, short_esi)
+    return re.sub(MATCH_PATTERN, REPL, short_esi)
