@@ -87,8 +87,7 @@ class PrefixListsMixin(UtilsMixin):
         return prefix_lists
 
     def _get_prefix_list(self, name: str):
-        pfx_list = get_item(self.shared_utils.ipv4_prefix_list_catalog, "name", name, required=True, var_name=f"ipv4_prefix_list_catalog[name={name}]")
-        return pfx_list
+        return get_item(self.shared_utils.ipv4_prefix_list_catalog, "name", name, required=True, var_name=f"ipv4_prefix_list_catalog[name={name}]")
 
     @cached_property
     def ipv6_prefix_lists(self: AvdStructuredConfigUnderlay) -> list | None:

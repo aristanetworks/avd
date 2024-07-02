@@ -143,8 +143,8 @@ class RouteMapsMixin(UtilsMixin):
                 route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
 
         for neighbor in self.shared_utils.l3_interfaces_bgp_neighbors:
+            # RM-BGP-<PEER-IP>-IN
             if prefix_list_in := get(neighbor, "ipv4_prefix_list_in"):
-                # RM-BGP-<PEER-IP>-IN
                 sequence_numbers = [
                     {
                         "sequence": 10,
@@ -159,6 +159,7 @@ class RouteMapsMixin(UtilsMixin):
 
                 route_maps.append({"name": neighbor["route_map_in"], "sequence_numbers": sequence_numbers})
 
+            # RM-BGP-<PEER-IP>-OUT
             if prefix_list_out := get(neighbor, "ipv4_prefix_list_out"):
                 sequence_numbers = [
                     {
@@ -172,7 +173,6 @@ class RouteMapsMixin(UtilsMixin):
                     },
                 ]
             else:
-                # RM-BGP-<PEER-IP>-OUT
                 sequence_numbers = [
                     {
                         "sequence": 10,
