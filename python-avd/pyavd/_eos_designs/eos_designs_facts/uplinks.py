@@ -299,7 +299,10 @@ class UplinksMixin:
         if uplink_native_vlan := get(self.shared_utils.switch_data_combined, "uplink_native_vlan"):
             uplink["native_vlan"] = uplink_native_vlan
 
-        if self._short_esi is not None:
+        if self.shared_utils.mlag_role == "secondary":
+            # On the MLAG Secondary use short-esi from MLAG primary
+            uplink["peer_short_esi"] = self.shared_utils.mlag_peer_facts._short_esi
+        elif self._short_esi is not None:
             uplink["peer_short_esi"] = self._short_esi
 
         if self.shared_utils.link_tracking_groups is not None:

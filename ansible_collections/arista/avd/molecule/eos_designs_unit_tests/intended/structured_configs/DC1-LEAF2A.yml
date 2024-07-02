@@ -491,6 +491,17 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
+- name: Ethernet11
+  peer: server01_MTU_PROFILE_MLAG
+  peer_interface: Eth4
+  peer_type: server
+  description: server01_MTU_PROFILE_MLAG_Eth4
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 11
+    mode: active
+  port_profile: TENANT_A_MTU
 - name: Ethernet13
   peer: DC1-L2LEAF4A
   peer_interface: Ethernet1
@@ -676,17 +687,6 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-- name: Ethernet11
-  peer: server01_MTU_PROFILE_MLAG
-  peer_interface: Eth4
-  peer_type: server
-  port_profile: TENANT_A_MTU
-  description: server01_MTU_PROFILE_MLAG_Eth4
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 11
-    mode: active
 - name: Ethernet12
   peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth6
@@ -750,6 +750,19 @@ port_channel_interfaces:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
   lacp_id: 0606.0707.0808
+- name: Port-Channel11
+  description: server01_MTU_PROFILE_MLAG_PortChanne1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  evpn_ethernet_segment:
+    identifier: 0000:0000:ca01:5ba3:6ffb
+    route_target: ca:01:5b:a3:6f:fb
+  lacp_id: ca01.5ba3.6ffb
+  mtu: 1600
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
 - name: Port-Channel1013
   description: DC1-L2LEAF4A_Po1001
   type: switched
@@ -778,15 +791,6 @@ port_channel_interfaces:
   vlans: 210-211
   spanning_tree_bpdufilter: disabled
   spanning_tree_bpduguard: disabled
-- name: Port-Channel11
-  description: server01_MTU_PROFILE_MLAG_PortChanne1
-  type: switched
-  shutdown: false
-  mtu: 1600
-  mode: access
-  vlans: '110'
-  spanning_tree_bpdufilter: enabled
-  spanning_tree_bpduguard: enabled
 - name: Port-Channel12
   description: server01_MTU_ADAPTOR_MLAG_PortChanne1
   type: switched
