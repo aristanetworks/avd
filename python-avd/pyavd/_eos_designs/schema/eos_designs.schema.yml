@@ -4057,6 +4057,8 @@ keys:
     format: ipv4
     default: 0.0.0.0
   underlay_ospf_authentication:
+    documentation_options:
+      table: ospf-settings
     type: dict
     keys:
       enabled:
