@@ -3439,6 +3439,173 @@ keys:
                         type: int
                         convert_types:
                         - str
+            tap:
+              type: dict
+              keys:
+                allowed_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VLAN ID or range of VLAN IDs within range 1-4094.
+                default:
+                  type: dict
+                  keys:
+                    groups:
+                      description: Tap group names for the interface.
+                      type: list
+                      items:
+                        type: str
+                    interfaces:
+                      description: Interfaces like -  Ethernet, InternalRecirc, Port-Channel,
+                        Recirc-Channel.
+                      type: list
+                      items:
+                        type: str
+                    nexthop_groups:
+                      type: list
+                      description: Default nexthop-group names.
+                      items:
+                        type: str
+                identity:
+                  type: dict
+                  keys:
+                    port_id:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+                      description: Tap port ID tag.
+                    inner_port_id:
+                      description: Inner tap port ID tag.
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+                mpls_pop_all:
+                  type: bool
+                  description: Pop all MPLS labels.
+                native_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Native VLAN ID when interface is in tap mode.
+                truncation:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    size:
+                      description: Ingress packet truncation size in bytes.
+                      type: int
+                      convert_types:
+                      - str
+                      min: 100
+                      max: 9236
+                mac_address:
+                  type: dict
+                  keys:
+                    src:
+                      type: str
+                      description: MAC address for the source.
+                    dest:
+                      type: str
+                      required: true
+                      description: MAC address for the destination.
+                encapsulation:
+                  type: dict
+                  keys:
+                    vxlan_strip:
+                      type: bool
+                      description: Strip VXLAN encapsulation header.
+                    gre_strip:
+                      type: bool
+                      required: true
+                      description: Strip GRE encapsulation header.
+                    gre:
+                      type: dict
+                      keys:
+                        destination:
+                          description: Destination IP address of tunnel packets.
+                          type: str
+                        source:
+                          description: Source IP address of tunnel packets.
+                          type: str
+                        protocol:
+                          type: str
+                          description: 'Protocol type in GRE header.
+
+                            Protocol range: 0x0000-0xFFFF'
+                        feature_header_length:
+                          description: Feature header length in bytes.
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 16
+            tool:
+              type: dict
+              keys:
+                mpls_pop_all:
+                  type: bool
+                  description: Pop all MPLS labels.
+                encapsulation:
+                  type: dict
+                  keys:
+                    dot1br_strip:
+                      type: bool
+                      description: Remove a 802.1 BR tag in packet header.
+                    vn_tag_strip:
+                      type: bool
+                      description: Remove a VN-tag in packet header.
+                allowed_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VLAN ID or range of VLAN IDs within range 1-4094.
+                identity:
+                  type: dict
+                  keys:
+                    tag:
+                      type: str
+                      valid_values:
+                      - dot1q
+                      - qinq
+                    dot1q_dzgre_source:
+                      type: str
+                      valid_values:
+                      - policy
+                      - port
+                    qinq_dzgre_source:
+                      type: str
+                      valid_values:
+                      - policy inner port
+                      - port inner policy
+                truncation:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    size:
+                      description: Egress packet truncation size in bytes.
+                      type: int
+                      convert_types:
+                      - str
+                      valid_values:
+                      - 160
+                groups:
+                  type: list
+                  items:
+                    type: str
+                  description: Tool groups for the interface.
+                dzgre_preserve:
+                  type: bool
+                  description: Preserve the DzGRE header.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -9319,6 +9486,176 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        switchport:
+          type: dict
+          keys:
+            tap:
+              type: dict
+              keys:
+                allowed_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VLAN ID or range of VLAN IDs within range 1-4094.
+                default:
+                  type: dict
+                  keys:
+                    groups:
+                      description: Tap group names for the interface.
+                      type: list
+                      items:
+                        type: str
+                    interfaces:
+                      description: Interfaces like -  Ethernet, InternalRecirc, Port-Channel,
+                        Recirc-Channel.
+                      type: list
+                      items:
+                        type: str
+                    nexthop_groups:
+                      type: list
+                      description: Default nexthop-group names.
+                      items:
+                        type: str
+                identity:
+                  type: dict
+                  keys:
+                    port_id:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+                      description: Tap port ID tag.
+                    inner_port_id:
+                      description: Inner tap port ID tag.
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+                mpls_pop_all:
+                  type: bool
+                  description: Pop all MPLS labels.
+                native_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Native VLAN ID when interface is in tap mode.
+                truncation:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    size:
+                      description: Ingress packet truncation size in bytes.
+                      type: int
+                      convert_types:
+                      - str
+                      min: 100
+                      max: 9236
+                mac_address:
+                  type: dict
+                  keys:
+                    src:
+                      type: str
+                      description: MAC address for the source.
+                    dest:
+                      type: str
+                      required: true
+                      description: MAC address for the destination.
+                encapsulation:
+                  type: dict
+                  keys:
+                    vxlan_strip:
+                      type: bool
+                      description: Strip VXLAN encapsulation header.
+                    gre_strip:
+                      type: bool
+                      required: true
+                      description: Strip GRE encapsulation header.
+                    gre:
+                      type: dict
+                      keys:
+                        destination:
+                          description: Destination IP address of tunnel packets.
+                          type: str
+                        source:
+                          description: Source IP address of tunnel packets.
+                          type: str
+                        protocol:
+                          type: str
+                          description: 'Protocol type in GRE header.
+
+                            Protocol range: 0x0000-0xFFFF'
+                        feature_header_length:
+                          description: Feature header length in bytes.
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 16
+            tool:
+              type: dict
+              keys:
+                mpls_pop_all:
+                  type: bool
+                  description: Pop all MPLS labels.
+                encapsulation:
+                  type: dict
+                  keys:
+                    dot1br_strip:
+                      type: bool
+                      description: Remove a 802.1 BR tag in packet header.
+                    vn_tag_strip:
+                      type: bool
+                      description: Remove a VN-tag in packet header.
+                allowed_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VLAN ID or range of VLAN IDs within range 1-4094.
+                identity:
+                  type: dict
+                  keys:
+                    tag:
+                      type: str
+                      valid_values:
+                      - dot1q
+                      - qinq
+                    dot1q_dzgre_source:
+                      type: str
+                      valid_values:
+                      - policy
+                      - port
+                    qinq_dzgre_source:
+                      type: str
+                      valid_values:
+                      - policy inner port
+                      - port inner policy
+                truncation:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    size:
+                      description: Egress packet truncation size in bytes.
+                      type: int
+                      convert_types:
+                      - str
+                      valid_values:
+                      - 160
+                groups:
+                  type: list
+                  items:
+                    type: str
+                  description: Tool groups for the interface.
+                dzgre_preserve:
+                  type: bool
+                  description: Preserve the DzGRE header.
         validate_state:
           type: bool
           description: Set to false to disable interface validation by the `eos_validate_state`

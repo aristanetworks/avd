@@ -11283,6 +11283,305 @@
                       "^_.+$": {}
                     },
                     "title": "Port Security"
+                  },
+                  "tap": {
+                    "type": "object",
+                    "properties": {
+                      "allowed_vlan": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "title": "Allowed VLAN"
+                      },
+                      "default": {
+                        "type": "object",
+                        "properties": {
+                          "groups": {
+                            "description": "Tap group names for the interface.",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Groups"
+                          },
+                          "interfaces": {
+                            "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Interfaces"
+                          },
+                          "nexthop_groups": {
+                            "type": "array",
+                            "description": "Default nexthop-group names.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Nexthop Groups"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Default"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "port_id": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "description": "Tap port ID tag.",
+                            "title": "Port ID"
+                          },
+                          "inner_port_id": {
+                            "description": "Inner tap port ID tag.",
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "title": "Inner Port ID"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Identity"
+                      },
+                      "mpls_pop_all": {
+                        "type": "boolean",
+                        "description": "Pop all MPLS labels.",
+                        "title": "MPLS Pop All"
+                      },
+                      "native_vlan": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "description": "Native VLAN ID when interface is in tap mode.",
+                        "title": "Native VLAN"
+                      },
+                      "truncation": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "size": {
+                            "description": "Ingress packet truncation size in bytes.",
+                            "type": "integer",
+                            "minimum": 100,
+                            "maximum": 9236,
+                            "title": "Size"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Truncation"
+                      },
+                      "mac_address": {
+                        "type": "object",
+                        "properties": {
+                          "src": {
+                            "type": "string",
+                            "description": "MAC address for the source.",
+                            "title": "Src"
+                          },
+                          "dest": {
+                            "type": "string",
+                            "description": "MAC address for the destination.",
+                            "title": "Dest"
+                          }
+                        },
+                        "required": [
+                          "dest"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address"
+                      },
+                      "encapsulation": {
+                        "type": "object",
+                        "properties": {
+                          "vxlan_strip": {
+                            "type": "boolean",
+                            "description": "Strip VXLAN encapsulation header.",
+                            "title": "VxLAN Strip"
+                          },
+                          "gre_strip": {
+                            "type": "boolean",
+                            "description": "Strip GRE encapsulation header.",
+                            "title": "Gre Strip"
+                          },
+                          "gre": {
+                            "type": "object",
+                            "properties": {
+                              "destination": {
+                                "description": "Destination IP address of tunnel packets.",
+                                "type": "string",
+                                "title": "Destination"
+                              },
+                              "source": {
+                                "description": "Source IP address of tunnel packets.",
+                                "type": "string",
+                                "title": "Source"
+                              },
+                              "protocol": {
+                                "type": "string",
+                                "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                "title": "Protocol"
+                              },
+                              "feature_header_length": {
+                                "description": "Feature header length in bytes.",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 16,
+                                "title": "Feature Header Length"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Gre"
+                          }
+                        },
+                        "required": [
+                          "gre_strip"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Encapsulation"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tap"
+                  },
+                  "tool": {
+                    "type": "object",
+                    "properties": {
+                      "mpls_pop_all": {
+                        "type": "boolean",
+                        "description": "Pop all MPLS labels.",
+                        "title": "MPLS Pop All"
+                      },
+                      "encapsulation": {
+                        "type": "object",
+                        "properties": {
+                          "dot1br_strip": {
+                            "type": "boolean",
+                            "description": "Remove a 802.1 BR tag in packet header.",
+                            "title": "dot1br Strip"
+                          },
+                          "vn_tag_strip": {
+                            "type": "boolean",
+                            "description": "Remove a VN-tag in packet header.",
+                            "title": "VN Tag Strip"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Encapsulation"
+                      },
+                      "allowed_vlan": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "title": "Allowed VLAN"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "tag": {
+                            "type": "string",
+                            "enum": [
+                              "dot1q",
+                              "qinq"
+                            ],
+                            "title": "Tag"
+                          },
+                          "dot1q_dzgre_source": {
+                            "type": "string",
+                            "enum": [
+                              "policy",
+                              "port"
+                            ],
+                            "title": "Dot1Q Dzgre Source"
+                          },
+                          "qinq_dzgre_source": {
+                            "type": "string",
+                            "enum": [
+                              "policy inner port",
+                              "port inner policy"
+                            ],
+                            "title": "Qinq Dzgre Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Identity"
+                      },
+                      "truncation": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "size": {
+                            "description": "Egress packet truncation size in bytes.",
+                            "type": "integer",
+                            "enum": [
+                              160
+                            ],
+                            "title": "Size"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Truncation"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Tool groups for the interface.",
+                        "title": "Groups"
+                      },
+                      "dzgre_preserve": {
+                        "type": "boolean",
+                        "description": "Preserve the DzGRE header.",
+                        "title": "Dzgre Preserve"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tool"
                   }
                 },
                 "additionalProperties": false,
@@ -14172,6 +14471,315 @@
                       "^_.+$": {}
                     },
                     "title": "Sflow"
+                  },
+                  "switchport": {
+                    "type": "object",
+                    "properties": {
+                      "tap": {
+                        "type": "object",
+                        "properties": {
+                          "allowed_vlan": {
+                            "type": "string",
+                            "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                            "title": "Allowed VLAN"
+                          },
+                          "default": {
+                            "type": "object",
+                            "properties": {
+                              "groups": {
+                                "description": "Tap group names for the interface.",
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Groups"
+                              },
+                              "interfaces": {
+                                "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Interfaces"
+                              },
+                              "nexthop_groups": {
+                                "type": "array",
+                                "description": "Default nexthop-group names.",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Nexthop Groups"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Default"
+                          },
+                          "identity": {
+                            "type": "object",
+                            "properties": {
+                              "port_id": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 4094,
+                                "description": "Tap port ID tag.",
+                                "title": "Port ID"
+                              },
+                              "inner_port_id": {
+                                "description": "Inner tap port ID tag.",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 4094,
+                                "title": "Inner Port ID"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Identity"
+                          },
+                          "mpls_pop_all": {
+                            "type": "boolean",
+                            "description": "Pop all MPLS labels.",
+                            "title": "MPLS Pop All"
+                          },
+                          "native_vlan": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "description": "Native VLAN ID when interface is in tap mode.",
+                            "title": "Native VLAN"
+                          },
+                          "truncation": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "title": "Enabled"
+                              },
+                              "size": {
+                                "description": "Ingress packet truncation size in bytes.",
+                                "type": "integer",
+                                "minimum": 100,
+                                "maximum": 9236,
+                                "title": "Size"
+                              }
+                            },
+                            "required": [
+                              "enabled"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Truncation"
+                          },
+                          "mac_address": {
+                            "type": "object",
+                            "properties": {
+                              "src": {
+                                "type": "string",
+                                "description": "MAC address for the source.",
+                                "title": "Src"
+                              },
+                              "dest": {
+                                "type": "string",
+                                "description": "MAC address for the destination.",
+                                "title": "Dest"
+                              }
+                            },
+                            "required": [
+                              "dest"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "MAC Address"
+                          },
+                          "encapsulation": {
+                            "type": "object",
+                            "properties": {
+                              "vxlan_strip": {
+                                "type": "boolean",
+                                "description": "Strip VXLAN encapsulation header.",
+                                "title": "VxLAN Strip"
+                              },
+                              "gre_strip": {
+                                "type": "boolean",
+                                "description": "Strip GRE encapsulation header.",
+                                "title": "Gre Strip"
+                              },
+                              "gre": {
+                                "type": "object",
+                                "properties": {
+                                  "destination": {
+                                    "description": "Destination IP address of tunnel packets.",
+                                    "type": "string",
+                                    "title": "Destination"
+                                  },
+                                  "source": {
+                                    "description": "Source IP address of tunnel packets.",
+                                    "type": "string",
+                                    "title": "Source"
+                                  },
+                                  "protocol": {
+                                    "type": "string",
+                                    "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                    "title": "Protocol"
+                                  },
+                                  "feature_header_length": {
+                                    "description": "Feature header length in bytes.",
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 16,
+                                    "title": "Feature Header Length"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Gre"
+                              }
+                            },
+                            "required": [
+                              "gre_strip"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Encapsulation"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Tap"
+                      },
+                      "tool": {
+                        "type": "object",
+                        "properties": {
+                          "mpls_pop_all": {
+                            "type": "boolean",
+                            "description": "Pop all MPLS labels.",
+                            "title": "MPLS Pop All"
+                          },
+                          "encapsulation": {
+                            "type": "object",
+                            "properties": {
+                              "dot1br_strip": {
+                                "type": "boolean",
+                                "description": "Remove a 802.1 BR tag in packet header.",
+                                "title": "dot1br Strip"
+                              },
+                              "vn_tag_strip": {
+                                "type": "boolean",
+                                "description": "Remove a VN-tag in packet header.",
+                                "title": "VN Tag Strip"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Encapsulation"
+                          },
+                          "allowed_vlan": {
+                            "type": "string",
+                            "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                            "title": "Allowed VLAN"
+                          },
+                          "identity": {
+                            "type": "object",
+                            "properties": {
+                              "tag": {
+                                "type": "string",
+                                "enum": [
+                                  "dot1q",
+                                  "qinq"
+                                ],
+                                "title": "Tag"
+                              },
+                              "dot1q_dzgre_source": {
+                                "type": "string",
+                                "enum": [
+                                  "policy",
+                                  "port"
+                                ],
+                                "title": "Dot1Q Dzgre Source"
+                              },
+                              "qinq_dzgre_source": {
+                                "type": "string",
+                                "enum": [
+                                  "policy inner port",
+                                  "port inner policy"
+                                ],
+                                "title": "Qinq Dzgre Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Identity"
+                          },
+                          "truncation": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "title": "Enabled"
+                              },
+                              "size": {
+                                "description": "Egress packet truncation size in bytes.",
+                                "type": "integer",
+                                "enum": [
+                                  160
+                                ],
+                                "title": "Size"
+                              }
+                            },
+                            "required": [
+                              "enabled"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Truncation"
+                          },
+                          "groups": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Tool groups for the interface.",
+                            "title": "Groups"
+                          },
+                          "dzgre_preserve": {
+                            "type": "boolean",
+                            "description": "Preserve the DzGRE header.",
+                            "title": "Dzgre Preserve"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Tool"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Switchport"
                   },
                   "validate_state": {
                     "type": "boolean",
@@ -17080,6 +17688,305 @@
                       "^_.+$": {}
                     },
                     "title": "Port Security"
+                  },
+                  "tap": {
+                    "type": "object",
+                    "properties": {
+                      "allowed_vlan": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "title": "Allowed VLAN"
+                      },
+                      "default": {
+                        "type": "object",
+                        "properties": {
+                          "groups": {
+                            "description": "Tap group names for the interface.",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Groups"
+                          },
+                          "interfaces": {
+                            "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Interfaces"
+                          },
+                          "nexthop_groups": {
+                            "type": "array",
+                            "description": "Default nexthop-group names.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Nexthop Groups"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Default"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "port_id": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "description": "Tap port ID tag.",
+                            "title": "Port ID"
+                          },
+                          "inner_port_id": {
+                            "description": "Inner tap port ID tag.",
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "title": "Inner Port ID"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Identity"
+                      },
+                      "mpls_pop_all": {
+                        "type": "boolean",
+                        "description": "Pop all MPLS labels.",
+                        "title": "MPLS Pop All"
+                      },
+                      "native_vlan": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "description": "Native VLAN ID when interface is in tap mode.",
+                        "title": "Native VLAN"
+                      },
+                      "truncation": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "size": {
+                            "description": "Ingress packet truncation size in bytes.",
+                            "type": "integer",
+                            "minimum": 100,
+                            "maximum": 9236,
+                            "title": "Size"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Truncation"
+                      },
+                      "mac_address": {
+                        "type": "object",
+                        "properties": {
+                          "src": {
+                            "type": "string",
+                            "description": "MAC address for the source.",
+                            "title": "Src"
+                          },
+                          "dest": {
+                            "type": "string",
+                            "description": "MAC address for the destination.",
+                            "title": "Dest"
+                          }
+                        },
+                        "required": [
+                          "dest"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address"
+                      },
+                      "encapsulation": {
+                        "type": "object",
+                        "properties": {
+                          "vxlan_strip": {
+                            "type": "boolean",
+                            "description": "Strip VXLAN encapsulation header.",
+                            "title": "VxLAN Strip"
+                          },
+                          "gre_strip": {
+                            "type": "boolean",
+                            "description": "Strip GRE encapsulation header.",
+                            "title": "Gre Strip"
+                          },
+                          "gre": {
+                            "type": "object",
+                            "properties": {
+                              "destination": {
+                                "description": "Destination IP address of tunnel packets.",
+                                "type": "string",
+                                "title": "Destination"
+                              },
+                              "source": {
+                                "description": "Source IP address of tunnel packets.",
+                                "type": "string",
+                                "title": "Source"
+                              },
+                              "protocol": {
+                                "type": "string",
+                                "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                "title": "Protocol"
+                              },
+                              "feature_header_length": {
+                                "description": "Feature header length in bytes.",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 16,
+                                "title": "Feature Header Length"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Gre"
+                          }
+                        },
+                        "required": [
+                          "gre_strip"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Encapsulation"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tap"
+                  },
+                  "tool": {
+                    "type": "object",
+                    "properties": {
+                      "mpls_pop_all": {
+                        "type": "boolean",
+                        "description": "Pop all MPLS labels.",
+                        "title": "MPLS Pop All"
+                      },
+                      "encapsulation": {
+                        "type": "object",
+                        "properties": {
+                          "dot1br_strip": {
+                            "type": "boolean",
+                            "description": "Remove a 802.1 BR tag in packet header.",
+                            "title": "dot1br Strip"
+                          },
+                          "vn_tag_strip": {
+                            "type": "boolean",
+                            "description": "Remove a VN-tag in packet header.",
+                            "title": "VN Tag Strip"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Encapsulation"
+                      },
+                      "allowed_vlan": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "title": "Allowed VLAN"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "tag": {
+                            "type": "string",
+                            "enum": [
+                              "dot1q",
+                              "qinq"
+                            ],
+                            "title": "Tag"
+                          },
+                          "dot1q_dzgre_source": {
+                            "type": "string",
+                            "enum": [
+                              "policy",
+                              "port"
+                            ],
+                            "title": "Dot1Q Dzgre Source"
+                          },
+                          "qinq_dzgre_source": {
+                            "type": "string",
+                            "enum": [
+                              "policy inner port",
+                              "port inner policy"
+                            ],
+                            "title": "Qinq Dzgre Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Identity"
+                      },
+                      "truncation": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "size": {
+                            "description": "Egress packet truncation size in bytes.",
+                            "type": "integer",
+                            "enum": [
+                              160
+                            ],
+                            "title": "Size"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Truncation"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Tool groups for the interface.",
+                        "title": "Groups"
+                      },
+                      "dzgre_preserve": {
+                        "type": "boolean",
+                        "description": "Preserve the DzGRE header.",
+                        "title": "Dzgre Preserve"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tool"
                   }
                 },
                 "additionalProperties": false,
@@ -23631,6 +24538,305 @@
                             "^_.+$": {}
                           },
                           "title": "Port Security"
+                        },
+                        "tap": {
+                          "type": "object",
+                          "properties": {
+                            "allowed_vlan": {
+                              "type": "string",
+                              "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                              "title": "Allowed VLAN"
+                            },
+                            "default": {
+                              "type": "object",
+                              "properties": {
+                                "groups": {
+                                  "description": "Tap group names for the interface.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Groups"
+                                },
+                                "interfaces": {
+                                  "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Interfaces"
+                                },
+                                "nexthop_groups": {
+                                  "type": "array",
+                                  "description": "Default nexthop-group names.",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Nexthop Groups"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default"
+                            },
+                            "identity": {
+                              "type": "object",
+                              "properties": {
+                                "port_id": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 4094,
+                                  "description": "Tap port ID tag.",
+                                  "title": "Port ID"
+                                },
+                                "inner_port_id": {
+                                  "description": "Inner tap port ID tag.",
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 4094,
+                                  "title": "Inner Port ID"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Identity"
+                            },
+                            "mpls_pop_all": {
+                              "type": "boolean",
+                              "description": "Pop all MPLS labels.",
+                              "title": "MPLS Pop All"
+                            },
+                            "native_vlan": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 4094,
+                              "description": "Native VLAN ID when interface is in tap mode.",
+                              "title": "Native VLAN"
+                            },
+                            "truncation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "size": {
+                                  "description": "Ingress packet truncation size in bytes.",
+                                  "type": "integer",
+                                  "minimum": 100,
+                                  "maximum": 9236,
+                                  "title": "Size"
+                                }
+                              },
+                              "required": [
+                                "enabled"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Truncation"
+                            },
+                            "mac_address": {
+                              "type": "object",
+                              "properties": {
+                                "src": {
+                                  "type": "string",
+                                  "description": "MAC address for the source.",
+                                  "title": "Src"
+                                },
+                                "dest": {
+                                  "type": "string",
+                                  "description": "MAC address for the destination.",
+                                  "title": "Dest"
+                                }
+                              },
+                              "required": [
+                                "dest"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "MAC Address"
+                            },
+                            "encapsulation": {
+                              "type": "object",
+                              "properties": {
+                                "vxlan_strip": {
+                                  "type": "boolean",
+                                  "description": "Strip VXLAN encapsulation header.",
+                                  "title": "VxLAN Strip"
+                                },
+                                "gre_strip": {
+                                  "type": "boolean",
+                                  "description": "Strip GRE encapsulation header.",
+                                  "title": "Gre Strip"
+                                },
+                                "gre": {
+                                  "type": "object",
+                                  "properties": {
+                                    "destination": {
+                                      "description": "Destination IP address of tunnel packets.",
+                                      "type": "string",
+                                      "title": "Destination"
+                                    },
+                                    "source": {
+                                      "description": "Source IP address of tunnel packets.",
+                                      "type": "string",
+                                      "title": "Source"
+                                    },
+                                    "protocol": {
+                                      "type": "string",
+                                      "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                      "title": "Protocol"
+                                    },
+                                    "feature_header_length": {
+                                      "description": "Feature header length in bytes.",
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 16,
+                                      "title": "Feature Header Length"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  },
+                                  "title": "Gre"
+                                }
+                              },
+                              "required": [
+                                "gre_strip"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Encapsulation"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Tap"
+                        },
+                        "tool": {
+                          "type": "object",
+                          "properties": {
+                            "mpls_pop_all": {
+                              "type": "boolean",
+                              "description": "Pop all MPLS labels.",
+                              "title": "MPLS Pop All"
+                            },
+                            "encapsulation": {
+                              "type": "object",
+                              "properties": {
+                                "dot1br_strip": {
+                                  "type": "boolean",
+                                  "description": "Remove a 802.1 BR tag in packet header.",
+                                  "title": "dot1br Strip"
+                                },
+                                "vn_tag_strip": {
+                                  "type": "boolean",
+                                  "description": "Remove a VN-tag in packet header.",
+                                  "title": "VN Tag Strip"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Encapsulation"
+                            },
+                            "allowed_vlan": {
+                              "type": "string",
+                              "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                              "title": "Allowed VLAN"
+                            },
+                            "identity": {
+                              "type": "object",
+                              "properties": {
+                                "tag": {
+                                  "type": "string",
+                                  "enum": [
+                                    "dot1q",
+                                    "qinq"
+                                  ],
+                                  "title": "Tag"
+                                },
+                                "dot1q_dzgre_source": {
+                                  "type": "string",
+                                  "enum": [
+                                    "policy",
+                                    "port"
+                                  ],
+                                  "title": "Dot1Q Dzgre Source"
+                                },
+                                "qinq_dzgre_source": {
+                                  "type": "string",
+                                  "enum": [
+                                    "policy inner port",
+                                    "port inner policy"
+                                  ],
+                                  "title": "Qinq Dzgre Source"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Identity"
+                            },
+                            "truncation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "size": {
+                                  "description": "Egress packet truncation size in bytes.",
+                                  "type": "integer",
+                                  "enum": [
+                                    160
+                                  ],
+                                  "title": "Size"
+                                }
+                              },
+                              "required": [
+                                "enabled"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Truncation"
+                            },
+                            "groups": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Tool groups for the interface.",
+                              "title": "Groups"
+                            },
+                            "dzgre_preserve": {
+                              "type": "boolean",
+                              "description": "Preserve the DzGRE header.",
+                              "title": "Dzgre Preserve"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Tool"
                         }
                       },
                       "additionalProperties": false,
@@ -33724,6 +34930,315 @@
                         "^_.+$": {}
                       },
                       "title": "Sflow"
+                    },
+                    "switchport": {
+                      "type": "object",
+                      "properties": {
+                        "tap": {
+                          "type": "object",
+                          "properties": {
+                            "allowed_vlan": {
+                              "type": "string",
+                              "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                              "title": "Allowed VLAN"
+                            },
+                            "default": {
+                              "type": "object",
+                              "properties": {
+                                "groups": {
+                                  "description": "Tap group names for the interface.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Groups"
+                                },
+                                "interfaces": {
+                                  "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Interfaces"
+                                },
+                                "nexthop_groups": {
+                                  "type": "array",
+                                  "description": "Default nexthop-group names.",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Nexthop Groups"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default"
+                            },
+                            "identity": {
+                              "type": "object",
+                              "properties": {
+                                "port_id": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 4094,
+                                  "description": "Tap port ID tag.",
+                                  "title": "Port ID"
+                                },
+                                "inner_port_id": {
+                                  "description": "Inner tap port ID tag.",
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 4094,
+                                  "title": "Inner Port ID"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Identity"
+                            },
+                            "mpls_pop_all": {
+                              "type": "boolean",
+                              "description": "Pop all MPLS labels.",
+                              "title": "MPLS Pop All"
+                            },
+                            "native_vlan": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 4094,
+                              "description": "Native VLAN ID when interface is in tap mode.",
+                              "title": "Native VLAN"
+                            },
+                            "truncation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "size": {
+                                  "description": "Ingress packet truncation size in bytes.",
+                                  "type": "integer",
+                                  "minimum": 100,
+                                  "maximum": 9236,
+                                  "title": "Size"
+                                }
+                              },
+                              "required": [
+                                "enabled"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Truncation"
+                            },
+                            "mac_address": {
+                              "type": "object",
+                              "properties": {
+                                "src": {
+                                  "type": "string",
+                                  "description": "MAC address for the source.",
+                                  "title": "Src"
+                                },
+                                "dest": {
+                                  "type": "string",
+                                  "description": "MAC address for the destination.",
+                                  "title": "Dest"
+                                }
+                              },
+                              "required": [
+                                "dest"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "MAC Address"
+                            },
+                            "encapsulation": {
+                              "type": "object",
+                              "properties": {
+                                "vxlan_strip": {
+                                  "type": "boolean",
+                                  "description": "Strip VXLAN encapsulation header.",
+                                  "title": "VxLAN Strip"
+                                },
+                                "gre_strip": {
+                                  "type": "boolean",
+                                  "description": "Strip GRE encapsulation header.",
+                                  "title": "Gre Strip"
+                                },
+                                "gre": {
+                                  "type": "object",
+                                  "properties": {
+                                    "destination": {
+                                      "description": "Destination IP address of tunnel packets.",
+                                      "type": "string",
+                                      "title": "Destination"
+                                    },
+                                    "source": {
+                                      "description": "Source IP address of tunnel packets.",
+                                      "type": "string",
+                                      "title": "Source"
+                                    },
+                                    "protocol": {
+                                      "type": "string",
+                                      "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                      "title": "Protocol"
+                                    },
+                                    "feature_header_length": {
+                                      "description": "Feature header length in bytes.",
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 16,
+                                      "title": "Feature Header Length"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  },
+                                  "title": "Gre"
+                                }
+                              },
+                              "required": [
+                                "gre_strip"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Encapsulation"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Tap"
+                        },
+                        "tool": {
+                          "type": "object",
+                          "properties": {
+                            "mpls_pop_all": {
+                              "type": "boolean",
+                              "description": "Pop all MPLS labels.",
+                              "title": "MPLS Pop All"
+                            },
+                            "encapsulation": {
+                              "type": "object",
+                              "properties": {
+                                "dot1br_strip": {
+                                  "type": "boolean",
+                                  "description": "Remove a 802.1 BR tag in packet header.",
+                                  "title": "dot1br Strip"
+                                },
+                                "vn_tag_strip": {
+                                  "type": "boolean",
+                                  "description": "Remove a VN-tag in packet header.",
+                                  "title": "VN Tag Strip"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Encapsulation"
+                            },
+                            "allowed_vlan": {
+                              "type": "string",
+                              "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                              "title": "Allowed VLAN"
+                            },
+                            "identity": {
+                              "type": "object",
+                              "properties": {
+                                "tag": {
+                                  "type": "string",
+                                  "enum": [
+                                    "dot1q",
+                                    "qinq"
+                                  ],
+                                  "title": "Tag"
+                                },
+                                "dot1q_dzgre_source": {
+                                  "type": "string",
+                                  "enum": [
+                                    "policy",
+                                    "port"
+                                  ],
+                                  "title": "Dot1Q Dzgre Source"
+                                },
+                                "qinq_dzgre_source": {
+                                  "type": "string",
+                                  "enum": [
+                                    "policy inner port",
+                                    "port inner policy"
+                                  ],
+                                  "title": "Qinq Dzgre Source"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Identity"
+                            },
+                            "truncation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "size": {
+                                  "description": "Egress packet truncation size in bytes.",
+                                  "type": "integer",
+                                  "enum": [
+                                    160
+                                  ],
+                                  "title": "Size"
+                                }
+                              },
+                              "required": [
+                                "enabled"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Truncation"
+                            },
+                            "groups": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Tool groups for the interface.",
+                              "title": "Groups"
+                            },
+                            "dzgre_preserve": {
+                              "type": "boolean",
+                              "description": "Preserve the DzGRE header.",
+                              "title": "Dzgre Preserve"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Tool"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Switchport"
                     },
                     "validate_state": {
                       "type": "boolean",
@@ -52389,6 +53904,315 @@
                     },
                     "title": "Sflow"
                   },
+                  "switchport": {
+                    "type": "object",
+                    "properties": {
+                      "tap": {
+                        "type": "object",
+                        "properties": {
+                          "allowed_vlan": {
+                            "type": "string",
+                            "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                            "title": "Allowed VLAN"
+                          },
+                          "default": {
+                            "type": "object",
+                            "properties": {
+                              "groups": {
+                                "description": "Tap group names for the interface.",
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Groups"
+                              },
+                              "interfaces": {
+                                "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Interfaces"
+                              },
+                              "nexthop_groups": {
+                                "type": "array",
+                                "description": "Default nexthop-group names.",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "title": "Nexthop Groups"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Default"
+                          },
+                          "identity": {
+                            "type": "object",
+                            "properties": {
+                              "port_id": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 4094,
+                                "description": "Tap port ID tag.",
+                                "title": "Port ID"
+                              },
+                              "inner_port_id": {
+                                "description": "Inner tap port ID tag.",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 4094,
+                                "title": "Inner Port ID"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Identity"
+                          },
+                          "mpls_pop_all": {
+                            "type": "boolean",
+                            "description": "Pop all MPLS labels.",
+                            "title": "MPLS Pop All"
+                          },
+                          "native_vlan": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "description": "Native VLAN ID when interface is in tap mode.",
+                            "title": "Native VLAN"
+                          },
+                          "truncation": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "title": "Enabled"
+                              },
+                              "size": {
+                                "description": "Ingress packet truncation size in bytes.",
+                                "type": "integer",
+                                "minimum": 100,
+                                "maximum": 9236,
+                                "title": "Size"
+                              }
+                            },
+                            "required": [
+                              "enabled"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Truncation"
+                          },
+                          "mac_address": {
+                            "type": "object",
+                            "properties": {
+                              "src": {
+                                "type": "string",
+                                "description": "MAC address for the source.",
+                                "title": "Src"
+                              },
+                              "dest": {
+                                "type": "string",
+                                "description": "MAC address for the destination.",
+                                "title": "Dest"
+                              }
+                            },
+                            "required": [
+                              "dest"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "MAC Address"
+                          },
+                          "encapsulation": {
+                            "type": "object",
+                            "properties": {
+                              "vxlan_strip": {
+                                "type": "boolean",
+                                "description": "Strip VXLAN encapsulation header.",
+                                "title": "VxLAN Strip"
+                              },
+                              "gre_strip": {
+                                "type": "boolean",
+                                "description": "Strip GRE encapsulation header.",
+                                "title": "Gre Strip"
+                              },
+                              "gre": {
+                                "type": "object",
+                                "properties": {
+                                  "destination": {
+                                    "description": "Destination IP address of tunnel packets.",
+                                    "type": "string",
+                                    "title": "Destination"
+                                  },
+                                  "source": {
+                                    "description": "Source IP address of tunnel packets.",
+                                    "type": "string",
+                                    "title": "Source"
+                                  },
+                                  "protocol": {
+                                    "type": "string",
+                                    "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                    "title": "Protocol"
+                                  },
+                                  "feature_header_length": {
+                                    "description": "Feature header length in bytes.",
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "maximum": 16,
+                                    "title": "Feature Header Length"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
+                                "title": "Gre"
+                              }
+                            },
+                            "required": [
+                              "gre_strip"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Encapsulation"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Tap"
+                      },
+                      "tool": {
+                        "type": "object",
+                        "properties": {
+                          "mpls_pop_all": {
+                            "type": "boolean",
+                            "description": "Pop all MPLS labels.",
+                            "title": "MPLS Pop All"
+                          },
+                          "encapsulation": {
+                            "type": "object",
+                            "properties": {
+                              "dot1br_strip": {
+                                "type": "boolean",
+                                "description": "Remove a 802.1 BR tag in packet header.",
+                                "title": "dot1br Strip"
+                              },
+                              "vn_tag_strip": {
+                                "type": "boolean",
+                                "description": "Remove a VN-tag in packet header.",
+                                "title": "VN Tag Strip"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Encapsulation"
+                          },
+                          "allowed_vlan": {
+                            "type": "string",
+                            "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                            "title": "Allowed VLAN"
+                          },
+                          "identity": {
+                            "type": "object",
+                            "properties": {
+                              "tag": {
+                                "type": "string",
+                                "enum": [
+                                  "dot1q",
+                                  "qinq"
+                                ],
+                                "title": "Tag"
+                              },
+                              "dot1q_dzgre_source": {
+                                "type": "string",
+                                "enum": [
+                                  "policy",
+                                  "port"
+                                ],
+                                "title": "Dot1Q Dzgre Source"
+                              },
+                              "qinq_dzgre_source": {
+                                "type": "string",
+                                "enum": [
+                                  "policy inner port",
+                                  "port inner policy"
+                                ],
+                                "title": "Qinq Dzgre Source"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Identity"
+                          },
+                          "truncation": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "title": "Enabled"
+                              },
+                              "size": {
+                                "description": "Egress packet truncation size in bytes.",
+                                "type": "integer",
+                                "enum": [
+                                  160
+                                ],
+                                "title": "Size"
+                              }
+                            },
+                            "required": [
+                              "enabled"
+                            ],
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Truncation"
+                          },
+                          "groups": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Tool groups for the interface.",
+                            "title": "Groups"
+                          },
+                          "dzgre_preserve": {
+                            "type": "boolean",
+                            "description": "Preserve the DzGRE header.",
+                            "title": "Dzgre Preserve"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Tool"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Switchport"
+                  },
                   "validate_state": {
                     "type": "boolean",
                     "description": "Set to false to disable interface validation by the `eos_validate_state` role.",
@@ -55296,6 +57120,305 @@
                       "^_.+$": {}
                     },
                     "title": "Port Security"
+                  },
+                  "tap": {
+                    "type": "object",
+                    "properties": {
+                      "allowed_vlan": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "title": "Allowed VLAN"
+                      },
+                      "default": {
+                        "type": "object",
+                        "properties": {
+                          "groups": {
+                            "description": "Tap group names for the interface.",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Groups"
+                          },
+                          "interfaces": {
+                            "description": "Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Interfaces"
+                          },
+                          "nexthop_groups": {
+                            "type": "array",
+                            "description": "Default nexthop-group names.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Nexthop Groups"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Default"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "port_id": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "description": "Tap port ID tag.",
+                            "title": "Port ID"
+                          },
+                          "inner_port_id": {
+                            "description": "Inner tap port ID tag.",
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 4094,
+                            "title": "Inner Port ID"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Identity"
+                      },
+                      "mpls_pop_all": {
+                        "type": "boolean",
+                        "description": "Pop all MPLS labels.",
+                        "title": "MPLS Pop All"
+                      },
+                      "native_vlan": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4094,
+                        "description": "Native VLAN ID when interface is in tap mode.",
+                        "title": "Native VLAN"
+                      },
+                      "truncation": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "size": {
+                            "description": "Ingress packet truncation size in bytes.",
+                            "type": "integer",
+                            "minimum": 100,
+                            "maximum": 9236,
+                            "title": "Size"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Truncation"
+                      },
+                      "mac_address": {
+                        "type": "object",
+                        "properties": {
+                          "src": {
+                            "type": "string",
+                            "description": "MAC address for the source.",
+                            "title": "Src"
+                          },
+                          "dest": {
+                            "type": "string",
+                            "description": "MAC address for the destination.",
+                            "title": "Dest"
+                          }
+                        },
+                        "required": [
+                          "dest"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "MAC Address"
+                      },
+                      "encapsulation": {
+                        "type": "object",
+                        "properties": {
+                          "vxlan_strip": {
+                            "type": "boolean",
+                            "description": "Strip VXLAN encapsulation header.",
+                            "title": "VxLAN Strip"
+                          },
+                          "gre_strip": {
+                            "type": "boolean",
+                            "description": "Strip GRE encapsulation header.",
+                            "title": "Gre Strip"
+                          },
+                          "gre": {
+                            "type": "object",
+                            "properties": {
+                              "destination": {
+                                "description": "Destination IP address of tunnel packets.",
+                                "type": "string",
+                                "title": "Destination"
+                              },
+                              "source": {
+                                "description": "Source IP address of tunnel packets.",
+                                "type": "string",
+                                "title": "Source"
+                              },
+                              "protocol": {
+                                "type": "string",
+                                "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                                "title": "Protocol"
+                              },
+                              "feature_header_length": {
+                                "description": "Feature header length in bytes.",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 16,
+                                "title": "Feature Header Length"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Gre"
+                          }
+                        },
+                        "required": [
+                          "gre_strip"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Encapsulation"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tap"
+                  },
+                  "tool": {
+                    "type": "object",
+                    "properties": {
+                      "mpls_pop_all": {
+                        "type": "boolean",
+                        "description": "Pop all MPLS labels.",
+                        "title": "MPLS Pop All"
+                      },
+                      "encapsulation": {
+                        "type": "object",
+                        "properties": {
+                          "dot1br_strip": {
+                            "type": "boolean",
+                            "description": "Remove a 802.1 BR tag in packet header.",
+                            "title": "dot1br Strip"
+                          },
+                          "vn_tag_strip": {
+                            "type": "boolean",
+                            "description": "Remove a VN-tag in packet header.",
+                            "title": "VN Tag Strip"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Encapsulation"
+                      },
+                      "allowed_vlan": {
+                        "type": "string",
+                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "title": "Allowed VLAN"
+                      },
+                      "identity": {
+                        "type": "object",
+                        "properties": {
+                          "tag": {
+                            "type": "string",
+                            "enum": [
+                              "dot1q",
+                              "qinq"
+                            ],
+                            "title": "Tag"
+                          },
+                          "dot1q_dzgre_source": {
+                            "type": "string",
+                            "enum": [
+                              "policy",
+                              "port"
+                            ],
+                            "title": "Dot1Q Dzgre Source"
+                          },
+                          "qinq_dzgre_source": {
+                            "type": "string",
+                            "enum": [
+                              "policy inner port",
+                              "port inner policy"
+                            ],
+                            "title": "Qinq Dzgre Source"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Identity"
+                      },
+                      "truncation": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "size": {
+                            "description": "Egress packet truncation size in bytes.",
+                            "type": "integer",
+                            "enum": [
+                              160
+                            ],
+                            "title": "Size"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Truncation"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Tool groups for the interface.",
+                        "title": "Groups"
+                      },
+                      "dzgre_preserve": {
+                        "type": "boolean",
+                        "description": "Preserve the DzGRE header.",
+                        "title": "Dzgre Preserve"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Tool"
                   }
                 },
                 "additionalProperties": false,

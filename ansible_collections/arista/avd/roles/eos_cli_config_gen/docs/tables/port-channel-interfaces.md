@@ -245,6 +245,51 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "port_channel_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "port_channel_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "port_channel_interfaces.[].switchport") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap</samp>](## "port_channel_interfaces.[].switchport.tap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "port_channel_interfaces.[].switchport.tap.allowed_vlan") | String |  |  |  | VLAN ID or range of VLAN IDs within range 1-4094. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "port_channel_interfaces.[].switchport.tap.default") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "port_channel_interfaces.[].switchport.tap.default.groups") | List, items: String |  |  |  | Tap group names for the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.tap.default.groups.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "port_channel_interfaces.[].switchport.tap.default.interfaces") | List, items: String |  |  |  | Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.tap.default.interfaces.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop_groups</samp>](## "port_channel_interfaces.[].switchport.tap.default.nexthop_groups") | List, items: String |  |  |  | Default nexthop-group names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.tap.default.nexthop_groups.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity</samp>](## "port_channel_interfaces.[].switchport.tap.identity") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_id</samp>](## "port_channel_interfaces.[].switchport.tap.identity.port_id") | Integer |  |  | Min: 1<br>Max: 4094 | Tap port ID tag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_port_id</samp>](## "port_channel_interfaces.[].switchport.tap.identity.inner_port_id") | Integer |  |  | Min: 1<br>Max: 4094 | Inner tap port ID tag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_pop_all</samp>](## "port_channel_interfaces.[].switchport.tap.mpls_pop_all") | Boolean |  |  |  | Pop all MPLS labels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "port_channel_interfaces.[].switchport.tap.native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Native VLAN ID when interface is in tap mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;truncation</samp>](## "port_channel_interfaces.[].switchport.tap.truncation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.tap.truncation.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "port_channel_interfaces.[].switchport.tap.truncation.size") | Integer |  |  | Min: 100<br>Max: 9236 | Ingress packet truncation size in bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "port_channel_interfaces.[].switchport.tap.mac_address") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src</samp>](## "port_channel_interfaces.[].switchport.tap.mac_address.src") | String |  |  |  | MAC address for the source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest</samp>](## "port_channel_interfaces.[].switchport.tap.mac_address.dest") | String | Required |  |  | MAC address for the destination. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan_strip</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.vxlan_strip") | Boolean |  |  |  | Strip VXLAN encapsulation header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre_strip</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre_strip") | Boolean | Required |  |  | Strip GRE encapsulation header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.destination") | String |  |  |  | Destination IP address of tunnel packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.source") | String |  |  |  | Source IP address of tunnel packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.protocol") | String |  |  |  | Protocol type in GRE header.<br>Protocol range: 0x0000-0xFFFF |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feature_header_length</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.feature_header_length") | Integer |  |  | Min: 1<br>Max: 16 | Feature header length in bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tool</samp>](## "port_channel_interfaces.[].switchport.tool") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_pop_all</samp>](## "port_channel_interfaces.[].switchport.tool.mpls_pop_all") | Boolean |  |  |  | Pop all MPLS labels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "port_channel_interfaces.[].switchport.tool.encapsulation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1br_strip</samp>](## "port_channel_interfaces.[].switchport.tool.encapsulation.dot1br_strip") | Boolean |  |  |  | Remove a 802.1 BR tag in packet header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vn_tag_strip</samp>](## "port_channel_interfaces.[].switchport.tool.encapsulation.vn_tag_strip") | Boolean |  |  |  | Remove a VN-tag in packet header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "port_channel_interfaces.[].switchport.tool.allowed_vlan") | String |  |  |  | VLAN ID or range of VLAN IDs within range 1-4094. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity</samp>](## "port_channel_interfaces.[].switchport.tool.identity") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "port_channel_interfaces.[].switchport.tool.identity.tag") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>qinq</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_dzgre_source</samp>](## "port_channel_interfaces.[].switchport.tool.identity.dot1q_dzgre_source") | String |  |  | Valid Values:<br>- <code>policy</code><br>- <code>port</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qinq_dzgre_source</samp>](## "port_channel_interfaces.[].switchport.tool.identity.qinq_dzgre_source") | String |  |  | Valid Values:<br>- <code>policy inner port</code><br>- <code>port inner policy</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;truncation</samp>](## "port_channel_interfaces.[].switchport.tool.truncation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.tool.truncation.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "port_channel_interfaces.[].switchport.tool.truncation.size") | Integer |  |  | Valid Values:<br>- <code>160</code> | Egress packet truncation size in bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "port_channel_interfaces.[].switchport.tool.groups") | List, items: String |  |  |  | Tool groups for the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.tool.groups.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dzgre_preserve</samp>](## "port_channel_interfaces.[].switchport.tool.dzgre_preserve") | Boolean |  |  |  | Preserve the DzGRE header. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "port_channel_interfaces.[].validate_state") | Boolean |  |  |  | Set to false to disable interface validation by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "port_channel_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
 
@@ -708,6 +753,100 @@
           egress:
             enable: <bool>
             unmodified_enable: <bool>
+        switchport:
+          tap:
+
+            # VLAN ID or range of VLAN IDs within range 1-4094.
+            allowed_vlan: <str>
+            default:
+
+              # Tap group names for the interface.
+              groups:
+                - <str>
+
+              # Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel.
+              interfaces:
+                - <str>
+
+              # Default nexthop-group names.
+              nexthop_groups:
+                - <str>
+            identity:
+
+              # Tap port ID tag.
+              port_id: <int; 1-4094>
+
+              # Inner tap port ID tag.
+              inner_port_id: <int; 1-4094>
+
+            # Pop all MPLS labels.
+            mpls_pop_all: <bool>
+
+            # Native VLAN ID when interface is in tap mode.
+            native_vlan: <int; 1-4094>
+            truncation:
+              enabled: <bool; required>
+
+              # Ingress packet truncation size in bytes.
+              size: <int; 100-9236>
+            mac_address:
+
+              # MAC address for the source.
+              src: <str>
+
+              # MAC address for the destination.
+              dest: <str; required>
+            encapsulation:
+
+              # Strip VXLAN encapsulation header.
+              vxlan_strip: <bool>
+
+              # Strip GRE encapsulation header.
+              gre_strip: <bool; required>
+              gre:
+
+                # Destination IP address of tunnel packets.
+                destination: <str>
+
+                # Source IP address of tunnel packets.
+                source: <str>
+
+                # Protocol type in GRE header.
+                # Protocol range: 0x0000-0xFFFF
+                protocol: <str>
+
+                # Feature header length in bytes.
+                feature_header_length: <int; 1-16>
+          tool:
+
+            # Pop all MPLS labels.
+            mpls_pop_all: <bool>
+            encapsulation:
+
+              # Remove a 802.1 BR tag in packet header.
+              dot1br_strip: <bool>
+
+              # Remove a VN-tag in packet header.
+              vn_tag_strip: <bool>
+
+            # VLAN ID or range of VLAN IDs within range 1-4094.
+            allowed_vlan: <str>
+            identity:
+              tag: <str; "dot1q" | "qinq">
+              dot1q_dzgre_source: <str; "policy" | "port">
+              qinq_dzgre_source: <str; "policy inner port" | "port inner policy">
+            truncation:
+              enabled: <bool; required>
+
+              # Egress packet truncation size in bytes.
+              size: <int; 160>
+
+            # Tool groups for the interface.
+            groups:
+              - <str>
+
+            # Preserve the DzGRE header.
+            dzgre_preserve: <bool>
 
         # Set to false to disable interface validation by the `eos_validate_state` role.
         validate_state: <bool>

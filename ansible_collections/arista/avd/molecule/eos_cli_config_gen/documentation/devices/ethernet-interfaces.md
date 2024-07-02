@@ -362,6 +362,27 @@ interface Ethernet1
    l2 mru 8000
    bgp session tracker ST1
    no switchport
+   switchport tap native vlan 10
+   switchport tap identity 3 inner 5
+   switchport tap mac-address dest 01:00:00:00:00:00 src 01:23:45:67:89:ab
+   switchport tap encapsulation vxlan strip
+   switchport tap encapsulation gre strip
+   switchport tap encapsulation gre destination 1.1.1.1 source 1.1.1.2 protocol 0x0000 feature header length 10 strip
+   switchport tool mpls pop all
+   switchport tool encapsulation vn-tag strip
+   switchport tool encapsulation dot1br strip
+   switchport tap allowed vlan 25
+   switchport tool allowed vlan 23
+   switchport tool identity qinq
+   switchport tool identity dot1q source dzgre port
+   switchport tap truncation 150
+   switchport tool truncation
+   switchport tap default group g1 group g2 group g3
+   switchport tap default nexthop-group nexthop_g1 nexthop_g2 nexthop_g3
+   switchport tap default interface ethernet4
+   switchport tap default interface port-channel10
+   switchport tool group set group1 group2 group3
+   switchport tool dzgre preserve
    ip address 172.31.255.1/31
    ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5

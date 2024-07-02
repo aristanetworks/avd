@@ -36,6 +36,55 @@ ethernet_interfaces:
     switchport:
       port_security:
         enabled: true
+      tap:
+        allowed_vlan: 25
+        default:
+          groups:
+            - g2
+            - g1
+            - g3
+          nexthop_groups:
+            - nexthop_g1
+            - nexthop_g3
+            - nexthop_g2
+          interfaces:
+            - port-channel10
+            - ethernet4
+        identity:
+          port_id: 3
+          inner_port_id: 5
+        mpls_pop_all: true
+        native_vlan: 10
+        truncation:
+          enabled: true
+          size: 150
+        mac_address:
+          dest: 01:00:00:00:00:00
+          src: 01:23:45:67:89:ab
+        encapsulation:
+          vxlan_strip: true
+          gre_strip: true
+          gre:
+            destination: 1.1.1.1
+            source: 1.1.1.2
+            protocol: "0x0000"
+            feature_header_length: 10
+      tool:
+        mpls_pop_all: true
+        encapsulation:
+          dot1br_strip: true
+          vn_tag_strip: true
+        allowed_vlan: 23
+        identity:
+          tag: qinq
+          dot1q_dzgre_source: port
+        truncation:
+          enabled: true
+        groups:
+          - group1
+          - group2
+          - group3
+        dzgre_preserve: true
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1

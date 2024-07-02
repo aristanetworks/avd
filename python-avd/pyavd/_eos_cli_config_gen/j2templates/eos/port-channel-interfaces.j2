@@ -108,6 +108,98 @@ interface {{ port_channel_interface.name }}
    {{ vlan_translation_cli }}
 {%         endif %}
 {%     endfor %}
+{%     if port_channel_interface.switchport.tap.native_vlan is arista.avd.defined %}
+   switchport tap native vlan {{ port_channel_interface.switchport.tap.native_vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.identity.port_id is arista.avd.defined %}
+{%         set tap_identity_cli = "switchport tap identity " ~ port_channel_interface.switchport.tap.identity.port_id %}
+{%         if port_channel_interface.switchport.tap.identity.inner_port_id is arista.avd.defined %}
+{%             set tap_identity_cli = tap_identity_cli ~ " inner " ~ port_channel_interface.switchport.tap.identity.inner_port_id %}
+{%         endif %}
+   {{ tap_identity_cli }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.mac_address.dest is arista.avd.defined %}
+{%         set tap_mac_address_cli = "switchport tap mac-address dest " ~ port_channel_interface.switchport.tap.mac_address.dest %}
+{%         if port_channel_interface.switchport.tap.mac_address.src is arista.avd.defined %}
+{%             set tap_mac_address_cli = tap_mac_address_cli ~ " src " ~ port_channel_interface.switchport.tap.mac_address.src %}
+{%         endif %}
+   {{ tap_mac_address_cli }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.encapsulation.vxlan_strip is arista.avd.defined(true) %}
+   switchport tap encapsulation vxlan strip
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.encapsulation.gre_strip is arista.avd.defined(true) %}
+   switchport tap encapsulation gre strip
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.encapsulation.gre.destination is arista.avd.defined or
+         port_channel_interface.switchport.tap.encapsulation.gre.protocol is arista.avd.defined %}
+{%         if port_channel_interface.switchport.tap.encapsulation.gre.destination is arista.avd.defined %}
+{%             set tap_encapsulation_cli = "switchport tap encapsulation gre destination " ~ port_channel_interface.switchport.tap.encapsulation.gre.destination %}
+{%             if port_channel_interface.switchport.tap.encapsulation.gre.source is arista.avd.defined %}
+{%                 set tap_encapsulation_cli = tap_encapsulation_cli ~ " source " ~ port_channel_interface.switchport.tap.encapsulation.gre.source %}
+{%             endif %}
+{%         endif %}
+{%         if port_channel_interface.switchport.tap.encapsulation.gre.protocol is arista.avd.defined %}
+{%             set tap_encapsulation_cli = tap_encapsulation_cli ~ " protocol " ~ port_channel_interface.switchport.tap.encapsulation.gre.protocol %}
+{%             if port_channel_interface.switchport.tap.encapsulation.gre.feature_header_length is arista.avd.defined %}
+{%                 set tap_encapsulation_cli = tap_encapsulation_cli ~ " feature header length " ~ port_channel_interface.switchport.tap.encapsulation.gre.feature_header_length %}
+{%             endif %}
+{%         endif %}
+   {{ tap_encapsulation_cli }} strip
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.mpls_pop_all is arista.avd.defined(true) %}
+   switchport tool mpls pop all
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.encapsulation.vn_tag_strip is arista.avd.defined(true) %}
+   switchport tool encapsulation vn-tag strip
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.encapsulation.dot1br_strip is arista.avd.defined(true) %}
+   switchport tool encapsulation dot1br strip
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.allowed_vlan is arista.avd.defined %}
+   switchport tap allowed vlan {{ port_channel_interface.switchport.tap.allowed_vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.allowed_vlan is arista.avd.defined %}
+   switchport tool allowed vlan {{ port_channel_interface.switchport.tool.allowed_vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.identity.tag is arista.avd.defined %}
+   switchport tool identity {{ port_channel_interface.switchport.tool.identity.tag }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.identity.dot1q_dzgre_source is arista.avd.defined %}
+   switchport tool identity dot1q source dzgre {{ port_channel_interface.switchport.tool.identity.dot1q_dzgre_source }}
+{%     elif port_channel_interface.switchport.tool.identity.qinq_dzgre_source is arista.avd.defined %}
+   switchport tool identity qinq source dzgre {{ port_channel_interface.switchport.tool.identity.qinq_dzgre_source }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.truncation.enabled is arista.avd.defined %}
+{%         set tap_truncation_cli = "switchport tap truncation" %}
+{%         if port_channel_interface.switchport.tap.truncation.size is arista.avd.defined %}
+{%             set tap_truncation_cli = tap_truncation_cli ~ " " ~ port_channel_interface.switchport.tap.truncation.size %}
+{%         endif %}
+   {{ tap_truncation_cli }}
+{%     endif %}
+{%     if ethernet_interface.switchport.tool.truncation.enabled is arista.avd.defined %}
+{%         set tool_truncation_cli = "switchport tool truncation" %}
+{%         if ethernet_interface.switchport.tool.truncation.size is arista.avd.defined %}
+{%             set tool_truncation_cli = tool_truncation_cli ~ " " ~ ethernet_interface.switchport.tool.truncation.size %}
+{%         endif %}
+   {{ tool_truncation_cli }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.default.groups is arista.avd.defined %}
+   switchport tap default group {{ port_channel_interface.switchport.tap.default.groups | arista.avd.natural_sort | join(" group ") }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tap.default.nexthop_groups is arista.avd.defined %}
+   switchport tap default nexthop-group {{ port_channel_interface.switchport.tap.default.nexthop_groups | arista.avd.natural_sort | join(" ") }}
+{%     endif %}
+{%     for interface in port_channel_interface.switchport.tap.default.interfaces | arista.avd.natural_sort %}
+   switchport tap default interface {{ interface }}
+{%     endfor %}
+{%     if port_channel_interface.switchport.tool.groups is arista.avd.defined %}
+{%         set tool_groups = port_channel_interface.switchport.tool.groups | arista.avd.natural_sort | join(" ") %}
+   switchport tool group set {{ tool_groups }}
+{%     endif %}
+{%     if port_channel_interface.switchport.tool.dzgre_preserve is arista.avd.defined(true) %}
+   switchport tool dzgre preserve
+{%     endif %}
 {%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%     endif %}
