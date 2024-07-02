@@ -425,8 +425,9 @@ $defs:
               table: node-type-loopback-vtep-configuration
             description: |-
               IPv4 address for Loopback0.
+              It must be given without a mask.
               When set, it takes precedence over `loopback_ipv4_pool`.
-              WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+              NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
             type: str
           vtep_loopback_ipv4_pool:
             documentation_options:
@@ -438,9 +439,10 @@ $defs:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description: |-
-              IPv4 address for VTEP-Loopback allocation.
+              IPv4 address for VTEP-Loopback.
+              It must be given without a mask.
               When set, it takes precedence over `vtep_loopback_ipv4_pool`.
-              WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+              NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
             type: str
           loopback_ipv4_offset:
             documentation_options:

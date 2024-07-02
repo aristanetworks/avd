@@ -10,9 +10,9 @@
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for Loopback0 allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.defaults.loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.defaults.loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>It must be given without a mask.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.vtep_loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for VTEP-Loopback allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.defaults.vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback allocation.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.defaults.vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback.<br>It must be given without a mask.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_offset</samp>](## "<node_type_keys.key>.defaults.loopback_ipv4_offset") | Integer |  | `0` |  | Offset all assigned loopback IP addresses.<br>Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.loopback_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 subnet for Loopback0 allocation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_offset</samp>](## "<node_type_keys.key>.defaults.loopback_ipv6_offset") | Integer |  | `0` |  | Offset all assigned loopback IPv6 addresses.<br>Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.<br> |
@@ -23,18 +23,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for Loopback0 allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>It must be given without a mask.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].vtep_loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for VTEP-Loopback allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback allocation.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback.<br>It must be given without a mask.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_offset</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].loopback_ipv4_offset") | Integer |  | `0` |  | Offset all assigned loopback IP addresses.<br>Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].loopback_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 subnet for Loopback0 allocation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_offset</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].loopback_ipv6_offset") | Integer |  | `0` |  | Offset all assigned loopback IPv6 addresses.<br>Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].vtep") | Boolean |  |  |  | Node is configured as a VTEP when applicable based on 'overlay_routing_protocol'.<br>Overrides VTEP setting inherited from node_type_keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].vtep_loopback") | String |  |  | Pattern: Loopback[\d/]+ | Set VXLAN source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for Loopback0 allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>It must be given without a mask.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].vtep_loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for VTEP-Loopback allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback allocation.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback.<br>It must be given without a mask.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_offset</samp>](## "<node_type_keys.key>.node_groups.[].loopback_ipv4_offset") | Integer |  | `0` |  | Offset all assigned loopback IP addresses.<br>Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].loopback_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 subnet for Loopback0 allocation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_offset</samp>](## "<node_type_keys.key>.node_groups.[].loopback_ipv6_offset") | Integer |  | `0` |  | Offset all assigned loopback IPv6 addresses.<br>Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.<br> |
@@ -43,9 +43,9 @@
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for Loopback0 allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.nodes.[].loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_address</samp>](## "<node_type_keys.key>.nodes.[].loopback_ipv4_address") | String |  |  |  | IPv4 address for Loopback0.<br>It must be given without a mask.<br>When set, it takes precedence over `loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].vtep_loopback_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 subnet for VTEP-Loopback allocation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.nodes.[].vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback allocation.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_ipv4_address</samp>](## "<node_type_keys.key>.nodes.[].vtep_loopback_ipv4_address") | String |  |  |  | IPv4 address for VTEP-Loopback.<br>It must be given without a mask.<br>When set, it takes precedence over `vtep_loopback_ipv4_pool`.<br>NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv4_offset</samp>](## "<node_type_keys.key>.nodes.[].loopback_ipv4_offset") | Integer |  | `0` |  | Offset all assigned loopback IP addresses.<br>Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].loopback_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 subnet for Loopback0 allocation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_offset</samp>](## "<node_type_keys.key>.nodes.[].loopback_ipv6_offset") | Integer |  | `0` |  | Offset all assigned loopback IPv6 addresses.<br>Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.<br> |
@@ -64,16 +64,18 @@
         loopback_ipv4_pool: <str>
 
         # IPv4 address for Loopback0.
+        # It must be given without a mask.
         # When set, it takes precedence over `loopback_ipv4_pool`.
-        # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
         loopback_ipv4_address: <str>
 
         # IPv4 subnet for VTEP-Loopback allocation.
         vtep_loopback_ipv4_pool: <str>
 
-        # IPv4 address for VTEP-Loopback allocation.
+        # IPv4 address for VTEP-Loopback.
+        # It must be given without a mask.
         # When set, it takes precedence over `vtep_loopback_ipv4_pool`.
-        # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
         vtep_loopback_ipv4_address: <str>
 
         # Offset all assigned loopback IP addresses.
@@ -113,16 +115,18 @@
               loopback_ipv4_pool: <str>
 
               # IPv4 address for Loopback0.
+              # It must be given without a mask.
               # When set, it takes precedence over `loopback_ipv4_pool`.
-              # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+              # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
               loopback_ipv4_address: <str>
 
               # IPv4 subnet for VTEP-Loopback allocation.
               vtep_loopback_ipv4_pool: <str>
 
-              # IPv4 address for VTEP-Loopback allocation.
+              # IPv4 address for VTEP-Loopback.
+              # It must be given without a mask.
               # When set, it takes precedence over `vtep_loopback_ipv4_pool`.
-              # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+              # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
               vtep_loopback_ipv4_address: <str>
 
               # Offset all assigned loopback IP addresses.
@@ -149,16 +153,18 @@
           loopback_ipv4_pool: <str>
 
           # IPv4 address for Loopback0.
+          # It must be given without a mask.
           # When set, it takes precedence over `loopback_ipv4_pool`.
-          # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
           loopback_ipv4_address: <str>
 
           # IPv4 subnet for VTEP-Loopback allocation.
           vtep_loopback_ipv4_pool: <str>
 
-          # IPv4 address for VTEP-Loopback allocation.
+          # IPv4 address for VTEP-Loopback.
+          # It must be given without a mask.
           # When set, it takes precedence over `vtep_loopback_ipv4_pool`.
-          # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
           vtep_loopback_ipv4_address: <str>
 
           # Offset all assigned loopback IP addresses.
@@ -191,16 +197,18 @@
           loopback_ipv4_pool: <str>
 
           # IPv4 address for Loopback0.
+          # It must be given without a mask.
           # When set, it takes precedence over `loopback_ipv4_pool`.
-          # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
           loopback_ipv4_address: <str>
 
           # IPv4 subnet for VTEP-Loopback allocation.
           vtep_loopback_ipv4_pool: <str>
 
-          # IPv4 address for VTEP-Loopback allocation.
+          # IPv4 address for VTEP-Loopback.
+          # It must be given without a mask.
           # When set, it takes precedence over `vtep_loopback_ipv4_pool`.
-          # WARNING: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          # NOTE: AVD does not check for validity of the IPv4 address and does not catch duplicates.
           vtep_loopback_ipv4_address: <str>
 
           # Offset all assigned loopback IP addresses.
