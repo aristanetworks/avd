@@ -1043,10 +1043,10 @@ roles/eos_cli_config_gen/docs/tables/platform.md
 roles/eos_cli_config_gen/docs/tables/poe.md
 --8<--
 
-### PTP
+### PTP settings
 
 --8<--
-roles/eos_cli_config_gen/docs/tables/ptp.md
+roles/eos_cli_config_gen/docs/tables/ptp_settings.md
 --8<--
 
 ### Redundancy
