@@ -8,7 +8,7 @@
 - name: Generate variables for testing
   arista.avd.emit_warning:
     message: |-
-      Starting AVD 5.0.0, the only behavior for `eos_validate_state` will be the current one when using `use_anta: true`.
+      Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior (same as setting `use_anta: true` in older versions).
       Please review the changes described on the ANTA integration page on https://avd.arista.com.
   delegate_to: localhost
   check_mode: false
