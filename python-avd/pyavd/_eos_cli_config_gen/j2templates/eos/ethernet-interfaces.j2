@@ -193,9 +193,6 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.switchport.tap.encapsulation.gre.protocol is arista.avd.defined %}
 {%             set tap_encapsulation_cli = tap_encapsulation_cli ~ " protocol " ~ ethernet_interface.switchport.tap.encapsulation.gre.protocol %}
-{%             if ethernet_interface.switchport.tap.encapsulation.gre.feature_header_length is arista.avd.defined %}
-{%                 set tap_encapsulation_cli = tap_encapsulation_cli ~ " feature header length " ~ ethernet_interface.switchport.tap.encapsulation.gre.feature_header_length %}
-{%             endif %}
 {%         endif %}
    {{ tap_encapsulation_cli }} strip
 {%     endif %}

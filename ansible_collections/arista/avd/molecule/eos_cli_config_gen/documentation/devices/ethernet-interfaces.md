@@ -367,7 +367,7 @@ interface Ethernet1
    switchport tap mac-address dest 01:00:00:00:00:00 src 01:23:45:67:89:ab
    switchport tap encapsulation vxlan strip
    switchport tap encapsulation gre strip
-   switchport tap encapsulation gre destination 1.1.1.1 source 1.1.1.2 protocol 0x0000 feature header length 10 strip
+   switchport tap encapsulation gre destination 1.1.1.1 source 1.1.1.2 protocol 0x0000 strip
    switchport tool mpls pop all
    switchport tool encapsulation vn-tag strip
    switchport tool encapsulation dot1br strip

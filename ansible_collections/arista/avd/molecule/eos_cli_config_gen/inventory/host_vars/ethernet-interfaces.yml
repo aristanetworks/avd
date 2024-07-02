@@ -68,7 +68,6 @@ ethernet_interfaces:
             destination: 1.1.1.1
             source: 1.1.1.2
             protocol: "0x0000"
-            feature_header_length: 10
       tool:
         mpls_pop_all: true
         encapsulation:
