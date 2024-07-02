@@ -10,6 +10,10 @@ title: Ansible Collection Role eos_validate_state
 
 # eos_validate_state
 
+!!! warning
+    Starting AVD 5.0.0, the only behavior for `eos_validate_state` will be the current one when using `use_anta: true`.
+    Please review the changes described on the  [ANTA integration page](../anta_integration.md)
+
 ## Overview
 
 **eos_validate_state** is a role leveraged to validate Arista EOS devices' operational states.
