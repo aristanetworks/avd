@@ -12,6 +12,7 @@
       Please review the changes described on the ANTA integration page on https://avd.arista.com.
   delegate_to: localhost
   check_mode: false
+  changed_when: false
   run_once: true
   tags:
     - always
