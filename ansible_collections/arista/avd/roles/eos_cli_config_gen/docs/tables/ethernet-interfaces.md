@@ -415,7 +415,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;range</samp>](## "ethernet_interfaces.[].switchport.port_security.vlans.[].range") | String | Required, Unique |  |  | VLAN ID or range(s) of VLAN IDs, <1-4094>.<br>Example:<br>  - 3<br>  - 1,3<br>  - 1-10<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "ethernet_interfaces.[].switchport.port_security.vlans.[].mac_address_maximum") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].switchport.trunk") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlans</samp>](## "ethernet_interfaces.[].switchport.trunk.allowed_vlans") | String |  |  |  | VLAN ID or range of VLAN IDs.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = trunk`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "ethernet_interfaces.[].switchport.trunk.allowed_vlan") | String |  |  |  | VLAN ID or range of VLAN IDs.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = trunk`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "ethernet_interfaces.[].switchport.trunk.native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set native VLAN when interface is in trunking mode.<br>Warning: This should not be combined with `ethernet_interfaces[].native_vlan`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "ethernet_interfaces.[].switchport.trunk.native_vlan_tag") | Boolean |  |  |  | If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.<br>Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan_secondary</samp>](## "ethernet_interfaces.[].switchport.trunk.private_vlan_secondary") | Boolean |  |  |  | Enable secondary VLAN mapping for a private vlan.<br>Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`. |
@@ -424,8 +424,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "ethernet_interfaces.[].switchport.dot1q") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethertype</samp>](## "ethernet_interfaces.[].switchport.dot1q.ethertype") | Integer |  |  | Min: 1536<br>Max: 65535 | Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "ethernet_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> | Allow/disallow VLAN tagged Frames. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ethernet_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out on the source interface.<br>tx multicast: Allow multicast packets only to go out on the source inteface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "ethernet_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ethernet_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out of the source interface.<br>tx multicast: Allow multicast packets only to go out of the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "ethernet_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].switchport.phone") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].switchport.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].switchport.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | Warning: This should not be combined with `ethernet_interfaces[].phone.trunk` |
@@ -439,7 +439,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_link</samp>](## "ethernet_interfaces.[].switchport.backup_link") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "ethernet_interfaces.[].switchport.backup_link.interface") | String |  |  |  | Backup interface. Example - Ethernet4, Vlan10 etc. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefer_vlan</samp>](## "ethernet_interfaces.[].switchport.backup_link.prefer_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | VLANs to carry on the backup interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "ethernet_interfaces.[].switchport.backup") | Dictionary |  |  |  | The `backup_link_interface` is required to set this config. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "ethernet_interfaces.[].switchport.backup") | Dictionary |  |  |  | The `backup_link` is required to set this config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_macaddr</samp>](## "ethernet_interfaces.[].switchport.backup.dest_macaddr") | String |  |  |  | Destination MAC address for MAC move updates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial_mac_move_delay</samp>](## "ethernet_interfaces.[].switchport.backup.initial_mac_move_delay") | Integer |  |  | Min: 0<br>Max: 65535 | Initial MAC move delay in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst") | Integer |  |  | Min: 0<br>Max: 65535 | Size of MAC move bursts in milliseconds. |
@@ -1209,7 +1209,7 @@
 
             # VLAN ID or range of VLAN IDs.
             # Warning: This should not be combined with `ethernet_interfaces[].mode = trunk`.
-            allowed_vlans: <str>
+            allowed_vlan: <str>
 
             # Set native VLAN when interface is in trunking mode.
             # Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.
@@ -1235,12 +1235,12 @@
             # Allow/disallow VLAN tagged Frames.
             vlan_tag: <str; "disallowed" | "required">
 
-          # tx: Allow bridged packets to go out on the source interface.
-          # tx multicast: Allow multicast packets only to go out on the source inteface.
+          # tx: Allow bridged packets to go out of the source interface.
+          # tx multicast: Allow multicast packets only to go out of the source interface.
           source_interface: <str; "tx" | "tx multicast">
 
           # Set VLAN when interface is in access mode.
-          # Warning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.
+          # Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.
           access_vlan: <int; 1-4094>
           phone:
 
@@ -1275,7 +1275,7 @@
             # VLANs to carry on the backup interface.
             prefer_vlan: <int; 1-4094>
 
-          # The `backup_link_interface` is required to set this config.
+          # The `backup_link` is required to set this config.
           backup:
 
             # Destination MAC address for MAC move updates.

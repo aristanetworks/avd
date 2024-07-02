@@ -177,8 +177,8 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ ethernet_interface.switchport.dot1q.vlan_tag }}
 {%     endif %}
-{%     if ethernet_interface.switchport.trunk.allowed_vlans is arista.avd.defined %}
-   switchport trunk allowed vlan {{ ethernet_interface.switchport.trunk.allowed_vlans }}
+{%     if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+   switchport trunk allowed vlan {{ ethernet_interface.switchport.trunk.allowed_vlan }}
 {%     endif %}
 {%     if ethernet_interface.switchport.mode is arista.avd.defined %}
    switchport mode {{ ethernet_interface.switchport.mode }}

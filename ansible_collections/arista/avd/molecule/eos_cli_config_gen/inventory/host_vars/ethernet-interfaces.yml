@@ -38,7 +38,7 @@ ethernet_interfaces:
         enabled: true
       enabled: false
       trunk:
-        allowed_vlans: 10-11
+        allowed_vlan: 10-11
         native_vlan: 5
         native_vlan_tag: true
         groups:

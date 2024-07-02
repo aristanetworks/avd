@@ -1453,7 +1453,7 @@ keys:
             trunk:
               type: dict
               keys:
-                allowed_vlans:
+                allowed_vlan:
                   type: str
                   description: |-
                     VLAN ID or range of VLAN IDs.
@@ -1503,8 +1503,8 @@ keys:
             source_interface:
               type: str
               description: |-
-                tx: Allow bridged packets to go out on the source interface.
-                tx multicast: Allow multicast packets only to go out on the source inteface.
+                tx: Allow bridged packets to go out of the source interface.
+                tx multicast: Allow multicast packets only to go out of the source interface.
               valid_values:
                 - tx
                 - tx multicast
@@ -1516,7 +1516,7 @@ keys:
               max: 4094
               description: |-
                 Set VLAN when interface is in access mode.
-                Warning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.
+                Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.
             phone:
               type: dict
               keys:
@@ -1586,7 +1586,7 @@ keys:
                   description: VLANs to carry on the backup interface.
             backup:
               type: dict
-              description: The `backup_link_interface` is required to set this config.
+              description: The `backup_link` is required to set this config.
               keys:
                 dest_macaddr:
                   type: str

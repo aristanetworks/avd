@@ -125,8 +125,8 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ port_channel_interface.switchport.dot1q.vlan_tag }}
 {%     endif %}
-{%     if port_channel_interface.switchport.trunk.allowed_vlans is arista.avd.defined %}
-   switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlans }}
+{%     if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+   switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlan }}
 {%     endif %}
 {%     if port_channel_interface.switchport.mode is arista.avd.defined %}
    switchport mode {{ port_channel_interface.switchport.mode }}

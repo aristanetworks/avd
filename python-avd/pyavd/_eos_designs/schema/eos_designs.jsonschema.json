@@ -11349,10 +11349,10 @@
                   "trunk": {
                     "type": "object",
                     "properties": {
-                      "allowed_vlans": {
+                      "allowed_vlan": {
                         "type": "string",
                         "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
-                        "title": "Allowed VLANs"
+                        "title": "Allowed VLAN"
                       },
                       "native_vlan": {
                         "type": "integer",
@@ -11414,7 +11414,7 @@
                   },
                   "source_interface": {
                     "type": "string",
-                    "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                    "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                     "enum": [
                       "tx",
                       "tx multicast"
@@ -11425,7 +11425,7 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 4094,
-                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
                     "title": "Access VLAN"
                   },
                   "phone": {
@@ -11539,7 +11539,7 @@
                   },
                   "backup": {
                     "type": "object",
-                    "description": "The `backup_link_interface` is required to set this config.",
+                    "description": "The `backup_link` is required to set this config.",
                     "properties": {
                       "dest_macaddr": {
                         "type": "string",
@@ -14603,10 +14603,10 @@
                       "trunk": {
                         "type": "object",
                         "properties": {
-                          "allowed_vlans": {
+                          "allowed_vlan": {
                             "type": "string",
                             "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
-                            "title": "Allowed VLANs"
+                            "title": "Allowed VLAN"
                           },
                           "native_vlan": {
                             "type": "integer",
@@ -14667,7 +14667,7 @@
                       },
                       "source_interface": {
                         "type": "string",
-                        "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                        "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                         "enum": [
                           "tx",
                           "tx multicast"
@@ -14678,7 +14678,7 @@
                         "type": "integer",
                         "minimum": 1,
                         "maximum": 4094,
-                        "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
+                        "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
                         "title": "Access VLAN"
                       },
                       "phone": {
@@ -14784,6 +14784,9 @@
                             "title": "Prefer VLAN"
                           }
                         },
+                        "required": [
+                          "interface"
+                        ],
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
@@ -14792,7 +14795,7 @@
                       },
                       "backup": {
                         "type": "object",
-                        "description": "The `backup_link_interface` is required to set this config.",
+                        "description": "The `backup_link` is required to set this config.",
                         "properties": {
                           "dest_macaddr": {
                             "type": "string",
@@ -17804,10 +17807,10 @@
                   "trunk": {
                     "type": "object",
                     "properties": {
-                      "allowed_vlans": {
+                      "allowed_vlan": {
                         "type": "string",
                         "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
-                        "title": "Allowed VLANs"
+                        "title": "Allowed VLAN"
                       },
                       "native_vlan": {
                         "type": "integer",
@@ -17869,7 +17872,7 @@
                   },
                   "source_interface": {
                     "type": "string",
-                    "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                    "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                     "enum": [
                       "tx",
                       "tx multicast"
@@ -17880,7 +17883,7 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 4094,
-                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
                     "title": "Access VLAN"
                   },
                   "phone": {
@@ -17994,7 +17997,7 @@
                   },
                   "backup": {
                     "type": "object",
-                    "description": "The `backup_link_interface` is required to set this config.",
+                    "description": "The `backup_link` is required to set this config.",
                     "properties": {
                       "dest_macaddr": {
                         "type": "string",
@@ -24760,10 +24763,10 @@
                         "trunk": {
                           "type": "object",
                           "properties": {
-                            "allowed_vlans": {
+                            "allowed_vlan": {
                               "type": "string",
                               "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
-                              "title": "Allowed VLANs"
+                              "title": "Allowed VLAN"
                             },
                             "native_vlan": {
                               "type": "integer",
@@ -24825,7 +24828,7 @@
                         },
                         "source_interface": {
                           "type": "string",
-                          "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                          "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                           "enum": [
                             "tx",
                             "tx multicast"
@@ -24836,7 +24839,7 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
-                          "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                          "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
                           "title": "Access VLAN"
                         },
                         "phone": {
@@ -24950,7 +24953,7 @@
                         },
                         "backup": {
                           "type": "object",
-                          "description": "The `backup_link_interface` is required to set this config.",
+                          "description": "The `backup_link` is required to set this config.",
                           "properties": {
                             "dest_macaddr": {
                               "type": "string",
@@ -35414,10 +35417,10 @@
                         "trunk": {
                           "type": "object",
                           "properties": {
-                            "allowed_vlans": {
+                            "allowed_vlan": {
                               "type": "string",
                               "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
-                              "title": "Allowed VLANs"
+                              "title": "Allowed VLAN"
                             },
                             "native_vlan": {
                               "type": "integer",
@@ -35478,7 +35481,7 @@
                         },
                         "source_interface": {
                           "type": "string",
-                          "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                          "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                           "enum": [
                             "tx",
                             "tx multicast"
@@ -35489,7 +35492,7 @@
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
-                          "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
+                          "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
                           "title": "Access VLAN"
                         },
                         "phone": {
@@ -35595,6 +35598,9 @@
                               "title": "Prefer VLAN"
                             }
                           },
+                          "required": [
+                            "interface"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -35603,7 +35609,7 @@
                         },
                         "backup": {
                           "type": "object",
-                          "description": "The `backup_link_interface` is required to set this config.",
+                          "description": "The `backup_link` is required to set this config.",
                           "properties": {
                             "dest_macaddr": {
                               "type": "string",
@@ -54506,10 +54512,10 @@
                       "trunk": {
                         "type": "object",
                         "properties": {
-                          "allowed_vlans": {
+                          "allowed_vlan": {
                             "type": "string",
                             "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
-                            "title": "Allowed VLANs"
+                            "title": "Allowed VLAN"
                           },
                           "native_vlan": {
                             "type": "integer",
@@ -54570,7 +54576,7 @@
                       },
                       "source_interface": {
                         "type": "string",
-                        "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                        "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                         "enum": [
                           "tx",
                           "tx multicast"
@@ -54581,7 +54587,7 @@
                         "type": "integer",
                         "minimum": 1,
                         "maximum": 4094,
-                        "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
+                        "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
                         "title": "Access VLAN"
                       },
                       "phone": {
@@ -54687,6 +54693,9 @@
                             "title": "Prefer VLAN"
                           }
                         },
+                        "required": [
+                          "interface"
+                        ],
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
@@ -54695,7 +54704,7 @@
                       },
                       "backup": {
                         "type": "object",
-                        "description": "The `backup_link_interface` is required to set this config.",
+                        "description": "The `backup_link` is required to set this config.",
                         "properties": {
                           "dest_macaddr": {
                             "type": "string",
@@ -57707,10 +57716,10 @@
                   "trunk": {
                     "type": "object",
                     "properties": {
-                      "allowed_vlans": {
+                      "allowed_vlan": {
                         "type": "string",
                         "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
-                        "title": "Allowed VLANs"
+                        "title": "Allowed VLAN"
                       },
                       "native_vlan": {
                         "type": "integer",
@@ -57772,7 +57781,7 @@
                   },
                   "source_interface": {
                     "type": "string",
-                    "description": "tx: Allow bridged packets to go out on the source interface.\ntx multicast: Allow multicast packets only to go out on the source inteface.",
+                    "description": "tx: Allow bridged packets to go out of the source interface.\ntx multicast: Allow multicast packets only to go out of the source interface.",
                     "enum": [
                       "tx",
                       "tx multicast"
@@ -57783,7 +57792,7 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 4094,
-                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined withe `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
+                    "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.",
                     "title": "Access VLAN"
                   },
                   "phone": {
@@ -57897,7 +57906,7 @@
                   },
                   "backup": {
                     "type": "object",
-                    "description": "The `backup_link_interface` is required to set this config.",
+                    "description": "The `backup_link` is required to set this config.",
                     "properties": {
                       "dest_macaddr": {
                         "type": "string",
