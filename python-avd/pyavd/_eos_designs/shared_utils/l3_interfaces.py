@@ -109,8 +109,8 @@ class L3InterfacesMixin:
             if is_intf_wan:
                 neighbor["set_no_advertise"] = True
 
-            if prefix_list_in:
-                # In route map is used only if there is a prefix list
+            # The inbound route-map is only used if there is a prefix list or no-advertise
+            if neighbor["ipv4_prefix_list_in"] or neighbor["set_no_advertise"]:
                 neighbor["route_map_in"] = f"RM-BGP-{neighbor['ip_address']}-IN"
             neighbor["route_map_out"] = f"RM-BGP-{neighbor['ip_address']}-OUT"
 
