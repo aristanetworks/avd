@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import re
 
-MATCH_PATTERN = re.compile(r"(\n{2})(\n{2}):(\n{2})(\n{2}):(\n{2})(\n{2})")
+MATCH_PATTERN = re.compile(r"([0-9a-fA-F]{2})([0-9a-fA-F]{2}):([0-9a-fA-F]{2})([0-9a-fA-F]{2}):([0-9a-fA-F]{2})([0-9a-fA-F]{2})")
 REPL = r"\1:\2:\3:\4:\5:\6"
 
 
