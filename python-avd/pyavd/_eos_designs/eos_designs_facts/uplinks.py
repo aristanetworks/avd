@@ -301,7 +301,8 @@ class UplinksMixin:
 
         if self.shared_utils.mlag_role == "secondary":
             # On the MLAG Secondary use short-esi from MLAG primary
-            uplink["peer_short_esi"] = self.shared_utils.mlag_peer_facts._short_esi
+            if (peer_short_esi := self.shared_utils.mlag_peer_facts._short_esi) is not None:
+                uplink["peer_short_esi"] = peer_short_esi
         elif self._short_esi is not None:
             uplink["peer_short_esi"] = self._short_esi
 
