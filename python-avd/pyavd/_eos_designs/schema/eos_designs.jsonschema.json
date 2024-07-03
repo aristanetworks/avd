@@ -8264,6 +8264,35 @@
             "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
             "title": "Peer IP"
           },
+          "bgp": {
+            "type": "object",
+            "description": "Enforce IPv4 BGP peering for the peer",
+            "properties": {
+              "peer_as": {
+                "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
+                "title": "Peer As"
+              },
+              "ipv4_prefix_list_in": {
+                "type": "string",
+                "description": "Prefix List Name. Accept routes for only these prefixes from the peer.\nRequired for wan interfaces.",
+                "title": "IPv4 Prefix List In"
+              },
+              "ipv4_prefix_list_out": {
+                "type": "string",
+                "description": "Prefix List Name. Advertise routes for only these prefixes.\nIf not specified, nothing would be advertised.",
+                "title": "IPv4 Prefix List Out"
+              }
+            },
+            "required": [
+              "peer_as"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "BGP"
+          },
           "ipv4_acl_in": {
             "description": "Name of the IPv4 access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls` and supports field substitution for \"interface_ip\" and \"peer_ip\".\nRequired for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.",
             "type": "string",
