@@ -123,6 +123,10 @@ options:
     required: false
     type: bool
     default: true
+deprecated:
+  removed_in: "5.0.0"
+  why: The internal 'arista.avd.yaml_templates_to_facts' action plugin is no longer used by AVD.
+  alternative: The plugin is released as open source, so it can be copied and reused according to the license and copyright.
 """
 
 EXAMPLES = r"""

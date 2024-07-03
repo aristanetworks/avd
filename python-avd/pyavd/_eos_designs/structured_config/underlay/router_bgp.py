@@ -174,6 +174,17 @@ class RouterBgpMixin(UtilsMixin):
             if neighbors:
                 router_bgp["neighbors"] = neighbors
 
+        for neighbor_info in self.shared_utils.l3_interfaces_bgp_neighbors:
+            neighbor = {
+                "ip_address": get(neighbor_info, "ip_address"),
+                "remote_as": get(neighbor_info, "remote_as"),
+                "description": get(neighbor_info, "description"),
+                "route_map_in": get(neighbor_info, "route_map_in"),
+                "route_map_out": get(neighbor_info, "route_map_out"),
+            }
+
+            router_bgp.setdefault("neighbors", []).append(strip_empties_from_dict(neighbor))
+
         if vrfs_dict:
             router_bgp["vrfs"] = list(vrfs_dict.values())
 
