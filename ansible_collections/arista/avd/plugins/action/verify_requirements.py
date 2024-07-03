@@ -58,10 +58,13 @@ def _validate_python_version(info: dict, result: dict) -> bool:
         result.setdefault("deprecations", []).append(
             {
                 "msg": (
-                    f"You are currently running Python version {running_version}. AVD version 5.0.0 will drop support for Python version {min_version}. "
-                    "The decision has been taken to remove Python version 3.9 support in AVD collection to anticipate its removal in `ansible-core`. "
-                    "`ansible-core` version 2.15 End-Of-Life is scheduled for November 2024 and it will be the last `ansible-core` version supporting Python version 3.9 as "
-                    "documented here: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix."
+                    f"You are currently running Python version {running_version}. "
+                    "AVD version 5.0.0 will drop support for Python version {min_version}. "
+                    "The decision has been taken to remove Python version 3.9 support in AVD "
+                    "collection to anticipate its removal in `ansible-core`. `ansible-core` "
+                    "version 2.15 End-Of-Life is scheduled for November 2024 and it will be the "
+                    "last `ansible-core` version supporting Python version 3.9 as documented here: "
+                    "https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix."
                 )
             }
         )
