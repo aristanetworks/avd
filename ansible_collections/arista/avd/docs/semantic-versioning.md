@@ -63,6 +63,7 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Action: `validate_and_template` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `verify_requirements` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `yaml_templates_to_facts` | ✘ | ✘ | Internal plugin, not intended for external use. |
+| Action: `_emit_warning` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Test: `contains` | ✅ | ✅ | |
 | Test: `defined` | ✅ | ✅ | |
 | Test: `global_vars` | ✅ | ✅ | |
