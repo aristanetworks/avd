@@ -238,22 +238,6 @@ port_channel_interfaces:
   mode: trunk
   vlans: '11'
   mlag: 14
-- name: Port-Channel16
-  description: PTP-TESTS-L2LEAF2-PTP-SETTINGS-KEY_Po1
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: '11'
-  mlag: 16
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
 - name: Port-Channel6
   description: Endpoint-with-mpass
   type: switched
@@ -358,16 +342,6 @@ ethernet_interfaces:
   type: port-channel-member
   channel_group:
     id: 14
-    mode: active
-- name: Ethernet16
-  peer: ptp-tests-l2leaf2-ptp-settings-key
-  peer_interface: Ethernet1
-  peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF2-PTP-SETTINGS-KEY_Ethernet1
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 16
     mode: active
 - name: Ethernet13
   peer: bmca-endpoint
