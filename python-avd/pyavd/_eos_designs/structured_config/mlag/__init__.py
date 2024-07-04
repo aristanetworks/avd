@@ -102,7 +102,9 @@ class AvdStructuredConfigMlag(AvdFacts):
                     "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                     "isis_metric": 50,
                     "isis_network_point_to_point": True,
-                },
+                    "isis_authentication_mode": get(self._hostvars, "underlay_isis_authentication_mode"),
+                    "isis_authentication_key": get(self._hostvars, "underlay_isis_authentication_key"),
+                }
             )
 
         if self.shared_utils.underlay_multicast:

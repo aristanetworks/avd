@@ -3910,12 +3910,19 @@ keys:
       '
     type: bool
     default: false
-  underlay_isis_authentication:
+  underlay_isis_authentication_key:
     documentation_options:
       table: isis-settings
-    type: dict
-    description: Only `md5` and `text` authentication modes are supported for `eos_designs`.
-    $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
+    type: str
+    description: Type-7 encrypted password.
+  underlay_isis_authentication_mode:
+    documentation_options:
+      table: isis-settings
+    type: str
+    description: Underlay ISIS authentication mode.
+    valid_values:
+    - md5
+    - text
   underlay_isis_bfd:
     documentation_options:
       table: isis-settings
