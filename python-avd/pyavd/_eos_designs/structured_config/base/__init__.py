@@ -657,7 +657,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         PTP priority2 is set in the code below, calculated based on the node id:
             default_priority2 = self.id % 256
         """
-        if not self.shared_utils.ptp_enabled and not get(self._hostvars, "ptp_settings.enabled"):
+        if not self.shared_utils.ptp_enabled:
             # Since we have overlapping data model "ptp" between eos_designs and eos_cli_config_gen,
             # we need to overwrite the input dict if set but not enabled.
             if get(self._hostvars, "ptp") is not None:
