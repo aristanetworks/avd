@@ -8909,6 +8909,30 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        bgp:
+          type: dict
+          description: Enforce IPv4 BGP peering for the peer
+          keys:
+            peer_as:
+              type: str
+              required: true
+              convert_types:
+              - int
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
+            ipv4_prefix_list_in:
+              type: str
+              description: 'Prefix List Name. Accept routes for only these prefixes
+                from the peer.
+
+                Required for wan interfaces.'
+            ipv4_prefix_list_out:
+              type: str
+              description: 'Prefix List Name. Advertise routes for only these prefixes.
+
+                If not specified, nothing would be advertised.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.

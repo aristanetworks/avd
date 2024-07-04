@@ -6,8 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
-from ....j2filters import generate_esi, generate_lacp_id, generate_route_target
+from ...._utils import get, short_esi_to_route_target
 from ...interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
@@ -72,10 +71,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
             if (short_esi := link.get("short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
-                    "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
-                    "route_target": generate_route_target(short_esi),
+                    "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
+                    "route_target": short_esi_to_route_target(short_esi),
                 }
-                port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
+                port_channel_interface["lacp_id"] = short_esi.replace(":", ".")
 
             # PTP
             if get(link, "ptp.enable") is True:

@@ -40,6 +40,10 @@ options:
     description: ESI prefix value. Will be concatenated with the `short_esi`.
     type: string
     default: "0000:0000:"
+deprecated:
+    removed_in: "5.0.0"
+    why: This filter is no longer used by AVD and is very simple to replace with generic Jinja syntax.
+    alternative: Use Jinja string concatenation instead like `{{ <esi_prefix> ~ <short_esi> }}`
 """
 
 EXAMPLES = r"""
