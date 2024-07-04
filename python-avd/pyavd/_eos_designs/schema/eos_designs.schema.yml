@@ -5671,6 +5671,9 @@ $defs:
               type: int
               convert_types:
               - str
+            fast_leave:
+              type: bool
+              description: Enable fast-leave processing on specified VLANs.
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -5798,6 +5801,9 @@ $defs:
               - 2
               - 3
               default: 2
+            fast_leave:
+              type: bool
+              description: Enable fast-leave processing on specified VLANs.
         evpn_l2_multi_domain:
           type: bool
           default: true
@@ -6988,6 +6994,9 @@ $defs:
                     - 2
                     - 3
                     default: 2
+                  fast_leave:
+                    type: bool
+                    description: Enable fast-leave processing on specified VLANs.
               bgp:
                 type: dict
                 keys:
@@ -9482,6 +9491,9 @@ $defs:
             - 1
             - 2
             - 3
+          fast_leave:
+            type: bool
+            description: Enable fast-leave processing on specified VLANs.
       vxlan:
         type: bool
         default: true

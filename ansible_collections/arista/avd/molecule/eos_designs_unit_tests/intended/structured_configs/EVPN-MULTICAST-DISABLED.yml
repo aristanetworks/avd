@@ -799,6 +799,17 @@ vlans:
   tenant: Tenant_E
 ip_igmp_snooping:
   globally_enabled: true
+  vlans:
+  - id: 256
+    querier:
+      enabled: true
+      address: 192.168.255.8
+    fast_leave: true
+  - id: 230
+    querier:
+      enabled: true
+      address: 192.168.255.8
+    fast_leave: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan310

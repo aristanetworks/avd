@@ -56451,6 +56451,11 @@
                         3
                       ],
                       "title": "Version"
+                    },
+                    "fast_leave": {
+                      "type": "boolean",
+                      "description": "Enable fast-leave processing on specified VLANs.",
+                      "title": "Fast Leave"
                     }
                   },
                   "additionalProperties": false,
@@ -58359,6 +58364,11 @@
                   3
                 ],
                 "title": "Version"
+              },
+              "fast_leave": {
+                "type": "boolean",
+                "description": "Enable fast-leave processing on specified VLANs.",
+                "title": "Fast Leave"
               }
             },
             "additionalProperties": false,

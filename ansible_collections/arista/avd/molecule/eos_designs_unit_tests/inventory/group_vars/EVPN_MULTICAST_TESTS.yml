@@ -17,6 +17,8 @@ tenants:
     evpn_l2_multicast:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
+    igmp_snooping_querier:
+      fast_leave: true
     vrfs:
       - name: MULTICAST_ENABLED_110_111
         description: "MULTICAST_ENABLED_110_111"
@@ -95,6 +97,9 @@ tenants:
         tags: ['test_l2']
         evpn_l2_multicast:
           enabled: false
+        igmp_snooping_querier:
+          enabled: true
+          fast_leave: true
       - id: 257
         name: "MULTICAST_ENABLED_257"
         tags: ['test_l2']
@@ -134,6 +139,8 @@ tenants:
             ip_address_virtual: 10.0.1.1/24
             evpn_l2_multicast:
               enabled: true
+            igmp_snooping_querier:
+              fast_leave: true
           - id: 2
             name: "MULTICAST_ENABLED_2"
             tags: ['test_l3']
@@ -291,6 +298,9 @@ tenants:
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.2.23.1/24
+            igmp_snooping_querier:
+              enabled: true
+              fast_leave: true
           - id: 231
             name: "L3_MULTICAST_DISABLED_231"
             tags: ['test_l3']
