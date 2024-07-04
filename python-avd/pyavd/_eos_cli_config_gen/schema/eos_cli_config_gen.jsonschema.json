@@ -5899,7 +5899,7 @@
                 "properties": {
                   "allowed_vlan": {
                     "type": "string",
-                    "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
+                    "description": "VLAN ID or range(s) of VLAN IDs.\nWarning: This should not be combined with `ethernet_interfaces[].mode = trunk`.",
                     "title": "Allowed VLAN"
                   },
                   "native_vlan": {
@@ -6087,11 +6087,11 @@
               },
               "backup": {
                 "type": "object",
-                "description": "The `backup_link` is required to set this config.",
+                "description": "The `backup_link` is required for this setting.",
                 "properties": {
                   "dest_macaddr": {
                     "type": "string",
-                    "description": "Destination MAC address for MAC move updates.",
+                    "description": "Destination MAC address for MAC move updates.\nExample:  01:00:00:00:00:00",
                     "title": "Dest Macaddr"
                   },
                   "initial_mac_move_delay": {
@@ -16553,7 +16553,7 @@
                 "properties": {
                   "allowed_vlan": {
                     "type": "string",
-                    "description": "VLAN ID or range of VLAN IDs.\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
+                    "description": "VLAN ID or range(s) of VLAN IDs.\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
                     "title": "Allowed VLAN"
                   },
                   "native_vlan": {
@@ -16743,11 +16743,11 @@
               },
               "backup": {
                 "type": "object",
-                "description": "The `backup_link` is required to set this config.",
+                "description": "The `backup_link` is required for this setting.",
                 "properties": {
                   "dest_macaddr": {
                     "type": "string",
-                    "description": "Destination MAC address for MAC move updates.",
+                    "description": "Destination MAC address for MAC move updates.\nExample:  01:00:00:00:00:00",
                     "title": "Dest Macaddr"
                   },
                   "initial_mac_move_delay": {
