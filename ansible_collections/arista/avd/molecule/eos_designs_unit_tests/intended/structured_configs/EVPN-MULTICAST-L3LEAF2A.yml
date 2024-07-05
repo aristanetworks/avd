@@ -534,6 +534,32 @@ router_bgp:
       - 10150:10150
     redistribute_routes:
     - learned
+  - id: 251
+    tenant: Tenant_F
+    rd: 192.168.255.5:10251
+    route_targets:
+      both:
+      - 10251:10251
+    redistribute_routes:
+    - learned
+  - id: 252
+    tenant: Tenant_F
+    rd: 192.168.255.5:10252
+    route_targets:
+      both:
+      - 10252:10252
+    redistribute_routes:
+    - learned
+    - igmp
+  - id: 4094
+    tenant: Tenant_F
+    rd: 192.168.255.5:14094
+    route_targets:
+      both:
+      - 14094:14094
+    redistribute_routes:
+    - learned
+    - igmp
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -832,6 +858,15 @@ vlans:
 - id: 150
   name: L3_MULTICAST_ENABLED_150
   tenant: Tenant_E
+- id: 251
+  name: MULTICAST_DISABLED_251
+  tenant: Tenant_F
+- id: 252
+  name: MULTICAST_ENABLED_252
+  tenant: Tenant_F
+- id: 4094
+  name: MULTICAST_ENABLED_4094
+  tenant: Tenant_F
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -850,10 +885,6 @@ ip_igmp_snooping:
       enabled: true
       address: 192.168.255.5
     fast_leave: true
-  - id: 256
-    querier:
-      enabled: true
-      address: 192.168.255.5
   - id: 257
     querier:
       enabled: true
@@ -894,6 +925,16 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.5
+  - id: 252
+    querier:
+      enabled: true
+      address: 192.168.255.5
+    fast_leave: true
+  - id: 4094
+    querier:
+      enabled: true
+      address: 192.168.255.5
+    fast_leave: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan310
@@ -1216,6 +1257,14 @@ vxlan_interface:
         vni: 10250
       - id: 150
         vni: 10150
+      - id: 251
+        vni: 10251
+      - id: 252
+        vni: 10252
+        multicast_group: 232.0.0.251
+      - id: 4094
+        vni: 14094
+        multicast_group: 232.0.15.253
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13

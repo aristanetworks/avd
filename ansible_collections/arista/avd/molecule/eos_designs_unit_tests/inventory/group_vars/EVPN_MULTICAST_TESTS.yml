@@ -95,11 +95,9 @@ tenants:
       - id: 256
         name: "MULTICAST_DISABLED_256"
         tags: ['test_l2']
+        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, vpn_l2_multicast.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
         evpn_l2_multicast:
           enabled: false
-        igmp_snooping_querier:
-          enabled: true
-          fast_leave: true
       - id: 257
         name: "MULTICAST_ENABLED_257"
         tags: ['test_l2']
@@ -137,6 +135,7 @@ tenants:
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.1.1/24
+            # test for fast-leave when tenant level evpn_l2_multicast.enabled: false and vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping_querier.fast_leave: true
             evpn_l2_multicast:
               enabled: true
             igmp_snooping_querier:
@@ -298,6 +297,7 @@ tenants:
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.2.23.1/24
+            # test for fast-leave when igmp_snooping_querier.fast_leave: true but evpn_l2_multicast.enabled is not set
             igmp_snooping_querier:
               enabled: true
               fast_leave: true
@@ -592,3 +592,23 @@ tenants:
             enabled: true
             pim:
               enabled: true
+
+# Test when tenant level evpn_l2_multicast.enabled: true and evpn_l2_multicast.fast_leave: true       
+  - name: Tenant_F
+    mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: true
+      fast_leave: true
+      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
+    l2vlans:
+      - id: 251
+        name: "MULTICAST_DISABLED_251"
+        tags: ['test_l2']
+        evpn_l2_multicast:
+          enabled: false
+      - id: 252
+        name: "MULTICAST_ENABLED_252"
+        tags: ['test_l2']
+      - id: 4094
+        name: "MULTICAST_ENABLED_4094"
+        tags: ['test_l2']
