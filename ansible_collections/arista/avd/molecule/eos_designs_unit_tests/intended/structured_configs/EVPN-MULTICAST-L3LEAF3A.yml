@@ -886,7 +886,6 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.6
-    fast_leave: true
   - id: 257
     querier:
       enabled: true
@@ -927,7 +926,6 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.6
-    fast_leave: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan310
