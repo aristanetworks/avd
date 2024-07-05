@@ -3665,30 +3665,94 @@ keys:
                 Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.'
             vlan_translations:
               description: 'Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
-              type: list
-              primary_key: direction
-              items:
-                type: dict
-                keys:
-                  from:
-                    type: str
-                    convert_types:
-                    - int
-                    description: VLAN ID or range of VLAN IDs to map from.
-                    required: true
-                  to:
-                    type: int
-                    convert_types:
-                    - str
-                    description: VLAN ID to map to.
-                    required: true
-                  direction:
-                    type: str
-                    valid_values:
-                    - in
-                    - out
-                    - both
-                    default: both
+              type: dict
+              keys:
+                direction_in:
+                  type: list
+                  description: Map ingress packets only.
+                  items:
+                    type: dict
+                    keys:
+                      required:
+                        type: bool
+                        description: Drop the packets that do not match any VLAN mapping.
+                      from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID or range of VLAN IDs to map from.
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                      dot1q_tunnel:
+                        type: bool
+                      inner_from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                direction_out:
+                  type: list
+                  description: Map egress packets only.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID or range of VLAN IDs to map from.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                      dot1q_tunnel:
+                        type: dict
+                        keys:
+                          all:
+                            type: bool
+                          to:
+                            type: int
+                            convert_types:
+                            - str
+                            description: VLAN ID or range(s) of VLAN IDs to map to.
+                      inner_to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map to.
+                direction_both:
+                  type: list
+                  description: Map both egress and ingress packets.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID or range of VLAN IDs to map from.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                        required: true
+                      dot1q_tunnel:
+                        type: bool
+                      inner_from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                      network:
+                        type: bool
+                        description: Use network-side VLAN ID.
             vlan_forwarding_accept_all:
               type: bool
             backup_link:
@@ -9892,30 +9956,94 @@ keys:
                 Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`.'
             vlan_translations:
               description: 'Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.'
-              type: list
-              primary_key: direction
-              items:
-                type: dict
-                keys:
-                  from:
-                    type: str
-                    convert_types:
-                    - int
-                    description: VLAN ID or range of VLAN IDs to map from.
-                    required: true
-                  to:
-                    type: int
-                    convert_types:
-                    - str
-                    description: VLAN ID to map to.
-                    required: true
-                  direction:
-                    type: str
-                    valid_values:
-                    - in
-                    - out
-                    - both
-                    default: both
+              type: dict
+              keys:
+                direction_in:
+                  type: list
+                  description: Map ingress packets only.
+                  items:
+                    type: dict
+                    keys:
+                      required:
+                        type: bool
+                        description: Drop the packets that do not match any VLAN mapping.
+                      from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID or range of VLAN IDs to map from.
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                      dot1q_tunnel:
+                        type: bool
+                      inner_from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                direction_out:
+                  type: list
+                  description: Map egress packets only.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID or range of VLAN IDs to map from.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                      dot1q_tunnel:
+                        type: dict
+                        keys:
+                          all:
+                            type: bool
+                          to:
+                            type: int
+                            convert_types:
+                            - str
+                            description: VLAN ID or range(s) of VLAN IDs to map to.
+                      inner_to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map to.
+                direction_both:
+                  type: list
+                  description: Map both egress and ingress packets.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID or range of VLAN IDs to map from.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                        required: true
+                      dot1q_tunnel:
+                        type: bool
+                      inner_from:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                      network:
+                        type: bool
+                        description: Use network-side VLAN ID.
             vlan_forwarding_accept_all:
               type: bool
             backup_link:

@@ -208,6 +208,55 @@ interface {{ ethernet_interface.name }}
    {{ vlan_translation_cli }}
 {%         endif %}
 {%     endfor %}
+{%     for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
+{%         set vlan_translation_both_cli = 'switchport vlan translation' %}
+{%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' ' ~  vlan_translation.from %}
+{%             if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
+{%                 set vlan_translation_both_cli = vlan_translation_both_cli ~ ' dot1q-tunnel' %}
+{%             elif vlan_translation.inner_from is arista.avd.defined %}
+{%                 set vlan_translation_both_cli = vlan_translation_both_cli ~ ' inner ' ~ vlan_translation.inner_from %}
+{%                 if vlan_translation.network is arista.avd.defined(true) %}
+{%                     set vlan_translation_both_cli = vlan_translation_both_cli ~ ' network' %}
+{%                 endif %}
+{%             endif %}
+{%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' ' ~  vlan_translation.to %}
+{%         endif %}
+   {{ vlan_translation_both_cli }}
+{%     endfor %}
+{%     if ethernet_interface.switchport.vlan_translations.direction_in is arista.avd.defined %}
+{%         for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_in %}
+{%             set vlan_translation_in_cli = 'switchport vlan translation in' %}
+{%             if vlan_translation.required is arista.avd.defined(true) %}
+{%                 set vlan_translation_in_cli = vlan_translation_in_cli ~ ' required' %}
+{%             elif vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%                 set vlan_translation_in_cli = 'switchport vlan translation in ' ~  vlan_translation.from %}
+{%                 if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
+{%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' dot1q-tunnel' %}
+{%                 elif vlan_translation.inner_from is arista.avd.defined %}
+{%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' inner ' ~ vlan_translation.inner_from %}
+{%                 endif %}
+{%                 set vlan_translation_in_cli = vlan_translation_in_cli ~ " " ~  vlan_translation.to %}
+{%             endif %}
+   {{ vlan_translation_in_cli }}
+{%         endfor %}
+{%     endif %}
+{%     for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort('from') %}
+{%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%             set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from ~ ' ' ~  vlan_translation.to %}
+{%             if vlan_translation.inner_to is arista.avd.defined %}
+{%                 set vlan_translation_out_cli = vlan_translation_out_cli ~ ' inner ' ~ vlan_translation.inner_to %}
+{%             endif %}
+{%         elif vlan_translation.from is arista.avd.defined and vlan_translation.dot1q_tunnel is arista.avd.defined %}
+{%             set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from %}
+{%             if vlan_translation.dot1q_tunnel.all is arista.avd.defined(true) %}
+{%                 set vlan_translation_out_cli = vlan_translation_out_cli ~ ' dot1q-tunnel all' %}
+{%             elif vlan_translation.dot1q_tunnel.to is arista.avd.defined %}
+{%                 set vlan_translation_out_cli = vlan_translation_out_cli ~ ' dot1q-tunnel ' ~ vlan_translation.dot1q_tunnel.to %}
+{%             endif %}
+{%         endif %}
+   {{ vlan_translation_out_cli }}
+{%     endfor %}
 {%     if ethernet_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
    switchport trunk private-vlan secondary
 {%     endif %}

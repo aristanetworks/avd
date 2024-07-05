@@ -522,8 +522,16 @@ interface Port-Channel100
    switchport trunk group g1
    switchport trunk group g2
    switchport source-interface tx multicast
-   switchport vlan translation in 23-37 45
-   switchport vlan translation out 23-37 45
+   switchport vlan translation 12 20
+   switchport vlan translation 24 inner 78 network 46
+   switchport vlan translation 43 dot1q-tunnel 30
+   switchport vlan translation in required
+   switchport vlan translation in 37 inner 56 49
+   switchport vlan translation in 23 dot1q-tunnel 45
+   switchport vlan translation out 10 45 inner 34
+   switchport vlan translation out 23 dot1q-tunnel 22
+   switchport vlan translation out 34 50
+   switchport vlan translation out 45 dot1q-tunnel all
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
    switchport backup-link Ethernet5
