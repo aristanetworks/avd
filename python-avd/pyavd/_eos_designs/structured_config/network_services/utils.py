@@ -690,12 +690,14 @@ class UtilsMixin(UtilsZscalerMixin):
     def _l3_interface_acls(self: AvdStructuredConfigNetworkServices):
         """
         Returns a dict of
-            <interface_name>: {
+            <hostname> : {
+                <interface_name>: {
                 "ipv4_acl_in": <generated_ipv4_acl>,
                 "ipv4_acl_out": <generated_ipv4_acl>,
+                }
             }
         Only contains interfaces with ACLs and only the ACLs that are set,
-        so use `get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
+        so use `get(self._l3_interface_acls, f"{hostname}.{interface_name}.ipv4_acl_in")` to get the value.
         """
 
         if not self.shared_utils.network_services_l3:
