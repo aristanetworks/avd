@@ -111,6 +111,14 @@ class DeviceUtilsMixin:
         """
         return "." in interface.get("name", "")
 
+    def is_vtep(self) -> bool:
+        """Check if the host is a VTEP by verifying the presence of a VXLAN interface."""
+        return get(self.structured_config, "vxlan_interface") is not None
+
+    def is_wan_vtep(self) -> bool:
+        """Check if the host is a WAN VTEP by verifying the DPS source interface."""
+        return "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface", "")
+
 
 class ValidationMixin:
     """Mixin class for the eos_validate_state tests.
