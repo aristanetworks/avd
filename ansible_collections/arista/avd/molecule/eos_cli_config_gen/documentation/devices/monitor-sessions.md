@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [Monitor Sessions](#monitor-sessions-1)
+  - [Monitor Sessions Default](#monitor-sessions-default)
 
 ## Management
 
@@ -80,6 +81,11 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
+### Monitor Sessions Default
+
+| Settings | Values |
+| Encapsulation Gre Payload | monitor_sessions_default_encapsulation_gre.payload |
+
 #### Monitor Sessions Device Configuration
 
 ```eos
@@ -99,4 +105,5 @@ monitor session myMonitoringSession2 destination Ethernet50
 monitor session myMonitoringSession2 encapsulation gre metadata tx
 monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 sample 50
+monitor session default encapsulation gre payload full-packet
 ```

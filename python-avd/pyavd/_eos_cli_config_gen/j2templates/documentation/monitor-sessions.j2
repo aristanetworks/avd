@@ -54,10 +54,18 @@
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+{%     if monitor_sessions_default_encapsulation_gre is arista.avd.defined %}
+
+### Monitor Sessions Default
+
+| Settings | Values |
+| Encapsulation Gre Payload | monitor_sessions_default_encapsulation_gre.payload |
+{%     endif %}
 
 #### Monitor Sessions Device Configuration
 
 ```eos
 {%     include 'eos/monitor-sessions.j2' %}
+{%     include 'eos/monitor_sessions_default_encapsulation_gre.j2' %}
 ```
 {% endif %}

@@ -40,3 +40,5 @@ monitor_sessions:
       type: ip
       name: ipv4ACL
     sample: 50
+monitor_sessions_default_encapsulation_gre:
+  payload: full-packet
