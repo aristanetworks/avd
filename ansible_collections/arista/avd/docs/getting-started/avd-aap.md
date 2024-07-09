@@ -10,13 +10,14 @@ This guide will walk you through the steps required to get up and running with A
 
 ## Requirements to get started
 
-Please note, that this guide leverages AAP version 2.4. The workflows should be similar in newer versions; if there are any questions, please see the official [AAP documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4). If you seen any errors in this guide, please open an [issue](https://github.com/aristanetworks/avd/issues).
-
 - An accessible lab topology running Arista EOS.
 - An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../examples/single-dc-l3ls/README.md).
 - A RHEL instance running AAP.
   - If you need access to a RHEL instance, you can join the [developer program](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux/developer-program) to get a copy.
   - To get started, you may also sign up for a 60-day [trial license](https://www.redhat.com/en/technologies/management/ansible/trial) for AAP.
+
+!!! note
+    This guide leverages AAP version 2.4. The workflows should be similar in newer versions. If there are any questions, please see the official [AAP documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4). If you notice any errors in this guide, please open an [issue](https://github.com/aristanetworks/avd/issues).
 
 ## Topology
 
@@ -46,9 +47,9 @@ Ansible Builder is a tool developed by the Ansible team to aid in creating EEs. 
 
 - A development machine with Python installed.
 - Ansible builder installed with `pip install ansible-builder`.
-- [Docker](https://docs.docker.com/engine/install/) or [Podman](https://podman.io/docs/installation) installed on the development machine.
+- [Podman](https://podman.io/docs/installation) installed on the development machine.
 
-You can place the Ansible builder dependencies with your current project or leverage a separate project entirely for your EE builds. Please note that this example was created with version 4.7.1 of the AVD collection. Dependencies may change between versions.
+You can place the Ansible builder dependencies with your current project or leverage a separate project entirely for your EE builds. Please note that this example was created with version 4.9.0 of the AVD collection. Dependencies may change between versions.
 
 ```shell
 ❯ tree -I venv/
@@ -66,7 +67,7 @@ You can place the Ansible builder dependencies with your current project or leve
 
     images: #(2)
       base_image:
-        name: quay.io/centos/centos:stream8
+        name: registry.fedoraproject.org/fedora:40
 
     dependencies: #(3)
       python_interpreter:
@@ -99,7 +100,7 @@ You can place the Ansible builder dependencies with your current project or leve
     ---
     collections: #(1)
       - name: arista.avd
-        version: 4.7.1
+        version: 4.9.0
 
     ```
 
@@ -108,23 +109,11 @@ You can place the Ansible builder dependencies with your current project or leve
 === "requirements.txt"
 
     ```text
-    netaddr>=0.7.19
-    Jinja2>=3.0.0
-    treelib>=1.5.5
-    cvprac>=1.3.1
-    jsonschema>=4.5.1,<4.18
-    requests>=2.27.0
-    PyYAML>=6.0.0
-    md-toc>=7.1.0
-    deepmerge>=1.1.0
-    cryptography>=38.0.4
-    # No anta requirement until the eos_validate_state integration is out of preview.
-    # anta>=1.0.0
-    aristaproto>=0.1.1
+    pyavd[ansible-collection]==4.9.0
 
     ```
 
-    The Python dependencies were taken from the [collection installation](../../docs/installation/collection-installation.md#python-requirements-installation) instructions. Please update for your specific version of the `arista.avd` collection.
+    The Python dependencies listed here are from the [collection installation](../../docs/installation/collection-installation.md#python-requirements-installation) instructions. Please update the requirements for the specific version of the `arista.avd` collection you are leveraging.
 
 #### Build the image
 
@@ -139,6 +128,9 @@ Once complete, you can push the image to a public or private container registry.
 ```shell
 podman push IMAGEID docker://docker.io/username/image-name
 ```
+
+!!! note
+    This guide uses Docker Hub as the container registry, but you may use any container registry that is accessible by AAP.
 
 ### Execution environments on AAP
 
@@ -289,6 +281,9 @@ One thing that may need some clarification is the naming of "job templates." The
 ### Surveys
 
 With most jobs, we need a way to authenticate to our CV instance or EOS nodes. AAP provides a multitude of ways to define credentials. Some options are credentials for Network devices, Container registries, HashiCorp Vault, etc. Feel free to explore any option you need for your environment. For this guide, we will leverage a survey secret. Surveys allow us to ask users for information we require for a job to execute correctly. We will leverage a survey with a default secret value (this is the credential used to connect to our nodes).
+
+!!! note
+    You will need to create a service account and token in CloudVision for the survey.
 
 === "Surveys"
 
