@@ -44,18 +44,22 @@ keys:
               convert_types:
                 - int
             tls:
-              type: bool
-              description: Enable TLS for this radius-server.
-            tls_ssl_profile:
-              type: str
-              description: Name of TLS profile.
-            tls_port:
-              type: int
-              min: 0
-              max: 65535
-              convert_types:
-                - str
-              description: TCP Port used for TLS.
+              type: dict
+              description: When TLS is configured, key is ignored due to mutually exclusive in EOS CLI.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable TLS for radius-server.
+                ssl_profile:
+                  type: str
+                  description: Name of TLS profile.
+                port:
+                  type: int
+                  min: 0
+                  max: 65535
+                  convert_types:
+                    - str
+                  description: TCP Port used for TLS. EOS default is 2083.
             timeout:
               type: int
               min: 1
@@ -70,4 +74,4 @@ keys:
                 - str
             key:
               type: str
-              description: Encrypted key.
+              description: Encrypted key. When TLS is configured, key is ignored.

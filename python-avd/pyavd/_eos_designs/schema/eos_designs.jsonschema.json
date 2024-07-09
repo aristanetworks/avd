@@ -35046,21 +35046,32 @@
                           "title": "VRF"
                         },
                         "tls": {
-                          "type": "boolean",
-                          "description": "Enable TLS for this radius-server.",
+                          "type": "object",
+                          "description": "When TLS is configured, key is ignored due to mutually exclusive in EOS CLI.",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "Enable TLS for radius-server.",
+                              "title": "Enabled"
+                            },
+                            "ssl_profile": {
+                              "type": "string",
+                              "description": "Name of TLS profile.",
+                              "title": "SSL Profile"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 65535,
+                              "description": "TCP Port used for TLS. EOS default is 2083.",
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
                           "title": "TLS"
-                        },
-                        "tls_ssl_profile": {
-                          "type": "string",
-                          "description": "Name of TLS profile.",
-                          "title": "TLS SSL Profile"
-                        },
-                        "tls_port": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 65535,
-                          "description": "TCP Port used for TLS.",
-                          "title": "TLS Port"
                         },
                         "timeout": {
                           "type": "integer",
@@ -35076,7 +35087,7 @@
                         },
                         "key": {
                           "type": "string",
-                          "description": "Encrypted key.",
+                          "description": "Encrypted key. When TLS is configured, key is ignored.",
                           "title": "Key"
                         }
                       },
