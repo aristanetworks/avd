@@ -45,16 +45,16 @@ interface Management1
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | Timeout | Retransmit |
-| --- | -------------- | ------- | ---------- |
-| mgt | 10.10.11.157 | 1 | 1 |
-| mgt | 10.10.11.159 | - | 1 |
-| mgt | 10.10.11.160 | 1 | - |
-| mgt | 10.10.11.248 | - | - |
-| default | 10.10.11.249 | 1 | 1 |
-| default | 10.10.11.158 | 1 | 1 |
-| default | 10.10.11.156 | 1 | 1 |
-| mgt | 10.10.11.155 | 1 | 1 |
+| VRF | RADIUS Servers | TLS | SSL-Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
+| mgt | 10.10.11.157 | - | - | 1 | 1 |
+| mgt | 10.10.11.159 | - | - | - | 1 |
+| mgt | 10.10.11.160 | - | - | 1 | - |
+| mgt | 10.10.11.248 | - | - | - | - |
+| default | 10.10.11.249 | - | - | 1 | 1 |
+| default | 10.10.11.158 | - | - | 1 | 1 |
+| default | 10.10.11.156 | True | - | 1 | 1 |
+| mgt | 10.10.11.155 | True | SSL_PROFILE | 1 | 1 |
 
 #### RADIUS Server Device Configuration
 

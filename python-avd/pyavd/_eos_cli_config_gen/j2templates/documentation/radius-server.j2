@@ -31,8 +31,8 @@
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | Timeout | Retransmit |
-| --- | -------------- | ------- | ---------- |
+| VRF | RADIUS Servers | TLS | SSL-Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
 {#     Old data model #}
 {%     for radius_server in radius_servers | arista.avd.default([]) %}
 {%         set vrf = radius_server.vrf | arista.avd.default('default') %}
@@ -43,9 +43,11 @@
 {#     New data model #}
 {%     for host in radius_server.hosts | arista.avd.default([]) %}
 {%         set vrf = host.vrf | arista.avd.default('default') %}
+{%         set tls = host.tls.enabled | arista.avd.default('-') %}
+{%         set ssl_profile = host.tls.ssl_profile | arista.avd.default('-') %}
 {%         set timeout = host.timeout | arista.avd.default('-') %}
 {%         set retransmit = host.retransmit | arista.avd.default('-') %}
-| {{ vrf }} | {{ host.host }} | {{ timeout }} | {{ retransmit }} |
+| {{ vrf }} | {{ host.host }} | {{ tls }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
 {%     endfor %}
 
 #### RADIUS Server Device Configuration
