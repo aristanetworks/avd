@@ -542,12 +542,12 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-  - id: 4094
+  - id: 4091
     tenant: Tenant_F
-    rd: 192.168.255.8:14094
+    rd: 192.168.255.8:14091
     route_targets:
       both:
-      - 14094:14094
+      - 14091:14091
     redistribute_routes:
     - learned
     - igmp
@@ -829,8 +829,8 @@ vlans:
 - id: 252
   name: MULTICAST_ENABLED_252
   tenant: Tenant_F
-- id: 4094
-  name: MULTICAST_ENABLED_4094
+- id: 4091
+  name: MULTICAST_ENABLED_4091
   tenant: Tenant_F
 ip_igmp_snooping:
   globally_enabled: true
@@ -1123,8 +1123,8 @@ vxlan_interface:
         vni: 10251
       - id: 252
         vni: 10252
-      - id: 4094
-        vni: 14094
+      - id: 4091
+        vni: 14091
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13

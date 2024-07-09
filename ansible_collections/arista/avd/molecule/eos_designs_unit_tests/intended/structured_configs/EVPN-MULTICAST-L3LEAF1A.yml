@@ -564,16 +564,16 @@ router_bgp:
     - learned
     - igmp
     vlan: '252'
-  - name: MULTICAST_ENABLED_4094
+  - name: MULTICAST_ENABLED_4091
     tenant: Tenant_F
-    rd: 192.168.255.3:14094
+    rd: 192.168.255.3:14091
     route_targets:
       both:
-      - 14094:14094
+      - 14091:14091
     redistribute_routes:
     - learned
     - igmp
-    vlan: '4094'
+    vlan: '4091'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -695,8 +695,8 @@ vlans:
   trunk_groups:
   - LEAF_PEER_L3
 - id: 4094
-  tenant: Tenant_F
-  name: MULTICAST_ENABLED_4094
+  tenant: system
+  name: MLAG_PEER
   trunk_groups:
   - MLAG
 - id: 310
@@ -875,6 +875,9 @@ vlans:
   tenant: Tenant_F
 - id: 252
   name: MULTICAST_ENABLED_252
+  tenant: Tenant_F
+- id: 4091
+  name: MULTICAST_ENABLED_4091
   tenant: Tenant_F
 vlan_interfaces:
 - name: Vlan4093
@@ -1266,7 +1269,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092,4094
+  vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4091-4092
   mlag: 6
 ethernet_interfaces:
 - name: Ethernet3
@@ -1497,7 +1500,7 @@ ip_igmp_snooping:
       enabled: true
       address: 192.168.255.3
     fast_leave: true
-  - id: 4094
+  - id: 4091
     querier:
       enabled: true
       address: 192.168.255.3
@@ -1591,9 +1594,9 @@ vxlan_interface:
       - id: 252
         vni: 10252
         multicast_group: 232.0.0.251
-      - id: 4094
-        vni: 14094
-        multicast_group: 232.0.15.253
+      - id: 4091
+        vni: 14091
+        multicast_group: 232.0.15.250
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13
