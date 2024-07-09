@@ -5,7 +5,7 @@ DOCUMENTATION = r"""
 ---
 module: _emit_warning
 version_added: "4.9.0"
-author: EMEA AS Team (@aristanetworks)
+author: Arista Networks (@aristanetworks)
 short_description: Internal module - DO NOT USE - Emit a warning in a task.
 description:
   - Emit a warning in a task.
