@@ -1149,6 +1149,7 @@ interface Ethernet70
    switchport
    dot1x aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
    dot1x aaa unresponsive action traffic allow vlan 10
+   dot1x aaa unresponsive eap response success
    dot1x mac based access-list
 ```
 

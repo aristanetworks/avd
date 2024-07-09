@@ -1081,13 +1081,31 @@ keys:
                   keys:
                     eap_response:
                       type: str
-                      description: EAP response to send.
+                      description: EAP response to send. EOS default is `success`.
                       valid_values:
                         - "success"
                         - "disabled"
                     action:
                       type: dict
-                      $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action"
+                      keys:
+                        apply_cached_results:
+                          type: bool
+                          $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/apply_cached_results"
+                        cached_results_timeout:
+                          type: dict
+                          $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/cached_results_timeout"
+                        apply_alternate:
+                          type: bool
+                          $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/apply_alternate"
+                        traffic_allow:
+                          type: bool
+                          $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/traffic_allow"
+                        traffic_allow_vlan:
+                          type: int
+                          $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/traffic_allow_vlan"
+                        traffic_allow_access_list:
+                          type: str
+                          description: Name of standard access-list to apply when AAA times out.
                     phone_action:
                       type: dict
                       $ref: "eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action"

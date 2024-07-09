@@ -15,10 +15,9 @@
     | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
-    | [<samp>&nbsp;&nbsp;mac_based_auth</samp>](## "dot1x.mac_based_auth") | Dictionary |  |  |  | Dot1x mac based auth. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;radius</samp>](## "dot1x.mac_based_auth.radius") | Dictionary |  |  |  | RADIUS parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delimiter</samp>](## "dot1x.mac_based_auth.radius.delimiter") | String |  |  | Valid Values:<br>- <code>colon</code><br>- <code>hyphen</code><br>- <code>none</code><br>- <code>period</code> | Delimiter to use in MAC address string. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_string_letter_case</samp>](## "dot1x.mac_based_auth.radius.mac_string_letter_case") | String |  |  | Valid Values:<br>- <code>lowercase</code><br>- <code>uppercase</code> | MAC address string in lowercase/uppercase. |
+    | [<samp>&nbsp;&nbsp;mac_based_auth_radius</samp>](## "dot1x.mac_based_auth_radius") | Dictionary |  |  |  | Dot1x mac based RADIUS auth. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delimiter</samp>](## "dot1x.mac_based_auth_radius.delimiter") | String |  |  | Valid Values:<br>- <code>colon</code><br>- <code>hyphen</code><br>- <code>none</code><br>- <code>period</code> | Delimiter to use in MAC address string. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_string_letter_case</samp>](## "dot1x.mac_based_auth_radius.mac_string_letter_case") | String |  |  | Valid Values:<br>- <code>lowercase</code><br>- <code>uppercase</code> | MAC address string in lowercase/uppercase. |
     | [<samp>&nbsp;&nbsp;radius_av_pair</samp>](## "dot1x.radius_av_pair") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x.radius_av_pair.service_type") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x.radius_av_pair.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
@@ -71,17 +70,14 @@
         delay: <int; 0-300>
         hold_period: <int; 1-300>
 
-      # Dot1x mac based auth.
-      mac_based_auth:
+      # Dot1x mac based RADIUS auth.
+      mac_based_auth_radius:
 
-        # RADIUS parameters.
-        radius:
+        # Delimiter to use in MAC address string.
+        delimiter: <str; "colon" | "hyphen" | "none" | "period">
 
-          # Delimiter to use in MAC address string.
-          delimiter: <str; "colon" | "hyphen" | "none" | "period">
-
-          # MAC address string in lowercase/uppercase.
-          mac_string_letter_case: <str; "lowercase" | "uppercase">
+        # MAC address string in lowercase/uppercase.
+        mac_string_letter_case: <str; "lowercase" | "uppercase">
       radius_av_pair:
         service_type: <bool>
         framed_mtu: <int; 68-9236>

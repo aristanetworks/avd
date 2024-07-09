@@ -24,10 +24,9 @@ dot1x:
         apply_alternate: true
       recovery_action_reauthenticate: true
     accounting_update_interval: 6
-  mac_based_auth:
-    radius:
-      delimiter: colon
-      mac_string_letter_case: lowercase
+  mac_based_auth_radius:
+    delimiter: colon
+    mac_string_letter_case: lowercase
   captive_portal:
     enabled: true
     url: http://portal-nacm08/captiveredirect/

@@ -33,28 +33,24 @@ keys:
             max: 300
             convert_types:
               - str
-      mac_based_auth:
+      mac_based_auth_radius:
         type: dict
-        description: Dot1x mac based auth.
+        description: Dot1x mac based RADIUS auth.
         keys:
-          radius:
-            type: dict
-            description: RADIUS parameters.
-            keys:
-              delimiter:
-                type: str
-                description: Delimiter to use in MAC address string.
-                valid_values:
-                  - colon
-                  - hyphen
-                  - none
-                  - period
-              mac_string_letter_case:
-                type: str
-                description: MAC address string in lowercase/uppercase.
-                valid_values:
-                  - lowercase
-                  - uppercase
+          delimiter:
+            type: str
+            description: Delimiter to use in MAC address string.
+            valid_values:
+              - colon
+              - hyphen
+              - none
+              - period
+          mac_string_letter_case:
+            type: str
+            description: MAC address string in lowercase/uppercase.
+            valid_values:
+              - lowercase
+              - uppercase
       radius_av_pair:
         type: dict
         keys:
