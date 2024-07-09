@@ -1,5 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+ci:
+  autoupdate_commit_msg: "Bump: pre-commit autoupdate"
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
@@ -96,17 +98,26 @@ repos:
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
         types: [python]
-        # The cv_client api is generated from proto files, so it should not be linted.
-        exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
+        # The cv client api is generated from proto files, so it should not be linted.
+        exclude: ^python-avd/pyavd/_cv/api
 
   - repo: https://github.com/pycqa/pylint
     rev: "v3.1.1"
     hooks:
       - id: pylint # Use pylintrc file in repository
-        name: Check for Linting errors on Python files with settings defined in `pylintrc`.
+        name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
         args:
+          # Suppress duplicate code for modules header
+          - -d duplicate-code
+      - id: pylint # Use pylintrc file in Ansible collection
+        name: Check for Linting errors on Python files in the Ansible collection.
+        description: This hook runs pylint.
+        types: [python]
+        files: ansible_collections/arista/avd/
+        args:
+          - --rcfile=ansible_collections/arista/avd/pylintrc
           # Suppress duplicate code for modules header
           - -d duplicate-code
 
@@ -147,10 +158,10 @@ repos:
             ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
             ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
-            ansible_collections/arista/avd/roles/.*/schemas/.*schema\.yml| # Exclude YAML schemas file
-            ansible_collections/arista/avd/roles/.*/schemas/.*jsonschema\.json| # Exclude JSON schemas file
-            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for CV API
-            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/extra_cv_protos/.*| # Exclude extra CV proto files
+            python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
+            python-avd/pyavd/.*/schema/.*jsonschema\.json| # Exclude JSON schemas file
+            python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
+            python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
           )$
 
@@ -201,9 +212,17 @@ repos:
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build-schemas.py'
         language: python
-        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
+        files: python-avd/pyavd/[a-z_]+/schema
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
+
+      - id: templates
+        name: Precompile eos_cli_config_gen Jinja2
+        entry: sh -c 'python-avd/scripts/compile_templates.py'
+        language: python
+        files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
+        pass_filenames: false
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.41.0

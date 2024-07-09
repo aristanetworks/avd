@@ -65,7 +65,6 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 
 !!! danger "This plugin is **deprecated**"
     This {{ plugin_type }} will be removed in version {{ deprecated['removed_in'] | default('') }}.
-
 {% else %}
 {%     set module_states = {
      "preview": {"message": "not guaranteed to have a backwards compatible interface", "level": "warning"},
@@ -115,7 +114,7 @@ The below requirements are needed on the host that executes this module.
 ## Notes
 
 {%     for note in notes %}
-- {{ note | e }}
+- {{ note | e | indent(2, false) }}
 {%     endfor %}
 {% endif %}
 {% if seealso %}

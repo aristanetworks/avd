@@ -1,0 +1,87 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  patch_panel:
+    type: dict
+    keys:
+      connector:
+        type: dict
+        keys:
+          interface:
+            type: dict
+            keys:
+              patch:
+                type: dict
+                keys:
+                  bgp_vpws_remote_failure_errdisable:
+                    type: bool
+              recovery:
+                type: dict
+                keys:
+                  review_delay:
+                    type: dict
+                    keys:
+                      min:
+                        type: int
+                        required: true
+                        min: 10
+                        max: 600
+                        convert_types:
+                          - str
+                        description: Minimum delay.
+                      max:
+                        type: int
+                        required: true
+                        min: 15
+                        max: 900
+                        convert_types:
+                          - str
+                        description: Maximum delay.
+      patches:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            enabled:
+              type: bool
+            connectors:
+              type: list
+              primary_key: id
+              convert_types:
+                - dict
+              min_length: 2
+              max_length: 2
+              description: Must have exactly two connectors to a patch of which at least one must be of type "interface".
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                    convert_types:
+                      - int
+                  type:
+                    type: str
+                    valid_values:
+                      - interface
+                      - pseudowire
+                    required: true
+                  endpoint:
+                    type: str
+                    description: |
+                      String with relevant endpoint depending on type.
+                      Examples:
+                      - "Ethernet1"
+                      - "Ethernet1 dot1q vlan 123"
+                      - "bgp vpws TENANT_A pseudowire VPWS_PW_1"
+                      - "ldp LDP_PW_1"
+                    required: true

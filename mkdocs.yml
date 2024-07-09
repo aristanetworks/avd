@@ -166,7 +166,7 @@ nav:
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
       - eos_validate_state:
           - Overview: roles/eos_validate_state/README.md
-          - ANTA Preview: roles/eos_validate_state/ANTA-Preview.md
+          - ANTA Integration: roles/eos_validate_state/anta_integration.md
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
@@ -184,6 +184,7 @@ nav:
   - Release Notes: docs/release-notes/4.x.x.md
   - Porting Guide: docs/porting-guides/4.x.x.md
   - PyAVD: docs/pyavd.md
+  - Versioning: docs/semantic-versioning.md
   - AVD Dev Containers:
       - Overview: docs/containers/overview.md
   - About:

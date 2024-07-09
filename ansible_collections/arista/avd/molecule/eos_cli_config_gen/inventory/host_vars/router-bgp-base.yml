@@ -28,6 +28,7 @@ router_bgp:
       always: true
     bestpath:
       d_path: true
+    redistribute_internal: false
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24
@@ -52,6 +53,14 @@ router_bgp:
         enabled: true
         default: 100G
       ttl_maximum_hops: 1
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+        direction_out:
+          action: permit
+          include_community_list: true
     - name: test-link-bandwidth2
       link_bandwidth:
         enabled: true
@@ -67,8 +76,6 @@ router_bgp:
     - prefix: 2.2.1.0/24
     - prefix: 1.12.1.0/24
       as_set: true
-      advertise_map: ADV-MAP
-      supress_map: SUP-MAP
       summary_only: true
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
@@ -98,6 +105,8 @@ router_bgp:
       - prefix: 172.16.0.0/12
       - prefix: 192.168.0.0/16
         route_map: RM-FOO-MATCH
+    bgp:
+      redistribute_internal: false
     peer_groups:
       - name: foo
         prefix_list_in: PL-BAR-v4-IN
@@ -136,6 +145,8 @@ router_bgp:
       - prefix: 2001:db8:100::/40
       - prefix: 2001:db8:200::/40
         route_map: RM-BAR-MATCH
+    bgp:
+      redistribute_internal: true
     peer_groups:
       - name: baz
         prefix_list_in: PL-BAR-v6-IN
@@ -203,6 +214,14 @@ router_bgp:
         all: true
       # Testing bfd false OUTSIDE a peer group that should NOT render
       bfd: false
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+        direction_out:
+          action: permit
+          include_community_list: true
     - ip_address: 192.0.3.3
       remote_as: 65434
       send_community: standard
@@ -211,6 +230,12 @@ router_bgp:
         all: false
       # Test no config generation
       default_originate:
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+          include_sub_route_map: true
     - ip_address: 192.0.3.4
       remote_as: 65435
       send_community: large

@@ -3,9 +3,6 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 
-from .avd_schema_tools import AvdSchemaTools
-from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
-
 
 def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -> dict:
     """
@@ -21,8 +18,10 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
         Device Structured Configuration as a dictionary
     """
     # pylint: disable=import-outside-toplevel
-    from .vendor.eos_designs.get_structured_config import get_structured_config
-    from .vendor.errors import AristaAvdError
+    from ._eos_designs.structured_config import get_structured_config
+    from ._errors import AristaAvdError
+    from .avd_schema_tools import AvdSchemaTools
+    from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
 
     # pylint: enable=import-outside-toplevel
     #

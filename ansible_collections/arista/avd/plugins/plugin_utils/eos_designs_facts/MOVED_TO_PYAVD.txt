@@ -1,0 +1,1 @@
+The eos_designs_facts Python module has been moved to PyAVD in the folder /python-avd/pyavd/_eos_designs/eos_designs_facts/

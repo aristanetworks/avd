@@ -13,6 +13,9 @@ title: arista.avd.yaml_templates_to_facts
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.yaml_templates_to_facts` when using this plugin.
 
+!!! danger "This plugin is **deprecated**"
+    This module will be removed in version 5.0.0.
+
 Set facts from YAML via Jinja2 templates
 
 ## Synopsis
@@ -51,7 +54,7 @@ Set facts from YAML produced by Jinja2 templates
   arista.avd.yaml_templates_to_facts:
     root_key: structured_config
     templates:
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
+      - python_module: "pyavd._eos_designs.structured_config.base"
         python_class_name: "AvdStructuredConfig"
       - template: "mlag/main.j2"
       - template: "designs/underlay/main.j2"

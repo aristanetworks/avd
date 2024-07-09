@@ -194,6 +194,13 @@ anta.tests.routing.bgp:
       custom_field: 'BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.20)'
 - VerifyBGPSpecificPeers:
     address_families:
+    - afi: evpn
+      peers:
+      - 10.255.1.2
+    result_overwrite:
+      custom_field: 'BGP EVPN Peer: dc1-wan2 (IP: 10.255.1.2)'
+- VerifyBGPSpecificPeers:
+    address_families:
     - afi: path-selection
       peers:
       - 10.255.255.10
@@ -393,6 +400,18 @@ anta.tests.software:
     - v1.13.6
     - v1.8.0
 anta.tests.stun:
+- VerifyStunClient:
+    result_overwrite:
+      custom_field: 'Source IPv4 Address: 172.18.3.2 Source Port: 4500'
+    stun_clients:
+    - source_address: 172.18.3.2
+      source_port: 4500
+- VerifyStunClient:
+    result_overwrite:
+      custom_field: 'Source IPv4 Address: 100.64.3.2 Source Port: 4500'
+    stun_clients:
+    - source_address: 100.64.3.2
+      source_port: 4500
 - VerifyStunClient:
     stun_clients:
     - public_address: 172.18.3.21

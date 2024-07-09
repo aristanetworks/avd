@@ -62,12 +62,27 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: dc1-leaf1b
     description: dc1-leaf1b
+  - ip_address: 10.255.1.1
+    peer: dc1-wan1
+    description: dc1-wan1
+    remote_as: '65101'
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 10.255.1.1
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -224,36 +239,22 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
-    match:
-    - extcommunity ECL-EVPN-SOO
-    set:
-    - as-path match all replacement auto auto
-  - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny other routes from the HA peer
     match:
     - as-path ASPATH-WAN
-    set:
-    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Advertise local routes towards LAN
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
   - sequence: 20
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
-  - sequence: 30
-    type: permit
-    description: Advertise WAN HA prefixes towards LAN
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -268,6 +269,27 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 10.255.2.1:100 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
