@@ -54,12 +54,13 @@
 {%             endif %}
 {%         endif %}
 {%     endfor %}
-{%     if monitor_sessions_default_encapsulation_gre is arista.avd.defined %}
+{%     if monitor_sessions_default_encapsulation_gre.payload is arista.avd.defined %}
 
 ### Monitor Sessions Default
 
 | Settings | Values |
-| Encapsulation Gre Payload | monitor_sessions_default_encapsulation_gre.payload |
+| -------- | ------ |
+| Encapsulation GRE Payload | monitor_sessions_default_encapsulation_gre.payload |
 {%     endif %}
 
 #### Monitor Sessions Device Configuration
