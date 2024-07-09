@@ -99,6 +99,9 @@ dot1x
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%             endif %}
 {%         endif %}
+{%         if dot1x.mac_based_auth.radius.delimiter is arista.avd.defined and dot1x.mac_based_auth.radius.mac_string_letter_case is arista.avd.defined %}
+   mac-based-auth radius av-pair user-name delimiter {{ dot1x.mac_based_auth.radius.delimiter }} {{ dot1x.mac_based_auth.radius.mac_string_letter_case }}
+{%         endif %}
 {%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
    supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds
 {%         endif %}

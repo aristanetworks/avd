@@ -1556,6 +1556,28 @@ keys:
             max: 300
             convert_types:
             - str
+      mac_based_auth:
+        type: dict
+        description: Dot1x mac based auth.
+        keys:
+          radius:
+            type: dict
+            description: RADIUS parameters.
+            keys:
+              delimiter:
+                type: str
+                description: Delimiter to use in MAC address string.
+                valid_values:
+                - colon
+                - hyphen
+                - none
+                - period
+              mac_string_letter_case:
+                type: str
+                description: MAC address string in lowercase/uppercase.
+                valid_values:
+                - lowercase
+                - uppercase
       radius_av_pair:
         type: dict
         keys:
@@ -3096,6 +3118,25 @@ keys:
                       max: 65535
                       convert_types:
                       - str
+            aaa:
+              type: dict
+              keys:
+                unresponsive:
+                  type: dict
+                  description: Configure AAA timeout options.
+                  keys:
+                    eap_response:
+                      type: str
+                      description: EAP response to send.
+                      valid_values:
+                      - success
+                      - disabled
+                    action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action
+                    phone_action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
         service_profile:
           type: str
           description: QOS profile.

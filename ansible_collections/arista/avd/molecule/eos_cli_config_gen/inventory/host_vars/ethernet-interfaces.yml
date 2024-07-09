@@ -1354,3 +1354,20 @@ ethernet_interfaces:
         inner_vlan: 11
       network:
         protocol: client inner
+  - name: Ethernet70
+    description: dot1x_aaa_unresponsive
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          eap_response: success
+          action:
+            traffic_allow_vlan: 10
+          phone_action:
+            apply_cached_results: true
+            cached_results_timeout:
+              time_duration: 10
+              time_duration_unit: hours
+            traffic_allow: true
+            apply_alternate: true
+      mac_based_access_list: true

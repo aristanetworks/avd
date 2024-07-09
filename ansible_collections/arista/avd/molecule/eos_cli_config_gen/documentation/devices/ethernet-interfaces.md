@@ -141,6 +141,7 @@ sFlow is disabled.
 | Ethernet67 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet68 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 | IP NAT service-profile | - | - | - | - | - |
+| Ethernet70 |  dot1x_aaa_unresponsive | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -1141,6 +1142,14 @@ interface Ethernet69
    description IP NAT service-profile
    switchport
    ip nat service-profile TEST-NAT-PROFILE
+!
+interface Ethernet70
+   description dot1x_aaa_unresponsive
+   no shutdown
+   switchport
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
+   dot1x aaa unresponsive action traffic allow vlan 10
+   dot1x mac based access-list
 ```
 
 ## BFD
@@ -1195,6 +1204,7 @@ interface Ethernet69
 | Ethernet43 | - | - | - | - | - | - | - | - |
 | Ethernet44 | - | - | - | - | - | - | - | - |
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
+| Ethernet70 | - | - | - | - | - | - | - | - |
 
 ## Power Over Ethernet (PoE)
 
