@@ -1,0 +1,244 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  metadata:
+    type: dict
+    description: |-
+      The data under `metadata` is used for documentation, validation or integration purposes.
+      It will not affect the generated EOS configuration.
+    keys:
+      platform:
+        type: str
+      system_mac_address:
+        type: str
+      cv_tags:
+        type: dict
+        keys:
+          device_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                value:
+                  type: str
+                  required: true
+          interface_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  required: true
+                tags:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      value:
+                        type: str
+                        required: true
+      cv_pathfinder:
+        type: dict
+        description: Metadata used for CV Pathfinder visualization on CloudVision.
+        keys:
+          role:
+            type: str
+          region:
+            type: str
+          zone:
+            type: str
+          site:
+            type: str
+          vtep_ip:
+            type: str
+          ssl_profile:
+            type: str
+          address:
+            # Only used by pathfinders and only if 'cv_pathfinder_site' is set.
+            type: str
+          pathfinders:
+            type: list
+            items:
+              type: dict
+              keys:
+                vtep_ip:
+                  type: str
+                  required: true
+          interfaces:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carrier:
+                  type: str
+                circuit_id:
+                  type: str
+                pathgroup:
+                  type: str
+                public_ip:
+                  type: str
+          pathgroups:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                imported_carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+          regions:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                name:
+                  type: str
+                zones:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      sites:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            id:
+                              type: int
+                            name:
+                              type: str
+                            location:
+                              type: dict
+                              keys:
+                                address:
+                                  type: str
+          vrfs:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                vni:
+                  type: int
+                avts:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      constraints:
+                        type: dict
+                        keys:
+                          jitter:
+                            type: int
+                          latency:
+                            type: int
+                          lossrate:
+                            type: str
+                            convert_types:
+                              - float
+                      description:
+                        type: str
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      pathgroups:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            name:
+                              type: str
+                            preference:
+                              type: str
+          internet_exit_policies:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                type:
+                  type: str
+                  required: true
+                city:
+                  type: str
+                  required: true
+                country:
+                  type: str
+                  required: true
+                upload_bandwidth:
+                  type: int
+                download_bandwidth:
+                  type: int
+                firewall:
+                  type: bool
+                  required: true
+                ips_control:
+                  type: bool
+                  required: true
+                acceptable_use_policy:
+                  type: bool
+                  required: true
+                vpn_credentials:
+                  type: list
+                  required: true
+                  items:
+                    type: dict
+                    keys:
+                      fqdn:
+                        type: str
+                        required: true
+                      vpn_type:
+                        type: str
+                        required: true
+                      pre_shared_key:
+                        type: str
+                        required: true
+                tunnels:
+                  type: list
+                  required: true
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      preference:
+                        type: str
+                        required: true

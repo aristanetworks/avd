@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Queue Monitor](#queue-monitor)
-  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Length](#queue-monitor-length-1)
   - [Queue Monitor Configuration](#queue-monitor-configuration)
 
 ## Management

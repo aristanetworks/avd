@@ -192,10 +192,10 @@ vlan 2020
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | CORE | 50 | point-to-point | level-1-2 | False | md5 |
-| Ethernet2 | - | CORE | 500 | point-to-point | level-2 | False | md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | CORE | - | 50 | point-to-point | level-1-2 | False | md5 |
+| Ethernet2 | - | CORE | - | 500 | point-to-point | level-2 | False | md5 |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -297,10 +297,6 @@ interface Ethernet8
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
 | Port-Channel3 | 0000:0000:0102:0000:0034 | all-active | 01:02:00:00:00:34 |
-| Port-Channel8 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
-| Port-Channel8.111 | 0000:0000:0303:0202:0111 | all-active | 03:03:02:02:01:11 |
-| Port-Channel8.222 | 0000:0000:0303:0202:0222 | all-active | 03:03:02:02:02:22 |
-| Port-Channel8.333 | 0000:0000:0303:0202:0333 | all-active | 03:03:02:02:03:33 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -343,34 +339,21 @@ interface Port-Channel8
    description CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
 !
 interface Port-Channel8.111
    vlan id 111
    encapsulation vlan
       client dot1q 111 network client
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0111
-      route-target import 03:03:02:02:01:11
 !
 interface Port-Channel8.222
    vlan id 222
    encapsulation vlan
       client dot1q 222 network client
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0222
-      route-target import 03:03:02:02:02:22
 !
 interface Port-Channel8.333
    vlan id 434
    encapsulation vlan
       client dot1q 333 network client
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0333
-      route-target import 03:03:02:02:03:33
 ```
 
 ### Loopback Interfaces
@@ -622,7 +605,7 @@ ASN Notation: asplain
 | 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
-| 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - | - |
+| 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -642,17 +625,17 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP VLANs
 
@@ -834,6 +817,8 @@ mpls ldp
 ## Patch Panel
 
 ### Patch Panel Summary
+
+#### Patch Panel Connections
 
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |

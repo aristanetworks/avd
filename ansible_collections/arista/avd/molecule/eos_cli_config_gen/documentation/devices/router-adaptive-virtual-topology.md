@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
-  - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
+  - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology-1)
 
 ## Management
 

@@ -32,13 +32,16 @@ vlans:
 - id: 100
   name: SVI_100
   tenant: L2LS_OSPF
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 192.168.254.1/31
   no_autostate: true
   mtu: 9214
+  ip_address: 192.168.254.1/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
 - name: Vlan100
@@ -46,6 +49,16 @@ vlan_interfaces:
   description: SVI_100
   shutdown: false
   ip_address_virtual: 10.0.100.1/24
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  ip_address: 172.23.254.3/24
+  ip_virtual_router_addresses:
+  - 172.23.254.1
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_OSPF-SPINE1_Po3
@@ -60,14 +73,14 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: '100'
+  vlans: 100,4092
   mlag: 1
 - name: Port-Channel2
   description: OSPF-LEAF2_Po1
   type: switched
   shutdown: false
   mode: trunk
-  vlans: '100'
+  vlans: 100,4092
   mlag: 2
 ethernet_interfaces:
 - name: Ethernet3

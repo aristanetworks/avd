@@ -1,0 +1,255 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_security:
+    type: dict
+    keys:
+      entropy_source:
+        type: str
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
+          new_key: entropy_sources
+      entropy_sources:
+        type: dict
+        description: Source of entropy.
+        keys:
+          hardware:
+            type: bool
+            description: Use a hardware based source.
+          haveged:
+            type: bool
+            description: Use the HAVEGE algorithm.
+          cpu_jitter:
+            type: bool
+            description: Use the Jitter RNG algorithm of a CPU based source.
+          hardware_exclusive:
+            type: bool
+            description: Only use entropy from the hardware source.
+      password:
+        type: dict
+        keys:
+          minimum_length:
+            type: int
+            min: 1
+            max: 32
+            convert_types:
+            - str
+          encryption_key_common:
+            type: bool
+          encryption_reversible:
+            type: str
+          policies:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                minimum:
+                  type: dict
+                  keys:
+                    digits:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    length:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    lower:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    special:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    upper:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                maximum:
+                  type: dict
+                  keys:
+                    repetitive:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    sequential:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+      ssl_profiles:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            tls_versions:
+              type: str
+              description: |
+                List of allowed TLS versions as string.
+                Examples:
+                  - "1.0"
+                  - "1.0 1.1"
+              convert_types:
+              - float
+            cipher_list:
+              type: str
+              description: |
+                cipher_list syntax follows the openssl cipher strings format.
+                Colon (:) separated list of allowed ciphers as a string.
+            trust_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: |
+                    List of trust certificate names.
+                    Examples:
+                      - test1.crt
+                      - test2.crt
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    basic_constraint_ca:
+                      type: bool
+                    hostname_fqdn:
+                      type: bool
+                      description: |
+                        Enforce hostname to be FQDN without wildcard.
+                policy_expiry_date_ignore:
+                  type: bool
+                system:
+                  type: bool
+                  description: |
+                    Use system-supplied trust certificates.
+            chain_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: |
+                    List of chain certificate names.
+                    Examples:
+                      - chain1.crt
+                      - chain2.crt
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    basic_constraint_ca:
+                      type: bool
+                    include_root_ca:
+                      type: bool
+            certificate:
+              type: dict
+              keys:
+                file:
+                  type: str
+                key:
+                  type: str
+            certificate_revocation_lists:
+              type: list
+              description: |
+                List of CRLs (Certificate Revocation List).
+                If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.
+              items:
+                type: str
+      shared_secret_profiles:
+        type: list
+        primary_key: profile
+        items:
+          type: dict
+          keys:
+            profile:
+              type: str
+            secrets:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  secret:
+                    type: str
+                    required: true
+                  secret_type:
+                    type: str
+                    default: "7"
+                    valid_values: [ "0", "7", "8a" ]
+                    convert_types:
+                    - int
+                  receive_lifetime:
+                    type: dict
+                    required: true
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: |-
+                          Start date and time of lifetime of the secret. End date should be greater than start date.
+                          Formats supported:
+                          1. mm/dd/yyyy hh:mm:ss
+                          2. yyyy-mm-dd hh:mm:ss
+                          e.g 2024-12-20 10:00:00
+                      end_date_time:
+                        type: str
+                        description: |-
+                          End date and time of lifetime of the secret. End date should be greater than start date.
+                          Formats supported:
+                          1. mm/dd/yyyy hh:mm:ss
+                          2. yyyy-mm-dd hh:mm:ss
+                          e.g 2024-12-20 10:00:00
+                  transmit_lifetime:
+                    type: dict
+                    required: true
+                    keys:
+                      infinite:
+                        type: bool
+                      start_date_time:
+                        type: str
+                        description: |-
+                          Start date and time of lifetime of the secret. End date should be greater than start date.
+                          Formats supported:
+                          1. mm/dd/yyyy hh:mm:ss
+                          2. yyyy-mm-dd hh:mm:ss
+                          e.g 2024-12-20 10:00:00
+                      end_date_time:
+                        type: str
+                        description: |-
+                          End date and time of lifetime of the secret. End date should be greater than start date.
+                          Formats supported:
+                          1. mm/dd/yyyy hh:mm:ss
+                          2. yyyy-mm-dd hh:mm:ss
+                          e.g 2024-12-20 10:00:00
+                  local_time:
+                    type: bool
+                    description: Configuring secret using the local timezone from system clock. Default is UTC.

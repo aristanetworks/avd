@@ -1,0 +1,304 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router isis #}
+{% if router_isis.instance is arista.avd.defined %}
+!
+router isis {{ router_isis.instance }}
+{%     if router_isis.net is arista.avd.defined %}
+   net {{ router_isis.net }}
+{%     endif %}
+{%     if router_isis.is_type is arista.avd.defined %}
+   is-type {{ router_isis.is_type }}
+{%     endif %}
+{%     for redistribute_route in router_isis.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
+{%         if redistribute_route.source_protocol is arista.avd.defined %}
+{%             set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%             if redistribute_route.source_protocol == 'isis' %}
+{%                 set redistribute_route_cli = redistribute_route_cli ~ " instance" %}
+{%             elif redistribute_route.source_protocol == 'ospf' %}
+{%                 if redistribute_route.include_leaked is arista.avd.defined(true) %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%                 endif %}
+{%                 if redistribute_route.ospf_route_type is not arista.avd.defined %}
+{%                     continue %}
+{%                 endif %}
+{%                 set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_route_type %}
+{%             elif redistribute_route.source_protocol == 'ospfv3' %}
+{%                 if redistribute_route.ospf_route_type is not arista.avd.defined %}
+{%                     continue %}
+{%                 endif %}
+{%                 set redistribute_route_cli = redistribute_route_cli ~ " match " ~ redistribute_route.ospf_route_type %}
+{%             elif redistribute_route.source_protocol in ['static', 'connected'] %}
+{%                 if redistribute_route.include_leaked is arista.avd.defined(true) %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%                 endif %}
+{%             endif %}
+{%             if redistribute_route.route_map is arista.avd.defined %}
+{%                 set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
+{%             endif %}
+   {{ redistribute_route_cli }}
+{%         endif %}
+{%     endfor %}
+{%     if router_isis.router_id is arista.avd.defined %}
+   router-id ipv4 {{ router_isis.router_id }}
+{%     endif %}
+{%     if router_isis.log_adjacency_changes is arista.avd.defined(true) %}
+   log-adjacency-changes
+{%     elif router_isis.log_adjacency_changes is arista.avd.defined(false) %}
+   no log-adjacency-changes
+{%     endif %}
+{%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
+   mpls ldp sync default
+{%     endif %}
+{%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
+{%         if router_isis.timers.local_convergence.delay is arista.avd.defined %}
+   timers local-convergence-delay {{ router_isis.timers.local_convergence.delay }} protected-prefixes
+{%         else %}
+   timers local-convergence-delay protected-prefixes
+{%         endif %}
+{%     endif %}
+{%     if router_isis.set_overload_bit.enabled is arista.avd.defined %}
+   set-overload-bit
+{%     endif %}
+{%     if router_isis.set_overload_bit.on_startup is arista.avd.defined %}
+{%         if router_isis.set_overload_bit.on_startup.delay is arista.avd.defined %}
+   set-overload-bit on-startup {{ router_isis.set_overload_bit.on_startup.delay }}
+{%         elif router_isis.set_overload_bit.on_startup.wait_for_bgp.enabled is arista.avd.defined(true) %}
+{%             if router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout is arista.avd.defined %}
+   set-overload-bit on-startup wait-for-bgp timeout {{ router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout }}
+{%             else %}
+   set-overload-bit on-startup wait-for-bgp
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
+   advertise passive-only
+{%     endif %}
+{%     if router_isis.spf_interval.interval is arista.avd.defined %}
+{%         set spf_interval_cli = "spf-interval " ~ router_isis.spf_interval.interval %}
+{%         if router_isis.spf_interval.interval_unit is arista.avd.defined %}
+{%             set spf_interval_cli = spf_interval_cli ~ " " ~ router_isis.spf_interval.interval_unit %}
+{%             set wait_hold_interval_unit = " milliseconds" %}
+{%         endif %}
+{%         if router_isis.spf_interval.wait_interval is arista.avd.defined %}
+{%             set spf_interval_cli = spf_interval_cli ~ " " ~ router_isis.spf_interval.wait_interval ~ wait_hold_interval_unit | arista.avd.default("") %}
+{%             if router_isis.spf_interval.hold_interval is arista.avd.defined %}
+{%                 set spf_interval_cli = spf_interval_cli ~ " " ~ router_isis.spf_interval.hold_interval ~ wait_hold_interval_unit | arista.avd.default("") %}
+{%             endif %}
+{%         endif %}
+   {{ spf_interval_cli }}
+{%     endif %}
+{%     if router_isis.authentication.both.mode is arista.avd.defined
+          and (router_isis.authentication.both.mode in ["md5", "text"]
+               or (router_isis.authentication.both.mode == "sha" and router_isis.authentication.both.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.both.mode == "shared-secret"
+                   and router_isis.authentication.both.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.both.shared_secret.algorithm is arista.avd.defined)) %}
+{%         set isis_auth_cli = "authentication mode " ~ router_isis.authentication.both.mode %}
+{%         if router_isis.authentication.both.mode == "sha" %}
+{%             set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.both.sha.key_id %}
+{%         elif router_isis.authentication.both.mode == "shared-secret" %}
+{%             set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.both.shared_secret.profile %}
+{%             set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.both.shared_secret.algorithm %}
+{%         endif %}
+{%         if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
+{%             set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%         endif %}
+   {{ isis_auth_cli }}
+{%     else %}
+{%         if router_isis.authentication.level_1.mode is arista.avd.defined
+               and (router_isis.authentication.level_1.mode in ["md5", "text"]
+               or (router_isis.authentication.level_1.mode == "sha" and router_isis.authentication.level_1.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.level_1.mode == "shared-secret"
+                   and router_isis.authentication.level_1.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.level_1.shared_secret.algorithm is arista.avd.defined)) %}
+{%             set isis_auth_cli = "authentication mode " ~ router_isis.authentication.level_1.mode %}
+{%             if router_isis.authentication.level_1.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.level_1.sha.key_id %}
+{%             elif router_isis.authentication.level_1.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_1.shared_secret.profile %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_1.shared_secret.algorithm %}
+{%             endif %}
+{%             if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%             endif %}
+   {{ isis_auth_cli }} level-1
+{%         endif %}
+{%         if router_isis.authentication.level_2.mode is arista.avd.defined
+               and (router_isis.authentication.level_2.mode in ["md5", "text"]
+               or (router_isis.authentication.level_2.mode == "sha" and router_isis.authentication.level_2.sha.key_id is arista.avd.defined)
+               or (router_isis.authentication.level_2.mode == "shared-secret"
+                   and router_isis.authentication.level_2.shared_secret.profile is arista.avd.defined
+                   and router_isis.authentication.level_2.shared_secret.algorithm is arista.avd.defined)) %}
+{%             set isis_auth_cli = "authentication mode " ~ router_isis.authentication.level_2.mode %}
+{%             if router_isis.authentication.level_2.mode == "sha" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ router_isis.authentication.level_2.sha.key_id %}
+{%             elif router_isis.authentication.level_2.mode == "shared-secret" %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_2.shared_secret.profile %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_2.shared_secret.algorithm %}
+{%             endif %}
+{%             if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
+{%             endif %}
+   {{ isis_auth_cli }} level-2
+{%         endif %}
+{%     endif %}
+{%     if router_isis.graceful_restart is arista.avd.defined %}
+{%         if router_isis.graceful_restart.enabled is arista.avd.defined(true) %}
+   graceful-restart
+{%         endif %}
+{%         if router_isis.graceful_restart.t2.level_1_wait_time is arista.avd.defined %}
+   graceful-restart t2 level-1 {{ router_isis.graceful_restart.t2.level_1_wait_time }}
+{%         endif %}
+{%         if router_isis.graceful_restart.t2.level_2_wait_time is arista.avd.defined %}
+   graceful-restart t2 level-2 {{ router_isis.graceful_restart.t2.level_2_wait_time }}
+{%         endif %}
+{%         if router_isis.graceful_restart.restart_hold_time is arista.avd.defined %}
+   graceful-restart restart-hold-time {{ router_isis.graceful_restart.restart_hold_time }}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.authentication is arista.avd.defined %}
+{%         set both_key_ids = [] %}
+{%         if router_isis.authentication.both.key_ids is arista.avd.defined %}
+{%             for auth_key in router_isis.authentication.both.key_ids | arista.avd.natural_sort("id") %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     do both_key_ids.append(auth_key.id) %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }}
+{%                     else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if router_isis.authentication.level_1.key_ids is arista.avd.defined %}
+{%             for auth_key in router_isis.authentication.level_1.key_ids %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.id not in both_key_ids
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+{%                     else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if router_isis.authentication.level_2.key_ids is arista.avd.defined %}
+{%             for auth_key in router_isis.authentication.level_2.key_ids %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.id not in both_key_ids
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+{%                     else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if router_isis.authentication.both.key_type is arista.avd.defined and router_isis.authentication.both.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.both.key_type }} {{ router_isis.authentication.both.key }}
+{%         else %}
+{%             if router_isis.authentication.level_1.key_type is arista.avd.defined and router_isis.authentication.level_1.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.level_1.key_type }} {{ router_isis.authentication.level_1.key }} level-1
+{%             endif %}
+{%             if router_isis.authentication.level_2.key_type is arista.avd.defined and router_isis.authentication.level_2.key is arista.avd.defined %}
+   authentication key {{ router_isis.authentication.level_2.key_type }} {{ router_isis.authentication.level_2.key }} level-2
+{%             endif %}
+{%         endif %}
+{%     endif %}
+   !
+{%     if router_isis.address_family is arista.avd.defined %}
+{%         for address_family in router_isis.address_family %}
+   address-family {{ address_family }}
+{%             if router_isis.isis_af_defaults is arista.avd.defined %}
+{%                 for af_default in router_isis.isis_af_defaults %}
+      {{ af_default }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+   !
+{%     endif %}
+{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
+   address-family ipv4 unicast
+{%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
+      maximum-paths {{ router_isis.address_family_ipv4.maximum_paths }}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enabled is arista.avd.defined(true) %}
+{%             set lu_cli = "tunnel source-protocol bgp ipv4 labeled-unicast" %}
+{%             if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf is arista.avd.defined %}
+{%                 set lu_cli = lu_cli ~ " rcf " ~ router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf %}
+{%             endif %}
+      {{ lu_cli }}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.bfd_all_interfaces is arista.avd.defined(true) %}
+      bfd all-interfaces
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+{%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode %}
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
+{%                 set ti_lfa_cli = ti_lfa_cli ~ " " ~ router_isis.address_family_ipv4.fast_reroute_ti_lfa.level %}
+{%             endif %}
+      {{ ti_lfa_cli }}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg" %}
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+{%                 set ti_lfa_srlg_cli = ti_lfa_srlg_cli ~ " strict" %}
+{%             endif %}
+      {{ ti_lfa_srlg_cli }}
+{%         endif %}
+   !
+{%     endif %}
+{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
+   address-family ipv6 unicast
+{%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
+      maximum-paths {{ router_isis.address_family_ipv6.maximum_paths }}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.bfd_all_interfaces is arista.avd.defined(true) %}
+      bfd all-interfaces
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+{%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode %}
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.level is arista.avd.defined %}
+{%                 set ti_lfa_cli = ti_lfa_cli ~ " " ~ router_isis.address_family_ipv6.fast_reroute_ti_lfa.level %}
+{%             endif %}
+      {{ ti_lfa_cli }}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg" %}
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+{%                 set ti_lfa_srlg_cli = ti_lfa_srlg_cli ~ " strict" %}
+{%             endif %}
+      {{ ti_lfa_srlg_cli }}
+{%         endif %}
+   !
+{%     endif %}
+{%     if router_isis.segment_routing_mpls is arista.avd.defined %}
+   segment-routing mpls
+{%         if router_isis.segment_routing_mpls.enabled is arista.avd.defined(true) %}
+      no shutdown
+{%         elif router_isis.segment_routing_mpls.enabled is arista.avd.defined(false) %}
+      shutdown
+{%         endif %}
+{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.natural_sort('prefix') %}
+{%             if prefix_segment.prefix is arista.avd.defined and prefix_segment.index is arista.avd.defined %}
+      prefix-segment {{ prefix_segment.prefix }} index {{ prefix_segment.index }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_isis.eos_cli is arista.avd.defined %}
+   {{ router_isis.eos_cli | indent(3, false) }}
+{%     endif %}
+{% endif %}

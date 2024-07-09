@@ -1,0 +1,62 @@
+---
+- name: Test cv_zscaler_endpoints lookup plugin
+  tags: [always]
+  delegate_to: localhost
+  when: cv_token is arista.avd.defined
+  vars:
+    # This is not working with ansible-test, so adjust for manual testing.
+    cv_token: "{{ lookup(ansible.builtin.env, 'CV_TOKEN') }}"
+    cv_server: "www.cv-play.corp.arista.io"
+    serial_number: ABCD1234
+    fabric_name: Test
+    type: wan_router
+    wan_router:
+      nodes:
+        - name: testhost
+          cv_pathfinder_region: REGION1
+          cv_pathfinder_site: SITE1
+    cv_pathfinder_regions:
+      - name: REGION1
+        id: 1
+        sites:
+          - name: SITE1
+            id: 1
+            location: Copenhagen, Denmark
+    expected_output:
+      cloud_name: zscalerbeta
+      device_location:
+        city: ""
+        country: ""
+        latitude: 55.67531204223633
+        longitude: 12.569733619689941
+      primary:
+        city: Frankfurt
+        country: Germany
+        datacenter: FRA4
+        ip_address: 165.225.72.39
+        latitude: 50.0
+        longitude: 9.0
+      secondary:
+        city: Washington, DC
+        country: United States
+        datacenter: WAS1
+        ip_address: 104.129.194.39
+        latitude: 39.0
+        longitude: -77.0
+      tertiary:
+        city: Fremont, CA
+        country: United States
+        datacenter: FMT1
+        ip_address: 199.168.148.132
+        latitude: 37.0
+        longitude: -121.0
+
+  block:
+    - name: Print output
+      ansible.builtin.debug:
+        msg: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
+
+    - name: Assert output
+      ansible.builtin.assert:
+        that:
+          - lookup('arista.avd.cv_zscaler_endpoints') == expected_output

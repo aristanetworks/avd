@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Multicast](#multicast)
-  - [Router MSDP](#router-msdp)
+  - [Router MSDP](#router-msdp-1)
 
 ## Management
 
@@ -85,7 +85,7 @@ router msdp
          local-interface Loopback13
          keepalive 5 15
          sa-filter in list ACL3
-         sa-filter out list ACL3
+         sa-filter out list ACL4
          description Some other kind of MSDP Peer
          sa-limit 100
 ```

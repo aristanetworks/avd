@@ -123,6 +123,10 @@ options:
     required: false
     type: bool
     default: true
+deprecated:
+  removed_in: "5.0.0"
+  why: The internal 'arista.avd.yaml_templates_to_facts' action plugin is no longer used by AVD.
+  alternative: The plugin is released as open source, so it can be copied and reused according to the license and copyright.
 """
 
 EXAMPLES = r"""
@@ -131,7 +135,7 @@ EXAMPLES = r"""
   arista.avd.yaml_templates_to_facts:
     root_key: structured_config
     templates:
-      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
+      - python_module: "pyavd._eos_designs.structured_config.base"
         python_class_name: "AvdStructuredConfig"
       - template: "mlag/main.j2"
       - template: "designs/underlay/main.j2"

@@ -16,7 +16,6 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -43,6 +42,7 @@ router_bgp:
       interval: 2020
       min_rx: 2000
       multiplier: 3
+    route_reflector_client: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -173,20 +173,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -514,11 +500,27 @@ vxlan_interface:
         vni: 66
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:
     - name: Role
       value: pathfinder
+    - name: Region
+      value: AVD_Land_West
     - name: PathfinderSet
       value: PATHFINDERS
     interface_tags:
@@ -534,6 +536,9 @@ metadata:
     role: pathfinder
     ssl_profile: profileB
     vtep_ip: 192.168.144.2
+    region: AVD_Land_West
+    site: Site423
+    address: Somewhere-warm
     interfaces:
     - name: Ethernet1
       carrier: Orange
@@ -570,6 +575,10 @@ metadata:
       - name: AVD_Land_West-ZONE
         id: 1
         sites:
+        - name: Site404
+          id: 404
+          location:
+            address: Not Found
         - name: Site422
           id: 422
           location:
@@ -586,6 +595,8 @@ metadata:
         sites:
         - name: Site511
           id: 511
+          location:
+            address: Miami
     vrfs:
     - name: default
       vni: 1

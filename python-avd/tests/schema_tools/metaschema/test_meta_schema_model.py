@@ -3,28 +3,30 @@
 # that can be found in the LICENSE file.
 import json
 from pathlib import Path
-from sys import path
+from sys import path, version_info
 
+import pytest
 import yaml
 
-# Override global path to load schema from source instead of any installed version.
-# Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-path.insert(0, str(Path(__file__).parents[3]))
+if version_info >= (3, 10):
+    # Override global path to load schema from source instead of any installed version.
+    # Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
+    path.insert(0, str(Path(__file__).parents[3]))
 
-from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
-from schema_tools.store import create_store
+    from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
+    from schema_tools.store import create_store
+
+    raw_schema = create_store()["eos_designs"]
 
 
 class NoAliasDumper(yaml.Dumper):
     """Dump YAML without generating aliases and anchors for reused ids"""
 
-    def ignore_aliases(self, data):
+    def ignore_aliases(self, _):
         return True
 
 
-raw_schema = create_store()["eos_designs"]
-
-
+@pytest.mark.skipif(version_info < (3, 10), reason="Our Pydantic models require minimum Python3.10")
 def test_pydantic_dump_matches_original_yaml():
     """
     Loads the schema _without_ resolving the $ref and then dumps the schema again as json.

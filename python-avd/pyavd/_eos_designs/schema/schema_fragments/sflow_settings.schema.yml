@@ -1,0 +1,73 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  sflow_settings:
+    documentation_options:
+      table: management-sflow-settings
+    type: dict
+    description: |-
+      sFlow settings.
+      The sFlow process will only be configured if any interface is enabled for sFlow.
+      For default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
+    keys:
+      sample:
+        type: dict
+        keys:
+          rate:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 4294967295
+            description: |-
+              Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.
+              A rate of 16384 corresponds to an average sample of one per 16384 packets.
+      destinations:
+        type: list
+        items:
+          type: dict
+          keys:
+            destination:
+              type: str
+              required: true
+              description: sFlow destination name or IP address.
+            port:
+              type: int
+              description: UDP Port number. The default port number for sFlow is 6343.
+              convert_types:
+                - str
+              min: 1
+              max: 65535
+            vrf:
+              type: str
+              description: |-
+                If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                The value of `vrf` will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.
+                  An error will be raised if inband management is not configured for the device.
+                - Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed.
+              convert_types:
+                - int
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: VRF name.
+            source_interface:
+              type: str
+              description: |-
+                Source interface to use for sFlow destinations in this VRF.
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.

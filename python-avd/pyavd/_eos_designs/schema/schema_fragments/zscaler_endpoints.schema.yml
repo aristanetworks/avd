@@ -1,0 +1,69 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  zscaler_endpoints:
+    type: dict
+    description: |-
+      PREVIEW: These keys are in preview mode.
+
+      Special data model used for testing the WAN internet-exit integration with Zscaler.
+      The model is supposed to be autofilled per-device by `eos_designs`.
+      Manually setting this model will take precedence and prevent `eos_designs` from trying to contact CloudVision.
+      This can be useful for offline testing or if CloudVision is not available or not configured for Zscaler integration.
+    keys:
+      primary:
+        type: dict
+        required: true
+        keys:
+          ip_address:
+            type: str
+            required: true
+          datacenter:
+            type: str
+            required: true
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true
+          latitude:
+            type: str
+            convert_types:
+              - int
+              - float
+            required: true
+          longitude:
+            type: str
+            convert_types:
+              - int
+              - float
+            required: true
+      secondary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
+      tertiary:
+        type: dict
+        $ref: eos_designs#/keys/zscaler_endpoints/keys/primary
+        required: false
+      cloud_name:
+        description: The name of the Zscaler cloud the CloudVision cluster is integrated with like 'zscaler1' or 'zscalerbeta'.
+        type: str
+        required: true
+      device_location:
+        description: The location of the calling device after being resolved by Zscaler location APIs. This is required since Zscaler only accepts their own variants of City and Country.
+        type: dict
+        required: true
+        keys:
+          city:
+            type: str
+            required: true
+          country:
+            type: str
+            required: true

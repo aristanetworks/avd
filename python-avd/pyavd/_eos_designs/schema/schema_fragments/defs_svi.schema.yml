@@ -1,0 +1,27 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  svi:
+    type: dict
+    $ref: "eos_designs#/$defs/svi_settings"
+    keys:
+      nodes:
+        type: list
+        primary_key: node
+        convert_types:
+          - dict
+        description: |
+          Define node specific configuration, such as unique IP addresses.
+          Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
+        items:
+          type: dict
+          $ref: "eos_designs#/$defs/svi_settings"
+          keys:
+            node:
+              type: str
+              description: l3_leaf inventory hostname.

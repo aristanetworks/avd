@@ -3,7 +3,10 @@
 # that can be found in the LICENSE file.
 from functools import cached_property
 
+# TODO: AVD5.0 change this to import from PyAVD instead and remove the utils from Ansible.
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+# TODO: AVD5.0 change this to import from PyAVD instead and remove the python_modules folder.
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions, InterfaceDescriptionData
 
 

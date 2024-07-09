@@ -49,7 +49,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Entropy source | hardware |
+| Entropy sources | hardware |
 | Common password encryption key | True |
 
 ### Management Security SSL Profiles
@@ -140,9 +140,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| aes128-gcm | 100 | 30 | True |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| aes128-gcm | 100 | 30 | True | allow |
 
 ###### Keys
 
@@ -161,9 +161,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| - | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| - | - | - | - | allow active-sak |
 
 ###### Keys
 
@@ -175,9 +175,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI |
-| ------ | ------------------- | ------------ | --- |
-| aes256-gcm-xpn | - | - | - |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
+| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| aes256-gcm-xpn | - | - | - | drop |
 
 ###### Keys
 
@@ -199,11 +199,14 @@ mac security
       key 1234c 7 <removed> fallback
       mka key-server priority 100
       mka session rekey-period 30
+      traffic unprotected allow
       sci
       l2-protocol lldp bypass unauthorized
    profile A2
       key 1234b 7 <removed>
+      traffic unprotected allow active-sak
    profile A3
       cipher aes256-gcm-xpn
       key ab 7 <removed>
+      traffic unprotected drop
 ```

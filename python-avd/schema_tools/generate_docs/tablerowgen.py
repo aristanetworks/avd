@@ -93,8 +93,8 @@ class TableRowGenBase(ABC):
             # TODO: Remove legacy output
             if LEGACY_OUTPUT:
                 return i * (indentation_count - 2) + "-" + " "  # Using space as last indentation to match legacy behavior
-            else:
-                return i * (indentation_count - 2) + "-" + i
+
+            return i * (indentation_count - 2) + "-" + i
 
         return i * indentation_count
 
@@ -187,7 +187,7 @@ class TableRowGenBase(ABC):
         Should render markdown for "default" field.
         """
         if self.schema.default is not None:
-            if isinstance(self.schema.default, (list, dict)) and len(self.schema.default) > 1:
+            if isinstance(self.schema.default, (list, dict)) and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40):
                 return "See (+) on YAML tab"
 
             return f"`{self.schema.default}`"

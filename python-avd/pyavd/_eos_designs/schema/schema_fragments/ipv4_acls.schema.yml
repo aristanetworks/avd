@@ -1,0 +1,47 @@
+# Copyright (c) 2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipv4_acls:
+    type: list
+    primary_key: name
+    description: |-
+      IPv4 extended access-lists supporting substitution on certain fields.
+      These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+
+      The substitution is useful when assigning the same access-list on multiple interfaces,
+      but where certain fields require unique values like the "interface_ip" or "peer_ip".
+      When using substitution, the interface name will be appended to the ACL name.
+    items:
+      $ref: "eos_cli_config_gen#/keys/ip_access_lists/items"
+      type: dict
+      keys:
+        name:
+          type: str
+          description: |-
+            Access-list name.
+            When using substitution for any fields, the interface name will be appended to the ACL name.
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              source:
+                type: str
+                description: |-
+                  This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+                  Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
+                  "<ip>" without a mask means host.
+                  Required except for remarks.
+              destination:
+                type: str
+                description: |-
+                  This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+                  Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
+                  "<ip>" without a mask means host.
+                  Required except for remarks.

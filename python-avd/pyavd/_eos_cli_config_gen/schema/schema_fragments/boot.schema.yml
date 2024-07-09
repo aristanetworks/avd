@@ -1,0 +1,24 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  boot:
+    display_name: System Boot Settings
+    description: |
+      Set the Aboot password.
+    type: dict
+    keys:
+      secret:
+        type: dict
+        keys:
+          hash_algorithm:
+            type: str
+            valid_values: ["md5", "sha512"]
+            default: "sha512"
+          key:
+            description: Hashed Password.
+            type: str

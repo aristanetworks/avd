@@ -1,6 +1,6 @@
 [project]
 name="pyavd"
-dynamic = ["version", "dependencies", "optional-dependencies"]
+dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
 description="Arista Validated Designs"
 readme = "README.md"
@@ -10,6 +10,7 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -17,25 +18,49 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 keywords = ["pyavd"]
-requires-python = ">=3.10"
+requires-python = ">=3.9"
+dependencies = [
+    "aristaproto>=0.1.1",
+    "cryptography>=38.0.4",
+    "deepmerge>=1.1.0",
+    "Jinja2>=3.0",
+    "jsonschema>=4.10.3",
+    "requests>=2.27.0",
+]
 
 [project.urls]
 homepage = "https://avd.arista.com"
 repository = "https://github.com/aristanetworks/avd"
+
+[project.optional-dependencies]
+ansible = [
+    "ansible-core>=2.15.0,<2.18.0",
+    "pyavd[ansible-collection]",
+]
+ansible-collection = [
+    "anta>=1.0.0",
+    "cvprac>=1.3.1",
+    "netaddr>=0.7.19",
+    "PyYAML>=6.0.0",
+    "treelib>=1.5.5",
+]
 
 [build-system]
 requires = [
     "setuptools>=66.1",
     "wheel",
     "jinja2>=3.0",
-    "jsonschema>=4.5.1,<4.18",
+    "jsonschema>=4.10.3",
+    "referencing>=0.35.0",
     "deepmerge>=1.1.0",
-    "md-toc>=8.1.8",
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
+    "eval-type-backport>=0.2.0", # Only needed for 3.9
+    "cryptography>=38.0.4",
+    "aristaproto>=0.1.1",
 ]
-build-backend = "custom-build-backend"
+build-backend = "custom_build_backend"
 backend-path = ["scripts"]
 
 [tool.setuptools]
@@ -50,12 +75,9 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["pyavd*"]
-exclude = ["vendor_overrides*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
-dependencies = {file = ["requirements.txt"]}
-optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }}
 
 [tool.black]
 line-length = 160
@@ -71,9 +93,12 @@ branch = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 89
+fail_under = 90
 include = [
   "pyavd/*"
+]
+omit = [
+  "pyavd/_cv/api/*"
 ]
 # Regexes for lines to exclude from consideration
 exclude_also = [
@@ -92,7 +117,7 @@ exclude_also = [
     "@(abc\\.)?abstractmethod",
     # Don't complain about TYPE_CHECKING blocks
     "if TYPE_CHECKING:",
-    # Dont' complain about Jinja2 internalcode
+    # Don't complain about Jinja2 internalcode
     # Note that except KeyError is a bit sad but this is the pattern
     "except KeyError:",
     "@internalcode",

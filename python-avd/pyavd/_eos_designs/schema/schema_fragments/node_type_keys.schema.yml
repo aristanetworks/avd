@@ -1,0 +1,268 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  node_type_keys:
+    type: list
+    description: |
+      Define Node Type Keys, to specify the properties of each node type in the fabric.
+      This allows for complete customization of the fabric layout and functionality.
+      `node_type_keys` should be defined in top level group_var for the fabric.
+      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+    convert_types:
+      - dict
+    primary_key: key
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+        type:
+          type: str
+          description: Type value matching this node_type_key.
+        connected_endpoints:
+          type: bool
+          default: false
+          description: Are endpoints connected to this node type.
+        default_evpn_role:
+          type: str
+          valid_values:
+            - none
+            - client
+            - server
+          default: none
+          description: Default evpn_role. Can be overridden in topology vars.
+        default_ptp_priority1:
+          type: int
+          min: 0
+          max: 255
+          default: 127
+          description: Default PTP priority 1
+        default_underlay_routing_protocol:
+          documentation_options:
+            table: node-type-keys
+          type: str
+          default: "ebgp"
+          convert_to_lower_case: true
+          $ref: "eos_designs#/keys/underlay_routing_protocol"
+          description: |
+            Set the default underlay routing_protocol.
+            Can be overridden by setting "underlay_routing_protocol" host/group_vars.
+        default_overlay_routing_protocol:
+          type: str
+          default: "ebgp"
+          convert_to_lower_case: true
+          valid_values:
+            - "ebgp"
+            - "ibgp"
+            - "her"
+            - "cvx"
+            - "none"
+          description: |
+            Set the default overlay routing_protocol.
+            Can be overridden by setting "overlay_routing_protocol" host/group_vars.
+        default_mpls_overlay_role:
+          type: str
+          valid_values:
+            - "client"
+            - "server"
+            - "none"
+          description: |
+            Set the default mpls overlay role.
+            Acting role in overlay control plane.
+        default_overlay_address_families:
+          type: list
+          convert_types:
+            - "str"
+          items:
+            type: str
+            convert_to_lower_case: true
+            valid_values:
+              - "evpn"
+              - "vpn-ipv4"
+              - "vpn-ipv6"
+          description: |
+            Set the default overlay address families.
+        default_evpn_encapsulation:
+          type: str
+          convert_to_lower_case: true
+          valid_values:
+            - "mpls"
+            - "vxlan"
+          description: |
+            Set the default evpn encapsulation.
+        default_wan_role:
+          type: str
+          valid_values:
+            - "client"
+            - "server"
+          description: |
+            Set the default WAN role.
+
+            This is used both for AutoVPN and Pathfinder designs.
+            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+            `server` indicates that the router is a route-reflector.
+
+            Only supported if `overlay_routing_protocol` is set to `ibgp`.
+        default_flow_tracker_type:
+          type: str
+          valid_values:
+            - "sampled"
+            - "hardware"
+          description: Set the default flow tracker type.
+          default: "sampled"
+        mlag_support:
+          type: bool
+          default: false
+          description: Can this node type support mlag.
+        network_services:
+          description: Will network services be deployed on this node type.
+          type: dict
+          keys:
+            l1:
+              type: bool
+              default: false
+              description: "??"
+            l2:
+              type: bool
+              default: false
+              description: Vlans
+            l3:
+              type: bool
+              default: false
+              description: |
+                VRFs, SVIs (if l2 is true).
+                Only supported with underlay_router.
+        underlay_router:
+          type: bool
+          default: true
+          description: Is this node type a L3 device.
+        uplink_type:
+          type: str
+          valid_values:
+            - p2p
+            - port-channel
+            - p2p-vrfs
+            - lan
+          default: p2p
+          description: |-
+            `uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.
+
+            For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF
+            in `network_services` present on both the uplink and the downlink switch.
+            The subinterface ID is the `vrf_id`.
+            'underlay_router' and 'network_services.l3' must be set to true.
+            VRF `default` is always configured on the physical interface using the underlay routing protocol.
+            All subinterfaces use the same IP address as the physical interface.
+            Multicast is not supported.
+            Only BGP is supported for subinterfaces.
+
+            For `lan`, a single uplink interface is supported and will be configured as an L3 Interface with
+            subinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also
+            has the VLAN permitted by tag/tenant filtering.
+        vtep:
+          type: bool
+          default: false
+          description: Is this switch an EVPN VTEP.
+        mpls_lsr:
+          type: bool
+          default: false
+          description: Is this switch an MPLS LSR.
+        ip_addressing:
+          type: dict
+          description: Override ip_addressing templates.
+          keys:
+            python_module:
+              type: str
+              description: Custom Python Module to import for IP addressing.
+            python_class_name:
+              type: str
+              description: Name of Custom Python Class to import for IP addressing.
+            router_id:
+              type: str
+              description: Path to Custom J2 template.
+            router_id_ipv6:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ip_primary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ip_secondary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_l3_ip_primary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_l3_ip_secondary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ibgp_peering_ip_primary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ibgp_peering_ip_secondary:
+              type: str
+              description: Path to Custom J2 template.
+            p2p_uplinks_ip:
+              type: str
+              description: Path to Custom J2 template.
+            p2p_uplinks_peer_ip:
+              type: str
+              description: Path to Custom J2 template.
+            vtep_ip_mlag:
+              type: str
+              description: Path to Custom J2 template.
+            vtep_ip:
+              type: str
+              description: Path to Custom J2 template.
+        interface_descriptions:
+          type: dict
+          description: |
+            Override interface_descriptions templates.
+            If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
+          keys:
+            python_module:
+              type: str
+              description: Custom Python Module to import for interface descriptions.
+            python_class_name:
+              type: str
+              description: Name of Custom Python Class to import for interface descriptions.
+            underlay_ethernet_interfaces:
+              type: str
+              description: Path to Custom J2 template.
+            underlay_port_channel_interfaces:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ethernet_interfaces:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_port_channel_interfaces:
+              type: str
+              description: Path to Custom J2 template.
+            connected_endpoints_ethernet_interfaces:
+              type: str
+              description: Path to Custom J2 template.
+            connected_endpoints_port_channel_interfaces:
+              type: str
+              description: Path to Custom J2 template.
+            overlay_loopback_interface:
+              type: str
+              description: Path to Custom J2 template.
+            vtep_loopback_interface:
+              type: str
+              description: Path to Custom J2 template.
+        cv_tags_topology_type:
+          documentation_options:
+            table: cloudvision-tags
+          description: |-
+            PREVIEW: This key is currently not supported
+            Type that CloudVision should use when generating the Topology.
+          type: str
+          valid_values:
+            - "leaf"
+            - "spine"
+            - "core"
+            - "edge"

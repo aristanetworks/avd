@@ -62,6 +62,15 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: 10.1.1.1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc1-spine1 (IP: 10.255.0.1)"
   },
   {
@@ -249,6 +258,24 @@
       "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.3) - Destination: dc1-svc-leaf1a Loopback0 (IP: 10.33.0.5)"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Loopback0 (IP: 10.255.0.3) - Destination: dc1-svc-leaf1b Loopback0 (IP: 10.33.0.6)"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Loopback0 (IP: 10.255.0.3) - Destination: dc1-wan1 Loopback0 (IP: 10.255.2.1)"
   },
   {
@@ -372,19 +399,33 @@
     "name": "dc1-leaf1a",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies the device is using an Aboot version that fix the bug discussed in the field notice 44 (Aboot manages system settings prior to EOS initialization)"
+    "description": "Verifies that the device is using the correct Aboot version per FN0044."
   },
   {
     "name": "dc1-leaf1a",
     "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "field notices",
-      "software"
+      "field notices"
     ],
-    "description": "Verifies if the device has exposeure to FN72, and if the issue has been mitigated"
+    "description": "Verifies if the device is exposed to FN0072, and if the issue has been mitigated."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyGreenT",
+    "categories": [
+      "greent"
+    ],
+    "description": "Verifies if a GreenT policy is created."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyGreenTCounters",
+    "categories": [
+      "greent"
+    ],
+    "description": "Verifies if the GreenT counters are incremented."
   },
   {
     "name": "dc1-leaf1a",
@@ -392,7 +433,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies there are no adverse drops on DCS7280E and DCS7500E"
+    "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
   {
     "name": "dc1-leaf1a",
@@ -409,7 +450,7 @@
       "hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays.",
-    "custom_field": "Accepted States: 'ok'"
+    "custom_field": "Accepted States: 'ok', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",
@@ -426,7 +467,7 @@
       "hardware"
     ],
     "description": "Verifies the power supplies status.",
-    "custom_field": "Accepted States: 'ok'"
+    "custom_field": "Accepted States: 'ok', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",
@@ -467,7 +508,7 @@
       "hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers.",
-    "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
+    "custom_field": "Accepted Manufacturers: 'Arastra, Inc.', 'Arista Networks', 'Generic', 'Not Present'"
   },
   {
     "name": "dc1-leaf1a",
@@ -704,6 +745,14 @@
   },
   {
     "name": "dc1-leaf1a",
+    "test": "VerifyLANZ",
+    "categories": [
+      "lanz"
+    ],
+    "description": "Verifies if LANZ is enabled."
+  },
+  {
+    "name": "dc1-leaf1a",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
@@ -716,7 +765,7 @@
     "categories": [
       "profiles"
     ],
-    "description": "Verify that the assigned TCAM profile is actually running on the device"
+    "description": "Verifies the device TCAM profile."
   },
   {
     "name": "dc1-leaf1a",
@@ -724,7 +773,47 @@
     "categories": [
       "profiles"
     ],
-    "description": ""
+    "description": "Verifies the device is using the expected UFT mode."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyPtpGMStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device is locked to a valid PTP Grandmaster."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyPtpLockStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device was locked to the upstream PTP GM in the last minute."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyPtpModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the device is configured as a PTP Boundary Clock."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyPtpOffset",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies that the PTP timing offset is within +/- 1000ns from the master clock."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyPtpPortModeStatus",
+    "categories": [
+      "ptp"
+    ],
+    "description": "Verifies the PTP interfaces state."
   },
   {
     "name": "dc1-leaf1a",
@@ -917,12 +1006,183 @@
   },
   {
     "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.33.0.5 - Peer: dc1-svc-leaf1a"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.33.0.6 - Peer: dc1-svc-leaf1b"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.33.1.5 - Peer: dc1-svc-leaf1a"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the eAPI has a valid SSL profile."
+  },
+  {
+    "name": "dc1-leaf1a",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
       "security"
     ],
     "description": "Verifies if the eAPI has a valid SSL profile.",
     "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAPIHttpStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTP server is disabled globally."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAPIIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv4 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAPIIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI has the right number IPv6 ACL(s) configured for a specified VRF."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAPISSLCertificate",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the eAPI SSL certificate expiry, common subject name, encryption algorithm and key size."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBannerLogin",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the login banner of a device."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBannerMotd",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the motd banner of a device."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyIPSecConnHealth",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies all IPv4 security connections."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyIPv4ACL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies the configuration of IPv4 ACLs."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifySSHIPv4Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv4 ACL(s) configured."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifySSHIPv6Acl",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent has IPv6 ACL(s) configured."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifySSHStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if the SSHD agent is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyTelnetStatus",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if Telnet is disabled in the default VRF."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyDNSLookup",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the DNS name to IP address resolution."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyDNSServers",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies if the DNS servers are correctly configured."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyErrdisableRecovery",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the errdisable recovery reason, status, and interval."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyHostname",
+    "categories": [
+      "services"
+    ],
+    "description": "Verifies the hostname of a device."
   },
   {
     "name": "dc1-leaf1a",
@@ -954,7 +1214,7 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies all EOS extensions installed on the device are enabled for boot persistence."
+    "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence."
   },
   {
     "name": "dc1-leaf1a",
@@ -962,7 +1222,7 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed EOS version."
+    "description": "Verifies the EOS version of the device."
   },
   {
     "name": "dc1-leaf1a",
@@ -970,7 +1230,15 @@
     "categories": [
       "software"
     ],
-    "description": "Verifies the device is running one of the allowed TerminAttr version."
+    "description": "Verifies the TerminAttr version of the device."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
   },
   {
     "name": "dc1-leaf1a",
@@ -1043,6 +1311,22 @@
       "system"
     ],
     "description": "Verifies the device uptime."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVlanInternalPolicy",
+    "categories": [
+      "vlan"
+    ],
+    "description": "Verifies the VLAN internal allocation policy and the range of VLANs."
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyVxlan1ConnSettings",
+    "categories": [
+      "vxlan"
+    ],
+    "description": "Verifies the interface vxlan1 source interface and UDP port."
   },
   {
     "name": "dc1-leaf1a",

@@ -1,0 +1,395 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_isis:
+    type: dict
+    keys:
+      instance:
+        type: str
+        required: true
+        description: ISIS Instance Name.
+      net:
+        type: str
+        description: CLNS Address like "49.0001.0001.0000.0001.00".
+      router_id:
+        type: str
+        description: IPv4 Address.
+      is_type:
+        display_name: "IS Type"
+        type: str
+        valid_values:
+          - "level-1"
+          - "level-1-2"
+          - "level-2"
+      log_adjacency_changes:
+        type: bool
+      mpls_ldp_sync_default:
+        type: bool
+      timers:
+        type: dict
+        keys:
+          local_convergence:
+            type: dict
+            keys:
+              protected_prefixes:
+                type: bool
+              delay:
+                type: int
+                convert_types:
+                  - str
+                default: 10000
+                description: Delay in milliseconds.
+      set_overload_bit:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          on_startup:
+            type: dict
+            keys:
+              delay:
+                type: int
+                convert_types:
+                  - str
+                description: Number of seconds.
+              wait_for_bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  timeout:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Number of seconds.
+      authentication:
+        type: dict
+        keys:
+          both:
+            type: dict
+            description: Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            keys:
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                valid_values:
+                  - '0'
+                  - '7'
+                  - '8a'
+                description: Configure authentication key type. Default key_id is 0.
+              key:
+                type: str
+                description: Password string.
+              key_ids:
+                type: list
+                convert_types:
+                  - dict
+                primary_key: id
+                items:
+                  type: dict
+                  keys:
+                    id:
+                      type: int
+                      convert_types:
+                        - str
+                      required: true
+                      min: 1
+                      max: 65535
+                      description: Configure authentication key-id.
+                    algorithm:
+                      type: str
+                      required: true
+                      valid_values:
+                        - sha-1
+                        - sha-224
+                        - sha-256
+                        - sha-384
+                        - sha-512
+                    key_type:
+                      type: str
+                      convert_types:
+                        - int
+                      required: true
+                      valid_values:
+                        - '0'
+                        - '7'
+                        - '8a'
+                      description: Configure authentication key type.
+                    key:
+                      type: str
+                      required: true
+                      description: Password string.
+                    rfc_5310:
+                      description: SHA digest computation according to rfc5310.
+                      type: bool
+              mode:
+                type: str
+                description: Authentication mode.
+                valid_values:
+                  - md5
+                  - sha
+                  - text
+                  - shared_secret
+              sha:
+                type: dict
+                description: Required settings for authentication mode 'sha'.
+                keys:
+                  key_id:
+                    type: int
+                    convert_types:
+                      - str
+                    required: true
+                    min: 1
+                    max: 65535
+              shared_secret:
+                type: dict
+                description: Required settings for authentication mode 'shared_secret'.
+                keys:
+                  profile:
+                    type: str
+                    required: true
+                  algorithm:
+                    type: str
+                    required: true
+                    valid_values:
+                      - md5
+                      - sha-1
+                      - sha-224
+                      - sha-256
+                      - sha-384
+                      - sha-512
+              rx_disabled:
+                type: bool
+          level_1:
+            type: dict
+            description: Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both"
+          level_2:
+            type: dict
+            description: Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+            $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both"
+      advertise:
+        type: dict
+        keys:
+          passive_only:
+            type: bool
+      address_family:
+        type: list
+        items:
+          type: str
+          valid_values:
+            - "ipv4"
+            - "ipv6"
+            - "ipv4 unicast"
+            - "ipv6 unicast"
+          description: Address Family.
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
+            remove_in_version: "5.0.0"
+      isis_af_defaults:
+        type: list
+        items:
+          type: str
+          description: |
+            EOS CLI rendered under the address families.
+            Example "maximum-paths 64"
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4/address_family_ipv6
+            remove_in_version: "5.0.0"
+      redistribute_routes:
+        type: list
+        items:
+          type: dict
+          keys:
+            source_protocol:
+              type: str
+              required: true
+              valid_values:
+                - "bgp"
+                - "connected"
+                - "isis"
+                - "ospf"
+                - "ospfv3"
+                - "static"
+            route_map:
+              type: str
+              description: Route-map name.
+            include_leaked:
+              type: bool
+            ospf_route_type:
+              type: str
+              valid_values:
+                - "external"
+                - "internal"
+                - "nssa-external"
+              description: ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'.
+      address_family_ipv4:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          maximum_paths:
+            type: int
+            convert_types:
+              - "str"
+            min: 1
+            max: 128
+          bfd_all_interfaces:
+            type: bool
+            description: Enable BFD on all interfaces.
+          fast_reroute_ti_lfa:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - "link-protection"
+                  - "node-protection"
+              level:
+                type: str
+                valid_values:
+                  - "level-1"
+                  - "level-2"
+              srlg:
+                type: dict
+                description: Shared Risk Link Group.
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+          tunnel_source_labeled_unicast:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              rcf:
+                type: str
+                description: Route Control Function.
+      address_family_ipv6:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          maximum_paths:
+            type: int
+            convert_types:
+              - "str"
+            min: 1
+            max: 128
+          bfd_all_interfaces:
+            type: bool
+            description: Enable BFD on all interfaces.
+          fast_reroute_ti_lfa:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - "link-protection"
+                  - "node-protection"
+              level:
+                type: str
+                valid_values:
+                  - "level-1"
+                  - "level-2"
+                description: Optional, default is to protect all levels.
+              srlg:
+                type: dict
+                description: Shared Risk Link Group.
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+      segment_routing_mpls:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          router_id:
+            type: str
+          prefix_segments:
+            type: list
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                index:
+                  type: int
+                  convert_types:
+                    - str
+      spf_interval:
+        type: dict
+        keys:
+          interval:
+            type: int
+            convert_types:
+              - str
+            description: |-
+              Maximum interval between two SPFs in seconds or milliseconds.
+              Range in seconds: <1-300>
+              Range in milliseconds: <1-300000>
+          interval_unit:
+            type: str
+            valid_values:
+              - "seconds"
+              - "milliseconds"
+            description: If interval unit is not defined EOS takes `seconds` by default.
+          wait_interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 300000
+            description: Initial wait interval for SPF in milliseconds.
+          hold_interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 300000
+            description: Hold interval between the first and second SPF runs in milliseconds.
+      graceful_restart:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          restart_hold_time:
+            type: int
+            convert_types:
+              - str
+            min: 5
+            max: 300
+            description: Number of seconds.
+          t2:
+            type: dict
+            keys:
+              level_1_wait_time:
+                type: int
+                convert_types:
+                  - str
+                min: 5
+                max: 300
+                description: Level-1 LSP database sync wait time in seconds.
+              level_2_wait_time:
+                type: int
+                convert_types:
+                  - str
+                min: 5
+                max: 300
+                description: Level-2 LSP database sync wait time in seconds.
+      eos_cli:
+        type: str
+        description: Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.

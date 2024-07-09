@@ -1,0 +1,112 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - dhcp server #}
+{% set ethernet_interfaces_dhcp_server = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) or ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
+{%         do ethernet_interfaces_dhcp_server.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% if (ethernet_interfaces_dhcp_server | length > 0 or dhcp_servers is arista.avd.defined) %}
+
+## DHCP Server
+{%     if dhcp_servers is arista.avd.defined %}
+
+### DHCP Servers Summary
+
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | ---------------- | ------------- |
+{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
+{%             set enabled = not dhcp_server.disabled | arista.avd.default(false) %}
+{%             set dns_domain_ipv4 = dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") %}
+{%             set dns_servers_ipv4 = dhcp_server.dns_servers_ipv4 | arista.avd.default(["-"]) | join(", ") %}
+{%             set tftp_server_file_ipv4 = dhcp_server.tftp_server.file_ipv4 | arista.avd.default("-") %}
+{%             set dns_domain_ipv6 = dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") %}
+{%             set dns_servers_ipv6 = dhcp_server.dns_servers_ipv6 | arista.avd.default(["-"]) | join(", ") %}
+{%             set tftp_server_file_ipv6 = dhcp_server.tftp_server.file_ipv6 | arista.avd.default("-") %}
+| {{ enabled }} | {{ dhcp_server.vrf }} | {{ dns_domain_ipv4 }} | {{ dns_servers_ipv4 }} | {{ tftp_server_file_ipv4 }} | {{ dns_domain_ipv6 }} | {{ dns_servers_ipv6 }} | {{ tftp_server_file_ipv6 }} |
+{%         endfor %}
+{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
+{%             set dhcp_server_subnets = [] %}
+{%             set dhcp_vendor_options = [] %}
+{%             for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
+{%                 set subnet_dns_servers = subnet.dns_servers | arista.avd.default(["-"]) | join(", ") %}
+{%                 if subnet.lease_time is arista.avd.defined %}
+{%                     set subnet_lease_time = subnet.lease_time.days ~ " days, " ~ subnet.lease_time.hours ~ " hours, " ~ subnet.lease_time.minutes ~ " minutes" %}
+{%                 else %}
+{%                     set subnet_lease_time = "-" %}
+{%                 endif %}
+{%                 set subnet_default_gw = subnet.default_gateway | arista.avd.default("-") %}
+{%                 if subnet.ranges is arista.avd.defined and subnet.ranges | length > 0 %}
+{%                     set subnet_ranges = [] %}
+{%                     for range in subnet.ranges | arista.avd.natural_sort("start") %}
+{%                         do subnet_ranges.append(range.start ~ "-" ~ range.end) %}
+{%                     endfor %}
+{%                 else %}
+{%                     set subnet_ranges = ["-"] %}
+{%                 endif %}
+{%                 do dhcp_server_subnets.append({"subnet": subnet.subnet, "name": subnet.name | arista.avd.default("-"), "dns_servers": subnet_dns_servers, "lease_time": subnet_lease_time, "default_gateway": subnet_default_gw , "ranges": subnet_ranges | join(", ")}) %}
+{%             endfor %}
+{%             for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}
+{%                 do dhcp_vendor_options.append({"vendor_id": option.vendor_id, "sub_options": option.sub_options}) %}
+{%             endfor %}
+{%             if dhcp_server_subnets | length > 0 or dhcp_vendor_options | length > 0 %}
+
+#### VRF {{ dhcp_server.vrf }} DHCP Server
+{%                 if dhcp_server_subnets | length > 0 %}
+
+##### Subnets
+
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+{%                     for subnet in dhcp_server_subnets %}
+| {{ subnet.subnet }} | {{ subnet.name | arista.avd.default("-") }} | {{ subnet.dns_servers }} | {{ subnet.default_gateway }} | {{ subnet.lease_time }} | {{ subnet.ranges }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if dhcp_vendor_options | length > 0 %}
+
+##### IPv4 Vendor Options
+
+| Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
+| --------- | ----------------| --------------- | --------------- |
+{%                     for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
+{%                         for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
+{%                             if sub_option.string is arista.avd.defined %}
+{%                                 set sub_option_type = "string" %}
+{%                                 set sub_option_data = sub_option.string %}
+{%                             elif sub_option.ipv4_address is arista.avd.defined %}
+{%                                 set sub_option_type = "ipv4-address" %}
+{%                                 set sub_option_data = sub_option.ipv4_address %}
+{%                             elif sub_option.array_ipv4_address is arista.avd.defined %}
+{%                                 set sub_option_type = "array ipv4-address" %}
+{%                                 set sub_option_data = sub_option.array_ipv4_address | join(" ") %}
+{%                             endif %}
+{%                             if sub_option_type is arista.avd.defined %}
+| {{ option.vendor_id }} | {{ sub_option.code }} | {{ sub_option_type }} | {{ sub_option_data }} |
+{%                             endif %}
+{%                         endfor %}
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+
+### DHCP Server Configuration
+
+```eos
+{%         include 'eos/dhcp-servers.j2' %}
+```
+{%     endif %}
+{%     if ethernet_interfaces_dhcp_server | length > 0 %}
+
+### DHCP Server Interfaces
+
+| Interface name | DHCP IPv4 | DHCP IPv6 |
+| -------------- | --------- | --------- |
+{%         for ethernet_interface in ethernet_interfaces_dhcp_server | arista.avd.natural_sort %}
+| {{ ethernet_interface.name }} | {{ ethernet_interface.dhcp_server_ipv4 | arista.avd.default(false) }} | {{ ethernet_interface.dhcp_server_ipv6 | arista.avd.default(false) }} |
+{%         endfor %}
+{%     endif %}
+{% endif %}

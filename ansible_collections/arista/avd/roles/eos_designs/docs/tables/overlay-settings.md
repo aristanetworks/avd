@@ -8,10 +8,8 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | `False` |  | Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.<br>Only supported in combination with MPLS overlay.<br> |
-    | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  | On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).<br>The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.<br>Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.<br>The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.<br> |
-    | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | `3000` | Min: 1<br>Max: 4093 |  |
     | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  | List of CVX vxlan overlay controllers.<br>Required if overlay_routing_protocol == CVX.<br>CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.<br> |
-    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server<br> |
+    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server.<br> |
     | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | `False` |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
     | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | `fabric` | Valid Values:<br>- <code>fabric</code><br>- <code>dc</code> | When using Head-End Replication, set the scope of flood-lists to Fabric or DC.<br>By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.<br>This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).<br>This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.<br> |
     | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") | String |  |  |  | Customize the description on overlay interface Loopback0. |
@@ -37,19 +35,12 @@
     # Only supported in combination with MPLS overlay.
     bgp_mesh_pes: <bool; default=False>
 
-    # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).
-    # The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.
-    # Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.
-    # The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
-    mlag_ibgp_peering_vrfs:
-      base_vlan: <int; 1-4093; default=3000>
-
     # List of CVX vxlan overlay controllers.
     # Required if overlay_routing_protocol == CVX.
     # CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
     overlay_cvx_servers:
 
-        # 'inventory_hostname' of CVX server
+        # 'inventory_hostname' of CVX server.
       - <str>
 
     # When using Head-End Replication, configure flood-lists per VNI.

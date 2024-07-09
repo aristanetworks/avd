@@ -52,6 +52,15 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
+  - ip_address: 192.168.143.2
+    peer: cv-pathfinder-transit1B
+    description: cv-pathfinder-transit1B
+    remote_as: '65000'
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
   vrfs:
   - name: IT
     router_id: 192.168.43.1
@@ -146,6 +155,12 @@ router_bgp:
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 192.168.143.2
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -251,6 +266,8 @@ ethernet_interfaces:
   type: l3dot1q
   description: Colt_10666
   encapsulation_dot1q_vlan: 666
+  ip_nat:
+    service_profile: NAT-IE-DIRECT
 - name: Ethernet1
   type: routed
   peer_type: l3_interface
@@ -309,36 +326,22 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
-    match:
-    - extcommunity ECL-EVPN-SOO
-    set:
-    - as-path match all replacement auto auto
-  - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny other routes from the HA peer
     match:
     - as-path ASPATH-WAN
-    set:
-    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Advertise local routes towards LAN
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
   - sequence: 20
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
-  - sequence: 30
-    type: permit
-    description: Advertise WAN HA prefixes towards LAN
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -353,6 +356,27 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.43.1:422 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -364,20 +388,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -456,6 +466,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: CUSTOM-VOICE-PROFILE-NAME
     load_balance_policy: LB-CUSTOM-VOICE-PROFILE-NAME
+    internet_exit_policy: DIRECT-EXIT-POLICY-2
   - name: TRANSIT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
@@ -567,7 +578,7 @@ router_path_selection:
     - name: Ethernet2.42
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -659,7 +670,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: profileA
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: profileA
 application_traffic_recognition:
@@ -715,6 +726,44 @@ application_traffic_recognition:
     - name: PFX-PATHFINDERS
       prefix_values:
       - 192.168.144.1/32
+ip_access_lists:
+- name: ACL-NAT-IE-DIRECT
+  entries:
+  - sequence: 10
+    action: deny
+    protocol: ip
+    source: 172.16.6.6
+    destination: any
+  - sequence: 20
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+ip_nat:
+  profiles:
+  - name: NAT-IE-DIRECT
+    source:
+      dynamic:
+      - access_list: ACL-NAT-IE-DIRECT
+        nat_type: overload
+router_service_insertion:
+  enabled: true
+  connections:
+  - name: IE-Ethernet2.42
+    monitor_connectivity_host: IE-Ethernet2.42
+    ethernet_interface:
+      name: Ethernet2.42
+      next_hop: 123.12.3.4
+router_internet_exit:
+  exit_groups:
+  - name: DIRECT-EXIT-POLICY-2
+    local_connections:
+    - name: IE-Ethernet2.42
+  policies:
+  - name: DIRECT-EXIT-POLICY-2
+    exit_groups:
+    - name: DIRECT-EXIT-POLICY-2
+    - name: system-default-exit-group
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -739,7 +788,36 @@ vxlan_interface:
         vni: 66
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
+monitor_connectivity:
+  interface_sets:
+  - name: SET-Ethernet2.42
+    interfaces: Ethernet2.42
+  hosts:
+  - name: IE-Ethernet2.42
+    description: Internet Exit DIRECT-EXIT-POLICY-2
+    ip: 123.12.3.4
+    local_interfaces: SET-Ethernet2.42
+    address_only: false
+  shutdown: false
 metadata:
+  cv_pathfinder:
+    internet_exit_policies: []
+    role: transit region
+    ssl_profile: profileA
+    vtep_ip: 192.168.143.1
+    region: AVD_Land_West
+    zone: AVD_Land_West-ZONE
+    site: Site422
+    interfaces:
+    - name: Ethernet1.42
+      carrier: Comcast
+      pathgroup: INET
+    - name: Ethernet2.42
+      carrier: Colt
+      circuit_id: '10666'
+      pathgroup: MPLS
+    pathfinders:
+    - vtep_ip: 192.168.144.1
   cv_tags:
     device_tags:
     - name: Role
@@ -789,20 +867,17 @@ metadata:
       tags:
       - name: Type
         value: lan
-  cv_pathfinder:
-    role: transit region
-    ssl_profile: profileA
-    vtep_ip: 192.168.143.1
-    region: AVD_Land_West
-    zone: AVD_Land_West-ZONE
-    site: Site422
-    interfaces:
-    - name: Ethernet1.42
-      carrier: Comcast
-      pathgroup: INET
-    - name: Ethernet2.42
-      carrier: Colt
-      circuit_id: '10666'
-      pathgroup: MPLS
-    pathfinders:
-    - vtep_ip: 192.168.144.1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

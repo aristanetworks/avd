@@ -1,0 +1,38 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - patch panel #}
+{% if patch_panel is arista.avd.defined %}
+!
+patch panel
+{%     if patch_panel.connector.interface is arista.avd.defined %}
+{%         if patch_panel.connector.interface.recovery.review_delay.min is arista.avd.defined and patch_panel.connector.interface.recovery.review_delay.max is arista.avd.defined %}
+   connector interface recovery review delay {{ patch_panel.connector.interface.recovery.review_delay.min }} {{ patch_panel.connector.interface.recovery.review_delay.max }}
+{%         endif %}
+{%         if patch_panel.connector.interface.patch.bgp_vpws_remote_failure_errdisable is arista.avd.defined(true) %}
+   connector interface patch bgp vpws remote-failure errdisable
+{%         endif %}
+   !
+{%     endif %}
+{%     for patch in patch_panel.patches | arista.avd.default([]) %}
+{%         if patch.name is arista.avd.defined %}
+   patch {{ patch.name }}
+{%             if patch.enabled is arista.avd.defined(false) %}
+      shutdown
+{%             endif %}
+{%             for connector in patch.connectors | arista.avd.natural_sort %}
+{%                 if connector.id is arista.avd.defined %}
+{%                     if connector.type is arista.avd.defined("interface") %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
+{%                     elif connector.type is arista.avd.defined("pseudowire") %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
+{%                     endif %}
+      {{ connector_cli }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+   !
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,35 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_extcommunity_lists_regexp:
+    type: list
+    primary_key: name
+    secondary_key: entries
+    convert_types:
+      - dict
+    display_name: IP Extended Community Lists RegExp
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Community-list Name.
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              type:
+                type: str
+                required: true
+                valid_values: ["permit", "deny"]
+              regexp:
+                type: str
+                required: true
+                description: Regular Expression.

@@ -10,22 +10,26 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Generator
 from urllib.error import HTTPError
 
-from ansible.errors import AnsibleConnectionFailure
+from ansible.errors import AnsibleActionFail, AnsibleConnectionFailure
 from ansible.module_utils.connection import ConnectionError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._errors import AristaAvdError
+except ImportError as e:
+    AristaAvdError = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 logger = getLogger(__name__)
 
-REQUIRED_ANTA_VERSION = "v0.13.0"
-"""This is temporary until the ANTA mode is out of preview and the `anta` Python library requirement is added to
-the AVD repository's `requirements.txt` file. This constant and the condition below must be removed once the requirement is added."""
-
 try:
-    from anta import __version__ as anta_version
-
-    if anta_version != REQUIRED_ANTA_VERSION:
-        raise AristaAvdError(message=f"AVD requires 'anta' Python library version {REQUIRED_ANTA_VERSION}, found {anta_version}")
     from anta import __DEBUG__
     from anta.device import AntaDevice
     from anta.logger import anta_log_exception
@@ -35,20 +39,6 @@ except ImportError:
     HAS_ANTA = False
     # Next line to make ansible-test sanity happy
     AntaDevice = object
-except TypeError as e:
-    # Known bug with Python 3.9.7 and Pydantic `conint`, impacting ANTA. Issue: https://github.com/arista-netdevops-community/anta/issues/557
-    if "Interval() takes no arguments" in str(e):
-        msg = (
-            "The ANTA testing framework, utilized in the AVD eos_validate_state role, has identified a compatibility issue with Python 3.9.x. "
-            "We recommend trying a different Python version; 3.9.13 has been confirmed to work, or consider upgrading to version 3.10 or newer.\n"
-            "For further assistance or to report your Python version, please visit the AVD and ANTA GitHub repositories:\n"
-            "https://github.com/aristanetworks/avd/\n"
-            "https://github.com/arista-netdevops-community/anta"
-        )
-        raise AristaAvdError(msg) from e
-    else:
-        # If the TypeError is not related to the known bug, raise it to avoid silencing other issues
-        raise
 
 if TYPE_CHECKING:
     from ansible.plugins.connection import ConnectionBase
@@ -84,11 +74,21 @@ class AnsibleEOSDevice(AntaDevice):
 
         super().__init__(name, tags, disable_cache=False)
         self.check_mode = check_mode
+
+        # Check the ansible connection is defined
+        if not self.check_mode and not hasattr(connection, "_sub_plugin"):
+            raise AristaAvdError(
+                message="AVD could not determine the Ansible connection plugin used. "
+                "Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host."
+            )
         # In check_mode we don't care that we cannot connect to the device
         if self.check_mode or (plugin_name := connection._sub_plugin.get("name")) == ANSIBLE_EOS_PLUGIN_NAME:
             self._connection = connection
         else:
-            raise AristaAvdError(message=f"The provided Ansible connection does not use EOS HttpApi plugin: {plugin_name}")
+            raise AristaAvdError(
+                message=f"The provided Ansible connection does not use EOS HttpApi plugin: {plugin_name}. "
+                "Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host."
+            )
 
     @property
     def _keys(self) -> tuple:
@@ -104,7 +104,7 @@ class AnsibleEOSDevice(AntaDevice):
         if __DEBUG__:
             yield "_connection", connection_vars
 
-    async def _collect(self, command: AntaCommand) -> None:
+    async def _collect(self, command: AntaCommand, *, collection_id: str | None = None) -> None:
         """Collect device command result using Ansible HttpApi connection plugin.
 
         Supports outformat 'json' and 'text' as output structure.
@@ -112,6 +112,7 @@ class AnsibleEOSDevice(AntaDevice):
         Args:
         ----
             command (AntaCommand): The command to collect.
+            collection_id (str, optional): This parameter is not used in this implementation. Defaults to None.
 
         If there is an exception while collecting the command, the exception will be propagated
         and handled in ANTA. That means ANTA will set the test result to 'error', the play will

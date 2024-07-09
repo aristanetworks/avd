@@ -1,0 +1,233 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip nat #}
+{% if ip_nat is arista.avd.defined %}
+
+## IP NAT
+{%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
+
+| Setting | Value |
+| -------- | ----- |
+| Kernel Buffer Size | {{ ip_nat.kernel_buffer_size }} MB |
+{%     endif %}
+{%     if ip_nat.profiles is arista.avd.defined %}
+
+### NAT Profiles
+{%         for profile in ip_nat.profiles | arista.avd.natural_sort("name") %}
+
+#### Profile: {{ profile.name }}
+{%             if profile.vrf is arista.avd.defined %}
+
+NAT profile VRF is: {{ profile.vrf }}
+{%             endif %}
+{%             set ip_nat = namespace(dst_dyn=[], src_dyn=[], dst_static=[], src_static=[]) %}
+{#             Analyze dynamic destination NAT #}
+{%             for dst_dyn in profile.destination.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%                 do ip_nat.dst_dyn.append(
+                       {'acl': dst_dyn.access_list,
+                        'pool': dst_dyn.pool_name,
+                        'comment': dst_dyn.comment | arista.avd.default('-'),
+                        'priority': dst_dyn.priority | arista.avd.default(0)}) %}
+{%             endfor %}
+{#             Analyze dynamic source NAT #}
+{%             for src_dyn in profile.source.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%                 set valid = false %}
+{%                 if src_dyn.nat_type == 'overload' %}
+{%                     set pool = '-' %}
+{%                     set valid = true %}
+{%                 elif src_dyn.pool_name is arista.avd.defined %}
+{%                     set pool = src_dyn.pool_name %}
+{%                     set valid = true %}
+{%                 endif %}
+{%                 if valid %}
+{%                     do ip_nat.src_dyn.append(
+                           {'acl': src_dyn.access_list,
+                            'type': src_dyn.nat_type,
+                            'pool': pool,
+                            'comment': src_dyn.comment | arista.avd.default('-'),
+                            'priority': src_dyn.priority | arista.avd.default(0)}) %}
+{%                 endif %}
+{%             endfor %}
+{#             Analyze static destination NAT #}
+{%             for dst_static in profile.destination.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
+{%                 if not (dst_static.access_list is arista.avd.defined and dst_static.group is arista.avd.defined) and
+                      not (dst_static.original_port is not arista.avd.defined and dst_static.translated_port is arista.avd.defined) %}
+{%                     do ip_nat.dst_static.append(
+                           {'direction': dst_static.direction | arista.avd.default('-'),
+                            'o_ip': dst_static.original_ip,
+                            'o_port': dst_static.original_port | arista.avd.default('-'),
+                            'acl': dst_static.access_list | arista.avd.default('-'),
+                            't_ip': dst_static.translated_ip,
+                            't_port': dst_static.translated_port | arista.avd.default('-'),
+                            'proto': dst_static.protocol | arista.avd.default('-'),
+                            'group': dst_static.group | arista.avd.default('-'),
+                            'priority': dst_static.priority | arista.avd.default(0),
+                            'comment': dst_static.comment | arista.avd.default('-')}) %}
+{%                 endif %}
+{%             endfor %}
+{#             Analyze static source NAT #}
+{%             for src_static in profile.source.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
+{%                 if not (src_static.access_list is arista.avd.defined and src_static.group is arista.avd.defined) and
+                      not (src_static.original_port is not arista.avd.defined and src_static.translated_port is arista.avd.defined) %}
+{%                     do ip_nat.src_static.append(
+                           {'direction': src_static.direction | arista.avd.default('-'),
+                            'o_ip': src_static.original_ip,
+                            'o_port': src_static.original_port | arista.avd.default('-'),
+                            'acl': src_static.access_list | arista.avd.default('-'),
+                            't_ip': src_static.translated_ip,
+                            't_port': src_static.translated_port | arista.avd.default('-'),
+                            'proto': src_static.protocol | arista.avd.default('-') | upper,
+                            'group': src_static.group | arista.avd.default('-'),
+                            'priority': src_static.priority | arista.avd.default(0),
+                            'comment': src_static.comment | arista.avd.default('-')}) %}
+{%                 endif %}
+{%             endfor %}
+{%             if ip_nat.src_static %}
+
+##### IP NAT: Source Static
+
+| Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+{%                 for row in ip_nat.src_static %}
+| {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
+{%                 endfor %}
+{%             endif %}
+{%             if ip_nat.src_dyn %}
+
+##### IP NAT: Source Dynamic
+
+| Access List | NAT Type | Pool Name | Priority | Comment |
+| ----------- | -------- | --------- | -------- | ------- |
+{%                 for row in ip_nat.src_dyn %}
+| {{ row.acl }} | {{ row.type }} | {{ row.pool }} | {{ row.priority }} | {{ row.comment }} |
+{%                 endfor %}
+{%             endif %}
+{%             if ip_nat.dst_static %}
+
+##### IP NAT: Destination Static
+
+| Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+{%                 for row in ip_nat.dst_static %}
+| {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
+{%                 endfor %}
+{%             endif %}
+{%             if ip_nat.dst_dyn %}
+
+##### IP NAT: Destination Dynamic
+
+| Access List | Pool Name | Priority | Comment |
+| ----------- | --------- | -------- | ------- |
+{%                 for row in ip_nat.dst_dyn %}
+| {{ row.acl }} | {{ row.pool }} | {{ row.priority }} | {{ row.comment }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if ip_nat.pools is arista.avd.defined %}
+
+### NAT Pools
+
+| Pool Name | Pool Type | Prefix Length | Utilization Log Threshold | First-Last IP Addresses | First-Last Ports |
+| --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
+{%         for pool in ip_nat.pools | arista.avd.natural_sort('name') %}
+{%             set pool_name = pool.name %}
+{%             set pool_type = pool.type | arista.avd.default('ip-port') %}
+{%             if pool_type == 'ip-port' %}
+{%                 set prefix_length = pool.prefix_length | arista.avd.default('-') %}
+{%                 set utilization_log_threshold = pool.utilization_log_threshold | arista.avd.default('-') %}
+{%             endif %}
+{%             set first_last_ip = [] %}
+{%             set first_last_port = [] %}
+{%             for range in pool.ranges | arista.avd.default([]) %}
+{%                 if pool_type == 'ip-port' %}
+{%                     do first_last_ip.append(range.first_ip | arista.avd.default('') ~ '-' ~ range.last_ip | arista.avd.default('')) %}
+{%                 endif %}
+{%                 do first_last_port.append(range.first_port | arista.avd.default('') ~ '-' ~ range.last_port | arista.avd.default('')) %}
+{%             endfor %}
+{%             if first_last_ip == [] %}
+{%                 set first_last_ip = '-' %}
+{%             endif %}
+{%             if first_last_port == [] %}
+{%                 set first_last_port = '-' %}
+{%             endif %}
+| {{ pool_name }} | {{ pool_type }} | {{ prefix_length | arista.avd.default('-') }} | {{ utilization_log_threshold | arista.avd.default('-') }} | {{ first_last_ip | join('<br>') }} | {{ first_last_port | join('<br>') }} |
+{%         endfor %}
+
+### NAT Synchronization
+
+| Setting | Value |
+| -------- | ----- |
+{%         if ip_nat.synchronization.shutdown | arista.avd.default(false) %}
+| State | Disabled |
+{%         else %}
+| State | Enabled !
+{%         endif %}
+{%         if ip_nat.synchronization.expiry_interval is arista.avd.defined %}
+| Expiry Interval | {{ ip_nat.synchronization.expiry_interval }} Seconds |
+{%         endif %}
+{%         if ip_nat.synchronization.local_interface is arista.avd.defined %}
+| Interface | {{ ip_nat.synchronization.local_interface }} |
+{%         endif %}
+{%         if ip_nat.synchronization.peer_address is arista.avd.defined %}
+| Peer IP Address | {{ ip_nat.synchronization.peer_address }} |
+{%         endif %}
+{%         if ip_nat.synchronization.port_range.first_port is arista.avd.defined
+                    and ip_nat.synchronization.port_range.last_port is arista.avd.defined %}
+| Port Range | {{ ip_nat.synchronization.port_range.first_port }} - {{ ip_nat.synchronization.port_range.last_port }} |
+{%         endif %}
+{%         if ip_nat.synchronization.port_range.split_disabled | arista.avd.default(false) %}
+| Port Range Split | Disabled |
+{%         else %}
+| Port Range Split | Enabled |
+{%         endif %}
+{%     endif %}
+{%     if ip_nat.translation is arista.avd.defined %}
+
+### NAT Translation Settings
+
+| Setting | Value |
+| -------- | ----- |
+{%         if ip_nat.translation.address_selection.any | arista.avd.default(false) %}
+| Address Selection | Any |
+{%         endif %}
+{%         if ip_nat.translation.address_selection.hash_field_source_ip | arista.avd.default(false) %}
+| Address Selection | Hash Source IP Field |
+{%         endif %}
+{%         if ip_nat.translation.counters | arista.avd.default(false) %}
+| Counters | Enabled |
+{%         endif %}
+{%         if ip_nat.translation.max_entries is arista.avd.defined %}
+{%             if ip_nat.translation.max_entries.limit is arista.avd.defined %}
+| Global Connection Limit | max. {{ ip_nat.translation.max_entries.limit }} Connections |
+{%             endif %}
+{%             if ip_nat.translation.max_entries.host_limit is arista.avd.defined %}
+| per Host Connection Limit | max. {{ ip_nat.translation.max_entries.host_limit }} Connections |
+{%             endif %}
+{%             for ip_limit in ip_nat.translation.max_entries.ip_limits | arista.avd.default([]) %}
+| IP Host {{ ip_limit.ip }} Connection Limit | max. {{ ip_limit.limit }} Connections |
+{%             endfor %}
+{%         endif %}
+{%         if ip_nat.translation.low_mark is arista.avd.defined %}
+{%             if ip_nat.translation.low_mark.percentage is arista.avd.defined %}
+| Global Connection Limit Low Mark | {{ ip_nat.translation.low_mark.percentage }} % |
+{%             endif %}
+{%             if ip_nat.translation.low_mark.host_percentage is arista.avd.defined %}
+| per Host Connection Limit Low Mark | {{ ip_nat.translation.low_mark.host_percentage }} % |
+{%             endif %}
+{%         endif %}
+{%         for timeout in ip_nat.translation.timeouts | arista.avd.default([]) %}
+| {{ timeout.protocol | upper }} Connection Timeout | {{ timeout.timeout }} Seconds |
+{%         endfor %}
+{%     endif %}
+
+### IP NAT Device Configuration
+
+```eos
+{%     include 'eos/ip-nat-part1.j2' %}
+{%     include 'eos/ip-nat-part2.j2' %}
+```
+{% endif %}

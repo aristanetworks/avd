@@ -1,7 +1,7 @@
 hostname: dc1-wan2
 is_deployed: true
 router_bgp:
-  as: '65000'
+  as: '65101'
   router_id: 10.255.2.2
   bgp:
     default:
@@ -28,7 +28,7 @@ router_bgp:
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
-    remote_as: '65000'
+    remote_as: '65101'
     ttl_maximum_hops: 1
     bfd_timers:
       interval: 1000
@@ -54,12 +54,35 @@ router_bgp:
     remote_as: '65101'
     peer: dc1-leaf1b
     description: dc1-leaf1b_Ethernet7
+  - ip_address: 10.255.255.10
+    peer_group: WAN-OVERLAY-PEERS
+    peer: dc1-leaf1a
+    description: dc1-leaf1a
+  - ip_address: 10.255.255.20
+    peer_group: WAN-OVERLAY-PEERS
+    peer: dc1-leaf1b
+    description: dc1-leaf1b
+  - ip_address: 10.255.1.1
+    peer: dc1-wan1
+    description: dc1-wan1
+    remote_as: '65101'
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 10.255.1.1
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -172,7 +195,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65000'
+      match: '65101'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -216,36 +239,22 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
-    match:
-    - extcommunity ECL-EVPN-SOO
-    set:
-    - as-path match all replacement auto auto
-  - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny other routes from the HA peer
     match:
     - as-path ASPATH-WAN
-    set:
-    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Advertise local routes towards LAN
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
   - sequence: 20
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
-  - sequence: 30
-    type: permit
-    description: Advertise WAN HA prefixes towards LAN
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -260,6 +269,27 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 10.255.2.1:100 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -271,20 +301,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -382,15 +398,41 @@ router_path_selection:
     id: 101
     local_interfaces:
     - name: Ethernet3
+      stun:
+        server_profiles:
+        - mpls-dc1-leaf1a-Ethernet6
+        - mpls-dc1-leaf1b-Ethernet6
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 10.255.255.10
+      name: dc1-leaf1a
+      ipv4_addresses:
+      - 172.18.1.2
+    - router_ip: 10.255.255.20
+      name: dc1-leaf1b
+      ipv4_addresses:
+      - 172.18.2.2
     ipsec_profile: CP-PROFILE
   - name: internet
     id: 102
     local_interfaces:
     - name: Ethernet4
+      stun:
+        server_profiles:
+        - internet-dc1-leaf1a-Ethernet7
+        - internet-dc1-leaf1b-Ethernet7
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 10.255.255.10
+      name: dc1-leaf1a
+      ipv4_addresses:
+      - 100.64.1.2
+    - router_ip: 10.255.255.20
+      name: dc1-leaf1b
+      ipv4_addresses:
+      - 100.64.2.2
     ipsec_profile: CP-PROFILE
   - name: LAN_HA
     id: 65535
@@ -418,6 +460,21 @@ router_path_selection:
     - name: LAN_HA
 router_traffic_engineering:
   enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: mpls-dc1-leaf1a-Ethernet6
+      ip_address: 172.18.1.2
+      ssl_profile: STUN-DTLS
+    - name: mpls-dc1-leaf1b-Ethernet6
+      ip_address: 172.18.2.2
+      ssl_profile: STUN-DTLS
+    - name: internet-dc1-leaf1a-Ethernet7
+      ip_address: 100.64.1.2
+      ssl_profile: STUN-DTLS
+    - name: internet-dc1-leaf1b-Ethernet7
+      ip_address: 100.64.2.2
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: APP-PROFILE-CONTROL-PLANE
@@ -430,13 +487,16 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.255.255.10/32
+      - 10.255.255.20/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9214
   ip_address: 10.255.1.2/32
   flow_tracker:
-    hardware: FLOW-TRACKER
+    sampled: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: dc1-wan2_VTEP
@@ -446,6 +506,21 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:
@@ -498,4 +573,7 @@ metadata:
       carrier: isp-1
       circuit_id: DC1-INET-4
       pathgroup: internet
+    pathfinders:
+    - vtep_ip: 10.255.255.10
+    - vtep_ip: 10.255.255.20
 dns_domain: dc1.local

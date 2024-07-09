@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Errdisable](#errdisable)
+- [Errdisable](#errdisable-1)
   - [Errdisable Summary](#errdisable-summary)
 
 ## Management

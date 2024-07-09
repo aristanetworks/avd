@@ -1,0 +1,218 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dot1x:
+    type: dict
+    display_name: Global 802.1x Authentication
+    keys:
+      system_auth_control:
+        type: bool
+      protocol_lldp_bypass:
+        type: bool
+      protocol_bpdu_bypass:
+        type: bool
+      dynamic_authorization:
+        type: bool
+      mac_based_authentication:
+        type: dict
+        keys:
+          delay:
+            type: int
+            min: 0
+            max: 300
+            convert_types:
+              - str
+          hold_period:
+            type: int
+            min: 1
+            max: 300
+            convert_types:
+              - str
+      radius_av_pair:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+          framed_mtu:
+            type: int
+            min: 68
+            max: 9236
+            convert_types:
+              - str
+      aaa:
+        type: dict
+        description: Configure AAA parameters.
+        keys:
+          unresponsive:
+            type: dict
+            description: Configure AAA timeout options.
+            keys:
+              eap_response:
+                type: str
+                description: EAP response to send.
+                valid_values:
+                  - "success"
+                  - "disabled"
+              action:
+                type: dict
+                description: Set action for supplicant when AAA times out.
+                keys:
+                  apply_cached_results:
+                    type: bool
+                    description: Use results from a previous AAA response.
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 1
+                        description: |-
+                          Enable caching for a specific duration -
+                          <1-10000>      duration in days
+                          <1-14400000>   duration in minutes
+                          <1-240000>     duration in hours
+                          <1-864000000>  duration in seconds
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "days"
+                          - "hours"
+                          - "minutes"
+                          - "seconds"
+                  apply_alternate:
+                    type: bool
+                    description: |-
+                      Apply alternate action if primary action fails.
+                      eg. aaa unresponsive action apply cached-results else traffic allow
+                  traffic_allow:
+                    type: bool
+                    description: Set action for supplicant traffic when AAA times out.
+                  traffic_allow_vlan:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 4094
+              phone_action:
+                type: dict
+                description: Set action for supplicant when AAA times out.
+                keys:
+                  apply_cached_results:
+                    type: bool
+                    description: Use results from a previous AAA response.
+                  cached_results_timeout:
+                    type: dict
+                    keys:
+                      time_duration:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 1
+                        description: |-
+                          Enable caching for a specific duration -
+                          <1-10000>      duration in days
+                          <1-14400000>   duration in minutes
+                          <1-240000>     duration in hours
+                          <1-864000000>  duration in seconds
+                      time_duration_unit:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "days"
+                          - "hours"
+                          - "minutes"
+                          - "seconds"
+                  apply_alternate:
+                    type: bool
+                    description: |-
+                      Apply alternate action if primary action fails.
+                      eg. aaa unresponsive phone action apply cached-results else traffic allow
+                  traffic_allow:
+                    description: Set action for supplicant traffic when AAA times out.
+                    type: bool
+              recovery_action_reauthenticate:
+                type: bool
+          accounting_update_interval:
+            type: int
+            convert_types:
+              - str
+            min: 5
+            max: 65535
+            description: Interval period in seconds.
+      captive_portal:
+        type: dict
+        description: Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          url:
+            type: str
+            description: |-
+              Supported URL type:
+                - http: http://<hostname>[:<port>]
+                - https: https://<hostname>[:<port>]
+          ssl_profile:
+            type: str
+          start_limit_infinite:
+            type: bool
+            description: Set captive-portal start limit to infinte.
+          access_list_ipv4:
+            type: str
+            description: Standard access-list name.
+      supplicant:
+        type: dict
+        keys:
+          profiles:
+            description: Dot1x supplicant profiles.
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                eap_method:
+                  type: str
+                  description: |-
+                    Extensible Authentication Protocol method:
+                      - EAP Flexible Authentication via Secure Tunneling.
+                      - EAP with Transport Layer Security.
+                  valid_values:
+                    - "fast"
+                    - "tls"
+                identity:
+                  type: str
+                  description: User identity.
+                passphrase_type:
+                  type: str
+                  convert_types:
+                    - int
+                  valid_values:
+                    - "0"
+                    - "7"
+                    - "8a"
+                  default: "7"
+                passphrase:
+                  type: str
+                  description: Extensible Authentication Protocol password.
+                ssl_profile:
+                  type: str
+          logging:
+            type: bool
+            description: Enable supplicant logging.
+          disconnect_cached_results_timeout:
+            type: int
+            convert_types:
+              - "str"
+            min: 60
+            max: 65535
+            description: Timeout in seconds for removing a disconnected supplicant.

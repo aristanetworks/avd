@@ -18,6 +18,8 @@ tenant_a:
             name: Tenant_A_OP_Zone_1
             tags: ['opzone']
             enabled: True
+            ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+            ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
             ip_address_virtual: 10.1.10.1/24
           # SVI as integer
           - id: 111
@@ -253,7 +255,7 @@ tenant_a:
             enabled: True
             description: "Single description"
             descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
-            # no description nor desciptions is tested in Tenant_OSPF below
+            # no description nor descriptions is tested in Tenant_OSPF below
       - name: Tenant_A_OSPF
         vrf_id: 16
         ospf:
@@ -313,3 +315,19 @@ tenant_a:
         name: overlapping_name
       - id: 165
         name: overlapping_name
+
+ipv4_acls:
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+    entries:
+      - remark: Some remark will not require source and destination fields.
+      - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any

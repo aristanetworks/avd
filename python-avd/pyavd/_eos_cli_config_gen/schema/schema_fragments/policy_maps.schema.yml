@@ -1,0 +1,200 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  policy_maps:
+    type: dict
+    keys:
+      pbr:
+        type: list
+        description: PBR Policy-Maps.
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy-Map Name.
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Class Name.
+                  index:
+                    type: int
+                    convert_types:
+                      - str
+                  drop:
+                    description: "'drop' and 'set' are mutually exclusive."
+                    type: bool
+                  set:
+                    description: |
+                      Set Nexthop
+                      'drop' and 'set' are mutually exclusive.
+                    type: dict
+                    keys:
+                      nexthop:
+                        type: dict
+                        keys:
+                          ip_address:
+                            type: str
+                            description: IPv4 or IPv6 Address.
+                          recursive:
+                            type: bool
+      qos:
+        type: list
+        description: QOS Policy-Maps.
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy-Map Name.
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Class Name.
+                  set:
+                    type: dict
+                    keys:
+                      cos:
+                        type: int
+                        convert_types:
+                          - str
+                      dscp:
+                        type: str
+                        convert_types:
+                          - int
+                      traffic_class:
+                        type: int
+                        convert_types:
+                          - str
+                      drop_precedence:
+                        type: int
+                        convert_types:
+                          - str
+                  police:
+                    type: dict
+                    keys:
+                      rate:
+                        type: int
+                        convert_types:
+                          - str
+                        description: |-
+                          Specify rate.
+                          Range in kbps <8-200000000>.
+                      rate_unit:
+                        type: str
+                        valid_values:
+                          - "bps"
+                          - "kbps"
+                          - "mbps"
+                          - "pps"
+                        default: "bps"
+                      rate_burst_size:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Range in bytes <256-128000000>.
+                      rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                          - "bytes"
+                          - "kbytes"
+                          - "mbytes"
+                          - "packets"
+                        default: "bytes"
+                      action:
+                        type: dict
+                        keys:
+                          type:
+                            description: Set action for policed traffic.
+                            type: str
+                            valid_values:
+                              - "dscp"
+                              - "drop-precedence"
+                          dscp_value:
+                            description: Set when action.type is set to "dscp".
+                            type: str
+                            convert_types:
+                              - int
+                      higher_rate:
+                        type: int
+                        convert_types:
+                          - str
+                        description: |-
+                          Specify higher rate.
+                          Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.
+                      higher_rate_unit:
+                        type: str
+                        valid_values:
+                          - "bps"
+                          - "kbps"
+                          - "mbps"
+                          - "pps"
+                        default: "bps"
+                      higher_rate_burst_size:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Range in bytes <256-128000000>.
+                      higher_rate_burst_size_unit:
+                        type: str
+                        valid_values:
+                          - "bytes"
+                          - "kbytes"
+                          - "mbytes"
+                          - "packets"
+                        default: "bytes"
+      copp_system_policy:
+        type: dict
+        description: Control-plane policy configuration.
+        keys:
+          classes:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                shape:
+                  type: int
+                  description: Maximum rate limit.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                    - str
+                bandwidth:
+                  type: int
+                  description: Minimum bandwidth.
+                  min: 0
+                  max: 10000000
+                  convert_types:
+                    - str
+                rate_unit:
+                  type: str
+                  description: The `rate_unit` must be defined for `shape` and `bandwidth`.
+                  valid_values: [ 'pps', 'kbps' ]

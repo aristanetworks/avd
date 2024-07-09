@@ -1,0 +1,144 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  snmp_settings:
+    documentation_options:
+      table: management-snmp-settings
+    type: dict
+    description: |-
+      SNMP settings.
+      For SNMP local-interfaces see "source_interfaces.snmp".
+      Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.
+    keys:
+      contact:
+        type: str
+        description: SNMP contact.
+      location:
+        type: bool
+        default: False
+        description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>".
+      vrfs:
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/vrfs"
+        type: list
+        description: |-
+          Enable/disable SNMP for one or more VRFs.
+          Can be used in combination with "enable_mgmt_interface_vrf" and "enable_inband_mgmt_vrf".
+      enable_mgmt_interface_vrf:
+        type: bool
+        description: |-
+          Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
+          Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.
+          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".
+      enable_inband_mgmt_vrf:
+        type: bool
+        description: |-
+          Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
+          Ignored if inband management is not configured for the device.
+          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
+      compute_local_engineid:
+        type: bool
+        default: False
+        description: |
+          Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
+      compute_local_engineid_source:
+        type: str
+        default: hostname_and_ip
+        description: |
+          `compute_local_engineid_source` supports:
+          - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
+            the string generated via the concatenation of the hostname plus the management IP.
+            {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
+          - `system_mac` generate the switch default engine id for AVD usage.
+            To use this, `system_mac_address` MUST be set for the device.
+            The formula is f5717f + system_mac_address + 00.
+        valid_values:
+          - hostname_and_ip
+          - system_mac
+      compute_v3_user_localized_key:
+        type: bool
+        default: False
+        description: |
+          Requires compute_local_engineid to be `true`.
+          If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.
+          The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.
+      users:
+        type: list
+        description: |-
+          Configuration of local SNMP users.
+          Configuration of remote SNMP users are currently only possible using `structured_config`.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Username.
+            group:
+              type: str
+              description: Group name.
+            version:
+              type: str
+              valid_values: ["v1", "v2c", "v3"]
+            auth:
+              type: str
+              valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
+            auth_passphrase:
+              type: str
+              description: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+            priv:
+              type: str
+              valid_values: ["des", "aes", "aes192", "aes256"]
+            priv_passphrase:
+              type: str
+              description: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+      hosts:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/hosts"
+        items:
+          type: dict
+          keys:
+            # Redefine host here to ensure it comes first in the docs.
+            host:
+              type: str
+              $ref: "eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host"
+            vrf:
+              type: str
+              description: |-
+                VRF Name.
+                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
+              convert_types:
+                - int
+            use_mgmt_interface_vrf:
+              type: bool
+              description:
+                Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
+                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
+            use_inband_mgmt_vrf:
+              type: bool
+              description:
+                Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+                Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
+                Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
+      communities:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/communities"
+      ipv4_acls:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls"
+      ipv6_acls:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls"
+      views:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/views"
+      groups:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/groups"
+      traps:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/traps"

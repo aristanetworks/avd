@@ -5,6 +5,9 @@
 # If a device is set to "is_deployed: false" at the host_vars level, then shutdown interfaces towards undeployed peers.
 shutdown_interfaces_towards_undeployed_peers: true
 
+# If a device is set to "is_deployed: false" at the host_vars level, then shutdown bgp towards undeployed peers.
+shutdown_bgp_towards_undeployed_peers: true
+
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
 
@@ -294,12 +297,14 @@ l2leaf:
       filter:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
+      uplink_mtu: 1499
       nodes:
         - name: DC1-L2LEAF1A
           id: 8
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7 ]
+          uplink_mtu: 1498
         - name: DC1-L2LEAF1B
           id: 11
           mgmt_ip: 192.168.200.115/24

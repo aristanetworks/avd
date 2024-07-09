@@ -15,13 +15,13 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 AVD Documentation:
 
 - [Stable version](https://avd.arista.com/stable/)
-- [Development version](https://www.avd.sh/en/devel/)
+- [Development version](https://avd.arista.com/devel/)
 
 ## Features
 
 - **Flexibility with Open Data Models:** Extensible fabric-wide network models, simplifying configuration, delivering consistency, and reducing errors
 - **Simplification through Multi-Domain Automation:** A framework that can automate the data center, campus or wide area network, enabled by a consistent EOS software image and management platform
-- **Comprehensive Workflows:** Automating the full life cycle of network provisioning from config generation to pre and post-deployment validation, and self-documentation of the network
+- **Comprehensive Workflows:** Automating the full life cycle of network provisioning from config generation to pre- and post-deployment validation, and self-documentation of the network
 
 ## Reference designs
 
@@ -34,25 +34,28 @@ AVD Documentation:
 ### Examples
 
 - [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
-- [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
+- [Examples](https://avd.arista.com/stable/examples/single-dc-l3ls/index.html)
 
-### Additional resources
+## Additional resources
 
 - Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on Ansible documentation
 - Ansible [CloudVision modules](https://cvp.avd.sh/en/stable/)
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
 
-## Ask a question
+## Support
 
-Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions).
+- AVD version 4.x releases with full support from Arista TAC. If your organization has the [A-Care subscription](https://www.arista.com/assets/data/pdf/AVD-A-Care-TAC-Support-Overview.pdf) please don't hesitate to contact TAC with any questions or issues.
+- Community support is provided via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](./ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
 
-You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit requests for enhancements.
+You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 
 ## License
 
-The project is published under [Apache 2.0 License](./LICENSE)
+Copyright (c) 2019-2024 Arista Networks, Inc.
+
+The project is published under [Apache 2.0 License](LICENSE)

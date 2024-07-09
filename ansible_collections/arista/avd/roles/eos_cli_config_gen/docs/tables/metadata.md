@@ -19,15 +19,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "metadata.cv_tags.interface_tags.[].tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.interface_tags.[].tags.[].name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "metadata.cv_tags.interface_tags.[].tags.[].value") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;cv_pathfinder</samp>](## "metadata.cv_pathfinder") | Dictionary |  |  |  | Metadata used for CV Pathfinder visualization on CloudVision |
+    | [<samp>&nbsp;&nbsp;cv_pathfinder</samp>](## "metadata.cv_pathfinder") | Dictionary |  |  |  | Metadata used for CV Pathfinder visualization on CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "metadata.cv_pathfinder.role") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "metadata.cv_pathfinder.region") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;zone</samp>](## "metadata.cv_pathfinder.zone") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;site</samp>](## "metadata.cv_pathfinder.site") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "metadata.cv_pathfinder.vtep_ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "metadata.cv_pathfinder.ssl_profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "metadata.cv_pathfinder.address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pathfinders</samp>](## "metadata.cv_pathfinder.pathfinders") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vtep_ip</samp>](## "metadata.cv_pathfinder.pathfinders.[].vtep_ip") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vtep_ip</samp>](## "metadata.cv_pathfinder.pathfinders.[].vtep_ip") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "metadata.cv_pathfinder.interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.interfaces.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrier</samp>](## "metadata.cv_pathfinder.interfaces.[].carrier") | String |  |  |  |  |
@@ -35,7 +36,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pathgroup</samp>](## "metadata.cv_pathfinder.interfaces.[].pathgroup") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "metadata.cv_pathfinder.interfaces.[].public_ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pathgroups</samp>](## "metadata.cv_pathfinder.pathgroups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.pathgroups.[].name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.pathgroups.[].name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "metadata.cv_pathfinder.pathgroups.[].carriers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.pathgroups.[].carriers.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imported_carriers</samp>](## "metadata.cv_pathfinder.pathgroups.[].imported_carriers") | List, items: Dictionary |  |  |  |  |
@@ -65,6 +66,23 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pathgroups</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].pathgroups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].pathgroups.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].pathgroups.[].preference") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_exit_policies</samp>](## "metadata.cv_pathfinder.internet_exit_policies") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].name") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].type") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].city") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].country") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;upload_bandwidth</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].upload_bandwidth") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;download_bandwidth</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].download_bandwidth") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firewall</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].firewall") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ips_control</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].ips_control") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acceptable_use_policy</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].acceptable_use_policy") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vpn_credentials</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].vpn_credentials") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;fqdn</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].vpn_credentials.[].fqdn") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vpn_type</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].vpn_credentials.[].vpn_type") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pre_shared_key</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].vpn_credentials.[].pre_shared_key") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnels</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels.[].name") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "metadata.cv_pathfinder.internet_exit_policies.[].tunnels.[].preference") | String | Required |  |  |  |
 
 === "YAML"
 
@@ -84,7 +102,7 @@
               - name: <str; required>
                 value: <str; required>
 
-      # Metadata used for CV Pathfinder visualization on CloudVision
+      # Metadata used for CV Pathfinder visualization on CloudVision.
       cv_pathfinder:
         role: <str>
         region: <str>
@@ -92,8 +110,9 @@
         site: <str>
         vtep_ip: <str>
         ssl_profile: <str>
+        address: <str>
         pathfinders:
-          - vtep_ip: <str>
+          - vtep_ip: <str; required>
         interfaces:
           - name: <str>
             carrier: <str>
@@ -101,7 +120,7 @@
             pathgroup: <str>
             public_ip: <str>
         pathgroups:
-          - name: <str>
+          - name: <str; required>
             carriers:
               - name: <str>
             imported_carriers:
@@ -131,4 +150,21 @@
                 pathgroups:
                   - name: <str>
                     preference: <str>
+        internet_exit_policies:
+          - name: <str; required>
+            type: <str; required>
+            city: <str; required>
+            country: <str; required>
+            upload_bandwidth: <int>
+            download_bandwidth: <int>
+            firewall: <bool; required>
+            ips_control: <bool; required>
+            acceptable_use_policy: <bool; required>
+            vpn_credentials: # required
+              - fqdn: <str; required>
+                vpn_type: <str; required>
+                pre_shared_key: <str; required>
+            tunnels: # required
+              - name: <str; required>
+                preference: <str; required>
     ```

@@ -7,12 +7,26 @@ import logging
 from asyncio import run
 from typing import TYPE_CHECKING
 
+from ansible.errors import AnsibleActionFail
 from yaml import CSafeLoader, YAMLError, dump, load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge_catalogs
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._errors import AristaAvdError
+    from pyavd._utils import get_item
+except ImportError as e:
+    AristaAvdError = get_item = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -43,7 +57,7 @@ def get_anta_results(
     anta_device: AntaDevice,
     config_manager: ConfigManager,
     logging_level: str,
-    skipped_tests: list[dict],
+    skip_tests: list[dict],
     ansible_tags: dict | None = None,
     save_catalog_name: Path | None = None,
     custom_anta_catalogs: list[Path] | None = None,
@@ -59,9 +73,9 @@ def get_anta_results(
                                 When running in Ansible, the action plugin will pass an AnsibleEOSDevice instance.
       config_manager (ConfigManager): The device ConfigManager object containing data to be used by the tests.
       logging_level (str): The level at which ANTA should be logging.
-      skipped_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
+      skip_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
-                           `eos_validate_state`. This is ignored if `skipped_tests` is set.
+                           `eos_validate_state`. This is ignored if `skip_tests` is set.
       save_catalog_name (str): When set, the generated catalog is saved to a file using this name.
       custom_anta_catalogs (list[Path]): An optional list of custom ANTA catalog files to merge with the generated catalog.
       yaml_dumper (Dumper): Dumper to use to dump the ANTA catalog. Default is NoAliasDumper to avoid anchors.
@@ -79,14 +93,14 @@ def get_anta_results(
     # Setup ANTA logging
     setup_logging(level=logging_level)
 
-    if skipped_tests:
-        LOGGER.warning("The variable 'skipped_tests' has been set. Ansible tags are ignored for filtering tests.")
+    if skip_tests:
+        LOGGER.warning("The variable 'skip_tests' has been set. Ansible tags are ignored for filtering tests.")
     # Backward compatibility with legacy eos_validate_state Ansible tags
     elif ansible_tags:
         run_tags = ansible_tags.get("ansible_run_tags", ())
         skip_tags = ansible_tags.get("ansible_skip_tags", ())
-        # Update the skipped_tests variable according to Ansible tags
-        skipped_tests = get_skipped_tests_from_tags(run_tags, skip_tags)
+        # Update the skip_tests variable according to Ansible tags
+        skip_tests = get_skip_tests_from_tags(run_tags, skip_tags)
 
     device_name = anta_device.name
 
@@ -94,7 +108,7 @@ def get_anta_results(
     custom_catalog = load_custom_catalogs(custom_anta_catalogs) if custom_anta_catalogs else None
 
     # Create the ANTA Catalog object with the appropriate skipped tests if any
-    tests = generate_tests(config_manager, skipped_tests, custom_catalog)
+    tests = generate_tests(config_manager, skip_tests, custom_catalog)
     anta_catalog = AntaCatalog.from_dict(data=tests) if tests else AntaCatalog()
 
     if save_catalog_name is not None:
@@ -115,7 +129,7 @@ def get_anta_results(
         run(anta_runner(manager, inventory, anta_catalog)) if len(anta_catalog.tests) > 0 else LOGGER.warning("Test catalog is empty!")
 
     # Convert the ANTA TestResult models to dictionaries, excluding default values
-    results = [result.model_dump(exclude_defaults=True) for result in manager.get_results()]
+    results = [result.model_dump(exclude_defaults=True) for result in manager.results]
 
     # Return sorted results
     return sorted(
@@ -165,7 +179,7 @@ def dump_to_file(tests: dict, filename: Path, yaml_dumper: Dumper = NoAliasDumpe
         dump(tests, fd, Dumper=yaml_dumper)
 
 
-def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]:
+def get_skip_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]:
     """Get the list of AVD test categories to skip from the Ansible tags.
 
     Args:
@@ -197,18 +211,18 @@ def get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]
     return result
 
 
-def generate_tests(config_manager: ConfigManager, skipped_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
-    """Create the test catalog in a dictionnary format generated from the AVD test classes.
+def generate_tests(config_manager: ConfigManager, skip_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
+    """Create the test catalog in a dictionary format generated from the AVD test classes.
 
     Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together
     with an optional custom_catalog to create the final catalog.
 
-    Tests can be skipped from the catalog depending on `skipped_tests`.
+    Tests can be skipped from the catalog depending on `skip_tests`.
 
     Args:
     ----
         config_manager (ConfigManager): The device ConfigManager object containing data to be used by the tests.
-        skipped_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
+        skip_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
         custom_catalog (dict): An optional custom catalog to merge with the generated catalog.
 
     Returns:
@@ -220,9 +234,9 @@ def generate_tests(config_manager: ConfigManager, skipped_tests: list[dict], cus
 
     for avd_test_class in AVD_TEST_CLASSES:
         # Check if the whole class is to be skipped
-        class_skip_config = get_item(skipped_tests, "category", avd_test_class.__name__)
+        class_skip_config = get_item(skip_tests, "category", avd_test_class.__name__)
         if class_skip_config is not None and not class_skip_config.get("tests"):
-            msg = f"Skipping all tests of {avd_test_class.__name__} per the `skipped_tests` input variable."
+            msg = f"Skipping all tests of {avd_test_class.__name__} per the `skip_tests` input variable."
             LOGGER.info(msg)
             continue
 
@@ -231,12 +245,12 @@ def generate_tests(config_manager: ConfigManager, skipped_tests: list[dict], cus
         generated_tests = eos_validate_state_module.render()
 
         # Remove the individual tests that are to be skipped
-        if class_skip_config is not None and (avd_test_class_skipped_tests := class_skip_config.get("tests")) is not None:
-            msg = f"Skipping the following tests of {avd_test_class.__name__} per the `skipped_tests` input variable: "
-            msg += ", ".join(avd_test_class_skipped_tests)
+        if class_skip_config is not None and (avd_test_class_skip_tests := class_skip_config.get("tests")) is not None:
+            msg = f"Skipping the following tests of {avd_test_class.__name__} per the `skip_tests` input variable: "
+            msg += ", ".join(avd_test_class_skip_tests)
             LOGGER.info(msg)
             for anta_tests in generated_tests.values():
-                anta_tests[:] = [test for test in anta_tests if next(iter(test.keys())) not in avd_test_class_skipped_tests]
+                anta_tests[:] = [test for test in anta_tests if next(iter(test.keys())) not in avd_test_class_skip_tests]
 
         catalog = merge_catalogs(catalog, generated_tests)
 
@@ -264,7 +278,7 @@ def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: Resul
         description = res_ow.description if res_ow and res_ow.description else test_definition.test.description
         custom_field = res_ow.custom_field if res_ow else None
 
-        manager.add_test_result(
+        manager.add(
             TestResult(
                 name=device_name,
                 test=test_definition.test.name,

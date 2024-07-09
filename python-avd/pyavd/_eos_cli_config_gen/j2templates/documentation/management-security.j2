@@ -1,0 +1,173 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - management security #}
+{% if management_security is arista.avd.defined %}
+
+## Management Security
+
+### Management Security Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%     if management_security.entropy_source is arista.avd.defined %}
+| Entropy source | {{ management_security.entropy_source }} |
+{%     endif %}
+{%     if management_security.entropy_sources is arista.avd.defined %}
+{%         set entropy_sources = [] %}
+{%         for source in ['hardware', 'haveged', 'cpu_jitter', 'hardware_exclusive'] %}
+{%             if management_security.entropy_sources[source] is arista.avd.defined(true) %}
+{%                 do entropy_sources.append(source.replace("_", " ")) %}
+{%             endif %}
+{%         endfor %}
+| Entropy sources | {{ entropy_sources | join(", ") }} |
+{%     endif %}
+{%     if management_security.password.encryption_key_common is arista.avd.defined %}
+| Common password encryption key | {{ management_security.password.encryption_key_common }} |
+{%     endif %}
+{%     if management_security.password.encryption_reversible is arista.avd.defined %}
+| Reversible password encryption | {{ management_security.password.encryption_reversible }} |
+{%     endif %}
+{%     if management_security.password.minimum_length is arista.avd.defined %}
+| Minimum password length | {{ management_security.password.minimum_length }} |
+{%     endif %}
+{%     if management_security.ssl_profiles is arista.avd.defined %}
+
+### Management Security SSL Profiles
+
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+{%         set ssl_profiles_certs = [] %}
+{%         for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
+{%             set crls = "-" %}
+{%             if ssl_profile.certificate_revocation_lists is arista.avd.defined %}
+{%                 set crls = ssl_profile.certificate_revocation_lists | arista.avd.natural_sort | join("<br>") %}
+{%             endif %}
+| {{ ssl_profile.name | arista.avd.default('-') }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} | {{ ssl_profile.cipher_list | arista.avd.default('-') }} | {{ crls }} |
+{%             set tmp_cert = {} %}
+{%             if ssl_profile.trust_certificate is arista.avd.defined %}
+{%                 set tmp_cert = {'trust_certificate': ssl_profile.trust_certificate} %}
+{%             endif %}
+{%             if ssl_profile.chain_certificate is arista.avd.defined %}
+{%                 do tmp_cert.update({'chain_certificate': ssl_profile.chain_certificate}) %}
+{%             endif %}
+{%             if tmp_cert | length > 0 %}
+{%                 do tmp_cert.update({'name': ssl_profile.name}) %}
+{%                 do ssl_profiles_certs.append(tmp_cert) %}
+{%             endif %}
+{%         endfor %}
+{%         for ssl_profile in ssl_profiles_certs | arista.avd.natural_sort('name') %}
+
+### SSL profile {{ ssl_profile.name }} Certificates Summary
+{%             if ssl_profile.trust_certificate is arista.avd.defined %}
+
+| Trust Certificates | Requirement | Policy | System |
+| ------------------ | ----------- | ------ | ------ |
+{%                 set trust_certs = ssl_profile.trust_certificate.certificates | arista.avd.default('-') | join(', ') %}
+{%                 set requirement = '-' %}
+{%                 if ssl_profile.trust_certificate.requirement is arista.avd.defined %}
+{%                     set tmp_requirement = [] %}
+{%                     if ssl_profile.trust_certificate.requirement.basic_constraint_ca is arista.avd.defined(true) %}
+{%                         do tmp_requirement.append('Basic Constraint CA') %}
+{%                     endif %}
+{%                     if ssl_profile.trust_certificate.requirement.hostname_fqdn is arista.avd.defined(true) %}
+{%                         do tmp_requirement.append('Hostname must be FQDN') %}
+{%                     endif %}
+{%                     if tmp_requirement | length > 0 %}
+{%                         set requirement = tmp_requirement | join(', ') %}
+{%                     endif %}
+{%                 endif %}
+{%                 set policy = '-' %}
+{%                 if ssl_profile.trust_certificate.policy_expiry_date_ignore is arista.avd.defined(true) %}
+{%                     set policy = 'Ignore Expiry Date' %}
+{%                 endif %}
+{%                 if ssl_profile.trust_certificate.system is arista.avd.defined(true) %}
+{%                     set system = 'Enabled' %}
+{%                 else %}
+{%                     set system = '-' %}
+{%                 endif %}
+| {{ trust_certs }} | {{ requirement }} | {{ policy }} | {{ system }} |
+{%             endif %}
+{%             if ssl_profile.chain_certificate is arista.avd.defined %}
+
+| Chain Certificates | Requirement |
+| ------------------ | ----------- |
+{%                 set chain_certs = ssl_profile.chain_certificate.certificates | arista.avd.default('-') | join(', ') %}
+{%                 set requirement = '-' %}
+{%                 if ssl_profile.chain_certificate.requirement is arista.avd.defined %}
+{%                     set tmp_requirement = [] %}
+{%                     if ssl_profile.chain_certificate.requirement.basic_constraint_ca is arista.avd.defined(true) %}
+{%                         do tmp_requirement.append('Basic Constraint CA') %}
+{%                     endif %}
+{%                     if ssl_profile.chain_certificate.requirement.include_root_ca is arista.avd.defined(true) %}
+{%                         do tmp_requirement.append('Root CA Included') %}
+{%                     endif %}
+{%                     if tmp_requirement | length > 0 %}
+{%                         set requirement = tmp_requirement | join(', ') %}
+{%                     endif %}
+{%                 endif %}
+| {{ chain_certs }} | {{ requirement }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if management_security.password.policies is arista.avd.defined %}
+
+### Password Policies
+
+| Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
+|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
+{%         for policy in management_security.password.policies | arista.avd.natural_sort('name') %}
+{%             set min_digits = policy.minimum.digits if policy.minimum.digits is arista.avd.defined else 'N/A' %}
+{%             set min_length = policy.minimum.length if policy.minimum.length is arista.avd.defined else 'N/A' %}
+{%             set min_lower = policy.minimum.lower if policy.minimum.lower is arista.avd.defined else 'N/A' %}
+{%             set min_special = policy.minimum.special if policy.minimum.special is arista.avd.defined else 'N/A' %}
+{%             set min_upper = policy.minimum.upper if policy.minimum.upper is arista.avd.defined else 'N/A' %}
+{%             set max_repetitive = policy.maximum.repetitive if policy.maximum.repetitive is arista.avd.defined else 'N/A' %}
+{%             set max_sequential = policy.maximum.sequential if policy.maximum.sequential is arista.avd.defined else 'N/A' %}
+| {{ policy.name }} | > {{ min_digits }} | > {{ min_length }} | > {{ min_lower }} | > {{ min_special }} | > {{ min_upper }} | < {{ max_repetitive }} | < {{ max_sequential }} |
+{%         endfor %}
+{%     endif %}
+{%     if management_security.shared_secret_profiles is arista.avd.defined %}
+
+### Session Shared-secret Profiles
+{%         for profile in management_security.shared_secret_profiles | arista.avd.natural_sort("profile") %}
+
+#### {{ profile.profile }}
+
+| Secret Name | Receive Lifetime | Transmit Lifetime | Timezone |
+| ----------- | ---------------- | ----------------- | -------- |
+{%             for secret in profile.secrets | arista.avd.natural_sort("name") %}
+{%                 if secret.secret is arista.avd.defined and
+                      ((secret.receive_lifetime.infinite is arista.avd.defined(true) or
+                        (secret.receive_lifetime.start_date_time and secret.receive_lifetime.end_date_time is arista.avd.defined)) and
+                       (secret.transmit_lifetime.infinite is arista.avd.defined(true) or
+                        (secret.transmit_lifetime.start_date_time and secret.transmit_lifetime.end_date_time is arista.avd.defined))) %}
+{%                     if secret.local_time is arista.avd.defined(true) %}
+{%                         set timezone = "Local Time" %}
+{%                     else %}
+{%                         set timezone = "UTC" %}
+{%                     endif %}
+{%                     if secret.receive_lifetime.infinite is arista.avd.defined(true) %}
+{%                         set receive_lifetime = "Infinite" %}
+{%                     else %}
+{%                         set receive_lifetime = secret.receive_lifetime.start_date_time ~ " - " ~ secret.receive_lifetime.end_date_time %}
+{%                     endif %}
+{%                     if secret.transmit_lifetime.infinite is arista.avd.defined(true) %}
+{%                         set transmit_lifetime = "Infinite" %}
+{%                     else %}
+{%                         set transmit_lifetime = secret.transmit_lifetime.start_date_time ~ " - " ~ secret.transmit_lifetime.end_date_time %}
+{%                     endif %}
+| {{ secret.name }} | {{ receive_lifetime | arista.avd.default("-") }} | {{ transmit_lifetime | arista.avd.default("-") }} | {{ timezone }} |
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+### Management Security Device Configuration
+
+```eos
+{%     include 'eos/management-security.j2' %}
+```
+{% endif %}

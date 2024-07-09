@@ -135,7 +135,7 @@ The base class has a few important methods:
 - `get(key, default=None)` returns the value of the requested "key" (`cached_property`) if the "key" is in the list returned by `keys()`.
   Otherwise the default value is returned.
 
-See the source code [here](../../plugins/plugin_utils/avdfacts.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/avdfacts.py)
 
 ### get_structured_config
 
@@ -148,7 +148,7 @@ TODO
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/eos_designs_facts)
 
 ```mermaid
 classDiagram
@@ -179,7 +179,7 @@ classDiagram
 
 ### SharedUtils
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/shared_utils)
 
 ```mermaid
 classDiagram
@@ -228,20 +228,9 @@ Each class is loaded in `get_structured_config` and rendered. All the results ar
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which at the time where `eos_designs_structured_config` run, is a nested `dict`. It contains the output from `EosDesignsFacts`'s `render()` method.
 
-Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into managable files.
+Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into manageable files.
 
-Source code:
-
-- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
-  (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
-- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
-- [AvdStructuredConfigCoreInterfacesAndL3Edge](../../roles/eos_designs/python_modules/core_interfaces_and_l3_edge/__init__.py)
-- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
-- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
-- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
-- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
-- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
-- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/structured_config)
 
 ```mermaid
 classDiagram
@@ -417,7 +406,7 @@ outside of that, so any inline Jinja2 could not use these values.
 | switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
 | switch.mgmt_ip | mgmt_ip must be available to the mlag peer. |
 | switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
-| switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name
+| switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name |
 | switch.bgp_as | Known use of inline jinja in customer deployments |
 | switch.group | Known use of inline jinja in customer deployments |
 | switch.hostname | Known use of inline jinja in customer deployments |

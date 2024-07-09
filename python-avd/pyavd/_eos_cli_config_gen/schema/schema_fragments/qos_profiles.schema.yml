@@ -1,0 +1,438 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  qos_profiles:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Profile-Name.
+        trust:
+          type: str
+          valid_values: ["cos", "dscp", "disabled"]
+        cos:
+          type: int
+          convert_types:
+            - str
+        dscp:
+          type: int
+          convert_types:
+            - str
+        shape:
+          type: dict
+          keys:
+            rate:
+              type: str
+              description: |
+                Supported options are platform dependent.
+                Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+        service_policy:
+          type: dict
+          keys:
+            type:
+              type: dict
+              keys:
+                qos_input:
+                  type: str
+                  description: Policy-map name.
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                description: TX-Queue ID.
+              bandwidth_percent:
+                type: int
+                convert_types:
+                  - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                  - str
+              priority:
+                type: str
+                valid_values: ["priority strict", "no priority"]
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: |
+                      Supported options are platform dependent.
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: Text comment added to queue.
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification.
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs.
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: |-
+                              Units to be used for the threshold values.
+                              This should be one of segments, byte, kbytes, mbytes.
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN minimum-threshold.
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum-threshold.
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum mark probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Random-detect ECN weight.
+                  drop:
+                    description: Set WRED parameters.
+                    type: dict
+                    keys:
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
+                            description: Units to be used for the threshold values.
+                          drop_precedence:
+                            type: int
+                            required: false
+                            min: 0
+                            max: 2
+                            description: Specify Drop Precedence value.
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED minimum-threshold.
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED maximum-threshold.
+                          drop_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: WRED weight.
+
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                description: UC TX queue ID.
+              bandwidth_percent:
+                type: int
+                convert_types:
+                  - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                  - str
+              priority:
+                type: str
+                valid_values: ["priority strict", "no priority"]
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: |
+                      Supported options are platform dependent.
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: Text comment added to queue.
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification.
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs.
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: Unit to be used for the threshold values.
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN minimum-threshold.
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum-threshold.
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum mark probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Random-detect ECN weight.
+                  drop:
+                    description: Set WRED parameters.
+                    type: dict
+                    keys:
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
+                            description: Units to be used for the threshold values.
+                          drop_precedence:
+                            type: int
+                            required: false
+                            min: 0
+                            max: 2
+                            description: Specify Drop Precedence value.
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED minimum-threshold.
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED maximum-threshold.
+                          drop_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: WRED weight.
+
+        mc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                description: MC TX queue ID.
+              bandwidth_percent:
+                type: int
+                convert_types:
+                  - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                  - str
+              priority:
+                type: str
+                valid_values: ["priority strict", "no priority"]
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: |
+                      Supported options are platform dependent.
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.
+        priority_flow_control:
+          type: dict
+          description: |
+            Priority Flow Control settings.
+          keys:
+            enabled:
+              type: bool
+              description: |
+                Enable Priority Flow control.
+            watchdog:
+              type: dict
+              description: |
+                Watchdog can detect stuck transmit queues.
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                  description: |
+                    Enable the watchdog on stuck transmit queues.
+                action:
+                  type: str
+                  valid_values: ["drop", "notify-only"]
+                  description: |
+                    Override the default error-disable action to either drop
+                    traffic on the stuck queue or notify-only
+                    without making any actions on the stuck queue.
+                timer:
+                  type: dict
+                  description: |
+                    Timer thresholds whilst monitoring queues.
+                  keys:
+                    timeout:
+                      type: str
+                      required: true
+                      pattern: "^\\d+(\\.\\d{1,2})?$"
+                      convert_types:
+                        - int
+                        - float
+                      description: |
+                        Timeout in seconds after which port should be errdisabled or
+                        should start dropping on congested priorities.
+                        This should be decimal with up to 2 decimal point.
+                        Example: 0.01 or 60
+                    polling_interval:
+                      type: str
+                      required: true
+                      pattern: "^auto|\\d+(\\.\\d{1,3})?$"
+                      convert_types:
+                        - int
+                        - float
+                      description: |
+                        Time interval in seconds at which the watchdog should poll the queues.
+                        This should be decimal with up to 3 decimal point or set
+                        to 'auto' based on recovery_time and timeout values.
+                        Example: 0.005 or 60
+                    recovery_time:
+                      type: str
+                      required: true
+                      pattern: "^\\d+(\\.\\d{1,2})?$"
+                      convert_types:
+                        - int
+                        - float
+                      description: |
+                        Recovery-time in seconds after which stuck queue should
+                        recover and start forwarding again.
+                        This should be decimal with up to 2 decimal point.
+                        Example: 0.01 or 60
+                    forced:
+                      type: bool
+                      description: |
+                        Force recover any stuck queue(s) after the duration,
+                        irrespective of whether PFC frames are being
+                        received or not.
+            priorities:
+              type: list
+              primary_key: priority
+              description: |
+                Set the drop/no_drop on each queue.
+              items:
+                type: dict
+                keys:
+                  priority:
+                    type: int
+                    min: 0
+                    max: 7
+                    required: true
+                    convert_types:
+                      - str
+                    description: |
+                      Priority queue number (COS value).
+                  no_drop:
+                    type: bool
+                    required: true
+                    description: |
+                      Enable Priority Flow Control frames on this queue.

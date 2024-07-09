@@ -1,0 +1,189 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_security:
+    type: dict
+    keys:
+      ike_policies:
+        type: list
+        description: Internet Security Association and Key Mgmt Protocol.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            local_id:
+              type: str
+              description: |-
+                Local IKE identification.
+                Can be an IPv4 or an IPv6 address.
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
+            local_id_fqdn:
+              type: str
+              description: |-
+                Local FQDN or UFQDN IKE identification.
+                If both `local_id` and `local_id_fqdn` are set, `local_id_fqdn` takes precedence.
+            ike_lifetime:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 24
+              description: IKE lifetime in hours.
+            encryption:
+              type: str
+              valid_values:
+                - 3des
+                - aes128
+                - aes256
+              description: IKE encryption algorithm.
+            dh_group:
+              type: int
+              convert_types:
+                - str
+              valid_values: [1, 2, 5, 14, 15, 16, 17, 20, 21, 24]
+              description: Diffie-Hellman group for the key exchange.
+      sa_policies:
+        type: list
+        description: Security Association policies.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0.
+            sa_lifetime:
+              type: dict
+              keys:
+                value:
+                  type: int
+                  description: |-
+                    Lifetime value for this SA.
+                    Valid range depends on the unit.
+                    <1-24>       Lifetime in hours ( default )
+                    <1-4000000>  Packet limit in thousands
+                    <1-6000>     Byte limit in GB ( 1024 MB )
+                    <1-6144000>  Byte limit in MB ( 1024 KB )
+                unit:
+                  type: str
+                  valid_values:
+                    - gigabytes
+                    - hours
+                    - megabytes
+                    - thousand-packets
+                  default: hours
+            esp:
+              type: dict
+              keys:
+                integrity:
+                  type: str
+                  valid_values:
+                    - disabled
+                    - sha1
+                    - sha256
+                    - "null"  # TODO: AVD 5.0.0
+                encryption:
+                  type: str
+                  valid_values:
+                    - disabled
+                    - aes128
+                    - aes128gcm128
+                    - aes128gcm64
+                    - aes256
+                    - aes256gcm128
+                    - "null"  # TODO: AVD 5.0.0
+            pfs_dh_group:
+              type: int
+              convert_types:
+                - str
+              valid_values: [1, 2, 5, 14, 15, 16, 17, 20, 21, 24]
+      profiles:
+        type: list
+        description: IPSec profiles.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the IPsec profile.
+            ike_policy:
+              type: str
+              description: Name of the IKE policy to use in this profile.
+            sa_policy:
+              type: str
+              description: Name of the Security Association to use in this profile.
+            connection:
+              type: str
+              description: IPsec connection (Initiator/Responder/Dynamic).
+              valid_values:
+                - add
+                - start
+                - route
+            shared_key:
+              type: str
+              description: Encrypted password - only type 7 supported.
+            dpd:
+              type: dict
+              description: Dead Peer Detection.
+              keys:
+                interval:
+                  type: int
+                  description: Interval (in seconds) between keep-alive messages.
+                  required: true
+                  convert_types:
+                    - str
+                  min: 2
+                  max: 3600
+                time:
+                  type: int
+                  description: Time (in seconds) after which the action is applied.
+                  required: true
+                  convert_types:
+                    - str
+                  min: 10
+                  max: 3600
+                action:
+                  type: str
+                  description: |
+                    Action to apply.
+
+                    * 'clear': Delete all connections
+                    * 'hold': Re-negotiate connection on demand
+                    * 'restart': Restart connection immediately
+                  required: true
+                  valid_values:
+                    - clear
+                    - hold
+                    - restart
+            mode:
+              type: str
+              description: Ipsec mode type.
+              valid_values:
+                - transport
+                - tunnel
+            flow_parallelization_encapsulation_udp:
+              type: bool
+              description: |-
+                Enable flow parallelization.
+                When enabled, multiple cores are used to parallelize the IPsec encryption and decryption processing.
+      key_controller:
+        type: dict
+        keys:
+          profile:
+            type: str
+            description: IPsec profile name to use.
+      hardware_encryption_disabled:
+        type: bool
+        default: False
+        description: |-
+          Disable hardware encryption.
+          An SFE restart is needed for this change to take effect.

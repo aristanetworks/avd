@@ -24,8 +24,14 @@ router_bgp:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
       maximum_routes: 0
+      missing_policy:
+        direction_out:
+          action: permit
       allowas_in:
         enabled: true
+      shared_secret:
+        profile: profile2
+        hash_algorithm: aes-128-cmac-96
     - name: MLAG-IPv4-UNDERLAY-PEER
       type: ipv4
       remote_as: 65101
@@ -34,6 +40,9 @@ router_bgp:
       maximum_routes: 12000
       maximum_routes_warning_limit: 80 percent
       maximum_routes_warning_only: true
+      missing_policy:
+        direction_in:
+          action: deny
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
       route_map_out: RM-MLAG-PEER-OUT
@@ -43,13 +52,22 @@ router_bgp:
       allowas_in:
         enabled: true
         times: 5
+      shared_secret:
+        profile: profile1
+        hash_algorithm: aes-128-cmac-96
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
+      missing_policy:
+        direction_out:
+          action: deny-in-out
     - ip_address: 192.168.255.3
       allowas_in:
         enabled: true
         times: 5
       maximum_routes: 52000
+      missing_policy:
+        direction_in:
+          action: deny
       maximum_routes_warning_limit: 2000
       maximum_routes_warning_only: true
   redistribute_routes:
@@ -59,9 +77,26 @@ router_bgp:
         enable: true
         inter_domain: true
     domain_identifier: "65101:0"
+    neighbors:
+      - ip_address: 10.100.100.1
+        activate: true
+        default_route:
+          enabled: true
+      - ip_address: 10.100.100.2
+        activate: true
+        default_route:
+          enabled: true
+          route_map: RM_DEFAULT_ROUTE
+      - ip_address: 10.100.100.3
+        activate: true
+        default_route:
+          enabled: true
+          rcf: RCF_DEFAULT_ROUTE()
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
+        default_route:
+          enabled: true
         domain_remote: true
         encapsulation: vxlan
       - name: MLAG-IPv4-UNDERLAY-PEER
@@ -109,6 +144,13 @@ router_bgp:
     route:
       import_ethernet_segment_ip_mass_withdraw: true
       export_ethernet_segment_ip_mass_withdraw: true
+      import_overlay_index_gateway: true
+    bgp_additional_paths:
+      receive: true
+      send:
+        any: true
+    layer_2_fec_in_place_update:
+      enabled: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
@@ -200,6 +242,8 @@ router_bgp:
       router_id: 192.168.255.3
       rd: "192.168.255.3:11"
       evpn_multicast: true
+      default_route_exports:
+        - address_family: evpn
       route_targets:
         import:
           - address_family: evpn
@@ -223,6 +267,9 @@ router_bgp:
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
+      default_route_exports:
+        - address_family: evpn
+          always: true
       route_targets:
         import:
           - address_family: evpn
@@ -251,6 +298,10 @@ router_bgp:
       evpn_multicast_address_family:
         ipv4:
           transit: true
+      default_route_exports:
+        - address_family: evpn
+          always: true
+          route_map: TENANT_A_PROJECT03_RM_DEFAULT
       route_targets:
         import:
           - address_family: evpn
@@ -267,6 +318,9 @@ router_bgp:
       evpn_multicast_address_family:
         ipv4:
           transit: false
+      default_route_exports:
+        - address_family: evpn
+          rcf: TENANT_A_PROJECT03_RCF_DEFAULT()
       route_targets:
         import:
           - address_family: evpn

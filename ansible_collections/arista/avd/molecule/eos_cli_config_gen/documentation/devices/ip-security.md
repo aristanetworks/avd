@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP Security](#ip-security)
+- [IP Security](#ip-security-1)
   - [IKE policies](#ike-policies)
   - [Security Association policies](#security-association-policies)
   - [IPSec profiles](#ipsec-profiles)
@@ -54,11 +54,11 @@ interface Management1
 
 ### Security Association policies
 
-| Policy name | ESP Integrity | ESP Encryption | PFS DH Group |
-| ----------- | ------------- | -------------- | ------------ |
-| SA-1 | - | aes128 | 14 |
-| SA-2 | - | aes128 | 14 |
-| SA-3 | disabled | disabled | 17 |
+| Policy name | ESP Integrity | ESP Encryption | Lifetime | PFS DH Group |
+| ----------- | ------------- | -------------- | -------- | ------------ |
+| SA-1 | - | aes128 | - | 14 |
+| SA-2 | - | aes128 | 42 gigabytes | 14 |
+| SA-3 | disabled | disabled | 8 hours | 17 |
 
 ### IPSec profiles
 
@@ -100,11 +100,13 @@ ip security
    !
    sa policy SA-2
       esp encryption aes128
+      sa lifetime 42 gigabytes
       pfs dh-group 14
    !
    sa policy SA-3
       esp integrity null
       esp encryption null
+      sa lifetime 8 hours
       pfs dh-group 17
    !
    profile Profile-1

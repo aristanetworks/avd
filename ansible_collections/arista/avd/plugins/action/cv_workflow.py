@@ -16,62 +16,72 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client import deploy_to_cv
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.workflows.models import (
-    CloudVision,
-    CVChangeControl,
-    CVDevice,
-    CVDeviceTag,
-    CVEosConfig,
-    CVInterfaceTag,
-    CVPathfinderMetadata,
-    CVTimeOuts,
-    CVWorkspace,
-)
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
+
+PLUGIN_NAME = "arista.avd.cv_workflow"
+
+try:
+    from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
+    from pyavd._cv.workflows.models import (
+        CloudVision,
+        CVChangeControl,
+        CVDevice,
+        CVDeviceTag,
+        CVEosConfig,
+        CVInterfaceTag,
+        CVPathfinderMetadata,
+        CVTimeOuts,
+        CVWorkspace,
+    )
+    from pyavd._utils import get, strip_empties_from_dict
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
+
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
-ARGUMENT_SPEC = {
-    "configuration_dir": {"type": "str", "required": True},
-    "structured_config_dir": {"type": "str", "required": True},
-    "structured_config_suffix": {"type": "str", "default": "yml"},
-    "device_list": {"type": "list", "elements": "str", "required": True},
-    "strict_tags": {"type": "bool", "required": False, "default": False},
-    "skip_missing_devices": {"type": "bool", "required": False, "default": False},
-    "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
-    "cv_servers": {"type": "list", "elements": "str", "required": True},
-    "cv_token": {"type": "str", "secret": True, "required": True},
-    "cv_verify_certs": {"type": "bool", "default": True},
-    "workspace": {
-        "type": "dict",
-        "options": {
-            "name": {"type": "str", "required": False},
-            "description": {"type": "str", "required": False},
-            "id": {"type": "str", "required": False},
-            "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
-            "force": {"type": "bool", "default": False},
+if HAS_PYAVD:
+    ARGUMENT_SPEC = {
+        "configuration_dir": {"type": "str", "required": True},
+        "structured_config_dir": {"type": "str", "required": True},
+        "structured_config_suffix": {"type": "str", "default": "yml"},
+        "device_list": {"type": "list", "elements": "str", "required": True},
+        "strict_tags": {"type": "bool", "required": False, "default": False},
+        "skip_missing_devices": {"type": "bool", "required": False, "default": False},
+        "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
+        "cv_servers": {"type": "list", "elements": "str", "required": True},
+        "cv_token": {"type": "str", "secret": True, "required": True},
+        "cv_verify_certs": {"type": "bool", "default": True},
+        "workspace": {
+            "type": "dict",
+            "options": {
+                "name": {"type": "str", "required": False},
+                "description": {"type": "str", "required": False},
+                "id": {"type": "str", "required": False},
+                "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
+                "force": {"type": "bool", "default": False},
+            },
         },
-    },
-    "change_control": {
-        "type": "dict",
-        "options": {
-            "name": {"type": "str", "required": False},
-            "description": {"type": "str", "required": False},
-            "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
+        "change_control": {
+            "type": "dict",
+            "options": {
+                "name": {"type": "str", "required": False},
+                "description": {"type": "str", "required": False},
+                "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
+            },
         },
-    },
-    "timeouts": {
-        "type": "dict",
-        "options": {
-            "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout},
-            "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout},
+        "timeouts": {
+            "type": "dict",
+            "options": {
+                "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout},
+                "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout},
+            },
         },
-    },
-    "return_details": {"type": "bool", "required": False, "default": False},
-}
+        "return_details": {"type": "bool", "required": False, "default": False},
+    }
 
 
 class ActionModule(ActionBase):
@@ -83,6 +93,9 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
+
+        if not HAS_PYAVD:
+            raise AnsibleActionFail("The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error")
 
         # Setup module logging
         setup_module_logging(result)
@@ -145,6 +158,9 @@ class ActionModule(ActionBase):
             result_object.errors = [str(error) for error in result_object.errors]
             result_object.warnings = [str(warning) for warning in result_object.warnings]
 
+            # Add warnings caught by the logger
+            result_object.warnings.extend(result.get("warnings", []))
+
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
                 # Result object is converted to JSON compatible dict.
@@ -152,7 +168,7 @@ class ActionModule(ActionBase):
             else:
                 result.update(
                     {
-                        "warnings": result_object.errors,
+                        "warnings": result_object.warnings,
                         "errors": result_object.errors,
                         "failed": result_object.failed,
                     }

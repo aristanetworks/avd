@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
-  - [IP Community-lists](#ip-community-lists)
+  - [IP Community-lists](#ip-community-lists-1)
 
 ## Management
 

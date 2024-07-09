@@ -1,10 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .avd_schema_tools import AvdSchemaTools
-from .constants import EOS_DESIGNS_SCHEMA_ID
-from .validation_result import ValidationResult
-from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .validation_result import ValidationResult
 
 eos_designs_schema_tools = None
 
@@ -21,7 +23,12 @@ def validate_inputs(inputs: dict) -> ValidationResult:
     Returns:
         Validation result object with any validation errors or deprecation warnings.
     """
+    # pylint: disable=import-outside-toplevel
+    from ._eos_designs.shared_utils import SharedUtils
+    from .avd_schema_tools import AvdSchemaTools
+    from .constants import EOS_DESIGNS_SCHEMA_ID
 
+    # pylint: enable=import-outside-toplevel
     # Initialize a global instance of eos_designs_schema_tools
     global eos_designs_schema_tools
     if eos_designs_schema_tools is None:

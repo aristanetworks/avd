@@ -1,0 +1,156 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_virtual_topologies:
+    type: dict
+    description: |-
+      Configure Virtual Topologies for CV Pathfinder and AutoVPN.
+      Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
+    keys:
+      vrfs:
+        type: list
+        description: |-
+          Map a VRF that exists in network_services to an AVT policy.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: VRF name.
+            policy:
+              type: str
+              description: |-
+                Name of the policy to apply to this VRF.
+                AVD will auto generate a default policy DEFAULT-POLICY and apply it to the VRF(s)
+                where the `policy` key is not set.
+                It is possible to overwrite the default policy for all VRFs using it
+                by redefining it in the `wan_virtual_topologies.policies` list using the
+                default name `DEFAULT-POLICY`.
+              default: DEFAULT-POLICY
+            wan_vni:
+              # The `wan_vni` is under here rather than `tenants.vrfs` as it as
+              # initially planned for 2 reasons:
+              # 1. This allow to keep a consistent WAN VNI ID in a more
+              #    effective way, as otherwise this wan_vni key would have had
+              #    to be aligned in every tenant where the VRF is defined.
+              # 2. This is used in the WAN metadata for pathfinder nodes to pick
+              #    up WAN VRFs and their VNI.
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 255
+              required: true
+              description: |-
+                Required for VRFs carried over AutoVPN or CV Pathfinder WAN.
+
+                A VRF can have different VNIs between the Datacenters and the WAN.
+                Note that if no VRF default is configured for WAN, AVD will automatically inject the VRF default with
+                `wan_vni` set to `1`.
+                In addition either `vrf_id` or `vrf_vni` must be set to enforce consistent route-targets across domains.
+      control_plane_virtual_topology:
+        type: dict
+        description: |-
+          Always injected into the default VRF policy as the first entry.
+
+          By default, if no path-groups are specified, all locally available path-groups
+          are used in the generated load-balance policy.
+          ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.
+        $ref: "eos_designs#/$defs/virtual_topology"
+        keys:
+          name:
+            type: str
+            description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
+          application_profile:
+            type: str
+            default: APP-PROFILE-CONTROL-PLANE
+            description: |-
+              The application profile to use for control plane traffic.
+
+              The application profile should be defined under `application_classification.application_profiles`.
+              If not defined AVD will auto generate an application profile using the provided name or the default value.
+
+              If not overwritten elsewhere, the application profile is generated matching one application matching the control plane traffic either sourced from or destined to the WAN route servers.
+      policies:
+        type: list
+        description: |-
+          List of virtual toplogies policies.
+
+          For AutoVPN, each item in the list creates:
+            * one policy with:
+                * one `match` entry per `application_virtual_topologies` item
+                  they are indexed using `10 * <list_index>` where `list_index` starts at `1`.
+                * one `default-match`
+            * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.
+            * if the policy is associated with the default VRF, a special control-plane rule is injected
+              in the policy with index `1` referring to a control-plane load-balance policy as defined under
+              `control_plane_virtual_topology` or if not set, the default one.
+
+          For CV Pathfinder, each item in the list creates:
+            * one policy with:
+                * one `match` entry per `application_virtual_topologies` item ordered as in the data.
+                * one last match entry for the `default` application-profile using `default_virtual_topology` information.
+            * one profile per `application_virtual_topologies` item.
+            * one profile for the `default_virtual_topology`.
+            * one load-balance policy per `application_virtual_topologies`.
+            * one load_balance policy for the `default_virtual_topology`.
+            * if the policy is associated with the default VRF, a special control-plane profile is configured
+              and injected first in the policy assigned to the `default` VRF. This profile points to a
+              control-plane load-balance policy as defined under `control_plane_virtual_topology` or if not set, the default one.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the AVT policy.
+            application_virtual_topologies:
+              type: list
+              description: List of application specific virtual topologies.
+              primary_key: application_profile
+              items:
+                type: dict
+                $ref: "eos_designs#/$defs/virtual_topology"
+                keys:
+                  application_profile:
+                    type: str
+                    description: The application profile to use for this virtual topology. It must be a defined `application_classification.application_profile`.
+                  name:
+                    type: str
+                    description: Optional name, if not set `<policy_name>-<application_profile>` is used.
+                  id:
+                    type: int
+                    $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id"
+                    required: false
+                    min: 2
+                    max: 253
+                    description: |-
+                      ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.
+                      ID 1 is reserved for the default_virtual_toplogy.
+                      ID 254 is reserved for the control_plane_virtual_topology.
+
+                      `id` is required when `wan_mode` is 'cv-pathfinder'.
+            default_virtual_topology:
+              type: dict
+              description: |-
+                Default match for the policy.
+                If no default match should be configured, set `drop_unmatched` to `true`.
+                Otherwise, in CV Pathfinder mode, a default AVT profile will be configured with ID 1.
+              $ref: "eos_designs#/$defs/virtual_topology"
+              required: true
+              keys:
+                name:
+                  type: str
+                  description: Optional name, if not set `<policy_name>-DEFAULT` is used.
+                drop_unmatched:
+                  type: bool
+                  description: When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped.
+                  default: false

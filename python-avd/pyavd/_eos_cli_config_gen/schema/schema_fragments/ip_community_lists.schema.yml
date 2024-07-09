@@ -1,0 +1,52 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_community_lists:
+    type: list
+    secondary_key: entries
+    primary_key: name
+    convert_types:
+      - dict
+    display_name: IP Community Lists
+    description: |
+      Communities and regexp entries MUST not be configured in the same community-list.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: IP Community-list Name.
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              action:
+                type: str
+                required: true
+                valid_values: ["permit", "deny"]
+              communities:
+                type: list
+                items:
+                  type: str
+                description: |
+                  If defined, a standard community-list will be configured.
+                  Supported community strings (case insensitive):
+                  - GSHUT
+                  - internet
+                  - local-as
+                  - no-advertise
+                  - no-export
+                  - <1-4294967040>
+                  - aa:nn
+              regexp:
+                type: str
+                description: |
+                  Regular Expression.
+                  If defined, a regex community-list will be configured.

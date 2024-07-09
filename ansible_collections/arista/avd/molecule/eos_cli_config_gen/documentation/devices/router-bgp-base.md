@@ -58,6 +58,7 @@ ASN Notation: asplain
 | update wait-install |
 | no bgp default ipv4-unicast |
 | no bgp default ipv4-unicast transport ipv6 |
+| no bgp redistribute-internal |
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 | bgp route-reflector preserve-attributes always |
@@ -126,11 +127,11 @@ ASN Notation: asplain
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | - | - | False | - | - | True |
-| 1.12.1.0/24 | True | ADV-MAP | SUP-MAP | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | - | - | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | False |
 
 #### Router BGP Session Trackers
 
@@ -164,6 +165,8 @@ router bgp 65101
    neighbor TEST ttl maximum-hops 42
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
+   neighbor test-link-bandwidth1 missing-policy address-family all include community-list prefix-list direction in action deny
+   neighbor test-link-bandwidth1 missing-policy address-family all include community-list direction out action permit
    neighbor test-link-bandwidth1 link-bandwidth default 100G
    neighbor test-link-bandwidth2 peer group
    neighbor test-link-bandwidth2 link-bandwidth
@@ -189,10 +192,13 @@ router bgp 65101
    neighbor 192.0.3.2 default-originate route-map RM-FOO-MATCH3
    neighbor 192.0.3.2 send-community extended
    neighbor 192.0.3.2 maximum-routes 10000
+   neighbor 192.0.3.2 missing-policy address-family all include community-list prefix-list direction in action deny
+   neighbor 192.0.3.2 missing-policy address-family all include community-list direction out action permit
    neighbor 192.0.3.2 link-bandwidth
    neighbor 192.0.3.3 remote-as 65434
    neighbor 192.0.3.3 rib-in pre-policy retain
    neighbor 192.0.3.3 send-community standard
+   neighbor 192.0.3.3 missing-policy address-family all include community-list prefix-list sub-route-map direction in action deny
    neighbor 192.0.3.4 remote-as 65435
    neighbor 192.0.3.4 ttl maximum-hops 1
    no neighbor 192.0.3.4 rib-in pre-policy retain
@@ -218,31 +224,53 @@ router bgp 65101
    neighbor 192.0.3.9 peer group TEST
    neighbor 192.0.3.9 remote-as 65438
    no neighbor 192.0.3.9 bfd
+   no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set advertise-map ADV-MAP supress-map SUP-MAP summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
    redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
+   redistribute connected rcf Router_BGP_Connected()
    redistribute ospf include leaked
+   redistribute ospf match internal
+   redistribute ospf match external
+   redistribute ospf match nssa-external 1 include leaked route-map RM-REDISTRIBUTE-OSPF-NSSA-1
+   redistribute static rcf Router_BGP_Static()
    !
    address-family ipv4
       neighbor foo prefix-list PL-BAR-v4-IN in
       neighbor foo prefix-list PL-BAR-v4-OUT out
       neighbor foo default-originate route-map RM-FOO-MATCH always
+      neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
+      neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       network 10.0.0.0/8
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
+      no bgp redistribute-internal
+      redistribute bgp leaked
+      redistribute connected include leaked rcf Address_Family_IPV4_Connected()
+      redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
+      redistribute ospf match internal include leaked
+      redistribute ospf match external include leaked route-map RM-REDISTRIBUTE-OSPF-EXTERNAL
+      redistribute ospf match nssa-external
+      redistribute static rcf Address_Family_IPV4_Static()
    !
    address-family ipv6
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
+      neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()
+      neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
+      bgp redistribute-internal
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
-      redistribute ospf include leaked
+      redistribute connected rcf Address_Family_IPV6_Connected()
+      redistribute ospfv3 match external include leaked
+      redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
+      redistribute ospfv3 match nssa-external 1
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
    session tracker ST1
       recovery delay 666 seconds

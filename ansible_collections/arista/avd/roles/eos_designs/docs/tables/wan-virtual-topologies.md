@@ -26,6 +26,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].preference") | String |  |  |  | Valid values are 1-65535 | "preferred" | "alternate".<br><br>"preferred" is converted to priority 1.<br>"alternate" is converted to priority 2.<br><br>If not set, each path-group in `names` will be attributed its `default_preference`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_exit</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.internet_exit") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.internet_exit.policy") | String |  |  |  | PREVIEW: This key is in preview mode.<br><br>Internet-exit policy name associated with this virtual_topology.<br>The policy must be defined under `cv_pathfinder_internet_exit_policies`. |
     | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  | List of virtual toplogies policies.<br><br>For AutoVPN, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item<br>        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.<br>      * one `default-match`<br>  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane rule is injected<br>    in the policy with index `1` referring to a control-plane load-balance policy as defined under<br>    `control_plane_virtual_topology` or if not set, the default one.<br><br>For CV Pathfinder, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item ordered as in the data.<br>      * one last match entry for the `default` application-profile using `default_virtual_topology` information.<br>  * one profile per `application_virtual_topologies` item.<br>  * one profile for the `default_virtual_topology`.<br>  * one load-balance policy per `application_virtual_topologies`.<br>  * one load_balance policy for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane profile is configured<br>    and injected first in the policy assigned to the `default` VRF. This profile points to a<br>    control-plane load-balance policy as defined under `control_plane_virtual_topology` or if not set, the default one. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].name") | String | Required, Unique |  |  | Name of the AVT policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_virtual_topologies</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies") | List, items: Dictionary |  |  |  | List of application specific virtual topologies. |
@@ -43,6 +45,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].preference") | String |  |  |  | Valid values are 1-65535 | "preferred" | "alternate".<br><br>"preferred" is converted to priority 1.<br>"alternate" is converted to priority 2.<br><br>If not set, each path-group in `names` will be attributed its `default_preference`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internet_exit</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].internet_exit") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].internet_exit.policy") | String |  |  |  | PREVIEW: This key is in preview mode.<br><br>Internet-exit policy name associated with this virtual_topology.<br>The policy must be defined under `cv_pathfinder_internet_exit_policies`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_virtual_topology</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology") | Dictionary | Required |  |  | Default match for the policy.<br>If no default match should be configured, set `drop_unmatched` to `true`.<br>Otherwise, in CV Pathfinder mode, a default AVT profile will be configured with ID 1. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.name") | String |  |  |  | Optional name, if not set `<policy_name>-DEFAULT` is used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_unmatched</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.drop_unmatched") | Boolean |  | `False` |  | When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped. |
@@ -57,6 +61,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].preference") | String |  |  |  | Valid values are 1-65535 | "preferred" | "alternate".<br><br>"preferred" is converted to priority 1.<br>"alternate" is converted to priority 2.<br><br>If not set, each path-group in `names` will be attributed its `default_preference`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internet_exit</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.internet_exit") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.internet_exit.policy") | String |  |  |  | PREVIEW: This key is in preview mode.<br><br>Internet-exit policy name associated with this virtual_topology.<br>The policy must be defined under `cv_pathfinder_internet_exit_policies`. |
 
 === "YAML"
 
@@ -138,6 +144,13 @@
             #
             # If not set, each path-group in `names` will be attributed its `default_preference`.
             preference: <str>
+        internet_exit:
+
+          # PREVIEW: This key is in preview mode.
+          #
+          # Internet-exit policy name associated with this virtual_topology.
+          # The policy must be defined under `cv_pathfinder_internet_exit_policies`.
+          policy: <str>
 
       # List of virtual toplogies policies.
       #
@@ -216,6 +229,13 @@
                   #
                   # If not set, each path-group in `names` will be attributed its `default_preference`.
                   preference: <str>
+              internet_exit:
+
+                # PREVIEW: This key is in preview mode.
+                #
+                # Internet-exit policy name associated with this virtual_topology.
+                # The policy must be defined under `cv_pathfinder_internet_exit_policies`.
+                policy: <str>
 
           # Default match for the policy.
           # If no default match should be configured, set `drop_unmatched` to `true`.
@@ -261,4 +281,11 @@
                 #
                 # If not set, each path-group in `names` will be attributed its `default_preference`.
                 preference: <str>
+            internet_exit:
+
+              # PREVIEW: This key is in preview mode.
+              #
+              # Internet-exit policy name associated with this virtual_topology.
+              # The policy must be defined under `cv_pathfinder_internet_exit_policies`.
+              policy: <str>
     ```

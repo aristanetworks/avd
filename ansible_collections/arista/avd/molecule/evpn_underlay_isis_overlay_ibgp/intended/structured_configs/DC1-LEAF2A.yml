@@ -123,14 +123,15 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.251.2/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.2/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.255.252.2/31
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-LEAF2B_Po5
@@ -178,6 +179,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.9/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -191,6 +193,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.11/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -204,6 +207,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.13/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
@@ -217,6 +221,7 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.255.15/31
   isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2

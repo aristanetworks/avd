@@ -1,23 +1,30 @@
-ansible-core>=2.14.0,<2.17.0
-ansible-lint>=6.21.0
+# Installing PyAVD as editable install.
+# Providing config-settings in a requirements file is only supported by very recent pip versions.
+# The editable_mode=compat is required for pylance to work correctly.
+# The path is relative to the root of the repo, so this only works when executed from there.
+-e python-avd --config-settings editable_mode=compat
+ansible-core>=2.15.0,<2.18.0
+ansible-lint>=6.21.0,<24.5.0
+codespell>=2.2.6
 pycodestyle
 flake8
-pylint>=2.16.1
+# Hitting various pylint bugs for 'possibly-used-before-assignment' introduced in 3.2.0
+pylint>=2.16.1,<3.2.0
 twine
 pre-commit>=3.2.0
 pre-commit-hooks>=3.3.0
 identify>=1.4.20
-docker
+docker>=7.1.0
 molecule>=6.0
 molecule-plugins[docker]>=23.4.0
 yamllint
 treelib>=1.5.5
-md-toc>=7.1.0
 natsort
-jsonschema>=4.5.1,<4.18
+jsonschema>=4.10.3
+referencing>=0.35.0
 deepmerge>=1.1.0
 isort==5.13.2
-black==24.3.0
+black==24.4.2
 ansible-doc-extractor>=0.1.10
 tox
 pydantic>=2.3.0

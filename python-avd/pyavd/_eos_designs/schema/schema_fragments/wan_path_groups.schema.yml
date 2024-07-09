@@ -1,0 +1,96 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_path_groups:
+    documentation_options:
+      table: wan-path-groups-and-carriers
+    description: List of path-groups used for the WAN configuration.
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Path-group name.
+        id:
+          type: int
+          convert_types:
+            - str
+          description: |-
+            Path-group id.
+            Required until an auto ID algorithm is implemented.
+          required: true
+        description:
+          type: str
+          description: Additional information about the path-group for documentation purposes.
+        ipsec:
+          type: dict
+          description: |-
+            Configuration of IPSec at the path-group level.
+          keys:
+            dynamic_peers:
+              type: bool
+              description: Enable IPSec for dynamic peers.
+              default: true
+            static_peers:
+              type: bool
+              description: Enable IPSec for static peers.
+              default: true
+        import_path_groups:
+          type: list
+          description: List of path-groups to import in this path-group.
+          items:
+            type: dict
+            keys:
+              remote:
+                type: str
+                description: Remote path-group to import.
+              local:
+                type: str
+                description: Optional, if not set, the path-group `name` is used as local.
+        default_preference:
+          type: str
+          convert_types:
+            - int
+          description: |-
+            Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
+            the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.
+
+            Valid values are 1-65535 | "preferred" | "alternate".
+
+            `preferred` is converted to priority 1.
+            `alternate` is converted to priority 2.
+          default: "preferred"
+        excluded_from_default_policy:
+          type: bool
+          default: false
+          description: |-
+            When set to `true`, the path-group is excluded from AVD auto generated policies.
+        dps_keepalive:
+          type: dict
+          description: |-
+            Period between the transmission of consecutive keepalive messages, and failure threshold.
+          keys:
+            interval:
+              type: str
+              convert_types:
+                - int
+              description: |-
+                Interval in milliseconds. Valid values are 50-60000 | "auto".
+
+                When auto, the interval and failure_threshold are automatically determined based on
+                path state.
+            failure_threshold:
+              type: int
+              min: 2
+              max: 100
+              default: 5
+              description: Failure threshold in number of lost keep-alive messages.
+              convert_types:
+                - str

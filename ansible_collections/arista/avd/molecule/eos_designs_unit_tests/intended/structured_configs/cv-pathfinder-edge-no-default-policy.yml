@@ -185,20 +185,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -326,7 +312,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -364,7 +350,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: STUN-DTLS
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: STUN-DTLS
 application_traffic_recognition:
@@ -401,6 +387,20 @@ vxlan_interface:
         vni: 100
       - name: PROD
         vni: 42
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:

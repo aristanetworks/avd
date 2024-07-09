@@ -47,6 +47,8 @@ core_router:
       id: 2
     - name: core-3-isis-sr-ldp
       id: 3
+    - name: core-4-multicast
+      id: 4
 
 core_interfaces:
   p2p_links_ip_pools:
@@ -144,6 +146,31 @@ core_interfaces:
             interfaces: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
 
+    # P2P core links with underlay_multicast(pim-sparse) enabled.
+    - nodes: [ core-4-multicast, peer1 ]
+      id: 10
+      as: [65001, 65002]
+      interfaces: [ Ethernet1, Ethernet1 ]
+      include_in_underlay_protocol: true
+      underlay_multicast: true
+      ip_pool: underlay_pool
+
+     # P2P core links with underlay_multicast(pim-sparse) disabled.
+    - nodes: [ core-4-multicast, peer2 ]
+      id: 11
+      as: [65001, 65003]
+      interfaces: [ Ethernet2, Ethernet2 ]
+      include_in_underlay_protocol: true
+      underlay_multicast: false
+      ip_pool: underlay_pool
+
+    # P2P core links with underlay_multicast(pim-sparse) default.
+    - nodes: [ core-4-multicast, peer3 ]
+      id: 12
+      as: [65001, 65004]
+      interfaces: [ Ethernet3, Ethernet3 ]
+      include_in_underlay_protocol: true
+      ip_pool: underlay_pool
 
 l3_edge:
   p2p_links_ip_pools:

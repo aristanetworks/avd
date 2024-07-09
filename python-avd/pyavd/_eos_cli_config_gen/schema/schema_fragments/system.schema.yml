@@ -1,0 +1,65 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  system:
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        keys:
+          tcp_mss:
+            type: dict
+            keys:
+              ipv4:
+                type: int
+                description: Segment size.
+              ipv6:
+                type: int
+                description: Segment size.
+          ipv4_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
+                  convert_types:
+                    - int
+          ipv6_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
+                  convert_types:
+                    - int
+      l1:
+        type: dict
+        keys:
+          unsupported_speed_action:
+            type: str
+            valid_values:
+              - "error"
+              - "warn"
+          unsupported_error_correction_action:
+            type: str
+            valid_values:
+              - "error"
+              - "warn"

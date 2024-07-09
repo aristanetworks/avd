@@ -1,4 +1,0 @@
-# Temporary requirements while ANTA integration is in preview state.
-# Once the integration is final, this file can be removed and the regular requirements can include ANTA.
--r ../../requirements.txt
-anta==0.13.0

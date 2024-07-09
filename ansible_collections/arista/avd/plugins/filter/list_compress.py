@@ -8,9 +8,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from itertools import count, groupby
-
 from ansible.errors import AnsibleFilterError
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.list_compress"
+
+try:
+    from pyavd.j2filters import list_compress
+except ImportError as e:
+    list_compress = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -44,15 +56,8 @@ _value:
 """
 
 
-def list_compress(list_to_compress):
-    if not isinstance(list_to_compress, list):
-        raise AnsibleFilterError(f"value must be of type list, got {type(list_to_compress)}")
-    G = (list(x) for y, x in groupby(sorted(list_to_compress), lambda x, c=count(): next(c) - x))
-    return ",".join("-".join(map(str, (g[0], g[-1])[: len(g)])) for g in G)
-
-
 class FilterModule(object):
     def filters(self):
         return {
-            "list_compress": list_compress,
+            "list_compress": wrap_filter(PLUGIN_NAME)(list_compress),
         }

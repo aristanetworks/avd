@@ -8,10 +8,21 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import re
+from ansible.errors import AnsibleFilterError
 
-from jinja2.runtime import Undefined
-from jinja2.utils import Namespace
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.natural_sort"
+
+try:
+    from pyavd.j2filters import natural_sort
+except ImportError as e:
+    natural_sort = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 DOCUMENTATION = r"""
 ---
@@ -55,27 +66,8 @@ _value:
 """
 
 
-def convert(text):
-    return int(text) if text.isdigit() else text.lower()
-
-
-def natural_sort(iterable, sort_key=None):
-    if isinstance(iterable, Undefined) or iterable is None:
-        return []
-
-    def alphanum_key(key):
-        if sort_key is not None and isinstance(key, dict):
-            return [convert(c) for c in re.split("([0-9]+)", str(key.get(sort_key, key)))]
-        elif sort_key is not None and isinstance(key, Namespace):
-            return [convert(c) for c in re.split("([0-9]+)", getattr(key, sort_key))]
-        else:
-            return [convert(c) for c in re.split("([0-9]+)", str(key))]
-
-    return sorted(iterable, key=alphanum_key)
-
-
 class FilterModule(object):
     def filters(self):
         return {
-            "natural_sort": natural_sort,
+            "natural_sort": wrap_filter(PLUGIN_NAME)(natural_sort),
         }

@@ -1,0 +1,69 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip security #}
+{% if ip_security is arista.avd.defined %}
+
+## IP Security
+{%     if ip_security.hardware_encryption_disabled is arista.avd.defined(true) %}
+
+- Hardware encryption is disabled
+{%     endif %}
+{%     if ip_security.ike_policies is arista.avd.defined %}
+
+### IKE policies
+
+| Policy name | IKE lifetime | Encryption | DH group | Local ID |
+| ----------- | ------------ | ---------- | -------- | -------- |
+{%         for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
+| {{ ike_policy.name }} | {{ ike_policy.ike_lifetime | arista.avd.default("-") }} | {{ ike_policy.encryption | arista.avd.default("-") }} | {{ ike_policy.dh_group | arista.avd.default("-") }} | {{ ike_policy.local_id_fqdn | arista.avd.default(ike_policy.local_id, "-") }} |
+{%         endfor %}
+{%     endif %}
+{%     if ip_security.sa_policies is arista.avd.defined %}
+
+### Security Association policies
+
+| Policy name | ESP Integrity | ESP Encryption | Lifetime | PFS DH Group |
+| ----------- | ------------- | -------------- | -------- | ------------ |
+{%         for sa_policy in ip_security.sa_policies | arista.avd.default([]) %}
+{%             if sa_policy.sa_lifetime.value is arista.avd.defined %}
+{%                 set lifetime = sa_policy.sa_lifetime.value ~ " " ~ sa_policy.sa_lifetime.unit | arista.avd.default("hours") %}
+{%             endif %}
+| {{ sa_policy.name }} | {{ sa_policy.esp.integrity | arista.avd.default("-") }} | {{ sa_policy.esp.encryption | arista.avd.default("-") }} | {{ lifetime | arista.avd.default("-") }} | {{ sa_policy.pfs_dh_group | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+{%     if ip_security.profiles is arista.avd.defined %}
+
+### IPSec profiles
+
+| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
+| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+{%         for profile in ip_security.profiles | arista.avd.default([]) %}
+{%             set ike_policy = profile.ike_policy | arista.avd.default("-") %}
+{%             set sa_policy = profile.sa_policy | arista.avd.default("-") %}
+{%             set connection = profile.connection | arista.avd.default("-") %}
+{%             set dpd_interval = profile.dpd_interval | arista.avd.default("-") %}
+{%             set dpd_time = profile.dpd_time | arista.avd.default("-") %}
+{%             set dpd_action = profile.dpd_action | arista.avd.default("-") %}
+{%             set mode = profile.mode | arista.avd.default("-") %}
+{%             set flow_parallelization = profile.flow_parallelization_encapsulation_udp | arista.avd.default('-') %}
+| {{ profile.name }} | {{ ike_policy }} | {{ sa_policy }} | {{ connection }} | {{ dpd_interval }} | {{ dpd_time }} | {{ dpd_action }} | {{ mode }} | {{ flow_parallelization }} |
+{%         endfor %}
+{%     endif %}
+{%     if ip_security.key_controller is arista.avd.defined %}
+
+### Key controller
+
+| Profile name |
+| ------------ |
+| {{ ip_security.key_controller.profile | arista.avd.default("-") }} |
+{%     endif %}
+
+### IP Security Device Configuration
+
+```eos
+{%     include 'eos/ip-security.j2' %}
+```
+{% endif %}

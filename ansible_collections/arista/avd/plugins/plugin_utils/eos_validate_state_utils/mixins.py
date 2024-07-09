@@ -5,8 +5,22 @@ from __future__ import annotations
 
 import logging
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, log_message
+from ansible.errors import AnsibleActionFail
+
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import log_message
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._utils import default, get, get_item
+except ImportError as e:
+    get = get_item = default = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 LOGGER = logging.getLogger(__name__)
 
@@ -66,7 +80,7 @@ class DeviceUtilsMixin:
         Args:
         ----
             interface_model (str): Interface model in the structured config (e.g., ethernet_interfaces).
-            interface_name (str): Interface name to retrive the IP.
+            interface_name (str): Interface name to retrieve the IP.
             host (str): Host to verify. Defaults to the host running the test.
 
         Returns:
@@ -74,14 +88,15 @@ class DeviceUtilsMixin:
             str | None: IP address of the host interface or None if unavailable.
         """
         host_struct_cfg = self.config_manager.get_host_structured_config(host=host) if host else self.structured_config
-        try:
-            interfaces = get(host_struct_cfg, interface_model, required=True)
-            interface = get_item(interfaces, "name", interface_name, required=True)
-            return get(interface, "ip_address", required=True)
-        except AristaAvdMissingVariableError:
+        interfaces = get(host_struct_cfg, interface_model, default=[])
+        interface = get_item(interfaces, "name", interface_name, default={})
+        ip_address = get(interface, "ip_address")
+        if ip_address is None:
             log_msg = f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable. {self.__class__.__name__} is skipped."
             LOGGER.warning(log_msg)
             return None
+
+        return ip_address
 
     def is_subinterface(self, interface: dict) -> bool:
         """Check if the interface is a subinterface.

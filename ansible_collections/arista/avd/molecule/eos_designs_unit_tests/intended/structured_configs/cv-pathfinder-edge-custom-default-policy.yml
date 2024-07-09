@@ -168,20 +168,6 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
-flow_tracking:
-  hardware:
-    trackers:
-    - name: custom_flow_track_name
-      record_export:
-        on_inactive_timeout: 50000
-        on_interval: 300331
-      exporters:
-      - name: ayush_exporter
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 40000
-    shutdown: false
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -314,7 +300,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
     static_peers:
@@ -354,7 +340,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: STUN-DTLS
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: STUN-DTLS
 application_traffic_recognition:
@@ -393,6 +379,20 @@ vxlan_interface:
         vni: 1
       - name: PROD
         vni: 42
+flow_tracking:
+  hardware:
+    trackers:
+    - name: custom_flow_track_name
+      record_export:
+        on_inactive_timeout: 50000
+        on_interval: 300331
+      exporters:
+      - name: ayush_exporter
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 40000
+    shutdown: false
 metadata:
   cv_tags:
     device_tags:

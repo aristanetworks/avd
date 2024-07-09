@@ -1,0 +1,184 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  event_handlers:
+    type: list
+    description: |
+      Gives the ability to monitor and react to Syslog messages.
+      Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
+      customize the system behavior, and implement workarounds to problems discovered in the field.
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Event Handler Name.
+        action_type:
+          type: str
+          valid_values: ["bash", "increment", "log"]
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
+        action:
+          type: str
+          description: |
+            Command to execute.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
+        actions:
+          type: dict
+          description: |-
+            Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.
+          keys:
+            bash_command:
+              type: str
+              description: Define BASH command action. Command could be multiline also.
+            log:
+              type: bool
+              description: Log a message when the event is triggered.
+            increment_device_health_metric:
+              type: str
+              description: Name of device-health metric.
+        delay:
+          type: int
+          convert_types:
+          - str
+          description: |
+            Event-handler delay in seconds.
+        trigger:
+          type: str
+          description: |
+            Configure event trigger condition.
+          valid_values:
+          - "on-boot"
+          - "on-counters"
+          - "on-intf"
+          - "on-logging"
+          - "on-maintenance"
+          - "on-startup-config"
+          - "vm-tracer vm"
+        trigger_on_counters:
+          type: dict
+          keys:
+            condition:
+              type: str
+              description: Set the logical expression to evaluate.
+            granularity_per_source:
+              type: bool
+              description: |-
+                Set the granularity of event counting for a wildcarded condition.
+                Example -
+                  condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
+                  [* wildcard is used here]
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
+              description: Set the polling interval in seconds.
+        trigger_on_logging:
+          type: dict
+          keys:
+            poll_interval:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 1000000
+              description: Set the polling interval in seconds.
+            regex:
+              type: str
+              description: Regular expression to use for searching log messages.
+        trigger_on_intf:
+          type: dict
+          description: |-
+            Trigger condition occurs on specified interface changes.
+            Note: Any one of the `ip`, `ipv6` and `operstatus` key needs to be defined along with the `interface`.
+          keys:
+            interface:
+              type: str
+              required: True
+              description: |-
+                Interface name.
+                Example - Ethernet4
+                          Loopback4-6
+                          Port-channel4,7
+            ip:
+              type: bool
+              description: Action is triggered upon changes to interface IP address assignment.
+            ipv6:
+              type: bool
+              description: Action is triggered upon changes to interface ipv6 address assignment.
+            operstatus:
+              type: bool
+              description: Action is triggered upon changes to interface operStatus.
+        trigger_on_maintenance:
+          description: Settings required for trigger 'on-maintenance'.
+          type: dict
+          keys:
+            operation:
+              type: str
+              required: true
+              valid_values:
+              - "enter"
+              - "exit"
+            bgp_peer:
+              description: |-
+                Ipv4/Ipv6 address or peer group name.
+                Trigger condition occurs on maintenance operation of specified BGP peer.
+              type: str
+            action:
+              type: str
+              required: true
+              description: Action for maintenance operation.
+              valid_values:
+              - after
+              - before
+              - all
+              - begin
+              - end
+            stage:
+              type: str
+              description: Action is triggered after/before specified stage.
+              valid_values:
+              - "bgp"
+              - "linkdown"
+              - "mlag"
+              - "ratemon"
+            vrf:
+              type: str
+              description: VRF name. VRF can be defined for "bgp_peer" only.
+            interface:
+              type: str
+              description: Trigger condition occurs on maintenance operation of specified interface.
+            unit:
+              type: str
+              description: Name of unit. Trigger condition occurs on maintenance operation of specified unit
+        regex:
+          type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 5.0.0
+            new_key: event_handlers.trigger_on_logging.regex
+          description: |
+            Regular expression to use for searching log messages. Required for on-logging trigger.
+        asynchronous:
+          type: bool
+          default: False
+          description: |
+            Set the action to be non-blocking.

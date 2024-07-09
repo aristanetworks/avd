@@ -1,0 +1,202 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - qos profiles #}
+{% if qos_profiles is arista.avd.defined %}
+
+### QOS Profiles
+
+#### QOS Profiles Summary
+{%     for profile in qos_profiles | arista.avd.natural_sort('name') %}
+
+##### QOS Profile: **{{ profile.name }}**
+
+###### Settings
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+{%         set cos = profile.cos | arista.avd.default('-') %}
+{%         set dscp = profile.dscp | arista.avd.default('-') %}
+{%         set trust = profile.trust | arista.avd.default('-') %}
+{%         set shape_rate = profile.shape.rate | arista.avd.default('-') %}
+{%         set qos_sp = profile.service_policy.type.qos_input | arista.avd.default('-') %}
+| {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} | {{ qos_sp }} |
+{%         if profile.tx_queues is arista.avd.defined or
+              profile.uc_tx_queues is arista.avd.defined or
+              profile.mc_tx_queues is arista.avd.defined %}
+
+###### TX Queues
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+{%             if profile.tx_queues is arista.avd.defined %}
+{%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "All" %}
+{%                     set bw_percent = tx_queue.bandwidth_percent | arista.avd.default(
+                                        tx_queue.bandwidth_guaranteed_percent,
+                                    '-') %}
+{%                     set priority = tx_queue.priority | arista.avd.default('-') %}
+{%                     set shape_rate = tx_queue.shape.rate | arista.avd.default('-') %}
+{%                     set comment = tx_queue.comment | arista.avd.default('-') | trim | replace('\n', '<br>') %}
+| {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ comment }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.uc_tx_queues is arista.avd.defined %}
+{%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "Unicast" %}
+{%                     set bw_percent = uc_tx_queue.bandwidth_percent | arista.avd.default(
+                                        uc_tx_queue.bandwidth_guaranteed_percent,
+                                        '-') %}
+{%                     set priority = uc_tx_queue.priority | arista.avd.default('-') %}
+{%                     set shape_rate = uc_tx_queue.shape.rate | arista.avd.default('-') %}
+{%                     set comment = uc_tx_queue.comment | arista.avd.default('-') | trim | replace('\n', '<br>') %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ comment }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.mc_tx_queues is arista.avd.defined %}
+{%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "Multicast" %}
+{%                     set bw_percent = mc_tx_queue.bandwidth_percent | arista.avd.default(
+                                        mc_tx_queue.bandwidth_guaranteed_percent,
+                                        '-') %}
+{%                     set priority = mc_tx_queue.priority | arista.avd.default('-') %}
+{%                     set shape_rate = mc_tx_queue.shape.rate | arista.avd.default('-') %}
+{%                     set comment = mc_tx_queue.comment | arista.avd.default('-') | trim | replace('\n', '<br>') %}
+| {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ comment }} |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         set ns = namespace(ecn_table=false) %}
+{%         for tx_queue in profile.tx_queues | arista.avd.default([]) %}
+{%             if tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
+{%                 set ns.ecn_table = true %}
+{%             endif %}
+{%         endfor %}
+{%         for tx_queue in profile.uc_tx_queues | arista.avd.default([]) %}
+{%             if tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
+{%                 set ns.ecn_table = true %}
+{%             endif %}
+{%         endfor %}
+{%         if ns.ecn_table %}
+
+###### ECN Configuration
+
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | ------------- | ------------- | -------------------- |
+{%             if profile.tx_queues is arista.avd.defined %}
+{%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "All" %}
+{%                     set min = tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
+{%                     set max = tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
+{%                     set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
+{%                     set units = tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+| {{ tx_queue.id }} | {{ type }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.uc_tx_queues is arista.avd.defined %}
+{%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "Unicast" %}
+{%                     set min = uc_tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
+{%                     set max = uc_tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
+{%                     set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
+{%                     set units = uc_tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.mc_tx_queues is arista.avd.defined %}
+{%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "Multicast" %}
+| {{ mc_tx_queue.id }} | {{ type }} | - | - | - |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         set ns = namespace(wred_table=false) %}
+{%         for tx_queue in profile.tx_queues | arista.avd.default([]) %}
+{%             if tx_queue.random_detect.drop.threshold.units is arista.avd.defined() %}
+{%                 set ns.wred_table = true %}
+{%             endif %}
+{%         endfor %}
+{%         for tx_queue in profile.uc_tx_queues | arista.avd.default([]) %}
+{%             if tx_queue.random_detect.drop.threshold.units is arista.avd.defined() %}
+{%                 set ns.wred_table = true %}
+{%             endif %}
+{%         endfor %}
+{%         if ns.wred_table %}
+
+###### WRED Configuration
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
+| -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
+{%             if profile.tx_queues is arista.avd.defined %}
+{%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "All" %}
+{%                     set precedence = tx_queue.random_detect.drop.threshold.drop_precedence | arista.avd.default("-") %}
+{%                     set min = tx_queue.random_detect.drop.threshold.min | arista.avd.default("-") %}
+{%                     set max = tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
+{%                     set prob = tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
+{%                     set weight = tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
+{%                     set units = tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
+| {{ tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.uc_tx_queues is arista.avd.defined %}
+{%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "Unicast" %}
+{%                     set precedence = uc_tx_queue.random_detect.drop.threshold.drop_precedence | arista.avd.default("-") %}
+{%                     set min = uc_tx_queue.random_detect.drop.threshold.min | arista.avd.default("-") %}
+{%                     set max = uc_tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
+{%                     set prob = uc_tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
+{%                     set weight = uc_tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
+{%                     set units = uc_tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} |{{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.mc_tx_queues is arista.avd.defined %}
+{%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
+{%                     set type = "Multicast" %}
+| {{ mc_tx_queue.id }} | {{ type }} | - | - | - | - | - |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
+
+###### Priority Flow Control
+
+Priority Flow Control is **enabled**.
+
+| Priority | Action |
+| -------- | ------ |
+{%             for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort('priority') %}
+{%                 if priority_block.priority is arista.avd.defined %}
+{%                     if priority_block.no_drop is arista.avd.defined(true) %}
+{%                         set action = "no-drop" %}
+{%                     else %}
+{%                         set action = "drop" %}
+{%                     endif %}
+| {{ priority_block.priority }} | {{ action }} |
+{%                 endif %}
+{%             endfor %}
+{%             if profile.priority_flow_control.watchdog.enabled is arista.avd.defined(true) %}
+{%                 set enabled = profile.priority_flow_control.watchdog.enabled %}
+{%                 set action = profile.priority_flow_control.watchdog.action | arista.avd.default('errdisable') %}
+{%                 set timeout = profile.priority_flow_control.watchdog.timer.timeout | arista.avd.default('-') %}
+{%                 set recovery = profile.priority_flow_control.watchdog.timer.recovery_time | arista.avd.default('-') %}
+{%                 set polling = profile.priority_flow_control.watchdog.timer.polling_interval | arista.avd.default('-') %}
+
+###### Priority Flow Control Watchdog Settings
+
+| Enabled | Action | Timeout | Recovery | Polling |
+| ------- | ------ | ------- | -------- | ------- |
+| {{ enabled }} | {{ action }} | {{ timeout }} | {{ recovery }} | {{ polling }} |
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+
+#### QOS Profile Device Configuration
+
+```eos
+{%     include 'eos/qos-profiles.j2' %}
+```
+{% endif %}

@@ -1,0 +1,151 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dhcp_servers:
+    type: list
+    primary_key: vrf
+    items:
+      type: dict
+      keys:
+        disabled:
+          type: bool
+        vrf:
+          type: str
+          description: VRF in which to configure the DHCP server, use `default` to indicate default VRF.
+          convert_types:
+          - int
+        dns_domain_name_ipv4:
+          type: str
+        dns_domain_name_ipv6:
+          type: str
+        dns_servers_ipv4:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv4 clients.
+          items:
+            type: str
+            required: true
+            description: IPv4 address of DNS server.
+        dns_servers_ipv6:
+          type: list
+          min_length: 1
+          description: List of DNS servers for IPv6 clients.
+          items:
+            type: str
+            required: true
+            description: IPv6 address of DNS server.
+        tftp_server:
+          type: dict
+          keys:
+            file_ipv4:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv4 clients.
+            file_ipv6:
+              type: str
+              min_length: 1
+              max_length: 255
+              description: Name of TFTP file for IPv6 clients.
+        ipv4_vendor_options:
+          type: list
+          primary_key: vendor_id
+          items:
+            type: dict
+            keys:
+              vendor_id:
+                type: str
+                convert_types:
+                - int
+              sub_options:
+                type: list
+                primary_key: code
+                items:
+                  type: dict
+                  keys:
+                    code:
+                      type: int
+                      required: true
+                      min: 1
+                      max: 254
+                      convert_types:
+                      - str
+                    string:
+                      type: str
+                      description: |-
+                        String value for suboption data.
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
+                        The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
+                    ipv4_address:
+                      type: str
+                      description: |-
+                        IPv4 address value for suboption data.
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
+                        The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
+                    array_ipv4_address:
+                      type: list
+                      description: |-
+                        Array of IPv4 addresses for suboption data.
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
+                        The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
+                      items:
+                        type: str
+        subnets:
+          type: list
+          primary_key: subnet
+          items:
+            type: dict
+            keys:
+              subnet:
+                type: str
+                required: true
+              name:
+                type: str
+                convert_types:
+                - int
+              default_gateway:
+                type: str
+              dns_servers:
+                type: list
+                items:
+                  type: str
+              ranges:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    start:
+                      type: str
+                      required: true
+                    end:
+                      type: str
+                      required: true
+              lease_time:
+                type: dict
+                keys:
+                  days:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 2000
+                    convert_types:
+                    - str
+                  hours:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 23
+                    convert_types:
+                    - str
+                  minutes:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 59
+                    convert_types:
+                    - str

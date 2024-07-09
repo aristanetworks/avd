@@ -1,0 +1,83 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_bfd:
+    type: dict
+    keys:
+      interval:
+        type: int
+        description: Rate in milliseconds.
+      local_address:
+        type: str
+        description: Configure BFD local IP/IPv6 address.
+      min_rx:
+        type: int
+        description: Rate in milliseconds.
+      multiplier:
+        type: int
+        min: 3
+        max: 50
+      multihop:
+        type: dict
+        keys:
+          interval:
+            type: int
+            description: Rate in milliseconds.
+          min_rx:
+            type: int
+            description: Rate in milliseconds.
+          multiplier:
+            type: int
+            min: 3
+            max: 50
+      session_snapshot_interval:
+        type: int
+        convert_types:
+          - str
+        min: 1
+        max: 3600
+        description: |-
+          Interval in seconds.
+          Intervals below 10 are considered "dangerous" on EOS and must have `session_snapshot_interval_dangerous` set to `true`.
+      session_snapshot_interval_dangerous:
+        type: bool
+      sbfd:
+        type: dict
+        keys:
+          local_interface:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Interface Name.
+              protocols:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                  ipv6:
+                    type: bool
+          initiator_interval:
+            type: int
+            description: Rate in milliseconds.
+          initiator_multiplier:
+            type: int
+            min: 3
+            max: 50
+          initiator_measurement_round_trip:
+            type: bool
+            description: Enable round-trip delay measurement.
+          reflector:
+            type: dict
+            keys:
+              min_rx:
+                type: int
+                description: Rate in milliseconds.
+              local_discriminator:
+                type: str
+                description: IPv4 address or 32 bit integer.

@@ -1,15 +1,13 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing import Generator
+from __future__ import annotations
 
-from .validation_result import ValidationResult
-from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
-from .vendor.schema.avdschema import AvdSchema
+from typing import TYPE_CHECKING, Generator
 
-IGNORE_EXCEPTIONS = AvdConversionWarning
-VALIDATION_ERROR_EXCEPTIONS = AvdValidationError
-DEPRECATION_WARNING_EXCEPTIONS = AvdDeprecationWarning
+if TYPE_CHECKING:
+    from ._errors import AvdDeprecationWarning
+    from .validation_result import ValidationResult
 
 
 class AvdSchemaTools:
@@ -26,6 +24,11 @@ class AvdSchemaTools:
             schema_id:
                 Name of AVD Schema to use for conversion and validation.
         """
+        # pylint: disable=import-outside-toplevel
+        from ._schema.avdschema import AvdSchema
+
+        # pylint: enable=import-outside-toplevel
+
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
     def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
@@ -40,20 +43,23 @@ class AvdSchemaTools:
         Returns:
             List of AvdDeprecationWarnings
         """
+        from ._errors import AvdConversionWarning, AvdDeprecationWarning  # pylint: disable=import-outside-toplevel
 
         # avdschema.convert returns a Generator, so we have to iterate through it to perform the actual conversions.
         exceptions: Generator = self.avdschema.convert(data)
 
         result = []
         for exception in exceptions:
-            # Ignore conversions and deprecations
-            if isinstance(exception, IGNORE_EXCEPTIONS):
+            # Ignore conversions
+            if isinstance(exception, AvdConversionWarning):
                 continue
 
-            if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
+            # Store but continue for deprecations
+            if isinstance(exception, AvdDeprecationWarning):
                 result.append(exception)
                 continue
 
+            # Raise on other exceptions
             if isinstance(exception, Exception):
                 raise exception
 
@@ -70,24 +76,33 @@ class AvdSchemaTools:
         Returns:
             Validation result object with any validation errors or deprecation warnings.
         """
+        # pylint: disable=import-outside-toplevel
+        from ._errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
+        from .validation_result import ValidationResult
+
+        # pylint: enable=import-outside-toplevel
+
         result = ValidationResult(failed=False)
 
         # avdschema.validate returns a Generator, so we have to iterate through it to perform the actual validations.
         exceptions: Generator = self.avdschema.validate(data)
         for exception in exceptions:
-            # Ignore conversions and deprecations
-            if isinstance(exception, IGNORE_EXCEPTIONS):
+            # Ignore conversions
+            if isinstance(exception, AvdConversionWarning):
                 continue
 
-            if isinstance(exception, VALIDATION_ERROR_EXCEPTIONS):
+            # Store and fail but continue for validation errors
+            if isinstance(exception, AvdValidationError):
                 result.validation_errors.append(exception)
                 result.failed = True
                 continue
 
-            if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
+            # Store but continue for deprecations
+            if isinstance(exception, AvdDeprecationWarning):
                 result.deprecation_warnings.append(exception)
                 continue
 
+            # Raise on other exceptions
             if isinstance(exception, Exception):
                 raise exception
 

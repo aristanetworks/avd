@@ -1,0 +1,154 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_access_lists:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    display_name: IP Extended Access-Lists (improved model)
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list Name.
+          convert_types:
+            - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          description: ACL Entries.
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                  - str
+                description: ACL entry sequence number.
+              remark:
+                type: str
+                description: |-
+                  Comment up to 100 characters.
+                  If remark is defined, other keys in the ACL entry will be ignored.
+              action:
+                type: str
+                valid_values:
+                  - "permit"
+                  - "deny"
+                description: |-
+                  ACL action.
+                  Required except for remarks.
+              protocol:
+                type: str
+                description: |-
+                  "ip", "tcp", "udp", "icmp" or other protocol name or number.
+                  Required except for remarks.
+              source:
+                type: str
+                description: |-
+                  "any", "<ip>/<mask>" or "<ip>".
+                  "<ip>" without a mask means host.
+                  Required except for remarks.
+              source_ports_match:
+                type: str
+                valid_values:
+                  - "eq"
+                  - "gt"
+                  - "lt"
+                  - "neq"
+                  - "range"
+                default: "eq"
+              source_ports:
+                type: list
+                items:
+                  type: str
+                  convert_types:
+                    - int
+                  description: TCP/UDP source port name or number.
+              destination:
+                type: str
+                description: |-
+                  "any", "<ip>/<mask>" or "<ip>".
+                  "<ip>" without a mask means host.
+                  Required except for remarks.
+              destination_ports_match:
+                type: str
+                valid_values:
+                  - "eq"
+                  - "gt"
+                  - "lt"
+                  - "neq"
+                  - "range"
+                default: "eq"
+              destination_ports:
+                type: list
+                items:
+                  type: str
+                  convert_types:
+                    - int
+                  description: TCP/UDP destination port name or number.
+              tcp_flags:
+                type: list
+                items:
+                  type: str
+                  description: TCP Flag Name.
+              fragments:
+                type: bool
+                description: Match non-head fragment packets.
+              log:
+                type: bool
+                description: Log matches against this rule.
+              ttl:
+                type: int
+                description: TTL value.
+                convert_types:
+                  - str
+                min: 0
+                max: 255
+              ttl_match:
+                type: str
+                valid_values:
+                  - "eq"
+                  - "gt"
+                  - "lt"
+                  - "neq"
+                default: "eq"
+              icmp_type:
+                type: str
+                convert_types:
+                  - int
+                description: Message type name/number for ICMP packets.
+              icmp_code:
+                type: str
+                convert_types:
+                  - int
+                description: Message code for ICMP packets.
+              nexthop_group:
+                type: str
+                description: nexthop-group name.
+              tracked:
+                type: bool
+                description: Match packets in existing ICMP/UDP/TCP connections.
+              dscp:
+                type: str
+                convert_types:
+                  - int
+                description: DSCP value or name.
+              vlan_number:
+                type: int
+                convert_types:
+                  - str
+              vlan_inner:
+                type: bool
+                default: false
+              vlan_mask:
+                type: str
+                description: 0x000-0xFFF VLAN mask.

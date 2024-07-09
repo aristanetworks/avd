@@ -1,0 +1,123 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  monitor_connectivity:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      interval:
+        type: int
+        convert_types:
+          - str
+      interface_sets:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            interfaces:
+              type: str
+              description: |
+                Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+                Multiple interface ranges can be specified separated by ",".
+      local_interfaces:
+        type: str
+      address_only:
+        type: bool
+        description: |-
+          PREVIEW: This key is in preview.
+          When address-only is configured, the source IP of the packet is set to the interface
+          IP but the packet may exit the device via a different interface.
+          When set to `false`, the probe uses the interface to exit the device.
+          Not supported yet in EOS.
+        default: true
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              description: Host Name.
+              type: str
+            description:
+              type: str
+            ip:
+              type: str
+            local_interfaces:
+              type: str
+            address_only:
+              type: bool
+              description: |-
+                PREVIEW: This key is in preview.
+                When address-only is configured, the source IP of the packet is set to the interface
+                IP but the packet may exit the device via a different interface.
+                When set to `false`, the probe uses the interface to exit the device.
+                Not supported yet in EOS.
+              default: true
+            url:
+              type: str
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              description: VRF Name.
+              type: str
+              convert_types:
+                - int
+            description:
+              type: str
+            interface_sets:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  interfaces:
+                    type: str
+            local_interfaces:
+              type: str
+            address_only:
+              type: bool
+              description: |-
+                PREVIEW: This key is in preview.
+                When address-only is configured, the source IP of the packet is set to the interface
+                IP but the packet may exit the device via a different interface.
+                When set to `false`, the probe uses the interface to exit the device.
+                Not supported yet in EOS.
+              default: true
+            hosts:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    description: Host name.
+                    type: str
+                  description:
+                    type: str
+                  ip:
+                    type: str
+                  local_interfaces:
+                    type: str
+                  address_only:
+                    type: bool
+                    description: |-
+                      PREVIEW: This key is in preview.
+                      When address-only is configured, the source IP of the packet is set to the interface
+                      IP but the packet may exit the device via a different interface.
+                      When set to `false`, the probe uses the interface to exit the device.
+                      Not supported yet in EOS.
+                    default: true
+                  url:
+                    type: str

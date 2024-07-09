@@ -20,20 +20,28 @@ mac_security:
       l2_protocols:
         lldp:
           mode: bypass unauthorized
+      traffic_unprotected:
+        action: allow
     - name: A2
       connection_keys:
         - id: 1234b
           encrypted_key: 12485744465E5A53
+      traffic_unprotected:
+        action: allow
+        allow_active_sak: true
     - name: A3
       cipher: aes256-gcm-xpn
       connection_keys:
         - id: ab
           encrypted_key: 10195F4C5144405A
           fallback: false
+      traffic_unprotected:
+        action: drop
 
 ### Mgmt sec
 management_security:
-  entropy_source: hardware
+  entropy_sources:
+    hardware: true
   password:
     encryption_key_common: true
   ssl_profiles:

@@ -21,11 +21,12 @@ vtep_vvtep_ip: 192.168.255.255/32
 # Testing event_handlers
 event_handlers:
   - name: evpn-blacklist-recovery
-    action_type: bash
-    action: FastCli -p 15 -c "clear bgp evpn host-flap"
+    actions:
+      bash_command: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
     trigger: on-logging
-    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+    trigger_on_logging:
+      regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
 
 # Testing with inline jinja - targeting base.py loaded in eos_designs_structured_config.

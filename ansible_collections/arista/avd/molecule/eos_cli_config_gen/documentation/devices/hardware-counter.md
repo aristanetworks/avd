@@ -43,7 +43,7 @@ interface Management1
 
 ##### Hardware Counter Features
 
-**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsability to configure valid options for each feature.
+**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsibility to configure valid options for each feature.
 
 | Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
 | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
@@ -54,6 +54,7 @@ interface Management1
 | mpls lfib | - | - | - | - | - | True |
 | route | - | ipv4 | test | - | 192.168.0.0/24 | - |
 | route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
+| segment-security | in | - | - | - | - | - |
 
 #### Hardware Counters Device Configuration
 
@@ -66,4 +67,5 @@ hardware counter feature ip out layer3 units packets
 hardware counter feature mpls lfib units packets
 hardware counter feature route ipv4 vrf test 192.168.0.0/24
 hardware counter feature route ipv6 2001:db8:cafe::/64
+hardware counter feature segment-security in
 ```

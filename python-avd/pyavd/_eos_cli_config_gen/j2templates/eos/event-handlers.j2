@@ -1,0 +1,103 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - event handlers #}
+{% if event_handlers is arista.avd.defined %}
+{%     for handler in event_handlers | arista.avd.natural_sort('name') %}
+!
+event-handler {{ handler.name }}
+{%         if handler.trigger is arista.avd.defined %}
+{%             if handler.trigger is arista.avd.defined("on-maintenance")
+                  and handler.trigger_on_maintenance.operation is arista.avd.defined
+                  and handler.trigger_on_maintenance.action is arista.avd.defined %}
+{%                 set trigger_cli =  "trigger " ~ handler.trigger ~ " " ~ handler.trigger_on_maintenance.operation %}
+{%                 if handler.trigger_on_maintenance.bgp_peer is arista.avd.defined %}
+{%                     set on_maintenance_cli = "bgp " ~ handler.trigger_on_maintenance.bgp_peer %}
+{%                     if handler.trigger_on_maintenance.vrf is arista.avd.defined %}
+{%                         set on_maintenance_cli = on_maintenance_cli ~ " vrf " ~ handler.trigger_on_maintenance.vrf %}
+{%                     endif %}
+{%                 elif handler.trigger_on_maintenance.interface is arista.avd.defined %}
+{%                     set on_maintenance_cli = "interface " ~ handler.trigger_on_maintenance.interface %}
+{%                 elif handler.trigger_on_maintenance.unit is arista.avd.defined %}
+{%                     set on_maintenance_cli = "unit " ~ handler.trigger_on_maintenance.unit %}
+{%                 endif %}
+{%                 if on_maintenance_cli is arista.avd.defined %}
+{%                     if handler.trigger_on_maintenance.action in ["after", "before"] and handler.trigger_on_maintenance.stage is arista.avd.defined %}
+   {{ trigger_cli }} {{ on_maintenance_cli }} {{ handler.trigger_on_maintenance.action }} stage {{ handler.trigger_on_maintenance.stage }}
+{%                     elif handler.trigger_on_maintenance.action in ["all", "begin", "end"] %}
+   {{ trigger_cli }} {{ on_maintenance_cli }} {{ handler.trigger_on_maintenance.action }}
+{%                     endif %}
+{%                 endif %}
+{%             elif handler.trigger is arista.avd.defined("on-counters") %}
+   trigger on-counters
+{%                 if handler.trigger_on_counters.poll_interval is arista.avd.defined %}
+      poll interval {{ handler.trigger_on_counters.poll_interval }}
+{%                 endif %}
+{%                 if handler.trigger_on_counters.condition is arista.avd.defined %}
+      condition {{ handler.trigger_on_counters.condition }}
+{%                 endif %}
+{%                 if handler.trigger_on_counters.granularity_per_source is arista.avd.defined(true) %}
+      granularity per-source
+{%                 endif %}
+{%             elif handler.trigger is arista.avd.defined("on-logging") %}
+   trigger on-logging
+{%                 if handler.trigger_on_logging.poll_interval is arista.avd.defined %}
+      poll interval {{ handler.trigger_on_logging.poll_interval }}
+{%                 endif %}
+{%                 if handler.trigger_on_logging.regex is arista.avd.defined %}
+      regex {{ handler.trigger_on_logging.regex }}
+{%                 endif %}
+{%             elif handler.trigger is arista.avd.defined("on-intf") %}
+{%                 if handler.trigger_on_intf.interface is arista.avd.defined and
+                     (handler.trigger_on_intf.ip is arista.avd.defined(true) or
+                     handler.trigger_on_intf.ipv6 is arista.avd.defined(true) or
+                     handler.trigger_on_intf.operstatus is arista.avd.defined(true)) %}
+{%                     set trigger_on_intf_cli = "trigger on-intf " ~ handler.trigger_on_intf.interface %}
+{%                     if handler.trigger_on_intf.operstatus is arista.avd.defined(true) %}
+{%                         set trigger_on_intf_cli = trigger_on_intf_cli ~ " operstatus" %}
+{%                     endif %}
+{%                     if handler.trigger_on_intf.ip is arista.avd.defined(true) %}
+{%                         set trigger_on_intf_cli = trigger_on_intf_cli ~ " ip" %}
+{%                     endif %}
+{%                     if handler.trigger_on_intf.ipv6 is arista.avd.defined(true) %}
+{%                         set trigger_on_intf_cli = trigger_on_intf_cli ~ " ip6" %}
+{%                     endif %}
+   {{ trigger_on_intf_cli }}
+{%                 endif %}
+{%             else %}
+   trigger {{ handler.trigger }}
+{%             endif %}
+{%             if handler.regex is arista.avd.defined %}
+      regex {{ handler.regex }}
+{%             endif %}
+{%         endif %}
+{%         if handler.action is arista.avd.defined and handler.action_type is arista.avd.defined %}
+   action {{ handler.action_type }} {{ handler.action }}
+{%         endif %}
+{%         if handler.actions.bash_command is arista.avd.defined %}
+{%             set bash_command = handler.actions.bash_command %}
+{%             if bash_command.count('\n') > 0 %}
+{%                 if not bash_command.rstrip().endswith('\nEOF') %}
+{%                     set bash_command = bash_command.rstrip() ~ "\nEOF" %}
+{%                 endif %}
+   action bash
+      {{ bash_command | indent(width=6, first=false) }}
+{%             else %}
+   action bash {{ bash_command }}
+{%             endif %}
+{%         elif handler.actions.log is arista.avd.defined(true) %}
+   action log
+{%         endif %}
+{%         if handler.actions.increment_device_health_metric is arista.avd.defined %}
+   action increment device-health metric {{ handler.actions.increment_device_health_metric }}
+{%         endif %}
+{%         if handler.delay is arista.avd.defined %}
+   delay {{ handler.delay }}
+{%         endif %}
+{%         if handler.asynchronous is arista.avd.defined(true) %}
+   asynchronous
+{%         endif %}
+{%     endfor %}
+{% endif %}

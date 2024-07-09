@@ -1,0 +1,65 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - monitor telemetry postcard policy #}
+{% if monitor_telemetry_postcard_policy is arista.avd.defined %}
+
+### Monitor Telemetry Postcard Policy
+{%     if monitor_telemetry_postcard_policy.sample_policies is arista.avd.defined %}
+
+#### Sample Policy Summary
+{%         for policy in monitor_telemetry_postcard_policy.sample_policies | arista.avd.natural_sort("name") %}
+
+##### {{ policy.name }}
+{%             if policy.match_rules is arista.avd.defined %}
+
+###### Match rules
+
+| Rule Name | Rule Type | Source Prefix | Destination Prefix | Protocol | Source Ports | Destination Ports |
+| --------- | --------- | ------------- | ------------------ | -------- | ------------ | ----------------- |
+{%                 for rule in policy.match_rules | arista.avd.natural_sort("name") %}
+{%                     set protocols_list = [] %}
+{%                     set destination_ports = [] %}
+{%                     set source_ports = [] %}
+{%                     for protocol in rule.protocols | arista.avd.natural_sort("protocol") %}
+{%                         do protocols_list.append(protocol.protocol) %}
+{%                         if protocol.source_ports is arista.avd.defined %}
+{%                             do source_ports.append(protocol.source_ports | join(", ")) %}
+{%                         else %}
+{%                             do source_ports.append("-") %}
+{%                         endif %}
+{%                         if protocol.destination_ports is arista.avd.defined %}
+{%                             do destination_ports.append(protocol.destination_ports | join(", ")) %}
+{%                         else %}
+{%                             do destination_ports.append("-") %}
+{%                         endif %}
+{%                     endfor %}
+{%                     if protocols_list == [] %}
+{%                         do protocols_list.append("-") %}
+{%                         do source_ports.append("-") %}
+{%                         do destination_ports.append("-") %}
+{%                     endif %}
+| {{ rule.name }} | {{ rule.type }} | {{ rule.source_prefix | arista.avd.default("-") }} | {{ rule.destination_prefix | arista.avd.default("-") }} | {{ protocols_list | join("<br>") }} | {{ source_ports | join("<br>") }} | {{ destination_ports | join("<br>") }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if monitor_telemetry_postcard_policy.profiles is arista.avd.defined %}
+
+#### Telemetry Postcard Policy Profiles
+
+| Profile Name | Ingress Sample Policy |
+| ------------ | --------------------- |
+{%         for profile in monitor_telemetry_postcard_policy.profiles | arista.avd.natural_sort("name") %}
+| {{ profile.name }} | {{ profile.ingress_sample_policy | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+
+#### Monitor Telemetry Postcard Policy Configuration
+
+```eos
+{%     include 'eos/monitor-telemetry-postcard-policy.j2' %}
+```
+{% endif %}

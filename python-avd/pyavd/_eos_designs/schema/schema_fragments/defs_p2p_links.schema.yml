@@ -1,0 +1,183 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  p2p_links:
+    type: list
+    items:
+      type: dict
+      keys:
+        id:
+          type: int
+          convert_types:
+            - str
+          description: |
+            Unique id per subnet_summary. Used to calculate ip addresses.
+            Required with ip_pool. ID starting from 1.
+        speed:
+          type: str
+          description: |-
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        ip_pool:
+          type: str
+          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
+        subnet:
+          type: str
+          description: IPv4 address/Mask. Subnet used on this P2P link.
+        ip:
+          type: list
+          description: Specific IP addresses used on this P2P link.
+          items:
+            type: str
+            description: Node IPv4 address/Mask.
+        ipv6_enable:
+          type: bool
+          default: false
+          description: Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
+        nodes:
+          type: list
+          description: Nodes where this link should be configured.
+          items:
+            type: str
+            description: |
+              The values can be < node_a >, < node_b >.
+              ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].
+        interfaces:
+          type: list
+          description: Interfaces where this link should be configured and Required unless using port-channels.
+          items:
+            type: str
+            description: |
+              The value can be like < node_a_interface >, < node_b_interface >.
+              ex. - [ Ethernet2, Ethernet2 ].
+        as:
+          type: list
+          description: |
+            AS numbers for BGP.
+            Required with bgp peering.
+          items:
+            type: str
+            convert_types:
+              - int
+            description: The values can be like ["node_a_as", "node_b_as"].
+        descriptions:
+          type: list
+          description: Interface description.
+          items:
+            type: str
+        include_in_underlay_protocol:
+          type: bool
+          default: true
+          description: Add this interface to underlay routing protocol.
+        isis_hello_padding:
+          type: bool
+          default: false
+        isis_metric:
+          type: int
+          convert_types:
+            - str
+        isis_circuit_type:
+          type: str
+          valid_values:
+            - level-1
+            - level-2
+            - level-1-2
+        isis_authentication_mode:
+          type: str
+          valid_values:
+            - md5
+            - text
+        isis_authentication_key:
+          type: str
+          description: Type-7 encrypted password.
+        mpls_ip:
+          type: bool
+          description: MPLS parameters. Default value is true if switch.mpls_lsr is true.
+        mpls_ldp:
+          type: bool
+          description: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
+        mtu:
+          type: int
+          convert_types:
+            - str
+          description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+        bfd:
+          type: bool
+          default: false
+          description: Enable BFD (only considered for BGP).
+        ptp:
+          description: PTP parameters.
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              default: false
+              description: Enable PTP.
+        sflow:
+          type: bool
+          description: Enable sFlow. Overrides `fabric_sflow` setting.
+        underlay_multicast:
+          type: bool
+          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
+          default: false
+        flow_tracking:
+          type: dict
+          $ref: "eos_designs#/$defs/flow_tracking_link"
+          description: Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
+        qos_profile:
+          type: str
+          description: QOS service profile.
+        macsec_profile:
+          type: str
+          description: MAC security profile.
+        port_channel:
+          description: Port-channel parameters.
+          type: dict
+          keys:
+            mode:
+              type: str
+              default: active
+            nodes_child_interfaces:
+              type: list
+              primary_key: node
+              secondary_key: interfaces
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  node:
+                    type: str
+                  interfaces:
+                    type: list
+                    description: List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].
+                    items:
+                      type: str
+                  channel_id:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
+        routing_protocol:
+          type: str
+          valid_values:
+            - ebgp
+          description: |-
+            Enables deviation of the routing protocol used on this link from the fabric underlay default.
+            - ebgp: Enforce plain IPv4 BGP peering
+        structured_config:
+          type: dict
+          documentation_options:
+            hide_keys: true
+          description: |-
+            Custom structured config for interfaces.
+            Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+          # Schema ref not implemented since we do not know which of the schemas to look at.
+          # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

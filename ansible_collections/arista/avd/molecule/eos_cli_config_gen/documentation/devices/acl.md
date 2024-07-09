@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [ACL](#acl)
+- [ACL](#acl-1)
   - [Standard Access-lists](#standard-access-lists)
   - [Extended Access-lists](#extended-access-lists)
 
@@ -139,6 +139,7 @@ ACL has counting mode `counters per-entry` enabled!
 | 10 | remark ACL to restrict access RFC1918 addresses |
 | 20 | permit ip 10.0.0.0/8 any |
 | 30 | permit ip 192.0.2.0/24 any |
+| - | permit response traffic nat |
 
 ##### ACL-03
 
@@ -167,6 +168,7 @@ ip access-list ACL-02
    10 remark ACL to restrict access RFC1918 addresses
    20 permit ip 10.0.0.0/8 any
    30 permit ip 192.0.2.0/24 any
+   permit response traffic nat
 !
 ip access-list ACL-03
    10 remark ACL to restrict access RFC1918 addresses
