@@ -31,13 +31,22 @@
 {%         if radius_host.vrf is arista.avd.defined and radius_host.vrf != "default" %}
 {%             set radius_cli = radius_cli ~ " vrf " ~ radius_host.vrf %}
 {%         endif %}
+{%         if radius_host.tls is arista.avd.defined(true) %}
+{%             set radius_cli = radius_cli ~ " tls" %}
+{%             if radius_host.tls_ssl_profile is arista.avd.defined %}
+{%                 set radius_cli = radius_cli ~ " ssl-profile " ~ radius_host.tls_ssl_profile %}
+{%             endif %}
+{%             if radius_host.tls_port is arista.avd.defined %}
+{%                 set radius_cli = radius_cli ~ " port " ~ radius_host.tls_port %}
+{%             endif %}
+{%         endif %}
 {%         if radius_host.timeout is arista.avd.defined %}
 {%             set radius_cli = radius_cli ~ " timeout " ~ radius_host.timeout %}
 {%         endif %}
 {%         if radius_host.retransmit is arista.avd.defined %}
 {%             set radius_cli = radius_cli ~ " retransmit " ~ radius_host.retransmit %}
 {%         endif %}
-{%         if radius_host.key is arista.avd.defined %}
+{%         if radius_host.key is arista.avd.defined and radius_host.tls is not arista.avd.defined(true) %}
 {%             set radius_cli = radius_cli ~ " key 7 " ~ radius_host.key | arista.avd.hide_passwords(hide_passwords) %}
 {%         endif %}
 {{ radius_cli }}

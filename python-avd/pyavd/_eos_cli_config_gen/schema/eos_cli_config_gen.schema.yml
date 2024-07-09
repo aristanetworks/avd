@@ -10256,6 +10256,19 @@ keys:
               type: str
               convert_types:
               - int
+            tls:
+              type: bool
+              description: Enable TLS for this radius-server.
+            tls_ssl_profile:
+              type: str
+              description: Name of TLS profile.
+            tls_port:
+              type: int
+              min: 0
+              max: 65535
+              convert_types:
+              - str
+              description: TCP Port used for TLS.
             timeout:
               type: int
               min: 1

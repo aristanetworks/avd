@@ -33,3 +33,17 @@ radius_server:
       timeout: 1
       retransmit: 1
       key: 071B245F5A
+    - host: 10.10.11.156
+      vrf: default
+      timeout: 1
+      retransmit: 1
+      key: 071B245F5A
+      tls: true
+      tls_port: 1700
+    - host: 10.10.11.155
+      vrf: mgt
+      timeout: 1
+      retransmit: 1
+      tls: true
+      tls_ssl_profile: SSL_PROFILE
+      tls_port: 2083

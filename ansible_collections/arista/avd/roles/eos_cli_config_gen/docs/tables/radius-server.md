@@ -17,6 +17,9 @@
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "radius_server.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "radius_server.hosts.[].host") | String | Required, Unique |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "radius_server.hosts.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "radius_server.hosts.[].tls") | Boolean |  |  |  | Enable TLS for this radius-server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls_ssl_profile</samp>](## "radius_server.hosts.[].tls_ssl_profile") | String |  |  |  | Name of TLS profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls_port</samp>](## "radius_server.hosts.[].tls_port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "radius_server.hosts.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "radius_server.hosts.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.hosts.[].key") | String |  |  |  | Encrypted key. |
@@ -42,6 +45,15 @@
           # Host IP address or name.
         - host: <str; required; unique>
           vrf: <str>
+
+          # Enable TLS for this radius-server.
+          tls: <bool>
+
+          # Name of TLS profile.
+          tls_ssl_profile: <str>
+
+          # TCP Port used for TLS.
+          tls_port: <int; 0-65535>
           timeout: <int; 1-1000>
           retransmit: <int; 0-100>
 
