@@ -17,7 +17,6 @@ tenants:
     evpn_l2_multicast:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
-    igmp_snooping_querier:
       fast_leave: true
     vrfs:
       - name: MULTICAST_ENABLED_110_111
@@ -593,7 +592,7 @@ tenants:
             pim:
               enabled: true
 
-# Test when tenant level evpn_l2_multicast.enabled: true and evpn_l2_multicast.fast_leave: true       
+# Test when tenant level evpn_l2_multicast.enabled: true and evpn_l2_multicast.fast_leave: true
   - name: Tenant_F
     mac_vrf_vni_base: 10000
     evpn_l2_multicast:

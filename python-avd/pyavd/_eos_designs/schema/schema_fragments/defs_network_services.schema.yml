@@ -279,9 +279,6 @@ $defs:
                 - 2
                 - 3
               default: 2
-            fast_leave:
-              type: bool
-              description: Enable fast-leave processing on specified VLANs.
         evpn_l2_multi_domain:
           type: bool
           default: true

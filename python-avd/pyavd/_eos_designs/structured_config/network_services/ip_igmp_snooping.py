@@ -117,7 +117,6 @@ class IpIgmpSnoopingMixin(UtilsMixin):
         if evpn_l2_multicast_enabled is True:
             fast_leave = default(
                 igmp_snooping_querier.get("fast_leave"),
-                tenant_igmp_snooping_querier.get("fast_leave"),
                 get(tenant, "evpn_l2_multicast.fast_leave"),
             )
             if fast_leave is not None:
