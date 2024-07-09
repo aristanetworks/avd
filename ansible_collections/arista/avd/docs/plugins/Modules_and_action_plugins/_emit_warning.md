@@ -41,4 +41,4 @@ Emit a warning in a task.
 
 ## Authors
 
-- EMEA AS Team (@aristanetworks)
+- Arista Networks (@aristanetworks)
