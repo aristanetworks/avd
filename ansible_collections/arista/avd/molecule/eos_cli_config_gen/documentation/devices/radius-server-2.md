@@ -43,7 +43,7 @@ interface Management1
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | SSL-Profile | Timeout | Retransmit |
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ----------- | ------- | ---------- |
 
 #### RADIUS Server Device Configuration

@@ -91,7 +91,7 @@ tacacs-server timeout 10
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | SSL-Profile | Timeout | Retransmit |
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ----------- | ------- | ---------- |
 | mgt | 10.10.10.157 | - | - | - | - |
 | default | 10.10.10.249 | - | - | - | - |

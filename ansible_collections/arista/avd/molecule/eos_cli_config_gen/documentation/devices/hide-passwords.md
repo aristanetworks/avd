@@ -91,7 +91,7 @@ tacacs-server host 10.10.10.157 key 7 <removed>
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | SSL-Profile | Timeout | Retransmit |
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ----------- | ------- | ---------- |
 | default | 10.10.10.158 | - | - | - | - |
 
