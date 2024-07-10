@@ -258,8 +258,8 @@ username admin privilege 15 role network-admin nopassword
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | Timeout | Retransmit |
-| --- | -------------- | ------- | ---------- |
+| VRF | RADIUS Servers | TLS | SSL-Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
 | mgt | 10.10.10.157 | - | - |
 | default | 10.10.10.249 | - | - |
 | default | 10.10.10.158 | - | - |
