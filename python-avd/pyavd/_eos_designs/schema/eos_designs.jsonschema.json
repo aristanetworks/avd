@@ -56454,7 +56454,7 @@
                     },
                     "fast_leave": {
                       "type": "boolean",
-                      "description": "Enable fast-leave processing on specified VLANs.",
+                      "description": "Enable IGMP snooping fast-leave feature on specified VLANs.",
                       "title": "Fast Leave"
                     }
                   },
@@ -58367,7 +58367,7 @@
               },
               "fast_leave": {
                 "type": "boolean",
-                "description": "Enable fast-leave processing on specified VLANs.",
+                "description": "Enable IGMP snooping fast-leave feature on specified VLANs.",
                 "title": "Fast Leave"
               }
             },

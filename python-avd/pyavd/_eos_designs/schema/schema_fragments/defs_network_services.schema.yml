@@ -174,7 +174,7 @@ $defs:
                 - str
             fast_leave:
               type: bool
-              description: Enable fast-leave processing on specified VLANs.
+              description: Enable IGMP snooping fast-leave feature on specified VLANs.
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -1254,7 +1254,7 @@ $defs:
                     default: 2
                   fast_leave:
                     type: bool
-                    description: Enable fast-leave processing on specified VLANs.
+                    description: Enable IGMP snooping fast-leave feature on specified VLANs.
               bgp:
                 type: dict
                 keys:

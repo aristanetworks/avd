@@ -85,8 +85,8 @@ tenants:
               enabled: false
     l2vlans:
       # Expected results:
-      # - vlan 256 not configured with multicast
-      # - vlan 257 and 4092 configured with multicast:
+      #   - vlan 256 not configured with multicast
+      #   - vlan 257 and 4092 configured with multicast:
       #   - Querier address configured with loopback address
       #   - vxlan vlan 257 multicast group 232.0.1.0
       #   - vxlan vlan 4092 multicast group 232.0.15.251 (tests near maximum value within subnet allocated in underlay_l2_multicast_group_ipv4_pool)
@@ -94,7 +94,8 @@ tenants:
       - id: 256
         name: "MULTICAST_DISABLED_256"
         tags: ['test_l2']
-        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, vpn_l2_multicast.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
+        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, evpn_l2_multicast.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
+        # fast-leave is not expected for VLAN 256 since l2vlans.evpn_l2_multicast.enabled: false
         evpn_l2_multicast:
           enabled: false
       - id: 257
@@ -129,6 +130,7 @@ tenants:
           #   - vxlan vlan 2 multicast group 232.0.16.2
           #   - redistribute igmp on BGP vlan-aware-bundle 1-2 (LEAF1A/B)
           #   - redistribute igmp on BGP vlan based 1 and 2 (LEAF2A)
+          #   - fast-leave on VLAN 1
           - id: 1
             name: "MULTICAST_ENABLED_1"
             tags: ['test_l3']
@@ -297,6 +299,7 @@ tenants:
             enabled: true
             ip_address_virtual: 10.2.23.1/24
             # test for fast-leave when igmp_snooping_querier.fast_leave: true but evpn_l2_multicast.enabled is not set
+            # fast-leave is not expected for VLAN 230 since evpn_l2_multicast.enabled is not set
             igmp_snooping_querier:
               enabled: true
               fast_leave: true
@@ -607,7 +610,4 @@ tenants:
           enabled: false
       - id: 252
         name: "MULTICAST_ENABLED_252"
-        tags: ['test_l2']
-      - id: 4091
-        name: "MULTICAST_ENABLED_4091"
         tags: ['test_l2']
