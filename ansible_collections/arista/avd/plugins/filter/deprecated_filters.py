@@ -24,7 +24,7 @@ except ImportError as e:
             orig_exc=e,
         )
     )
-    generate_generate_esi = RaiseOnUse(
+    generate_esi = RaiseOnUse(
         AnsibleFilterError(
             f"The '{PLUGIN_NAME_2}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
