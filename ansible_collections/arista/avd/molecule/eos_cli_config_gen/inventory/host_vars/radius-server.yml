@@ -47,5 +47,6 @@ radius_server:
       retransmit: 1
       tls:
         enabled: true
-        ssl_profile: SSL_PROFILE
+        ssl_profile: HOST_SSL_PROFILE
         port: 2083
+  tls_ssl_profile: GLOBAL_RADIUS_SSL_PROFILE

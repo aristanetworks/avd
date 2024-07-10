@@ -16,6 +16,9 @@
 {%         endif %}
 {{ attribute_32_include_in_access_cli }}
 {%     endif %}
+{%     if radius_server.tls_ssl_profile is arista.avd.defined %}
+radius-server tls ssl-profile {{ radius_server.tls_ssl_profile }}
+{%     endif %}
 {%     if radius_server.dynamic_authorization is arista.avd.defined %}
 {%         set dynamic_authorization_cli = "radius-server dynamic-authorization" %}
 {%         if radius_server.dynamic_authorization.port is arista.avd.defined %}

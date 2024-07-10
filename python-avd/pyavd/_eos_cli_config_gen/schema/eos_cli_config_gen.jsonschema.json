@@ -17139,7 +17139,7 @@
               },
               "tls": {
                 "type": "object",
-                "description": "When TLS is configured, key is ignored due to mutually exclusive in EOS CLI.",
+                "description": "When TLS is configured, `key` is ignored..",
                 "properties": {
                   "enabled": {
                     "type": "boolean",
@@ -17179,7 +17179,7 @@
               },
               "key": {
                 "type": "string",
-                "description": "Encrypted key. When TLS is configured, key is ignored.",
+                "description": "Encrypted key - only type 7 supported.\nWhen TLS is configured, `key` is ignored.",
                 "title": "Key"
               }
             },
@@ -17192,6 +17192,11 @@
             ]
           },
           "title": "Hosts"
+        },
+        "tls_ssl_profile": {
+          "type": "string",
+          "description": "Name of global TLS profile.",
+          "title": "TLS SSL Profile"
         }
       },
       "additionalProperties": false,

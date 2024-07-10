@@ -45,7 +45,8 @@ keys:
                 - int
             tls:
               type: dict
-              description: When TLS is configured, key is ignored due to mutually exclusive in EOS CLI.
+              description: |-
+                When TLS is configured, `key` is ignored..
               keys:
                 enabled:
                   type: bool
@@ -74,4 +75,9 @@ keys:
                 - str
             key:
               type: str
-              description: Encrypted key. When TLS is configured, key is ignored.
+              description: |-
+                Encrypted key - only type 7 supported.
+                When TLS is configured, `key` is ignored.
+      tls_ssl_profile:
+        type: str
+        description: Name of global TLS profile.
