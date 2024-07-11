@@ -428,6 +428,7 @@ $defs:
               When set, it takes precedence over `loopback_ipv4_pool`.
               Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
             type: str
+            format: ipv4
           vtep_loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -442,6 +443,7 @@ $defs:
               When set, it takes precedence over `vtep_loopback_ipv4_pool`.
               Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
             type: str
+            format: ipv4
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
