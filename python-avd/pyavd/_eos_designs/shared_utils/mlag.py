@@ -67,12 +67,20 @@ class MlagMixin:
         return get(self.switch_data_combined, "mlag_peer_address_family", default="ipv4")
 
     @cached_property
+    def mlag_peer_ipv4_address(self: SharedUtils) -> str:
+        return get(self.switch_data_combined, "mlag_peer_ipv4_address", required=False)
+
+    @cached_property
     def mlag_peer_ipv4_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "mlag_peer_ipv4_pool", required=True)
 
     @cached_property
     def mlag_peer_ipv6_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "mlag_peer_ipv6_pool", required=True)
+
+    @cached_property
+    def mlag_peer_l3_ipv4_address(self: SharedUtils) -> str:
+        return get(self.switch_data_combined, "mlag_peer_l3_ipv4_address", required=False)
 
     @cached_property
     def mlag_peer_l3_ipv4_pool(self: SharedUtils) -> str:

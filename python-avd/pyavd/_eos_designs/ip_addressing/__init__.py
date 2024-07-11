@@ -85,8 +85,13 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return IP for MLAG Primary
 
+        If "mlag_peer_ipv4_address" is set, it is used.
         Default pool is "mlag_peer_ipv4_pool"
         """
+
+        if self._mlag_peer_ipv4_address:
+            return self._mlag_peer_ipv4_address
+
         if self.shared_utils.mlag_peer_address_family == "ipv6":
             if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_primary"):
                 return self._template(
@@ -112,8 +117,13 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return IP for MLAG Secondary
 
+        If "mlag_peer_ipv4_address" is set, it is used.
         Default pool is "mlag_peer_ipv4_pool"
         """
+
+        if self._mlag_peer_ipv4_address:
+            return self._mlag_peer_ipv4_address
+
         if self.shared_utils.mlag_peer_address_family == "ipv6":
             if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_secondary"):
                 return self._template(
@@ -139,8 +149,13 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return IP for L3 Peerings for MLAG Primary
 
+        If "mlag_peer_l3_ipv4_address" is set, it is used.
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
+
+        if self._mlag_peer_l3_ipv4_address:
+            return self._mlag_peer_l3_ipv4_address
+
         if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_primary"):
             return self._template(
                 template_path,
@@ -155,8 +170,13 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         Return IP for L3 Peerings for MLAG Secondary
 
+        If "mlag_peer_l3_ipv4_address" is set, it is used.
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
+
+        if self._mlag_peer_l3_ipv4_address:
+            return self._mlag_peer_l3_ipv4_address
+
         if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_secondary"):
             return self._template(
                 template_path,

@@ -20,10 +20,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.defaults.mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_address</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG underlay L3 peering.<br>When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.defaults.mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.defaults.mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.defaults.mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_address</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG Peer Link (control link).<br>When set, it takes precedence over `mlag_peer_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.defaults.mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.defaults.mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
@@ -46,10 +48,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG underlay L3 peering.<br>When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG Peer Link (control link).<br>When set, it takes precedence over `mlag_peer_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
@@ -68,10 +72,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.node_groups.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG underlay L3 peering.<br>When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_address</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG Peer Link (control link).<br>When set, it takes precedence over `mlag_peer_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
@@ -92,10 +98,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_address</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG underlay L3 peering.<br>When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv4_pool") | String |  |  | Format: ipv4_cidr | IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv4_address</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv4_address") | String |  |  | Format: ipv4 | IPv4 address without mask used for MLAG Peer Link (control link).<br>When set, it takes precedence over `mlag_peer_ipv4_pool`.<br>Note: AVD does not check for validity of the IPv4 address and does not catch duplicates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_cidr | IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.nodes.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
@@ -158,6 +166,11 @@
         # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
         mlag_peer_l3_ipv4_pool: <str>
 
+        # IPv4 address without mask used for MLAG underlay L3 peering.
+        # When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.
+        # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        mlag_peer_l3_ipv4_address: <str>
+
         # MLAG Peer Link (control link) SVI interface id.
         mlag_peer_vlan: <int; 1-4094; default=4094>
         mlag_peer_link_allowed_vlans: <str>
@@ -170,6 +183,11 @@
         # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
         # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
         mlag_peer_ipv4_pool: <str>
+
+        # IPv4 address without mask used for MLAG Peer Link (control link).
+        # When set, it takes precedence over `mlag_peer_ipv4_pool`.
+        # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        mlag_peer_ipv4_address: <str>
 
         # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
         # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
@@ -250,6 +268,11 @@
               # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
               mlag_peer_l3_ipv4_pool: <str>
 
+              # IPv4 address without mask used for MLAG underlay L3 peering.
+              # When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.
+              # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+              mlag_peer_l3_ipv4_address: <str>
+
               # MLAG Peer Link (control link) SVI interface id.
               mlag_peer_vlan: <int; 1-4094; default=4094>
               mlag_peer_link_allowed_vlans: <str>
@@ -262,6 +285,11 @@
               # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
               # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
               mlag_peer_ipv4_pool: <str>
+
+              # IPv4 address without mask used for MLAG Peer Link (control link).
+              # When set, it takes precedence over `mlag_peer_ipv4_pool`.
+              # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+              mlag_peer_ipv4_address: <str>
 
               # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
               # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
@@ -329,6 +357,11 @@
           # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
           mlag_peer_l3_ipv4_pool: <str>
 
+          # IPv4 address without mask used for MLAG underlay L3 peering.
+          # When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.
+          # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          mlag_peer_l3_ipv4_address: <str>
+
           # MLAG Peer Link (control link) SVI interface id.
           mlag_peer_vlan: <int; 1-4094; default=4094>
           mlag_peer_link_allowed_vlans: <str>
@@ -341,6 +374,11 @@
           # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
           # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
           mlag_peer_ipv4_pool: <str>
+
+          # IPv4 address without mask used for MLAG Peer Link (control link).
+          # When set, it takes precedence over `mlag_peer_ipv4_pool`.
+          # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          mlag_peer_ipv4_address: <str>
 
           # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
           # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
@@ -414,6 +452,11 @@
           # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
           mlag_peer_l3_ipv4_pool: <str>
 
+          # IPv4 address without mask used for MLAG underlay L3 peering.
+          # When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.
+          # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          mlag_peer_l3_ipv4_address: <str>
+
           # MLAG Peer Link (control link) SVI interface id.
           mlag_peer_vlan: <int; 1-4094; default=4094>
           mlag_peer_link_allowed_vlans: <str>
@@ -426,6 +469,11 @@
           # IPv4 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
           # Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
           mlag_peer_ipv4_pool: <str>
+
+          # IPv4 address without mask used for MLAG Peer Link (control link).
+          # When set, it takes precedence over `mlag_peer_ipv4_pool`.
+          # Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+          mlag_peer_ipv4_address: <str>
 
           # IPv6 address pool used for MLAG Peer Link (control link). IP is derived from the node id.
           # Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.

@@ -142,11 +142,15 @@ l3leaf:
           id: 4
           mgmt_ip: 192.168.200.108/24
           mac_address: '0c:1d:c0:1d:62:01'
+          mlag_peer_ipv4_address: 192.168.44.41
+          mlag_peer_l3_ipv4_address: 192.168.44.41
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet4, Ethernet4 ]
         - name: DC1-SVC3B
           id: 5
           mgmt_ip: 192.168.200.109/24
+          mlag_peer_ipv4_address: 192.168.44.42
+          mlag_peer_l3_ipv4_address: 192.168.44.42
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
     - group: DC1_BL1

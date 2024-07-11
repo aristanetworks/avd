@@ -754,6 +754,15 @@ $defs:
               Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
             type: str
             format: ipv4_cidr
+          mlag_peer_l3_ipv4_address:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              IPv4 address without mask used for MLAG underlay L3 peering.
+              When set, it takes precedence over `mlag_peer_l3_ipv4_pool`.
+              Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+            type: str
+            format: ipv4
           mlag_peer_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -788,6 +797,15 @@ $defs:
               Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
             type: str
             format: ipv4_cidr
+          mlag_peer_ipv4_address:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |-
+              IPv4 address without mask used for MLAG Peer Link (control link).
+              When set, it takes precedence over `mlag_peer_ipv4_pool`.
+              Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+            type: str
+            format: ipv4
           mlag_peer_ipv6_pool:
             documentation_options:
               table: node-type-l2-mlag-configuration
