@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from .tests import (
     AvdTestAPIHttpsSSL,
-    AvdTestAVT,
+    AvdTestAvtPath,
+    AvdTestAvtRole,
     AvdTestBGP,
     AvdTestHardware,
     AvdTestInbandReachability,
@@ -41,7 +42,8 @@ AVD_TEST_CLASSES = {
     AvdTestAPIHttpsSSL: {},
     AvdTestIPSecurity: {},
     AvdTestStun: {},
-    AvdTestAVT: {},
+    AvdTestAvtPath: {},
+    AvdTestAvtRole: {},
 }
 """
 A dict of all AVD eos_validate_state test classes with their equivalent legacy Ansible tags.

@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .avdtestavt import AvdTestAVT
+from .avdtestavt import AvdTestAvtPath, AvdTestAvtRole
 from .avdtestconnectivity import AvdTestInbandReachability, AvdTestLLDPTopology, AvdTestLoopback0Reachability, AvdTestP2PIPReachability
 from .avdtesthardware import AvdTestHardware
 from .avdtestinterfaces import AvdTestInterfacesState
@@ -26,5 +26,6 @@ __all__ = [
     "AvdTestAPIHttpsSSL",
     "AvdTestStun",
     "AvdTestIPSecurity",
-    "AvdTestAVT",
+    "AvdTestAvtPath",
+    "AvdTestAvtRole",
 ]
