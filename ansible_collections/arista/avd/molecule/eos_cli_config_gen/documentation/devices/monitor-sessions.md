@@ -85,7 +85,7 @@ interface Management1
 
 | Settings | Values |
 | -------- | ------ |
-| Encapsulation GRE Payload | monitor_sessions_default_encapsulation_gre.payload |
+| Encapsulation GRE Payload | full-packet |
 
 #### Monitor Sessions Device Configuration
 
