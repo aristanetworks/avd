@@ -17,9 +17,14 @@
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "radius_server.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "radius_server.hosts.[].host") | String | Required, Unique |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "radius_server.hosts.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "radius_server.hosts.[].tls") | Dictionary |  |  |  | When TLS is configured, `key` is ignored.. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "radius_server.hosts.[].tls.enabled") | Boolean |  |  |  | Enable TLS for radius-server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "radius_server.hosts.[].tls.ssl_profile") | String |  |  |  | Name of TLS profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "radius_server.hosts.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. EOS default is 2083. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "radius_server.hosts.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "radius_server.hosts.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.hosts.[].key") | String |  |  |  | Encrypted key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.hosts.[].key") | String |  |  |  | Encrypted key - only type 7 supported.<br>When TLS is configured, `key` is ignored. |
+    | [<samp>&nbsp;&nbsp;tls_ssl_profile</samp>](## "radius_server.tls_ssl_profile") | String |  |  |  | Name of global TLS profile. |
 
 === "YAML"
 
@@ -42,9 +47,25 @@
           # Host IP address or name.
         - host: <str; required; unique>
           vrf: <str>
+
+          # When TLS is configured, `key` is ignored..
+          tls:
+
+            # Enable TLS for radius-server.
+            enabled: <bool>
+
+            # Name of TLS profile.
+            ssl_profile: <str>
+
+            # TCP Port used for TLS. EOS default is 2083.
+            port: <int; 0-65535>
           timeout: <int; 1-1000>
           retransmit: <int; 0-100>
 
-          # Encrypted key.
+          # Encrypted key - only type 7 supported.
+          # When TLS is configured, `key` is ignored.
           key: <str>
+
+      # Name of global TLS profile.
+      tls_ssl_profile: <str>
     ```
