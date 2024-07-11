@@ -35045,6 +35045,34 @@
                           "type": "string",
                           "title": "VRF"
                         },
+                        "tls": {
+                          "type": "object",
+                          "description": "When TLS is configured, `key` is ignored..",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "Enable TLS for radius-server.",
+                              "title": "Enabled"
+                            },
+                            "ssl_profile": {
+                              "type": "string",
+                              "description": "Name of TLS profile.",
+                              "title": "SSL Profile"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 65535,
+                              "description": "TCP Port used for TLS. EOS default is 2083.",
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "TLS"
+                        },
                         "timeout": {
                           "type": "integer",
                           "minimum": 1,
@@ -35059,7 +35087,7 @@
                         },
                         "key": {
                           "type": "string",
-                          "description": "Encrypted key.",
+                          "description": "Encrypted key - only type 7 supported.\nWhen TLS is configured, `key` is ignored.",
                           "title": "Key"
                         }
                       },
@@ -35072,6 +35100,11 @@
                       ]
                     },
                     "title": "Hosts"
+                  },
+                  "tls_ssl_profile": {
+                    "type": "string",
+                    "description": "Name of global TLS profile.",
+                    "title": "TLS SSL Profile"
                   }
                 },
                 "additionalProperties": false,
