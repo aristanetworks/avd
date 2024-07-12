@@ -129,7 +129,7 @@ class VlanInterfacesMixin(UtilsMixin):
                 vlan_interface_config["pim"] = {"ipv4": pim_config_ipv4}
 
         # Only set VARPv6 if ipv6_address is set
-        if vlan_interface_config["ipv6_address"] is not None:
+        if vlan_interface_config["ipv6_address"] is not None or vlan_interface_config["ipv6_enable"]:
             vlan_interface_config["ipv6_virtual_router_addresses"] = svi.get("ipv6_virtual_router_addresses")
             _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_virtual_router_addresses"])
 
