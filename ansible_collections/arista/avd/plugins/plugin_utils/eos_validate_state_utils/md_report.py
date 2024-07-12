@@ -129,7 +129,7 @@ class MDReportBase(ABC):
         heading_name = self.generate_heading_name()
         heading = "#" * heading_level + " " + heading_name
         self.mdfile.write(f"{heading}\n\n")
-    
+
     def safe_markdown(self, text: str | None) -> str:
         """Escape markdown characters in the text to prevent markdown rendering issues.
 
