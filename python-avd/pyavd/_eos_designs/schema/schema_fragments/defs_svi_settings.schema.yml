@@ -204,7 +204,7 @@ $defs:
               - 3
           fast_leave:
             type: bool
-            description: Enable IGMP snooping fast-leave feature on specified VLANs.
+            description: Enable IGMP snooping fast-leave feature.
       vxlan:
         type: bool
         default: true
