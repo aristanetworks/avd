@@ -138,10 +138,17 @@ port_channel_interfaces:
           dest: 01:00:00:00:00:00
           src: 01:23:45:67:89:ab
         encapsulation:
-          gre_strip: true
           gre:
-            destination: 1.1.1.1
-            protocol: "0x0000"
+            - strip: true
+            - strip: true
+              destination: 1.1.1.1
+              source: 1.1.1.2
+              protocol: "0x0000"
+            - strip: true
+              protocol: "0x0000"
+            - strip: true
+              destination: 2.1.1.2
+              protocol: "0x0000"
       tool:
         mpls_pop_all: true
         encapsulation:
@@ -158,6 +165,7 @@ port_channel_interfaces:
           - group1
           - group2
           - group3
+        dot1q_remove_outer_vlan_tag: 1-2
         dzgre_preserve: true
 
   - name: Port-Channel100.101

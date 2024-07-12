@@ -425,20 +425,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.tap.truncation.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "ethernet_interfaces.[].switchport.tap.truncation.size") | Integer |  |  | Min: 100<br>Max: 9236 | Ingress packet truncation size in bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "ethernet_interfaces.[].switchport.tap.mac_address") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src</samp>](## "ethernet_interfaces.[].switchport.tap.mac_address.src") | String |  |  |  | MAC address for the source. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest</samp>](## "ethernet_interfaces.[].switchport.tap.mac_address.dest") | String | Required |  |  | MAC address for the destination. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src</samp>](## "ethernet_interfaces.[].switchport.tap.mac_address.src") | String |  |  | Pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$ | MAC address for the source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest</samp>](## "ethernet_interfaces.[].switchport.tap.mac_address.dest") | String | Required |  | Pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$ | MAC address for the destination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan_strip</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.vxlan_strip") | Boolean |  |  |  | Strip VXLAN encapsulation header. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre_strip</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre_strip") | Boolean | Required |  |  | Strip GRE encapsulation header. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.destination") | String |  |  |  | Destination IP address of tunnel packets. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.source") | String |  |  |  | Source IP address of tunnel packets. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.protocol") | String |  |  |  | Protocol type in GRE header.<br>Protocol range: 0x0000-0xFFFF |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan_strip</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.vxlan_strip") | Boolean |  |  |  | Strip VXLAN encapsulation header.<br>`encapsulation.vxlan_strip` and `mpls_pop_all` are mutually exclusive.<br>`mpls_pop_all` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;strip</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.[].strip") | Boolean | Required |  |  | Strip GRE encapsulation header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.[].destination") | String |  |  |  | Destination IP address of tunnel packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.[].source") | String |  |  |  | Source IP address of tunnel packets. Applied only when destination is defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ethernet_interfaces.[].switchport.tap.encapsulation.gre.[].protocol") | String |  |  |  | Protocol type in GRE header.<br>Protocol range: 0x0000-0xFFFF |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tool</samp>](## "ethernet_interfaces.[].switchport.tool") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_pop_all</samp>](## "ethernet_interfaces.[].switchport.tool.mpls_pop_all") | Boolean |  |  |  | Pop all MPLS labels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "ethernet_interfaces.[].switchport.tool.encapsulation") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1br_strip</samp>](## "ethernet_interfaces.[].switchport.tool.encapsulation.dot1br_strip") | Boolean |  |  |  | Remove a 802.1 BR tag in packet header. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vn_tag_strip</samp>](## "ethernet_interfaces.[].switchport.tool.encapsulation.vn_tag_strip") | Boolean |  |  |  | Remove a VN-tag in packet header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1br_strip</samp>](## "ethernet_interfaces.[].switchport.tool.encapsulation.dot1br_strip") | Boolean |  |  |  | Remove a 802.1 BR tag in packet header. 'mpls_pop_all' takes precedence over 'dot1br_strip' in EOS. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vn_tag_strip</samp>](## "ethernet_interfaces.[].switchport.tool.encapsulation.vn_tag_strip") | Boolean |  |  |  | Remove a VN-tag in packet header. 'mpls_pop_all' takes precedence over 'vn_tag_strip' in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "ethernet_interfaces.[].switchport.tool.allowed_vlan") | String |  |  |  | VLAN ID or range of VLAN IDs within range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity</samp>](## "ethernet_interfaces.[].switchport.tool.identity") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "ethernet_interfaces.[].switchport.tool.identity.tag") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>qinq</code> |  |
@@ -449,6 +449,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "ethernet_interfaces.[].switchport.tool.truncation.size") | Integer |  |  | Valid Values:<br>- <code>160</code> | Egress packet truncation size in bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "ethernet_interfaces.[].switchport.tool.groups") | List, items: String |  |  |  | Tool groups for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].switchport.tool.groups.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_remove_outer_vlan_tag</samp>](## "ethernet_interfaces.[].switchport.tool.dot1q_remove_outer_vlan_tag") | String |  |  |  | Indices of vlan tags to be removed.<br>Range: 1-2 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dzgre_preserve</samp>](## "ethernet_interfaces.[].switchport.tool.dzgre_preserve") | Boolean |  |  |  | Preserve the DzGRE header. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
 
@@ -1244,31 +1245,33 @@
             encapsulation:
 
               # Strip VXLAN encapsulation header.
+              # `encapsulation.vxlan_strip` and `mpls_pop_all` are mutually exclusive.
+              # `mpls_pop_all` takes precedence.
               vxlan_strip: <bool>
-
-              # Strip GRE encapsulation header.
-              gre_strip: <bool; required>
               gre:
 
-                # Destination IP address of tunnel packets.
-                destination: <str>
+                  # Strip GRE encapsulation header.
+                - strip: <bool; required>
 
-                # Source IP address of tunnel packets.
-                source: <str>
+                  # Destination IP address of tunnel packets.
+                  destination: <str>
 
-                # Protocol type in GRE header.
-                # Protocol range: 0x0000-0xFFFF
-                protocol: <str>
+                  # Source IP address of tunnel packets. Applied only when destination is defined.
+                  source: <str>
+
+                  # Protocol type in GRE header.
+                  # Protocol range: 0x0000-0xFFFF
+                  protocol: <str>
           tool:
 
             # Pop all MPLS labels.
             mpls_pop_all: <bool>
             encapsulation:
 
-              # Remove a 802.1 BR tag in packet header.
+              # Remove a 802.1 BR tag in packet header. 'mpls_pop_all' takes precedence over 'dot1br_strip' in EOS.
               dot1br_strip: <bool>
 
-              # Remove a VN-tag in packet header.
+              # Remove a VN-tag in packet header. 'mpls_pop_all' takes precedence over 'vn_tag_strip' in EOS.
               vn_tag_strip: <bool>
 
             # VLAN ID or range of VLAN IDs within range 1-4094.
@@ -1286,6 +1289,10 @@
             # Tool groups for the interface.
             groups:
               - <str>
+
+            # Indices of vlan tags to be removed.
+            # Range: 1-2
+            dot1q_remove_outer_vlan_tag: <str>
 
             # Preserve the DzGRE header.
             dzgre_preserve: <bool>

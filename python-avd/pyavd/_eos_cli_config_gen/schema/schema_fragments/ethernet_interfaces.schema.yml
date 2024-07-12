@@ -1496,35 +1496,42 @@ keys:
                   keys:
                     src:
                       type: str
+                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
                       description: MAC address for the source.
                     dest:
                       type: str
                       required: true
+                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
                   keys:
                     vxlan_strip:
                       type: bool
-                      description: Strip VXLAN encapsulation header.
-                    gre_strip:
-                      type: bool
-                      required: true
-                      description: Strip GRE encapsulation header.
+                      description: |-
+                        Strip VXLAN encapsulation header.
+                        `encapsulation.vxlan_strip` and `mpls_pop_all` are mutually exclusive.
+                        `mpls_pop_all` takes precedence.
                     gre:
-                      type: dict
-                      keys:
-                        destination:
-                          description: Destination IP address of tunnel packets.
-                          type: str
-                        source:
-                          description: Source IP address of tunnel packets.
-                          type: str
-                        protocol:
-                          type: str
-                          description: |-
-                            Protocol type in GRE header.
-                            Protocol range: 0x0000-0xFFFF
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          strip:
+                            type: bool
+                            required: true
+                            description: Strip GRE encapsulation header.
+                          destination:
+                            description: Destination IP address of tunnel packets.
+                            type: str
+                          source:
+                            description: Source IP address of tunnel packets. Applied only when destination is defined.
+                            type: str
+                          protocol:
+                            type: str
+                            description: |-
+                              Protocol type in GRE header.
+                              Protocol range: 0x0000-0xFFFF
             tool:
               type: dict
               keys:
@@ -1536,10 +1543,10 @@ keys:
                   keys:
                     dot1br_strip:
                       type: bool
-                      description: Remove a 802.1 BR tag in packet header.
+                      description: Remove a 802.1 BR tag in packet header. 'mpls_pop_all' takes precedence over 'dot1br_strip' in EOS.
                     vn_tag_strip:
                       type: bool
-                      description: Remove a VN-tag in packet header.
+                      description: Remove a VN-tag in packet header. 'mpls_pop_all' takes precedence over 'vn_tag_strip' in EOS.
                 allowed_vlan:
                   type: str
                   convert_types:
@@ -1581,6 +1588,13 @@ keys:
                   items:
                     type: str
                   description: Tool groups for the interface.
+                dot1q_remove_outer_vlan_tag:
+                  type: str
+                  convert_types:
+                    - int
+                  description: |-
+                    Indices of vlan tags to be removed.
+                    Range: 1-2
                 dzgre_preserve:
                   type: bool
                   description: Preserve the DzGRE header.

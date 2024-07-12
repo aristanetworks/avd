@@ -365,9 +365,11 @@ interface Ethernet1
    switchport tap native vlan 10
    switchport tap identity 3 inner 5
    switchport tap mac-address dest 01:00:00:00:00:00 src 01:23:45:67:89:ab
-   switchport tap encapsulation vxlan strip
+   switchport tap mpls pop all
    switchport tap encapsulation gre strip
    switchport tap encapsulation gre destination 1.1.1.1 source 1.1.1.2 protocol 0x0000 strip
+   switchport tap encapsulation gre protocol 0x0000 strip
+   switchport tap encapsulation gre destination 2.1.1.2 protocol 0x0000 strip
    switchport tool mpls pop all
    switchport tool encapsulation vn-tag strip
    switchport tool encapsulation dot1br strip
@@ -382,6 +384,7 @@ interface Ethernet1
    switchport tap default interface ethernet4
    switchport tap default interface port-channel10
    switchport tool group set group1 group2 group3
+   switchport tool dot1q remove outer 1
    switchport tool dzgre preserve
    ip address 172.31.255.1/31
    ip verify unicast source reachable-via rx

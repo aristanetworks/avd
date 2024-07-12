@@ -5831,11 +5831,13 @@
                     "properties": {
                       "src": {
                         "type": "string",
+                        "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
                         "description": "MAC address for the source.",
                         "title": "Src"
                       },
                       "dest": {
                         "type": "string",
+                        "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
                         "description": "MAC address for the destination.",
                         "title": "Dest"
                       }
@@ -5854,43 +5856,46 @@
                     "properties": {
                       "vxlan_strip": {
                         "type": "boolean",
-                        "description": "Strip VXLAN encapsulation header.",
+                        "description": "Strip VXLAN encapsulation header.\n`encapsulation.vxlan_strip` and `mpls_pop_all` are mutually exclusive.\n`mpls_pop_all` takes precedence.",
                         "title": "VxLAN Strip"
                       },
-                      "gre_strip": {
-                        "type": "boolean",
-                        "description": "Strip GRE encapsulation header.",
-                        "title": "Gre Strip"
-                      },
                       "gre": {
-                        "type": "object",
-                        "properties": {
-                          "destination": {
-                            "description": "Destination IP address of tunnel packets.",
-                            "type": "string",
-                            "title": "Destination"
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "strip": {
+                              "type": "boolean",
+                              "description": "Strip GRE encapsulation header.",
+                              "title": "Strip"
+                            },
+                            "destination": {
+                              "description": "Destination IP address of tunnel packets.",
+                              "type": "string",
+                              "title": "Destination"
+                            },
+                            "source": {
+                              "description": "Source IP address of tunnel packets. Applied only when destination is defined.",
+                              "type": "string",
+                              "title": "Source"
+                            },
+                            "protocol": {
+                              "type": "string",
+                              "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                              "title": "Protocol"
+                            }
                           },
-                          "source": {
-                            "description": "Source IP address of tunnel packets.",
-                            "type": "string",
-                            "title": "Source"
-                          },
-                          "protocol": {
-                            "type": "string",
-                            "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
-                            "title": "Protocol"
+                          "required": [
+                            "strip"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
                           }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
                         },
                         "title": "Gre"
                       }
                     },
-                    "required": [
-                      "gre_strip"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
@@ -5917,12 +5922,12 @@
                     "properties": {
                       "dot1br_strip": {
                         "type": "boolean",
-                        "description": "Remove a 802.1 BR tag in packet header.",
+                        "description": "Remove a 802.1 BR tag in packet header. 'mpls_pop_all' takes precedence over 'dot1br_strip' in EOS.",
                         "title": "dot1br Strip"
                       },
                       "vn_tag_strip": {
                         "type": "boolean",
-                        "description": "Remove a VN-tag in packet header.",
+                        "description": "Remove a VN-tag in packet header. 'mpls_pop_all' takes precedence over 'vn_tag_strip' in EOS.",
                         "title": "VN Tag Strip"
                       }
                     },
@@ -6003,6 +6008,11 @@
                     },
                     "description": "Tool groups for the interface.",
                     "title": "Groups"
+                  },
+                  "dot1q_remove_outer_vlan_tag": {
+                    "type": "string",
+                    "description": "Indices of vlan tags to be removed.\nRange: 1-2",
+                    "title": "Dot1Q Remove Outer VLAN Tag"
                   },
                   "dzgre_preserve": {
                     "type": "boolean",
@@ -16219,11 +16229,13 @@
                     "properties": {
                       "src": {
                         "type": "string",
+                        "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
                         "description": "MAC address for the source.",
                         "title": "Src"
                       },
                       "dest": {
                         "type": "string",
+                        "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
                         "description": "MAC address for the destination.",
                         "title": "Dest"
                       }
@@ -16242,50 +16254,53 @@
                     "properties": {
                       "vxlan_strip": {
                         "type": "boolean",
-                        "description": "Strip VXLAN encapsulation header.",
+                        "description": "Strip VXLAN encapsulation header.\n`encapsulation.vxlan_strip` and `mpls_pop_all` are mutually exclusive.\n`mpls_pop_all` takes precedence.",
                         "title": "VxLAN Strip"
                       },
-                      "gre_strip": {
-                        "type": "boolean",
-                        "description": "Strip GRE encapsulation header.",
-                        "title": "Gre Strip"
-                      },
                       "gre": {
-                        "type": "object",
-                        "properties": {
-                          "destination": {
-                            "description": "Destination IP address of tunnel packets.",
-                            "type": "string",
-                            "title": "Destination"
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "strip": {
+                              "type": "boolean",
+                              "description": "Strip GRE encapsulation header.",
+                              "title": "Strip"
+                            },
+                            "destination": {
+                              "description": "Destination IP address of tunnel packets.",
+                              "type": "string",
+                              "title": "Destination"
+                            },
+                            "source": {
+                              "description": "Source IP address of tunnel packets. Applied only when destination is defined.",
+                              "type": "string",
+                              "title": "Source"
+                            },
+                            "protocol": {
+                              "type": "string",
+                              "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                              "title": "Protocol"
+                            },
+                            "feature_header_length": {
+                              "description": "Feature header length in bytes.",
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 16,
+                              "title": "Feature Header Length"
+                            }
                           },
-                          "source": {
-                            "description": "Source IP address of tunnel packets.",
-                            "type": "string",
-                            "title": "Source"
-                          },
-                          "protocol": {
-                            "type": "string",
-                            "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
-                            "title": "Protocol"
-                          },
-                          "feature_header_length": {
-                            "description": "Feature header length in bytes.",
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": 16,
-                            "title": "Feature Header Length"
+                          "required": [
+                            "strip"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
                           }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
                         },
                         "title": "Gre"
                       }
                     },
-                    "required": [
-                      "gre_strip"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
@@ -16312,12 +16327,12 @@
                     "properties": {
                       "dot1br_strip": {
                         "type": "boolean",
-                        "description": "Remove a 802.1 BR tag in packet header.",
+                        "description": "Remove a 802.1 BR tag in packet header. 'mpls_pop_all' takes precedence over 'dot1br_strip' in EOS.",
                         "title": "dot1br Strip"
                       },
                       "vn_tag_strip": {
                         "type": "boolean",
-                        "description": "Remove a VN-tag in packet header.",
+                        "description": "Remove a VN-tag in packet header. 'mpls_pop_all' takes precedence over 'vn_tag_strip' in EOS.",
                         "title": "VN Tag Strip"
                       }
                     },
@@ -16398,6 +16413,11 @@
                     },
                     "description": "Tool groups for the interface.",
                     "title": "Groups"
+                  },
+                  "dot1q_remove_outer_vlan_tag": {
+                    "type": "string",
+                    "description": "Indices of vlan tags to be removed.\nRange: 1-2",
+                    "title": "Dot1Q Remove Outer VLAN Tag"
                   },
                   "dzgre_preserve": {
                     "type": "boolean",
