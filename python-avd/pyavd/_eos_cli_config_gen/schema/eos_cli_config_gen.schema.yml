@@ -3563,6 +3563,8 @@ keys:
               keys:
                 allowed_vlan:
                   type: str
+                  convert_types:
+                  - int
                   description: 'VLAN ID or range(s) of VLAN IDs.
 
                     Warning: This should not be combined with `ethernet_interfaces[].mode
@@ -3607,7 +3609,7 @@ keys:
                     frames.
                 vlan_tag:
                   type: str
-                  description: Allow/disallow VLAN tagged Frames.
+                  description: Allow/disallow VLAN tagged frames.
                   valid_values:
                   - disallowed
                   - required
@@ -3680,16 +3682,22 @@ keys:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: VLAN ID or range of VLAN IDs to map from.
                       to:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: VLAN ID to map to.
                       dot1q_tunnel:
                         type: bool
                       inner_from:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: Inner VLAN ID to map from.
@@ -3703,12 +3711,16 @@ keys:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: VLAN ID or range of VLAN IDs to map from.
                         required: true
                       to:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: VLAN ID to map to.
                       dot1q_tunnel:
                         type: dict
@@ -3719,9 +3731,13 @@ keys:
                             type: int
                             convert_types:
                             - str
+                            min: 1
+                            max: 4094
                             description: VLAN ID or range(s) of VLAN IDs to map to.
                       inner_to:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: Inner VLAN ID to map to.
@@ -3735,12 +3751,16 @@ keys:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: VLAN ID or range of VLAN IDs to map from.
                         required: true
                       to:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: VLAN ID to map to.
                         required: true
                       dot1q_tunnel:
@@ -3749,10 +3769,14 @@ keys:
                         type: int
                         convert_types:
                         - str
+                        min: 1
+                        max: 4094
                         description: Inner VLAN ID to map from.
                       network:
                         type: bool
-                        description: Use network-side VLAN ID.
+                        description: 'Enable use of network-side VLAN ID.
+
+                          This setting can be enabled only when inner_from is defined.'
             vlan_forwarding_accept_all:
               type: bool
             backup_link:
@@ -3762,19 +3786,20 @@ keys:
                   type: str
                   description: Backup interface. Example - Ethernet4, Vlan10 etc.
                 prefer_vlan:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
-                  min: 1
-                  max: 4094
-                  description: VLANs to carry on the backup interface.
+                  - int
+                  description: VLANs to carry on the backup interface (1-4094).
             backup:
               type: dict
               description: The `backup_link` is required for this setting.
               keys:
                 dest_macaddr:
                   type: str
+                  pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
                   description: 'Destination MAC address for MAC move updates.
+
+                    The mac address should be multicast or broadcast.
 
                     Example:  01:00:00:00:00:00'
                 initial_mac_move_delay:
@@ -9855,7 +9880,9 @@ keys:
               keys:
                 allowed_vlan:
                   type: str
-                  description: 'VLAN ID or range(s) of VLAN IDs.
+                  convert_types:
+                  - int
+                  description: 'VLAN ID or range(s) of VLAN IDs (1-4094).
 
                     Warning: This should not be combined with `port_channel_interfaces.mode
                     = trunk`.'
@@ -9969,11 +9996,15 @@ keys:
                         description: Drop the packets that do not match any VLAN mapping.
                       from:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: VLAN ID or range of VLAN IDs to map from.
                       to:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: VLAN ID to map to.
@@ -9981,6 +10012,8 @@ keys:
                         type: bool
                       inner_from:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: Inner VLAN ID to map from.
@@ -9992,12 +10025,16 @@ keys:
                     keys:
                       from:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: VLAN ID or range of VLAN IDs to map from.
                         required: true
                       to:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: VLAN ID to map to.
@@ -10008,11 +10045,15 @@ keys:
                             type: bool
                           to:
                             type: int
+                            min: 1
+                            max: 4094
                             convert_types:
                             - str
                             description: VLAN ID or range(s) of VLAN IDs to map to.
                       inner_to:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: Inner VLAN ID to map to.
@@ -10024,12 +10065,16 @@ keys:
                     keys:
                       from:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: VLAN ID or range of VLAN IDs to map from.
                         required: true
                       to:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: VLAN ID to map to.
@@ -10038,12 +10083,16 @@ keys:
                         type: bool
                       inner_from:
                         type: int
+                        min: 1
+                        max: 4094
                         convert_types:
                         - str
                         description: Inner VLAN ID to map from.
                       network:
                         type: bool
-                        description: Use network-side VLAN ID.
+                        description: 'Enable use of network-side VLAN ID.
+
+                          This setting can be enabled only when inner_from is defined.'
             vlan_forwarding_accept_all:
               type: bool
             backup_link:
@@ -10054,19 +10103,20 @@ keys:
                   required: true
                   description: Backup interface. Example - Ethernet4, Vlan10 etc.
                 prefer_vlan:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
-                  min: 1
-                  max: 4094
-                  description: VLANs to carry on the backup interface.
+                  - int
+                  description: VLANs to carry on the backup interface (1-4094).
             backup:
               type: dict
               description: The `backup_link` is required for this setting.
               keys:
                 dest_macaddr:
                   type: str
+                  pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
                   description: 'Destination MAC address for MAC move updates.
+
+                    The mac address should be multicast or broadcast.
 
                     Example:  01:00:00:00:00:00'
                 initial_mac_move_delay:

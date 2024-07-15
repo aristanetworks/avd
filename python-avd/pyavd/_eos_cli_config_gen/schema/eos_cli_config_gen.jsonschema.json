@@ -5946,7 +5946,7 @@
                   },
                   "vlan_tag": {
                     "type": "string",
-                    "description": "Allow/disallow VLAN tagged Frames.",
+                    "description": "Allow/disallow VLAN tagged frames.",
                     "enum": [
                       "disallowed",
                       "required"
@@ -6037,11 +6037,15 @@
                         },
                         "from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID or range of VLAN IDs to map from.",
                           "title": "From"
                         },
                         "to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID to map to.",
                           "title": "To"
                         },
@@ -6051,6 +6055,8 @@
                         },
                         "inner_from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
                           "title": "Inner From"
                         }
@@ -6070,11 +6076,15 @@
                       "properties": {
                         "from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID or range of VLAN IDs to map from.",
                           "title": "From"
                         },
                         "to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID to map to.",
                           "title": "To"
                         },
@@ -6087,6 +6097,8 @@
                             },
                             "to": {
                               "type": "integer",
+                              "minimum": 1,
+                              "maximum": 4094,
                               "description": "VLAN ID or range(s) of VLAN IDs to map to.",
                               "title": "To"
                             }
@@ -6099,6 +6111,8 @@
                         },
                         "inner_to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "Inner VLAN ID to map to.",
                           "title": "Inner To"
                         }
@@ -6121,11 +6135,15 @@
                       "properties": {
                         "from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID or range of VLAN IDs to map from.",
                           "title": "From"
                         },
                         "to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID to map to.",
                           "title": "To"
                         },
@@ -6135,12 +6153,14 @@
                         },
                         "inner_from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
                           "title": "Inner From"
                         },
                         "network": {
                           "type": "boolean",
-                          "description": "Use network-side VLAN ID.",
+                          "description": "Enable use of network-side VLAN ID.\nThis setting can be enabled only when inner_from is defined.",
                           "title": "Network"
                         }
                       },
@@ -6175,10 +6195,8 @@
                     "title": "Interface"
                   },
                   "prefer_vlan": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 4094,
-                    "description": "VLANs to carry on the backup interface.",
+                    "type": "string",
+                    "description": "VLANs to carry on the backup interface (1-4094).",
                     "title": "Prefer VLAN"
                   }
                 },
@@ -6194,7 +6212,8 @@
                 "properties": {
                   "dest_macaddr": {
                     "type": "string",
-                    "description": "Destination MAC address for MAC move updates.\nExample:  01:00:00:00:00:00",
+                    "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
+                    "description": "Destination MAC address for MAC move updates.\nThe mac address should be multicast or broadcast.\nExample:  01:00:00:00:00:00",
                     "title": "Dest Macaddr"
                   },
                   "initial_mac_move_delay": {
@@ -16656,7 +16675,7 @@
                 "properties": {
                   "allowed_vlan": {
                     "type": "string",
-                    "description": "VLAN ID or range(s) of VLAN IDs.\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
+                    "description": "VLAN ID or range(s) of VLAN IDs (1-4094).\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
                     "title": "Allowed VLAN"
                   },
                   "native_vlan": {
@@ -16793,11 +16812,15 @@
                         },
                         "from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID or range of VLAN IDs to map from.",
                           "title": "From"
                         },
                         "to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID to map to.",
                           "title": "To"
                         },
@@ -16807,6 +16830,8 @@
                         },
                         "inner_from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
                           "title": "Inner From"
                         }
@@ -16826,11 +16851,15 @@
                       "properties": {
                         "from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID or range of VLAN IDs to map from.",
                           "title": "From"
                         },
                         "to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID to map to.",
                           "title": "To"
                         },
@@ -16843,6 +16872,8 @@
                             },
                             "to": {
                               "type": "integer",
+                              "minimum": 1,
+                              "maximum": 4094,
                               "description": "VLAN ID or range(s) of VLAN IDs to map to.",
                               "title": "To"
                             }
@@ -16855,6 +16886,8 @@
                         },
                         "inner_to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "Inner VLAN ID to map to.",
                           "title": "Inner To"
                         }
@@ -16877,11 +16910,15 @@
                       "properties": {
                         "from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID or range of VLAN IDs to map from.",
                           "title": "From"
                         },
                         "to": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "VLAN ID to map to.",
                           "title": "To"
                         },
@@ -16891,12 +16928,14 @@
                         },
                         "inner_from": {
                           "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
                           "title": "Inner From"
                         },
                         "network": {
                           "type": "boolean",
-                          "description": "Use network-side VLAN ID.",
+                          "description": "Enable use of network-side VLAN ID.\nThis setting can be enabled only when inner_from is defined.",
                           "title": "Network"
                         }
                       },
@@ -16931,10 +16970,8 @@
                     "title": "Interface"
                   },
                   "prefer_vlan": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 4094,
-                    "description": "VLANs to carry on the backup interface.",
+                    "type": "string",
+                    "description": "VLANs to carry on the backup interface (1-4094).",
                     "title": "Prefer VLAN"
                   }
                 },
@@ -16953,7 +16990,8 @@
                 "properties": {
                   "dest_macaddr": {
                     "type": "string",
-                    "description": "Destination MAC address for MAC move updates.\nExample:  01:00:00:00:00:00",
+                    "pattern": "^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
+                    "description": "Destination MAC address for MAC move updates.\nThe mac address should be multicast or broadcast.\nExample:  01:00:00:00:00:00",
                     "title": "Dest Macaddr"
                   },
                   "initial_mac_move_delay": {
