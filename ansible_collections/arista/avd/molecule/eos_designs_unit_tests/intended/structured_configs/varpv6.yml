@@ -135,7 +135,7 @@ vlans:
   name: VARPv6_configured_1
   tenant: TENANT1
 - id: 200
-  name: VARPv6_not_configured_2
+  name: VARPv6_not_configured_1
   tenant: TENANT1
 - id: 300
   name: VARPv6_configured_2
@@ -157,7 +157,7 @@ vlan_interfaces:
   vrf: VRF1
 - name: Vlan200
   tenant: TENANT1
-  description: VARPv6_not_configured_2
+  description: VARPv6_not_configured_1
   shutdown: false
   vrf: VRF1
 - name: Vlan300

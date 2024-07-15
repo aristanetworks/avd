@@ -1,9 +1,3 @@
-# Testing duplicate VRF definitions according to the following rules documented in the schema.
-# Also see eos_designs_negative_unit_tests for testing of the raised errors.
-
-# It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
-# are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
-
 type: l3leaf
 l3leaf:
   defaults:
@@ -22,6 +16,7 @@ tenants:
   - name: TENANT1
     mac_vrf_vni_base: 10000
     vrfs:
+      # VARPv6 is configured if ipv6_address and ipv6_virtual_router_addresses is set
       - name: VRF1
         vrf_id: 1
         svis:
@@ -33,17 +28,20 @@ tenants:
             nodes:
               - node: varpv6
                 ipv6_address: 2000:1000::2/64
+          # VARPv6 is not configured if ipv6_address and ipv6_enable missing
           - id: 200
             enabled: true
-            name: VARPv6_not_configured_2
+            name: VARPv6_not_configured_1
             ipv6_virtual_router_addresses:
               - fe80::1
+          # VARPv6 is configured if ipv6_enable and ipv6_virtual_router_addresses is set
           - id: 300
             enabled: true
             name: VARPv6_configured_2
             ipv6_enable: true
             ipv6_virtual_router_addresses:
               - fe80::1
+          # VARPv6 is not configured if ipv6_enable is set to false
           - id: 400
             enabled: true
             name: VARPv6_not_configured_2
