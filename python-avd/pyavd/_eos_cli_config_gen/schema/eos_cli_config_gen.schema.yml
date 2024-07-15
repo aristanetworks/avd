@@ -10256,6 +10256,23 @@ keys:
               type: str
               convert_types:
               - int
+            tls:
+              type: dict
+              description: When TLS is configured, `key` is ignored..
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable TLS for radius-server.
+                ssl_profile:
+                  type: str
+                  description: Name of TLS profile.
+                port:
+                  type: int
+                  min: 0
+                  max: 65535
+                  convert_types:
+                  - str
+                  description: TCP Port used for TLS. EOS default is 2083.
             timeout:
               type: int
               min: 1
@@ -10270,7 +10287,12 @@ keys:
               - str
             key:
               type: str
-              description: Encrypted key.
+              description: 'Encrypted key - only type 7 supported.
+
+                When TLS is configured, `key` is ignored.'
+      tls_ssl_profile:
+        type: str
+        description: Name of global TLS profile.
   radius_servers:
     deprecation:
       warning: true
