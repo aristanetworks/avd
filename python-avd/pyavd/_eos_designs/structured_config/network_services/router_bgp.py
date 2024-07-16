@@ -165,11 +165,12 @@ class RouterBgpMixin(UtilsMixin):
                     # The called function in-place updates the bgp_vrf dict.
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
 
+                bgp_vrf_redistribute_connected = get(vrf, "redistribute_connected", default=True)
                 if vrf_name != "default":
                     # Non-default VRF
                     bgp_vrf |= {
                         "router_id": self.shared_utils.router_id,
-                        "redistribute_routes": [{"source_protocol": "connected"}],
+                        "redistribute_routes": [{"source_protocol": "connected"}] if bgp_vrf_redistribute_connected else [],
                     }
                     # Redistribution of static routes for VRF default are handled elsewhere
                     # since there is a choice between redistributing to underlay or overlay.
@@ -318,7 +319,8 @@ class RouterBgpMixin(UtilsMixin):
     def _update_router_bgp_vrf_mlag_neighbor_cfg(self: AvdStructuredConfigNetworkServices, bgp_vrf: dict, vrf: dict, tenant: dict, vlan_id: int) -> None:
         """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
         if not self._mlag_ibgp_peering_redistribute(vrf, tenant):
-            bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
+            if len(bgp_vrf["redistribute_routes"]) > 0:
+                bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
 
         if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
             interface_name = f"Vlan{vlan_id}"

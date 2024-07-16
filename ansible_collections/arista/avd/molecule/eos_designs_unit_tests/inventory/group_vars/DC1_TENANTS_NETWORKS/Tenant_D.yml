@@ -6,6 +6,7 @@ tenant_d:
         vrf_vni: 40
         enable_mlag_ibgp_peering_vrfs: true
         mlag_ibgp_peering_vlan: 2
+        redistribute_connected: false
         svis:
           - id: 410
             name: Tenant_D_v6_OP_Zone_1
