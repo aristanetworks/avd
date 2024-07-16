@@ -246,9 +246,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "port_channel_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "port_channel_interfaces.[].switchport") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap</samp>](## "port_channel_interfaces.[].switchport.tap") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "port_channel_interfaces.[].switchport.tap.allowed_vlan") | String |  |  |  | VLAN ID or range of VLAN IDs within range 1-4094. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "port_channel_interfaces.[].switchport.tap.default") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap</samp>](## "port_channel_interfaces.[].switchport.tap") | Dictionary |  |  |  | In tap mode, the interface operates as a tap port.<br>Tap ports receive traffic for replication on one or more tool ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "port_channel_interfaces.[].switchport.tap.allowed_vlan") | String |  |  |  | VLAN ID or range(s) of VLAN IDs within range 1-4094. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "port_channel_interfaces.[].switchport.tap.default") | Dictionary |  |  |  | Default tap destination config. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "port_channel_interfaces.[].switchport.tap.default.groups") | List, items: String |  |  |  | Tap group names for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.tap.default.groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "port_channel_interfaces.[].switchport.tap.default.interfaces") | List, items: String |  |  |  | Interfaces like -  Ethernet, InternalRecirc, Port-Channel, Recirc-Channel. |
@@ -274,7 +274,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.[].source") | String |  |  |  | Source IP address of tunnel packets. Applied only when destination is defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.[].protocol") | String |  |  |  | Protocol type in GRE header.<br>Protocol range: 0x0000-0xFFFF |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feature_header_length</samp>](## "port_channel_interfaces.[].switchport.tap.encapsulation.gre.[].feature_header_length") | Integer |  |  | Min: 1<br>Max: 16 | Feature header length in bytes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tool</samp>](## "port_channel_interfaces.[].switchport.tool") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tool</samp>](## "port_channel_interfaces.[].switchport.tool") | Dictionary |  |  |  | In tool mode, the interface operates as a tool port.<br>Tool ports replicate traffic received by tap ports. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_pop_all</samp>](## "port_channel_interfaces.[].switchport.tool.mpls_pop_all") | Boolean |  |  |  | Pop all MPLS labels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "port_channel_interfaces.[].switchport.tool.encapsulation") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1br_strip</samp>](## "port_channel_interfaces.[].switchport.tool.encapsulation.dot1br_strip") | Boolean |  |  |  | Remove a 802.1 BR tag in packet header. 'mpls_pop_all' takes precedence over 'dot1br_strip' in EOS. |
@@ -755,10 +755,15 @@
             enable: <bool>
             unmodified_enable: <bool>
         switchport:
+
+          # In tap mode, the interface operates as a tap port.
+          # Tap ports receive traffic for replication on one or more tool ports.
           tap:
 
-            # VLAN ID or range of VLAN IDs within range 1-4094.
+            # VLAN ID or range(s) of VLAN IDs within range 1-4094.
             allowed_vlan: <str>
+
+            # Default tap destination config.
             default:
 
               # Tap group names for the interface.
@@ -820,6 +825,9 @@
 
                   # Feature header length in bytes.
                   feature_header_length: <int; 1-16>
+
+          # In tool mode, the interface operates as a tool port.
+          # Tool ports replicate traffic received by tap ports.
           tool:
 
             # Pop all MPLS labels.

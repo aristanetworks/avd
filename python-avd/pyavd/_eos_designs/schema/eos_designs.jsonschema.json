@@ -11285,14 +11285,16 @@
                     "title": "Port Security"
                   },
                   "tap": {
+                    "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                     "type": "object",
                     "properties": {
                       "allowed_vlan": {
                         "type": "string",
-                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                         "title": "Allowed VLAN"
                       },
                       "default": {
+                        "description": "Default tap destination config.",
                         "type": "object",
                         "properties": {
                           "groups": {
@@ -11470,6 +11472,7 @@
                     "title": "Tap"
                   },
                   "tool": {
+                    "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                     "type": "object",
                     "properties": {
                       "mpls_pop_all": {
@@ -14479,14 +14482,16 @@
                     "type": "object",
                     "properties": {
                       "tap": {
+                        "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                         "type": "object",
                         "properties": {
                           "allowed_vlan": {
                             "type": "string",
-                            "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                            "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                             "title": "Allowed VLAN"
                           },
                           "default": {
+                            "description": "Default tap destination config.",
                             "type": "object",
                             "properties": {
                               "groups": {
@@ -14671,6 +14676,7 @@
                         "title": "Tap"
                       },
                       "tool": {
+                        "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                         "type": "object",
                         "properties": {
                           "mpls_pop_all": {
@@ -17703,14 +17709,16 @@
                     "title": "Port Security"
                   },
                   "tap": {
+                    "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                     "type": "object",
                     "properties": {
                       "allowed_vlan": {
                         "type": "string",
-                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                         "title": "Allowed VLAN"
                       },
                       "default": {
+                        "description": "Default tap destination config.",
                         "type": "object",
                         "properties": {
                           "groups": {
@@ -17888,6 +17896,7 @@
                     "title": "Tap"
                   },
                   "tool": {
+                    "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                     "type": "object",
                     "properties": {
                       "mpls_pop_all": {
@@ -24556,14 +24565,16 @@
                           "title": "Port Security"
                         },
                         "tap": {
+                          "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                           "type": "object",
                           "properties": {
                             "allowed_vlan": {
                               "type": "string",
-                              "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                              "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                               "title": "Allowed VLAN"
                             },
                             "default": {
+                              "description": "Default tap destination config.",
                               "type": "object",
                               "properties": {
                                 "groups": {
@@ -24741,6 +24752,7 @@
                           "title": "Tap"
                         },
                         "tool": {
+                          "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                           "type": "object",
                           "properties": {
                             "mpls_pop_all": {
@@ -34954,14 +34966,16 @@
                       "type": "object",
                       "properties": {
                         "tap": {
+                          "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                           "type": "object",
                           "properties": {
                             "allowed_vlan": {
                               "type": "string",
-                              "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                              "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                               "title": "Allowed VLAN"
                             },
                             "default": {
+                              "description": "Default tap destination config.",
                               "type": "object",
                               "properties": {
                                 "groups": {
@@ -35146,6 +35160,7 @@
                           "title": "Tap"
                         },
                         "tool": {
+                          "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                           "type": "object",
                           "properties": {
                             "mpls_pop_all": {
@@ -53937,14 +53952,16 @@
                     "type": "object",
                     "properties": {
                       "tap": {
+                        "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                         "type": "object",
                         "properties": {
                           "allowed_vlan": {
                             "type": "string",
-                            "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                            "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                             "title": "Allowed VLAN"
                           },
                           "default": {
+                            "description": "Default tap destination config.",
                             "type": "object",
                             "properties": {
                               "groups": {
@@ -54129,6 +54146,7 @@
                         "title": "Tap"
                       },
                       "tool": {
+                        "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                         "type": "object",
                         "properties": {
                           "mpls_pop_all": {
@@ -57161,14 +57179,16 @@
                     "title": "Port Security"
                   },
                   "tap": {
+                    "description": "In tap mode, the interface operates as a tap port.\nTap ports receive traffic for replication on one or more tool ports.",
                     "type": "object",
                     "properties": {
                       "allowed_vlan": {
                         "type": "string",
-                        "description": "VLAN ID or range of VLAN IDs within range 1-4094.",
+                        "description": "VLAN ID or range(s) of VLAN IDs within range 1-4094.",
                         "title": "Allowed VLAN"
                       },
                       "default": {
+                        "description": "Default tap destination config.",
                         "type": "object",
                         "properties": {
                           "groups": {
@@ -57346,6 +57366,7 @@
                     "title": "Tap"
                   },
                   "tool": {
+                    "description": "In tool mode, the interface operates as a tool port.\nTool ports replicate traffic received by tap ports.",
                     "type": "object",
                     "properties": {
                       "mpls_pop_all": {
