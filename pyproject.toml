@@ -1,12 +1,12 @@
 [tool.black]
 line-length = 160
 
-force-exclude = '''ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*'''
+force-exclude = '''python-avd/pyavd/_cv/api/.*'''
 
 [tool.isort]
 
 extend_skip_glob = [
-  "ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/**/*"
+  "python-avd/pyavd/_cv/api/**/*"
 ]
 
 profile = "black"

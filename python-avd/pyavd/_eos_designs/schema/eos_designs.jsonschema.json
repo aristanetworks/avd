@@ -6660,6 +6660,26 @@
             "^_.+$": {}
           },
           "title": "DPS Interfaces"
+        },
+        "direct_wan_ha_links": {
+          "description": "Enable flow-tracking on all direct WAN HA links.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
+            "name": {
+              "type": "string",
+              "description": "Flow tracker name as defined in flow_tracking_settings.",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Direct Wan Ha Links"
         }
       },
       "additionalProperties": false,
@@ -8243,6 +8263,35 @@
             "type": "string",
             "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
             "title": "Peer IP"
+          },
+          "bgp": {
+            "type": "object",
+            "description": "Enforce IPv4 BGP peering for the peer",
+            "properties": {
+              "peer_as": {
+                "type": "string",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\".\nFor asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.",
+                "title": "Peer As"
+              },
+              "ipv4_prefix_list_in": {
+                "type": "string",
+                "description": "Prefix List Name. Accept routes for only these prefixes from the peer.\nRequired for wan interfaces.",
+                "title": "IPv4 Prefix List In"
+              },
+              "ipv4_prefix_list_out": {
+                "type": "string",
+                "description": "Prefix List Name. Advertise routes for only these prefixes.\nIf not specified, nothing would be advertised.",
+                "title": "IPv4 Prefix List Out"
+              }
+            },
+            "required": [
+              "peer_as"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "BGP"
           },
           "ipv4_acl_in": {
             "description": "Name of the IPv4 access-list to be assigned in the ingress direction.\nThe access-list must be defined under `ipv4_acls` and supports field substitution for \"interface_ip\" and \"peer_ip\".\nRequired for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under `wan_carriers`.",
@@ -34996,6 +35045,34 @@
                           "type": "string",
                           "title": "VRF"
                         },
+                        "tls": {
+                          "type": "object",
+                          "description": "When TLS is configured, `key` is ignored..",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "description": "Enable TLS for radius-server.",
+                              "title": "Enabled"
+                            },
+                            "ssl_profile": {
+                              "type": "string",
+                              "description": "Name of TLS profile.",
+                              "title": "SSL Profile"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 65535,
+                              "description": "TCP Port used for TLS. EOS default is 2083.",
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "TLS"
+                        },
                         "timeout": {
                           "type": "integer",
                           "minimum": 1,
@@ -35010,7 +35087,7 @@
                         },
                         "key": {
                           "type": "string",
-                          "description": "Encrypted key.",
+                          "description": "Encrypted key - only type 7 supported.\nWhen TLS is configured, `key` is ignored.",
                           "title": "Key"
                         }
                       },
@@ -35023,6 +35100,11 @@
                       ]
                     },
                     "title": "Hosts"
+                  },
+                  "tls_ssl_profile": {
+                    "type": "string",
+                    "description": "Name of global TLS profile.",
+                    "title": "TLS SSL Profile"
                   }
                 },
                 "additionalProperties": false,
@@ -37460,6 +37542,29 @@
                               "type": "string",
                               "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
+                            },
+                            "default_route": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "rcf": {
+                                  "type": "string",
+                                  "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                  "title": "RCF"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default Route"
                             }
                           },
                           "additionalProperties": false,
@@ -37505,6 +37610,29 @@
                               "type": "string",
                               "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
+                            },
+                            "default_route": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "rcf": {
+                                  "type": "string",
+                                  "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                  "title": "RCF"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default Route"
                             },
                             "domain_remote": {
                               "type": "boolean",
@@ -39433,6 +39561,29 @@
                               "type": "string",
                               "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
+                            },
+                            "default_route": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "rcf": {
+                                  "type": "string",
+                                  "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                  "title": "RCF"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default Route"
                             }
                           },
                           "additionalProperties": false,
@@ -39494,6 +39645,29 @@
                               "type": "string",
                               "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
+                            },
+                            "default_route": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "rcf": {
+                                  "type": "string",
+                                  "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                  "title": "RCF"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default Route"
                             }
                           },
                           "additionalProperties": false,
@@ -39567,6 +39741,29 @@
                               "type": "string",
                               "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
+                            },
+                            "default_route": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "rcf": {
+                                  "type": "string",
+                                  "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                  "title": "RCF"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default Route"
                             }
                           },
                           "additionalProperties": false,
@@ -39628,6 +39825,29 @@
                               "type": "string",
                               "description": "Outbound RCF function name with parenthesis.\nExample: MyFunction(myarg).",
                               "title": "RCF Out"
+                            },
+                            "default_route": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "rcf": {
+                                  "type": "string",
+                                  "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                  "title": "RCF"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Default Route"
                             }
                           },
                           "additionalProperties": false,
@@ -39720,6 +39940,45 @@
                             "^_.+$": {}
                           },
                           "title": "EVPN Multicast Address Family"
+                        },
+                        "default_route_exports": {
+                          "type": "array",
+                          "description": "Enable default-originate per VRF/address-family.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "address_family": {
+                                "type": "string",
+                                "enum": [
+                                  "evpn",
+                                  "vpn-ipv4",
+                                  "vpn-ipv6"
+                                ],
+                                "title": "Address Family"
+                              },
+                              "always": {
+                                "type": "boolean",
+                                "title": "Always"
+                              },
+                              "route_map": {
+                                "type": "string",
+                                "title": "Route Map"
+                              },
+                              "rcf": {
+                                "type": "string",
+                                "description": "RCF function name with parenthesis.\nExample: MyFunction(myarg).",
+                                "title": "RCF"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "required": [
+                              "address_family"
+                            ]
+                          },
+                          "title": "Default Route Exports"
                         },
                         "route_targets": {
                           "type": "object",
@@ -56225,6 +56484,11 @@
                         3
                       ],
                       "title": "Version"
+                    },
+                    "fast_leave": {
+                      "type": "boolean",
+                      "description": "Enable IGMP snooping fast-leave feature.",
+                      "title": "Fast Leave"
                     }
                   },
                   "additionalProperties": false,
@@ -58133,6 +58397,11 @@
                   3
                 ],
                 "title": "Version"
+              },
+              "fast_leave": {
+                "type": "boolean",
+                "description": "Enable IGMP snooping fast-leave feature.",
+                "title": "Fast Leave"
               }
             },
             "additionalProperties": false,

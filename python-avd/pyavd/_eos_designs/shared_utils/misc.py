@@ -7,14 +7,12 @@ from copy import deepcopy
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...j2filters.convert_dicts import convert_dicts
-from ...j2filters.natural_sort import natural_sort
-from ...vendor.errors.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.j2.filter.range_expand import range_expand
-from ...vendor.utils import default, get, get_item
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get
+from ...j2filters import convert_dicts, natural_sort, range_expand
 
 if TYPE_CHECKING:
-    from ...eos_designs_facts import EosDesignsFacts
+    from ..eos_designs_facts import EosDesignsFacts
     from . import SharedUtils
 
 
@@ -367,15 +365,15 @@ class MiscMixin:
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
 
     @cached_property
-    def ipv4_acls(self: SharedUtils) -> list:
-        return get(self.hostvars, "ipv4_acls", default=[])
+    def ipv4_acls(self: SharedUtils) -> dict:
+        return {acl["name"]: acl for acl in get(self.hostvars, "ipv4_acls", default=[])}
 
     def get_ipv4_acl(self: SharedUtils, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None):
         """
         Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
         If any substitution is done, the ACL name will get "_<interface_name>" appended.
         """
-        org_ipv4_acl = get_item(self.ipv4_acls, "name", name, required=True, var_name=f"ipv4_acls[name={name}]")
+        org_ipv4_acl = get(self.ipv4_acls, name, required=True, org_key=f"ipv4_acls[name={name}]")
         # deepcopy to avoid inplace updates below from modifying the original.
         ipv4_acl = deepcopy(org_ipv4_acl)
         ip_replacements = {
@@ -420,3 +418,7 @@ class MiscMixin:
             return value
 
         return field_value
+
+    @cached_property
+    def ipv4_prefix_list_catalog(self: SharedUtils) -> list:
+        return get(self.hostvars, "ipv4_prefix_list_catalog", default=[])

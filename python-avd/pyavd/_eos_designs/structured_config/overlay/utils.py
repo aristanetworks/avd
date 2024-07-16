@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
-from ....vendor.utils import get
+from ...._utils import get
+from ....j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigOverlay
@@ -288,3 +288,8 @@ class UtilsMixin:
                     for interface_dict in get(path_group, "interfaces", required=True)
                 )
         return stun_server_profiles
+
+    def _wan_ha_peer_vtep_ip(self) -> str:
+        """ """
+        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
+        return get(peer_facts, "vtep_ip", required=True)

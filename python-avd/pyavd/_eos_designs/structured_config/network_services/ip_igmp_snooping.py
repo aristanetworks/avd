@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.utils import append_if_not_duplicate, default, get
+from ...._utils import append_if_not_duplicate, default, get
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -113,6 +113,15 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             )
             if version is not None:
                 ip_igmp_snooping_vlan["querier"]["version"] = version
+
+        # IGMP snooping fast-leave feature is enabled only when evpn_l2_multicast is enabled
+        if evpn_l2_multicast_enabled is True:
+            fast_leave = default(
+                igmp_snooping_querier.get("fast_leave"),
+                get(tenant, "evpn_l2_multicast.fast_leave"),
+            )
+            if fast_leave is not None:
+                ip_igmp_snooping_vlan["fast_leave"] = fast_leave
 
         if ip_igmp_snooping_vlan:
             return {"id": int(vlan["id"]), **ip_igmp_snooping_vlan}

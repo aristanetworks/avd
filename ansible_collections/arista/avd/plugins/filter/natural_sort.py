@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.natural_sort"
 
 try:
-    from pyavd.j2filters.natural_sort import natural_sort
+    from pyavd.j2filters import natural_sort
 except ImportError as e:
     natural_sort = RaiseOnUse(
         AnsibleFilterError(

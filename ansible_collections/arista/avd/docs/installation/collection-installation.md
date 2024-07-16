@@ -89,15 +89,6 @@ After an upgrade, some python requirements may have changed. Make sure to also u
 pip install "pyavd[ansible]==4.9.0"
 ```
 
-## Required Python Libraries
-
-```pip
---8<--
-requirements.txt
---8<--
-ansible-core>=2.15.0,<2.18.0
-```
-
 ### Python requirements installation
 
 Python requirements can be installed with the `pip install "pyavd[ansible]"`.

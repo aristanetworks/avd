@@ -1349,6 +1349,10 @@ keys:
         description: Enable flow-tracking on all dps_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
+      direct_wan_ha_links:
+        description: Enable flow-tracking on all direct WAN HA links.
+        type: dict
+        $ref: eos_designs#/$defs/flow_tracking_link
   fabric_ip_addressing:
     type: dict
     keys:
@@ -5667,6 +5671,10 @@ $defs:
               type: int
               convert_types:
               - str
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature for all SVIs and
+                l2vlans within Tenant.
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -6984,6 +6992,9 @@ $defs:
                     - 2
                     - 3
                     default: 2
+                  fast_leave:
+                    type: bool
+                    description: Enable IGMP snooping fast-leave feature.
               bgp:
                 type: dict
                 keys:
@@ -8702,6 +8713,36 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              ha_interfaces:
+                description: "Local WAN HA interfaces\nOverwrite the default behavior
+                  which is to pick all the `uplink_interfaces`.\nCan be used to filter
+                  uplink interfaces when there are multiple uplinks.\nLimitations:\n
+                  \ Either all interfaces must be uplinks or all interfaces must not
+                  be uplinks.\n  Only one interface is supported for non uplinks."
+                type: list
+                items:
+                  type: str
+                  pattern: Ethernet[\d/]+
+              ha_ipv4_pool:
+                description: 'IP address pool used for WAN HA connectivity.
+
+                  IP is derived from the node ID.
+
+                  Not used for uplink interfaces.'
+                type: str
+                format: ipv4_cidr
+              max_ha_interfaces:
+                type: int
+                convert_types:
+                - str
+                description: 'Number of parallel links towards HA switches.
+
+                  Can be used to reserve IP addresses for future parallel HA links.'
+              flow_tracking:
+                type: dict
+                $ref: eos_designs#/$defs/flow_tracking_link
+                description: Configures flow-tracking on the HA interfaces. Overrides
+                  `fabric_flow_tracking.wan_ha_links` setting.
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration
@@ -8875,6 +8916,30 @@ $defs:
           type: str
           description: The peer device IPv4 address (no mask). Used as default route
             gateway if `set_default_route` is true and `ip` is an IP address.
+        bgp:
+          type: dict
+          description: Enforce IPv4 BGP peering for the peer
+          keys:
+            peer_as:
+              type: str
+              required: true
+              convert_types:
+              - int
+              description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+
+                For asdot notation in YAML inputs, the value must be put in quotes,
+                to prevent it from being interpreted as a float number.'
+            ipv4_prefix_list_in:
+              type: str
+              description: 'Prefix List Name. Accept routes for only these prefixes
+                from the peer.
+
+                Required for wan interfaces.'
+            ipv4_prefix_list_out:
+              type: str
+              description: 'Prefix List Name. Advertise routes for only these prefixes.
+
+                If not specified, nothing would be advertised.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -9424,6 +9489,9 @@ $defs:
             - 1
             - 2
             - 3
+          fast_leave:
+            type: bool
+            description: Enable IGMP snooping fast-leave feature.
       vxlan:
         type: bool
         default: true

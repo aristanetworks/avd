@@ -10,10 +10,22 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Generator
 from urllib.error import HTTPError
 
-from ansible.errors import AnsibleConnectionFailure
+from ansible.errors import AnsibleActionFail, AnsibleConnectionFailure
 from ansible.module_utils.connection import ConnectionError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+
+PLUGIN_NAME = "arista.avd.eos_validate_state"
+
+try:
+    from pyavd._errors import AristaAvdError
+except ImportError as e:
+    AristaAvdError = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        )
+    )
 
 logger = getLogger(__name__)
 

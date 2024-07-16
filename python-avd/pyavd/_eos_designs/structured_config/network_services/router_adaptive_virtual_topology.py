@@ -6,8 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.strip_empties import strip_empties_from_dict
-from ....vendor.utils import append_if_not_duplicate, get, get_item
+from ...._utils import append_if_not_duplicate, get, get_item, strip_empties_from_dict
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:

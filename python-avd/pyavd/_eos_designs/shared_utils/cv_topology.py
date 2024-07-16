@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...vendor.j2.filter.range_expand import range_expand
-from ...vendor.utils import get, get_item
+from ..._utils import get, get_item
+from ...j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils

@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ...._utils import get
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -34,7 +35,6 @@ class RouteMapsMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
-            sequence_numbers = []
             sequence_10 = {
                 "sequence": 10,
                 "type": "permit",
@@ -43,8 +43,7 @@ class RouteMapsMixin(UtilsMixin):
             if self.shared_utils.wan_role:
                 sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
-            sequence_numbers.append(sequence_10)
-
+            sequence_numbers = [sequence_10]
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
             if self.shared_utils.underlay_ipv6 is True:
@@ -65,7 +64,7 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
-            if self.shared_utils.wan_ha:
+            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
                 sequence_numbers.append(
                     {
                         "sequence": 50,
@@ -107,7 +106,7 @@ class RouteMapsMixin(UtilsMixin):
                     "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                 },
             ]
-            if self.shared_utils.wan_ha:
+            if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
                 sequence_numbers.extend(
                     [
                         {
@@ -118,23 +117,70 @@ class RouteMapsMixin(UtilsMixin):
                         },
                         {
                             "sequence": 20,
-                            "type": "permit",
-                            "description": "Allow prefixes originated from the HA peer",
-                            "match": ["extcommunity ECL-EVPN-SOO"],
-                            "set": ["as-path match all replacement auto auto"],
-                        },
-                        {
-                            "sequence": 30,
-                            "type": "permit",
-                            "description": "Use WAN routes from HA peer as backup",
+                            "type": "deny",
+                            "description": "Deny other routes from the HA peer",
                             "match": ["as-path ASPATH-WAN"],
-                            "set": ["community no-advertise"],
                         },
                     ]
                 )
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 
-            # TODO: No RM-BGP-UNDERLAY-PEERS-OUT, sending everything out. There will be one added for HA support in a future PR
+            # RM-BGP-UNDERLAY-PEERS-OUT
+            if self.shared_utils.wan_ha:
+                sequence_numbers = [
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "description": "Make routes learned from WAN HA peer less preferred on LAN routers",
+                        "match": ["tag 50", "route-type internal"],
+                        "set": ["metric 50"],
+                    },
+                    {
+                        "sequence": 20,
+                        "type": "permit",
+                    },
+                ]
+                route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-OUT", "sequence_numbers": sequence_numbers})
+
+        for neighbor in self.shared_utils.l3_interfaces_bgp_neighbors:
+            # RM-BGP-<PEER-IP>-IN
+            if prefix_list_in := get(neighbor, "ipv4_prefix_list_in"):
+                sequence_numbers = [
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "match": [f"ip address prefix-list {prefix_list_in}"],
+                    },
+                ]
+                # set no advertise is set only for wan neighbors, which will also have
+                # prefix_list_in
+                if neighbor.get("set_no_advertise"):
+                    sequence_numbers[0]["set"] = ["community no-advertise additive"]
+
+                route_maps.append({"name": neighbor["route_map_in"], "sequence_numbers": sequence_numbers})
+
+            # RM-BGP-<PEER-IP>-OUT
+            if prefix_list_out := get(neighbor, "ipv4_prefix_list_out"):
+                sequence_numbers = [
+                    {
+                        "sequence": 10,
+                        "type": "permit",
+                        "match": [f"ip address prefix-list {prefix_list_out}"],
+                    },
+                    {
+                        "sequence": 20,
+                        "type": "deny",
+                    },
+                ]
+            else:
+                sequence_numbers = [
+                    {
+                        "sequence": 10,
+                        "type": "deny",
+                    },
+                ]
+
+            route_maps.append({"name": neighbor["route_map_out"], "sequence_numbers": sequence_numbers})
 
         if route_maps:
             return route_maps

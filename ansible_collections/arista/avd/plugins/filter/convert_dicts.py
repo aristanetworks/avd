@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.convert_dicts"
 
 try:
-    from pyavd.j2filters.convert_dicts import convert_dicts
+    from pyavd.j2filters import convert_dicts
 except ImportError as e:
     convert_dicts = RaiseOnUse(
         AnsibleFilterError(

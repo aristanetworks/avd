@@ -6,8 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.strip_empties import strip_empties_from_dict
-from ....vendor.utils import append_if_not_duplicate, get
+from ...._utils import append_if_not_duplicate, get, strip_empties_from_dict
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -49,10 +48,11 @@ class RouterBgpMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.is_cv_pathfinder_router:
             peer_group["route_map_in"] = "RM-BGP-UNDERLAY-PEERS-IN"
-            # TODO: no RM-BGP-UNDERLAY-PEERS-OUT route-map, one will be added in a future PR for HA.
             if self.shared_utils.wan_ha:
-                # For HA need to add allowas_in 1
-                peer_group["allowas_in"] = {"enabled": True, "times": 1}
+                peer_group["route_map_out"] = "RM-BGP-UNDERLAY-PEERS-OUT"
+                if self.shared_utils.use_uplinks_for_wan_ha:
+                    # For HA need to add allowas_in 1
+                    peer_group["allowas_in"] = {"enabled": True, "times": 1}
 
         router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
@@ -173,6 +173,17 @@ class RouterBgpMixin(UtilsMixin):
 
             if neighbors:
                 router_bgp["neighbors"] = neighbors
+
+        for neighbor_info in self.shared_utils.l3_interfaces_bgp_neighbors:
+            neighbor = {
+                "ip_address": get(neighbor_info, "ip_address"),
+                "remote_as": get(neighbor_info, "remote_as"),
+                "description": get(neighbor_info, "description"),
+                "route_map_in": get(neighbor_info, "route_map_in"),
+                "route_map_out": get(neighbor_info, "route_map_out"),
+            }
+
+            router_bgp.setdefault("neighbors", []).append(strip_empties_from_dict(neighbor))
 
         if vrfs_dict:
             router_bgp["vrfs"] = list(vrfs_dict.values())

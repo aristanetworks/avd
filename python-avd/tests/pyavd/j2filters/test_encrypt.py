@@ -6,7 +6,7 @@ from __future__ import annotations
 from contextlib import nullcontext as does_not_raise
 
 import pytest
-from pyavd.j2filters.encrypt import encrypt
+from pyavd.j2filters import encrypt
 
 
 @pytest.mark.parametrize(

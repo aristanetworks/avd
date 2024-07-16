@@ -6,7 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from pyavd.j2filters.hide_passwords import hide_passwords
+from pyavd.j2filters import hide_passwords
 
 VALID_INPUT_HIDE_PASSWORDS = [
     ("dummy", False, "dummy"),

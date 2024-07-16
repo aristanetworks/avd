@@ -11,7 +11,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.hide_passwords"
 
 try:
-    from pyavd.j2filters.hide_passwords import hide_passwords
+    from pyavd.j2filters import hide_passwords
 except ImportError as e:
     hide_passwords = RaiseOnUse(
         AnsibleFilterError(

@@ -98,8 +98,8 @@ repos:
         # ignoring errors and selecting line length as per
         # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
         types: [python]
-        # The cv_client api is generated from proto files, so it should not be linted.
-        exclude: ^ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
+        # The cv client api is generated from proto files, so it should not be linted.
+        exclude: ^python-avd/pyavd/_cv/api
 
   - repo: https://github.com/pycqa/pylint
     rev: "v3.1.1"
@@ -160,8 +160,8 @@ repos:
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
             python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
             python-avd/pyavd/.*/schema/.*jsonschema\.json| # Exclude JSON schemas file
-            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/.*| # Exclude auto generated files for CV API
-            ansible_collections/arista/avd/plugins/plugin_utils/cv_client/extra_cv_protos/.*| # Exclude extra CV proto files
+            python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
+            python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
           )$
 
@@ -180,9 +180,10 @@ repos:
         name: Build documentation for collection filter plugins.
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Filter_plugins/"
         language: python
-        types: [python]
+        types_or: [python, yaml]
         additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.15.0,<2.18.0']
         files: ansible_collections/arista/avd/plugins/filter/
+        exclude: ^(ansible_collections/arista/avd/plugins/filter/deprecated_filters.py)$
 
       - id: docs-plugin-lookup
         name: Build documentation for collection lookup plugins.
@@ -216,16 +217,13 @@ repos:
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
-      - id: compile-templates
+      - id: templates
         name: Precompile eos_cli_config_gen Jinja2
-        # Workaround because pyavd.vendor is still needed for now - this also rebuilds the schemas so it is a bit wasteful
-        entry: sh -c 'cd python-avd; make dep'
-        # entry: sh -c 'python-avd/scripts/compile_templates.py'
+        entry: sh -c 'python-avd/scripts/compile_templates.py'
         language: python
         files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0', 'cryptography>=38.0.4']
-        # additional_dependencies: ['Jinja2>=3.0.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.41.0

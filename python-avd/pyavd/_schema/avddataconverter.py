@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generator
 
-from ..j2filters.convert_dicts import convert_dicts
-from ..vendor.errors import AvdConversionWarning, AvdDeprecationWarning
-from ..vendor.utils import get_all
+from .._errors import AvdConversionWarning, AvdDeprecationWarning
+from .._utils import get_all
+from ..j2filters import convert_dicts
 
 SCHEMA_TO_PY_TYPE_MAP = {
     "str": str,

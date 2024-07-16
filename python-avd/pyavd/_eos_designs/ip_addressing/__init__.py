@@ -4,9 +4,9 @@
 import ipaddress
 from collections import ChainMap
 
-from ...vendor.avdfacts import AvdFacts
-from ...vendor.errors import AristaAvdError
-from ...vendor.utils import get_ip_from_pool
+from ..._errors import AristaAvdError
+from ..._utils import get_ip_from_pool
+from ..avdfacts import AvdFacts
 from .utils import UtilsMixin
 
 

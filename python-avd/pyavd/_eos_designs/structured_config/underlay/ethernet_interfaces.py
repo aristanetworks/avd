@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
-from ....vendor.utils import append_if_not_duplicate, get
+from ...._utils import append_if_not_duplicate, get
+from ....j2filters import natural_sort
 from ...interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
@@ -250,6 +250,31 @@ class EthernetInterfacesMixin(UtilsMixin):
                     primary_key="name",
                     new_dict=parent_interface,
                     context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
+                    context_keys=["name", "peer", "peer_interface"],
+                )
+
+        # WAN HA interfaces for direct connection
+        if self.shared_utils.use_uplinks_for_wan_ha is False:
+            direct_wan_ha_links_flow_tracker = get(
+                self.shared_utils.switch_data_combined, "wan_ha.flow_tracker", default=self.shared_utils.get_flow_tracker(None, "direct_wan_ha_links")
+            )
+            for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
+                ha_interface = {
+                    "name": interface,
+                    "type": "routed",
+                    "peer_type": "l3_interface",
+                    "peer": self.shared_utils.wan_ha_peer,
+                    "shutdown": False,
+                    "description": "DIRECT LAN HA LINK",
+                    "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
+                    "flow_tracker": direct_wan_ha_links_flow_tracker,
+                }
+
+                append_if_not_duplicate(
+                    list_of_dicts=ethernet_interfaces,
+                    primary_key="name",
+                    new_dict=ha_interface,
+                    context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} wan_ha_interfaces",
                     context_keys=["name", "peer", "peer_interface"],
                 )
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters.natural_sort import natural_sort
+from ....j2filters import natural_sort
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -70,6 +70,7 @@ class RouteMapsMixin(UtilsMixin):
                     ],
                 }
             )
+
             route_maps.append(
                 {
                     "name": "RM-EVPN-SOO-OUT",
@@ -82,6 +83,41 @@ class RouteMapsMixin(UtilsMixin):
                     ],
                 }
             )
+
+            if self.shared_utils.wan_ha:
+                route_maps.append(
+                    {
+                        "name": "RM-WAN-HA-PEER-IN",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "description": "Set tag 50 on routes received from HA peer over EVPN",
+                                "set": ["tag 50"],
+                            },
+                        ],
+                    }
+                )
+                route_maps.append(
+                    {
+                        "name": "RM-WAN-HA-PEER-OUT",
+                        "sequence_numbers": [
+                            {
+                                "sequence": 10,
+                                "type": "permit",
+                                "description": "Make EVPN routes learned from WAN less preferred on HA peer",
+                                "match": ["route-type internal"],
+                                "set": ["local-preference 50"],
+                            },
+                            {
+                                "sequence": 20,
+                                "type": "permit",
+                                "description": "Make locally injected routes less preferred on HA peer",
+                                "set": ["local-preference 75"],
+                            },
+                        ],
+                    }
+                )
 
         if route_maps:
             return route_maps

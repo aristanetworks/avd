@@ -6,10 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ...j2filters.natural_sort import natural_sort
-from ...vendor.errors import AristaAvdError, AristaAvdMissingVariableError
-from ...vendor.strip_empties import strip_empties_from_dict
-from ...vendor.utils import default, get, get_item
+from ..._errors import AristaAvdError, AristaAvdMissingVariableError
+from ..._utils import default, get, get_ip_from_pool, get_item, strip_empties_from_dict
+from ...j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -42,15 +41,15 @@ class WanMixin:
         return wan_role
 
     @cached_property
-    def is_wan_router(self) -> bool:
+    def is_wan_router(self: SharedUtils) -> bool:
         return bool(self.wan_role)
 
     @cached_property
-    def is_wan_server(self) -> bool:
+    def is_wan_server(self: SharedUtils) -> bool:
         return self.wan_role == "server"
 
     @cached_property
-    def is_wan_client(self) -> bool:
+    def is_wan_client(self: SharedUtils) -> bool:
         return self.wan_role == "client"
 
     @cached_property
@@ -179,7 +178,7 @@ class WanMixin:
         return list(local_path_groups_dict.values())
 
     @cached_property
-    def wan_local_path_group_names(self) -> list:
+    def wan_local_path_group_names(self: SharedUtils) -> list:
         """
         Return a list of wan_local_path_group names to be used by HA peer and in various places
         """
@@ -476,27 +475,81 @@ class WanMixin:
         raise AristaAvdError("Unable to find WAN HA peer within same node group")
 
     @cached_property
+    def configured_wan_ha_interfaces(self: SharedUtils) -> set:
+        """
+        Read the device wan_ha.ha_interfaces node settings
+        """
+        return get(self.switch_data_combined, "wan_ha.ha_interfaces", default=[])
+
+    @cached_property
+    def vrf_default_uplinks(self: SharedUtils) -> list:
+        """
+        Return the uplinkss in VRF default
+        """
+        return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+
+    @cached_property
+    def vrf_default_uplink_interfaces(self: SharedUtils) -> list:
+        """
+        Return the uplink interfaces in VRF default
+        """
+        return [uplink["interface"] for uplink in self.vrf_default_uplinks]
+
+    @cached_property
+    def use_uplinks_for_wan_ha(self: SharedUtils) -> bool:
+        """
+        Return true or false
+        """
+        interfaces = set(self.configured_wan_ha_interfaces)
+        uplink_interfaces = set(self.vrf_default_uplink_interfaces)
+
+        if interfaces.issubset(uplink_interfaces):
+            return True
+        if not interfaces.intersection(uplink_interfaces):
+            if len(interfaces) > 1:
+                raise AristaAvdError("AVD does not support multiple HA interfaces when not using uplinks.")
+            return False
+        raise AristaAvdError("Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks.")
+
+    @cached_property
+    def wan_ha_interfaces(self: SharedUtils) -> list:
+        """
+        Return the list of interfaces for WAN HA
+
+        If using uplinks for WAN HA, returns the filtered uplinks if self.configured_wan_ha_interfaces is not empty
+        else returns all of them.
+        """
+        if self.use_uplinks_for_wan_ha:
+            return natural_sort(set(self.configured_wan_ha_interfaces)) or self.vrf_default_uplink_interfaces
+        # Using node values
+        return natural_sort(set(self.configured_wan_ha_interfaces), "name")
+
+    @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
         """
         Read the IP addresses/prefix length from HA peer uplinks
         Used also to generate the prefix list of the PEER HA prefixes
         """
-        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
-        # For now only picking up uplink interfaces in VRF default on the router.
-        vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
-
+        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
-        for uplink in vrf_default_peer_uplinks:
-            ip_address = get(
-                uplink,
-                "ip_address",
-                required=True,
-                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
-            )
-            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
-            prefix_length = uplink["prefix_length"]
-            ip_addresses.append(f"{ip_address}/{prefix_length}")
-
+        if self.use_uplinks_for_wan_ha:
+            peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
+            vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+            for uplink in vrf_default_peer_uplinks:
+                if not interfaces or uplink["interface"] in interfaces:
+                    ip_address = get(
+                        uplink,
+                        "ip_address",
+                        required=True,
+                        org_key=(
+                            f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
+                        ),
+                    )
+                    prefix_length = uplink["prefix_length"]
+                    ip_addresses.append(f"{ip_address}/{prefix_length}")
+        else:
+            # Only one supported HA interface today when not using uplinks
+            ip_addresses.append(self.get_wan_ha_ip_address(local=False))
         return ip_addresses
 
     @cached_property
@@ -505,21 +558,51 @@ class WanMixin:
         Read the IP addresses/prefix length from this device uplinks used for HA.
         Used to generate the prefix list.
         """
-        vrf_default_uplinks = [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
-
+        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
-        for uplink in vrf_default_uplinks:
-            ip_address = get(
-                uplink,
-                "ip_address",
-                required=True,
-                org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
-            )
-            # We can use [] notation here because if there is an ip_address, there should be a prefix_length
-            prefix_length = uplink["prefix_length"]
-            ip_addresses.append(f"{ip_address}/{prefix_length}")
 
+        if self.use_uplinks_for_wan_ha:
+            for uplink in self.vrf_default_uplinks:
+                if not interfaces or uplink["interface"] in interfaces:
+                    ip_address = get(
+                        uplink,
+                        "ip_address",
+                        required=True,
+                        org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
+                    )
+                    # We can use [] notation here because if there is an ip_address, there should be a prefix_length
+                    prefix_length = uplink["prefix_length"]
+                    ip_addresses.append(f"{ip_address}/{prefix_length}")
+        else:
+            # Only one supported HA interface today when not using uplinks
+            ip_addresses.append(self.get_wan_ha_ip_address(local=True))
         return ip_addresses
+
+    def get_wan_ha_ip_address(self: SharedUtils, local: bool) -> str | None:
+        """
+        Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
+
+        local: When true, request the first IP address else request the remote peer IP.
+        TODO: Move this to ip_addressing module to allow for custom logic.
+        """
+        wan_ha_ipv4_pool = get(
+            self.switch_data_combined,
+            "wan_ha.ha_ipv4_pool",
+            required=True,
+            org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
+        )
+
+        first_ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
+        second_ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)
+
+        if self.is_first_ha_peer:
+            local_ip, remote_ip = first_ip_address, second_ip_address
+        else:
+            local_ip, remote_ip = second_ip_address, first_ip_address
+
+        ip_address = local_ip if local else remote_ip
+
+        return f"{ip_address}/31"
 
     def generate_lb_policy_name(self: SharedUtils, name: str) -> str:
         """

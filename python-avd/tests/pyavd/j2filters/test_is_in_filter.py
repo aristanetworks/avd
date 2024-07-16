@@ -4,7 +4,7 @@
 from __future__ import absolute_import, division, print_function
 
 import pytest
-from pyavd.j2filters.is_in_filter import is_in_filter
+from pyavd.j2filters import is_in_filter
 
 HOSTNAME_VALID = "test1.aristanetworks.com"
 HOSTNAME_INVALID = "test1.bsn.com"

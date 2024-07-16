@@ -6,9 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....vendor.errors import AristaAvdError
-from ....vendor.strip_empties import strip_empties_from_dict
-from ....vendor.utils import get, get_item
+from ...._errors import AristaAvdError
+from ...._utils import get, get_item, strip_empties_from_dict
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -127,7 +126,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         ha_path_group.update(
             {
                 # This should be the LAN interface over which a DPS tunnel is built
-                "local_interfaces": [{"name": interface["interface"]} for interface in self._wan_ha_interfaces()],
+                "local_interfaces": [{"name": interface} for interface in self.shared_utils.wan_ha_interfaces],
                 "static_peers": [
                     {
                         "router_ip": self._wan_ha_peer_vtep_ip(),

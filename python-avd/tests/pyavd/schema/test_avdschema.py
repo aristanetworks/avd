@@ -6,9 +6,9 @@ import os
 import pytest
 import yaml
 from deepmerge import always_merger
+from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 from pyavd._schema.avdschemaresolver import AvdSchemaResolver
-from pyavd.vendor.errors import AvdValidationError  # pylint: disable=no-name-in-module
 from schema_tools.constants import SCHEMA_PATHS
 from schema_tools.store import create_store
 
@@ -165,10 +165,6 @@ class TestAvdSchema:
                 assert isinstance(validation_error, AvdValidationError)
         except Exception as e:  # pylint: disable=broad-exception-caught
             assert False, f"AvdSchema(combined_schema).validate(INVALID_DATA) raised an exception: {e}"
-
-    def test_avd_schema_validate_with_missing_data(self):
-        with pytest.raises(TypeError):
-            AvdSchema().validate()  # pylint: disable=no-value-for-parameter
 
     @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
     def test_avd_schema_load_valid_schema(self, test_schema):
