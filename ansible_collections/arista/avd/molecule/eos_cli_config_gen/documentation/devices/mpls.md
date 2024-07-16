@@ -108,6 +108,8 @@ interface Loopback0
 | LDP Router ID | 192.168.1.1 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
+| ICMP Fragmentation-Needed Tunneling Enabled | True |
+| ICMP TTL-Exceeded Tunneling Enabled | True |
 
 #### MPLS and LDP Device Configuration
 
@@ -120,6 +122,9 @@ mpls ldp
    router-id 192.168.1.1
    no shutdown
    transport-address interface Loopback0
+!
+   mpls icmp fragmentation-needed tunneling
+   mpls icmp ttl-exceeded tunneling
 ```
 
 ### MPLS Interfaces
