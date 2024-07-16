@@ -52,7 +52,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
+  vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
 vlans:
 - id: 310
   name: MULTICAST_DISABLED_310
@@ -150,6 +150,12 @@ vlans:
 - id: 150
   name: L3_MULTICAST_ENABLED_150
   tenant: Tenant_E
+- id: 251
+  name: MULTICAST_DISABLED_251
+  tenant: Tenant_F
+- id: 252
+  name: MULTICAST_ENABLED_252
+  tenant: Tenant_F
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
