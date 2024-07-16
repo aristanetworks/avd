@@ -3666,7 +3666,9 @@ keys:
 
                 Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.'
             vlan_translations:
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
+              description: 'Map packets from one VLAN to another.
+
+                Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
               type: dict
               keys:
                 direction_in:
@@ -3694,7 +3696,7 @@ keys:
                         description: VLAN ID to map to.
                       dot1q_tunnel:
                         type: bool
-                      inner_from:
+                      inner_vlan_from:
                         type: int
                         min: 1
                         max: 4094
@@ -3734,7 +3736,7 @@ keys:
                             min: 1
                             max: 4094
                             description: VLAN ID or range(s) of VLAN IDs to map to.
-                      inner_to:
+                      inner_vlan_to:
                         type: int
                         min: 1
                         max: 4094
@@ -3765,7 +3767,7 @@ keys:
                         required: true
                       dot1q_tunnel:
                         type: bool
-                      inner_from:
+                      inner_vlan_from:
                         type: int
                         convert_types:
                         - str
@@ -3776,7 +3778,8 @@ keys:
                         type: bool
                         description: 'Enable use of network-side VLAN ID.
 
-                          This setting can be enabled only when inner_from is defined.'
+                          This setting can be enabled only when inner_vlan_from is
+                          defined.'
             vlan_forwarding_accept_all:
               type: bool
             backup_link:
@@ -10010,7 +10013,7 @@ keys:
                         description: VLAN ID to map to.
                       dot1q_tunnel:
                         type: bool
-                      inner_from:
+                      inner_vlan_from:
                         type: int
                         min: 1
                         max: 4094
@@ -10050,7 +10053,7 @@ keys:
                             convert_types:
                             - str
                             description: VLAN ID or range(s) of VLAN IDs to map to.
-                      inner_to:
+                      inner_vlan_to:
                         type: int
                         min: 1
                         max: 4094
@@ -10081,7 +10084,7 @@ keys:
                         required: true
                       dot1q_tunnel:
                         type: bool
-                      inner_from:
+                      inner_vlan_from:
                         type: int
                         min: 1
                         max: 4094
@@ -10092,7 +10095,8 @@ keys:
                         type: bool
                         description: 'Enable use of network-side VLAN ID.
 
-                          This setting can be enabled only when inner_from is defined.'
+                          This setting can be enabled only when inner_vlan_from is
+                          defined.'
             vlan_forwarding_accept_all:
               type: bool
             backup_link:

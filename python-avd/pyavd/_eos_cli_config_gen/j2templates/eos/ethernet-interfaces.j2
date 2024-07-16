@@ -214,8 +214,8 @@ interface {{ ethernet_interface.name }}
 {%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' ' ~  vlan_translation.from %}
 {%             if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
 {%                 set vlan_translation_both_cli = vlan_translation_both_cli ~ ' dot1q-tunnel' %}
-{%             elif vlan_translation.inner_from is arista.avd.defined %}
-{%                 set vlan_translation_both_cli = vlan_translation_both_cli ~ ' inner ' ~ vlan_translation.inner_from %}
+{%             elif vlan_translation.inner_vlan_from is arista.avd.defined %}
+{%                 set vlan_translation_both_cli = vlan_translation_both_cli ~ ' inner ' ~ vlan_translation.inner_vlan_from %}
 {%                 if vlan_translation.network is arista.avd.defined(true) %}
 {%                     set vlan_translation_both_cli = vlan_translation_both_cli ~ ' network' %}
 {%                 endif %}
@@ -233,8 +233,8 @@ interface {{ ethernet_interface.name }}
 {%                 set vlan_translation_in_cli = 'switchport vlan translation in ' ~  vlan_translation.from %}
 {%                 if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
 {%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' dot1q-tunnel' %}
-{%                 elif vlan_translation.inner_from is arista.avd.defined %}
-{%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' inner ' ~ vlan_translation.inner_from %}
+{%                 elif vlan_translation.inner_vlan_from is arista.avd.defined %}
+{%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' inner ' ~ vlan_translation.inner_vlan_from %}
 {%                 endif %}
 {%                 set vlan_translation_in_cli = vlan_translation_in_cli ~ " " ~  vlan_translation.to %}
 {%             endif %}
@@ -244,8 +244,8 @@ interface {{ ethernet_interface.name }}
 {%     for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort('from') %}
 {%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
 {%             set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from ~ ' ' ~  vlan_translation.to %}
-{%             if vlan_translation.inner_to is arista.avd.defined %}
-{%                 set vlan_translation_out_cli = vlan_translation_out_cli ~ ' inner ' ~ vlan_translation.inner_to %}
+{%             if vlan_translation.inner_vlan_to is arista.avd.defined %}
+{%                 set vlan_translation_out_cli = vlan_translation_out_cli ~ ' inner ' ~ vlan_translation.inner_vlan_to %}
 {%             endif %}
 {%         elif vlan_translation.from is arista.avd.defined and vlan_translation.dot1q_tunnel is arista.avd.defined %}
 {%             set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from %}

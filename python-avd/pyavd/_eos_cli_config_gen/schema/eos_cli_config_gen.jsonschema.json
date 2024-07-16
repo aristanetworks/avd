@@ -6021,7 +6021,7 @@
                 "title": "PVLAN Mapping"
               },
               "vlan_translations": {
-                "description": "Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
+                "description": "Map packets from one VLAN to another.\nWarning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
                 "type": "object",
                 "properties": {
                   "direction_in": {
@@ -6053,12 +6053,12 @@
                           "type": "boolean",
                           "title": "Dot1Q Tunnel"
                         },
-                        "inner_from": {
+                        "inner_vlan_from": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
-                          "title": "Inner From"
+                          "title": "Inner VLAN From"
                         }
                       },
                       "additionalProperties": false,
@@ -6109,12 +6109,12 @@
                           },
                           "title": "Dot1Q Tunnel"
                         },
-                        "inner_to": {
+                        "inner_vlan_to": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
                           "description": "Inner VLAN ID to map to.",
-                          "title": "Inner To"
+                          "title": "Inner VLAN To"
                         }
                       },
                       "required": [
@@ -6151,16 +6151,16 @@
                           "type": "boolean",
                           "title": "Dot1Q Tunnel"
                         },
-                        "inner_from": {
+                        "inner_vlan_from": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
-                          "title": "Inner From"
+                          "title": "Inner VLAN From"
                         },
                         "network": {
                           "type": "boolean",
-                          "description": "Enable use of network-side VLAN ID.\nThis setting can be enabled only when inner_from is defined.",
+                          "description": "Enable use of network-side VLAN ID.\nThis setting can be enabled only when inner_vlan_from is defined.",
                           "title": "Network"
                         }
                       },
@@ -16828,12 +16828,12 @@
                           "type": "boolean",
                           "title": "Dot1Q Tunnel"
                         },
-                        "inner_from": {
+                        "inner_vlan_from": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
-                          "title": "Inner From"
+                          "title": "Inner VLAN From"
                         }
                       },
                       "additionalProperties": false,
@@ -16884,12 +16884,12 @@
                           },
                           "title": "Dot1Q Tunnel"
                         },
-                        "inner_to": {
+                        "inner_vlan_to": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
                           "description": "Inner VLAN ID to map to.",
-                          "title": "Inner To"
+                          "title": "Inner VLAN To"
                         }
                       },
                       "required": [
@@ -16926,16 +16926,16 @@
                           "type": "boolean",
                           "title": "Dot1Q Tunnel"
                         },
-                        "inner_from": {
+                        "inner_vlan_from": {
                           "type": "integer",
                           "minimum": 1,
                           "maximum": 4094,
                           "description": "Inner VLAN ID to map from.",
-                          "title": "Inner From"
+                          "title": "Inner VLAN From"
                         },
                         "network": {
                           "type": "boolean",
-                          "description": "Enable use of network-side VLAN ID.\nThis setting can be enabled only when inner_from is defined.",
+                          "description": "Enable use of network-side VLAN ID.\nThis setting can be enabled only when inner_vlan_from is defined.",
                           "title": "Network"
                         }
                       },

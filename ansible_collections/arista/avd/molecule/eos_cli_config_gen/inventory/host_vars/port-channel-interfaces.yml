@@ -138,13 +138,13 @@ port_channel_interfaces:
           - required: true
           - from: 37
             to: 49
-            inner_from: 56
+            inner_vlan_from: 56
           - from: 23
             to: 45
             dot1q_tunnel: true
         direction_both:
           - from: 24
-            inner_from: 78
+            inner_vlan_from: 78
             network: true
             to: 46
           - from: 12
@@ -155,7 +155,7 @@ port_channel_interfaces:
         direction_out:
           - from: 10
             to: 45
-            inner_to: 34
+            inner_vlan_to: 34
           - from: 34
             to: 50
           - from: 45
