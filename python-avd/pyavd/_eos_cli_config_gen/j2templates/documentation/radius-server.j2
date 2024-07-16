@@ -17,6 +17,10 @@
 
 {{ doc_line }}
 {%     endif %}
+{%     if radius_server.tls_ssl_profile is arista.avd.defined %}
+
+- Global RADIUS TLS SSL profile is {{ radius_server.tls_ssl_profile }}
+{%     endif %}
 {%     if radius_server.dynamic_authorization is arista.avd.defined %}
 {%         set doc_line = "- Dynamic Authorization is enabled" %}
 {%         if radius_server.dynamic_authorization.port is arista.avd.defined %}
@@ -31,21 +35,23 @@
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | Timeout | Retransmit |
-| --- | -------------- | ------- | ---------- |
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
 {#     Old data model #}
 {%     for radius_server in radius_servers | arista.avd.default([]) %}
 {%         set vrf = radius_server.vrf | arista.avd.default('default') %}
 {%         set timeout = radius_server.timeout | arista.avd.default('-') %}
 {%         set retransmit = radius_server.retransmit | arista.avd.default('-') %}
-| {{ vrf }} | {{ radius_server.host }} | {{ timeout }} | {{ retransmit }} |
+| {{ vrf }} | {{ radius_server.host }} | - | - | {{ timeout }} | {{ retransmit }} |
 {%     endfor %}
 {#     New data model #}
 {%     for host in radius_server.hosts | arista.avd.default([]) %}
 {%         set vrf = host.vrf | arista.avd.default('default') %}
+{%         set tls = host.tls.enabled | arista.avd.default('-') %}
+{%         set ssl_profile = host.tls.ssl_profile | arista.avd.default('-') %}
 {%         set timeout = host.timeout | arista.avd.default('-') %}
 {%         set retransmit = host.retransmit | arista.avd.default('-') %}
-| {{ vrf }} | {{ host.host }} | {{ timeout }} | {{ retransmit }} |
+| {{ vrf }} | {{ host.host }} | {{ tls }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
 {%     endfor %}
 
 #### RADIUS Server Device Configuration
