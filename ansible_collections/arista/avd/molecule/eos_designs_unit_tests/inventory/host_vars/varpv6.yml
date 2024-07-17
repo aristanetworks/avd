@@ -27,7 +27,7 @@ tenants:
               - fe80::1
             nodes:
               - node: varpv6
-                ipv6_address: 2000:1000::2/64
+                ipv6_address: 2001:db8::2/64
           # VARPv6 is not configured if ipv6_address and ipv6_enable missing
           - id: 200
             enabled: true
@@ -48,3 +48,12 @@ tenants:
             ipv6_enable: false
             ipv6_virtual_router_addresses:
               - fe80::1
+          # VARPv6 is not configured if ipv6_enable is set to false, but ipv6 address virtual is configured in this case
+          - id: 500
+            enabled: true
+            name: VARPv6_not_configured_3
+            ipv6_enable: false
+            ipv6_virtual_router_addresses:
+              - fe80::1
+            ipv6_address_virtuals:
+              - 2001:db8::1/64

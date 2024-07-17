@@ -84,6 +84,14 @@ router_bgp:
       - 10400:10400
     redistribute_routes:
     - learned
+  - id: 500
+    tenant: TENANT1
+    rd: 192.168.255.101:10500
+    route_targets:
+      both:
+      - 10500:10500
+    redistribute_routes:
+    - learned
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -143,6 +151,9 @@ vlans:
 - id: 400
   name: VARPv6_not_configured_2
   tenant: TENANT1
+- id: 500
+  name: VARPv6_not_configured_3
+  tenant: TENANT1
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
@@ -151,7 +162,7 @@ vlan_interfaces:
   tenant: TENANT1
   description: VARPv6_configured_1
   shutdown: false
-  ipv6_address: 2000:1000::2/64
+  ipv6_address: 2001:db8::2/64
   ipv6_virtual_router_addresses:
   - fe80::1
   vrf: VRF1
@@ -174,6 +185,14 @@ vlan_interfaces:
   shutdown: false
   ipv6_enable: false
   vrf: VRF1
+- name: Vlan500
+  tenant: TENANT1
+  description: VARPv6_not_configured_3
+  shutdown: false
+  ipv6_enable: false
+  ipv6_address_virtuals:
+  - 2001:db8::1/64
+  vrf: VRF1
 vxlan_interface:
   Vxlan1:
     description: varpv6_VTEP
@@ -189,6 +208,8 @@ vxlan_interface:
         vni: 10300
       - id: 400
         vni: 10400
+      - id: 500
+        vni: 10500
       vrfs:
       - name: VRF1
         vni: 1
