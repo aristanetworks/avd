@@ -1209,6 +1209,8 @@ vxlan_interface:
         vni: 40
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
+  ip_address: 10.255.1.11
 - name: Tenant_A_OSPF
+  ip_address: 10.255.11.11
 metadata:
   platform: 7280R

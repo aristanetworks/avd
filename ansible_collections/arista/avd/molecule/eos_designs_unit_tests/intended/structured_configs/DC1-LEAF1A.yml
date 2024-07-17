@@ -587,5 +587,6 @@ vxlan_interface:
         vni: 41
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
+  ip_address: 10.255.1.9
 metadata:
   platform: VEOS

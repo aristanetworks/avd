@@ -41,7 +41,7 @@ interface Management1
 ### Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address | Source NAT IPV6 Address |
-| -------------- | --------------------- |
+| -------------- | --------------------- | ----------------------- |
 | TEST_01 | 1.1.1.1 | - |
 | TEST_02 | 1.1.1.2 | - |
 | TEST_03 | - | 2001:db8:85a3::8a2e:370:7334 |

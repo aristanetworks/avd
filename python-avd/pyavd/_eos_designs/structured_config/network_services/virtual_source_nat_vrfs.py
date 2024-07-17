@@ -46,7 +46,7 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
                 primary_key="name",
                 new_dict={
                     "name": vrf,
-                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0] if "ipv6_address" in loopback_interface else None,
+                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0] if "ip_address" in loopback_interface else None,
                     "ipv6_address": loopback_interface["ipv6_address"].split("/", maxsplit=1)[0] if "ipv6_address" in loopback_interface else None,
                 },
                 context="virtual_source_nat_vrfs",

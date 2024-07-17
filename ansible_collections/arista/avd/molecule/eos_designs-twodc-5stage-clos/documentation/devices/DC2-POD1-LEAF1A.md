@@ -751,14 +751,16 @@ vrf instance vrf_with_loopbacks_from_pod_pools
 ### Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address | Source NAT IPV6 Address |
-| -------------- | --------------------- |
-| vrf_with_loopbacks_from_overlapping_pool | - | - |
-| vrf_with_loopbacks_from_pod_pools | - | - |
+| -------------- | --------------------- | ----------------------- |
+| vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3 | - |
+| vrf_with_loopbacks_from_pod_pools | 10.101.201.3 | - |
 
 ### Virtual Source NAT Configuration
 
 ```eos
 !
+ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.3
+ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.201.3
 ```
 
 ## EOS CLI Device Configuration

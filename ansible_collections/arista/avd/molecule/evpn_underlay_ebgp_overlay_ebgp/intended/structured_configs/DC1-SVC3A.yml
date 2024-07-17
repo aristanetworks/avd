@@ -1393,5 +1393,6 @@ vxlan_interface:
         vni: 31
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
+  ip_address: 10.255.1.12
 metadata:
   platform: 7050SX3

@@ -948,12 +948,14 @@ vrf instance VRF11
 ### Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address | Source NAT IPV6 Address |
-| -------------- | --------------------- |
-| VRF10 | - | - |
-| VRF11 | - | - |
+| -------------- | --------------------- | ----------------------- |
+| VRF10 | 10.255.10.3 | - |
+| VRF11 | 10.255.11.3 | - |
 
 ### Virtual Source NAT Configuration
 
 ```eos
 !
+ip address virtual source-nat vrf VRF10 address 10.255.10.3
+ip address virtual source-nat vrf VRF11 address 10.255.11.3
 ```

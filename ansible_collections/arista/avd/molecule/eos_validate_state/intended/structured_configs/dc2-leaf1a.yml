@@ -461,6 +461,8 @@ vxlan_interface:
         vni: 11
 virtual_source_nat_vrfs:
 - name: VRF10
+  ip_address: 10.255.10.13
 - name: VRF11
+  ip_address: 10.255.11.13
 metadata:
   platform: vEOS-lab
