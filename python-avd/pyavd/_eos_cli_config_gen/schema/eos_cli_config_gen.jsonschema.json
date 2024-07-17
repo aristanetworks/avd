@@ -6024,17 +6024,17 @@
                 "description": "Map packets from one VLAN to another.\nWarning: This should not be combined with `ethernet_interfaces[].vlan_translations`.",
                 "type": "object",
                 "properties": {
+                  "required": {
+                    "type": "boolean",
+                    "description": "Drop the ingress packets that do not match any VLAN mapping.",
+                    "title": "Required"
+                  },
                   "direction_in": {
                     "type": "array",
                     "description": "Map ingress packets only.",
                     "items": {
                       "type": "object",
                       "properties": {
-                        "required": {
-                          "type": "boolean",
-                          "description": "Drop the packets that do not match any VLAN mapping.",
-                          "title": "Required"
-                        },
                         "from": {
                           "type": "integer",
                           "minimum": 1,
@@ -16799,17 +16799,17 @@
                 "description": "Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.",
                 "type": "object",
                 "properties": {
+                  "required": {
+                    "type": "boolean",
+                    "description": "Drop the ingress packets that do not match any VLAN mapping.",
+                    "title": "Required"
+                  },
                   "direction_in": {
                     "type": "array",
                     "description": "Map ingress packets only.",
                     "items": {
                       "type": "object",
                       "properties": {
-                        "required": {
-                          "type": "boolean",
-                          "description": "Drop the packets that do not match any VLAN mapping.",
-                          "title": "Required"
-                        },
                         "from": {
                           "type": "integer",
                           "minimum": 1,

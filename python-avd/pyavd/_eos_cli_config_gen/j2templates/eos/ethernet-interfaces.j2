@@ -174,6 +174,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.phone.trunk is arista.avd.defined %}
    switchport phone trunk {{ ethernet_interface.switchport.phone.trunk }}
 {%     endif %}
+{%     if ethernet_interface.switchport.vlan_translations.required is arista.avd.defined(true) %}
+   switchport vlan translation in required
+{%     endif %}
 {%     if ethernet_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ ethernet_interface.switchport.dot1q.vlan_tag }}
 {%     endif %}
@@ -227,9 +230,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.vlan_translations.direction_in is arista.avd.defined %}
 {%         for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_in %}
 {%             set vlan_translation_in_cli = 'switchport vlan translation in' %}
-{%             if vlan_translation.required is arista.avd.defined(true) %}
-{%                 set vlan_translation_in_cli = vlan_translation_in_cli ~ ' required' %}
-{%             elif vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%             if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
 {%                 set vlan_translation_in_cli = 'switchport vlan translation in ' ~  vlan_translation.from %}
 {%                 if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
 {%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' dot1q-tunnel' %}

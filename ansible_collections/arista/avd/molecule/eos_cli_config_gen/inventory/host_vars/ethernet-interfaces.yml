@@ -54,8 +54,8 @@ ethernet_interfaces:
       dot1q:
         ethertype: 1536
       vlan_translations:
+        required: true
         direction_in:
-          - required: true
           - from: 37
             to: 49
             inner_vlan_from: 56

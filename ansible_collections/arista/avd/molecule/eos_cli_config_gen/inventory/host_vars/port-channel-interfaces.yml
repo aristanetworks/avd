@@ -134,8 +134,8 @@ port_channel_interfaces:
         vlan_tag: required
       source_interface: tx multicast
       vlan_translations:
+        required: true
         direction_in:
-          - required: true
           - from: 37
             to: 49
             inner_vlan_from: 56

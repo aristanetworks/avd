@@ -280,9 +280,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `port_channel_interfaces[].mode` |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "port_channel_interfaces.[].switchport.pvlan_mapping") | String |  |  |  | Secondary VLAN IDs of the private VLAN mapping.<br>Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "port_channel_interfaces.[].switchport.vlan_translations") | Dictionary |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.required") | Boolean |  |  |  | Drop the ingress packets that do not match any VLAN mapping. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in") | List, items: Dictionary |  |  |  | Map ingress packets only. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].required") | Boolean |  |  |  | Drop the packets that do not match any VLAN mapping. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].from") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].from") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].dot1q_tunnel") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].inner_vlan_from") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map from. |
@@ -864,14 +864,14 @@
           # Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.
           vlan_translations:
 
+            # Drop the ingress packets that do not match any VLAN mapping.
+            required: <bool>
+
             # Map ingress packets only.
             direction_in:
 
-                # Drop the packets that do not match any VLAN mapping.
-              - required: <bool>
-
                 # VLAN ID or range of VLAN IDs to map from.
-                from: <int; 1-4094>
+              - from: <int; 1-4094>
 
                 # VLAN ID to map to.
                 to: <int; 1-4094>

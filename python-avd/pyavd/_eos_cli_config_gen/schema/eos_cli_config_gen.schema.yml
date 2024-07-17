@@ -3671,15 +3671,16 @@ keys:
                 Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
               type: dict
               keys:
+                required:
+                  type: bool
+                  description: Drop the ingress packets that do not match any VLAN
+                    mapping.
                 direction_in:
                   type: list
                   description: Map ingress packets only.
                   items:
                     type: dict
                     keys:
-                      required:
-                        type: bool
-                        description: Drop the packets that do not match any VLAN mapping.
                       from:
                         type: int
                         convert_types:
@@ -9988,15 +9989,16 @@ keys:
               description: 'Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.'
               type: dict
               keys:
+                required:
+                  type: bool
+                  description: Drop the ingress packets that do not match any VLAN
+                    mapping.
                 direction_in:
                   type: list
                   description: Map ingress packets only.
                   items:
                     type: dict
                     keys:
-                      required:
-                        type: bool
-                        description: Drop the packets that do not match any VLAN mapping.
                       from:
                         type: int
                         min: 1

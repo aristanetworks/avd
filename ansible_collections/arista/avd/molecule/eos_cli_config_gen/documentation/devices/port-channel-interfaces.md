@@ -515,6 +515,7 @@ interface Port-Channel100
    switchport trunk native vlan tag
    switchport phone vlan 110
    switchport phone trunk tagged
+   switchport vlan translation in required
    switchport dot1q vlan tag required
    switchport trunk allowed vlan 10-11
    switchport mode dot1q-tunnel
@@ -525,7 +526,6 @@ interface Port-Channel100
    switchport vlan translation 12 20
    switchport vlan translation 24 inner 78 network 46
    switchport vlan translation 43 dot1q-tunnel 30
-   switchport vlan translation in required
    switchport vlan translation in 37 inner 56 49
    switchport vlan translation in 23 dot1q-tunnel 45
    switchport vlan translation out 10 45 inner 34
