@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate
+from ...._utils import append_if_not_duplicate, strip_null_from_data
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -46,15 +46,16 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
                 primary_key="name",
                 new_dict={
                     "name": vrf,
-                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
+                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0] if "ipv6_address" in loopback_interface else None,
+                    "ipv6_address": loopback_interface["ipv6_address"].split("/", maxsplit=1)[0] if "ipv6_address" in loopback_interface else None,
                 },
                 context="virtual_source_nat_vrfs",
                 context_keys=["name"],
                 ignore_same_dict=True,
-                ignore_keys={"ip_address"},
+                ignore_keys={"ip_address", "ipv6_address"},
             )
 
         if virtual_source_nat_vrfs:
-            return virtual_source_nat_vrfs
+            return strip_null_from_data(virtual_source_nat_vrfs)
 
         return None

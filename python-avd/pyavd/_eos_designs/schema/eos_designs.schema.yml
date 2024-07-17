@@ -6110,6 +6110,16 @@ $defs:
                       are set.
 
                       '
+                  loopback_ipv6_range:
+                    type: str
+                    description: 'IPv6_address/Mask.
+
+                      Loopback ipv6 range, a unique ipv6 is derived from this ranged
+                      and assignedto each l3 leaf based on it''s unique id.
+
+                      Loopback is not created unless loopback_ipv6_range is set.
+
+                      '
                   loopback_ip_pools:
                     type: list
                     description: 'For inventories with multiple PODs a loopback range
@@ -6129,6 +6139,9 @@ $defs:
                         ipv4_pool:
                           type: str
                           description: IPv4_address/Mask.
+                        ipv6_pool:
+                          type: str
+                          description: IPv6_address/Mask.
               ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings

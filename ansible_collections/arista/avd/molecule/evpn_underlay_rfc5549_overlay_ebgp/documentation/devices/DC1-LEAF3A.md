@@ -1247,15 +1247,14 @@ vrf instance Tenant_C_OP_Zone
 
 ### Virtual Source NAT Summary
 
-| Source NAT VRF | Source NAT IP Address |
+| Source NAT VRF | Source NAT IP Address | Source NAT IPV6 Address |
 | -------------- | --------------------- |
-| Tenant_A_OP_Zone | 10.255.1.12 |
+| Tenant_A_OP_Zone | - | - |
 
 ### Virtual Source NAT Configuration
 
 ```eos
 !
-ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.12
 ```
 
 ## Platform

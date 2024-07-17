@@ -1285,23 +1285,14 @@ vxlan_interface:
         multicast_group: 232.0.96.50
 virtual_source_nat_vrfs:
 - name: TEN_C_L3_MULTICAST_DISABLED_330_331
-  ip_address: 10.255.3.5
 - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-  ip_address: 10.255.1.5
 - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-  ip_address: 10.255.2.5
 - name: TEN_D_L3_MULTICAST_DISABLED_240_241
-  ip_address: 10.255.42.5
 - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-  ip_address: 10.255.41.5
 - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-  ip_address: 10.255.55.5
 - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-  ip_address: 10.255.60.5
 - name: TEN_E_L3_MULTICAST_TRANSIT
-  ip_address: 10.255.52.5
 - name: TEN_E_PEG_L3_MULTICAST_ENABLED
-  ip_address: 10.255.51.5
 router_pim_sparse_mode:
   vrfs:
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE

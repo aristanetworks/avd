@@ -10,5 +10,8 @@
 {%         if vrf.ip_address is arista.avd.defined %}
 ip address virtual source-nat vrf {{ vrf.name }} address {{ vrf.ip_address }}
 {%         endif %}
+{%         if vrf.ipv6_address is arista.avd.defined %}
+ipv6 address virtual source-nat vrf {{ vrf.name }} address {{ vrf.ipv6_address }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

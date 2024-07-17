@@ -509,7 +509,7 @@ interface Port-Channel19
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
+| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 2001:db8:1::3/128 |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | - |
 
 #### Loopback Interfaces Device Configuration
@@ -537,6 +537,7 @@ interface Loopback101
    no shutdown
    vrf vrf_with_loopbacks_from_pod_pools
    ip address 10.101.101.5/32
+   ipv6 address 2001:db8:1::3/128
 !
 interface Loopback102
    description vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
@@ -1179,19 +1180,18 @@ vrf instance vrf_with_loopbacks_from_pod_pools
 
 ### Virtual Source NAT Summary
 
-| Source NAT VRF | Source NAT IP Address |
+| Source NAT VRF | Source NAT IP Address | Source NAT IPV6 Address |
 | -------------- | --------------------- |
-| vrf_with_loopbacks_dc1_pod1_only | 10.102.101.5 |
-| vrf_with_loopbacks_from_overlapping_pool | 10.100.0.5 |
-| vrf_with_loopbacks_from_pod_pools | 10.101.101.5 |
+| vrf_with_loopbacks_dc1_pod1_only | - | - |
+| vrf_with_loopbacks_from_overlapping_pool | - | - |
+| vrf_with_loopbacks_from_pod_pools | 10.101.101.5 | 2001:db8:1::3 |
 
 ### Virtual Source NAT Configuration
 
 ```eos
 !
-ip address virtual source-nat vrf vrf_with_loopbacks_dc1_pod1_only address 10.102.101.5
-ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.5
 ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.101.5
+ipv6 address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 2001:db8:1::3
 ```
 
 ## EOS CLI Device Configuration

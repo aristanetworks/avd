@@ -32,9 +32,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback") | Integer |  |  | Min: 2<br>Max: 2100 | Loopback interface number, required when vtep_diagnotics defined.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_description</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_description") | String |  |  |  | Provide a custom description for loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ip_range</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_range") | String |  |  |  | IPv4_address/Mask.<br>Loopback ip range, a unique ip is derived from this ranged and assignedto each l3 leaf based on it's unique id.<br>Loopback is not created unless loopback_ip_range or loopback_ip_pools are set.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_range</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ipv6_range") | String |  |  |  | IPv6_address/Mask.<br>Loopback ipv6 range, a unique ipv6 is derived from this ranged and assignedto each l3 leaf based on it's unique id.<br>Loopback is not created unless loopback_ipv6_range is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ip_pools</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools") | List, items: Dictionary |  |  |  | For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.<br>This only takes effect when loopback_ip_range is not defined, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;pod</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools.[].pod") | String |  |  |  | POD name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools.[].ipv6_pool") | String |  |  |  | IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_routes</samp>](## "<network_services_keys.name>.[].vrfs.[].static_routes") | List, items: Dictionary |  |  |  | List of static routes for v4 and/or v6.<br>This will create static routes inside the tenant VRF.<br>If nodes are not specified, all l3leafs that carry the VRF will also be applied the static routes.<br>If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF.<br>This automatic behavior can be overridden non-selectively with the redistribute_static knob for the VRF.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination_address_prefix</samp>](## "<network_services_keys.name>.[].vrfs.[].static_routes.[].destination_address_prefix") | String |  |  |  | IPv4_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gateway</samp>](## "<network_services_keys.name>.[].vrfs.[].static_routes.[].gateway") | String |  |  |  | IPv4_address. |
@@ -186,6 +188,11 @@
               # Loopback is not created unless loopback_ip_range or loopback_ip_pools are set.
               loopback_ip_range: <str>
 
+              # IPv6_address/Mask.
+              # Loopback ipv6 range, a unique ipv6 is derived from this ranged and assignedto each l3 leaf based on it's unique id.
+              # Loopback is not created unless loopback_ipv6_range is set.
+              loopback_ipv6_range: <str>
+
               # For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
               # This only takes effect when loopback_ip_range is not defined, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set).
               loopback_ip_pools:
@@ -195,6 +202,9 @@
 
                   # IPv4_address/Mask.
                   ipv4_pool: <str>
+
+                  # IPv6_address/Mask.
+                  ipv6_pool: <str>
 
             # List of static routes for v4 and/or v6.
             # This will create static routes inside the tenant VRF.
