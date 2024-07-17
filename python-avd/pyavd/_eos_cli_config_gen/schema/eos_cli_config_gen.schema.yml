@@ -17429,6 +17429,11 @@ keys:
           description: VRF Name.
           convert_types:
           - int
+        underlay_vrf:
+          type: str
+          description: Underlay VRF Name.
+          convert_types:
+          - int
         ip_address:
           type: str
           format: ipv4_cidr

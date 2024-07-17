@@ -813,10 +813,10 @@ interface Loopback1
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
-| Tunnel3 | test dual stack | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
-| Tunnel4 | test no tcp_mss | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Tunnel3 | test dual stack | default | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
+| Tunnel4 | test no tcp_mss | default | default | 1500 | - | - | - | Ethernet42 | 1.1.1.1 | - | - |
 
 ##### IPv4
 

@@ -67,6 +67,9 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.destination is arista.avd.defined %}
    tunnel destination {{ tunnel_interface.destination }}
 {%     endif %}
+{%     if tunnel_interface.underlay_vrf is arista.avd.defined %}
+   tunnel underlay vrf {{ tunnel_interface.underlay_vrf }}
+{%     endif %}
 {%     if tunnel_interface.path_mtu_discovery is arista.avd.defined(true) %}
    tunnel path-mtu-discovery
 {%     endif %}
