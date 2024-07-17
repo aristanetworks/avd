@@ -82,17 +82,15 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         loopback_ipv4_pool = ""
         loopback_ipv6_pool = ""
+        pod_name = self.shared_utils.pod_name
+        loopback_ip_pools = get(vrf, "vtep_diagnostic.loopback_ip_pools")
         if (loopback_ipv4_pool := get(vrf, "vtep_diagnostic.loopback_ip_range")) is None:
-            pod_name = self.shared_utils.pod_name
-            loopback_ip_pools = get(vrf, "vtep_diagnostic.loopback_ip_pools")
             if pod_name and loopback_ip_pools:
                 loopback_ipv4_pool = get_item(loopback_ip_pools, "pod", pod_name, default={}).get("ipv4_pool")
 
         if (loopback_ipv6_pool := get(vrf, "vtep_diagnostic.loopback_ipv6_range")) is None:
-            pod_name = self.shared_utils.pod_name
-            loopback_ipv6_pools = get(vrf, "vtep_diagnostic.loopback_ip_pools")
-            if pod_name and loopback_ipv6_pools:
-                loopback_ipv6_pool = get_item(loopback_ipv6_pools, "pod", pod_name, default={}).get("ipv6_pool")
+            if pod_name and loopback_ip_pools:
+                loopback_ipv6_pool = get_item(loopback_ip_pools, "pod", pod_name, default={}).get("ipv6_pool")
 
         if not loopback_ipv4_pool and not loopback_ipv6_pool:
             return None
