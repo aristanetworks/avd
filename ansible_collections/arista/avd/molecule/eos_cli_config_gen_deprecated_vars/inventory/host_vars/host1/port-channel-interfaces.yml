@@ -30,6 +30,14 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
+  # Testing deprecated filter plugins to be remove in AVD 5.0.0
+  Port-Channel30:
+    description: deprecate_filters_testing
+    esi: "{{ '0303:0202:0101' | arista.avd.generate_esi('deaf:beed:') }}"
+    rt: "{{ '0303:0202:0101' | arista.avd.generate_route_target }}"
+    lacp_id: "{{ '0303:0202:0101' | arista.avd.generate_lacp_id }}"
+
+
   Port-Channel51:
     description: ipv6_prefix
     vlans: 1-500
