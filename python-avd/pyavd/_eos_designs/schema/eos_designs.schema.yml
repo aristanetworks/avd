@@ -6104,7 +6104,7 @@ $defs:
                     description: 'IPv4_address/Mask.
 
                       Loopback ip range, a unique ip is derived from this ranged and
-                      assignedto each l3 leaf based on it''s unique id.
+                      assigned to each l3 leaf based on it''s unique id.
 
                       Loopback is not created unless loopback_ip_range or loopback_ip_pools
                       are set.
@@ -6115,9 +6115,10 @@ $defs:
                     description: 'IPv6_address/Mask.
 
                       Loopback ipv6 range, a unique ipv6 is derived from this ranged
-                      and assignedto each l3 leaf based on it''s unique id.
+                      and assigned to each l3 leaf based on it''s unique id.
 
-                      Loopback is not created unless loopback_ipv6_range is set.
+                      Loopback is not created unless loopback_ipv6_range or loopback_ip_pools
+                      are set.
 
                       '
                   loopback_ip_pools:
@@ -6126,7 +6127,7 @@ $defs:
                       can be set per POD to avoid overlaps.
 
                       This only takes effect when loopback_ip_range is not defined,
-                      ptional (loopback is not created unless loopback_ip_range or
+                      optional (loopback is not created unless loopback_ip_range or
                       loopback_ip_pools are set).
 
                       '
