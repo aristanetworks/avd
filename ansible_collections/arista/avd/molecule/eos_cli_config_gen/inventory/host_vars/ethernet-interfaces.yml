@@ -1363,6 +1363,7 @@ ethernet_interfaces:
           eap_response: success
           action:
             traffic_allow_vlan: 10
+            traffic_allow_access_list: acl1
           phone_action:
             apply_cached_results: true
             cached_results_timeout:

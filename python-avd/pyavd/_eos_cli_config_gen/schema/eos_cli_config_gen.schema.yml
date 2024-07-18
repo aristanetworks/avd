@@ -1563,6 +1563,7 @@ keys:
           delimiter:
             type: str
             description: Delimiter to use in MAC address string.
+            required: true
             valid_values:
             - colon
             - hyphen
@@ -1571,6 +1572,7 @@ keys:
           mac_string_letter_case:
             type: str
             description: MAC address string in lowercase/uppercase.
+            required: true
             valid_values:
             - lowercase
             - uppercase
@@ -3129,22 +3131,8 @@ keys:
                       - disabled
                     action:
                       type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action
                       keys:
-                        apply_cached_results:
-                          type: bool
-                          $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/apply_cached_results
-                        cached_results_timeout:
-                          type: dict
-                          $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/cached_results_timeout
-                        apply_alternate:
-                          type: bool
-                          $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/apply_alternate
-                        traffic_allow:
-                          type: bool
-                          $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/traffic_allow
-                        traffic_allow_vlan:
-                          type: int
-                          $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action/keys/traffic_allow_vlan
                         traffic_allow_access_list:
                           type: str
                           description: Name of standard access-list to apply when

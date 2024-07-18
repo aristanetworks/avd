@@ -386,12 +386,16 @@ interface {{ ethernet_interface.name }}
 {%                                     set action_apply_config = action_apply_config ~ " timeout " ~ ethernet_interface.dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration ~ " " ~ ethernet_interface.dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit %}
 {%                                 endif %}
 {%                             endif %}
-{%                             if ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow is arista.avd.defined(true) %}
+{%                             if ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow is arista.avd.defined(true) or
+                                   ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined or
+                                   ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_access_list is arista.avd.defined %}
 {%                                 set traffic = "traffic allow" %}
-{%                             elif ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
-{%                                 set traffic = "traffic allow vlan " ~ ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_vlan %}
-{%                             elif ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_access_list is arista.avd.defined %}
-{%                                 set traffic = "traffic allow access-list " ~ ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_access_list %}
+{%                                 if ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
+{%                                     set traffic = traffic ~ " vlan " ~ ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_vlan %}
+{%                                 endif %}
+{%                                 if ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_access_list is arista.avd.defined %}
+{%                                     set traffic = traffic ~ " access-list " ~ ethernet_interface.dot1x.aaa.unresponsive[action.name].traffic_allow_access_list %}
+{%                                 endif %}
 {%                             endif %}
 {%                             if ethernet_interface.dot1x.aaa.unresponsive[action.name].apply_alternate is arista.avd.defined(true) and action_apply_config is arista.avd.defined and traffic is arista.avd.defined %}
 {%                                 set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config ~ " else " ~ traffic %}

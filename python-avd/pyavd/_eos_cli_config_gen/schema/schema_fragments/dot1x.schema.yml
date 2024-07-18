@@ -40,6 +40,7 @@ keys:
           delimiter:
             type: str
             description: Delimiter to use in MAC address string.
+            required: true
             valid_values:
               - colon
               - hyphen
@@ -48,6 +49,7 @@ keys:
           mac_string_letter_case:
             type: str
             description: MAC address string in lowercase/uppercase.
+            required: true
             valid_values:
               - lowercase
               - uppercase
