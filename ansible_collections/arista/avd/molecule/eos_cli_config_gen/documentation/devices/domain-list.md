@@ -38,13 +38,13 @@ interface Management1
 
 #### Domains List
 
-- Domain1
-- Domain2
+- domain1.local
+- domain2.local
 
 #### IP Domain-list Device Configuration
 
 ```eos
-ip domain-list Domain1
-ip domain-list Domain2
+ip domain-list domain1.local
+ip domain-list domain2.local
 !
 ```

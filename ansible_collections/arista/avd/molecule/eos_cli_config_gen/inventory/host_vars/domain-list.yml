@@ -1,4 +1,4 @@
 ### Domain List ###
 domain_list:
-  - Domain1
-  - Domain2
+  - domain1.local
+  - domain2.local
