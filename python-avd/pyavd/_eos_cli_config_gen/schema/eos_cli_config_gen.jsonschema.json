@@ -870,6 +870,14 @@
                     "description": "Destination prefix set name.",
                     "title": "Dest Prefix Set Name"
                   },
+                  "dscp": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "DSCP values or ranges.\nValid values are integer between 0 and 63 as well as\ncs0 to cs7, af11-13, af21-23, af31-33 and af41-af43 and ef"
+                    },
+                    "title": "DSCP"
+                  },
                   "protocols": {
                     "type": "array",
                     "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",

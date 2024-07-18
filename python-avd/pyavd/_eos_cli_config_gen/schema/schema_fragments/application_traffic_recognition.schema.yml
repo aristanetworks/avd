@@ -95,6 +95,16 @@ keys:
                 dest_prefix_set_name:
                   type: str
                   description: Destination prefix set name.
+                dscp:
+                  type: list
+                  items:
+                    type: str
+                    convert_types:
+                      - int
+                    description: |-
+                      DSCP values or ranges.
+                      Valid values are integer between 0 and 63 as well as
+                      cs0 to cs7, af11-13, af21-23, af31-33 and af41-af43 and ef
           l4_applications:
             type: list
             description: List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).
