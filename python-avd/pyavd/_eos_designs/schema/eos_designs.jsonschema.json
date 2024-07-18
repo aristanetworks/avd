@@ -31037,7 +31037,7 @@
                 "properties": {
                   "payload": {
                     "type": "string",
-                    "description": "Mirroring GRE payload type configuration commands.",
+                    "description": "Mirroring GRE payload type.",
                     "enum": [
                       "full-packet",
                       "inner-packet"
