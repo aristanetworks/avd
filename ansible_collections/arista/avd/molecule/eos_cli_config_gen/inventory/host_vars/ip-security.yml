@@ -1,12 +1,13 @@
 ### IP Security ###
 ip_security:
   ike_policies:
+    # Testing sorting
+    - name: IKE-2
     - name: IKE-1
       local_id: 192.168.100.1
       ike_lifetime: 24
       encryption: aes256
       dh_group: 20
-    - name: IKE-2
     - name: IKE-FQDN
       local_id_fqdn: fqdn.local
     - name: IKE-UFQDN
@@ -14,6 +15,8 @@ ip_security:
       # local_id won't be rendered as local_id_fqdn takes precedence
       local_id: 192.168.42.42
   sa_policies:
+    # Testing sorting
+    - name: SA-4
     - name: SA-1
       esp:
         encryption: aes128
@@ -44,6 +47,8 @@ ip_security:
       esp:
         integrity: sha384
   profiles:
+    # testing sorting
+    - name: Profile-4
     - name: Profile-1
       ike_policy: IKE-1
       sa_policy: SA-1
