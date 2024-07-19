@@ -12,6 +12,14 @@ dhcp_servers:
           - code: 66
             array_ipv4_address: [1.1.1.1, 2.2.2.2]
     disabled: false
+    lease_time_ipv4:
+      days: 10
+      hours: 10
+      minutes: 10
+    lease_time_ipv6:
+      days: 12
+      hours: 12
+      minutes: 12
     dns_domain_name_ipv4: testv4.com
     dns_domain_name_ipv6: testv6.com
     subnets:
@@ -30,7 +38,13 @@ dhcp_servers:
           hours: 0
           minutes: 10
         default_gateway: 10.0.0.1
-
+        reservations:
+          - mac_address: 1a1b.1c1d.1e1f
+            hostname: host1
+            ipv4_address: 10.0.0.1
+          - mac_address: 2a2b.2c2d.2e2f
+            hostname: host2
+            ipv6_address: ff06::c3
   - vrf: default
     dns_servers_ipv4:
       - 10.0.0.1

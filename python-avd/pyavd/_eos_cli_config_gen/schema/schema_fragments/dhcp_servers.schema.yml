@@ -19,6 +19,48 @@ keys:
           description: VRF in which to configure the DHCP server, use `default` to indicate default VRF.
           convert_types:
           - int
+        lease_time_ipv4:
+          type: dict
+          keys:
+            days:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 2000
+            hours:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 23
+            minutes:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 59
+        lease_time_ipv6:
+          type: dict
+          keys:
+            days:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 2000
+            hours:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 23
+            minutes:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 59
         dns_domain_name_ipv4:
           type: str
         dns_domain_name_ipv6:
@@ -102,6 +144,7 @@ keys:
             type: dict
             keys:
               subnet:
+                description: IPv4/IPv6 subnet.
                 type: str
                 required: true
               name:
@@ -149,3 +192,24 @@ keys:
                     max: 59
                     convert_types:
                     - str
+              reservations:
+                description: DHCP client reservations.
+                type: list
+                primary_key: mac_address
+                items:
+                  type: dict
+                  keys:
+                    mac_address:
+                      type: str
+                      description: Ethernet address in format - H.H.H
+                    hostname:
+                      type: str
+                    ipv4_address:
+                      type: str
+                      description: This setting can be configured only when the subnet is ipv4.
+                    ipv6_address:
+                      type: str
+                      description: This setting can be configured only when the subnet is ipv6.
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.
