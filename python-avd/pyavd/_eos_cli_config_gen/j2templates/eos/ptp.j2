@@ -37,6 +37,9 @@ ptp mode {{ ptp.mode }} one-step
 ptp mode {{ ptp.mode }}
 {%         endif %}
 {%     endif %}
+{%     if ptp.profile is arista.avd.defined %}
+ptp profile {{ ptp.profile }}
+{%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast
 {%     endif %}
