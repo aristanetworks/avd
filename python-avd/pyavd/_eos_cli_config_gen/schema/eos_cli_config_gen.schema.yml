@@ -2589,6 +2589,20 @@ keys:
               valid_values:
               - e2e
               - p2p
+            profile:
+              type: dict
+              keys:
+                g8275.1:
+                  type: dict
+                  keys:
+                    destination:
+                      type: dict
+                      keys:
+                        mac_address:
+                          type: str
+                          valid_values:
+                          - forwardable
+                          - non-forwardable
             sync_message:
               type: dict
               keys:
@@ -9045,6 +9059,20 @@ keys:
               valid_values:
               - e2e
               - p2p
+            profile:
+              type: dict
+              keys:
+                g8275_1:
+                  type: dict
+                  keys:
+                    destination:
+                      type: dict
+                      keys:
+                        mac_address:
+                          type: str
+                          valid_values:
+                          - forwardable
+                          - non-forwardable
             sync_message:
               type: dict
               keys:
@@ -9445,6 +9473,11 @@ keys:
         - gptp
         - ordinarymaster
         - p2ptransparent
+      profile:
+        type: str
+        valid_values:
+        - g8275.1
+        - g8275.2
       mode_one_step:
         type: bool
       forward_unicast:
