@@ -123,8 +123,8 @@ mpls ldp
    no shutdown
    transport-address interface Loopback0
 !
-   mpls icmp fragmentation-needed tunneling
-   mpls icmp ttl-exceeded tunneling
+mpls icmp fragmentation-needed tunneling
+mpls icmp ttl-exceeded tunneling
 ```
 
 ### MPLS Interfaces
