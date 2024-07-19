@@ -1459,7 +1459,7 @@ keys:
                     - int
                   description: |-
                     VLAN ID or range(s) of VLAN IDs.
-                    Warning: This should not be combined with `ethernet_interfaces[].mode = trunk`.
+                    Warning: This should not be combined with `ethernet_interfaces[].mode = trunk` and `ethernet_interface[].vlans`.
                 native_vlan:
                   type: int
                   convert_types:

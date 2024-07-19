@@ -36,7 +36,6 @@ ethernet_interfaces:
     switchport:
       port_security:
         enabled: true
-      enabled: false
       trunk:
         allowed_vlan: 10-11
         native_vlan: 5
@@ -56,6 +55,8 @@ ethernet_interfaces:
       vlan_translations:
         required: true
         direction_in:
+          - from: 10
+            to: 24
           - from: 37
             to: 49
             inner_vlan_from: 56
