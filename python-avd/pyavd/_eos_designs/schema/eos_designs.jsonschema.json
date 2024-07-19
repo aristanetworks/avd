@@ -9814,7 +9814,7 @@
                   "profile": {
                     "type": "object",
                     "properties": {
-                      "g8275.1": {
+                      "g8275_1": {
                         "type": "object",
                         "properties": {
                           "destination": {
@@ -9840,7 +9840,7 @@
                         "patternProperties": {
                           "^_.+$": {}
                         },
-                        "title": "G8275.1"
+                        "title": "G8275 1"
                       }
                     },
                     "additionalProperties": false,
@@ -15687,7 +15687,7 @@
                   "profile": {
                     "type": "object",
                     "properties": {
-                      "g8275.1": {
+                      "g8275_1": {
                         "type": "object",
                         "properties": {
                           "destination": {
@@ -15713,7 +15713,7 @@
                         "patternProperties": {
                           "^_.+$": {}
                         },
-                        "title": "G8275.1"
+                        "title": "G8275 1"
                       }
                     },
                     "additionalProperties": false,
@@ -22276,7 +22276,7 @@
                         "profile": {
                           "type": "object",
                           "properties": {
-                            "g8275.1": {
+                            "g8275_1": {
                               "type": "object",
                               "properties": {
                                 "destination": {
@@ -22302,7 +22302,7 @@
                               "patternProperties": {
                                 "^_.+$": {}
                               },
-                              "title": "G8275.1"
+                              "title": "G8275 1"
                             }
                           },
                           "additionalProperties": false,
@@ -54063,7 +54063,7 @@
                   "profile": {
                     "type": "object",
                     "properties": {
-                      "g8275.1": {
+                      "g8275_1": {
                         "type": "object",
                         "properties": {
                           "destination": {
@@ -54089,7 +54089,7 @@
                         "patternProperties": {
                           "^_.+$": {}
                         },
-                        "title": "G8275.1"
+                        "title": "G8275 1"
                       }
                     },
                     "additionalProperties": false,
