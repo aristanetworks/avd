@@ -27,7 +27,7 @@
 {%     endif %}
 {%     if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
 
-- Dynamic Authorization for TLS connections uses SSL profile - {{ radius_server.dynamic_authorization.tls_ssl_profile }}
+- Dynamic Authorization for TLS connections uses SSL profile {{ radius_server.dynamic_authorization.tls_ssl_profile }}
 {%     endif %}
 
 #### RADIUS Server Hosts

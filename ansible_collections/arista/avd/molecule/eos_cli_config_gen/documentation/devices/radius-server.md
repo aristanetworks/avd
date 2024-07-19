@@ -45,7 +45,7 @@ interface Management1
 
 - Dynamic Authorization is enabled on port 1700
 
-- Dynamic Authorization for TLS connections uses SSL profile - SSL_PROFILE
+- Dynamic Authorization for TLS connections uses SSL profile SSL_PROFILE
 
 #### RADIUS Server Hosts
 
