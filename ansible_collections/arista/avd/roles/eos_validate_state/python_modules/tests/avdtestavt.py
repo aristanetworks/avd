@@ -22,6 +22,31 @@ class AvdTestAvtPath(AvdTestBase):
 
     anta_module = "anta.tests.avt"
 
+    def _get_static_peers(self, path_groups):
+        """Extract static peers from path groups after validation.
+
+        Parameters
+        ----------
+        path_groups : list
+            A list of path group dictionaries.
+
+        Returns
+        -------
+        set
+            A set of sorted static peer router IP addresses.
+        """
+        static_peers = set()
+
+        for group_idx, path_group in enumerate(path_groups):
+            if self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="static_peers"):
+                for peer_idx, peers_data in enumerate(path_group["static_peers"]):
+                    if self.validate_data(
+                        data=peers_data, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
+                    ):
+                        static_peers.add(peers_data["router_ip"])
+
+        return sorted(static_peers)
+
     @cached_property
     def test_definition(self) -> dict | None:
         """
@@ -36,24 +61,14 @@ class AvdTestAvtPath(AvdTestBase):
             LOGGER.info("Path groups are not configured to collect AVT peer information. %s is skipped.", self.__class__.__name__)
             return None
 
-        # Retrieve AVT profiles from the structured configuration
-        avt_profiles = get(self.structured_config, "router_adaptive_virtual_topology.vrfs")
-        if not avt_profiles:
+        # Retrieve AVT vrfs from the structured configuration
+        avt_vrfs = get(self.structured_config, "router_adaptive_virtual_topology.vrfs")
+        if not avt_vrfs:
             LOGGER.info("AVT profiles are not configured for any VRF. %s is skipped.", self.__class__.__name__)
             return None
 
         # Build a set of static peers
-        static_peers = sorted(
-            {
-                peers_data["router_ip"]
-                for group_idx, path_group in enumerate(path_groups)
-                if self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="static_peers")
-                for peer_idx, peers_data in enumerate(path_group["static_peers"])
-                if self.validate_data(
-                    data=peers_data, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
-                )
-            }
-        )
+        static_peers = self._get_static_peers(path_groups)
         if not static_peers:
             LOGGER.info("No static peers are configured under router path selection. %s is skipped.", self.__class__.__name__)
             return None
@@ -76,7 +91,7 @@ class AvdTestAvtPath(AvdTestBase):
                     },
                 }
             }
-            for vrf in avt_profiles
+            for vrf in avt_vrfs
             for avt_profile in vrf["profiles"]
             for dst_address in static_peers
         ]
