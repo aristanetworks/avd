@@ -116,8 +116,8 @@ class DeviceUtilsMixin:
         return get(self.structured_config, "vxlan_interface") is not None
 
     def is_wan_vtep(self) -> bool:
-        """Check if the host is a WAN VTEP by verifying the DPS source interface."""
-        return "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface", "")
+        """Check if the host is a WAN VTEP by verifying the presence of a VXLAN interface and Dps in the source interface."""
+        return self.is_vtep() and "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface", "")
 
 
 class ValidationMixin:

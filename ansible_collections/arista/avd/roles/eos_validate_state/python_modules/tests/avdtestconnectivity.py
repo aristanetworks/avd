@@ -180,11 +180,7 @@ class AvdTestDpsReachability(AvdTestBase):
 
         anta_tests = []
 
-        # Skip the test if the host is not a VTEP (no VXLAN interface)
-        if not self.is_vtep():
-            LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
-            return None
-
+        # Skip the test if the host is not a WAN VTEP
         if not self.is_wan_vtep():
             LOGGER.info("Host is not a WAN VTEP. %s is skipped.", self.__class__.__name__)
             return None
