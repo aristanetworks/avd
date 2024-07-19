@@ -66,9 +66,18 @@ def get_requires_for_build_wheel(config_settings=None):
     print("Fetch version from ansible.avd ansible collection and insert into __init__.py")
     _insert_version()
 
-    print("Running 'make dep' to vendor various scripts and templates from arista.avd ansible collection")
+    print("Running 'make dep' to generate compiled Jinja2 templates and schemas pickle files.")
     with Popen("make dep", shell=True) as make_process:
         if make_process.wait() != 0:
             raise RuntimeError("Something went wrong during 'make dep'")
 
     return _orig.get_requires_for_build_wheel(config_settings)
+
+
+def get_requires_for_build_editable(config_settings=None):
+    print("Running 'make dep' to generate compiled Jinja2 templates and schemas pickle files.")
+    with Popen("make dep", shell=True) as make_process:
+        if make_process.wait() != 0:
+            raise RuntimeError("Something went wrong during 'make dep'")
+
+    return _orig.get_requires_for_build_editable(config_settings)

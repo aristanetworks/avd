@@ -33,7 +33,6 @@ class EthernetInterfacesMixin(UtilsMixin):
         if not (self.shared_utils.network_services_l3 or self.shared_utils.network_services_l1 or self.shared_utils.l3_interfaces):
             return None
 
-        # Using temp variables to keep the order of interfaces from Jinja
         ethernet_interfaces = []
         subif_parent_interface_names = set()
 
