@@ -16,6 +16,7 @@ ptp:
   mode: boundary
   mode_one_step: true
   forward_unicast: true
+  profile: "g8275.1"
   monitor:
     # enabled: true (default)
     threshold:
@@ -53,6 +54,10 @@ port_channel_interfaces:
       role: dynamic
       vlan: 2
       transport: layer2
+      profile:
+        g8275_1:
+          destination:
+            mac_address: forwardable
 
 ### interface
 ethernet_interfaces:
@@ -91,6 +96,10 @@ ethernet_interfaces:
         interval: 1
       role: dynamic
       transport: ipv4
+      profile:
+        g8275_1:
+          destination:
+            mac_address: non-forwardable
 # port-channel interfaces
   - name: Ethernet5
     type: port-channel-member

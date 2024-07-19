@@ -38,6 +38,7 @@ interface Management1
 ```
 
 ### PTP
+PTP Profile: g8275.1
 
 #### PTP Summary
 
@@ -58,6 +59,7 @@ ptp domain 17
 ptp message-type general dscp 36 default
 ptp message-type event dscp 46 default
 ptp mode boundary one-step
+ptp profile g8275.1
 ptp forward-unicast
 ptp monitor threshold offset-from-master 11
 ptp monitor threshold mean-path-delay 12
@@ -120,6 +122,7 @@ interface Ethernet6
    no switchport
    ip address 172.31.255.15/31
    ptp enable
+   ptp profile g8275.1 destination mac-address non-forwardable
    ptp sync-message interval 1
    ptp delay-mechanism e2e
    ptp announce interval 3
@@ -152,6 +155,7 @@ interface Port-Channel5
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
+   ptp profile g8275.1 destination mac-address forwardable
    ptp sync-message interval 1
    ptp role dynamic
    ptp vlan 2
