@@ -2592,7 +2592,7 @@ keys:
             profile:
               type: dict
               keys:
-                g8275.1:
+                g8275_1:
                   type: dict
                   keys:
                     destination:
