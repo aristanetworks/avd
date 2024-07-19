@@ -29,9 +29,9 @@ mpls ldp
 {% if mpls.icmp is arista.avd.defined %}
 !
 {%     if mpls.icmp.fragmentation_needed_tunneling is arista.avd.defined(true) %}
-   mpls icmp fragmentation-needed tunneling
+mpls icmp fragmentation-needed tunneling
 {%     endif %}
 {%     if mpls.icmp.ttl_exceeded_tunneling is arista.avd.defined(true) %}
-   mpls icmp ttl-exceeded tunneling
+mpls icmp ttl-exceeded tunneling
 {%     endif %}
 {% endif %}
