@@ -38,6 +38,7 @@ interface Management1
 ```
 
 ### PTP
+
 PTP Profile: g8275.1
 
 #### PTP Summary
