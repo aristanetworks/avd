@@ -16675,7 +16675,7 @@
                 "properties": {
                   "allowed_vlan": {
                     "type": "string",
-                    "description": "VLAN ID or range(s) of VLAN IDs (1-4094).\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk`.",
+                    "description": "VLAN ID or range(s) of VLAN IDs (1-4094).\nWarning: This should not be combined with `port_channel_interfaces.mode = trunk` and `ethernet_interface[].vlans`.",
                     "title": "Allowed VLAN"
                   },
                   "native_vlan": {

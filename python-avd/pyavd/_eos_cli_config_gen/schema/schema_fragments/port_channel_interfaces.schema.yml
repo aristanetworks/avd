@@ -923,7 +923,7 @@ keys:
                     - int
                   description: |-
                     VLAN ID or range(s) of VLAN IDs (1-4094).
-                    Warning: This should not be combined with `port_channel_interfaces.mode = trunk`.
+                    Warning: This should not be combined with `port_channel_interfaces.mode = trunk` and `ethernet_interface[].vlans`.
                 native_vlan:
                   type: int
                   convert_types:

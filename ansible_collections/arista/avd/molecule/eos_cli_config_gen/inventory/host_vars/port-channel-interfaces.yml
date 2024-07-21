@@ -136,6 +136,8 @@ port_channel_interfaces:
       vlan_translations:
         required: true
         direction_in:
+          - from: 34
+            to: 23
           - from: 37
             to: 49
             inner_vlan_from: 56
@@ -153,11 +155,11 @@ port_channel_interfaces:
             to: 30
             dot1q_tunnel: true
         direction_out:
+          - from: 34
+            to: 50
           - from: 10
             to: 45
             inner_vlan_to: 34
-          - from: 34
-            to: 50
           - from: 45
             dot1q_tunnel:
               all: true

@@ -74,11 +74,11 @@ ethernet_interfaces:
             to: 30
             dot1q_tunnel: true
         direction_out:
+          - from: 34
+            to: 50
           - from: 10
             to: 45
             inner_vlan_to: 34
-          - from: 34
-            to: 50
           - from: 45
             dot1q_tunnel:
               all: true
