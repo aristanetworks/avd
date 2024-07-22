@@ -15,7 +15,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, modes
 
 # Starting cyryptography 43.0.0, TripleDES cipher has been moved to cryptography.hazmat.decrepit module
-try
+try:
     from cryptography.hazmat.decrepit.ciphers.algorithms import TripleDES
 except ImportError:
     from cryptography.hazmat.primitives.ciphers.algorithms import TripleDES
