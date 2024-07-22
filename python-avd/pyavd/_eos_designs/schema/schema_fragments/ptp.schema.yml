@@ -30,4 +30,3 @@ keys:
       auto_clock_identity:
         type: bool
         default: true
-
