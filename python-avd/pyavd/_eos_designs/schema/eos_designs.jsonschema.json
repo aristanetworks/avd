@@ -30882,6 +30882,25 @@
                 },
                 "title": "Monitor Layer1"
               },
+              "monitor_session_default_encapsulation_gre": {
+                "type": "object",
+                "properties": {
+                  "payload": {
+                    "type": "string",
+                    "description": "Mirroring GRE payload type configuration commands.",
+                    "enum": [
+                      "full-packet",
+                      "inner-packet"
+                    ],
+                    "title": "Payload"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Monitor Session Default Encapsulation Gre"
+              },
               "monitor_sessions": {
                 "type": "array",
                 "items": {
@@ -31031,25 +31050,6 @@
                   }
                 },
                 "title": "Monitor Sessions"
-              },
-              "monitor_session_default_encapsulation_gre": {
-                "type": "object",
-                "properties": {
-                  "payload": {
-                    "type": "string",
-                    "description": "Mirroring GRE payload type configuration commands.",
-                    "enum": [
-                      "full-packet",
-                      "inner-packet"
-                    ],
-                    "title": "Payload"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "Monitor Session Default Encapsulation Gre"
               },
               "monitor_telemetry_influx": {
                 "type": "object",
