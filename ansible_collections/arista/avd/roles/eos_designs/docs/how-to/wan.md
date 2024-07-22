@@ -580,7 +580,7 @@ AVD `eos_designs` will fetch Zscaler integration information from Cloudvision.
 
 ```yaml
 # Variables used by eos_designs to connect to Cloudvision
-cv_server: <cloudvision_ip>
+cv_server:  <hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS>
 cv_token: <service account token as defined on CloudVision. This value should be using Ansible Vault>
 ```
 
