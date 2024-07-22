@@ -519,6 +519,7 @@ interface Port-Channel100
    switchport tap encapsulation gre destination 1.1.1.1 source 1.1.1.2 protocol 0x0000 strip
    switchport tap encapsulation gre protocol 0x0010 strip
    switchport tap encapsulation gre destination 2.1.1.2 protocol 0x0001 strip
+   switchport tap encapsulation gre destination 1.1.1.3 source 1.1.1.4 strip
    switchport tool mpls pop all
    switchport tool encapsulation vn-tag strip
    switchport tool encapsulation dot1br strip
@@ -541,6 +542,13 @@ interface Port-Channel100.101
    logging event link-status
    mtu 1500
    encapsulation dot1q vlan 101
+   switchport tap identity 3 inner 10
+   switchport tap mac-address dest 01:00:00:00:00:00
+   switchport tap encapsulation vxlan strip
+   switchport tool identity dot1q
+   switchport tool identity dot1q source dzgre policy
+   switchport tap truncation 120
+   switchport tool truncation
    ip address 10.1.1.3/31
 !
 interface Port-Channel100.102
