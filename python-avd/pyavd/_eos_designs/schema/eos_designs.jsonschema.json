@@ -31032,7 +31032,7 @@
                 },
                 "title": "Monitor Sessions"
               },
-              "monitor_sessions_default_encapsulation_gre": {
+              "monitor_session_default_encapsulation_gre": {
                 "type": "object",
                 "properties": {
                   "payload": {
@@ -31049,7 +31049,7 @@
                 "patternProperties": {
                   "^_.+$": {}
                 },
-                "title": "Monitor Sessions Default Encapsulation Gre"
+                "title": "Monitor Session Default Encapsulation Gre"
               },
               "monitor_telemetry_influx": {
                 "type": "object",

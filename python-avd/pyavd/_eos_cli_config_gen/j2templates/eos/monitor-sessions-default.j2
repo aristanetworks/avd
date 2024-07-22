@@ -4,6 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - monitor sessions default #}
-{% if monitor_sessions_default_encapsulation_gre.payload is arista.avd.defined %}
-monitor session default encapsulation gre payload {{ monitor_sessions_default_encapsulation_gre.payload }}
+{% if monitor_session_default_encapsulation_gre.payload is arista.avd.defined %}
+!
+monitor session default encapsulation gre payload {{ monitor_session_default_encapsulation_gre.payload }}
 {% endif %}

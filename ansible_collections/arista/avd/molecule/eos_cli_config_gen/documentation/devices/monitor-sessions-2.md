@@ -51,5 +51,6 @@ interface Management1
 #### Monitor Sessions Device Configuration
 
 ```eos
+!
 monitor session default encapsulation gre payload inner-packet
 ```
