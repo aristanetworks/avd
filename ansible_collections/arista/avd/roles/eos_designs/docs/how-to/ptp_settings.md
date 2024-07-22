@@ -40,6 +40,7 @@ PTP must be specifically enabled:
   ptp_settings:
     enabled: true
   ```
+
 - on fabric level, it can be enabled with `ptp` key. This setting is deprecated.
 
   ```yaml
@@ -193,7 +194,7 @@ If you prefer to have PTP clock identity be the system MAC-address of the switch
   ptp_settings:
     auto_clock_identity: < true | false | default -> true >
   ```
-  
+
   OR
 
   ```yaml
