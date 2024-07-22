@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - monitor sessions #}
-{% if monitor_sessions is arista.avd.defined %}
+{% if monitor_sessions is arista.avd.defined or monitor_sessions_default_encapsulation_gre is arista.avd.defined %}
 
 ### Monitor Sessions
 
