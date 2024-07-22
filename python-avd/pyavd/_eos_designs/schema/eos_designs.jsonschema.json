@@ -55384,8 +55384,6 @@
     },
     "ptp": {
       "type": "object",
-      "description": "Common PTP settings.\n`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.\nThis key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.",
-      "deprecated": true,
       "properties": {
         "enabled": {
           "type": "boolean",
