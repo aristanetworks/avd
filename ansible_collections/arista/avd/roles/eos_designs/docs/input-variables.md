@@ -1350,17 +1350,9 @@ Management interface is modified for specific platforms like modular platforms w
 roles/eos_designs/docs/tables/platform-settings.md
 --8<--
 
-## PTP
-
-See the [Configuring PTP](how-to/ptp.md) how-to for details.
-
---8<--
-roles/eos_designs/docs/tables/ptp.md
---8<--
-
 ## PTP settings
 
-See the [Configuring PTP](how-to/ptp_settings.md) how-to for details.
+See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
 --8<--
 roles/eos_designs/docs/tables/ptp_settings.md
