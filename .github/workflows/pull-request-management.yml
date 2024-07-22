@@ -141,7 +141,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -176,7 +176,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -247,7 +247,7 @@ jobs:
           cat ${{ matrix.pip_requirements }}
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -286,7 +286,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -326,7 +326,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'

@@ -29,7 +29,7 @@ jobs:
       - name: Run molecule action
         env:
           CVAAS_AAWG_CI: ${{ secrets.CVAAS_AAWG_CI }}
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -62,7 +62,7 @@ jobs:
       - name: Run molecule action
         env:
           CVAAS_AAWG_CI: ${{ secrets.CVAAS_AAWG_CI }}
-        uses: arista-netdevops-community/action-molecule-avd@v1.8
+        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
