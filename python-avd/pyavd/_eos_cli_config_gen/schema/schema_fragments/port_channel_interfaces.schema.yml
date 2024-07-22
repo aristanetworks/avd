@@ -946,11 +946,11 @@ keys:
                           source:
                             description: Source IP address of tunnel packets. Applied only when destination is defined.
                             type: str
-                          protocol:
+                          protocol: 
                             type: str
                             description: |-
                               Protocol type in GRE header.
-                              Protocol range: 0x0000-0xFFFF
+                              Protocol range: 0x0000-0xFFFF. It should be unique.
                           feature_header_length:
                             description: Feature header length in bytes.
                             type: int

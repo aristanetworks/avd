@@ -145,10 +145,10 @@ port_channel_interfaces:
               source: 1.1.1.2
               protocol: "0x0000"
             - strip: true
-              protocol: "0x0000"
+              protocol: "0x0010"
             - strip: true
               destination: 2.1.1.2
-              protocol: "0x0000"
+              protocol: "0x0001"
       tool:
         mpls_pop_all: true
         encapsulation:

@@ -3553,7 +3553,7 @@ keys:
                             type: str
                             description: 'Protocol type in GRE header.
 
-                              Protocol range: 0x0000-0xFFFF'
+                              Protocol range: 0x0000-0xFFFF. It should be unique.'
             tool:
               description: 'In tool mode, the interface operates as a tool port.
 
@@ -9622,7 +9622,7 @@ keys:
                             type: str
                             description: 'Protocol type in GRE header.
 
-                              Protocol range: 0x0000-0xFFFF'
+                              Protocol range: 0x0000-0xFFFF. It should be unique.'
                           feature_header_length:
                             description: Feature header length in bytes.
                             type: int

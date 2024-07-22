@@ -5883,7 +5883,7 @@
                             },
                             "protocol": {
                               "type": "string",
-                              "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                              "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF. It should be unique.",
                               "title": "Protocol"
                             }
                           },
@@ -16284,7 +16284,7 @@
                             },
                             "protocol": {
                               "type": "string",
-                              "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF",
+                              "description": "Protocol type in GRE header.\nProtocol range: 0x0000-0xFFFF. It should be unique.",
                               "title": "Protocol"
                             },
                             "feature_header_length": {
