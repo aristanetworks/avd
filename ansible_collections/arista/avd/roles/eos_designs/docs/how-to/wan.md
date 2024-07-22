@@ -577,17 +577,10 @@ An internet-exit policy of type `zscaler` leverages the following AVD data model
 
 AVD supports up to three tunnels (primary, secondary, tertiary).
 
-The target is for this data to be retrieved from Cloudvision through a lookup plugin for each device to determine what are the best tunnel(s) to use for a given location.
-
 ```yaml
-# Variables used by the lookup plugin to connect to Cloudvision
 cv_server: <cloudvision_ip>
 cv_token: <cloudvision_token>
-
-# Lookup plugin usage
-zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
 ```
-
 For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.
 
 The `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary has additonnal options to configure the policy parameters shared with Zscaler through Cloudvision.
