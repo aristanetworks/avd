@@ -576,10 +576,12 @@ interface Ethernet3
 An internet-exit policy of type `zscaler` leverages the following AVD data model to generate the target configuration.
 
 AVD supports up to three tunnels (primary, secondary, tertiary).
+AVD `eos_designs` will fetch Zscaler integration information from Cloudvision.
 
 ```yaml
+# Variables used by eos_designs to connect to Cloudvision
 cv_server: <cloudvision_ip>
-cv_token: <cloudvision_token>
+cv_token: <service account token as defined on CloudVision. This value should be using Ansible Vault>
 ```
 
 For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.
