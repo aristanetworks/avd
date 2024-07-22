@@ -169,6 +169,7 @@ port_channel_interfaces:
           - from: 45
             dot1q_tunnel:
               all: true
+          - from: 55
       vlan_forwarding_accept_all: true
       backup_link:
         interface: Ethernet5
@@ -321,6 +322,7 @@ port_channel_interfaces:
       - direction: both
         from: 120
         to: 130
+      - direction: in
 
   - name: Port-Channel103
     description: PVLAN Secondary Trunk

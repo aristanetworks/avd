@@ -162,8 +162,8 @@ interface {{ port_channel_interface.name }}
 {%                 endif %}
 {%             endif %}
 {%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' ' ~  vlan_translation.to %}
-{%         endif %}
    {{ vlan_translation_both_cli }}
+{%         endif %}
 {%     endfor %}
 {%     if port_channel_interface.switchport.vlan_translations.direction_in is arista.avd.defined %}
 {%         for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_in %}
@@ -176,8 +176,8 @@ interface {{ port_channel_interface.name }}
 {%                     set vlan_translation_in_cli = vlan_translation_in_cli ~ ' inner ' ~ vlan_translation.inner_vlan_from %}
 {%                 endif %}
 {%                 set vlan_translation_in_cli = vlan_translation_in_cli ~ " " ~  vlan_translation.to %}
-{%             endif %}
    {{ vlan_translation_in_cli }}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if port_channel_interface.switchport.vlan_translations.direction_out is arista.avd.defined %}
@@ -195,7 +195,9 @@ interface {{ port_channel_interface.name }}
 {%                     set vlan_translation_out_cli = vlan_translation_out_cli ~ ' dot1q-tunnel ' ~ vlan_translation.dot1q_tunnel.to %}
 {%                 endif %}
 {%             endif %}
+{%             if vlan_translation_out_cli is arista.avd.defined %}
    {{ vlan_translation_out_cli }}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}

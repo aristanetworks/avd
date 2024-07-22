@@ -89,6 +89,7 @@ ethernet_interfaces:
           - from: 45
             dot1q_tunnel:
               all: true
+          - from: 55
       vlan_forwarding_accept_all: true
       source_interface: tx
       backup_link:
@@ -456,6 +457,7 @@ ethernet_interfaces:
       - direction: both
         from: 120
         to: 130
+      - direction: in
 
   - name: Ethernet17
     description: PVLAN Secondary Trunk
