@@ -12,8 +12,6 @@ keys:
     type: str
     description: |
       `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:
-        - `cvp_instance_ips`
-        - `name_servers`
         - `ntp_settings`
         - `sflow_settings`
 
