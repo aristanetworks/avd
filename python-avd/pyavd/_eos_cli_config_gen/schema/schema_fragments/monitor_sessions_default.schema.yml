@@ -11,7 +11,7 @@ keys:
     keys:
       payload:
         type: str
-        description: Mirroring GRE payload type.
+        description: Mirroring GRE payload type configuration commands.
         valid_values:
           - full-packet
           - inner-packet
