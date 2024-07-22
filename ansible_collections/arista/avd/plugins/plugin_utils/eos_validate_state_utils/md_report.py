@@ -130,6 +130,27 @@ class MDReportBase(ABC):
         heading = "#" * heading_level + " " + heading_name
         self.mdfile.write(f"{heading}\n\n")
 
+    def safe_markdown(self, text: str | None) -> str:
+        """Escape markdown characters in the text to prevent markdown rendering issues.
+
+        Args:
+        ----------
+            text (str): The text to escape markdown characters from.
+
+        Returns
+        -------
+            str: The text with escaped markdown characters.
+        """
+        # Custom field from a TestResult object can be None
+        if text is None:
+            return ""
+
+        # Replace newlines with spaces to keep content on one line
+        text = text.replace("\n", " ")
+
+        # Replace backticks with single quotes
+        return text.replace("`", "'")
+
 
 class ValidateStateReport(MDReportBase):
     """Generate the `# Validate State Report` section of the markdown report."""
@@ -231,7 +252,7 @@ class FailedTestResultsSummary(MDReportBase):
     def generate_rows(self) -> Generator[str, None, None]:
         """Generate the rows of the failed test results table."""
         for result in self.results.failed_tests:
-            messages = ", ".join(result["messages"])
+            messages = self.safe_markdown(", ".join(result["messages"]))
             categories = ", ".join(result["categories"])
             yield (
                 f"| {result['id'] or '-'} | {result['dut'] or '-'} | {categories or '-'} | {result['test'] or '-'} |"
@@ -258,7 +279,7 @@ class AllTestResults(MDReportBase):
     def generate_rows(self) -> Generator[str, None, None]:
         """Generate the rows of the all test results table."""
         for result in self.results.all_tests:
-            messages = ", ".join(result["messages"])
+            messages = self.safe_markdown(", ".join(result["messages"]))
             categories = ", ".join(result["categories"])
             yield (
                 f"| {result['id'] or '-'} | {result['dut'] or '-'} | {categories or '-'} | {result['test'] or '-'} |"

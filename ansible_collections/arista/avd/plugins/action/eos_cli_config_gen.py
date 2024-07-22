@@ -188,7 +188,7 @@ class ActionModule(ActionBase):
                 try:
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
-                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}': '{e}'") from e
 
         if not isinstance(task_vars, dict):
             # Corner case for ansible-test where the passed task_vars is a nested chain-map

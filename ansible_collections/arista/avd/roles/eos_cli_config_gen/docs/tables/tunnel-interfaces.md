@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "tunnel_interfaces.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "tunnel_interfaces.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "tunnel_interfaces.[].vrf") | String |  |  |  | VRF Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_vrf</samp>](## "tunnel_interfaces.[].underlay_vrf") | String |  |  |  | Underlay VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "tunnel_interfaces.[].ip_address") | String |  |  | Format: ipv4_cidr | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "tunnel_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "tunnel_interfaces.[].ipv6_address") | String |  |  | Format: ipv6_cidr | IPv6_address/Mask. |
@@ -45,6 +46,9 @@
 
         # VRF Name.
         vrf: <str>
+
+        # Underlay VRF Name.
+        underlay_vrf: <str>
 
         # IPv4_address/Mask.
         ip_address: <str>
