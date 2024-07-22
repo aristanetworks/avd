@@ -48,8 +48,6 @@ interface Management1
 | LDP Router ID | 192.168.1.2 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | - |
-| ICMP Fragmentation-Needed Tunneling Enabled | - |
-| ICMP TTL-Exceeded Tunneling Enabled | - |
 
 #### MPLS and LDP Device Configuration
 

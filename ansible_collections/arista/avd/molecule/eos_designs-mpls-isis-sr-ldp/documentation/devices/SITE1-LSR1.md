@@ -398,8 +398,6 @@ router isis CORE
 | LDP Router ID | 100.70.0.1 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
-| ICMP Fragmentation-Needed Tunneling Enabled | - |
-| ICMP TTL-Exceeded Tunneling Enabled | - |
 
 #### MPLS and LDP Device Configuration
 

@@ -109,7 +109,6 @@ interface Loopback0
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 | ICMP Fragmentation-Needed Tunneling Enabled | True |
-| ICMP TTL-Exceeded Tunneling Enabled | - |
 
 #### MPLS and LDP Device Configuration
 

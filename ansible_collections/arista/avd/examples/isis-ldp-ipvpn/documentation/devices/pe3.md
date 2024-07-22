@@ -564,8 +564,6 @@ router bfd
 | LDP Router ID | 10.255.1.3 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
-| ICMP Fragmentation-Needed Tunneling Enabled | - |
-| ICMP TTL-Exceeded Tunneling Enabled | - |
 
 #### MPLS and LDP Device Configuration
 

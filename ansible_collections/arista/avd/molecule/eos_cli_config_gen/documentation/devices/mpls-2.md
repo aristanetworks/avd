@@ -48,7 +48,6 @@ interface Management1
 | LDP Router ID | - |
 | LDP Interface Disabled Default | False |
 | LDP Transport-Address Interface | - |
-| ICMP Fragmentation-Needed Tunneling Enabled | - |
 | ICMP TTL-Exceeded Tunneling Enabled | True |
 
 #### MPLS and LDP Device Configuration
