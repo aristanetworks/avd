@@ -34,11 +34,17 @@ Arista best practices are used, simplifying configuration of several global and 
 
 PTP must be specifically enabled:
 
-- on the fabric level, for example FABRIC.yml
+- on the fabric level, for example FABRIC.yml. This setting takes precedence over `ptp`.
 
   ```yaml
   ptp_settings:
     enabled: true
+  ```
+- on fabric level, it can be enabled with `ptp` key. This setting is deprecated.
+
+  ```yaml
+  ptp:
+   enabled: true
   ```
 
 - per node type, for example for all spine nodes in SPINES.yml
@@ -77,7 +83,7 @@ spine:
 Common PTP settings can be specified for the entire topology to greatly simplify the configuration of PTP:
 
 --8<--
-roles/eos_designs/docs/tables/ptp.md
+roles/eos_designs/docs/tables/ptp_settings.md
 --8<--
 
 These settings can also be defined on a more specific group_vars level, if the network design requires this.
@@ -185,6 +191,13 @@ If you prefer to have PTP clock identity be the system MAC-address of the switch
 
   ```yaml
   ptp_settings:
+    auto_clock_identity: < true | false | default -> true >
+  ```
+  
+  OR
+
+  ```yaml
+  ptp:
     auto_clock_identity: < true | false | default -> true >
   ```
 
