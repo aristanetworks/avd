@@ -660,6 +660,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         if not self.shared_utils.ptp_enabled:
             # Since we have overlapping data model "ptp" between eos_designs and eos_cli_config_gen,
             # we need to overwrite the input dict if set but not enabled.
+            # TODO: AVD5.0.0 Remove this handling since the `ptp` key is removed from eos_designs.
             if get(self._hostvars, "ptp") is not None:
                 return {}
             return None
