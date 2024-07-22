@@ -12,7 +12,13 @@ It is used  in the encrypt and decrypt filters
 import base64
 
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives.ciphers import Cipher, modes
+
+# Starting cyryptography 43.0.0, TripleDES cipher has been moved to cryptography.hazmat.decrepit module
+try
+    from cryptography.hazmat.decrepit.ciphers.algorithms import TripleDES
+except ImportError:
+    from cryptography.hazmat.primitives.ciphers.algorithms import TripleDES
 
 SEED = b"\xd5\xa8\xc9\x1e\xf5\xd5\x8a\x23"
 
@@ -186,7 +192,7 @@ def cbc_encrypt(key: bytes, data: bytes) -> bytes:
     ciphertext = ENC_SIG + bytes([padding * 16 + 0xE]) + data + bytes(padding)
 
     # Accepting SonarLint issue: The insecure algorithm is ok since this simply matches the algorithm of EOS.
-    cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
+    cipher = Cipher(TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
     encryptor = cipher.encryptor()
     result = encryptor.update(ciphertext)
     encryptor.finalize()
@@ -213,7 +219,7 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     hashed_key = hashkey(key)
 
     # Accepting SonarLint issue: Insecure algorithm is ok since this is simply matching the algorithm of EOS.
-    cipher = Cipher(algorithms.TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
+    cipher = Cipher(TripleDES(hashed_key), modes.CBC(bytes(8)), default_backend())  # NOSONAR
     decryptor = cipher.decryptor()
     result = decryptor.update(data)
     decryptor.finalize()
