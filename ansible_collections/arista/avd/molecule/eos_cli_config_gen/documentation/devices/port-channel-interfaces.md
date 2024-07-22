@@ -266,6 +266,7 @@ interface Ethernet50
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
+| Port-Channel15 | - | False |
 | Port-Channel101 | 111 | - |
 | Port-Channel103 | - | True |
 
@@ -273,7 +274,10 @@ interface Ethernet50
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
+| Port-Channel102 | 120 | 130 | both |
+| Port-Channel102 | 113 | 115 | in |
 | Port-Channel102 | 111-112 | 110 | out |
+| Port-Channel102 | 12 | 20 | both |
 
 ##### EVPN Multihoming
 
@@ -455,6 +459,7 @@ interface Port-Channel15
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   no switchport trunk private-vlan secondary
    mlag 15
    spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
@@ -519,11 +524,13 @@ interface Port-Channel100
    switchport dot1q vlan tag required
    switchport trunk allowed vlan 10-11
    switchport mode dot1q-tunnel
+   switchport dot1q ethertype 1536
    switchport vlan forwarding accept all
    switchport trunk group g1
    switchport trunk group g2
    switchport source-interface tx multicast
    switchport vlan translation 12 20
+   switchport vlan translation 23 inner 74 42
    switchport vlan translation 24 inner 78 network 46
    switchport vlan translation 43 dot1q-tunnel 30
    switchport vlan translation in 34 23
@@ -532,7 +539,6 @@ interface Port-Channel100
    switchport vlan translation out 34 50
    switchport vlan translation out 10 45 inner 34
    switchport vlan translation out 45 dot1q-tunnel all
-   switchport vlan translation out 23 dot1q-tunnel 22
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
    switchport backup-link Ethernet5
@@ -547,6 +553,10 @@ interface Port-Channel100.101
    logging event link-status
    mtu 1500
    encapsulation dot1q vlan 101
+   switchport trunk native vlan 10
+   switchport dot1q vlan tag disallowed
+   no switchport
+   switchport vlan translation out 23 dot1q-tunnel 22
    ip address 10.1.1.3/31
 !
 interface Port-Channel100.102
@@ -570,7 +580,10 @@ interface Port-Channel102
    switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
+   switchport vlan translation 120 130
+   switchport vlan translation in 113 115
    switchport vlan translation out 111-112 110
+   switchport vlan translation 12 20
 !
 interface Port-Channel103
    description PVLAN Secondary Trunk

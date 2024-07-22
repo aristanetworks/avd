@@ -6061,6 +6061,10 @@
                           "title": "Inner VLAN From"
                         }
                       },
+                      "required": [
+                        "from",
+                        "to"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -6093,13 +6097,14 @@
                           "properties": {
                             "all": {
                               "type": "boolean",
+                              "description": "The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.",
                               "title": "All"
                             },
                             "to": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 4094,
-                              "description": "VLAN ID or range(s) of VLAN IDs to map to.",
+                              "description": "VLAN ID or range(s) of VLAN IDs to map to.\nThe `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.",
                               "title": "To"
                             }
                           },
@@ -16868,13 +16873,14 @@
                           "properties": {
                             "all": {
                               "type": "boolean",
+                              "description": "The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.",
                               "title": "All"
                             },
                             "to": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 4094,
-                              "description": "VLAN ID or range(s) of VLAN IDs to map to.",
+                              "description": "VLAN ID or range(s) of VLAN IDs to map to.\nThe `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.",
                               "title": "To"
                             }
                           },

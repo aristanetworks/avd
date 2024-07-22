@@ -1569,6 +1569,7 @@ keys:
                         min: 1
                         max: 4094
                         description: VLAN ID or range of VLAN IDs to map from.
+                        required: true
                       to:
                         type: int
                         convert_types:
@@ -1576,6 +1577,7 @@ keys:
                         min: 1
                         max: 4094
                         description: VLAN ID to map to.
+                        required: true
                       dot1q_tunnel:
                         type: bool
                       inner_vlan_from:
@@ -1611,13 +1613,16 @@ keys:
                         keys:
                           all:
                             type: bool
+                            description: The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.
                           to:
                             type: int
                             convert_types:
                               - str
                             min: 1
                             max: 4094
-                            description: VLAN ID or range(s) of VLAN IDs to map to.
+                            description: |-
+                              VLAN ID or range(s) of VLAN IDs to map to.
+                              The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.
                       inner_vlan_to:
                         type: int
                         min: 1

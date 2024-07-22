@@ -290,8 +290,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].from") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.all") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range(s) of VLAN IDs to map to. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.all") | Boolean |  |  |  | The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range(s) of VLAN IDs to map to.<br>The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].inner_vlan_to") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_both</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both") | List, items: Dictionary |  |  |  | Map both egress and ingress packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].from") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
@@ -889,9 +889,12 @@
                 # VLAN ID to map to.
                 to: <int; 1-4094>
                 dot1q_tunnel:
+
+                  # The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.
                   all: <bool>
 
                   # VLAN ID or range(s) of VLAN IDs to map to.
+                  # The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.
                   to: <int; 1-4094>
 
                 # Inner VLAN ID to map to.

@@ -122,4 +122,5 @@ exclude_also = [
     "raise TemplateRuntimeError",
     "^blocks = {}",
     "^debug_info =.*",
+    "if (t_9(environment.getattr(l_2_vlan_translation, 'from')) and t_9(environment.getattr(l_2_vlan_translation, 'to'))):",
 ]

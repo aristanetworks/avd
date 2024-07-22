@@ -36,6 +36,8 @@ ethernet_interfaces:
     switchport:
       port_security:
         enabled: true
+        mac_address_maximum:
+          disabled: true
       trunk:
         allowed_vlan: 10-11
         native_vlan: 5
@@ -52,6 +54,7 @@ ethernet_interfaces:
       pvlan_mapping: 20-30
       dot1q:
         ethertype: 1536
+        vlan_tag: required
       vlan_translations:
         required: true
         direction_in:
@@ -73,6 +76,10 @@ ethernet_interfaces:
           - from: 43
             to: 30
             dot1q_tunnel: true
+          - from: 24
+            inner_vlan_from: 78
+            network: false
+            to: 46
         direction_out:
           - from: 34
             to: 50
@@ -82,9 +89,6 @@ ethernet_interfaces:
           - from: 45
             dot1q_tunnel:
               all: true
-          - from: 23
-            dot1q_tunnel:
-              to: 22
       vlan_forwarding_accept_all: true
       source_interface: tx
       backup_link:
@@ -130,6 +134,7 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
+    trunk_private_vlan_secondary: false
     tcp_mss_ceiling:
       ipv4_segment_size: 70
       direction: ingress
@@ -159,12 +164,17 @@ ethernet_interfaces:
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
     switchport:
+      enabled: false
+      dot1q:
+        vlan_tag: disallowed
       port_security:
         mac_address_maximum:
           limit: 100
         violation:
           mode: protect
           protect_log: true
+      vlan_translations:
+        required: true
 
   - name: Ethernet3
     peer: DC1-SPINE2
@@ -198,6 +208,8 @@ ethernet_interfaces:
     tcp_mss_ceiling:
       ipv6_segment_size: 65
     switchport:
+      trunk:
+        native_vlan: 5
       port_security:
         mac_address_maximum:
           disabled: false
@@ -207,6 +219,11 @@ ethernet_interfaces:
         vlans:
           - range: 1-3
             mac_address_maximum: 3
+      vlan_translations:
+        direction_out:
+          - from: 23
+            dot1q_tunnel:
+              to: 50
 
   - name: Ethernet4
     type: routed
@@ -237,6 +254,10 @@ ethernet_interfaces:
         boundaries:
           - boundary: ff00::/16
           - boundary: ff01::/16
+    switchport:
+      port_security:
+        violation:
+          mode: protect
 
   - name: Ethernet5
     description: Molecule Routing
@@ -424,9 +445,17 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-112
     vlan_translations:
+      - from: 12
+        to: 20
       - direction: out
         from: 111-112
         to: 110
+      - direction: in
+        from: 113
+        to: 115
+      - direction: both
+        from: 120
+        to: 130
 
   - name: Ethernet17
     description: PVLAN Secondary Trunk

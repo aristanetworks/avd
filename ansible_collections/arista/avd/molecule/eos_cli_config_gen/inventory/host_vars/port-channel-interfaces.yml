@@ -52,6 +52,7 @@ port_channel_interfaces:
       version: 2
   - name: Port-Channel15
     description: DC1_L2LEAF3_Po1
+    trunk_private_vlan_secondary: false
     vlans: 110,201
     link_tracking_groups:
       - name: EVPN_MH_ES2
@@ -131,6 +132,7 @@ port_channel_interfaces:
       mode: dot1q-tunnel
       pvlan_mapping: 20-30
       dot1q:
+        ethertype: 1536
         vlan_tag: required
       source_interface: tx multicast
       vlan_translations:
@@ -154,6 +156,10 @@ port_channel_interfaces:
           - from: 43
             to: 30
             dot1q_tunnel: true
+          - from: 23
+            inner_vlan_from: 74
+            network: false
+            to: 42
         direction_out:
           - from: 34
             to: 50
@@ -163,9 +169,6 @@ port_channel_interfaces:
           - from: 45
             dot1q_tunnel:
               all: true
-          - from: 23
-            dot1q_tunnel:
-              to: 22
       vlan_forwarding_accept_all: true
       backup_link:
         interface: Ethernet5
@@ -185,6 +188,17 @@ port_channel_interfaces:
     mtu: 1500
     ip_address: 10.1.1.3/31
     encapsulation_dot1q_vlan: 101
+    switchport:
+      enabled: false
+      trunk:
+        native_vlan: 10
+      dot1q:
+        vlan_tag: disallowed
+      vlan_translations:
+        direction_out:
+          - from: 23
+            dot1q_tunnel:
+              to: 22
 
   - name: Port-Channel100.102
     type: l3dot1q
@@ -296,9 +310,17 @@ port_channel_interfaces:
     mode: trunk
     vlans: 110-112
     vlan_translations:
+      - from: 12
+        to: 20
       - direction: out
         from: 111-112
         to: 110
+      - direction: in
+        from: 113
+        to: 115
+      - direction: both
+        from: 120
+        to: 130
 
   - name: Port-Channel103
     description: PVLAN Secondary Trunk
