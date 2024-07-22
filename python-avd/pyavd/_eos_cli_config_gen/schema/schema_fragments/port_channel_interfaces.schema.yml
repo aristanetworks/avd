@@ -946,7 +946,7 @@ keys:
                           source:
                             description: Source IP address of tunnel packets. Applied only when destination is defined.
                             type: str
-                          protocol: 
+                          protocol:
                             type: str
                             description: |-
                               Protocol type in GRE header.
