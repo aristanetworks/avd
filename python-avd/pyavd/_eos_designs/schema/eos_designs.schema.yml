@@ -6103,7 +6103,7 @@ $defs:
                     type: str
                     description: 'IPv4_address/Mask.
 
-                      Loopback ip range, a unique ip is derived from this ranged and
+                      Loopback ip range, a unique ip is derived from this range and
                       assigned to each l3 leaf based on it''s unique id.
 
                       Loopback is not created unless loopback_ip_range or loopback_ip_pools
