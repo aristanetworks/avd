@@ -56,8 +56,7 @@ port_channel_interfaces:
       transport: layer2
       profile:
         g8275_1:
-          destination:
-            mac_address: forwardable
+          destination_mac_address: forwardable
 
 ### interface
 ethernet_interfaces:
@@ -98,8 +97,7 @@ ethernet_interfaces:
       transport: ipv4
       profile:
         g8275_1:
-          destination:
-            mac_address: non-forwardable
+          destination_mac_address: non-forwardable
 # port-channel interfaces
   - name: Ethernet5
     type: port-channel-member

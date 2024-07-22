@@ -4257,23 +4257,13 @@
                   "g8275_1": {
                     "type": "object",
                     "properties": {
-                      "destination": {
-                        "type": "object",
-                        "properties": {
-                          "mac_address": {
-                            "type": "string",
-                            "enum": [
-                              "forwardable",
-                              "non-forwardable"
-                            ],
-                            "title": "MAC Address"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Destination"
+                      "destination_mac_address": {
+                        "type": "string",
+                        "enum": [
+                          "forwardable",
+                          "non-forwardable"
+                        ],
+                        "title": "Destination MAC Address"
                       }
                     },
                     "additionalProperties": false,
@@ -15118,23 +15108,13 @@
                   "g8275_1": {
                     "type": "object",
                     "properties": {
-                      "destination": {
-                        "type": "object",
-                        "properties": {
-                          "mac_address": {
-                            "type": "string",
-                            "enum": [
-                              "forwardable",
-                              "non-forwardable"
-                            ],
-                            "title": "MAC Address"
-                          }
-                        },
-                        "additionalProperties": false,
-                        "patternProperties": {
-                          "^_.+$": {}
-                        },
-                        "title": "Destination"
+                      "destination_mac_address": {
+                        "type": "string",
+                        "enum": [
+                          "forwardable",
+                          "non-forwardable"
+                        ],
+                        "title": "Destination MAC Address"
                       }
                     },
                     "additionalProperties": false,

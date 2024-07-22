@@ -142,8 +142,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay_mechanism</samp>](## "port_channel_interfaces.[].ptp.delay_mechanism") | String |  |  | Valid Values:<br>- <code>e2e</code><br>- <code>p2p</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "port_channel_interfaces.[].ptp.profile") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g8275_1</samp>](## "port_channel_interfaces.[].ptp.profile.g8275_1") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "port_channel_interfaces.[].ptp.profile.g8275_1.destination") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "port_channel_interfaces.[].ptp.profile.g8275_1.destination.mac_address") | String |  |  | Valid Values:<br>- <code>forwardable</code><br>- <code>non-forwardable</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_mac_address</samp>](## "port_channel_interfaces.[].ptp.profile.g8275_1.destination_mac_address") | String |  |  | Valid Values:<br>- <code>forwardable</code><br>- <code>non-forwardable</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync_message</samp>](## "port_channel_interfaces.[].ptp.sync_message") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "port_channel_interfaces.[].ptp.sync_message.interval") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "port_channel_interfaces.[].ptp.role") | String |  |  | Valid Values:<br>- <code>master</code><br>- <code>dynamic</code> |  |
@@ -510,8 +509,7 @@
           delay_mechanism: <str; "e2e" | "p2p">
           profile:
             g8275_1:
-              destination:
-                mac_address: <str; "forwardable" | "non-forwardable">
+              destination_mac_address: <str; "forwardable" | "non-forwardable">
           sync_message:
             interval: <int>
           role: <str; "master" | "dynamic">
