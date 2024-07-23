@@ -42,9 +42,14 @@ dhcp_servers:
           - mac_address: 1a1b.1c1d.1e1f
             hostname: host1
             ipv4_address: 10.0.0.1
-          - mac_address: 2a2b.2c2d.2e2f
-            hostname: host2
-            ipv6_address: ff06::c3
+          - mac_address: 0001.0001.0001
+            hostname: host3
+            ipv4_address: 10.0.0.2
+      - subnet: 2001:db8:abcd:1234:c000::/66 
+        reservations:
+          - mac_address: 0003.0003.003
+            ipv6_address: 2001:db8:abcd:1234:c000::1
+
   - vrf: default
     dns_servers_ipv4:
       - 10.0.0.1
