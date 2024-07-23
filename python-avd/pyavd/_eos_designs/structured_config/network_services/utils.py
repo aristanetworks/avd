@@ -689,7 +689,7 @@ class UtilsMixin(UtilsZscalerMixin):
     @cached_property
     def _l3_interface_acls(self: AvdStructuredConfigNetworkServices):
         """
-        Returns a dict of interfaces and acls assigned to the interfaces.
+        Returns a dict of interfaces and ACLs set on the interfaces.
             {
                 <interface_name>: {
                 "ipv4_acl_in": <generated_ipv4_acl>,
@@ -717,8 +717,6 @@ class UtilsMixin(UtilsZscalerMixin):
                         interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
                         node = l3_interface["nodes"][interface_idx]
                         if node == self.shared_utils.hostname:
-                            # if node not in l3_interface_acls:
-                            #     l3_interface_acls[node] = {}
                             if ipv4_acl_in is not None:
                                 l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
                                     name=ipv4_acl_in,
