@@ -47435,6 +47435,11 @@
                       "description": "VRF Name.",
                       "title": "VRF"
                     },
+                    "underlay_vrf": {
+                      "type": "string",
+                      "description": "Underlay VRF Name.",
+                      "title": "Underlay VRF"
+                    },
                     "ip_address": {
                       "type": "string",
                       "description": "IPv4_address/Mask.",
