@@ -29,6 +29,10 @@ class ShortEsiMixin:
         """
         short_esi = get(self.shared_utils.switch_data_combined, "short_esi")
         if short_esi == "auto":
+            if self.shared_utils.mlag_role == "secondary":
+                # On the MLAG Secondary use short-esi from MLAG primary
+                if (peer_short_esi := self.shared_utils.mlag_peer_facts._short_esi) is not None:
+                    return peer_short_esi
             esi_seed_1 = "".join(self.shared_utils.uplink_switches[:2])
             esi_seed_2 = "".join(self.shared_utils.uplink_switch_interfaces[:2])
             esi_seed_3 = "".join(default(self.shared_utils.uplink_interfaces, [])[:2])
