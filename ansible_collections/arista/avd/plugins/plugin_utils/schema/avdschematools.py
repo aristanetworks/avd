@@ -91,8 +91,17 @@ class AvdSchemaTools:
         if self.conversion_mode == "disabled":
             return 0
 
-        # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
-        exceptions = self.avdschema.convert(data)
+        # avd_schema.convert returns a generator, which we iterate through with list() to perform the actual conversions.
+        exceptions = list(self.avdschema.convert(data))
+        if exceptions:
+            exceptions.insert(
+                0,
+                AvdDeprecationWarning(
+                    key=["dict-of-dicts to list-of-dicts automatic conversion"],
+                    remove_in_version="5.0.0",
+                    url="'https://avd.arista.com/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts'",
+                ),
+            )
         return self.handle_validation_exceptions(exceptions, self.conversion_mode)
 
     def validate_data(self, data: dict) -> int:
