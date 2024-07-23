@@ -1159,11 +1159,13 @@ keys:
       (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
       globally (default).\nFor MLAG devices Route Distinguisher must be unique since
       this feature will create multi-vtep configuration.\nWarning !!! For Trident3
-      based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default
-      platform setting will be configured: \"platform trident forwarding-table partition
-      flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding
-      agents will be restarted when this configuration is applied.\n  You can tune
-      the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform
+      setting will be configured on 7050X3 and 7300X3: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  The
+      Following default platform setting will be configured on 720XP: \"flexible exact-match
+      16000 l2-shared 18000 l3-shared 22000\"\n  All forwarding agents will be restarted
+      when this configuration is applied.\n  You can tune the settings by overriding
+      the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
       values for your environment.\n"
     default: false
@@ -2970,8 +2972,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
-      trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
-        l3-shared 131072
+      trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000
+        l3-shared 22000
     - platforms:
       - '750'
       - '755'
@@ -5671,6 +5673,10 @@ $defs:
               type: int
               convert_types:
               - str
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature for all SVIs and
+                l2vlans within Tenant.
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -6988,6 +6994,9 @@ $defs:
                     - 2
                     - 3
                     default: 2
+                  fast_leave:
+                    type: bool
+                    description: Enable IGMP snooping fast-leave feature.
               bgp:
                 type: dict
                 keys:
@@ -9482,6 +9491,9 @@ $defs:
             - 1
             - 2
             - 3
+          fast_leave:
+            type: bool
+            description: Enable IGMP snooping fast-leave feature.
       vxlan:
         type: bool
         default: true

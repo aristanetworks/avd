@@ -294,6 +294,7 @@ router bgp 65101
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
       evpn multicast
+         gateway dr election algorithm preference 10000
       default-route export evpn
       route-target import evpn 11:11
       route-target export evpn 11:11

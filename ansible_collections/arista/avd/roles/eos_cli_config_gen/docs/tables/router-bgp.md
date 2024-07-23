@@ -625,6 +625,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast_address_family</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family") | Dictionary |  |  |  | Enable per-AF EVPN multicast settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family.ipv4.transit") | Boolean |  |  |  | Enable EVPN multicast transit mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast_gateway_dr_election</samp>](## "router_bgp.vrfs.[].evpn_multicast_gateway_dr_election") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "router_bgp.vrfs.[].evpn_multicast_gateway_dr_election.algorithm") | String | Required |  | Valid Values:<br>- <code>hrw</code><br>- <code>modulus</code><br>- <code>preference</code> | DR election algorithms:<br>  hrw: Default selection based on highest random weight.<br>  modulus: Selection based on VLAN ID modulo number of candidates.<br>  preference: Selection based on a configured preference value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference_value</samp>](## "router_bgp.vrfs.[].evpn_multicast_gateway_dr_election.preference_value") | Integer |  |  | Min: 0<br>Max: 65535 | Required when `algorithm` is `preference`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route_exports</samp>](## "router_bgp.vrfs.[].default_route_exports") | List, items: Dictionary |  |  |  | Enable default-originate per VRF/address-family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address_family</samp>](## "router_bgp.vrfs.[].default_route_exports.[].address_family") | String | Required, Unique |  | Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.vrfs.[].default_route_exports.[].always") | Boolean |  |  |  |  |
@@ -2076,6 +2079,16 @@
 
               # Enable EVPN multicast transit mode.
               transit: <bool>
+          evpn_multicast_gateway_dr_election:
+
+            # DR election algorithms:
+            #   hrw: Default selection based on highest random weight.
+            #   modulus: Selection based on VLAN ID modulo number of candidates.
+            #   preference: Selection based on a configured preference value.
+            algorithm: <str; "hrw" | "modulus" | "preference"; required>
+
+            # Required when `algorithm` is `preference`.
+            preference_value: <int; 0-65535>
 
           # Enable default-originate per VRF/address-family.
           default_route_exports:
