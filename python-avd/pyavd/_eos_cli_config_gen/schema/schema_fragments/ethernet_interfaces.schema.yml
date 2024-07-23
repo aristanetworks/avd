@@ -1483,6 +1483,8 @@ keys:
                   type: list
                   items:
                     type: str
+                    convert_types:
+                      - int
                     description: |-
                       Trunk group name.
                       Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
@@ -1701,7 +1703,7 @@ keys:
                   type: int
                   convert_types:
                     - str
-                  description: Size of MAC move bursts in milliseconds.
+                  description: Size of MAC move bursts.
                   min: 0
                   max: 65535
                 mac_move_burst_interval:

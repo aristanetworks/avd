@@ -458,7 +458,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "ethernet_interfaces.[].switchport.backup") | Dictionary |  |  |  | The `backup_link` is required for this setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_macaddr</samp>](## "ethernet_interfaces.[].switchport.backup.dest_macaddr") | String |  |  | Pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$ | Destination MAC address for MAC move updates.<br>The mac address should be multicast or broadcast.<br>Example:  01:00:00:00:00:00 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial_mac_move_delay</samp>](## "ethernet_interfaces.[].switchport.backup.initial_mac_move_delay") | Integer |  |  | Min: 0<br>Max: 65535 | Initial MAC move delay in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst") | Integer |  |  | Min: 0<br>Max: 65535 | Size of MAC move bursts in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst") | Integer |  |  | Min: 0<br>Max: 65535 | Size of MAC move bursts. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst_interval</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst_interval") | Integer |  |  | Min: 0<br>Max: 65535 | MAC move burst interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preemption_delay</samp>](## "ethernet_interfaces.[].switchport.backup.preemption_delay") | Integer |  |  | Min: 0<br>Max: 65535 | Preemption delay in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
@@ -1349,7 +1349,7 @@
             # Initial MAC move delay in milliseconds.
             initial_mac_move_delay: <int; 0-65535>
 
-            # Size of MAC move bursts in milliseconds.
+            # Size of MAC move bursts.
             mac_move_burst: <int; 0-65535>
 
             # MAC move burst interval in milliseconds.

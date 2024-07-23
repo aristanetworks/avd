@@ -6230,7 +6230,7 @@
                   },
                   "mac_move_burst": {
                     "type": "integer",
-                    "description": "Size of MAC move bursts in milliseconds.",
+                    "description": "Size of MAC move bursts.",
                     "minimum": 0,
                     "maximum": 65535,
                     "title": "MAC Move Burst"
@@ -17009,7 +17009,7 @@
                   },
                   "mac_move_burst": {
                     "type": "integer",
-                    "description": "Size of MAC move bursts in milliseconds.",
+                    "description": "Size of MAC move bursts.",
                     "minimum": 0,
                     "maximum": 65535,
                     "title": "MAC Move Burst"
