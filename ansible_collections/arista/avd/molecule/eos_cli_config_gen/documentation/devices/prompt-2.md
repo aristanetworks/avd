@@ -38,5 +38,5 @@ interface Management1
 
 ```eos
 !
-prompt unsafe
+prompt Test
 ```
