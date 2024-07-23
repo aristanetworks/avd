@@ -1,9 +1,12 @@
-# monitor-session-default
+# monitor-session-default-encapsulation-gre
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Monitoring](#monitoring)
+  - [Monitor Sessions](#monitor-sessions)
+  - [Monitor Sessions Default](#monitor-sessions-default)
 
 ## Management
 
@@ -31,4 +34,23 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Monitoring
+
+### Monitor Sessions
+
+#### Monitor Sessions Summary
+
+### Monitor Sessions Default
+
+| Settings | Values |
+| -------- | ------ |
+| Encapsulation GRE Payload | inner-packet |
+
+#### Monitor Sessions Device Configuration
+
+```eos
+!
+monitor session default encapsulation gre payload inner-packet
 ```
