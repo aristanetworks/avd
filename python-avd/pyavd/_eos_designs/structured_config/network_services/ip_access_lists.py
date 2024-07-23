@@ -113,7 +113,7 @@ class IpAccesslistsMixin(UtilsMixin):
 
         if self._l3_interface_acls:
             l3_interface_acls = self._l3_interface_acls
-            for l3_interface_acl in l3_interface_acls[self.shared_utils.hostname].values():
+            for l3_interface_acl in l3_interface_acls.values():
                 for acl in l3_interface_acl.values():
                     append_if_not_duplicate(ip_access_lists, "name", acl, context="IPv4 Access lists for L3 interface", context_keys=["name"])
 

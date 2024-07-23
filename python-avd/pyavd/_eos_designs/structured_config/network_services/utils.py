@@ -689,15 +689,15 @@ class UtilsMixin(UtilsZscalerMixin):
     @cached_property
     def _l3_interface_acls(self: AvdStructuredConfigNetworkServices):
         """
-        Returns a dict of
-            <hostname> : {
+        Returns a dict of interfaces and acls assigned to the interfaces.
+            {
                 <interface_name>: {
                 "ipv4_acl_in": <generated_ipv4_acl>,
                 "ipv4_acl_out": <generated_ipv4_acl>,
                 }
             }
         Only contains interfaces with ACLs and only the ACLs that are set,
-        so use `get(self._l3_interface_acls, f"{hostname}.{interface_name}..ipv4_acl_in", separator="..")` to get the value.
+        so use `get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in", separator="..")` to get the value.
         """
 
         if not self.shared_utils.network_services_l3:
@@ -717,21 +717,21 @@ class UtilsMixin(UtilsZscalerMixin):
                         interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
                         node = l3_interface["nodes"][interface_idx]
                         if node == self.shared_utils.hostname:
-                            if node not in l3_interface_acls:
-                                l3_interface_acls[node] = {}
+                            # if node not in l3_interface_acls:
+                            #     l3_interface_acls[node] = {}
                             if ipv4_acl_in is not None:
-                                l3_interface_acls[node].setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
                                     name=ipv4_acl_in,
                                     interface_name=interface_name,
                                     interface_ip=interface_ip,
                                 )
                             if ipv4_acl_out is not None:
-                                l3_interface_acls[node].setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
                                     name=ipv4_acl_out,
                                     interface_name=interface_name,
                                     interface_ip=interface_ip,
                                 )
-            return l3_interface_acls
+        return l3_interface_acls
 
     @cached_property
     def _filtered_internet_exit_policies(self: AvdStructuredConfigNetworkServices) -> list:

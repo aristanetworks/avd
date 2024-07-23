@@ -75,15 +75,15 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
 
-                            if get(self._l3_interface_acls, self.shared_utils.hostname):
+                            if self._l3_interface_acls is not None:
                                 interface.update(
                                     {
                                         "access_group_in": get(
-                                            self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}..ipv4_acl_in..name", separator=".."
-                                        ),
+                                            self._l3_interface_acls, f"{interface_name}..ipv4_acl_in..name", separator=".."
+                                            ),
                                         "access_group_out": get(
-                                            self._l3_interface_acls[self.shared_utils.hostname], f"{interface_name}..ipv4_acl_out..name", separator=".."
-                                        ),
+                                            self._l3_interface_acls, f"{interface_name}..ipv4_acl_out..name", separator=".."
+                                            ),
                                     }
                                 )
 
