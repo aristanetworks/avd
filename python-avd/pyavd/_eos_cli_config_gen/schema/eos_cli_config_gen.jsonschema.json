@@ -17141,6 +17141,34 @@
                 "type": "string",
                 "title": "VRF"
               },
+              "tls": {
+                "type": "object",
+                "description": "When TLS is configured, `key` is ignored..",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable TLS for radius-server.",
+                    "title": "Enabled"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "description": "Name of TLS profile.",
+                    "title": "SSL Profile"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "description": "TCP Port used for TLS. EOS default is 2083.",
+                    "title": "Port"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "TLS"
+              },
               "timeout": {
                 "type": "integer",
                 "minimum": 1,
@@ -17155,7 +17183,7 @@
               },
               "key": {
                 "type": "string",
-                "description": "Encrypted key.",
+                "description": "Encrypted key - only type 7 supported.\nWhen TLS is configured, `key` is ignored.",
                 "title": "Key"
               }
             },
@@ -17168,6 +17196,11 @@
             ]
           },
           "title": "Hosts"
+        },
+        "tls_ssl_profile": {
+          "type": "string",
+          "description": "Name of global TLS profile.",
+          "title": "TLS SSL Profile"
         }
       },
       "additionalProperties": false,
@@ -22003,6 +22036,36 @@
                   "^_.+$": {}
                 },
                 "title": "EVPN Multicast Address Family"
+              },
+              "evpn_multicast_gateway_dr_election": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string",
+                    "description": "DR election algorithms:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
+                    "enum": [
+                      "hrw",
+                      "modulus",
+                      "preference"
+                    ],
+                    "title": "Algorithm"
+                  },
+                  "preference_value": {
+                    "type": "integer",
+                    "description": "Required when `algorithm` is `preference`.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "Preference Value"
+                  }
+                },
+                "required": [
+                  "algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "EVPN Multicast Gateway DR Election"
               },
               "default_route_exports": {
                 "type": "array",
@@ -29497,6 +29560,11 @@
             "type": "string",
             "description": "VRF Name.",
             "title": "VRF"
+          },
+          "underlay_vrf": {
+            "type": "string",
+            "description": "Underlay VRF Name.",
+            "title": "Underlay VRF"
           },
           "ip_address": {
             "type": "string",

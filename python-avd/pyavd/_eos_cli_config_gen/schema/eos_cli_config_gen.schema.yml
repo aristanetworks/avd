@@ -10258,6 +10258,23 @@ keys:
               type: str
               convert_types:
               - int
+            tls:
+              type: dict
+              description: When TLS is configured, `key` is ignored..
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable TLS for radius-server.
+                ssl_profile:
+                  type: str
+                  description: Name of TLS profile.
+                port:
+                  type: int
+                  min: 0
+                  max: 65535
+                  convert_types:
+                  - str
+                  description: TCP Port used for TLS. EOS default is 2083.
             timeout:
               type: int
               min: 1
@@ -10272,7 +10289,12 @@ keys:
               - str
             key:
               type: str
-              description: Encrypted key.
+              description: 'Encrypted key - only type 7 supported.
+
+                When TLS is configured, `key` is ignored.'
+      tls_ssl_profile:
+        type: str
+        description: Name of global TLS profile.
   radius_servers:
     deprecation:
       warning: true
@@ -13102,6 +13124,27 @@ keys:
                     transit:
                       type: bool
                       description: Enable EVPN multicast transit mode.
+            evpn_multicast_gateway_dr_election:
+              type: dict
+              keys:
+                algorithm:
+                  type: str
+                  required: true
+                  description: "DR election algorithms:\n  hrw: Default selection
+                    based on highest random weight.\n  modulus: Selection based on
+                    VLAN ID modulo number of candidates.\n  preference: Selection
+                    based on a configured preference value."
+                  valid_values:
+                  - hrw
+                  - modulus
+                  - preference
+                preference_value:
+                  type: int
+                  description: Required when `algorithm` is `preference`.
+                  min: 0
+                  max: 65535
+                  convert_types:
+                  - str
             default_route_exports:
               type: list
               primary_key: address_family
@@ -17407,6 +17450,11 @@ keys:
         vrf:
           type: str
           description: VRF Name.
+          convert_types:
+          - int
+        underlay_vrf:
+          type: str
+          description: Underlay VRF Name.
           convert_types:
           - int
         ip_address:
