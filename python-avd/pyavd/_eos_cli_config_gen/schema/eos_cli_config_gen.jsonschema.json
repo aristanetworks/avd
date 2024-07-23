@@ -12055,6 +12055,10 @@
                             "lossrate": {
                               "type": "string",
                               "title": "Lossrate"
+                            },
+                            "hop_count": {
+                              "type": "string",
+                              "title": "Hop Count"
                             }
                           },
                           "additionalProperties": false,
@@ -13127,6 +13131,27 @@
             "^_.+$": {}
           },
           "title": "LDP"
+        },
+        "icmp": {
+          "description": "Enables the LSRs to generate ICMP reply messages and deliver them to the originating host.",
+          "type": "object",
+          "properties": {
+            "fragmentation_needed_tunneling": {
+              "type": "boolean",
+              "description": "Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation needed, packet too big).",
+              "title": "Fragmentation Needed Tunneling"
+            },
+            "ttl_exceeded_tunneling": {
+              "type": "boolean",
+              "description": "Enables the MPLS tunneling of TTL exceeded ICMP replies.",
+              "title": "TTL Exceeded Tunneling"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "ICMP"
         }
       },
       "additionalProperties": false,
@@ -22040,6 +22065,36 @@
                   "^_.+$": {}
                 },
                 "title": "EVPN Multicast Address Family"
+              },
+              "evpn_multicast_gateway_dr_election": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string",
+                    "description": "DR election algorithms:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
+                    "enum": [
+                      "hrw",
+                      "modulus",
+                      "preference"
+                    ],
+                    "title": "Algorithm"
+                  },
+                  "preference_value": {
+                    "type": "integer",
+                    "description": "Required when `algorithm` is `preference`.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "Preference Value"
+                  }
+                },
+                "required": [
+                  "algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "EVPN Multicast Gateway DR Election"
               },
               "default_route_exports": {
                 "type": "array",

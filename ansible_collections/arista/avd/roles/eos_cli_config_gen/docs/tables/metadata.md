@@ -60,6 +60,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].constraints.jitter") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].constraints.latency") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lossrate</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].constraints.lossrate") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_count</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].constraints.hop_count") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "metadata.cv_pathfinder.vrfs.[].avts.[].name") | String |  |  |  |  |
@@ -144,6 +145,7 @@
                   jitter: <int>
                   latency: <int>
                   lossrate: <str>
+                  hop_count: <str>
                 description: <str>
                 id: <int>
                 name: <str>

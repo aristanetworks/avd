@@ -21,16 +21,13 @@
 
 - Global RADIUS TLS SSL profile is {{ radius_server.tls_ssl_profile }}
 {%     endif %}
-{%     if radius_server.dynamic_authorization is arista.avd.defined %}
-{%         set doc_line = "- Dynamic Authorization is enabled" %}
-{%         if radius_server.dynamic_authorization.port is arista.avd.defined %}
-{%             set doc_line = doc_line ~ " on port "~ radius_server.dynamic_authorization.port %}
-{%         endif %}
-{%         if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
-{%             set doc_line = doc_line ~ " with SSL profile " ~ radius_server.dynamic_authorization.tls_ssl_profile %}
-{%         endif %}
+{%     if radius_server.dynamic_authorization.port is arista.avd.defined %}
 
-{{ doc_line }}
+- Dynamic Authorization is enabled on port {{ radius_server.dynamic_authorization.port }}
+{%     endif %}
+{%     if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
+
+- Dynamic Authorization for TLS connections uses SSL profile {{ radius_server.dynamic_authorization.tls_ssl_profile }}
 {%     endif %}
 
 #### RADIUS Server Hosts
