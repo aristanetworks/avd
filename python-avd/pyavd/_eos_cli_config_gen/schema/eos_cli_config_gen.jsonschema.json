@@ -22033,6 +22033,36 @@
                 },
                 "title": "EVPN Multicast Address Family"
               },
+              "evpn_multicast_gateway_dr_election": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string",
+                    "description": "DR election algorithms:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
+                    "enum": [
+                      "hrw",
+                      "modulus",
+                      "preference"
+                    ],
+                    "title": "Algorithm"
+                  },
+                  "preference_value": {
+                    "type": "integer",
+                    "description": "Required when `algorithm` is `preference`.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "title": "Preference Value"
+                  }
+                },
+                "required": [
+                  "algorithm"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "EVPN Multicast Gateway DR Election"
+              },
               "default_route_exports": {
                 "type": "array",
                 "description": "Enable default-originate per VRF/address-family.",
