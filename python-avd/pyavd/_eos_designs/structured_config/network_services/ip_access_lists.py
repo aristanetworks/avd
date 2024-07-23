@@ -113,10 +113,9 @@ class IpAccesslistsMixin(UtilsMixin):
 
         if self._l3_interface_acls:
             l3_interface_acls = self._l3_interface_acls
-            if self.shared_utils.hostname in l3_interface_acls:
-                for l3_interface_acl in l3_interface_acls[self.shared_utils.hostname].values():
-                    for acl in l3_interface_acl.values():
-                        append_if_not_duplicate(ip_access_lists, "name", acl, context="IPv4 Access lists for L3 interface", context_keys=["name"])
+            for l3_interface_acl in l3_interface_acls[self.shared_utils.hostname].values():
+                for acl in l3_interface_acl.values():
+                    append_if_not_duplicate(ip_access_lists, "name", acl, context="IPv4 Access lists for L3 interface", context_keys=["name"])
 
         for ie_policy_type in self._filtered_internet_exit_policy_types:
             acls = self._acl_internet_exit(ie_policy_type)
