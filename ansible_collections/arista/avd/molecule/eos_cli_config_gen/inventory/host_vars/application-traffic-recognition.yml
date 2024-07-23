@@ -77,6 +77,10 @@ application_traffic_recognition:
           - "7-11"
         src_prefix_set_name: src_prefix_set2
         dest_prefix_set_name: dest_prefix_set2
+        dscp_ranges:
+          - ef
+          - 1-42
+          - cs1
       - name: user_defined_app1
         protocols:
           - udp
@@ -89,6 +93,10 @@ application_traffic_recognition:
         dest_prefix_set_name: dest_prefix_set1
         tcp_src_port_set_name: src_port_set1
         tcp_dest_port_set_name: dest_port_set1
+        dscp_ranges:
+          - 12-19
+          - af43
+          - af41
     l4_applications:
       - name: l4-app-1
         protocols:

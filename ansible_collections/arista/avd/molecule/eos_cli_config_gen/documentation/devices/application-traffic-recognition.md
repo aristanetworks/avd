@@ -45,12 +45,12 @@ interface Management1
 
 #### IPv4 Applications
 
-| Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set |
-| ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ |
-| empty-application | - | - | - | - | - | - | - | - |
-| empty-protocols | - | - | - | 21 | - | - | - | - |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 |
-| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim, icmp, tcp | 21, 7-11 | - | - | - | - |
+| Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set | DSCP |
+| ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
+| empty-application | - | - | - | - | - | - | - | - | - |
+| empty-protocols | - | - | - | 21 | - | - | - | - | - |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 | 12-19, af43, af41 |
+| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim, icmp, tcp | 21, 7-11 | - | - | - | - | ef, 1-42, cs1 |
 
 #### Layer 4 Applications
 
@@ -132,6 +132,7 @@ application traffic recognition
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp source port field-set src_port_set2 destination port field-set dest_port_set2
       protocol 25
+      dscp 12-19, af41, af43
    !
    application ipv4 user_defined_app2
       source prefix field-set src_prefix_set2
@@ -140,6 +141,7 @@ application traffic recognition
       protocol pim
       protocol tcp
       protocol 7-11, 21
+      dscp 1-42, cs1, ef
    !
    application l4 l4-app-1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1

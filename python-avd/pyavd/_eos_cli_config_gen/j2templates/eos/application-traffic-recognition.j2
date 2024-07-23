@@ -40,6 +40,9 @@ application traffic recognition
 {%             if application.protocol_ranges is arista.avd.defined %}
       protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
 {%             endif %}
+{%             if application.dscp_ranges is arista.avd.defined %}
+      dscp {{ application.dscp_ranges | arista.avd.natural_sort() | join(", ") }}
+{%             endif %}
 {%         endfor %}
 {%         for application in application_traffic_recognition.applications.l4_applications | arista.avd.natural_sort('name') %}
    !

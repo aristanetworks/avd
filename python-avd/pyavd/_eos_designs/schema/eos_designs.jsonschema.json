@@ -154,13 +154,14 @@
                     "description": "Destination prefix set name.",
                     "title": "Dest Prefix Set Name"
                   },
-                  "dscp": {
+                  "dscp_ranges": {
                     "type": "array",
+                    "description": "Accept DSCP value(s) or range(s).\nDSCP values can be between 0 and 63.\nOther valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.",
                     "items": {
                       "type": "string",
-                      "description": "DSCP values or ranges.\nValid values are integer between 0 and 63 as well as\ncs0 to cs7, af11-13, af21-23, af31-33 and af41-af43 and ef"
+                      "description": "DSCP value or range."
                     },
-                    "title": "DSCP"
+                    "title": "DSCP Ranges"
                   },
                   "protocols": {
                     "type": "array",
@@ -18786,13 +18787,14 @@
                               "description": "Destination prefix set name.",
                               "title": "Dest Prefix Set Name"
                             },
-                            "dscp": {
+                            "dscp_ranges": {
                               "type": "array",
+                              "description": "Accept DSCP value(s) or range(s).\nDSCP values can be between 0 and 63.\nOther valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.",
                               "items": {
                                 "type": "string",
-                                "description": "DSCP values or ranges.\nValid values are integer between 0 and 63 as well as\ncs0 to cs7, af11-13, af21-23, af31-33 and af41-af43 and ef"
+                                "description": "DSCP value or range."
                               },
-                              "title": "DSCP"
+                              "title": "DSCP Ranges"
                             },
                             "protocols": {
                               "type": "array",
