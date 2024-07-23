@@ -648,6 +648,7 @@ metadata:
       avts:
       - constraints:
           jitter: 42
+          hop_count: lowest
         id: 2
         name: PROD-AVT-POLICY-VOICE
         pathgroups:

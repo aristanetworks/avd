@@ -29955,6 +29955,10 @@
                                       "lossrate": {
                                         "type": "string",
                                         "title": "Lossrate"
+                                      },
+                                      "hop_count": {
+                                        "type": "string",
+                                        "title": "Hop Count"
                                       }
                                     },
                                     "additionalProperties": false,
