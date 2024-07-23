@@ -92,6 +92,7 @@ class AvdSchemaTools:
             return 0
 
         # avd_schema.convert returns a generator, which we iterate through with list() to perform the actual conversions.
+        # TODO: AVD 5.0.0 Remove the conversion to list and deprecation warning
         exceptions = list(self.avdschema.convert(data))
         if exceptions:
             exceptions.insert(
@@ -102,7 +103,8 @@ class AvdSchemaTools:
                     url="'https://avd.arista.com/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts'",
                 ),
             )
-        return self.handle_validation_exceptions(exceptions, self.conversion_mode)
+        # Forcing exceptions to be a generator
+        return self.handle_validation_exceptions((exception for exception in exceptions), self.conversion_mode)
 
     def validate_data(self, data: dict) -> int:
         """
