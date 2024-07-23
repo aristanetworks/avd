@@ -172,7 +172,7 @@ port_channel_interfaces:
           - from: 55
       vlan_forwarding_accept_all: true
       backup_link:
-        interface: Ethernet5
+        interface: Port-channel51
       backup:
         dest_macaddr: 01:00:00:00:00:00
         mac_move_burst: 20
@@ -200,6 +200,9 @@ port_channel_interfaces:
           - from: 23
             dot1q_tunnel:
               to: 22
+      backup_link:
+        interface: Port-Channel100.102
+        prefer_vlan: 20
 
   - name: Port-Channel100.102
     type: l3dot1q

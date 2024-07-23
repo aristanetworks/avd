@@ -176,6 +176,9 @@ ethernet_interfaces:
           protect_log: true
       vlan_translations:
         required: true
+      backup_link:
+        prefer_vlan: 20
+
 
   - name: Ethernet3
     peer: DC1-SPINE2
@@ -225,6 +228,8 @@ ethernet_interfaces:
           - from: 23
             dot1q_tunnel:
               to: 50
+      backup_link:
+        interface: Ethernet4
 
   - name: Ethernet4
     type: routed
