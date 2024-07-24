@@ -1,0 +1,34 @@
+### sync-e
+
+sync_e:
+  network_option: 2
+
+
+### interface
+ethernet_interfaces:
+  - name: Ethernet3
+    peer: DC1-SPINE2
+    peer_interface: Ethernet5
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    type: switched
+    mode: trunk
+    vlans: 2,14
+
+  - name: Ethernet6
+    peer: DC1-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.15/31
+
+# port-channel interfaces
+  - name: Ethernet5
+    type: port-channel-member
+    peer: DC1-AGG01
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-AGG01_Ethernet1
+
