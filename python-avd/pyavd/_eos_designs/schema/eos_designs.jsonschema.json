@@ -49252,6 +49252,219 @@
               "vxlan_interface": {
                 "type": "object",
                 "properties": {
+                  "vxlan1": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "vxlan": {
+                        "type": "object",
+                        "properties": {
+                          "source_interface": {
+                            "type": "string",
+                            "description": "Source Interface Name.",
+                            "title": "Source Interface"
+                          },
+                          "multicast": {
+                            "type": "object",
+                            "properties": {
+                              "headend_replication": {
+                                "type": "boolean",
+                                "title": "Headend Replication"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Multicast"
+                          },
+                          "controller_client": {
+                            "type": "object",
+                            "description": "Client to CVX Controllers.",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "title": "Enabled"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Controller Client"
+                          },
+                          "mlag_source_interface": {
+                            "type": "string",
+                            "title": "MLAG Source Interface"
+                          },
+                          "udp_port": {
+                            "type": "integer",
+                            "title": "UDP Port"
+                          },
+                          "vtep_to_vtep_bridging": {
+                            "type": "boolean",
+                            "description": "Enable bridging between different VTEPs in vxlan overlay.",
+                            "title": "Vtep To Vtep Bridging"
+                          },
+                          "virtual_router_encapsulation_mac_address": {
+                            "type": "string",
+                            "description": "\"mlag-system-id\" or ethernet_address (H.H.H).\n",
+                            "title": "Virtual Router Encapsulation MAC Address"
+                          },
+                          "bfd_vtep_evpn": {
+                            "type": "object",
+                            "properties": {
+                              "interval": {
+                                "type": "integer",
+                                "title": "Interval"
+                              },
+                              "min_rx": {
+                                "type": "integer",
+                                "title": "Min RX"
+                              },
+                              "multiplier": {
+                                "type": "integer",
+                                "minimum": 3,
+                                "maximum": 50,
+                                "title": "Multiplier"
+                              },
+                              "prefix_list": {
+                                "type": "string",
+                                "title": "Prefix List"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "BFD Vtep EVPN"
+                          },
+                          "qos": {
+                            "type": "object",
+                            "description": "For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in \"DSCP Trust\" mode.\n!!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.\n",
+                            "properties": {
+                              "dscp_propagation_encapsulation": {
+                                "type": "boolean",
+                                "title": "DSCP Propagation Encapsulation"
+                              },
+                              "ecn_propagation": {
+                                "type": "boolean",
+                                "description": "Enable copying the ECN marking to/from encapsulated packets.\n",
+                                "title": "Ecn Propagation"
+                              },
+                              "map_dscp_to_traffic_class_decapsulation": {
+                                "type": "boolean",
+                                "title": "Map DSCP To Traffic Class Decapsulation"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "QOS"
+                          },
+                          "vlans": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "description": "VLAN ID.",
+                                  "title": "ID"
+                                },
+                                "vni": {
+                                  "type": "integer",
+                                  "title": "Vni"
+                                },
+                                "multicast_group": {
+                                  "type": "string",
+                                  "description": "IP Multicast Group Address.",
+                                  "title": "Multicast Group"
+                                },
+                                "flood_vteps": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "description": "Remote VTEP IP Address."
+                                  },
+                                  "title": "Flood Vteps"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "required": [
+                                "id"
+                              ]
+                            },
+                            "title": "VLANs"
+                          },
+                          "vrfs": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "VRF Name.",
+                                  "title": "Name"
+                                },
+                                "vni": {
+                                  "type": "integer",
+                                  "title": "Vni"
+                                },
+                                "multicast_group": {
+                                  "type": "string",
+                                  "description": "IP Multicast Group Address.",
+                                  "title": "Multicast Group"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "required": [
+                                "name"
+                              ]
+                            },
+                            "title": "VRFs"
+                          },
+                          "flood_vteps": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "description": "Remote VTEP IP Address."
+                            },
+                            "title": "Flood Vteps"
+                          },
+                          "flood_vtep_learned_data_plane": {
+                            "type": "boolean",
+                            "title": "Flood Vtep Learned Data Plane"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "VxLAN"
+                      },
+                      "eos_cli": {
+                        "type": "string",
+                        "description": "Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.\n",
+                        "title": "EOS CLI"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Vxlan1"
+                  },
                   "Vxlan1": {
                     "type": "object",
                     "properties": {

@@ -18390,7 +18390,7 @@ keys:
   vxlan_interface:
     type: dict
     keys:
-      Vxlan1:
+      vxlan1:
         type: dict
         keys:
           description:
@@ -18524,6 +18524,13 @@ keys:
               interface in the final EOS configuration.
 
               '
+      Vxlan1:
+        deprecation:
+          warning: true
+          remove_in_version: 5.0.0
+          new_key: vxlan1
+        type: dict
+        $ref: eos_cli_config_gen#/keys/vxlan_interface/keys/vxlan1
 $defs:
   application_traffic_recognition_application:
     type: dict

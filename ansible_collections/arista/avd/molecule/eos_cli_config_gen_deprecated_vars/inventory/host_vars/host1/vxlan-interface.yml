@@ -1,6 +1,8 @@
 ### VxLAN interface ###
 
 vxlan_interface:
+  # Testing Vxlan1 as key
+  # Vxlan1 key is deprecated in 4.10.0. To be removed in 5.0.0
   Vxlan1:
     vxlan:
       # Testing vlans as dict of dict

@@ -5,6 +5,8 @@
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
+- [Interfaces](#interfaces)
+  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
@@ -30,6 +32,29 @@ spanning-tree mode rapid-pvst
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
+```
+
+## Interfaces
+
+### VXLAN Interface
+
+#### VXLAN Interface Summary
+
+| Setting | Value |
+| ------- | ----- |
+| UDP port | 4789 |
+| Qos dscp propagation encapsulation | Disabled |
+| Qos ECN propagation | Disabled |
+| Qos map dscp to traffic-class decapsulation | Disabled |
+
+#### VXLAN Interface Device Configuration
+
+```eos
+!
+interface Vxlan1
+   no vxlan qos dscp propagation encapsulation
+   no vxlan qos ecn propagation
+   no vxlan qos map dscp to traffic-class decapsulation
 ```
 
 ## Routing
