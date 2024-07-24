@@ -14,7 +14,9 @@ ethernet_interfaces:
     type: switched
     mode: trunk
     vlans: 2,14
-
+    sync_e:
+      enable: true
+      priority: 10
   - name: Ethernet6
     peer: DC1-SPINE1
     peer_interface: Ethernet6
@@ -23,7 +25,9 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.15/31
-
+    sync_e:
+      enable: true
+      priority: disabled
 # port-channel interfaces
   - name: Ethernet5
     type: port-channel-member
@@ -31,4 +35,5 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
     description: DC1-AGG01_Ethernet1
-
+    sync_e:
+      enable: true
