@@ -1,14 +1,12 @@
 # Collapsing generated schemas from PR diff by default
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml  linguist-generated=true -merge -diff
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json  linguist-generated=true -merge -diff
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.pickle  linguist-generated=true merge=union -diff -text
-/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml  linguist-generated=true -merge -diff
-/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.jsonschema.json  linguist-generated=true -merge -diff
-/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.pickle  linguist-generated=true merge=union -diff -text
+/python_avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml  linguist-generated=true -merge -diff
+/python_avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.jsonschema.json  linguist-generated=true -merge -diff
+/python_avd/pyavd/_eos_designs/schema/eos_designs.schema.yml  linguist-generated=true -merge -diff
+/python_avd/pyavd/_eos_designs/schema/eos_designs.jsonschema.json  linguist-generated=true -merge -diff
 
 # Collapsing generated tables from PR diff by default
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/tables/*  linguist-generated=true -merge -diff
-/ansible_collections/arista/avd/roles/eos_designs/tables/*  linguist-generated=true -merge -diff
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*  linguist-generated=true -merge -diff
+/ansible_collections/arista/avd/roles/eos_designs/docs/tables/*  linguist-generated=true -merge -diff
 
 # Collapsing generated plugins doc from PR diff by default
 /ansible_collections/arista/avd/docs/plugins/*  linguist-generated=true
@@ -19,3 +17,6 @@
 # Excluding docs from stats for linguist
 /ansible_collections/arista/avd/roles/*/docs/*  linguist-documentation
 /ansible_collections/arista/avd/docs/*  linguist-documentation
+
+# CV API files are generated from proto files
+/python_avd/pyavd/_cv/api  linguist-generated=true
