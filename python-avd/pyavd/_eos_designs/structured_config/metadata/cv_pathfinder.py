@@ -23,6 +23,9 @@ class CvPathfinderMixin:
         """
         Generate metadata for CV Pathfinder feature.
         Only relevant for cv_pathfinder routers
+
+        Metadata for "applications" and "internet_exit_policies" is generated in the network services module,
+        since all the required data was readily available in there.
         """
         if not self.shared_utils.is_cv_pathfinder_router:
             return None
@@ -202,12 +205,3 @@ class CvPathfinderMixin:
             raise AristaAvdError(f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
 
         return wan_vni
-
-    def _metadata_internet_exit_policies(self: AvdStructuredConfigMetadata):
-        """
-        No-op.
-
-        This metadata is generated in the network services module,
-        since all the required data was readily available in there.
-        """
-        return NotImplemented

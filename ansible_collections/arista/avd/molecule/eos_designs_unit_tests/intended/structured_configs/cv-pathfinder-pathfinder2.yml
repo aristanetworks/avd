@@ -524,47 +524,31 @@ vxlan_interface:
         vni: 66
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 metadata:
-  cv_tags:
-    device_tags:
-    - name: Role
-      value: pathfinder
-    - name: Region
-      value: AVD_Land_East
-    - name: PathfinderSet
-      value: PATHFINDERS
-    interface_tags:
-    - interface: Ethernet1
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: SFR
-      - name: Circuit
-        value: '999'
-    - interface: Ethernet2
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: ATT-MPLS
-      - name: Circuit
-        value: '10999'
   cv_pathfinder:
+    applications:
+      profiles:
+      - name: VIDEO
+        builtin_applications:
+        - name: skype
+        user_defined_applications:
+        - name: CUSTOM-APPLICATION-1
+        categories:
+        - category: VIDEO1
+      - name: VOICE
+        builtin_applications:
+        - name: CUSTOM-VOICE-APPLICATION
+      - name: MPLS-ONLY
+      - name: APP-PROFILE-CONTROL-PLANE
+        user_defined_applications:
+        - name: APP-CONTROL-PLANE
+      categories:
+        builtin_applications:
+        - name: microsoft-teams
+          category: VIDEO1
+        user_defined_applications:
+        - name: CUSTOM-APPLICATION-2
+          category: VIDEO1
     role: pathfinder
     ssl_profile: profileB
     vtep_ip: 192.168.144.3
@@ -781,3 +765,42 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    - name: Region
+      value: AVD_Land_East
+    - name: PathfinderSet
+      value: PATHFINDERS
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: SFR
+      - name: Circuit
+        value: '999'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT-MPLS
+      - name: Circuit
+        value: '10999'
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
