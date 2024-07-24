@@ -117,6 +117,8 @@ port_channel_interfaces:
     switchport:
       port_security:
         enabled: true
+        mac_address_maximum:
+          disabled: true
       trunk:
         allowed_vlan: 10-11
         native_vlan: 5
@@ -190,6 +192,12 @@ port_channel_interfaces:
     ip_address: 10.1.1.3/31
     encapsulation_dot1q_vlan: 101
     switchport:
+      port_security:
+        mac_address_maximum:
+          limit: 100
+        violation:
+          mode: protect
+          protect_log: true
       enabled: false
       trunk:
         native_vlan: 10
@@ -212,6 +220,17 @@ port_channel_interfaces:
         storm_control_discards: true
     description: IFL for TENANT02
     mtu: 1500
+    switchport:
+      port_security:
+        mac_address_maximum:
+          disabled: false
+        violation:
+          mode: shutdown
+        vlan_default_mac_address_maximum: 2
+        vlans:
+          - range: 1-3
+            mac_address_maximum: 3
+          - range: 4-5
     ip_address: 10.1.2.3/31
     vrf: C2
     encapsulation_dot1q_vlan: 102
@@ -220,6 +239,10 @@ port_channel_interfaces:
   - name: Port-Channel8
     description: to Dev02 Port-channel 8
     type: routed
+    switchport:
+      port_security:
+        violation:
+          mode: protect
   - name: Port-Channel8.101
     description: to Dev02 Port-Channel8.101 - VRF-C1
     type: l3dot1q
@@ -239,6 +262,8 @@ port_channel_interfaces:
         enabled: true
         rfc_7130: true
     spanning_tree_guard: root
+    switchport:
+      access_vlan: 220
 
   - name: Port-Channel20
     description: Po_in_mode_access_accepting_tagged_LACP_frames

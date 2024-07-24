@@ -267,13 +267,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "port_channel_interfaces.[].switchport.trunk.native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set native VLAN when interface is in trunking mode.<br>Warning: This should not be combined with `port_channel_interfaces[].native_vlan`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "port_channel_interfaces.[].switchport.trunk.native_vlan_tag") | Boolean |  |  |  | If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.<br>Warning: This should not be combined with `port_channel_interfaces[].native_vlan_tag`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan_secondary</samp>](## "port_channel_interfaces.[].switchport.trunk.private_vlan_secondary") | Boolean |  |  |  | Enable secondary VLAN mapping for a private vlan.<br>Warning: This should not be combined with `port_channel_interfaces[].trunk_private_vlan_secondary`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "port_channel_interfaces.[].switchport.trunk.groups") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.trunk.groups.[]") | String |  |  |  | Trunk group name.<br>Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "port_channel_interfaces.[].switchport.trunk.groups") | List, items: String |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.trunk.groups.[]") | String |  |  |  | Trunk group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "port_channel_interfaces.[].switchport.dot1q") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethertype</samp>](## "port_channel_interfaces.[].switchport.dot1q.ethertype") | Integer |  |  | Min: 1536<br>Max: 65535 | Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "port_channel_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "port_channel_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out of the source interface.<br>tx multicast: Allow multicast packets only to go out of the source interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "port_channel_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "port_channel_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "port_channel_interfaces.[].switchport.phone") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "port_channel_interfaces.[].switchport.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "port_channel_interfaces.[].switchport.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | Warning: This should not be combined with `port_channel_interfaces[].phone.trunk` |
@@ -828,10 +828,11 @@
             # Enable secondary VLAN mapping for a private vlan.
             # Warning: This should not be combined with `port_channel_interfaces[].trunk_private_vlan_secondary`.
             private_vlan_secondary: <bool>
+
+            # Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
             groups:
 
                 # Trunk group name.
-                # Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
               - <str>
           dot1q:
 
@@ -844,7 +845,7 @@
           source_interface: <str; "tx" | "tx multicast">
 
           # Set VLAN when interface is in access mode.
-          # Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel`.
+          # Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
           access_vlan: <int; 1-4094>
           phone:
 

@@ -1463,7 +1463,7 @@ keys:
                 native_vlan:
                   type: int
                   convert_types:
-                    - "str"
+                    - str
                   description: |-
                     Set native VLAN when interface is in trunking mode.
                     Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.
@@ -1480,14 +1480,14 @@ keys:
                     Enable secondary VLAN mapping for a private vlan.
                     Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.
                 groups:
+                  description: |
+                    Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
                   type: list
                   items:
                     type: str
                     convert_types:
                       - int
-                    description: |-
-                      Trunk group name.
-                      Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
+                    description: Trunk group name.
             dot1q:
               type: dict
               keys:

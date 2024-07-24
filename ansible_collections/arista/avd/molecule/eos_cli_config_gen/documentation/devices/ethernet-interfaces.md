@@ -500,6 +500,7 @@ interface Ethernet5
    no shutdown
    mtu 9100
    no switchport
+   switchport access vlan 220
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest

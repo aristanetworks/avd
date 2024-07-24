@@ -299,6 +299,8 @@ ethernet_interfaces:
     isis_authentication_mode: md5
     isis_authentication_key: "asfddja23452"
     spanning_tree_guard: loop
+    switchport:
+      access_vlan: 220
 
   - name: Ethernet6
     type: switched

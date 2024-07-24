@@ -5920,10 +5920,11 @@
                     "title": "Private VLAN Secondary"
                   },
                   "groups": {
+                    "description": "Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.\n",
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Trunk group name.\nWarning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`."
+                      "description": "Trunk group name."
                     },
                     "title": "Groups"
                   }
@@ -16701,10 +16702,11 @@
                     "title": "Private VLAN Secondary"
                   },
                   "groups": {
+                    "description": "Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.\n",
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Trunk group name.\nWarning: This should not be combined with `port_channel_interfaces[].trunk_groups`."
+                      "description": "Trunk group name."
                     },
                     "title": "Groups"
                   }
@@ -16753,7 +16755,7 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 4094,
-                "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel`.",
+                "description": "Set VLAN when interface is in access mode.\nWarning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.",
                 "title": "Access VLAN"
               },
               "phone": {

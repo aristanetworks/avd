@@ -419,8 +419,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "ethernet_interfaces.[].switchport.trunk.native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set native VLAN when interface is in trunking mode.<br>Warning: This should not be combined with `ethernet_interfaces[].native_vlan`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "ethernet_interfaces.[].switchport.trunk.native_vlan_tag") | Boolean |  |  |  | If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.<br>Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan_secondary</samp>](## "ethernet_interfaces.[].switchport.trunk.private_vlan_secondary") | Boolean |  |  |  | Enable secondary VLAN mapping for a private vlan.<br>Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "ethernet_interfaces.[].switchport.trunk.groups") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].switchport.trunk.groups.[]") | String |  |  |  | Trunk group name.<br>Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "ethernet_interfaces.[].switchport.trunk.groups") | List, items: String |  |  |  | Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].switchport.trunk.groups.[]") | String |  |  |  | Trunk group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "ethernet_interfaces.[].switchport.dot1q") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethertype</samp>](## "ethernet_interfaces.[].switchport.dot1q.ethertype") | Integer |  |  | Min: 1536<br>Max: 65535 | Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "ethernet_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> | Allow/disallow VLAN tagged frames. |
@@ -1238,10 +1238,11 @@
             # Enable secondary VLAN mapping for a private vlan.
             # Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.
             private_vlan_secondary: <bool>
+
+            # Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
             groups:
 
                 # Trunk group name.
-                # Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
               - <str>
           dot1q:
 

@@ -3590,14 +3590,15 @@ keys:
 
                     Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.'
                 groups:
+                  description: 'Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
+
+                    '
                   type: list
                   items:
                     type: str
                     convert_types:
                     - int
-                    description: 'Trunk group name.
-
-                      Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.'
+                    description: Trunk group name.
             dot1q:
               type: dict
               keys:
@@ -9920,14 +9921,15 @@ keys:
 
                     Warning: This should not be combined with `port_channel_interfaces[].trunk_private_vlan_secondary`.'
                 groups:
+                  description: 'Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
+
+                    '
                   type: list
                   items:
                     type: str
                     convert_types:
                     - int
-                    description: 'Trunk group name.
-
-                      Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.'
+                    description: Trunk group name.
             dot1q:
               type: dict
               keys:
@@ -9962,7 +9964,7 @@ keys:
               description: 'Set VLAN when interface is in access mode.
 
                 Warning: This should not be combined with `port_channel_interfaces[].mode
-                = access/dot1q-tunnel`.'
+                = access/dot1q-tunnel` and `port_channel_interface.vlans`.'
             phone:
               type: dict
               keys:

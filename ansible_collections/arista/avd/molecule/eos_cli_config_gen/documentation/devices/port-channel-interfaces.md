@@ -401,6 +401,7 @@ interface Port-Channel5
 interface Port-Channel8
    description to Dev02 Port-channel 8
    no switchport
+   switchport port-security violation protect
 !
 interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
@@ -409,6 +410,7 @@ interface Port-Channel8.101
 !
 interface Port-Channel9
    no switchport
+   switchport access vlan 220
    spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
@@ -541,6 +543,8 @@ interface Port-Channel100
    switchport vlan translation out 45 dot1q-tunnel all
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
+   switchport port-security
+   switchport port-security mac-address maximum disabled
    switchport backup-link Port-channel51
    switchport backup preemption-delay 35
    switchport backup mac-move-burst 20
@@ -557,6 +561,8 @@ interface Port-Channel100.101
    switchport dot1q vlan tag disallowed
    no switchport
    switchport vlan translation out 23 dot1q-tunnel 22
+   switchport port-security violation protect log
+   switchport port-security mac-address maximum 100
    ip address 10.1.1.3/31
    switchport backup-link Port-Channel100.102 prefer vlan 20
 !
@@ -566,6 +572,12 @@ interface Port-Channel100.102
    logging event storm-control discards
    mtu 1500
    encapsulation dot1q vlan 102
+   switchport port-security
+   no switchport port-security mac-address maximum disabled
+   switchport port-security vlan 1 mac-address maximum 3
+   switchport port-security vlan 2 mac-address maximum 3
+   switchport port-security vlan 3 mac-address maximum 3
+   switchport port-security vlan default mac-address maximum 2
    vrf C2
    ip address 10.1.2.3/31
 !
