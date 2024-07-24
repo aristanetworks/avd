@@ -68,6 +68,14 @@ sync-e
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.15/31 | default | 1500 | - | - | - |
 
+#### Synchronous Ethernet
+
+| Interface | Priority |
+| --------- | -------- |
+| Ethernet3 | 10 |
+| Ethernet5 | 127 |
+| Ethernet6 | disabled |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos

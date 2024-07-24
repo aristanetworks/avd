@@ -661,6 +661,22 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     set sync_e_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.sync_e is arista.avd.defined and ethernet_interface.sync_e.enable is arista.avd.defined(true) %}
+{%             do sync_e_interfaces.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if sync_e_interfaces | length > 0 %}
+
+#### Synchronous Ethernet
+
+| Interface | Priority |
+| --------- | -------- |
+{%         for sync_e_interface in sync_e_interfaces %}
+| {{ sync_e_interface.name }} | {{ sync_e_interface.sync_e.priority | arista.avd.default('127') }} |
+{%         endfor %}
+{%     endif %}
 
 #### Ethernet Interfaces Device Configuration
 
