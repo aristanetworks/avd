@@ -97,7 +97,8 @@ class ActionModule(ActionBase):
         if validation_result.failed:
             validation_mode = validated_args.get("validation_mode", "warning")
             self._log_validation_errors(validation_result, validation_mode)
-            return result
+            if validation_mode == "error":
+                return result
 
         has_custom_templates = bool(task_vars.get("custom_templates"))
         try:
