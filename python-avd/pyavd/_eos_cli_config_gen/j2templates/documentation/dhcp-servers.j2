@@ -77,6 +77,18 @@
 {%                     for subnet in dhcp_server_subnets %}
 | {{ subnet.subnet }} | {{ subnet.name | arista.avd.default("-") }} | {{ subnet.dns_servers }} | {{ subnet.default_gateway }} | {{ subnet.lease_time }} | {{ subnet.ranges }} |
 {%                     endfor %}
+{%                     for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
+{%                         if subnet.reservations is arista.avd.defined %}
+
+###### Reservations for subnet: {{ subnet.subnet }}
+
+| Mac Address | IPv4 Address | IPv6 Address | Hostname |
+| ----------- | ------------ | ------------ | -------- |
+{%                             for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
+| {{ reservation.mac_address }} | {{ reservation.ipv4_address | arista.avd.default("-") }} | {{ reservation.ipv6_address | arista.avd.default("-") }} |  {{ reservation.hostname | arista.avd.default("-") }} |
+{%                             endfor %}
+{%                         endif %}
+{%                     endfor %}
 {%                 endif %}
 {%                 if dhcp_vendor_options | length > 0 %}
 
