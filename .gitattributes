@@ -4,9 +4,9 @@
 /python_avd/pyavd/_eos_designs/schema/eos_designs.schema.yml  linguist-generated=true -merge -diff
 /python_avd/pyavd/_eos_designs/schema/eos_designs.jsonschema.json  linguist-generated=true -merge -diff
 
-# Collapsing generated tables from PR diff by default
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*  linguist-generated=true -merge -diff
-/ansible_collections/arista/avd/roles/eos_designs/docs/tables/*  linguist-generated=true -merge -diff
+# Showing generated tables in PR diff by default by count as generated and automatically use the latest file on merge
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*  linguist-generated=true -merge diff
+/ansible_collections/arista/avd/roles/eos_designs/docs/tables/*  linguist-generated=true -merge diff
 
 # Collapsing generated plugins doc from PR diff by default
 /ansible_collections/arista/avd/docs/plugins/*  linguist-generated=true
