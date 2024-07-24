@@ -25,7 +25,7 @@
 {%                 set udp_dest_port = application.udp_dest_port_set_name | arista.avd.default("-") %}
 {%                 set protocol_ranges = ", ".join(application.protocol_ranges | arista.avd.default(["-"])) %}
 {%                 set protocol = ", ".join(application.protocols | arista.avd.default(["-"])) %}
-{%                 set dscp_ranges = ", ".join(application.dscp_ranges | arista.avd.default(["-"])) %}
+{%                 set dscp_ranges = " ".join(application.dscp_ranges | arista.avd.default(["-"])) %}
 | {{ application.name }} | {{ src_prefix }} | {{ dest_prefix }} | {{ protocol }} | {{ protocol_ranges }} | {{ tcp_src_port }} | {{ tcp_dest_port }} | {{ udp_src_port }} | {{ udp_dest_port }} | {{ dscp_ranges }} |
 {%             endfor %}
 {%         endif %}

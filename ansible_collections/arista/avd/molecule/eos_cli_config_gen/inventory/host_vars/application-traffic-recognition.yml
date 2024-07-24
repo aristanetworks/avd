@@ -97,6 +97,12 @@ application_traffic_recognition:
           - 12-19
           - af43
           - af41
+          - ef
+          - 1-4,6
+          - 32-33,34-35
+          - 11
+          - 56-57, 58
+          - 59-60, 61-62
     l4_applications:
       - name: l4-app-1
         protocols:
