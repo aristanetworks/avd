@@ -306,6 +306,84 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.isis_network_point_to_point is arista.avd.defined(true) %}
    isis network point-to-point
 {%     endif %}
+{%     if vlan_interface.isis_authentication_mode is arista.avd.defined %}
+{%         set auth_cli = "isis authentication mode" ~ " " ~ vlan_interface.isis_authentication_mode %}
+{%         if vlan_interface.isis_authentication_mode == "sha" and vlan_interface.isis_authentication_mode_sha is arista.avd.defined %}
+{%             if vlan_interface.isis_authentication_mode_sha.both.key_id is arista.avd.defined %}
+{%                 set auth_cli = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.both.key_id %}
+{%                 if vlan_interface.isis_authentication_mode_sha.both.rx_disabled is arista.avd.defined %}
+{%                     set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                 endif %}
+   {{ auth_cli }}
+{%             else %}
+{%                 if vlan_interface.isis_authentication_mode_sha.level_1.key_id is arista.avd.defined %}
+{%                     if vlan_interface.isis_authentication_mode_sha.level_1.rx_disabled is arista.avd.defined %}
+{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                     endif %}
+{%                     set auth_cli = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.level_1.key_id ~ " level-1" %}
+   {{ auth_cli }}
+{%                 endif %}
+{%                 if vlan_interface.isis_authentication_mode_sha.level_2.key_id is arista.avd.defined %}
+{%                     if vlan_interface.isis_authentication_mode_sha.level_2.rx_disabled is arista.avd.defined %}
+{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                     endif %}
+{%                     set auth_cli = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.level_2.key_id ~ " level-2" %}
+   {{ auth_cli }}
+{%                 endif %}
+{%             endif %}
+{%         endif %}
+{%         if vlan_interface.isis_authentication_mode == "shared-secret" and vlan_interface.isis_authentication_mode_shared_secret is arista.avd.defined %}
+{%             if vlan_interface.isis_authentication_mode_shared_secret.both.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.both.algorithm is arista.avd.defined %}
+{%                 set auth_cli = auth_cli ~ " profile " ~  vlan_interface.isis_authentication_mode_shared_secret.both.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.both.algorithm %}
+{%                 if vlan_interface.isis_authentication_mode_shared_secret.both.rx_disabled is arista.avd.defined %}
+{%                     set auth_cli = auth_cli ~ " rx-disabled " %}
+{%                 endif %}
+   {{ auth_cli }}
+{%             else %}
+{%                 if vlan_interface.isis_authentication_mode_shared_secret.level_1.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm is arista.avd.defined %}
+{%                     set auth_cli = auth_cli ~  "profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm %}
+{%                     if vlan_interface.isis_authentication_mode_shared_secret.level_1.rx_disabled is arista.avd.defined %}
+{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                     endif %}
+{%                     set auth_cli = auth_cli ~ " level-1" %}
+   {{ auth_cli }}
+{%                 endif %}
+{%                 if vlan_interface.isis_authentication_mode_shared_secret.level_2.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm is arista.avd.defined %}
+{%                     set auth_cli = auth_cli ~ " profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm %}
+{%                     if vlan_interface.isis_authentication_mode_shared_secret.level_2.rx_disabled is arista.avd.defined %}
+{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                     endif %}
+{%                     set auth_cli = auth_cli ~ " level-2" %}
+   {{ auth_cli }}
+{%                 endif %}
+{%             endif %}
+{%         endif %}
+{%         if vlan_interface.isis_authentication_mode is in [ "text", "md5" ] %}
+   {{ auth_cli }}
+{%         endif %}
+{%     endif %}
+{%     if vlan_interface.isis_authentication_key is arista.avd.defined %}
+   isis authentication key 7 {{ vlan_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
+{%     endif %}
+{# The below "vrrp" keys will be deprecated in AVD v4.0 - These should not be mixed with the new "vrrp_ids" key above to avoid conflicts. #}
+{%     if vlan_interface.vrrp.virtual_router is arista.avd.defined %}
+{%         if vlan_interface.vrrp.priority is arista.avd.defined %}
+   vrrp {{ vlan_interface.vrrp.virtual_router }} priority-level {{ vlan_interface.vrrp.priority }}
+{%         endif %}
+{%         if vlan_interface.vrrp.advertisement_interval is arista.avd.defined %}
+   vrrp {{ vlan_interface.vrrp.virtual_router }} advertisement interval {{ vlan_interface.vrrp.advertisement_interval }}
+{%         endif %}
+{%         if vlan_interface.vrrp.preempt_delay_minimum is arista.avd.defined %}
+   vrrp {{ vlan_interface.vrrp.virtual_router }} preempt delay minimum {{ vlan_interface.vrrp.preempt_delay_minimum }}
+{%         endif %}
+{%         if vlan_interface.vrrp.ipv4 is arista.avd.defined %}
+   vrrp {{ vlan_interface.vrrp.virtual_router }} ipv4 {{ vlan_interface.vrrp.ipv4 }}
+{%         endif %}
+{%         if vlan_interface.vrrp.ipv6 is arista.avd.defined %}
+   vrrp {{ vlan_interface.vrrp.virtual_router }} ipv6 {{ vlan_interface.vrrp.ipv6 }}
+{%         endif %}
+{%     endif %}
+{# New improved "vrrp" data model to support multiple IDs #}
 {%     if vlan_interface.vrrp_ids is arista.avd.defined %}
 {%         for vrid in vlan_interface.vrrp_ids | arista.avd.natural_sort('id') if vrid.id is arista.avd.defined %}
 {%             if vrid.priority_level is arista.avd.defined %}

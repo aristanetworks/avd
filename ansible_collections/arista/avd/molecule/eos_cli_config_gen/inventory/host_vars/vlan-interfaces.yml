@@ -460,3 +460,31 @@ vlan_interfaces:
       dynamic_capacity: 900
       expire: 250
       refresh_always: true
+
+  - name: Vlan340
+    description: isis authentication text
+    isis_authentication_mode: text
+    isis_authentication_key: "asfddja23452"
+
+  - name: Vlan341
+    description: isis authentication sha
+    isis_authentication_mode: sha
+    isis_authentication_mode_sha:
+      both:
+        key_id: 1000
+        rx_disabled: true
+      level_1:
+        key_id: 1010
+
+  - name: Vlan342
+    description: isis authentication shared-secret
+    isis_authentication_mode: shared-secret
+    isis_authentication_mode_shared_secret:
+      level_1:
+        profile: profile1
+        algorithm: sha-1
+        rx_disabled: true
+      level_2:
+        profile: profile1
+        algorithm: md5
+        rx_disabled: true

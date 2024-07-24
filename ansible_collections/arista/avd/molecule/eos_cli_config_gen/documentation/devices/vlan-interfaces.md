@@ -74,6 +74,9 @@ interface Management1
 | Vlan337 | v4 dhcp relay all-subnets | default | - | - |
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
+| Vlan340 | isis authentication text | default | - | - |
+| Vlan341 | isis authentication sha | default | - | - |
+| Vlan342 | isis authentication shared-secret | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -435,6 +438,20 @@ interface Vlan339
    ipv6 enable
    ipv6 address 2001:db8:339::1/64
    ipv6 nd other-config-flag
+!
+interface Vlan340
+   description isis authentication text
+   isis authentication mode text
+   isis authentication key 7 <removed>
+!
+interface Vlan341
+   description isis authentication sha
+   isis authentication mode sha key-id 1000 rx-disabled
+!
+interface Vlan342
+   description isis authentication shared-secret
+   isis authentication mode shared-secretprofile profile1 algorithm sha-1 rx-disabled level-1
+   isis authentication mode shared-secretprofile profile1 algorithm sha-1 rx-disabled level-1 profile profile1 algorithm md5 rx-disabled level-2
 !
 interface Vlan501
    description SVI Description
