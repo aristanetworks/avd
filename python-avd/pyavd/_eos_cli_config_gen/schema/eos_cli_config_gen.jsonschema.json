@@ -28729,6 +28729,22 @@
       },
       "title": "Switchport Port Security"
     },
+    "sync_e": {
+      "type": "object",
+      "properties": {
+        "network_option": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2,
+          "title": "Network Option"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Sync E"
+    },
     "system": {
       "type": "object",
       "properties": {

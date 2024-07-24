@@ -16971,6 +16971,15 @@ keys:
         type: bool
       violation_protect_chip_based:
         type: bool
+  sync_e:
+    type: dict
+    keys:
+      network_option:
+        type: int
+        min: 1
+        max: 2
+        convert_types:
+        - str
   system:
     type: dict
     keys:
