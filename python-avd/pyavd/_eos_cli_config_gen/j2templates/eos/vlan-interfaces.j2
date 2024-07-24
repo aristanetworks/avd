@@ -341,20 +341,20 @@ interface {{ vlan_interface.name }}
    {{ auth_cli }}
 {%             else %}
 {%                 if vlan_interface.isis_authentication_mode_shared_secret.level_1.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm is arista.avd.defined %}
-{%                     set auth_cli = auth_cli ~  "profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm %}
+{%                     set auth_cli_level1 = auth_cli ~  " profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm %}
 {%                     if vlan_interface.isis_authentication_mode_shared_secret.level_1.rx_disabled is arista.avd.defined %}
-{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                         set auth_cli_level1 = auth_cli_level1 ~ " rx-disabled" %}
 {%                     endif %}
-{%                     set auth_cli = auth_cli ~ " level-1" %}
-   {{ auth_cli }}
+{%                     set auth_cli_level1 = auth_cli_level1 ~ " level-1" %}
+   {{ auth_cli_level1 }}
 {%                 endif %}
 {%                 if vlan_interface.isis_authentication_mode_shared_secret.level_2.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm is arista.avd.defined %}
-{%                     set auth_cli = auth_cli ~ " profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm %}
+{%                     set auth_cli_level2 = auth_cli ~ " profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm %}
 {%                     if vlan_interface.isis_authentication_mode_shared_secret.level_2.rx_disabled is arista.avd.defined %}
-{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                         set auth_cli_level2 = auth_cli_level2 ~ " rx-disabled" %}
 {%                     endif %}
-{%                     set auth_cli = auth_cli ~ " level-2" %}
-   {{ auth_cli }}
+{%                     set auth_cli_level2 = auth_cli_level2 ~ " level-2" %}
+   {{ auth_cli_level2 }}
 {%                 endif %}
 {%             endif %}
 {%         endif %}

@@ -450,8 +450,8 @@ interface Vlan341
 !
 interface Vlan342
    description isis authentication shared-secret
-   isis authentication mode shared-secretprofile profile1 algorithm sha-1 rx-disabled level-1
-   isis authentication mode shared-secretprofile profile1 algorithm sha-1 rx-disabled level-1 profile profile1 algorithm md5 rx-disabled level-2
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled level-1
+   isis authentication mode shared-secret profile profile1 algorithm md5 rx-disabled level-2
 !
 interface Vlan501
    description SVI Description
