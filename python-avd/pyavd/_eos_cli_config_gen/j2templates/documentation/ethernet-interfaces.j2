@@ -663,7 +663,7 @@
 {%     endif %}
 {%     set sync_e_interfaces = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.sync_e is arista.avd.defined and ethernet_interface.sync_e.enable is arista.avd.defined(true) %}
+{%         if ethernet_interface.sync_e.enable is arista.avd.defined(true) %}
 {%             do sync_e_interfaces.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}

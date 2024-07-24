@@ -16987,6 +16987,7 @@ keys:
     type: dict
     keys:
       network_option:
+        required: true
         type: int
         min: 1
         max: 2

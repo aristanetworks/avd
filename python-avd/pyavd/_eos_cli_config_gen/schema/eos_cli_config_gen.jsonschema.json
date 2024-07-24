@@ -28758,6 +28758,9 @@
           "title": "Network Option"
         }
       },
+      "required": [
+        "network_option"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
