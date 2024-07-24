@@ -9,3 +9,4 @@
       ansible.builtin.import_role:
         name: arista.avd.build_output_folders
       run_once: true
+      tags: [test]

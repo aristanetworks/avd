@@ -9,3 +9,6 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
+      # Adding a test for #4232
+      tags:
+        - test
