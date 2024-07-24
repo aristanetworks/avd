@@ -100,7 +100,8 @@ application_traffic_recognition:
           - ef
           - 1-4,6
           - 32-33,34-35
-          - 11
+          # Needs to be a string for pyavd test to pass
+          - "11"
           - 56-57, 58
           - 59-60, 61-62
     l4_applications:
