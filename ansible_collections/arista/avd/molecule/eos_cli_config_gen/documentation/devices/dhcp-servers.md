@@ -40,14 +40,14 @@ interface Management1
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | ---------------- | ------------- |
-| True | AVRF | - | - | - | - | - | - |
-| True | defauls | - | - | - | - | - | - |
-| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap |
-| True | defaulu | - | - | - | - | - | - |
-| True | TEST | testv4.com | - | - | testv6.com | - | - |
-| False | VRF01 | - | - | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv4 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
+| True | AVRF | - | - | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
+| True | defaulu | - | - | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
+| False | VRF01 | - | - | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
@@ -105,6 +105,8 @@ dhcp server vrf AVRF
    !
    subnet 172.16.254.0/24
       default-gateway 172.16.254.1
+   dns server ipv4 10.0.0.1 192.168.255.254
+   client class ipv4 definition Class1
 !
 dhcp server vrf defauls
 !

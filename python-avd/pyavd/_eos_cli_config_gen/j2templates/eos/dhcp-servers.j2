@@ -73,7 +73,9 @@
 {%             if subnet.dns_servers is arista.avd.defined %}
       dns server {{ subnet.dns_servers | join(" ") }}
 {%             endif %}
-{%             if subnet.lease_time is arista.avd.defined %}
+{%             if subnet.lease_time.days is arista.avd.defined
+                and subnet.lease_time.hours is arista.avd.defined
+                and subnet.lease_time.minutes is arista.avd.defined %}
       lease time {{ subnet.lease_time.days }} days {{ subnet.lease_time.hours }} hours {{ subnet.lease_time.minutes }} minutes
 {%             endif %}
 {%             if subnet.default_gateway is arista.avd.defined %}
@@ -96,5 +98,8 @@
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
+{%         if dhcp_server.eos_cli is arista.avd.defined %}
+   {{ dhcp_server.eos_cli | indent(3, false) }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

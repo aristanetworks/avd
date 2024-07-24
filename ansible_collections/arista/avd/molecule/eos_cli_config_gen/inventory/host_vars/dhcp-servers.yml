@@ -45,7 +45,7 @@ dhcp_servers:
           - mac_address: 0001.0001.0001
             hostname: host3
             ipv4_address: 10.0.0.2
-      - subnet: 2001:db8:abcd:1234:c000::/66 
+      - subnet: 2001:db8:abcd:1234:c000::/66
         reservations:
           - mac_address: 0003.0003.003
             ipv6_address: 2001:db8:abcd:1234:c000::1
@@ -78,3 +78,6 @@ dhcp_servers:
     subnets:
       - subnet: 172.16.254.0/24
         default_gateway: 172.16.254.1
+    eos_cli: |-
+      dns server ipv4 10.0.0.1 192.168.255.254
+      client class ipv4 definition Class1

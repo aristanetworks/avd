@@ -25,19 +25,19 @@ keys:
             days:
               type: int
               convert_types:
-                - str
+              - str
               min: 0
               max: 2000
             hours:
               type: int
               convert_types:
-                - str
+              - str
               min: 0
               max: 23
             minutes:
               type: int
               convert_types:
-                - str
+              - str
               min: 0
               max: 59
         lease_time_ipv6:
@@ -46,19 +46,19 @@ keys:
             days:
               type: int
               convert_types:
-                - str
+              - str
               min: 0
               max: 2000
             hours:
               type: int
               convert_types:
-                - str
+              - str
               min: 0
               max: 23
             minutes:
               type: int
               convert_types:
-                - str
+              - str
               min: 0
               max: 59
         dns_domain_name_ipv4:
