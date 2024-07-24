@@ -34,7 +34,7 @@ Arista best practices are used, simplifying configuration of several global and 
 
 PTP must be specifically enabled:
 
-- on the fabric level, for example FABRIC.yml.
+- on the fabric level, for example FABRIC.yml
 
   ```yaml
   ptp_settings:
