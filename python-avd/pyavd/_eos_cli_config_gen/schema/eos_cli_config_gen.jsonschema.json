@@ -5223,6 +5223,25 @@
             },
             "title": "Sflow"
           },
+          "sync_e": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "priority": {
+                "type": "string",
+                "description": "The priority is used to influence the reference clock selection. The default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                "title": "Priority"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Sync E"
+          },
           "port_profile": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes.",
