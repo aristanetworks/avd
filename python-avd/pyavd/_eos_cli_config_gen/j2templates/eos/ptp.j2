@@ -21,6 +21,9 @@ ptp priority2 {{ ptp.priority2 }}
 {%     if ptp.ttl is arista.avd.defined %}
 ptp ttl {{ ptp.ttl }}
 {%     endif %}
+{%     if ptp.profile is arista.avd.defined %}
+ptp profile {{ ptp.profile }}
+{%     endif %}
 {%     if ptp.domain is arista.avd.defined %}
 ptp domain {{ ptp.domain }}
 {%     endif %}
@@ -36,9 +39,6 @@ ptp mode {{ ptp.mode }} one-step
 {%         else %}
 ptp mode {{ ptp.mode }}
 {%         endif %}
-{%     endif %}
-{%     if ptp.profile is arista.avd.defined %}
-ptp profile {{ ptp.profile }}
 {%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast
