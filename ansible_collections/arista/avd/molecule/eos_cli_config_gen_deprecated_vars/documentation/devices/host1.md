@@ -1544,8 +1544,8 @@ vrf instance TENANT_A_PROJECT02
 
 ### Virtual Source NAT Summary
 
-| Source NAT VRF | Source NAT IP Address | Source NAT IPV6 Address |
-| -------------- | --------------------- | ----------------------- |
+| Source NAT VRF | Source NAT IPv4 Address | Source NAT IPv6 Address |
+| -------------- | ----------------------- | ----------------------- |
 | TEST_01 | 1.1.1.1 | - |
 | TEST_02 | 1.1.1.2 | - |
 

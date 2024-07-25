@@ -6,3 +6,6 @@ virtual_source_nat_vrfs:
     ip_address: 1.1.1.2
   - name: TEST_03
     ipv6_address: 2001:db8:85a3::8a2e:370:7334
+  - name: TEST_04
+    ipv6_address: 2001:db8:85a3::8a2e:370:7335
+    ip_address: 1.1.1.3
