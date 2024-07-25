@@ -3138,8 +3138,8 @@ keys:
             priority:
               type: str
               description: The priority is used to influence the reference clock selection.
-                The default priority is 127. The priority can be configured to any
-                integer between 1-255, or set to `disabled`.
+                The EOS default priority is 127. The priority can be configured to
+                any integer between 1-255, or set to `disabled`.
               convert_types:
               - int
         port_profile:

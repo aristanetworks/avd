@@ -10792,7 +10792,7 @@
                   },
                   "priority": {
                     "type": "string",
-                    "description": "The priority is used to influence the reference clock selection. The default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
                     "title": "Priority"
                   }
                 },
@@ -16608,7 +16608,7 @@
                   },
                   "priority": {
                     "type": "string",
-                    "description": "The priority is used to influence the reference clock selection. The default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
                     "title": "Priority"
                   }
                 },
@@ -23178,7 +23178,7 @@
                         },
                         "priority": {
                           "type": "string",
-                          "description": "The priority is used to influence the reference clock selection. The default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                          "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
                           "title": "Priority"
                         }
                       },
@@ -54936,7 +54936,7 @@
                   },
                   "priority": {
                     "type": "string",
-                    "description": "The priority is used to influence the reference clock selection. The default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
                     "title": "Priority"
                   }
                 },
