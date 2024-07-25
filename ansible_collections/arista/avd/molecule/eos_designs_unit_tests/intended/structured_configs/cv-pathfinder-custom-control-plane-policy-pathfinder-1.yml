@@ -356,6 +356,7 @@ application_traffic_recognition:
   - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-2
+    - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
   applications:
     ipv4_applications:
@@ -369,6 +370,12 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
+    - name: CUSTOM-DSCP-APPLICATION
+      dscp_ranges:
+      - ef
+      - 12-14
+      - cs6
+      - '42'
     - name: APP-CONTROL-PLANE
       src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
