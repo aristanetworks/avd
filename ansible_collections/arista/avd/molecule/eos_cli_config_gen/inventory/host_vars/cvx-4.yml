@@ -1,0 +1,9 @@
+### CVX ###
+# Test when cvx.services.vxlan is undefined
+cvx:
+  peer_hosts:
+  - 1.1.1.3
+  - 2.2.2.3
+  services:
+    mcs:
+      shutdown: true

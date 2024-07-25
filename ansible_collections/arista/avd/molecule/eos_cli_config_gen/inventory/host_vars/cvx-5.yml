@@ -1,0 +1,6 @@
+### CVX ###
+# Test when cvx.services is undefined
+cvx:
+  peer_hosts:
+  - 1.1.1.4
+  - 2.2.2.4

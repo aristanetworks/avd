@@ -1,0 +1,13 @@
+### CVX ###
+# Test when cvx.shutdown, cvx.services.mcs.shutdown and cvs.services.vxlan.shutdown are undefined.
+cvx:
+  peer_hosts:
+  - 1.1.1.2
+  - 2.2.2.1
+  services:
+    mcs:
+      redis:
+        password: 070E334ddD1D18
+        password_type: 7
+    vxlan:
+      vtep_mac_learning: "control-plane"

@@ -1,11 +1,10 @@
-# cvx
+# cvx-3
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [CVX](#cvx-1)
-  - [CVX Services](#cvx-services)
+- [CVX](#cvx)
   - [CVX Device Configuration](#cvx-device-configuration)
 
 ## Management
@@ -40,28 +39,17 @@ interface Management1
 
 | Peer Hosts |
 | ---------- |
-| 1.1.1.1, 2.2.2.2 |
-
-CVX is enabled
-
-### CVX Services
-
-| Service | Enabled | Settings |
-| ------- | ------- | -------- |
-| MCS | True |  |
-| VXLAN | True | VTEP MAC learning: control-plane |
+| 1.1.1.2, 2.2.2.1 |
 
 ### CVX Device Configuration
 
 ```eos
 !
 cvx
-   no shutdown
-   peer host 1.1.1.1
-   peer host 2.2.2.2
+   peer host 1.1.1.2
+   peer host 2.2.2.1
    service mcs
-      no shutdown
+      redis password 7 <removed>
    service vxlan
-      no shutdown
       vtep mac-learning control-plane
 ```
