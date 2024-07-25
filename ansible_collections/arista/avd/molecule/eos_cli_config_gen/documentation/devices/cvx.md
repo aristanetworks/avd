@@ -48,7 +48,7 @@ CVX is enabled
 
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
-| MCS | True |  |
+| MCS | True | Redis Password Set |
 | VXLAN | True | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -60,6 +60,7 @@ cvx
    peer host 1.1.1.1
    peer host 2.2.2.2
    service mcs
+      redis password 7 <removed>
       no shutdown
    service vxlan
       no shutdown
