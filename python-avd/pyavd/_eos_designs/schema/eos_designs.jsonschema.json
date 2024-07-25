@@ -10783,6 +10783,25 @@
                 },
                 "title": "Sflow"
               },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "title": "Priority"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
+              },
               "port_profile": {
                 "type": "string",
                 "description": "Key only used for documentation or validation purposes.",
@@ -16579,6 +16598,25 @@
                   "^_.+$": {}
                 },
                 "title": "Sflow"
+              },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "title": "Priority"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
               },
               "port_profile": {
                 "type": "string",
@@ -23130,6 +23168,25 @@
                         "^_.+$": {}
                       },
                       "title": "Sflow"
+                    },
+                    "sync_e": {
+                      "type": "object",
+                      "properties": {
+                        "enable": {
+                          "type": "boolean",
+                          "title": "Enable"
+                        },
+                        "priority": {
+                          "type": "string",
+                          "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                          "title": "Priority"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Sync E"
                     },
                     "port_profile": {
                       "type": "string",
@@ -46637,6 +46694,25 @@
                 },
                 "title": "Switchport Port Security"
               },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "network_option": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2,
+                    "title": "Network Option"
+                  }
+                },
+                "required": [
+                  "network_option"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
+              },
               "system": {
                 "type": "object",
                 "properties": {
@@ -54850,6 +54926,25 @@
                   "^_.+$": {}
                 },
                 "title": "Sflow"
+              },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "title": "Priority"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
               },
               "port_profile": {
                 "type": "string",

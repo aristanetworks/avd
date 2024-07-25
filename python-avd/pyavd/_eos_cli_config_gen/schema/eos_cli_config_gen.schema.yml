@@ -3130,6 +3130,18 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        sync_e:
+          type: dict
+          keys:
+            enable:
+              type: bool
+            priority:
+              type: str
+              description: The priority is used to influence the reference clock selection.
+                The EOS default priority is 127. The priority can be configured to
+                any integer between 1-255, or set to `disabled`.
+              convert_types:
+              - int
         port_profile:
           type: str
           description: Key only used for documentation or validation purposes.
@@ -16971,6 +16983,16 @@ keys:
         type: bool
       violation_protect_chip_based:
         type: bool
+  sync_e:
+    type: dict
+    keys:
+      network_option:
+        required: true
+        type: int
+        min: 1
+        max: 2
+        convert_types:
+        - str
   system:
     type: dict
     keys:
