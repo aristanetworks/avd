@@ -201,6 +201,30 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 0)
 
+    def p2p_vrfs_uplinks_ip(
+        self,
+        uplink_switch_index: int,
+        vrf: str,  # pylint: disable=unused-argument # NOSONAR
+    ) -> str:
+        """
+        Return Child IP for P2P-VRFs Uplinks
+
+        Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
+        """
+        return self.p2p_uplinks_ip(uplink_switch_index)
+
+    def p2p_vrfs_uplinks_peer_ip(
+        self,
+        uplink_switch_index: int,
+        vrf: str,  # pylint: disable=unused-argument # NOSONAR
+    ) -> str:
+        """
+        Return Parent IP for P2P-VRFs Uplinks
+
+        Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
+        """
+        return self.p2p_uplinks_peer_ip(uplink_switch_index)
+
     def router_id(self) -> str:
         """
         Return IP address for Router ID
