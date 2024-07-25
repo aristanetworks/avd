@@ -14,7 +14,7 @@
   run_once: true
   register: avd_requirements
 
-# For backward compatibiity reasons we need to handle the case where the role
+# For backward compatibility reasons we need to handle the case where the role
 # is imported in a playbook with a tag which would have run all the tasks.
 - name: Handle role being imported with a tag
   tags: [never]
@@ -34,11 +34,11 @@
     validation_mode: "{{ avd_data_validation_mode }}"
     # The logic to be on par with previous tags behavior is as follow:
     # either all tasks should be run OR the config should explicitly be generated because of a tag in [all, build, provision]
-    # AND the config generation should NOT be explicitely be skipped (Ansible precedence)
-    generate_device_config: "{{ ((run_all_tasks | default(false)) or ansible_run_tags  is arista.avd.contains(['all', 'build', 'provision'])) and ansible_skip_tags is not arista.avd.contains(['build', 'provision']) }}"
+    # AND the config generation should NOT be explicitly be skipped (Ansible precedence)
+    generate_device_config: "{{ ((run_all_tasks | default(false)) or ansible_run_tags is arista.avd.contains(['all', 'build', 'provision'])) and ansible_skip_tags is not arista.avd.contains(['build', 'provision']) }}"
     # The logic to be on par with previous tags behavior is as follow:
     # either all tasks should be run OR the config should explicitly be generated because of a tag in [all, build, provision, documentation]
-    # AND the config generation should NOT be explicitely be skipped (Ansible precedence)
+    # AND the config generation should NOT be explicitly be skipped (Ansible precedence)
     # AND generate_device_documentation must NOT be false
     generate_device_doc: "{{ generate_device_documentation | arista.avd.default(true) and ((run_all_tasks | default(false)) or ansible_run_tags is arista.avd.contains(['all', 'build', 'provision', 'documentation'])) and ansible_skip_tags is not arista.avd.contains(['build', 'provision', 'documentation']) }}"
     device_doc_toc: true
