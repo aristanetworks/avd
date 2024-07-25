@@ -351,6 +351,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "ethernet_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "ethernet_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sync_e</samp>](## "ethernet_interfaces.[].sync_e") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sync_e.enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ethernet_interfaces.[].sync_e.priority") | String |  |  |  | The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_profile</samp>](## "ethernet_interfaces.[].port_profile") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uc_tx_queues</samp>](## "ethernet_interfaces.[].uc_tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID. |
@@ -1025,6 +1028,11 @@
           egress:
             enable: <bool>
             unmodified_enable: <bool>
+        sync_e:
+          enable: <bool>
+
+          # The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.
+          priority: <str>
 
         # Key only used for documentation or validation purposes.
         port_profile: <str>
