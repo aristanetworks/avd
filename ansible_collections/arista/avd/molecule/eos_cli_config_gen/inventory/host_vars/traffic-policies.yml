@@ -17,7 +17,55 @@ traffic_policies:
           - 224.0.0.0/8
   policies:
     - name: BLUE-C1-POLICY
+      default_actions:
+        ipv4:
+          drop: true
       matches:
+        - name: POLICY-WITHOUT-SOURCE
+          type: ipv4
+          protocols:
+            - protocol: neighbors
+            - protocol: ip
+            - protocol: udp
+              dst_port: "1,10-20"
+            # - protocol: tcp
+            #   dst_field: SERVICE-DEMO
+              
+            - protocol: tcp
+              src_port: "22"
+              flags:
+                - initial
+              icmp_type:
+                - echo
+                - echo-reply
+            - protocol: icmp
+              src_field: SERVICE-DEMO
+              flags:
+                - initial
+              
+          actions:
+            log: false
+        - name: POLICY-WITH-DEST-PREFIX
+          type: ipv4
+          destination:
+            prefixes:
+              - 10.0.0.0/8
+              - 192.168.0.0/16
+        - name: POLICY-WITH-DEST-PREFIX-AND-LIST
+          type: ipv4
+          destination:
+            prefixes:
+              - 10.0.0.0/8
+              - 192.168.0.0/16
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            - protocol: udp
+              dst_port: "1,10-20"
+              flags:
+                - initial
+            - protocol: tcp
+              dst_field: SERVICE-DEMO
         - name: BLUE-C1-POLICY-01
           type: ipv4
           source:
@@ -30,6 +78,10 @@ traffic_policies:
           protocols:
             - protocol: tcp
               src_port: "1,10-20"
+            - protocol: udp
+              src_field: SERVICE-DEMO
+              flags:
+                - initial
           ttl: "10, 20-30"
           actions:
             traffic_class: 5
@@ -133,8 +185,12 @@ traffic_policies:
             - protocol: tcp
           actions:
             drop: true
-            log: true
-
+    - name: BLUE-C3-POLICY
+      default_actions:
+        ipv4:
+          count: test
+          traffic_class: 10
+          dscp: 11
 ethernet_interfaces:
   - name: Ethernet1
     type: routed
