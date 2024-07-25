@@ -131,7 +131,7 @@ class ActionModule(ActionBase):
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
                 file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
-                result["changed"] = result["changed"] or file_changed
+                result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
