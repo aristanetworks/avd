@@ -95,6 +95,20 @@ keys:
                 dest_prefix_set_name:
                   type: str
                   description: Destination prefix set name.
+                dscp_ranges:
+                  type: list
+                  description: |-
+                    Accept DSCP value(s) or range(s).
+                    DSCP values can be between 0 and 63.
+                    Other valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.
+                    Note: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required.
+                  items:
+                    type: str
+                    convert_types:
+                      - int
+                    description: |-
+                      DSCP value or range syntax.
+                    pattern: '^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)$'
           l4_applications:
             type: list
             description: List of user defined L4 applications. The name should be unique over all defined applications (ipv4 and l4).

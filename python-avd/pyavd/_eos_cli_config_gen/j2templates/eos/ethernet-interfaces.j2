@@ -864,6 +864,12 @@ interface {{ ethernet_interface.name }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
+{%     if ethernet_interface.sync_e.enable is arista.avd.defined(true) %}
+   sync-e
+{%         if ethernet_interface.sync_e.priority is arista.avd.defined %}
+      priority {{ ethernet_interface.sync_e.priority }}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}
 {%     endif %}
