@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - sync-e #}
-{% if sync_e is arista.avd.defined and sync_e.network_option is arista.avd.defined %}
+{% if sync_e.network_option is arista.avd.defined %}
 !
 sync-e
    network option {{ sync_e.network_option }}
