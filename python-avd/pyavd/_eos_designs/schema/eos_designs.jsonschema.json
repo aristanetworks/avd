@@ -30386,7 +30386,10 @@
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "name"
+                      ]
                     },
                     "title": "Hosts"
                   },
@@ -30471,7 +30474,10 @@
                             "additionalProperties": false,
                             "patternProperties": {
                               "^_.+$": {}
-                            }
+                            },
+                            "required": [
+                              "name"
+                            ]
                           },
                           "title": "Hosts"
                         }
