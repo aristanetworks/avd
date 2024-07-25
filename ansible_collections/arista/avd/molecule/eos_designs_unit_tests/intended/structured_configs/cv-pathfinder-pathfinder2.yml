@@ -635,6 +635,9 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - APP-PROFILE-CONTROL-PLANE
+        - VIDEO
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
@@ -646,6 +649,9 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - APP-PROFILE-CONTROL-PLANE
+        - VIDEO
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
@@ -657,6 +663,9 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - APP-PROFILE-CONTROL-PLANE
+        - VIDEO
     - name: PROD
       vni: 42
       avts:
@@ -672,6 +681,10 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
+        - VIDEO
+        - MPLS-ONLY
       - constraints:
           lossrate: 42.0
         id: 4
@@ -685,6 +698,10 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
+        - VIDEO
+        - MPLS-ONLY
       - id: 5
         name: PROD-AVT-POLICY-MPLS-ONLY
         pathgroups:
@@ -692,6 +709,10 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
+        - VIDEO
+        - MPLS-ONLY
       - id: 1
         name: PROD-AVT-POLICY-DEFAULT
         pathgroups:
@@ -701,6 +722,10 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
+        - VIDEO
+        - MPLS-ONLY
     - name: IT
       vni: 100
       avts:
@@ -715,6 +740,8 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VIDEO
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
@@ -726,6 +753,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VIDEO
     - name: TRANSIT
       vni: 66
       avts:
@@ -738,6 +767,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
       - id: 1
         name: TRANSIT-AVT-POLICY-DEFAULT
         pathgroups:
@@ -747,6 +778,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
     - name: ATTRACTED-VRF-FROM-UPLINK
       vni: 166
       avts:

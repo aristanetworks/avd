@@ -30188,6 +30188,13 @@
                                       }
                                     },
                                     "title": "Pathgroups"
+                                  },
+                                  "application_profiles": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "title": "Application Profiles"
                                   }
                                 },
                                 "additionalProperties": false,

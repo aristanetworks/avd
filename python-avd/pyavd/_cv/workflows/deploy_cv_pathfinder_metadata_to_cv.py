@@ -88,6 +88,14 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
                 warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring AVT hop-count information since it is not supported by metadata studio."
                 LOGGER.info(warning)
                 warnings.append(warning)
+            if avt_app_profiles := avt.pop("application_profiles", None):
+                if is_applications_supported(studio_schema):
+                    avt["applicationProfiles"] = avt_app_profiles
+                else:
+                    # application_profiles are set but not supported by metadata studio.
+                    warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring AVT application-profiles information since it is not supported by metadata studio."
+                    LOGGER.info(warning)
+                    warnings.append(warning)
 
     studio_inputs.update(
         {

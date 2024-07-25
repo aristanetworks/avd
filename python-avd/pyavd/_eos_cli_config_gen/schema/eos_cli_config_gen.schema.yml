@@ -7195,6 +7195,10 @@ keys:
                               type: str
                             preference:
                               type: str
+                      application_profiles:
+                        type: list
+                        items:
+                          type: str
           internet_exit_policies:
             type: list
             items:
