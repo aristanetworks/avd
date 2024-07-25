@@ -6622,7 +6622,7 @@
           "title": "MLAG Interfaces"
         },
         "l3_interfaces": {
-          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "description": "Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces.",
           "type": "object",
           "properties": {
             "enabled": {
@@ -30067,6 +30067,10 @@
                                       "lossrate": {
                                         "type": "string",
                                         "title": "Lossrate"
+                                      },
+                                      "hop_count": {
+                                        "type": "string",
+                                        "title": "Hop Count"
                                       }
                                     },
                                     "additionalProperties": false,
@@ -31139,6 +31143,27 @@
                       "^_.+$": {}
                     },
                     "title": "LDP"
+                  },
+                  "icmp": {
+                    "description": "Enables the LSRs to generate ICMP reply messages and deliver them to the originating host.",
+                    "type": "object",
+                    "properties": {
+                      "fragmentation_needed_tunneling": {
+                        "type": "boolean",
+                        "description": "Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation needed, packet too big).",
+                        "title": "Fragmentation Needed Tunneling"
+                      },
+                      "ttl_exceeded_tunneling": {
+                        "type": "boolean",
+                        "description": "Enables the MPLS tunneling of TTL exceeded ICMP replies.",
+                        "title": "TTL Exceeded Tunneling"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "ICMP"
                   }
                 },
                 "additionalProperties": false,

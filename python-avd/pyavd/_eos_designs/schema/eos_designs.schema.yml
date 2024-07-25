@@ -1344,7 +1344,8 @@ keys:
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       l3_interfaces:
-        description: Enable flow-tracking on all node.l3_interfaces.
+        description: Enable flow-tracking on all node.l3_interfaces and network-services
+          tenants.vrfs.l3_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       dps_interfaces:
@@ -8047,7 +8048,7 @@ $defs:
               `ipv6` requires EOS version 4.31.1F or higher.
 
               Note: `ipv6` is not supported in combination with a common MLAG peer
-              link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).'
+              link VLAN (ex. `mlag_peer_l3_vlan` set to 4094).'
             type: str
             valid_values:
             - ipv4

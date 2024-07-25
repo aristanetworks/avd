@@ -7149,6 +7149,8 @@ keys:
                             type: str
                             convert_types:
                             - float
+                          hop_count:
+                            type: str
                       description:
                         type: str
                       id:
@@ -7770,6 +7772,18 @@ keys:
           transport_address_interface:
             description: Interface Name.
             type: str
+      icmp:
+        description: Enables the LSRs to generate ICMP reply messages and deliver
+          them to the originating host.
+        type: dict
+        keys:
+          fragmentation_needed_tunneling:
+            type: bool
+            description: Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation
+              needed, packet too big).
+          ttl_exceeded_tunneling:
+            type: bool
+            description: Enables the MPLS tunneling of TTL exceeded ICMP replies.
   name_server:
     deprecation:
       warning: true

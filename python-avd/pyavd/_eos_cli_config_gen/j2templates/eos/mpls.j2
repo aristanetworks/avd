@@ -26,3 +26,12 @@ mpls ldp
    transport-address interface {{ mpls.ldp.transport_address_interface }}
 {%     endif %}
 {% endif %}
+{% if mpls.icmp.fragmentation_needed_tunneling is arista.avd.defined(true) or mpls.icmp.ttl_exceeded_tunneling is arista.avd.defined(true) %}
+!
+{%     if mpls.icmp.fragmentation_needed_tunneling is arista.avd.defined(true) %}
+mpls icmp fragmentation-needed tunneling
+{%     endif %}
+{%     if mpls.icmp.ttl_exceeded_tunneling is arista.avd.defined(true) %}
+mpls icmp ttl-exceeded tunneling
+{%     endif %}
+{% endif %}

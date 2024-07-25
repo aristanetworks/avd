@@ -534,6 +534,7 @@ metadata:
       avts:
       - constraints:
           jitter: 5
+          hop_count: lowest
         id: 254
         name: CUSTOM-CP-POLICY
         pathgroups:
