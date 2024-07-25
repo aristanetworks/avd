@@ -7138,6 +7138,8 @@ keys:
                             type: str
                             convert_types:
                             - float
+                          hop_count:
+                            type: str
                       description:
                         type: str
                       id:
@@ -7759,6 +7761,18 @@ keys:
           transport_address_interface:
             description: Interface Name.
             type: str
+      icmp:
+        description: Enables the LSRs to generate ICMP reply messages and deliver
+          them to the originating host.
+        type: dict
+        keys:
+          fragmentation_needed_tunneling:
+            type: bool
+            description: Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation
+              needed, packet too big).
+          ttl_exceeded_tunneling:
+            type: bool
+            description: Enables the MPLS tunneling of TTL exceeded ICMP replies.
   name_server:
     deprecation:
       warning: true
@@ -13122,6 +13136,27 @@ keys:
                     transit:
                       type: bool
                       description: Enable EVPN multicast transit mode.
+            evpn_multicast_gateway_dr_election:
+              type: dict
+              keys:
+                algorithm:
+                  type: str
+                  required: true
+                  description: "DR election algorithms:\n  hrw: Default selection
+                    based on highest random weight.\n  modulus: Selection based on
+                    VLAN ID modulo number of candidates.\n  preference: Selection
+                    based on a configured preference value."
+                  valid_values:
+                  - hrw
+                  - modulus
+                  - preference
+                preference_value:
+                  type: int
+                  description: Required when `algorithm` is `preference`.
+                  min: 0
+                  max: 65535
+                  convert_types:
+                  - str
             default_route_exports:
               type: list
               primary_key: address_family

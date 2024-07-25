@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp</samp>](## "ptp") | Dictionary |  |  |  |  |
+    | [<samp>ptp</samp>](## "ptp") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "ptp.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- <code>aes67</code><br>- <code>smpte2059-2</code><br>- <code>aes67-r16-2016</code> |  |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
@@ -21,10 +21,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sync_message</samp>](## "ptp_profiles.[].sync_message") | Dictionary |  |  |  | PTP sync message interval. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "ptp_profiles.[].sync_message.interval") | Integer |  |  | Min: -7<br>Max: 3 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transport</samp>](## "ptp_profiles.[].transport") | String |  |  | Valid Values:<br>- <code>ipv4</code> |  |
+    | [<samp>ptp_settings</samp>](## "ptp_settings") | Dictionary |  |  |  | Common PTP settings.<br>`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence. |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "ptp_settings.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp_settings.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- <code>aes67</code><br>- <code>smpte2059-2</code><br>- <code>aes67-r16-2016</code> |  |
+    | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp_settings.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;auto_clock_identity</samp>](## "ptp_settings.auto_clock_identity") | Boolean |  | `True` |  |  |
 
 === "YAML"
 
     ```yaml
+    # This key is deprecated.
+    # Support will be removed in AVD version v5.0.0.
+    # Use <samp>ptp_settings</samp> instead.
     ptp:
       enabled: <bool>
       profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
@@ -45,6 +53,14 @@
         sync_message:
           interval: <int; -7-3>
         transport: <str; "ipv4">
+
+    # Common PTP settings.
+    # `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.
+    ptp_settings:
+      enabled: <bool>
+      profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
+      domain: <int; 0-255>
+      auto_clock_identity: <bool; default=True>
     ```
 
     1. Default Value

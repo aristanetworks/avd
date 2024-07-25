@@ -5973,7 +5973,7 @@
     },
     "default_mgmt_method": {
       "type": "string",
-      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
+      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
       "enum": [
         "oob",
         "inband",
@@ -6402,7 +6402,7 @@
     },
     "evpn_multicast": {
       "type": "boolean",
-      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform setting will be configured on 7050X3 and 7300X3: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  The Following default platform setting will be configured on 720XP: \"flexible exact-match 16000 l2-shared 18000 l3-shared 22000\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
       "default": false,
       "title": "EVPN Multicast"
     },
@@ -6622,7 +6622,7 @@
           "title": "MLAG Interfaces"
         },
         "l3_interfaces": {
-          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "description": "Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces.",
           "type": "object",
           "properties": {
             "enabled": {
@@ -29955,6 +29955,10 @@
                                       "lossrate": {
                                         "type": "string",
                                         "title": "Lossrate"
+                                      },
+                                      "hop_count": {
+                                        "type": "string",
+                                        "title": "Hop Count"
                                       }
                                     },
                                     "additionalProperties": false,
@@ -31027,6 +31031,27 @@
                       "^_.+$": {}
                     },
                     "title": "LDP"
+                  },
+                  "icmp": {
+                    "description": "Enables the LSRs to generate ICMP reply messages and deliver them to the originating host.",
+                    "type": "object",
+                    "properties": {
+                      "fragmentation_needed_tunneling": {
+                        "type": "boolean",
+                        "description": "Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation needed, packet too big).",
+                        "title": "Fragmentation Needed Tunneling"
+                      },
+                      "ttl_exceeded_tunneling": {
+                        "type": "boolean",
+                        "description": "Enables the MPLS tunneling of TTL exceeded ICMP replies.",
+                        "title": "TTL Exceeded Tunneling"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "ICMP"
                   }
                 },
                 "additionalProperties": false,
@@ -39940,6 +39965,36 @@
                             "^_.+$": {}
                           },
                           "title": "EVPN Multicast Address Family"
+                        },
+                        "evpn_multicast_gateway_dr_election": {
+                          "type": "object",
+                          "properties": {
+                            "algorithm": {
+                              "type": "string",
+                              "description": "DR election algorithms:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
+                              "enum": [
+                                "hrw",
+                                "modulus",
+                                "preference"
+                              ],
+                              "title": "Algorithm"
+                            },
+                            "preference_value": {
+                              "type": "integer",
+                              "description": "Required when `algorithm` is `preference`.",
+                              "minimum": 0,
+                              "maximum": 65535,
+                              "title": "Preference Value"
+                            }
+                          },
+                          "required": [
+                            "algorithm"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "EVPN Multicast Gateway DR Election"
                         },
                         "default_route_exports": {
                           "type": "array",
@@ -49470,7 +49525,7 @@
             "mlag": 300,
             "non_mlag": 330
           },
-          "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+          "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
         },
         {
           "platforms": [
@@ -55470,6 +55525,42 @@
         }
       ],
       "title": "PTP Profiles"
+    },
+    "ptp_settings": {
+      "type": "object",
+      "description": "Common PTP settings.\n`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "aes67",
+            "smpte2059-2",
+            "aes67-r16-2016"
+          ],
+          "default": "aes67-r16-2016",
+          "title": "Profile"
+        },
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Domain"
+        },
+        "auto_clock_identity": {
+          "type": "boolean",
+          "default": true,
+          "title": "Auto Clock Identity"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PTP Settings"
     },
     "queue_monitor_length": {
       "type": "object",

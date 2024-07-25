@@ -1355,7 +1355,7 @@ roles/eos_designs/docs/tables/platform-settings.md
 See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
 --8<--
-roles/eos_designs/docs/tables/ptp.md
+roles/eos_designs/docs/tables/ptp_settings.md
 --8<--
 
 ## Custom Structured Configuration

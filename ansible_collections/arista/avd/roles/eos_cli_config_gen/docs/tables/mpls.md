@@ -14,6 +14,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "mpls.ldp.router_id") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "mpls.ldp.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transport_address_interface</samp>](## "mpls.ldp.transport_address_interface") | String |  |  |  | Interface Name. |
+    | [<samp>&nbsp;&nbsp;icmp</samp>](## "mpls.icmp") | Dictionary |  |  |  | Enables the LSRs to generate ICMP reply messages and deliver them to the originating host. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragmentation_needed_tunneling</samp>](## "mpls.icmp.fragmentation_needed_tunneling") | Boolean |  |  |  | Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation needed, packet too big). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl_exceeded_tunneling</samp>](## "mpls.icmp.ttl_exceeded_tunneling") | Boolean |  |  |  | Enables the MPLS tunneling of TTL exceeded ICMP replies. |
 
 === "YAML"
 
@@ -27,4 +30,13 @@
 
         # Interface Name.
         transport_address_interface: <str>
+
+      # Enables the LSRs to generate ICMP reply messages and deliver them to the originating host.
+      icmp:
+
+        # Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation needed, packet too big).
+        fragmentation_needed_tunneling: <bool>
+
+        # Enables the MPLS tunneling of TTL exceeded ICMP replies.
+        ttl_exceeded_tunneling: <bool>
     ```
