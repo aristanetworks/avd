@@ -37,7 +37,7 @@ PTP must be specifically enabled:
 - on the fabric level, for example FABRIC.yml
 
   ```yaml
-  ptp:
+  ptp_settings:
     enabled: true
   ```
 
@@ -184,7 +184,7 @@ If you prefer to have PTP clock identity be the system MAC-address of the switch
 - on the fabric level, for example FABRIC.yml
 
   ```yaml
-  ptp:
+  ptp_settings:
     auto_clock_identity: < true | false | default -> true >
   ```
 

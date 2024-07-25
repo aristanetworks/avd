@@ -55621,6 +55621,42 @@
       ],
       "title": "PTP Profiles"
     },
+    "ptp_settings": {
+      "type": "object",
+      "description": "Common PTP settings.\n`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "aes67",
+            "smpte2059-2",
+            "aes67-r16-2016"
+          ],
+          "default": "aes67-r16-2016",
+          "title": "Profile"
+        },
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Domain"
+        },
+        "auto_clock_identity": {
+          "type": "boolean",
+          "default": true,
+          "title": "Auto Clock Identity"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PTP Settings"
+    },
     "queue_monitor_length": {
       "type": "object",
       "properties": {
