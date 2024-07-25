@@ -20,14 +20,10 @@ try:
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
-    from pyavd.validation_result import ValidationResult
 
     HAS_PYAVD = True
 except ImportError:
     HAS_PYAVD = False
-    import typing
-
-    ValidationResult = typing.Any
 
 
 CUSTOM_TEMPLATES_CFG_TEMPLATE = "eos/custom-templates.j2"
