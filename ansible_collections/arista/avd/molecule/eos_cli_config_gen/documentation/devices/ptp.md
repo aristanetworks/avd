@@ -55,8 +55,8 @@ ptp clock-identity 11:11:11:11:11:11
 ptp source ip 1.1.2.3
 ptp priority1 101
 ptp priority2 102
-ptp ttl 12
 ptp profile g8275.1
+ptp ttl 12
 ptp domain 17
 ptp message-type general dscp 36 default
 ptp message-type event dscp 46 default
