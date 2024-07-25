@@ -28,18 +28,21 @@ keys:
               - str
               min: 0
               max: 2000
+              required: true
             hours:
               type: int
               convert_types:
               - str
               min: 0
               max: 23
+              required: true
             minutes:
               type: int
               convert_types:
               - str
               min: 0
               max: 59
+              required: true
         lease_time_ipv6:
           type: dict
           keys:
@@ -49,18 +52,21 @@ keys:
               - str
               min: 0
               max: 2000
+              required: true
             hours:
               type: int
               convert_types:
               - str
               min: 0
               max: 23
+              required: true
             minutes:
               type: int
               convert_types:
               - str
               min: 0
               max: 59
+              required: true
         dns_domain_name_ipv4:
           type: str
         dns_domain_name_ipv6:

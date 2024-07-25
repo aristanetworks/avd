@@ -2024,6 +2024,11 @@
                 "title": "Minutes"
               }
             },
+            "required": [
+              "days",
+              "hours",
+              "minutes"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -2052,6 +2057,11 @@
                 "title": "Minutes"
               }
             },
+            "required": [
+              "days",
+              "hours",
+              "minutes"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}

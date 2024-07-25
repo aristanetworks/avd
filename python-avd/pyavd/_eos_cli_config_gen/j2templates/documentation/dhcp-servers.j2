@@ -17,7 +17,7 @@
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv4 Lease Time |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
 | ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
 {%             set enabled = not dhcp_server.disabled | arista.avd.default(false) %}
@@ -80,7 +80,7 @@
 {%                     for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
 {%                         if subnet.reservations is arista.avd.defined %}
 
-###### Reservations for subnet: {{ subnet.subnet }}
+###### DHCP Reservations in {{ subnet.subnet }}
 
 | Mac Address | IPv4 Address | IPv6 Address | Hostname |
 | ----------- | ------------ | ------------ | -------- |

@@ -11,13 +11,13 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;disabled</samp>](## "dhcp_servers.[].disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String | Required, Unique |  |  | VRF in which to configure the DHCP server, use `default` to indicate default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lease_time_ipv4</samp>](## "dhcp_servers.[].lease_time_ipv4") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days</samp>](## "dhcp_servers.[].lease_time_ipv4.days") | Integer |  |  | Min: 0<br>Max: 2000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "dhcp_servers.[].lease_time_ipv4.hours") | Integer |  |  | Min: 0<br>Max: 23 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "dhcp_servers.[].lease_time_ipv4.minutes") | Integer |  |  | Min: 0<br>Max: 59 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days</samp>](## "dhcp_servers.[].lease_time_ipv4.days") | Integer | Required |  | Min: 0<br>Max: 2000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "dhcp_servers.[].lease_time_ipv4.hours") | Integer | Required |  | Min: 0<br>Max: 23 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "dhcp_servers.[].lease_time_ipv4.minutes") | Integer | Required |  | Min: 0<br>Max: 59 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lease_time_ipv6</samp>](## "dhcp_servers.[].lease_time_ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days</samp>](## "dhcp_servers.[].lease_time_ipv6.days") | Integer |  |  | Min: 0<br>Max: 2000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "dhcp_servers.[].lease_time_ipv6.hours") | Integer |  |  | Min: 0<br>Max: 23 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "dhcp_servers.[].lease_time_ipv6.minutes") | Integer |  |  | Min: 0<br>Max: 59 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days</samp>](## "dhcp_servers.[].lease_time_ipv6.days") | Integer | Required |  | Min: 0<br>Max: 2000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "dhcp_servers.[].lease_time_ipv6.hours") | Integer | Required |  | Min: 0<br>Max: 23 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "dhcp_servers.[].lease_time_ipv6.minutes") | Integer | Required |  | Min: 0<br>Max: 59 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv4</samp>](## "dhcp_servers.[].dns_domain_name_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv6</samp>](## "dhcp_servers.[].dns_domain_name_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_ipv4</samp>](## "dhcp_servers.[].dns_servers_ipv4") | List, items: String |  |  | Min Length: 1 | List of DNS servers for IPv4 clients. |
@@ -64,13 +64,13 @@
         # VRF in which to configure the DHCP server, use `default` to indicate default VRF.
         vrf: <str; required; unique>
         lease_time_ipv4:
-          days: <int; 0-2000>
-          hours: <int; 0-23>
-          minutes: <int; 0-59>
+          days: <int; 0-2000; required>
+          hours: <int; 0-23; required>
+          minutes: <int; 0-59; required>
         lease_time_ipv6:
-          days: <int; 0-2000>
-          hours: <int; 0-23>
-          minutes: <int; 0-59>
+          days: <int; 0-2000; required>
+          hours: <int; 0-23; required>
+          minutes: <int; 0-59; required>
         dns_domain_name_ipv4: <str>
         dns_domain_name_ipv6: <str>
 
