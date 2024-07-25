@@ -6622,7 +6622,7 @@
           "title": "MLAG Interfaces"
         },
         "l3_interfaces": {
-          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "description": "Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces.",
           "type": "object",
           "properties": {
             "enabled": {
