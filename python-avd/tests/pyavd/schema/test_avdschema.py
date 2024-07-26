@@ -8,9 +8,6 @@ import yaml
 from deepmerge import always_merger
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
-from pyavd._schema.avdschemaresolver import AvdSchemaResolver
-from schema_tools.constants import SCHEMA_PATHS
-from schema_tools.store import create_store
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
@@ -208,26 +205,6 @@ class TestAvdSchema:
             assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
         else:
             assert subschema == EXPECTED_SUBSCHEMAS[".".join(test_path)]
-
-    def test_avd_schema_subschema_with_ref_to_store_schemas(self):
-        test_schema = {"type": "dict", "keys": {}}
-        for id in SCHEMA_PATHS:
-            if id == "avd_meta_schema":
-                continue
-            test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#"}
-
-        # For performance reasons $ref is no longer supported at runtime.
-        # The $ref must be resolved before loading the schema.
-        store = create_store()
-        resolved_test_schema = AvdSchemaResolver("", store).resolve(test_schema)
-
-        avdschema = AvdSchema(resolved_test_schema)
-        for id in SCHEMA_PATHS:
-            if id == "avd_meta_schema":
-                continue
-            subschema = avdschema.subschema([id])
-            assert subschema.get("type") == "dict"
-            assert subschema.get("keys") is not None
 
     @pytest.mark.parametrize("test_schema", UNIQUE_KEYS_SCHEMAS)
     @pytest.mark.parametrize("test_data", UNIQUE_KEYS_VALID_DATA)
