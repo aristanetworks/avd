@@ -455,7 +455,7 @@ keys:
               $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_shared_secret/keys/both"
             level_2:
               type: dict
-              description: Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+              description: Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
               $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_shared_secret/keys/both"
         isis_authentication_mode_sha:
           type: dict
@@ -474,7 +474,7 @@ keys:
               $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_sha/keys/both"
             level_2:
               type: dict
-              description: Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+              description: Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
               $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_sha/keys/both"
         mtu:
           type: int
