@@ -175,6 +175,9 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha512
     key: y3T//O9Xw3pqF6bDtFr8EELtrNKEERsI
+  - id: 2
+    hash_algorithm: sha512
+    key: ENWftWJFSbpghLsDSRPIcEkVUaACFoRaVvxnFmIjZ7YdChtwYn1Q7lM2Z8asSHCg
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094
