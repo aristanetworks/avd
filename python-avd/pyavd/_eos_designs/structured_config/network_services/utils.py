@@ -687,7 +687,7 @@ class UtilsMixin(UtilsZscalerMixin):
         return sorted(set(internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies))
 
     @cached_property
-    def _l3_interface_acls(self: AvdStructuredConfigNetworkServices):
+    def _l3_interface_acls(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
         Returns a dict of interfaces and ACLs set on the interfaces.
             {
