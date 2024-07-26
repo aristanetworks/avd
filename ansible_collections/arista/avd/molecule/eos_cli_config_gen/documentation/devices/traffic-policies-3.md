@@ -1,11 +1,11 @@
-# traffic-policies-2
+# traffic-policies-3
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
   - [Traffic Policies information](#traffic-policies-information)
 
 ## Management
@@ -38,37 +38,30 @@ interface Management1
 
 ## Interfaces
 
-### Port-Channel Interfaces
+### Ethernet Interfaces
 
-#### Port-Channel Interfaces Summary
+#### Ethernet Interfaces Summary
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
-#### Port-Channel Interfaces Device Configuration
+*Inherited from Port-Channel Interface
+
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel2
+interface Ethernet1
    no switchport
 ```
 
 ### Traffic Policies information
-
-#### IPv6 Field Sets
-
-| Field Set Name | Values |
-| -------------- | ------ |
-| IPv6-Demo | 11:22:33:44:55:66:77:88 |
 
 #### Traffic Policies Device Configuration
 
 ```eos
 !
 traffic-policies
-   field-set ipv6 prefix IPv6-Demo
-      11:22:33:44:55:66:77:88
-   !
 ```

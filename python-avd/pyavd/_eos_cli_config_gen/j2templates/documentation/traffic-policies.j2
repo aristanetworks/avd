@@ -15,12 +15,10 @@
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
-{%                 if field_set_ipv4 | length > 1 %}
+{%                 if field_set_ipv4.prefixes is arista.avd.defined %}
 {%                     set value = field_set_ipv4.prefixes | join('<br/>') %}
-{%                 else %}
-{%                     set value = field_set_ipv4[0].prefixes %}
 {%                 endif %}
-| {{ field_set_ipv4.name }} | {{ value }} |
+| {{ field_set_ipv4.name }} | {{ value | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
@@ -30,12 +28,10 @@
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
-{%                 if field_set_ipv6 | length > 1 %}
+{%                 if field_set_ipv6.prefixes is arista.avd.defined %}
 {%                     set value = field_set_ipv6.prefixes | join('<br/>') %}
-{%                 else %}
-{%                     set value = field_set_ipv6[0].prefixes %}
 {%                 endif %}
-| {{ field_set_ipv6.name }} | {{ value }} |
+| {{ field_set_ipv6.name }} | {{ value | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%         if traffic_policies.field_sets.ports is arista.avd.defined %}

@@ -8,6 +8,3 @@ traffic_policies:
 port_channel_interfaces:
   - name: Port-Channel2
     type: routed
-    traffic_policy:
-      input: BLUE-C1-POLICY
-      output: BLUE-C2-POLICY
