@@ -905,11 +905,11 @@ $defs:
                         type: str
               redistribute_static:
                 type: bool
-                description: Non-selectively enabling or disabling redistribute static inside the VRF.
+                description: Non-selectively enabling or disabling redistribute static to BGP inside the VRF.
               redistribute_connected:
                 type: bool
                 default: true
-                description: Enabled/disable redistribution of connected routes.
+                description: Non-selectively enabling or disabling redistribution of connected routes to BGP.
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
