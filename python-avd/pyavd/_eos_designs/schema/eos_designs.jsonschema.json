@@ -3832,7 +3832,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group, and\nin the case where there are multiple pathinders in full-mesh with peering IP\naddresses overlaping with the `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` prefixes,\nit is necessary to also add a password on the `wan_rr_overlay_peers` BGP\npeer group or the peerings will not come up.",
+              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group,\nit may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.\nThis is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.",
               "title": "Password"
             },
             "bfd": {
@@ -4350,7 +4350,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group, and\nin the case where there are multiple pathinders in full-mesh with peering IP\naddresses overlaping with the `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` prefixes,\nit is necessary to also add a password on the `wan_rr_overlay_peers` BGP\npeer group or the peerings will not come up.",
+              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group,\nit may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.\nThis is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.\nIf the password is not set, the static BGP peerings between Pathfinders may not come up.",
               "title": "Password"
             },
             "bfd": {
