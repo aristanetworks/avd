@@ -362,7 +362,10 @@ keys:
               BGP peer group.
 
               This is required in the case where one or more pathfinders use the same
-              VTEP IP range as the edge routers.'
+              VTEP IP range as the edge routers.
+
+              If the password is not set, the static BGP peerings between Pathfinders
+              may not come up.'
           bfd:
             type: bool
             default: true
