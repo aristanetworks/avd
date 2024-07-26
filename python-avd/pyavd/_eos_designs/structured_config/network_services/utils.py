@@ -718,20 +718,18 @@ class UtilsMixin(UtilsZscalerMixin):
                         interface_name = interface
                         interface_ip: str | None = l3_interface["ip_addresses"][interface_idx]
                         interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
-                        node = l3_interface["nodes"][interface_idx]
-                        if node == self.shared_utils.hostname:
-                            if ipv4_acl_in is not None:
-                                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
-                                    name=ipv4_acl_in,
-                                    interface_name=interface_name,
-                                    interface_ip=interface_ip,
-                                )
-                            if ipv4_acl_out is not None:
-                                l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
-                                    name=ipv4_acl_out,
-                                    interface_name=interface_name,
-                                    interface_ip=interface_ip,
-                                )
+                        if ipv4_acl_in is not None:
+                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                                name=ipv4_acl_in,
+                                interface_name=interface_name,
+                                interface_ip=interface_ip,
+                            )
+                        if ipv4_acl_out is not None:
+                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                                name=ipv4_acl_out,
+                                interface_name=interface_name,
+                                interface_ip=interface_ip,
+                            )
         return l3_interface_acls
 
     @cached_property
