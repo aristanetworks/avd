@@ -909,7 +909,7 @@ $defs:
               redistribute_connected:
                 type: bool
                 default: true
-                description: Non-selectively enabling or disabling redistribution of connected routes to BGP.
+                description: Non-selectively enabling or disabling redistribution of connected routes to BGP inside the VRF.
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings

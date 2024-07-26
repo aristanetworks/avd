@@ -6674,7 +6674,7 @@ $defs:
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribution
-                  of connected routes to BGP.
+                  of connected routes to BGP inside the VRF.
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
