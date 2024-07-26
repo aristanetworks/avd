@@ -792,7 +792,7 @@ $defs:
             description: |-
               IP address family used to establish MLAG Peer Link (control link).
               `ipv6` requires EOS version 4.31.1F or higher.
-              Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).
+              Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_peer_l3_vlan` set to 4094).
             type: str
             valid_values:
               - ipv4

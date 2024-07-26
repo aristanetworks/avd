@@ -37,7 +37,7 @@ DEFAULT_PLATFORM_SETTINGS = [
     },
     {
         "platforms": ["720XP"],
-        "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+        "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000",
         "reload_delay": {
             "mlag": 300,
             "non_mlag": 330,

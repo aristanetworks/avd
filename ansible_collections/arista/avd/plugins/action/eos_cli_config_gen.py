@@ -13,20 +13,17 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar
 
 try:
-    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
-    from pyavd.validation_result import ValidationResult
 
     HAS_PYAVD = True
 except ImportError:
     HAS_PYAVD = False
-    import typing
-
-    ValidationResult = typing.Any
 
 
 CUSTOM_TEMPLATES_CFG_TEMPLATE = "eos/custom-templates.j2"
@@ -88,15 +85,21 @@ class ActionModule(ActionBase):
             LOGGER.debug("Preparing task vars [done].")
 
             LOGGER.debug("Validating structured configuration...")
-            validation_result = validate_structured_config(task_vars)
+            # result dict will be in-place updated.
+            self.validate_task_vars(
+                hostname=task_vars["inventory_hostname"],
+                conversion_mode=validated_args["conversion_mode"],
+                validation_mode=validated_args["validation_mode"],
+                task_vars=task_vars,
+                result=result,
+            )
             LOGGER.debug("Validating structured configuration [done].")
         except Exception as e:
             LOGGER.error(e)
             return result
 
-        if validation_result.failed:
-            validation_mode = validated_args.get("validation_mode", "warning")
-            self._log_validation_errors(validation_result, validation_mode)
+        if result.get("failed"):
+            # Something failed in schema validation or conversion.
             return result
 
         has_custom_templates = bool(task_vars.get("custom_templates"))
@@ -131,7 +134,7 @@ class ActionModule(ActionBase):
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
                 file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
-                result["changed"] = result["changed"] or file_changed
+                result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
@@ -188,13 +191,25 @@ class ActionModule(ActionBase):
                 try:
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
-                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}': '{e}'") from e
 
         if not isinstance(task_vars, dict):
             # Corner case for ansible-test where the passed task_vars is a nested chain-map
             task_vars = dict(task_vars)
 
         return task_vars
+
+    def validate_task_vars(self, hostname: str, conversion_mode: str, validation_mode: str, task_vars: dict, result: dict) -> None:
+        # Load schema tools for input schema
+        input_schema_tools = AvdSchemaTools(
+            hostname=hostname,
+            ansible_display=display,
+            schema_id="eos_cli_config_gen",
+            conversion_mode=conversion_mode,
+            validation_mode=validation_mode,
+            plugin_name="arista.avd.eos_cli_config_gen",
+        )
+        result.update(input_schema_tools.convert_and_validate_data(task_vars))
 
     def render_template_with_ansible_templar(self, task_vars: dict, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
@@ -231,27 +246,6 @@ class ActionModule(ActionBase):
 
         path.write_text(content, encoding="UTF-8")
         return True
-
-    def _log_validation_errors(self, validation_results: ValidationResult, validation_mode: str) -> None:
-        """Log validation results depending on the validation_mode
-
-        Parameters
-        ----------
-        validation_result: The ValidationResult object containing the errors.
-        validation_mode: A validated string containing one of the possible validation_mode
-            in [error, warning, info, debug, disabled]
-
-        """
-        for validation_error in validation_results.validation_errors:
-            if validation_mode == "debug":
-                LOGGER.debug(validation_error)
-            elif validation_mode == "error":
-                LOGGER.error(validation_error)
-            elif validation_mode == "info":
-                LOGGER.info(validation_error)
-            elif validation_mode == "warning":
-                LOGGER.warning(validation_error)
-            # otherwise the validation_mode is disabled
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

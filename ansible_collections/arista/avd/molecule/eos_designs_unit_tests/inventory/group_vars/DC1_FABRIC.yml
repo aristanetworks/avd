@@ -371,6 +371,20 @@ l2leaf:
         - name: DC1.L2LEAF5B
           id: 15
           mgmt_ip: 192.168.200.121/24
+    # Example for issue 4124
+    - group: DC1_L2LEAF6
+      short_esi: auto # Test Auto ESI to MLAG pair
+      nodes:
+        - name: DC1.L2LEAF6A
+          id: 16
+          mgmt_ip: 192.168.200.122/24
+          uplink_switches: [ DC1-LEAF2A ]
+          uplink_switch_interfaces: [ Ethernet30 ]
+        - name: DC1.L2LEAF6B
+          id: 17
+          mgmt_ip: 192.168.200.123/24
+          uplink_switches: [ DC1-LEAF2B ]
+          uplink_switch_interfaces: [ Ethernet31 ]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500

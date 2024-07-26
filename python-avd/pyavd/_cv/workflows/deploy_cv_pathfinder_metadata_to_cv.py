@@ -34,9 +34,19 @@ def is_pathfinder_location_supported(studio_schema: InputSchema) -> bool:
     return attributes.issubset(pathfinder_group_fields)
 
 
+def is_avt_hop_count_supported(studio_schema: InputSchema) -> bool:
+    """Detect if AVT hop count is supported by the metadata studio"""
+    return bool(get_v2(studio_schema, "fields.values.avtHopCount"))
+
+
 def is_internet_exit_zscaler_supported(studio_schema: InputSchema) -> bool:
     """Detect if zscaler internet exit is supported by the metadata studio"""
     return bool(get_v2(studio_schema, "fields.values.zscaler"))
+
+
+def is_applications_supported(studio_schema: InputSchema) -> bool:
+    """Detect if applications is supported by the metadata studio"""
+    return bool(get_v2(studio_schema, "fields.values.applications"))
 
 
 async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
@@ -58,10 +68,12 @@ async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClie
     return studio_schema
 
 
-def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
+def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
     """
     In-place update general metadata in studio_inputs.
     """
+    warnings = []
+
     # Temporary fix for default values in metadata studio
     for vrf in get(metadata, "vrfs", default=[]):
         for avt in get(vrf, "avts", default=[]):
@@ -69,6 +81,21 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
             constraints.setdefault("latency", 4294967295)
             constraints.setdefault("jitter", 4294967295)
             constraints.setdefault("lossrate", 99.0)
+            if is_avt_hop_count_supported(studio_schema):
+                constraints["hopCount"] = constraints.pop("hop_count", "")
+            elif constraints.pop("hop_count", ""):
+                # hop count is set but not supported by metadata studio.
+                warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring AVT hop-count information since it is not supported by metadata studio."
+                LOGGER.info(warning)
+                warnings.append(warning)
+            if avt_app_profiles := avt.pop("application_profiles", None):
+                if is_applications_supported(studio_schema):
+                    avt["applicationProfiles"] = avt_app_profiles
+                else:
+                    # application_profiles are set but not supported by metadata studio.
+                    warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring AVT application-profiles information since it is not supported by metadata studio."
+                    LOGGER.info(warning)
+                    warnings.append(warning)
 
     studio_inputs.update(
         {
@@ -84,6 +111,16 @@ def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
             "vrfs": get(metadata, "vrfs", default=[]),
         }
     )
+
+    if applications := generate_applications_metadata(metadata):
+        if not is_applications_supported(studio_schema):
+            warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring application_traffic_recognition information since it is not supported by metadata studio."
+            LOGGER.info(warning)
+            warnings.append(warning)
+        else:
+            studio_inputs["applications"] = applications
+
+    return warnings
 
 
 def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
@@ -329,7 +366,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     if pathfinders:
         # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
-        update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs)
+        result.warnings.extend(update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
     for pathfinder in pathfinders:
         result.warnings.extend(
@@ -415,3 +452,42 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
         )
 
     return services_dict, warnings
+
+
+def generate_applications_metadata(metadata: dict) -> dict:
+    """
+    Generate application traffic recognition related metadata for one patfinder.
+    To be inserted into the common metadata under "applications"
+    """
+    if (applications := get(metadata, "applications")) is None:
+        return {}
+
+    return {
+        "appProfiles": [
+            {
+                "name": profile["name"],
+                "builtinApps": get(profile, "builtin_applications"),
+                "userDefinedApps": get(profile, "user_defined_applications"),
+                "categories": get(profile, "categories"),
+                "transportProtocols": get(profile, "transport_protocols"),
+            }
+            for profile in get(applications, "profiles", default=[])
+        ],
+        "appCategories": {
+            "builtinApps": [
+                {
+                    "appName": application["name"],
+                    "category": application["category"],
+                    "service": get(application, "service"),
+                }
+                for application in get(applications, "builtin_applications", default=[])
+            ],
+            "userDefinedApps": [
+                {
+                    "appName": application["name"],
+                    "category": application["category"],
+                }
+                for application in get(applications, "user_defined_applications", default=[])
+            ],
+        },
+    }

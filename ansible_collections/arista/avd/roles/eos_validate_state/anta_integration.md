@@ -12,6 +12,7 @@ title: Ansible Collection Role eos_validate_state - Integration with ANTA
 
 !!! note
     [ANTA](https://anta.arista.com/stable/) will be the future default framework leveraged by AVD for network testing and validation. Since it introduces small [breaking changes](#breaking-changes), you have to opt-in to leverage ANTA with `eos_validate_state` by configuring: `use_anta: true`.
+    Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior (same as setting `use_anta: true` in older versions).
 
 # Overview
 

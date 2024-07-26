@@ -18,6 +18,11 @@ keys:
         - gptp
         - ordinarymaster
         - p2ptransparent
+      profile:
+        type: str
+        valid_values:
+        - g8275.1
+        - g8275.2
       mode_one_step:
         type: bool
       forward_unicast:

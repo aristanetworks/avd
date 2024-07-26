@@ -49,6 +49,11 @@ router_bgp:
     remote_as: '65001'
     peer: CUSTOM-PYTHON_MODULES-SPINE1
     description: CUSTOM-PYTHON_MODULES-SPINE1_Ethernet1
+  - ip_address: 172.31.255.25
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    peer: CUSTOM-PYTHON_MODULES-L3LEAF2
+    description: CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: CUSTOM-PYTHON_MODULES-SPINE1
@@ -57,13 +62,16 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   vrfs:
   - name: TEST_VRF
     router_id: 192.168.255.21
+    neighbors:
+    - ip_address: 172.16.0.25
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65103'
+      description: CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1.1_vrf_TEST_VRF
+    - ip_address: 10.255.240.11
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
     rd: 192.168.255.21:1
     route_targets:
       import:
@@ -76,11 +84,12 @@ router_bgp:
         - '1:1'
     redistribute_routes:
     - source_protocol: connected
-    neighbors:
-    - ip_address: 10.255.240.11
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
     updates:
       wait_install: true
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vlans:
   - id: 110
     tenant: CUSTOM_PYTHON_MODULES_TENANT
@@ -179,15 +188,17 @@ port_channel_interfaces:
   - MLAG
 ethernet_interfaces:
 - name: Ethernet3
-  peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1B_Ethernet3
-  type: port-channel-member
+  peer: CUSTOM-PYTHON_MODULES-L3LEAF2
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1
+  type: routed
   shutdown: false
   channel_group:
     id: 3
     mode: active
+  mtu: 9214
+  ip_address: 172.31.255.24/31
 - name: Ethernet4
   peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
   peer_interface: Ethernet4
@@ -207,6 +218,17 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 172.31.255.21/31
+- name: Ethernet3.1
+  peer: CUSTOM-PYTHON_MODULES-L3LEAF2
+  peer_interface: Ethernet1.1
+  peer_type: l3leaf
+  vrf: TEST_VRF
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1.1 VRF TEST_VRF
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 1
+  mtu: 9214
+  ip_address: 172.16.0.24/31
 mlag_configuration:
   domain_id: CUSTOM_PYTHON_MODULES_L3LEAF1
   local_interface: Vlan4094

@@ -154,6 +154,16 @@
                     "description": "Destination prefix set name.",
                     "title": "Dest Prefix Set Name"
                   },
+                  "dscp_ranges": {
+                    "type": "array",
+                    "description": "Accept DSCP value(s) or range(s).\nDSCP values can be between 0 and 63.\nOther valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.\nNote: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required.",
+                    "items": {
+                      "type": "string",
+                      "description": "DSCP value or range syntax.",
+                      "pattern": "^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\\s|^)(?:\\d|[1-5]\\d|6[0-3])(?:-(?:\\d|[1-5]\\d|6[0-3]))?)+)$"
+                    },
+                    "title": "DSCP Ranges"
+                  },
                   "protocols": {
                     "type": "array",
                     "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
@@ -5973,7 +5983,7 @@
     },
     "default_mgmt_method": {
       "type": "string",
-      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
+      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
       "enum": [
         "oob",
         "inband",
@@ -6402,7 +6412,7 @@
     },
     "evpn_multicast": {
       "type": "boolean",
-      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform setting will be configured on 7050X3 and 7300X3: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  The Following default platform setting will be configured on 720XP: \"flexible exact-match 16000 l2-shared 18000 l3-shared 22000\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
       "default": false,
       "title": "EVPN Multicast"
     },
@@ -6622,7 +6632,7 @@
           "title": "MLAG Interfaces"
         },
         "l3_interfaces": {
-          "description": "Enable flow-tracking on all node.l3_interfaces.",
+          "description": "Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces.",
           "type": "object",
           "properties": {
             "enabled": {
@@ -9811,6 +9821,34 @@
                     ],
                     "title": "Delay Mechanism"
                   },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "g8275_1": {
+                        "type": "object",
+                        "properties": {
+                          "destination_mac_address": {
+                            "type": "string",
+                            "enum": [
+                              "forwardable",
+                              "non-forwardable"
+                            ],
+                            "title": "Destination MAC Address"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "G8275 1"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Profile"
+                  },
                   "sync_message": {
                     "type": "object",
                     "properties": {
@@ -10782,6 +10820,25 @@
                   "^_.+$": {}
                 },
                 "title": "Sflow"
+              },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "title": "Priority"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
               },
               "port_profile": {
                 "type": "string",
@@ -13430,6 +13487,34 @@
                         ],
                         "title": "Delay Mechanism"
                       },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "g8275_1": {
+                            "type": "object",
+                            "properties": {
+                              "destination_mac_address": {
+                                "type": "string",
+                                "enum": [
+                                  "forwardable",
+                                  "non-forwardable"
+                                ],
+                                "title": "Destination MAC Address"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "G8275 1"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Profile"
+                      },
                       "sync_message": {
                         "type": "object",
                         "properties": {
@@ -15608,6 +15693,34 @@
                     ],
                     "title": "Delay Mechanism"
                   },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "g8275_1": {
+                        "type": "object",
+                        "properties": {
+                          "destination_mac_address": {
+                            "type": "string",
+                            "enum": [
+                              "forwardable",
+                              "non-forwardable"
+                            ],
+                            "title": "Destination MAC Address"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "G8275 1"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Profile"
+                  },
                   "sync_message": {
                     "type": "object",
                     "properties": {
@@ -16579,6 +16692,25 @@
                   "^_.+$": {}
                 },
                 "title": "Sflow"
+              },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "title": "Priority"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
               },
               "port_profile": {
                 "type": "string",
@@ -18777,6 +18909,16 @@
                               "type": "string",
                               "description": "Destination prefix set name.",
                               "title": "Dest Prefix Set Name"
+                            },
+                            "dscp_ranges": {
+                              "type": "array",
+                              "description": "Accept DSCP value(s) or range(s).\nDSCP values can be between 0 and 63.\nOther valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.\nNote: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required.",
+                              "items": {
+                                "type": "string",
+                                "description": "DSCP value or range syntax.",
+                                "pattern": "^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\\s|^)(?:\\d|[1-5]\\d|6[0-3])(?:-(?:\\d|[1-5]\\d|6[0-3]))?)+)$"
+                              },
+                              "title": "DSCP Ranges"
                             },
                             "protocols": {
                               "type": "array",
@@ -22159,6 +22301,34 @@
                           ],
                           "title": "Delay Mechanism"
                         },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "g8275_1": {
+                              "type": "object",
+                              "properties": {
+                                "destination_mac_address": {
+                                  "type": "string",
+                                  "enum": [
+                                    "forwardable",
+                                    "non-forwardable"
+                                  ],
+                                  "title": "Destination MAC Address"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "G8275 1"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Profile"
+                        },
                         "sync_message": {
                           "type": "object",
                           "properties": {
@@ -23130,6 +23300,25 @@
                         "^_.+$": {}
                       },
                       "title": "Sflow"
+                    },
+                    "sync_e": {
+                      "type": "object",
+                      "properties": {
+                        "enable": {
+                          "type": "boolean",
+                          "title": "Enable"
+                        },
+                        "priority": {
+                          "type": "string",
+                          "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                          "title": "Priority"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Sync E"
                     },
                     "port_profile": {
                       "type": "string",
@@ -29955,6 +30144,10 @@
                                       "lossrate": {
                                         "type": "string",
                                         "title": "Lossrate"
+                                      },
+                                      "hop_count": {
+                                        "type": "string",
+                                        "title": "Hop Count"
                                       }
                                     },
                                     "additionalProperties": false,
@@ -29995,6 +30188,13 @@
                                       }
                                     },
                                     "title": "Pathgroups"
+                                  },
+                                  "application_profiles": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "title": "Application Profiles"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -30126,6 +30326,164 @@
                           }
                         },
                         "title": "Internet Exit Policies"
+                      },
+                      "applications": {
+                        "type": "object",
+                        "properties": {
+                          "profiles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "title": "Name"
+                                },
+                                "builtin_applications": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "title": "Name"
+                                      },
+                                      "services": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "title": "Services"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "Builtin Applications"
+                                },
+                                "user_defined_applications": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "title": "Name"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "User Defined Applications"
+                                },
+                                "categories": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "category": {
+                                        "type": "string",
+                                        "title": "Category"
+                                      },
+                                      "services": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "title": "Services"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "Categories"
+                                },
+                                "transport_protocols": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Transport Protocols"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              }
+                            },
+                            "title": "Profiles"
+                          },
+                          "categories": {
+                            "type": "object",
+                            "properties": {
+                              "builtin_applications": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "title": "Name"
+                                    },
+                                    "category": {
+                                      "type": "string",
+                                      "title": "Category"
+                                    },
+                                    "services": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "title": "Services"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  }
+                                },
+                                "title": "Builtin Applications"
+                              },
+                              "user_defined_applications": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "title": "Name"
+                                    },
+                                    "category": {
+                                      "type": "string",
+                                      "title": "Category"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  }
+                                },
+                                "title": "User Defined Applications"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Categories"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Applications"
                       }
                     },
                     "additionalProperties": false,
@@ -30305,7 +30663,10 @@
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "name"
+                      ]
                     },
                     "title": "Hosts"
                   },
@@ -30390,7 +30751,10 @@
                             "additionalProperties": false,
                             "patternProperties": {
                               "^_.+$": {}
-                            }
+                            },
+                            "required": [
+                              "name"
+                            ]
                           },
                           "title": "Hosts"
                         }
@@ -31027,6 +31391,27 @@
                       "^_.+$": {}
                     },
                     "title": "LDP"
+                  },
+                  "icmp": {
+                    "description": "Enables the LSRs to generate ICMP reply messages and deliver them to the originating host.",
+                    "type": "object",
+                    "properties": {
+                      "fragmentation_needed_tunneling": {
+                        "type": "boolean",
+                        "description": "Enables the MPLS tunneling of MTU exceeded ICMP replies (fragmentation needed, packet too big).",
+                        "title": "Fragmentation Needed Tunneling"
+                      },
+                      "ttl_exceeded_tunneling": {
+                        "type": "boolean",
+                        "description": "Enables the MPLS tunneling of TTL exceeded ICMP replies.",
+                        "title": "TTL Exceeded Tunneling"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "ICMP"
                   }
                 },
                 "additionalProperties": false,
@@ -32982,6 +33367,34 @@
                           ],
                           "title": "Delay Mechanism"
                         },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "g8275_1": {
+                              "type": "object",
+                              "properties": {
+                                "destination_mac_address": {
+                                  "type": "string",
+                                  "enum": [
+                                    "forwardable",
+                                    "non-forwardable"
+                                  ],
+                                  "title": "Destination MAC Address"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "G8275 1"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Profile"
+                        },
                         "sync_message": {
                           "type": "object",
                           "properties": {
@@ -33870,6 +34283,14 @@
                       "p2ptransparent"
                     ],
                     "title": "Mode"
+                  },
+                  "profile": {
+                    "type": "string",
+                    "enum": [
+                      "g8275.1",
+                      "g8275.2"
+                    ],
+                    "title": "Profile"
                   },
                   "mode_one_step": {
                     "type": "boolean",
@@ -39940,6 +40361,36 @@
                             "^_.+$": {}
                           },
                           "title": "EVPN Multicast Address Family"
+                        },
+                        "evpn_multicast_gateway_dr_election": {
+                          "type": "object",
+                          "properties": {
+                            "algorithm": {
+                              "type": "string",
+                              "description": "DR election algorithms:\n  hrw: Default selection based on highest random weight.\n  modulus: Selection based on VLAN ID modulo number of candidates.\n  preference: Selection based on a configured preference value.",
+                              "enum": [
+                                "hrw",
+                                "modulus",
+                                "preference"
+                              ],
+                              "title": "Algorithm"
+                            },
+                            "preference_value": {
+                              "type": "integer",
+                              "description": "Required when `algorithm` is `preference`.",
+                              "minimum": 0,
+                              "maximum": 65535,
+                              "title": "Preference Value"
+                            }
+                          },
+                          "required": [
+                            "algorithm"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "EVPN Multicast Gateway DR Election"
                         },
                         "default_route_exports": {
                           "type": "array",
@@ -46582,6 +47033,25 @@
                 },
                 "title": "Switchport Port Security"
               },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "network_option": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2,
+                    "title": "Network Option"
+                  }
+                },
+                "required": [
+                  "network_option"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
+              },
               "system": {
                 "type": "object",
                 "properties": {
@@ -47434,6 +47904,11 @@
                       "type": "string",
                       "description": "VRF Name.",
                       "title": "VRF"
+                    },
+                    "underlay_vrf": {
+                      "type": "string",
+                      "description": "Underlay VRF Name.",
+                      "title": "Underlay VRF"
                     },
                     "ip_address": {
                       "type": "string",
@@ -49465,7 +49940,7 @@
             "mlag": 300,
             "non_mlag": 330
           },
-          "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+          "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
         },
         {
           "platforms": [
@@ -51640,6 +52115,34 @@
                           "p2p"
                         ],
                         "title": "Delay Mechanism"
+                      },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "g8275_1": {
+                            "type": "object",
+                            "properties": {
+                              "destination_mac_address": {
+                                "type": "string",
+                                "enum": [
+                                  "forwardable",
+                                  "non-forwardable"
+                                ],
+                                "title": "Destination MAC Address"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "G8275 1"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Profile"
                       },
                       "sync_message": {
                         "type": "object",
@@ -53819,6 +54322,34 @@
                     ],
                     "title": "Delay Mechanism"
                   },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "g8275_1": {
+                        "type": "object",
+                        "properties": {
+                          "destination_mac_address": {
+                            "type": "string",
+                            "enum": [
+                              "forwardable",
+                              "non-forwardable"
+                            ],
+                            "title": "Destination MAC Address"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "G8275 1"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Profile"
+                  },
                   "sync_message": {
                     "type": "object",
                     "properties": {
@@ -54791,6 +55322,25 @@
                 },
                 "title": "Sflow"
               },
+              "sync_e": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "type": "boolean",
+                    "title": "Enable"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                    "title": "Priority"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Sync E"
+              },
               "port_profile": {
                 "type": "string",
                 "description": "Key only used for documentation or validation purposes.",
@@ -55465,6 +56015,42 @@
         }
       ],
       "title": "PTP Profiles"
+    },
+    "ptp_settings": {
+      "type": "object",
+      "description": "Common PTP settings.\n`ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "aes67",
+            "smpte2059-2",
+            "aes67-r16-2016"
+          ],
+          "default": "aes67-r16-2016",
+          "title": "Profile"
+        },
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Domain"
+        },
+        "auto_clock_identity": {
+          "type": "boolean",
+          "default": true,
+          "title": "Auto Clock Identity"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PTP Settings"
     },
     "queue_monitor_length": {
       "type": "object",
