@@ -870,6 +870,16 @@
                     "description": "Destination prefix set name.",
                     "title": "Dest Prefix Set Name"
                   },
+                  "dscp_ranges": {
+                    "type": "array",
+                    "description": "Accept DSCP value(s) or range(s).\nDSCP values can be between 0 and 63.\nOther valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.\nNote: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required.",
+                    "items": {
+                      "type": "string",
+                      "description": "DSCP value or range syntax.",
+                      "pattern": "^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\\s|^)(?:\\d|[1-5]\\d|6[0-3])(?:-(?:\\d|[1-5]\\d|6[0-3]))?)+)$"
+                    },
+                    "title": "DSCP Ranges"
+                  },
                   "protocols": {
                     "type": "array",
                     "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
@@ -5222,6 +5232,25 @@
               "^_.+$": {}
             },
             "title": "Sflow"
+          },
+          "sync_e": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "priority": {
+                "type": "string",
+                "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                "title": "Priority"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Sync E"
           },
           "port_profile": {
             "type": "string",
@@ -28728,6 +28757,25 @@
         "^_.+$": {}
       },
       "title": "Switchport Port Security"
+    },
+    "sync_e": {
+      "type": "object",
+      "properties": {
+        "network_option": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2,
+          "title": "Network Option"
+        }
+      },
+      "required": [
+        "network_option"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Sync E"
     },
     "system": {
       "type": "object",

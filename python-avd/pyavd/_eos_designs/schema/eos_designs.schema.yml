@@ -1344,7 +1344,8 @@ keys:
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       l3_interfaces:
-        description: Enable flow-tracking on all node.l3_interfaces.
+        description: Enable flow-tracking on all node.l3_interfaces and network-services
+          tenants.vrfs.l3_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       dps_interfaces:
@@ -3182,8 +3183,12 @@ keys:
 
             '
   ptp:
+    deprecation:
+      warning: true
+      new_key: ptp_settings
+      remove_in_version: v5.0.0
     documentation_options:
-      table: ptp
+      table: ptp_settings
     type: dict
     keys:
       enabled:
@@ -3203,7 +3208,7 @@ keys:
         default: true
   ptp_profiles:
     documentation_options:
-      table: ptp
+      table: ptp_settings
     type: list
     items:
       type: dict
@@ -3272,6 +3277,29 @@ keys:
       sync_message:
         interval: 0
       transport: ipv4
+  ptp_settings:
+    documentation_options:
+      table: ptp_settings
+    type: dict
+    description: 'Common PTP settings.
+
+      `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.'
+    keys:
+      enabled:
+        type: bool
+      profile:
+        type: str
+        valid_values:
+        - aes67
+        - smpte2059-2
+        - aes67-r16-2016
+        default: aes67-r16-2016
+      domain:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
+      auto_clock_identity:
+        type: bool
+        default: true
   queue_monitor_length:
     documentation_options:
       table: system-settings

@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_telemetry_influx.destinations.[].name") | String | Required, Unique |  |  | InfluxDB connection name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;database</samp>](## "monitor_telemetry_influx.destinations.[].database") | String |  |  |  | Set name of the database. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_retention_policy</samp>](## "monitor_telemetry_influx.destinations.[].data_retention_policy") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "monitor_telemetry_influx.destinations.[].url") | String |  |  | Pattern: (http(s)?|udp|unix)://.+ | It only accepts http(s), udp and unix domain destination URL. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "monitor_telemetry_influx.destinations.[].url") | String |  |  | Pattern: `(http(s)?|udp|unix)://.+` | It only accepts http(s), udp and unix domain destination URL. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "monitor_telemetry_influx.destinations.[].username") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "monitor_telemetry_influx.destinations.[].password") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "monitor_telemetry_influx.destinations.[].password_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;source_sockets</samp>](## "monitor_telemetry_influx.source_sockets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_telemetry_influx.source_sockets.[].name") | String | Required, Unique |  |  | Label of the socket connection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_limit</samp>](## "monitor_telemetry_influx.source_sockets.[].connection_limit") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "monitor_telemetry_influx.source_sockets.[].url") | String |  |  | Pattern: (http(s)?|udp|unix)://.+ | It only accepts http(s), udp and unix domain socket URL. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "monitor_telemetry_influx.source_sockets.[].url") | String |  |  | Pattern: `(http(s)?|udp|unix)://.+` | It only accepts http(s), udp and unix domain socket URL. |
     | [<samp>&nbsp;&nbsp;tags</samp>](## "monitor_telemetry_influx.tags") | List, items: Dictionary |  |  |  | Extra tags added to the telemetry output. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_telemetry_influx.tags.[].name") | String | Required, Unique |  |  | Key of the global tag pair. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "monitor_telemetry_influx.tags.[].value") | String | Required |  |  | Value of the global tag pair. |
