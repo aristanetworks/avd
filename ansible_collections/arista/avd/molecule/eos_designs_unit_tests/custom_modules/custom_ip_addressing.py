@@ -106,6 +106,25 @@ class CustomAvdIpAddressing(AvdIpAddressing):
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index + self._custom_ip_offset_20_subnets
         return self._ip(self._uplink_ipv4_pool, 31, offset, 0)
 
+    def p2p_vrfs_uplinks_ip(self, uplink_switch_index: int, vrf: str) -> str:
+        """
+        Implementation of custom code to override IP addressing on VRF uplinks.
+        We read the uplink pool from a custom dict `custom_ip_pools_for_vrfs.<vrf>` - Note no error handling in this example.
+        """
+        offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index + self._custom_ip_offset_20_subnets
+
+        vrf_pool = self._hostvars["custom_ip_pools_for_vrfs"][vrf]
+        return self._ip(vrf_pool, 31, offset, 1)
+
+    def p2p_vrfs_uplinks_peer_ip(self, uplink_switch_index: int, vrf: str) -> str:
+        """
+        Implementation of custom code to override IP addressing on VRF downlinks
+        We read the uplink pool from a custom dict `custom_ip_pools_for_vrfs.<vrf>` - Note no error handling in this example.
+        """
+        offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index + self._custom_ip_offset_20_subnets
+        vrf_pool = self._hostvars["custom_ip_pools_for_vrfs"][vrf]
+        return self._ip(vrf_pool, 31, offset, 0)
+
     def router_id(self) -> str:
         """
         Implementation of custom code similar to jinja:

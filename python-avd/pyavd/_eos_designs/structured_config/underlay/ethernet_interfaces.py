@@ -194,7 +194,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "mtu": self.shared_utils.p2p_uplinks_mtu,
                     }
                     if subinterface.get("ip_address") is not None:
-                        ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"}),
+                        ethernet_subinterface.update({"ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}"})
 
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
                     append_if_not_duplicate(
