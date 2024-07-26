@@ -55,7 +55,5 @@ interface Management1
 ```eos
 !
 router isis EVPN_UNDERLAY
-   authentication mode sha key-id 4 rx-disabled level-1
-   authentication key 0 password level-1
    !
 ```

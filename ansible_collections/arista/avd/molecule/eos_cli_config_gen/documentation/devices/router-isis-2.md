@@ -58,6 +58,5 @@ router isis EVPN_UNDERLAY
    set-overload-bit
    set-overload-bit on-startup 55
    authentication mode sha key-id 4 rx-disabled
-   authentication key 0 password
    !
 ```

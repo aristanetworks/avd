@@ -321,7 +321,23 @@ interface Vlan4094
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
-| Maximum-paths | 2 |
+| TI-LFA Mode | node-protection |
+| TI-LFA Level | level-2 |
+| TI-LFA SRLG Enabled | True |
+
+#### Tunnel Source
+
+| Source Protocol | RCF |
+| --------------- | --- |
+| BGP Labeled-Unicast | - |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| BFD All-interfaces | True |
+| TI-LFA SRLG Enabled | True |
 
 #### Router ISIS Device Configuration
 
@@ -342,7 +358,13 @@ router isis EVPN_UNDERLAY
    authentication key 0 password
    !
    address-family ipv4 unicast
-      maximum-paths 2
+      tunnel source-protocol bgp ipv4 labeled-unicast
+      fast-reroute ti-lfa mode node-protection level-2
+      fast-reroute ti-lfa srlg
+   !
+   address-family ipv6 unicast
+      bfd all-interfaces
+      fast-reroute ti-lfa srlg
    !
    segment-routing mpls
       shutdown

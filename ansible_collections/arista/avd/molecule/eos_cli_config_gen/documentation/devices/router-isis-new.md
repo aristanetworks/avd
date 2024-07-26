@@ -260,8 +260,6 @@ interface Vlan4094
 | Settings | Value |
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
-| Maximum-paths | 4 |
-| BFD All-interfaces | True |
 | TI-LFA Mode | node-protection |
 | TI-LFA Level | level-1 |
 | TI-LFA SRLG Enabled | True |
@@ -308,8 +306,6 @@ router isis EVPN_UNDERLAY
       fast-reroute ti-lfa srlg strict
    !
    address-family ipv6 unicast
-      maximum-paths 4
-      bfd all-interfaces
       fast-reroute ti-lfa mode node-protection level-1
       fast-reroute ti-lfa srlg strict
    !

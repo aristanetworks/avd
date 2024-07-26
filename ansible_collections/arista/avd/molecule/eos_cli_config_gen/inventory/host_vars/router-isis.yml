@@ -8,6 +8,8 @@ router_isis:
   mpls_ldp_sync_default: false
   spf_interval:
     interval: 250
+  graceful_restart:
+    enabled: false
   timers:
     local_convergence:
       protected_prefixes: true
@@ -18,7 +20,21 @@ router_isis:
     - source_protocol: bgp
       route_map: RM-BGP
   address_family_ipv4:
-    maximum_paths: 2
+    tunnel_source_labeled_unicast:
+      enabled: True
+    fast_reroute_ti_lfa:
+      mode: node-protection
+      level: level-2
+      srlg:
+        enable: true
+        strict: false
+  address_family_ipv6:
+    bfd_all_interfaces: true
+    fast_reroute_ti_lfa:
+      level: level-2
+      srlg:
+        enable: true
+        strict: false
   segment_routing_mpls:
     enabled: false
     prefix_segments:
