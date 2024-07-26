@@ -51,8 +51,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reservations</samp>](## "dhcp_servers.[].subnets.[].reservations") | List, items: Dictionary |  |  |  | DHCP client reservations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "dhcp_servers.[].subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].subnets.[].reservations.[].hostname") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].subnets.[].reservations.[].ipv4_address") | String |  |  |  | Valid IPv4 address from given subnet.<br>This setting can be configured only when the subnet is IPv4. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "dhcp_servers.[].subnets.[].reservations.[].ipv6_address") | String |  |  |  | Valid IPv6 address from given subnet.<br>This setting can be configured only when the subnet is IPv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].subnets.[].reservations.[].ipv4_address") | String |  |  |  | Valid IPv4 address from the given subnet.<br>This setting can only be configured when the subnet is IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "dhcp_servers.[].subnets.[].reservations.[].ipv6_address") | String |  |  |  | Valid IPv6 address from the given subnet.<br>This setting can only be configured when the subnet is IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "dhcp_servers.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration. |
 
 === "YAML"
@@ -135,12 +135,12 @@
               - mac_address: <str; required; unique>
                 hostname: <str>
 
-                # Valid IPv4 address from given subnet.
-                # This setting can be configured only when the subnet is IPv4.
+                # Valid IPv4 address from the given subnet.
+                # This setting can only be configured when the subnet is IPv4.
                 ipv4_address: <str>
 
-                # Valid IPv6 address from given subnet.
-                # This setting can be configured only when the subnet is IPv6.
+                # Valid IPv6 address from the given subnet.
+                # This setting can only be configured when the subnet is IPv6.
                 ipv6_address: <str>
 
         # Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.
