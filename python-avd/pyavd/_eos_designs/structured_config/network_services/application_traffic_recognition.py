@@ -46,7 +46,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     def _wan_cp_app_src_prefix(self: AvdStructuredConfigNetworkServices) -> str:
         return "PFX-LOCAL-VTEP-IP"
 
-    def _generate_control_plane_application_profile(self, app_dict: dict) -> None:
+    def _generate_control_plane_application_profile(self: AvdStructuredConfigNetworkServices, app_dict: dict) -> None:
         """
         Generate an application profile using a single application matching:
         * the device Pathfinders vtep_ips as destination for non Pathfinders.

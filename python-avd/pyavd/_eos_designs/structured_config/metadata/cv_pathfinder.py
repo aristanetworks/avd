@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ...._errors import AristaAvdError
-from ...._utils import get, get_item
+from ...._utils import get, get_all, get_item, strip_empties_from_list
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigMetadata
@@ -23,6 +23,9 @@ class CvPathfinderMixin:
         """
         Generate metadata for CV Pathfinder feature.
         Only relevant for cv_pathfinder routers
+
+        Metadata for "applications" and "internet_exit_policies" is generated in the network services module,
+        since all the required data was readily available in there.
         """
         if not self.shared_utils.is_cv_pathfinder_router:
             return None
@@ -141,6 +144,8 @@ class CvPathfinderMixin:
         if (load_balance_policies := get(self._hostvars, "router_path_selection.load_balance_policies")) is None:
             return []
 
+        avt_policies = get(self._hostvars, "router_adaptive_virtual_topology.policies", required=True)
+
         if self.shared_utils.is_wan_server:
             # On pathfinders, verify that the Load Balance policies have at least one priority one except for the HA path-group
             for lb_policy in load_balance_policies:
@@ -156,35 +161,43 @@ class CvPathfinderMixin:
                         "for a non excluded path-group is set to 'preferred' (or unset as this is the default)."
                     )
 
-        return [
-            {
-                "name": vrf["name"],
-                "vni": self._get_vni_for_vrf_name(vrf["name"]),
-                "avts": [
-                    {
-                        "constraints": {
-                            "jitter": lb_policy.get("jitter"),
-                            "latency": lb_policy.get("latency"),
-                            "lossrate": float(lb_policy["loss_rate"]) if "loss_rate" in lb_policy else None,
-                            "hop_count": "lowest" if lb_policy.get("lowest_hop_count") else None,
-                        },
-                        "description": "",  # TODO: Not sure we have this field anywhere
-                        "id": profile["id"],
-                        "name": profile["name"],
-                        "pathgroups": [
-                            {
-                                "name": pathgroup["name"],
-                                "preference": "alternate" if pathgroup.get("priority", 1) > 1 else "preferred",
-                            }
-                            for pathgroup in lb_policy["path_groups"]
-                        ],
-                    }
-                    for profile in vrf["profiles"]
-                    for lb_policy in [get_item(load_balance_policies, "name", self.shared_utils.generate_lb_policy_name(profile["name"]), required=True)]
-                ],
-            }
-            for vrf in avt_vrfs
-        ]
+        return strip_empties_from_list(
+            [
+                {
+                    "name": vrf["name"],
+                    "vni": self._get_vni_for_vrf_name(vrf["name"]),
+                    "avts": [
+                        {
+                            "constraints": {
+                                "jitter": lb_policy.get("jitter"),
+                                "latency": lb_policy.get("latency"),
+                                "lossrate": float(lb_policy["loss_rate"]) if "loss_rate" in lb_policy else None,
+                                "hop_count": "lowest" if lb_policy.get("lowest_hop_count") else None,
+                            },
+                            "description": "",  # TODO: Not sure we have this field anywhere
+                            "id": profile["id"],
+                            "name": profile["name"],
+                            "pathgroups": [
+                                {
+                                    "name": pathgroup["name"],
+                                    "preference": "alternate" if pathgroup.get("priority", 1) > 1 else "preferred",
+                                }
+                                for pathgroup in lb_policy["path_groups"]
+                            ],
+                            "application_profiles": [
+                                profile
+                                for profile in get_all(get_item(avt_policy["matches"], "avt_profile", profile["name"], default={}), "application_profile")
+                                if profile != "default"
+                            ],
+                        }
+                        for profile in vrf["profiles"]
+                        for lb_policy in [get_item(load_balance_policies, "name", self.shared_utils.generate_lb_policy_name(profile["name"]), required=True)]
+                    ],
+                }
+                for vrf in avt_vrfs
+                for avt_policy in [get_item(avt_policies, "name", vrf["policy"], required=True)]
+            ]
+        )
 
     @cached_property
     def _wan_virtual_topologies_vrfs(self: AvdStructuredConfigMetadata) -> list[dict]:
@@ -202,12 +215,3 @@ class CvPathfinderMixin:
             raise AristaAvdError(f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata.")
 
         return wan_vni
-
-    def _metadata_internet_exit_policies(self: AvdStructuredConfigMetadata):
-        """
-        No-op.
-
-        This metadata is generated in the network services module,
-        since all the required data was readily available in there.
-        """
-        return NotImplemented
