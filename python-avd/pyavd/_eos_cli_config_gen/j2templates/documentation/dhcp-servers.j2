@@ -80,7 +80,7 @@
 {%                     for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
 {%                         if subnet.reservations is arista.avd.defined %}
 
-###### DHCP Reservations in {{ subnet.subnet }}
+###### DHCP Reservations in subnet {{ subnet.subnet }}
 
 | Mac Address | IPv4 Address | IPv6 Address | Hostname |
 | ----------- | ------------ | ------------ | -------- |

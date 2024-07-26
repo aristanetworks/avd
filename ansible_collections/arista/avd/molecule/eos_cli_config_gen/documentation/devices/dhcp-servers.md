@@ -81,14 +81,14 @@ interface Management1
 | 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
 | 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
 
-###### DHCP Reservations in 10.0.0.0/24
+###### DHCP Reservations in subnet 10.0.0.0/24
 
 | Mac Address | IPv4 Address | IPv6 Address | Hostname |
 | ----------- | ------------ | ------------ | -------- |
 | 0001.0001.0001 | 10.0.0.2 | - |  host3 |
 | 1a1b.1c1d.1e1f | 10.0.0.1 | - |  host1 |
 
-###### DHCP Reservations in 2001:db8:abcd:1234:c000::/66
+###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
 | Mac Address | IPv4 Address | IPv6 Address | Hostname |
 | ----------- | ------------ | ------------ | -------- |

@@ -11,6 +11,7 @@ dhcp_servers:
             string: "test"
           - code: 66
             array_ipv4_address: [1.1.1.1, 2.2.2.2]
+          - code: 70
     disabled: false
     lease_time_ipv4:
       days: 10
