@@ -119,15 +119,11 @@ interface Port-Channel2
 
 ##### BLUE-C3-POLICY
 
-
 ##### BLUE-C4-POLICY
-
 
 ##### BLUE-C5-POLICY
 
-
 ##### BLUE-C6-POLICY
-
 
 ##### BLUE-C7-POLICY
 
