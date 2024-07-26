@@ -9821,6 +9821,34 @@
                     ],
                     "title": "Delay Mechanism"
                   },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "g8275_1": {
+                        "type": "object",
+                        "properties": {
+                          "destination_mac_address": {
+                            "type": "string",
+                            "enum": [
+                              "forwardable",
+                              "non-forwardable"
+                            ],
+                            "title": "Destination MAC Address"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "G8275 1"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Profile"
+                  },
                   "sync_message": {
                     "type": "object",
                     "properties": {
@@ -13459,6 +13487,34 @@
                         ],
                         "title": "Delay Mechanism"
                       },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "g8275_1": {
+                            "type": "object",
+                            "properties": {
+                              "destination_mac_address": {
+                                "type": "string",
+                                "enum": [
+                                  "forwardable",
+                                  "non-forwardable"
+                                ],
+                                "title": "Destination MAC Address"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "G8275 1"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Profile"
+                      },
                       "sync_message": {
                         "type": "object",
                         "properties": {
@@ -15636,6 +15692,34 @@
                       "p2p"
                     ],
                     "title": "Delay Mechanism"
+                  },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "g8275_1": {
+                        "type": "object",
+                        "properties": {
+                          "destination_mac_address": {
+                            "type": "string",
+                            "enum": [
+                              "forwardable",
+                              "non-forwardable"
+                            ],
+                            "title": "Destination MAC Address"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "G8275 1"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Profile"
                   },
                   "sync_message": {
                     "type": "object",
@@ -22216,6 +22300,34 @@
                             "p2p"
                           ],
                           "title": "Delay Mechanism"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "g8275_1": {
+                              "type": "object",
+                              "properties": {
+                                "destination_mac_address": {
+                                  "type": "string",
+                                  "enum": [
+                                    "forwardable",
+                                    "non-forwardable"
+                                  ],
+                                  "title": "Destination MAC Address"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "G8275 1"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Profile"
                         },
                         "sync_message": {
                           "type": "object",
@@ -33084,6 +33196,34 @@
                           ],
                           "title": "Delay Mechanism"
                         },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "g8275_1": {
+                              "type": "object",
+                              "properties": {
+                                "destination_mac_address": {
+                                  "type": "string",
+                                  "enum": [
+                                    "forwardable",
+                                    "non-forwardable"
+                                  ],
+                                  "title": "Destination MAC Address"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "G8275 1"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Profile"
+                        },
                         "sync_message": {
                           "type": "object",
                           "properties": {
@@ -33972,6 +34112,14 @@
                       "p2ptransparent"
                     ],
                     "title": "Mode"
+                  },
+                  "profile": {
+                    "type": "string",
+                    "enum": [
+                      "g8275.1",
+                      "g8275.2"
+                    ],
+                    "title": "Profile"
                   },
                   "mode_one_step": {
                     "type": "boolean",
@@ -51797,6 +51945,34 @@
                         ],
                         "title": "Delay Mechanism"
                       },
+                      "profile": {
+                        "type": "object",
+                        "properties": {
+                          "g8275_1": {
+                            "type": "object",
+                            "properties": {
+                              "destination_mac_address": {
+                                "type": "string",
+                                "enum": [
+                                  "forwardable",
+                                  "non-forwardable"
+                                ],
+                                "title": "Destination MAC Address"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "G8275 1"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Profile"
+                      },
                       "sync_message": {
                         "type": "object",
                         "properties": {
@@ -53974,6 +54150,34 @@
                       "p2p"
                     ],
                     "title": "Delay Mechanism"
+                  },
+                  "profile": {
+                    "type": "object",
+                    "properties": {
+                      "g8275_1": {
+                        "type": "object",
+                        "properties": {
+                          "destination_mac_address": {
+                            "type": "string",
+                            "enum": [
+                              "forwardable",
+                              "non-forwardable"
+                            ],
+                            "title": "Destination MAC Address"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "G8275 1"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Profile"
                   },
                   "sync_message": {
                     "type": "object",
