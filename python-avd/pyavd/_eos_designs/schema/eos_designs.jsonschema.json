@@ -3832,7 +3832,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Type 7 encrypted password.",
+              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group, and\nin the case where there are multiple pathinders in full-mesh with peering IP\naddresses overlaping with the `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` prefixes,\nit is necessary to also add a password on the `wan_rr_overlay_peers` BGP\npeer group or the peerings will not come up.",
               "title": "Password"
             },
             "bfd": {
@@ -4350,7 +4350,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Type 7 encrypted password.",
+              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group, and\nin the case where there are multiple pathinders in full-mesh with peering IP\naddresses overlaping with the `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` prefixes,\nit is necessary to also add a password on the `wan_rr_overlay_peers` BGP\npeer group or the peerings will not come up.",
               "title": "Password"
             },
             "bfd": {

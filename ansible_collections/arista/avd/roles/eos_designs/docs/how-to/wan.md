@@ -124,6 +124,14 @@ Additionally, following keys must be set for the WAN route servers for the conne
 
 - `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes`: To set the ranges of IP address from which to expect BGP peerings for the WAN. Include the VTEP ranges for all routers connecting to this patfinder.
 
+!!! warning
+
+    When configuring a password on the `wan_overlay_peers` BGP peer group, and
+    in the case where there are multiple pathinders in full-mesh with peering IP
+    addresses overlaping with the `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` prefixes,
+    it is necessary to also add a password on the `wan_rr_overlay_peers` BGP
+    peer group or the peerings will not come up.
+
 #### WAN mode
 
 AVD supports two design types for WAN:
