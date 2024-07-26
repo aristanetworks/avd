@@ -135,7 +135,7 @@ keys:
                   - md5
                   - sha
                   - text
-                  - shared_secret
+                  - shared-secret
               sha:
                 type: dict
                 description: Required settings for authentication mode 'sha'.

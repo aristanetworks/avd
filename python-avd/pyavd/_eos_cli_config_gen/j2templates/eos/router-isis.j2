@@ -104,7 +104,7 @@ router isis {{ router_isis.instance }}
 {%             set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.both.shared_secret.profile %}
 {%             set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.both.shared_secret.algorithm %}
 {%         endif %}
-{%         if router_isis.authentication.both.rx_disabled is arista.avd.defined('true') %}
+{%         if router_isis.authentication.both.rx_disabled is arista.avd.defined(true) %}
 {%             set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
 {%         endif %}
    {{ isis_auth_cli }}
@@ -122,7 +122,7 @@ router isis {{ router_isis.instance }}
 {%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_1.shared_secret.profile %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_1.shared_secret.algorithm %}
 {%             endif %}
-{%             if router_isis.authentication.level_1.rx_disabled is arista.avd.defined('true') %}
+{%             if router_isis.authentication.level_1.rx_disabled is arista.avd.defined(true) %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
 {%             endif %}
    {{ isis_auth_cli }} level-1
@@ -140,7 +140,7 @@ router isis {{ router_isis.instance }}
 {%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ router_isis.authentication.level_2.shared_secret.profile %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ router_isis.authentication.level_2.shared_secret.algorithm %}
 {%             endif %}
-{%             if router_isis.authentication.level_2.rx_disabled is arista.avd.defined('true') %}
+{%             if router_isis.authentication.level_2.rx_disabled is arista.avd.defined(true) %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
 {%             endif %}
    {{ isis_auth_cli }} level-2
