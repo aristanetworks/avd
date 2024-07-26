@@ -88,15 +88,13 @@
 {%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}
    !
    vendor-option ipv4 {{ option.vendor_id }}
-{%             for sub_option in option.sub_options | arista.avd.natural_sort %}
-{%                 if sub_option.code is arista.avd.defined %}
-{%                     if sub_option.string is arista.avd.defined %}
+{%             for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
+{%                 if sub_option.string is arista.avd.defined %}
       sub-option {{ sub_option.code }} type string data "{{ sub_option.string }}"
-{%                     elif sub_option.ipv4_address is arista.avd.defined %}
+{%                 elif sub_option.ipv4_address is arista.avd.defined %}
       sub-option {{ sub_option.code }} type ipv4-address data {{ sub_option.ipv4_address }}
-{%                     elif sub_option.array_ipv4_address is arista.avd.defined %}
+{%                 elif sub_option.array_ipv4_address is arista.avd.defined %}
       sub-option {{ sub_option.code }} type array ipv4-address data {{ sub_option.array_ipv4_address | join(" ") }}
-{%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
