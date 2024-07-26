@@ -708,6 +708,9 @@ class UtilsMixin(UtilsZscalerMixin):
             for vrf in tenant["vrfs"]:
                 for l3_interface in vrf["l3_interfaces"]:
                     for interface_idx, interface in enumerate(l3_interface["interfaces"]):
+                        if l3_interface["nodes"][interface_idx] != self.shared_utils.hostname:
+                            continue
+                            
                         ipv4_acl_in = get(l3_interface, "ipv4_acl_in")
                         ipv4_acl_out = get(l3_interface, "ipv4_acl_out")
                         if ipv4_acl_in is None and ipv4_acl_out is None:
