@@ -687,6 +687,52 @@ class UtilsMixin(UtilsZscalerMixin):
         return sorted(set(internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies))
 
     @cached_property
+    def _l3_interface_acls(self: AvdStructuredConfigNetworkServices) -> dict | None:
+        """
+        Returns a dict of interfaces and ACLs set on the interfaces.
+            {
+                <interface_name>: {
+                "ipv4_acl_in": <generated_ipv4_acl>,
+                "ipv4_acl_out": <generated_ipv4_acl>,
+                }
+            }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in", separator="..")` to get the value.
+        """
+
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        l3_interface_acls = {}
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for l3_interface in vrf["l3_interfaces"]:
+                    for interface_idx, interface in enumerate(l3_interface["interfaces"]):
+                        if l3_interface["nodes"][interface_idx] != self.shared_utils.hostname:
+                            continue
+
+                        ipv4_acl_in = get(l3_interface, "ipv4_acl_in")
+                        ipv4_acl_out = get(l3_interface, "ipv4_acl_out")
+                        if ipv4_acl_in is None and ipv4_acl_out is None:
+                            continue
+                        interface_name = interface
+                        interface_ip: str | None = l3_interface["ip_addresses"][interface_idx]
+                        interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
+                        if ipv4_acl_in is not None:
+                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                                name=ipv4_acl_in,
+                                interface_name=interface_name,
+                                interface_ip=interface_ip,
+                            )
+                        if ipv4_acl_out is not None:
+                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                                name=ipv4_acl_out,
+                                interface_name=interface_name,
+                                interface_ip=interface_ip,
+                            )
+        return l3_interface_acls
+
+    @cached_property
     def _filtered_internet_exit_policies(self: AvdStructuredConfigNetworkServices) -> list:
         """
         Only supported for CV Pathfinder Edge routers. Returns an empty list for pathfinders.

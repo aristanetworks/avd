@@ -6387,6 +6387,14 @@ $defs:
                       type: int
                       convert_types:
                       - str
+                    ipv4_acl_in:
+                      type: str
+                      convert_types:
+                      - int
+                    ipv4_acl_out:
+                      type: str
+                      convert_types:
+                      - int
                     ospf:
                       type: dict
                       description: OSPF interface configuration.

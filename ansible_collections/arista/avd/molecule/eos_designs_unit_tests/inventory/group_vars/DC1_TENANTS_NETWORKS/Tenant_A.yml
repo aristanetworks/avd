@@ -255,6 +255,14 @@ tenant_a:
             enabled: True
             description: "Single description"
             descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
+          - interfaces: [Ethernet12, Ethernet13.10, Ethernet12, Ethernet13.10]
+            ip_addresses: [10.10.40.10/24, 10.10.40.20/24, 10.10.50.10/24, 10.10.50.20/24]
+            nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "test l3 interfaces acls"
+            ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+            ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
             # no description nor descriptions is tested in Tenant_OSPF below
       - name: Tenant_A_OSPF
         vrf_id: 16
