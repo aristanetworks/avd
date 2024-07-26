@@ -186,7 +186,7 @@ class CvPathfinderMixin:
                             ],
                             "application_profiles": [
                                 profile
-                                for profile in get_all(get_item(avt_policies, "name", vrf["policy"], default=[]), "matches.application_profile")
+                                for profile in get_all(get_item(avt_policy["matches"], "avt_profile", profile["name"], default={}), "application_profile")
                                 if profile != "default"
                             ],
                         }
@@ -195,6 +195,7 @@ class CvPathfinderMixin:
                     ],
                 }
                 for vrf in avt_vrfs
+                for avt_policy in [get_item(avt_policies, "name", vrf["policy"], required=True)]
             ]
         )
 

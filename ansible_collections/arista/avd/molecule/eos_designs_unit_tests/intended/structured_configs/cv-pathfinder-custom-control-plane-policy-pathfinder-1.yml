@@ -527,7 +527,6 @@ metadata:
           preference: preferred
         application_profiles:
         - APP-PROFILE-CONTROL-PLANE
-        - VIDEO
       - id: 3
         name: DEFAULT-POLICY-VIDEO
         pathgroups:
@@ -538,7 +537,6 @@ metadata:
         - name: LAN_HA
           preference: preferred
         application_profiles:
-        - APP-PROFILE-CONTROL-PLANE
         - VIDEO
       - id: 1
         name: DEFAULT-POLICY-DEFAULT
@@ -549,9 +547,6 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-        application_profiles:
-        - APP-PROFILE-CONTROL-PLANE
-        - VIDEO
     - name: PROD
       vni: 42
       avts:
@@ -575,8 +570,6 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-        application_profiles:
-        - VIDEO
     - name: IT
       vni: 14
       avts:
@@ -600,8 +593,6 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-        application_profiles:
-        - VIDEO
   cv_tags:
     device_tags:
     - name: Role
