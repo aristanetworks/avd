@@ -2280,12 +2280,12 @@
                       },
                       "ipv4_address": {
                         "type": "string",
-                        "description": "Valid IPv4 address from the given subnet.\nThis setting can only be configured when the subnet is IPv4.",
+                        "description": "Valid IPv4 address from the given subnet.\nThis should only be used within an IPv4 subnet.",
                         "title": "IPv4 Address"
                       },
                       "ipv6_address": {
                         "type": "string",
-                        "description": "Valid IPv6 address from the given subnet.\nThis setting can only be configured when the subnet is IPv6.",
+                        "description": "Valid IPv6 address from the given subnet.\nThis should only be used within an IPv6 subnet.",
                         "title": "IPv6 Address"
                       }
                     },
