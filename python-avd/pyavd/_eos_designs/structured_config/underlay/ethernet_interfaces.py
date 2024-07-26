@@ -114,7 +114,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
                                     "key": encrypt(
                                         ospf_key["key"],
-                                        passwd_type="ospf_message_digest",
+                                        passwd_type="ospf_message_digest",  # NOSONAR
                                         key=ethernet_interface["name"],
                                         hash_algorithm=ospf_key.get("hash_algorithm", "sha512"),
                                         key_id=ospf_key["id"],
