@@ -61027,6 +61027,67 @@
       "default": "0.0.0.0",
       "title": "Underlay OSPF Area"
     },
+    "underlay_ospf_authentication": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enabled"
+        },
+        "message_digest_keys": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "title": "ID"
+              },
+              "hash_algorithm": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha1",
+                  "sha256",
+                  "sha384",
+                  "sha512"
+                ],
+                "default": "sha512",
+                "title": "Hash Algorithm"
+              },
+              "key": {
+                "type": "string",
+                "maxLength": 16,
+                "minLength": 1,
+                "description": "Key password.\nOnly plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.\nTo protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.",
+                "title": "Key"
+              }
+            },
+            "required": [
+              "key",
+              "id"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Message Digest Keys"
+        }
+      },
+      "required": [
+        "enabled",
+        "message_digest_keys"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Underlay OSPF Authentication"
+    },
     "underlay_ospf_bfd_enable": {
       "type": "boolean",
       "default": false,

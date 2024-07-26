@@ -185,6 +185,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.41/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
 - name: Ethernet2
   peer: DC1-SPINE2
   peer_interface: Ethernet6
@@ -196,6 +201,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.43/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
 - name: Ethernet3
   peer: DC1-SPINE3
   peer_interface: Ethernet6
@@ -207,6 +217,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.45/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
 - name: Ethernet4
   peer: DC1-SPINE4
   peer_interface: Ethernet6
@@ -218,6 +233,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.47/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
 mlag_configuration:
   domain_id: DC1_BL1
   local_interface: Vlan4094
