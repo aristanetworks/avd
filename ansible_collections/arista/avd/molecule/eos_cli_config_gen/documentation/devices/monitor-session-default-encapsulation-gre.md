@@ -6,7 +6,6 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [Monitor Sessions](#monitor-sessions)
-  - [Monitor Sessions Default](#monitor-sessions-default)
 
 ## Management
 
@@ -42,7 +41,7 @@ interface Management1
 
 #### Monitor Sessions Summary
 
-### Monitor Sessions Default
+##### Monitor Session Default Settings
 
 | Settings | Values |
 | -------- | ------ |
