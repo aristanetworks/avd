@@ -4,9 +4,9 @@ underlay_ospf_authentication:
   enabled: true
   message_digest_keys:
     - id: 1
-      key: arista123arista123
+      key: arista123arista
     - id: 2
-      key: muchbettersecret_remember_to_vault_this
+      key: please_vault_me
 
 type: l3leaf
 

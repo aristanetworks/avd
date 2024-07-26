@@ -174,10 +174,10 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha512
-    key: y3T//O9Xw3pqF6bDtFr8EELtrNKEERsI
+    key: qO39Oo+xVTO7l/La1StOQcW1t7hpfAAH
   - id: 2
     hash_algorithm: sha512
-    key: ENWftWJFSbpghLsDSRPIcEkVUaACFoRaVvxnFmIjZ7YdChtwYn1Q7lM2Z8asSHCg
+    key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094

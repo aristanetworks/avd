@@ -263,7 +263,7 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha256
-    key: 75lAW2BE3DkMFcGwW7pr40ZdyCbWfN0r
+    key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
 - name: Ethernet2
   peer: DC1-SPINE2
   peer_interface: Ethernet2
@@ -279,7 +279,7 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha256
-    key: wE8M/xeN3Vll0FP1vIN5UovmD8wQD3U8
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
 - name: Ethernet3
   peer: DC1-SPINE3
   peer_interface: Ethernet2
@@ -295,7 +295,7 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha256
-    key: wE8M/xeN3Vll0FP1vIN5UovmD8wQD3U8
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
 - name: Ethernet4
   peer: DC1-SPINE4
   peer_interface: Ethernet2
@@ -311,7 +311,7 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha256
-    key: oRDB0AnG4AqF/KCJ/yBn8MPwsN+9A3xC
+    key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
 - name: Ethernet7
   peer: DC1-L2LEAF1A
   peer_interface: Ethernet1
