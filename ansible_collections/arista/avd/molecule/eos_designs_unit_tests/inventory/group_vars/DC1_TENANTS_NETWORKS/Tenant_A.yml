@@ -255,7 +255,7 @@ tenant_a:
             enabled: True
             description: "Single description"
             descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
-          - interfaces: [Ethernet12, Ethernet13, Ethernet12, Ethernet13]
+          - interfaces: [Ethernet12, Ethernet13.10, Ethernet12, Ethernet13.10]
             ip_addresses: [10.10.40.10/24, 10.10.40.20/24, 10.10.50.10/24, 10.10.50.20/24]
             nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
             mtu: 9000

@@ -474,15 +474,16 @@ ethernet_interfaces:
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
-- name: Ethernet13
+- name: Ethernet13.10
   peer_type: l3_interface
   ip_address: 10.10.50.20/24
   mtu: 9000
   shutdown: false
   description: test l3 interfaces acls
-  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13
-  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13
-  type: routed
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 10
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet7
   peer_type: l3_interface
@@ -492,6 +493,10 @@ ethernet_interfaces:
   description: test
   type: routed
   vrf: Tenant_A_WAN_Zone
+- name: Ethernet13
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 - name: Ethernet4000
   description: My second test
   ip_address: 10.1.2.3/12
@@ -559,7 +564,7 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: 10.10.50.10
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
   entries:
   - sequence: 15
     action: deny
@@ -573,7 +578,7 @@ ip_access_lists:
     protocol: ip
     source: 10.10.50.10
     destination: any
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
   entries:
   - remark: Some remark will not require source and destination fields.
   - action: permit
