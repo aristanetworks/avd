@@ -30188,6 +30188,13 @@
                                       }
                                     },
                                     "title": "Pathgroups"
+                                  },
+                                  "application_profiles": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "title": "Application Profiles"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -30319,6 +30326,164 @@
                           }
                         },
                         "title": "Internet Exit Policies"
+                      },
+                      "applications": {
+                        "type": "object",
+                        "properties": {
+                          "profiles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "title": "Name"
+                                },
+                                "builtin_applications": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "title": "Name"
+                                      },
+                                      "services": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "title": "Services"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "Builtin Applications"
+                                },
+                                "user_defined_applications": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "title": "Name"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "User Defined Applications"
+                                },
+                                "categories": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "category": {
+                                        "type": "string",
+                                        "title": "Category"
+                                      },
+                                      "services": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "title": "Services"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "Categories"
+                                },
+                                "transport_protocols": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Transport Protocols"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              }
+                            },
+                            "title": "Profiles"
+                          },
+                          "categories": {
+                            "type": "object",
+                            "properties": {
+                              "builtin_applications": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "title": "Name"
+                                    },
+                                    "category": {
+                                      "type": "string",
+                                      "title": "Category"
+                                    },
+                                    "services": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "title": "Services"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  }
+                                },
+                                "title": "Builtin Applications"
+                              },
+                              "user_defined_applications": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "title": "Name"
+                                    },
+                                    "category": {
+                                      "type": "string",
+                                      "title": "Category"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  }
+                                },
+                                "title": "User Defined Applications"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Categories"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Applications"
                       }
                     },
                     "additionalProperties": false,

@@ -47,8 +47,18 @@ class IpAddressingMixin:
         return get(self.switch_data_combined, "loopback_ipv4_pool", required=True)
 
     @cached_property
+    def loopback_ipv4_address(self: SharedUtils) -> str:
+        """Set the loopback IPv4 for this host, takes precedence over loopback_ipv4_pool."""
+        return get(self.switch_data_combined, "loopback_ipv4_address")
+
+    @cached_property
     def vtep_loopback_ipv4_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "vtep_loopback_ipv4_pool", required=True)
+
+    @cached_property
+    def vtep_loopback_ipv4_address(self: SharedUtils) -> str:
+        """Set the VTEP loopback IPv4 for this host, takes precedence over vtep_loopback_ipv4_pool."""
+        return get(self.switch_data_combined, "vtep_loopback_ipv4_address")
 
     @cached_property
     def vtep_ip(self: SharedUtils) -> str:
