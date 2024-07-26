@@ -40,6 +40,8 @@ keys:
             key:
               type: str
               required: true
+              max_length: 16
+              min_length: 1
               convert_types:
               - int
               description: |-
