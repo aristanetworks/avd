@@ -60787,6 +60787,8 @@
               },
               "key": {
                 "type": "string",
+                "maxLength": 16,
+                "minLength": 1,
                 "description": "Key password.\nOnly plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.\nTo protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.",
                 "title": "Key"
               }
