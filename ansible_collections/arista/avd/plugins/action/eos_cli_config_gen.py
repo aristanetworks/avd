@@ -20,14 +20,10 @@ try:
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
-    from pyavd.validation_result import ValidationResult
 
     HAS_PYAVD = True
 except ImportError:
     HAS_PYAVD = False
-    import typing
-
-    ValidationResult = typing.Any
 
 
 CUSTOM_TEMPLATES_CFG_TEMPLATE = "eos/custom-templates.j2"
@@ -138,7 +134,7 @@ class ActionModule(ActionBase):
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
                 file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
-                result["changed"] = result["changed"] or file_changed
+                result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
@@ -250,27 +246,6 @@ class ActionModule(ActionBase):
 
         path.write_text(content, encoding="UTF-8")
         return True
-
-    def _log_validation_errors(self, validation_results: ValidationResult, validation_mode: str) -> None:
-        """Log validation results depending on the validation_mode
-
-        Parameters
-        ----------
-        validation_result: The ValidationResult object containing the errors.
-        validation_mode: A validated string containing one of the possible validation_mode
-            in [error, warning, info, debug, disabled]
-
-        """
-        for validation_error in validation_results.validation_errors:
-            if validation_mode == "debug":
-                LOGGER.debug(validation_error)
-            elif validation_mode == "error":
-                LOGGER.error(validation_error)
-            elif validation_mode == "info":
-                LOGGER.info(validation_error)
-            elif validation_mode == "warning":
-                LOGGER.warning(validation_error)
-            # otherwise the validation_mode is disabled
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
