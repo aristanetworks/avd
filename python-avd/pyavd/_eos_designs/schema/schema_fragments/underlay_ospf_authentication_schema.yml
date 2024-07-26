@@ -42,7 +42,7 @@ keys:
               required: true
               convert_types:
               - int
-              description: |
+              description: |-
                 Key password.
                 Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.
                 To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
