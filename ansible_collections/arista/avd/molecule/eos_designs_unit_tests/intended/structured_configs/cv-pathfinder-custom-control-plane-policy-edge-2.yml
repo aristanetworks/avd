@@ -353,6 +353,8 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+    application_transports:
+    - rtp
   - name: CUSTOM-CP-APP-PROFILE
     applications:
     - name: APP-CONTROL-PLANE

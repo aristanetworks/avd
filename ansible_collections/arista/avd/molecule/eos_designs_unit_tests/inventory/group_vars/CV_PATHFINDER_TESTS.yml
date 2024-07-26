@@ -595,6 +595,9 @@ application_classification:
         - name: CUSTOM-APPLICATION-1
         # Builtin application that should not raise
         - name: skype
+      # application transport to also be covered by the profile
+      application_transports:
+        - rtp
     - name: IT
     - name: MPLS-ONLY
     - name: VOICE

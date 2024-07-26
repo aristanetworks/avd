@@ -3832,7 +3832,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Type 7 encrypted password.",
+              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group,\nit may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.\nThis is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.\nIf the password is not set, the static BGP peerings between Pathfinders may not come up.",
               "title": "Password"
             },
             "bfd": {
@@ -4350,7 +4350,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Type 7 encrypted password.",
+              "description": "Type 7 encrypted password.\nWhen configuring a password on the `wan_overlay_peers` BGP peer group,\nit may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.\nThis is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.\nIf the password is not set, the static BGP peerings between Pathfinders may not come up.",
               "title": "Password"
             },
             "bfd": {
@@ -20042,6 +20042,72 @@
                       "description": "VRF in which to configure the DHCP server, use `default` to indicate default VRF.",
                       "title": "VRF"
                     },
+                    "lease_time_ipv4": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 2000,
+                          "title": "Days"
+                        },
+                        "hours": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 23,
+                          "title": "Hours"
+                        },
+                        "minutes": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 59,
+                          "title": "Minutes"
+                        }
+                      },
+                      "required": [
+                        "days",
+                        "hours",
+                        "minutes"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Lease Time IPv4"
+                    },
+                    "lease_time_ipv6": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 2000,
+                          "title": "Days"
+                        },
+                        "hours": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 23,
+                          "title": "Hours"
+                        },
+                        "minutes": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 59,
+                          "title": "Minutes"
+                        }
+                      },
+                      "required": [
+                        "days",
+                        "hours",
+                        "minutes"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Lease Time IPv6"
+                    },
                     "dns_domain_name_ipv4": {
                       "type": "string",
                       "title": "DNS Domain Name IPv4"
@@ -20160,6 +20226,7 @@
                         "type": "object",
                         "properties": {
                           "subnet": {
+                            "description": "IPv4/IPv6 subnet.",
                             "type": "string",
                             "title": "Subnet"
                           },
@@ -20235,6 +20302,42 @@
                               "^_.+$": {}
                             },
                             "title": "Lease Time"
+                          },
+                          "reservations": {
+                            "description": "DHCP client reservations.",
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "mac_address": {
+                                  "type": "string",
+                                  "description": "Ethernet address in format - HHHH.HHHH.HHHH",
+                                  "title": "MAC Address"
+                                },
+                                "hostname": {
+                                  "type": "string",
+                                  "title": "Hostname"
+                                },
+                                "ipv4_address": {
+                                  "type": "string",
+                                  "description": "Valid IPv4 address from the given subnet.\nThis should only be used within an IPv4 subnet.",
+                                  "title": "IPv4 Address"
+                                },
+                                "ipv6_address": {
+                                  "type": "string",
+                                  "description": "Valid IPv6 address from the given subnet.\nThis should only be used within an IPv6 subnet.",
+                                  "title": "IPv6 Address"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "required": [
+                                "mac_address"
+                              ]
+                            },
+                            "title": "Reservations"
                           }
                         },
                         "required": [
@@ -20246,6 +20349,11 @@
                         }
                       },
                       "title": "Subnets"
+                    },
+                    "eos_cli": {
+                      "type": "string",
+                      "description": "Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.",
+                      "title": "EOS CLI"
                     }
                   },
                   "additionalProperties": false,
@@ -30188,6 +30296,13 @@
                                       }
                                     },
                                     "title": "Pathgroups"
+                                  },
+                                  "application_profiles": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "title": "Application Profiles"
                                   }
                                 },
                                 "additionalProperties": false,
@@ -30319,6 +30434,164 @@
                           }
                         },
                         "title": "Internet Exit Policies"
+                      },
+                      "applications": {
+                        "type": "object",
+                        "properties": {
+                          "profiles": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "title": "Name"
+                                },
+                                "builtin_applications": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "title": "Name"
+                                      },
+                                      "services": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "title": "Services"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "Builtin Applications"
+                                },
+                                "user_defined_applications": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string",
+                                        "title": "Name"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "User Defined Applications"
+                                },
+                                "categories": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "category": {
+                                        "type": "string",
+                                        "title": "Category"
+                                      },
+                                      "services": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "title": "Services"
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "patternProperties": {
+                                      "^_.+$": {}
+                                    }
+                                  },
+                                  "title": "Categories"
+                                },
+                                "transport_protocols": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "title": "Transport Protocols"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              }
+                            },
+                            "title": "Profiles"
+                          },
+                          "categories": {
+                            "type": "object",
+                            "properties": {
+                              "builtin_applications": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "title": "Name"
+                                    },
+                                    "category": {
+                                      "type": "string",
+                                      "title": "Category"
+                                    },
+                                    "services": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      },
+                                      "title": "Services"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  }
+                                },
+                                "title": "Builtin Applications"
+                              },
+                              "user_defined_applications": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "title": "Name"
+                                    },
+                                    "category": {
+                                      "type": "string",
+                                      "title": "Category"
+                                    }
+                                  },
+                                  "additionalProperties": false,
+                                  "patternProperties": {
+                                    "^_.+$": {}
+                                  }
+                                },
+                                "title": "User Defined Applications"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Categories"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Applications"
                       }
                     },
                     "additionalProperties": false,

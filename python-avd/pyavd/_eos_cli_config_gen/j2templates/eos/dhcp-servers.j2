@@ -12,8 +12,18 @@
 {%         endif %}
 !
 {{ server_cli }}
+{%         if dhcp_server.lease_time_ipv4.days is arista.avd.defined
+            and dhcp_server.lease_time_ipv4.hours is arista.avd.defined
+            and dhcp_server.lease_time_ipv4.minutes is arista.avd.defined %}
+   lease time ipv4 {{ dhcp_server.lease_time_ipv4.days }} days {{ dhcp_server.lease_time_ipv4.hours }} hours {{ dhcp_server.lease_time_ipv4.minutes }} minutes
+{%         endif %}
 {%         if dhcp_server.dns_domain_name_ipv4 is arista.avd.defined %}
    dns domain name ipv4 {{ dhcp_server.dns_domain_name_ipv4 }}
+{%         endif %}
+{%         if dhcp_server.lease_time_ipv6.days is arista.avd.defined
+            and dhcp_server.lease_time_ipv6.hours is arista.avd.defined
+            and dhcp_server.lease_time_ipv6.minutes is arista.avd.defined %}
+   lease time ipv6 {{ dhcp_server.lease_time_ipv6.days }} days {{ dhcp_server.lease_time_ipv6.hours }} hours {{ dhcp_server.lease_time_ipv6.minutes }} minutes
 {%         endif %}
 {%         if dhcp_server.dns_domain_name_ipv6 is arista.avd.defined %}
    dns domain name ipv6 {{ dhcp_server.dns_domain_name_ipv6 }}
@@ -33,6 +43,26 @@
 {%         for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
    !
    subnet {{ subnet.subnet }}
+{%             if subnet.reservations is arista.avd.defined %}
+      reservations
+{%                 for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
+{%                     if reservation.mac_address is arista.avd.defined %}
+         mac-address {{ reservation.mac_address }}
+{%                         if reservation.ipv4_address is arista.avd.defined %}
+            ipv4-address {{ reservation.ipv4_address }}
+{%                         endif %}
+{%                         if reservation.ipv6_address is arista.avd.defined %}
+            ipv6-address {{ reservation.ipv6_address }}
+{%                         endif %}
+{%                         if reservation.hostname is arista.avd.defined %}
+            hostname {{ reservation.hostname }}
+{%                         endif %}
+{%                     endif %}
+{%                     if not loop.last %}
+         !
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
 {%             for range in subnet.ranges | arista.avd.natural_sort("end") | arista.avd.natural_sort("start") %}
       !
       range {{ range.start }} {{ range.end }}
@@ -43,7 +73,9 @@
 {%             if subnet.dns_servers is arista.avd.defined %}
       dns server {{ subnet.dns_servers | join(" ") }}
 {%             endif %}
-{%             if subnet.lease_time is arista.avd.defined %}
+{%             if subnet.lease_time.days is arista.avd.defined
+                and subnet.lease_time.hours is arista.avd.defined
+                and subnet.lease_time.minutes is arista.avd.defined %}
       lease time {{ subnet.lease_time.days }} days {{ subnet.lease_time.hours }} hours {{ subnet.lease_time.minutes }} minutes
 {%             endif %}
 {%             if subnet.default_gateway is arista.avd.defined %}
@@ -56,7 +88,7 @@
 {%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}
    !
    vendor-option ipv4 {{ option.vendor_id }}
-{%             for sub_option in option.sub_options | arista.avd.natural_sort %}
+{%             for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
 {%                 if sub_option.string is arista.avd.defined %}
       sub-option {{ sub_option.code }} type string data "{{ sub_option.string }}"
 {%                 elif sub_option.ipv4_address is arista.avd.defined %}
@@ -66,5 +98,8 @@
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
+{%         if dhcp_server.eos_cli is arista.avd.defined %}
+   {{ dhcp_server.eos_cli | indent(3, false) }}
+{%         endif %}
 {%     endfor %}
 {% endif %}
