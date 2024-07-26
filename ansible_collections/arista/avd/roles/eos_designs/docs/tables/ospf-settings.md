@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;message_digest_keys</samp>](## "underlay_ospf_authentication.message_digest_keys") | List, items: Dictionary | Required |  | Min Length: 1<br>Max Length: 2 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "underlay_ospf_authentication.message_digest_keys.[].id") | Integer | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "underlay_ospf_authentication.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "underlay_ospf_authentication.message_digest_keys.[].key") | String | Required |  |  | Key password.<br>Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.<br>To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "underlay_ospf_authentication.message_digest_keys.[].key") | String | Required |  |  | Key password.<br>Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.<br>To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar. |
     | [<samp>underlay_ospf_bfd_enable</samp>](## "underlay_ospf_bfd_enable") | Boolean |  | `False` |  |  |
     | [<samp>underlay_ospf_max_lsa</samp>](## "underlay_ospf_max_lsa") | Integer |  | `12000` |  |  |
     | [<samp>underlay_ospf_process_id</samp>](## "underlay_ospf_process_id") | Integer |  | `100` |  |  |

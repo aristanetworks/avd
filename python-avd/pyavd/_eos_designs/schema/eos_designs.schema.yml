@@ -4098,9 +4098,7 @@ keys:
                 encrypt the password for each individual underlay interface.
 
                 To protect the password at rest it is strongly recommended to make
-                use of Ansible Vault or similar.
-
-                '
+                use of Ansible Vault or similar.'
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
