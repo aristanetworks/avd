@@ -349,6 +349,8 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+    application_transports:
+    - rtp
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -428,6 +430,8 @@ metadata:
         - name: CUSTOM-APPLICATION-1
         categories:
         - category: VIDEO1
+        transport_protocols:
+        - rtp
       - name: APP-PROFILE-CONTROL-PLANE
         user_defined_applications:
         - name: APP-CONTROL-PLANE
