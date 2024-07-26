@@ -282,10 +282,16 @@ interface Vlan4094
 | Type | level-2 |
 | Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
-| MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
-| SR MPLS Enabled | True |
+| SR MPLS Enabled | False |
+| SPF Interval | 250 seconds |
+
+#### ISIS Route Redistribution
+
+| Route Type | Route-Map | Include Leaked |
+| ---------- | --------- | -------------- |
+| bgp | RM-BGP | - |
 
 #### ISIS Interfaces Summary
 
@@ -304,6 +310,12 @@ interface Vlan4094
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
 
+#### Prefix Segments
+
+| Prefix Segment | Index |
+| -------------- | ----- |
+| 155.2.1.19/32 | 2121 |
+
 #### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
@@ -318,19 +330,23 @@ interface Vlan4094
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
+   redistribute bgp route-map RM-BGP
    router-id ipv4 192.168.255.3
    log-adjacency-changes
-   mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
+   set-overload-bit on-startup wait-for-bgp
    advertise passive-only
-   authentication mode sha key-id 4
+   spf-interval 250
+   authentication mode sha key-id 5 rx-disabled level-1
+   authentication mode shared-secret profile test2 algorithm md5 rx-disabled level-2
    authentication key 0 password
    !
    address-family ipv4 unicast
       maximum-paths 2
    !
    segment-routing mpls
-      no shutdown
+      shutdown
+      prefix-segment 155.2.1.19/32 index 2121
    address-family ipv6 unicast
      multi-topology
    traffic-engineering
