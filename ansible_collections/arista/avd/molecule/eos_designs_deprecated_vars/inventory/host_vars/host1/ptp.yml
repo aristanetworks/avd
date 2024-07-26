@@ -1,4 +1,4 @@
 ---
-ptp:
+ptp_settings:
   enabled: true
   auto_clock_identity: true
