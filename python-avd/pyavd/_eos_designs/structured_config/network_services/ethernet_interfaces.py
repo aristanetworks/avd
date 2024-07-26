@@ -78,12 +78,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                             if self._l3_interface_acls is not None:
                                 interface.update(
                                     {
-                                        "access_group_in": get(
-                                            self._l3_interface_acls, f"{interface_name}..ipv4_acl_in..name", separator=".."
-                                            ),
-                                        "access_group_out": get(
-                                            self._l3_interface_acls, f"{interface_name}..ipv4_acl_out..name", separator=".."
-                                            ),
+                                        "access_group_in": get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in..name", separator=".."),
+                                        "access_group_out": get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_out..name", separator=".."),
                                     }
                                 )
 
