@@ -438,6 +438,8 @@ metadata:
         user_defined_applications:
         - name: CUSTOM-APPLICATION-2
           category: VIDEO1
+        - name: CUSTOM-DSCP-APPLICATION
+          category: VIDEO1
     role: pathfinder
     ssl_profile: profileA
     vtep_ip: 192.168.144.1
