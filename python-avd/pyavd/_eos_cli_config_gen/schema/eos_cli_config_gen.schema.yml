@@ -7427,6 +7427,7 @@ keys:
         default: true
       hosts:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -7493,6 +7494,7 @@ keys:
               default: true
             hosts:
               type: list
+              primary_key: name
               items:
                 type: dict
                 keys:
