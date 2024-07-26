@@ -2,9 +2,6 @@
 # Test for cvx.shutdown: true, cvx.services.mcs.shutdown: true, cvx.services.mcs.shutdown: true
 cvx:
   shutdown: true
-  peer_hosts:
-  - 1.1.1.2
-  - 2.2.2.1
   services:
     mcs:
       shutdown: true

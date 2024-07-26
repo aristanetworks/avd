@@ -37,10 +37,6 @@ interface Management1
 
 ## CVX
 
-| Peer Hosts |
-| ---------- |
-| 1.1.1.2, 2.2.2.1 |
-
 CVX is disabled
 
 ### CVX Device Configuration
@@ -49,8 +45,6 @@ CVX is disabled
 !
 cvx
    shutdown
-   peer host 1.1.1.2
-   peer host 2.2.2.1
    service mcs
       shutdown
    service vxlan
