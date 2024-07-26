@@ -100,11 +100,14 @@ interface Port-Channel2
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp | 1,10-20 | ANY | action: PASS<br/>traffic-class: 5 |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | SERVICE-DEMO | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | ANY | SERVICE-DEMO | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
 | BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | ANY | icmp | ANY | ANY | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
 | BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | tcp | ANY | ANY | action: PASS<br/>traffic-class: 5 |
+| BLUE-C1-POLICY-06 | ipv4 | ANY | ANY | neighbors<br/>ip<br/>udp<br/>tcp<br/>icmp | SERVICE-DEMO | 1,10-20 | action: PASS |
+| BLUE-C1-POLICY-07 | ipv4 | ANY | 10.0.0.0/8<br/>192.168.0.0/16 | ANY |  |  | default action: PASS |
+| BLUE-C1-POLICY-08 | ipv4 | ANY | DEMO-01 | udp<br/>tcp | ANY | SERVICE-DEMO | default action: PASS |
 
 ##### BLUE-C2-POLICY
 
@@ -112,7 +115,25 @@ interface Port-Channel2
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | tcp<br/>icmp | 1,10-20 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | SERVICE-DEMO | ANY | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
-| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>logging |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP |
+
+##### BLUE-C3-POLICY
+
+
+##### BLUE-C4-POLICY
+
+
+##### BLUE-C5-POLICY
+
+
+##### BLUE-C6-POLICY
+
+
+##### BLUE-C7-POLICY
+
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
+| BLUE-C7-POLICY-01 | ipv4 | ANY | ANY | neighbors | ANY | ANY | default action: PASS |
 
 ##### Traffic-Policy Interfaces
 
@@ -142,6 +163,7 @@ traffic-policies
          source prefix 10.0.0.0/8 192.168.0.0/16
          destination prefix field-set DEMO-01
          protocol tcp source port 1,10-20
+         protocol udp flags initial source port field-set SERVICE-DEMO
          ttl 10, 20-30
          actions
             set traffic class 5
@@ -158,7 +180,7 @@ traffic-policies
       !
       match BLUE-C1-POLICY-03 ipv4
          source prefix field-set DEMO-01
-         protocol icmp
+         protocol icmp type echo echo-reply code all
          fragment offset 1124, 2000-2010
          actions
             count DROP-PACKETS
@@ -184,6 +206,27 @@ traffic-policies
             set traffic class 5
          !
       !
+      match BLUE-C1-POLICY-06 ipv4
+         protocol neighbors bgp
+         protocol udp destination port 1,10-20
+         protocol tcp flags initial source port 22
+         protocol icmp
+         !
+      !
+      match BLUE-C1-POLICY-07 ipv4
+         destination prefix 10.0.0.0/8 192.168.0.0/16
+         !
+      !
+      match BLUE-C1-POLICY-08 ipv4
+         destination prefix 10.0.0.0/8 192.168.0.0/16
+         destination prefix field-set DEMO-01
+         protocol udp flags initial destination port 1,10-20
+         protocol tcp destination port field-set SERVICE-DEMO
+         !
+      !
+      match ipv4-all-default ipv4
+         actions
+            drop
    !
    traffic-policy BLUE-C2-POLICY
       counter DEMO-TRAFFIC
@@ -209,12 +252,42 @@ traffic-policies
          protocol tcp
          actions
             drop
-            log
          !
       !
       match ipv4-all-default ipv4
          actions
             drop
             log
+   !
+   traffic-policy BLUE-C3-POLICY
+      match ipv4-all-default ipv4
+         actions
+            count test
+            set traffic class 10
+            set dscp 11
+   !
+   traffic-policy BLUE-C4-POLICY
+      match ipv6-all-default ipv6
+         actions
+            count test
+            set traffic class 10
+            set dscp 11
+   !
+   traffic-policy BLUE-C5-POLICY
+      match ipv6-all-default ipv6
+         actions
+            drop
+            log
+   !
+   traffic-policy BLUE-C6-POLICY
+      match ipv6-all-default ipv6
+         actions
+            drop
+   !
+   traffic-policy BLUE-C7-POLICY
+      match BLUE-C7-POLICY-01 ipv4
+         protocol neighbors bgp
+         !
+      !
    !
 ```

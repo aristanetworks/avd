@@ -182,7 +182,8 @@ traffic-policies
             log
 {%                             endif %}
 {%                         endif %}
-{%                     elif version is arista.avd.defined('ipv6') %}
+{%                     endif %}
+{%                     if version is arista.avd.defined('ipv6') %}
 {#                         -- COUNT packets ipv6 -- #}
 {%                         if policy.default_actions.ipv6.count is arista.avd.defined %}
             count {{ policy.default_actions.ipv6.count }}

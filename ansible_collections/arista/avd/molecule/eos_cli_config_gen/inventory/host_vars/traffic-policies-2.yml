@@ -1,39 +1,13 @@
+### Traffic Policies to cover IPv6 field and none policy case
 traffic_policies:
   field_sets:
     ipv6:
       - name: IPv6-Demo
         prefixes:
           - 11:22:33:44:55:66:77:88
-  policies:
-    - name: RED
-      matches:
-        - name: POLICY-WITHOUT-SOURCE
-          type: ipv4
-          protocols:
-            - protocol: neighbors
-    - name: BLUE-C1-POLICY
-      default_actions:
-        # ipv4:
-        #   count: test
-        #   traffic_class: 10
-        #   dscp: 11
-    - name: BLUE-C1-POLICY1
-      default_actions:
-        ipv6:
-          count: test
-          traffic_class: 101
-          dscp: 111
-    - name: BLUE-C1-POLICY11
-      default_actions:
-        ipv6:
-          drop: true
-          log: true
-    - name: BLUE-C1-POLICY111
-      default_actions:
-        ipv4:
-          drop: true
-    - name: BLUE-C1-POLICY1111
-      default_actions:
-        ipv6:
-          drop: true
-        
+port_channel_interfaces:
+  - name: Port-Channel2
+    type: routed
+    traffic_policy:
+      input: BLUE-C1-POLICY
+      output: BLUE-C2-POLICY
