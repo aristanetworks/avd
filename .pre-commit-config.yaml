@@ -91,7 +91,7 @@ repos:
         name: Check for changes when running Black on all python files.
 
   - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+    rev: 7.1.0
     hooks:
       - id: flake8
         name: Check for Flake8 errors on Python files.
@@ -102,7 +102,7 @@ repos:
         exclude: ^python-avd/pyavd/_cv/api
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.1.1"
+    rev: "v3.2.6"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
