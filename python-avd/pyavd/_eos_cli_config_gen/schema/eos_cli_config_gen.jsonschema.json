@@ -870,6 +870,16 @@
                     "description": "Destination prefix set name.",
                     "title": "Dest Prefix Set Name"
                   },
+                  "dscp_ranges": {
+                    "type": "array",
+                    "description": "Accept DSCP value(s) or range(s).\nDSCP values can be between 0 and 63.\nOther valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.\nNote: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required.",
+                    "items": {
+                      "type": "string",
+                      "description": "DSCP value or range syntax.",
+                      "pattern": "^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\\s|^)(?:\\d|[1-5]\\d|6[0-3])(?:-(?:\\d|[1-5]\\d|6[0-3]))?)+)$"
+                    },
+                    "title": "DSCP Ranges"
+                  },
                   "protocols": {
                     "type": "array",
                     "description": "List of protocols to consider for this application.\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
@@ -1992,6 +2002,72 @@
             "description": "VRF in which to configure the DHCP server, use `default` to indicate default VRF.",
             "title": "VRF"
           },
+          "lease_time_ipv4": {
+            "type": "object",
+            "properties": {
+              "days": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000,
+                "title": "Days"
+              },
+              "hours": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 23,
+                "title": "Hours"
+              },
+              "minutes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 59,
+                "title": "Minutes"
+              }
+            },
+            "required": [
+              "days",
+              "hours",
+              "minutes"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Lease Time IPv4"
+          },
+          "lease_time_ipv6": {
+            "type": "object",
+            "properties": {
+              "days": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2000,
+                "title": "Days"
+              },
+              "hours": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 23,
+                "title": "Hours"
+              },
+              "minutes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 59,
+                "title": "Minutes"
+              }
+            },
+            "required": [
+              "days",
+              "hours",
+              "minutes"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Lease Time IPv6"
+          },
           "dns_domain_name_ipv4": {
             "type": "string",
             "title": "DNS Domain Name IPv4"
@@ -2110,6 +2186,7 @@
               "type": "object",
               "properties": {
                 "subnet": {
+                  "description": "IPv4/IPv6 subnet.",
                   "type": "string",
                   "title": "Subnet"
                 },
@@ -2185,6 +2262,42 @@
                     "^_.+$": {}
                   },
                   "title": "Lease Time"
+                },
+                "reservations": {
+                  "description": "DHCP client reservations.",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "mac_address": {
+                        "type": "string",
+                        "description": "Ethernet address in format - HHHH.HHHH.HHHH",
+                        "title": "MAC Address"
+                      },
+                      "hostname": {
+                        "type": "string",
+                        "title": "Hostname"
+                      },
+                      "ipv4_address": {
+                        "type": "string",
+                        "description": "Valid IPv4 address from the given subnet.\nThis should only be used within an IPv4 subnet.",
+                        "title": "IPv4 Address"
+                      },
+                      "ipv6_address": {
+                        "type": "string",
+                        "description": "Valid IPv6 address from the given subnet.\nThis should only be used within an IPv6 subnet.",
+                        "title": "IPv6 Address"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "mac_address"
+                    ]
+                  },
+                  "title": "Reservations"
                 }
               },
               "required": [
@@ -2196,6 +2309,11 @@
               }
             },
             "title": "Subnets"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.",
+            "title": "EOS CLI"
           }
         },
         "additionalProperties": false,
@@ -4251,6 +4369,34 @@
                 ],
                 "title": "Delay Mechanism"
               },
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "g8275_1": {
+                    "type": "object",
+                    "properties": {
+                      "destination_mac_address": {
+                        "type": "string",
+                        "enum": [
+                          "forwardable",
+                          "non-forwardable"
+                        ],
+                        "title": "Destination MAC Address"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "G8275 1"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Profile"
+              },
               "sync_message": {
                 "type": "object",
                 "properties": {
@@ -5222,6 +5368,25 @@
               "^_.+$": {}
             },
             "title": "Sflow"
+          },
+          "sync_e": {
+            "type": "object",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              },
+              "priority": {
+                "type": "string",
+                "description": "The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.",
+                "title": "Priority"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Sync E"
           },
           "port_profile": {
             "type": "string",
@@ -12091,6 +12256,13 @@
                             }
                           },
                           "title": "Pathgroups"
+                        },
+                        "application_profiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Application Profiles"
                         }
                       },
                       "additionalProperties": false,
@@ -12222,6 +12394,164 @@
                 }
               },
               "title": "Internet Exit Policies"
+            },
+            "applications": {
+              "type": "object",
+              "properties": {
+                "profiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "Name"
+                      },
+                      "builtin_applications": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            },
+                            "services": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "title": "Services"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Builtin Applications"
+                      },
+                      "user_defined_applications": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "title": "Name"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "User Defined Applications"
+                      },
+                      "categories": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "category": {
+                              "type": "string",
+                              "title": "Category"
+                            },
+                            "services": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "title": "Services"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Categories"
+                      },
+                      "transport_protocols": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Transport Protocols"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Profiles"
+                },
+                "categories": {
+                  "type": "object",
+                  "properties": {
+                    "builtin_applications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name"
+                          },
+                          "category": {
+                            "type": "string",
+                            "title": "Category"
+                          },
+                          "services": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Services"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        }
+                      },
+                      "title": "Builtin Applications"
+                    },
+                    "user_defined_applications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name"
+                          },
+                          "category": {
+                            "type": "string",
+                            "title": "Category"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        }
+                      },
+                      "title": "User Defined Applications"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Categories"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Applications"
             }
           },
           "additionalProperties": false,
@@ -12401,7 +12731,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Hosts"
         },
@@ -12486,7 +12819,10 @@
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Hosts"
               }
@@ -15099,6 +15435,34 @@
                 ],
                 "title": "Delay Mechanism"
               },
+              "profile": {
+                "type": "object",
+                "properties": {
+                  "g8275_1": {
+                    "type": "object",
+                    "properties": {
+                      "destination_mac_address": {
+                        "type": "string",
+                        "enum": [
+                          "forwardable",
+                          "non-forwardable"
+                        ],
+                        "title": "Destination MAC Address"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "G8275 1"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Profile"
+              },
               "sync_message": {
                 "type": "object",
                 "properties": {
@@ -15987,6 +16351,14 @@
             "p2ptransparent"
           ],
           "title": "Mode"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "g8275.1",
+            "g8275.2"
+          ],
+          "title": "Profile"
         },
         "mode_one_step": {
           "type": "boolean",
@@ -28728,6 +29100,25 @@
         "^_.+$": {}
       },
       "title": "Switchport Port Security"
+    },
+    "sync_e": {
+      "type": "object",
+      "properties": {
+        "network_option": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2,
+          "title": "Network Option"
+        }
+      },
+      "required": [
+        "network_option"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Sync E"
     },
     "system": {
       "type": "object",

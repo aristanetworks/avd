@@ -310,7 +310,9 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.9/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
@@ -319,7 +321,9 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.11/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet2
@@ -328,7 +332,9 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.13/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet2
@@ -337,7 +343,9 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.15/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet5
    description MLAG_PEER_DC1-LEAF2B_Ethernet5

@@ -81,6 +81,10 @@ class UtilsMixin:
         return self.shared_utils.max_parallel_uplinks
 
     @cached_property
+    def _loopback_ipv4_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.loopback_ipv4_address
+
+    @cached_property
     def _loopback_ipv4_pool(self: AvdIpAddressing) -> str:
         return self.shared_utils.loopback_ipv4_pool
 
@@ -95,6 +99,10 @@ class UtilsMixin:
     @cached_property
     def _loopback_ipv6_offset(self: AvdIpAddressing) -> int:
         return self.shared_utils.loopback_ipv6_offset
+
+    @cached_property
+    def _vtep_loopback_ipv4_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.vtep_loopback_ipv4_address
 
     @cached_property
     def _vtep_loopback_ipv4_pool(self: AvdIpAddressing) -> str:

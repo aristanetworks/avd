@@ -130,6 +130,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.1/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
 - name: Ethernet2
   peer: DC1-SPINE2
   peer_interface: Ethernet1
@@ -141,6 +146,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.3/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
 - name: Ethernet3
   peer: DC1-SPINE3
   peer_interface: Ethernet1
@@ -152,6 +162,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.5/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
 - name: Ethernet4
   peer: DC1-SPINE4
   peer_interface: Ethernet1
@@ -163,6 +178,11 @@ ethernet_interfaces:
   ip_address: 172.31.255.7/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

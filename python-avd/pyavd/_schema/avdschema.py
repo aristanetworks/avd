@@ -3,15 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from copy import deepcopy
-from functools import cached_property
-
 import jsonschema
 from deepmerge import always_merger
 
 from .._errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from .avddataconverter import AvdDataConverter
-from .avdschemaresolver import AvdSchemaResolver
 from .avdvalidator import AvdValidator
 from .store import create_store
 
@@ -60,10 +56,6 @@ class AvdSchema:
         schema_id : str, optional
             ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
         """
-
-        # Clear cached resolved_schema if any
-        self.__dict__.pop("resolved_schema", None)
-
         if schema:
             # Validate the schema
             for validation_error in self.validate_schema(schema):
@@ -81,14 +73,10 @@ class AvdSchema:
         try:
             self._validator = AvdValidator(schema, self.store)
             self._dataconverter = AvdDataConverter(self)
-            self._schemaresolver = AvdSchemaResolver(schema, self.store)
         except Exception as e:
             raise AristaAvdError("An error occurred during creation of the validator") from e
 
     def extend_schema(self, schema: dict):
-        # Clear cached resolved_schema if any
-        self.__dict__.pop("resolved_schema", None)
-
         for validation_error in self.validate_schema(schema):
             raise validation_error
         always_merger.merge(self._schema, schema)
@@ -112,22 +100,6 @@ class AvdSchema:
                 yield self._error_handler(conversion_error)
         except Exception as error:  # pylint: disable=broad-exception-caught
             yield self._error_handler(error)
-
-    @cached_property
-    def resolved_schema(self):
-        """
-        Get fully resolved schema (where all $ref has been expanded recursively)
-        _schemaresolver performs inplace update of the argument so we give it a copy of the existing schema.
-
-        The resolved schema is cached on the instance of AvdSchema.
-        """
-        resolved_schema = deepcopy(self._schema)
-        resolve_errors = self._schemaresolver.iter_errors(resolved_schema)
-        for resolve_error in resolve_errors:
-            if isinstance(resolve_error, Exception):
-                # TODO: Raise multiple errors or abstract them
-                raise self._error_handler(resolve_error)
-        return resolved_schema
 
     def _error_handler(self, error: Exception):
         if isinstance(error, AristaAvdError):

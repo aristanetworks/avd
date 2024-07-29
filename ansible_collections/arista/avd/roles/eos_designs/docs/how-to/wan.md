@@ -124,6 +124,13 @@ Additionally, following keys must be set for the WAN route servers for the conne
 
 - `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes`: To set the ranges of IP address from which to expect BGP peerings for the WAN. Include the VTEP ranges for all routers connecting to this patfinder.
 
+!!! warning
+
+    When configuring a password on the `wan_overlay_peers` BGP peer group,
+    it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+    This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+    If the password is not set, the static BGP peerings between Pathfinders may not come up.
+
 #### WAN mode
 
 AVD supports two design types for WAN:
@@ -309,7 +316,27 @@ wan_carriers:
 ### Flow tracking
 
 For scalabilty reasons, flow-tracking is enabled only on `Dps1` interface by default.
-It can be added on WAN and LAN interfaces using `custom_structured_configuration`.
+It can be added on WAN and LAN interfaces using the appropriate combination of `fabric_flow_tracking` and `flow_tracking_settings`, the `flow_tracking` key in various places in the schema or `custom_structured_configuration`.
+
+Example to enable flow tracking on a WAN interface:
+
+```yaml
+wan_router:
+  node_groups:
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      nodes:
+        - name: cv-pathfinder-edge
+          id: 1
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              ip_address: dhcp
+              flow_tracking:
+                enabled: true
+```
 
 ### WAN interfaces
 

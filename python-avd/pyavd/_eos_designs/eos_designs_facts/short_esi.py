@@ -26,7 +26,14 @@ class ShortEsiMixin:
         """
         If short_esi is set to "auto" we will use sha256 to create a
         unique short_esi value based on various uplink information.
+
+        Note: Secondary MLAG switch should have the same short-esi value
+        as primary MLAG switch.
         """
+        if self.shared_utils.mlag_role == "secondary":
+            # On the MLAG Secondary use short-esi from MLAG primary
+            if (peer_short_esi := self.shared_utils.mlag_peer_facts._short_esi) is not None:
+                return peer_short_esi
         short_esi = get(self.shared_utils.switch_data_combined, "short_esi")
         if short_esi == "auto":
             esi_seed_1 = "".join(self.shared_utils.uplink_switches[:2])

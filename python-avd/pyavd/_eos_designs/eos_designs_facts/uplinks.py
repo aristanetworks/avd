@@ -344,8 +344,8 @@ class UplinksMixin:
                     subinterface["ipv6_enable"] = True
                 else:
                     subinterface["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
-                    subinterface["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
-                    subinterface["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
+                    subinterface["ip_address"] = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ip(uplink_index, vrf["name"])
+                    subinterface["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ip(uplink_index, vrf["name"])
 
                 if self.shared_utils.uplink_structured_config is not None:
                     subinterface["structured_config"] = self.shared_utils.uplink_structured_config

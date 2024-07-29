@@ -56,7 +56,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;wan_overlay_peers</samp>](## "bgp_peer_groups.wan_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_overlay_peers.name") | String |  | `WAN-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_overlay_peers.password") | String |  |  |  | Type 7 encrypted password.<br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers") | Dictionary |  |  |  | Specify the BFD timers to override the default values.<br>It is recommended to keep BFD total timeout longer than the DPS timeout.<br>The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers.interval") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Interval in milliseconds. |
@@ -68,7 +68,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;wan_rr_overlay_peers</samp>](## "bgp_peer_groups.wan_rr_overlay_peers") | Dictionary |  |  |  | Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.name") | String |  | `WAN-RR-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password.<br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd_timers") | Dictionary |  |  |  | Specify the BFD timers to override the default values.<br>It is recommended to keep BFD total timeout longer than the DPS timeout.<br>The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd_timers.interval") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Interval in milliseconds. |
@@ -201,6 +201,10 @@
         name: <str; default="WAN-OVERLAY-PEERS">
 
         # Type 7 encrypted password.
+        # When configuring a password on the `wan_overlay_peers` BGP peer group,
+        # it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+        # This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+        # If the password is not set, the static BGP peerings between Pathfinders may not come up.
         password: <str>
         bfd: <bool; default=True>
 
@@ -234,6 +238,10 @@
         name: <str; default="WAN-RR-OVERLAY-PEERS">
 
         # Type 7 encrypted password.
+        # When configuring a password on the `wan_overlay_peers` BGP peer group,
+        # it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+        # This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+        # If the password is not set, the static BGP peerings between Pathfinders may not come up.
         password: <str>
         bfd: <bool; default=True>
 
