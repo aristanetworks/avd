@@ -51,8 +51,8 @@
 {%         for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
 
 ##### {{ policy.name }}
-
 {%             if policy.matches is arista.avd.defined %}
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
 {%                 for match in policy.matches | arista.avd.natural_sort('name') %}
