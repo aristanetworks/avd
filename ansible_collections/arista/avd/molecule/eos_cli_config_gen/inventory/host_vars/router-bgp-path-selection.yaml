@@ -31,11 +31,11 @@ router_bgp:
         receive: true
         send:
           # Need to choose what to test here or create multiple hosts...
-          #any: true
-          #backup: true
-          #ecmp: true
+          # any: true
+          # backup: true
+          # ecmp: true
           ecmp_limit: 42
-          #limit: 42
+          # limit: 42
     peer_groups:
       - name: PATH-SELECTION-PG-1
         activate: true

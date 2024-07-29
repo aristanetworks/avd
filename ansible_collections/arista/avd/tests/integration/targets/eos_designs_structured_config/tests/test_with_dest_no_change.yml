@@ -10,7 +10,9 @@
     dest: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
 
 - name: Compare actual output with expected output
-  ansible.builtin.shell: diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml" "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+  ansible.builtin.shell: >-
+    diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+    "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
   failed_when: diff_output.rc
   register: diff_output
   delegate_to: localhost

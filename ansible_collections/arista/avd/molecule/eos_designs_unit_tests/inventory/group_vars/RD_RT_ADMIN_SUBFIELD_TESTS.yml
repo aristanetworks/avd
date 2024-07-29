@@ -5,7 +5,6 @@ type: l3leaf
 
 mgmt_gateway: 192.168.200.1
 
-
 l3leaf:
   defaults:
     platform: vEOS-LAB

@@ -1,4 +1,4 @@
-#Doubts in keep
+# Doubts in keep
 - name: Test with list_merge keep option
   ignore_errors: yes
   register: result

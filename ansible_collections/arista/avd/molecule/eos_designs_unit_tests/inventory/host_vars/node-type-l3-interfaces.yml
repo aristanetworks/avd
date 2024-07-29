@@ -33,7 +33,6 @@ spine:
           enabled: false
           ip_address: 192.168.42.42/24
 
-
 l3_interface_profiles:
   - profile: profile1
     speed: "forced 10000full"

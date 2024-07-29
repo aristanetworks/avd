@@ -26,7 +26,9 @@ tenants:
             name: Tenant_A_OP_Zone_1
           # SVI as integer
           - id: 111
-            vni_override: 10110 #10111 would be the calculated value.
+            vni_override: 10110 # 10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
 
-expected_error_message: "Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for SVIs. {'id': 111, 'name': None, 'vni': 10110} conflicts with {'id': 110, 'name': None, 'vni': 10110}."
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for SVIs.
+  {'id': 111, 'name': None, 'vni': 10110} conflicts with {'id': 110, 'name': None, 'vni': 10110}.

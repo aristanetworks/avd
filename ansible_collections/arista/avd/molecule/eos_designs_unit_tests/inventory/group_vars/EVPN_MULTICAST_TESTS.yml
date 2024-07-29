@@ -4,7 +4,7 @@ mgmt_gateway: 192.168.200.1
 
 underlay_multicast: true # If set to "false" will raise an error.
 evpn_multicast: true
-#default_igmp_snooping_enabled: true # Default is true, if set to "false" will raise error.
+# default_igmp_snooping_enabled: true # Default is true, if set to "false" will raise error.
 
 # Default is overlay_loopback_ip
 # If set to same value on MLAG pairs will raise error. Trigger error with "bgp_as" or "vtep_loopback".
@@ -136,7 +136,8 @@ tenants:
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.1.1/24
-            # test for fast-leave when tenant level evpn_l2_multicast.enabled: false and vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping_querier.fast_leave: true
+            # test for fast-leave when tenant level evpn_l2_multicast.enabled: false and
+            # vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping_querier.fast_leave: true
             evpn_l2_multicast:
               enabled: true
             igmp_snooping_querier:

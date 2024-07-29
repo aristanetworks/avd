@@ -55,7 +55,6 @@ servers:
         mode: access
         spanning_tree_portfast: edge
 
-
   # Start of definitions for DC2 (identical to DC1)
 
   # Name of the defined server.

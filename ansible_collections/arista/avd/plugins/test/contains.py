@@ -24,7 +24,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible.errors import AnsibleTemplateError
+from ansible.errors import AnsibleFilterError
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_test
 
@@ -34,7 +34,7 @@ try:
     from pyavd.j2tests.contains import contains
 except ImportError as e:
     contains = RaiseOnUse(
-        AnsibleTemplateError(
+        AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
         )

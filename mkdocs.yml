@@ -25,7 +25,7 @@ theme:
     - navigation.instant
     - navigation.top
     - search.highlight
-    #- toc.integrate
+    # - toc.integrate
     - toc.follow
   highlightjs: true
   icon:
