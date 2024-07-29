@@ -1,8 +1,8 @@
 # Collapsing generated schemas from PR diff by default
-/python_avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml  linguist-generated=true -merge -diff
-/python_avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.jsonschema.json  linguist-generated=true -merge -diff
-/python_avd/pyavd/_eos_designs/schema/eos_designs.schema.yml  linguist-generated=true -merge -diff
-/python_avd/pyavd/_eos_designs/schema/eos_designs.jsonschema.json  linguist-generated=true -merge -diff
+/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml  linguist-generated=true -merge -diff
+/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.jsonschema.json  linguist-generated=true -merge -diff
+/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml  linguist-generated=true -merge -diff
+/python-avd/pyavd/_eos_designs/schema/eos_designs.jsonschema.json  linguist-generated=true -merge -diff
 
 # Showing generated tables in PR diff by default by count as generated and automatically use the latest file on merge
 /ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*  linguist-generated=true -merge diff
@@ -19,4 +19,4 @@
 /ansible_collections/arista/avd/docs/*  linguist-documentation
 
 # CV API files are generated from proto files
-/python_avd/pyavd/_cv/api  linguist-generated=true
+/python-avd/pyavd/_cv/api  linguist-generated=true
