@@ -17085,13 +17085,6 @@ keys:
         type: dict
         description: STUN server settings.
         keys:
-          local_interface:
-            type: str
-            deprecation:
-              removed: true
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
           local_interfaces:
             type: list
             min_length: 1
@@ -17134,6 +17127,13 @@ keys:
             max: 65535
             convert_types:
             - str
+          local_interface:
+            type: str
+            deprecation:
+              removed: true
+              warning: true
+              new_key: local_interfaces
+              remove_in_version: v5.0.0
   switchport_default:
     type: dict
     keys:
