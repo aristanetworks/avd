@@ -43,7 +43,7 @@ class AvdTestAvtPath(AvdTestBase):
             for peer_idx, peers_data in enumerate(path_group["static_peers"]):
                 if self.validate_data(
                     data=peers_data, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
-                    ):
+                ):
                     static_peers.add(peers_data["router_ip"])
 
         return sorted(static_peers)
