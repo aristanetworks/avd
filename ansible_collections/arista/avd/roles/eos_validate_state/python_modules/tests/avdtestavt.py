@@ -38,12 +38,13 @@ class AvdTestAvtPath(AvdTestBase):
         static_peers = set()
 
         for group_idx, path_group in enumerate(path_groups):
-            if self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="static_peers"):
-                for peer_idx, peers_data in enumerate(path_group["static_peers"]):
-                    if self.validate_data(
-                        data=peers_data, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
+            if not self.validate_data(data=path_group, data_path=f"router_path_selection.path_groups.[{group_idx}]", required_keys="static_peers"):
+                continue
+            for peer_idx, peers_data in enumerate(path_group["static_peers"]):
+                if self.validate_data(
+                    data=peers_data, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
                     ):
-                        static_peers.add(peers_data["router_ip"])
+                    static_peers.add(peers_data["router_ip"])
 
         return sorted(static_peers)
 
