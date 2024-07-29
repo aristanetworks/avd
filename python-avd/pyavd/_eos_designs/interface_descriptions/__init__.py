@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 from collections import ChainMap
 
 from ..avdfacts import AvdFacts
@@ -94,7 +96,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             link_peer=data.peer, link_peer_channel_group_id=data.peer_channel_group_id, link_channel_description=data.port_channel_description
         )
 
-    def underlay_port_channel_interfaces(self, link_peer: str, link_peer_channel_group_id: int, link_channel_description: str) -> str:
+    def underlay_port_channel_interfaces(self, link_peer: str, link_peer_channel_group_id: int, link_channel_description: str | None) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
         if template_path := self.shared_utils.interface_descriptions_templates.get("underlay_port_channel_interfaces"):
             return self._template(
@@ -133,7 +135,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def mlag_port_channel_interface(
         self,
-        data: InterfaceDescriptionData,  # pylint: disable=unused-argument
+        data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR
     ) -> str:
         """
         Available data:
@@ -228,7 +230,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         """
         return self.overlay_loopback_interface(overlay_loopback_description=data.description)
 
-    def overlay_loopback_interface(self, overlay_loopback_description: str = None) -> str:
+    def overlay_loopback_interface(self, overlay_loopback_description: str | None = None) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
         if template_path := self.shared_utils.interface_descriptions_templates.get("overlay_loopback_interface"):
             return self._template(template_path, overlay_loopback_description=overlay_loopback_description)

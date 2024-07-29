@@ -536,6 +536,23 @@ keys:
                 dest_prefix_set_name:
                   type: str
                   description: Destination prefix set name.
+                dscp_ranges:
+                  type: list
+                  description: 'Accept DSCP value(s) or range(s).
+
+                    DSCP values can be between 0 and 63.
+
+                    Other valid values are cs0 to cs7, af11-13, af21-23, af31-33,
+                    af41-af43 and ef.
+
+                    Note: The values are not sorted so the list items need to be supplied
+                    in the right order to match the CLI if required.'
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                    description: DSCP value or range syntax.
+                    pattern: ^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)$
           l4_applications:
             type: list
             description: List of user defined L4 applications. The name should be
@@ -1328,6 +1345,54 @@ keys:
             indicate default VRF.
           convert_types:
           - int
+        lease_time_ipv4:
+          type: dict
+          keys:
+            days:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 2000
+              required: true
+            hours:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 23
+              required: true
+            minutes:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 59
+              required: true
+        lease_time_ipv6:
+          type: dict
+          keys:
+            days:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 2000
+              required: true
+            hours:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 23
+              required: true
+            minutes:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 59
+              required: true
         dns_domain_name_ipv4:
           type: str
         dns_domain_name_ipv6:
@@ -1420,6 +1485,7 @@ keys:
             type: dict
             keys:
               subnet:
+                description: IPv4/IPv6 subnet.
                 type: str
                 required: true
               name:
@@ -1467,6 +1533,32 @@ keys:
                     max: 59
                     convert_types:
                     - str
+              reservations:
+                description: DHCP client reservations.
+                type: list
+                primary_key: mac_address
+                items:
+                  type: dict
+                  keys:
+                    mac_address:
+                      type: str
+                      description: Ethernet address in format - HHHH.HHHH.HHHH
+                    hostname:
+                      type: str
+                    ipv4_address:
+                      type: str
+                      description: 'Valid IPv4 address from the given subnet.
+
+                        This should only be used within an IPv4 subnet.'
+                    ipv6_address:
+                      type: str
+                      description: 'Valid IPv6 address from the given subnet.
+
+                        This should only be used within an IPv6 subnet.'
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the dhcp server in the
+            final EOS configuration.
   dns_domain:
     type: str
     description: Domain Name.
@@ -2589,6 +2681,17 @@ keys:
               valid_values:
               - e2e
               - p2p
+            profile:
+              type: dict
+              keys:
+                g8275_1:
+                  type: dict
+                  keys:
+                    destination_mac_address:
+                      type: str
+                      valid_values:
+                      - forwardable
+                      - non-forwardable
             sync_message:
               type: dict
               keys:
@@ -3130,6 +3233,18 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        sync_e:
+          type: dict
+          keys:
+            enable:
+              type: bool
+            priority:
+              type: str
+              description: The priority is used to influence the reference clock selection.
+                The EOS default priority is 127. The priority can be configured to
+                any integer between 1-255, or set to `disabled`.
+              convert_types:
+              - int
         port_profile:
           type: str
           description: Key only used for documentation or validation purposes.
@@ -7155,6 +7270,10 @@ keys:
                               type: str
                             preference:
                               type: str
+                      application_profiles:
+                        type: list
+                        items:
+                          type: str
           internet_exit_policies:
             type: list
             items:
@@ -7212,6 +7331,74 @@ keys:
                       preference:
                         type: str
                         required: true
+          applications:
+            type: dict
+            keys:
+              profiles:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                    builtin_applications:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          name:
+                            type: str
+                          services:
+                            type: list
+                            items:
+                              type: str
+                    user_defined_applications:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          name:
+                            type: str
+                    categories:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          category:
+                            type: str
+                          services:
+                            type: list
+                            items:
+                              type: str
+                    transport_protocols:
+                      type: list
+                      items:
+                        type: str
+              categories:
+                type: dict
+                keys:
+                  builtin_applications:
+                    type: list
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                        category:
+                          type: str
+                        services:
+                          type: list
+                          items:
+                            type: str
+                  user_defined_applications:
+                    type: list
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                        category:
+                          type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -7315,6 +7502,7 @@ keys:
         default: true
       hosts:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -7381,6 +7569,7 @@ keys:
               default: true
             hosts:
               type: list
+              primary_key: name
               items:
                 type: dict
                 keys:
@@ -9059,6 +9248,17 @@ keys:
               valid_values:
               - e2e
               - p2p
+            profile:
+              type: dict
+              keys:
+                g8275_1:
+                  type: dict
+                  keys:
+                    destination_mac_address:
+                      type: str
+                      valid_values:
+                      - forwardable
+                      - non-forwardable
             sync_message:
               type: dict
               keys:
@@ -9459,6 +9659,11 @@ keys:
         - gptp
         - ordinarymaster
         - p2ptransparent
+      profile:
+        type: str
+        valid_values:
+        - g8275.1
+        - g8275.2
       mode_one_step:
         type: bool
       forward_unicast:
@@ -16971,6 +17176,16 @@ keys:
         type: bool
       violation_protect_chip_based:
         type: bool
+  sync_e:
+    type: dict
+    keys:
+      network_option:
+        required: true
+        type: int
+        min: 1
+        max: 2
+        convert_types:
+        - str
   system:
     type: dict
     keys:

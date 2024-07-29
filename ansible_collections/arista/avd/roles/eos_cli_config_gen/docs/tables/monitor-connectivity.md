@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.local_interfaces") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.address_only") | Boolean |  | `True` |  | PREVIEW: This key is in preview.<br>When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device.<br>Not supported yet in EOS. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.hosts") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.hosts.[].name") | String |  |  |  | Host Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.hosts.[].name") | String | Required, Unique |  |  | Host Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "monitor_connectivity.hosts.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "monitor_connectivity.hosts.[].ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.hosts.[].local_interfaces") | String |  |  |  |  |
@@ -31,7 +31,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.vrfs.[].local_interfaces") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.vrfs.[].address_only") | Boolean |  | `True` |  | PREVIEW: This key is in preview.<br>When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device.<br>Not supported yet in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.vrfs.[].hosts") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.vrfs.[].hosts.[].name") | String |  |  |  | Host name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.vrfs.[].hosts.[].name") | String | Required, Unique |  |  | Host name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "monitor_connectivity.vrfs.[].hosts.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "monitor_connectivity.vrfs.[].hosts.[].ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.vrfs.[].hosts.[].local_interfaces") | String |  |  |  |  |
@@ -61,7 +61,7 @@
       hosts:
 
           # Host Name.
-        - name: <str>
+        - name: <str; required; unique>
           description: <str>
           ip: <str>
           local_interfaces: <str>
@@ -92,7 +92,7 @@
           hosts:
 
               # Host name.
-            - name: <str>
+            - name: <str; required; unique>
               description: <str>
               ip: <str>
               local_interfaces: <str>

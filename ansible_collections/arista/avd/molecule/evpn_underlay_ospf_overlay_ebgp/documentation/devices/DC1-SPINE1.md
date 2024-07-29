@@ -230,7 +230,9 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.0/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet1
@@ -239,7 +241,9 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.8/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet1
@@ -248,7 +252,9 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.16/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet1
@@ -257,7 +263,9 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.24/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet1
@@ -266,7 +274,9 @@ interface Ethernet5
    no switchport
    ip address 172.31.255.32/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet1
@@ -275,7 +285,9 @@ interface Ethernet6
    no switchport
    ip address 172.31.255.40/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet1
@@ -284,7 +296,9 @@ interface Ethernet7
    no switchport
    ip address 172.31.255.48/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 ```
 
 ### Loopback Interfaces

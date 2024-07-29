@@ -354,7 +354,18 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'Type 7 encrypted password.
+
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+
+              it may also be required to set a password for the `wan_rr_overlay_peers`
+              BGP peer group.
+
+              This is required in the case where one or more pathfinders use the same
+              VTEP IP range as the edge routers.
+
+              If the password is not set, the static BGP peerings between Pathfinders
+              may not come up.'
           bfd:
             type: bool
             default: true
@@ -410,7 +421,18 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'Type 7 encrypted password.
+
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+
+              it may also be required to set a password for the `wan_rr_overlay_peers`
+              BGP peer group.
+
+              This is required in the case where one or more pathfinders use the same
+              VTEP IP range as the edge routers.
+
+              If the password is not set, the static BGP peerings between Pathfinders
+              may not come up.'
           bfd:
             type: bool
             default: true
@@ -4056,6 +4078,51 @@ keys:
     - int
     format: ipv4
     default: 0.0.0.0
+  underlay_ospf_authentication:
+    documentation_options:
+      table: ospf-settings
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        required: true
+        default: false
+      message_digest_keys:
+        type: list
+        required: true
+        primary_key: id
+        min_length: 1
+        max_length: 2
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - md5
+              - sha1
+              - sha256
+              - sha384
+              - sha512
+              default: sha512
+            key:
+              type: str
+              required: true
+              max_length: 16
+              min_length: 1
+              convert_types:
+              - int
+              description: 'Key password.
+
+                Only plaintext passwords are supported here as `eos_designs` will
+                encrypt the password for each individual underlay interface.
+
+                To protect the password at rest it is strongly recommended to make
+                use of Ansible Vault or similar.'
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
@@ -6365,6 +6432,14 @@ $defs:
                       type: int
                       convert_types:
                       - str
+                    ipv4_acl_in:
+                      type: str
+                      convert_types:
+                      - int
+                    ipv4_acl_out:
+                      type: str
+                      convert_types:
+                      - int
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -7640,12 +7715,34 @@ $defs:
             description: IPv4 subnet for Loopback0 allocation.
             type: str
             format: ipv4_cidr
+          loopback_ipv4_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'IPv4 address without mask for Loopback0.
+
+              When set, it takes precedence over `loopback_ipv4_pool`.
+
+              Note: AVD does not check for validity of the IPv4 address and does not
+              catch duplicates.'
+            type: str
+            format: ipv4
           vtep_loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description: IPv4 subnet for VTEP-Loopback allocation.
             type: str
             format: ipv4_cidr
+          vtep_loopback_ipv4_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'IPv4 address without mask for VTEP-Loopback.
+
+              When set, it takes precedence over `vtep_loopback_ipv4_pool`.
+
+              Note: AVD does not check for validity of the IPv4 address and does not
+              catch duplicates.'
+            type: str
+            format: ipv4
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration

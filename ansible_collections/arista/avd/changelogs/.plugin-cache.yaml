@@ -75,6 +75,11 @@ plugins:
   inventory: {}
   lookup: {}
   module:
+    _emit_warning:
+      description: Internal module - DO NOT USE - Emit a warning in a task.
+      name: _emit_warning
+      namespace: ''
+      version_added: 4.9.0
     batch_template:
       description: Render Jinja2 template on multiple items and write result to individual
         files.
@@ -160,4 +165,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 4.9.0
+version: 4.10.0

@@ -283,7 +283,7 @@ class TableRowGenStr(TableRowGenBase):
         restrictions.extend(super().get_restrictions())
 
         if self.schema.pattern is not None:
-            restrictions.append(f"Pattern: {self.schema.pattern}")
+            restrictions.append(f"Pattern: `{self.schema.pattern}`")
 
         return restrictions
 

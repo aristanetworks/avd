@@ -75,6 +75,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
 
+                            if self._l3_interface_acls is not None:
+                                interface.update(
+                                    {
+                                        "access_group_in": get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in..name", separator=".."),
+                                        "access_group_out": get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_out..name", separator=".."),
+                                    }
+                                )
+
                             if "." in interface_name:
                                 # This is a subinterface so we need to ensure that the parent is created
                                 parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)

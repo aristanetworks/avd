@@ -27,10 +27,12 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - mpls_lsr
             - overlay_routing_protocol
             - type
+            - vrf
         """
         link_peer = str(data.peer).upper()
         if data.link_type == "underlay_p2p":
-            return f"{self._custom_description_prefix}_P2P_LINK_TO_{link_peer}_{data.peer_interface}"
+            vrf_desc = f" VRF {data.vrf}" if data.vrf else ""
+            return f"{self._custom_description_prefix}_P2P_LINK_TO_{link_peer}_{data.peer_interface}{vrf_desc}"
 
         if data.link_type == "underlay_l2":
             return f"{self._custom_description_prefix}_{link_peer}_{data.peer_interface}"

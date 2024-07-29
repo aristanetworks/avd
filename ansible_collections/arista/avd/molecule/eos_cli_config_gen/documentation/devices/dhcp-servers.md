@@ -40,14 +40,14 @@ interface Management1
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | ---------------- | ------------- |
-| True | AVRF | - | - | - | - | - | - |
-| True | defauls | - | - | - | - | - | - |
-| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap |
-| True | defaulu | - | - | - | - | - | - |
-| True | TEST | testv4.com | - | - | testv6.com | - | - |
-| False | VRF01 | - | - | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
+| True | AVRF | - | - | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
+| True | defaulu | - | - | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
+| False | VRF01 | - | - | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
@@ -79,6 +79,20 @@ interface Management1
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+
+###### DHCP Reservations in subnet 10.0.0.0/24
+
+| Mac Address | IPv4 Address | IPv6 Address | Hostname |
+| ----------- | ------------ | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | - |  host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | - |  host1 |
+
+###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
+
+| Mac Address | IPv4 Address | IPv6 Address | Hostname |
+| ----------- | ------------ | ------------ | -------- |
+| 0003.0003.003 | - | 2001:db8:abcd:1234:c000::1 |  - |
 
 ##### IPv4 Vendor Options
 
@@ -104,6 +118,8 @@ dhcp server vrf AVRF
    !
    subnet 172.16.254.0/24
       default-gateway 172.16.254.1
+   dns server ipv4 10.0.0.1 192.168.255.254
+   client class ipv4 definition Class1
 !
 dhcp server vrf defauls
 !
@@ -123,10 +139,20 @@ dhcp server
 dhcp server vrf defaulu
 !
 dhcp server vrf TEST
+   lease time ipv4 10 days 10 hours 10 minutes
    dns domain name ipv4 testv4.com
+   lease time ipv6 12 days 12 hours 12 minutes
    dns domain name ipv6 testv6.com
    !
    subnet 10.0.0.0/24
+      reservations
+         mac-address 0001.0001.0001
+            ipv4-address 10.0.0.2
+            hostname host3
+         !
+         mac-address 1a1b.1c1d.1e1f
+            ipv4-address 10.0.0.1
+            hostname host1
       !
       range 10.0.0.10 10.0.0.100
       !
@@ -135,6 +161,11 @@ dhcp server vrf TEST
       dns server 10.1.1.12 10.1.1.13
       lease time 0 days 0 hours 10 minutes
       default-gateway 10.0.0.1
+   !
+   subnet 2001:db8:abcd:1234:c000::/66
+      reservations
+         mac-address 0003.0003.003
+            ipv6-address 2001:db8:abcd:1234:c000::1
    !
    vendor-option ipv4 NTP
       sub-option 1 type string data "test"

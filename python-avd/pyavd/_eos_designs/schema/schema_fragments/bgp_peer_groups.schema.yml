@@ -156,7 +156,12 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: |-
+              Type 7 encrypted password.
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+              it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+              This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+              If the password is not set, the static BGP peerings between Pathfinders may not come up.
           bfd:
             type: bool
             default: True
@@ -206,7 +211,12 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: |-
+              Type 7 encrypted password.
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+              it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+              This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+              If the password is not set, the static BGP peerings between Pathfinders may not come up.
           bfd:
             type: bool
             default: True

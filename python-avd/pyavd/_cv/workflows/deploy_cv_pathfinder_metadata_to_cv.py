@@ -44,6 +44,11 @@ def is_internet_exit_zscaler_supported(studio_schema: InputSchema) -> bool:
     return bool(get_v2(studio_schema, "fields.values.zscaler"))
 
 
+def is_applications_supported(studio_schema: InputSchema) -> bool:
+    """Detect if applications is supported by the metadata studio"""
+    return bool(get_v2(studio_schema, "fields.values.applications"))
+
+
 async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
     """
     Download and return the input schema for the cv pathfinder metadata studio.
@@ -83,6 +88,14 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
                 warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring AVT hop-count information since it is not supported by metadata studio."
                 LOGGER.info(warning)
                 warnings.append(warning)
+            if avt_app_profiles := avt.pop("application_profiles", None):
+                if is_applications_supported(studio_schema):
+                    avt["applicationProfiles"] = avt_app_profiles
+                else:
+                    # application_profiles are set but not supported by metadata studio.
+                    warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring AVT application-profiles information since it is not supported by metadata studio."
+                    LOGGER.info(warning)
+                    warnings.append(warning)
 
     studio_inputs.update(
         {
@@ -98,6 +111,14 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
             "vrfs": get(metadata, "vrfs", default=[]),
         }
     )
+
+    if applications := generate_applications_metadata(metadata):
+        if not is_applications_supported(studio_schema):
+            warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring application_traffic_recognition information since it is not supported by metadata studio."
+            LOGGER.info(warning)
+            warnings.append(warning)
+        else:
+            studio_inputs["applications"] = applications
 
     return warnings
 
@@ -431,3 +452,42 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
         )
 
     return services_dict, warnings
+
+
+def generate_applications_metadata(metadata: dict) -> dict:
+    """
+    Generate application traffic recognition related metadata for one patfinder.
+    To be inserted into the common metadata under "applications"
+    """
+    if (applications := get(metadata, "applications")) is None:
+        return {}
+
+    return {
+        "appProfiles": [
+            {
+                "name": profile["name"],
+                "builtinApps": get(profile, "builtin_applications"),
+                "userDefinedApps": get(profile, "user_defined_applications"),
+                "categories": get(profile, "categories"),
+                "transportProtocols": get(profile, "transport_protocols"),
+            }
+            for profile in get(applications, "profiles", default=[])
+        ],
+        "appCategories": {
+            "builtinApps": [
+                {
+                    "appName": application["name"],
+                    "category": application["category"],
+                    "service": get(application, "service"),
+                }
+                for application in get(applications, "builtin_applications", default=[])
+            ],
+            "userDefinedApps": [
+                {
+                    "appName": application["name"],
+                    "category": application["category"],
+                }
+                for application in get(applications, "user_defined_applications", default=[])
+            ],
+        },
+    }
