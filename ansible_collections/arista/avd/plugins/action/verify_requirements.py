@@ -25,7 +25,6 @@ try:
 except ImportError:
     HAS_PACKAGING = False
 
-# Python >= 3.9
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
 
