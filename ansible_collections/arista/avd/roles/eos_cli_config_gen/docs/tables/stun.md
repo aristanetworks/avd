@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "stun.client.server_profiles.[].ssl_profile") | String |  |  |  | SSL profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "stun.client.server_profiles.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | Destination port for the request STUN server (default - 3478). |
     | [<samp>&nbsp;&nbsp;server</samp>](## "stun.server") | Dictionary |  |  |  | STUN server settings. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "stun.server.local_interface") <span style="color:red">deprecated</span> | String |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>local_interfaces</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "stun.server.local_interface") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>local_interfaces</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "stun.server.local_interfaces") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "stun.server.local_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bindings_timeout</samp>](## "stun.server.bindings_timeout") | Integer |  |  | Min: 10<br>Max: 7200 | Timeout for bindings stored on STUN server in seconds. |
@@ -47,10 +47,6 @@
 
       # STUN server settings.
       server:
-        # This key is deprecated.
-        # Support will be removed in AVD version v5.0.0.
-        # Use <samp>local_interfaces</samp> instead.
-        local_interface: <str>
         local_interfaces: # >=1 items
           - <str>
 

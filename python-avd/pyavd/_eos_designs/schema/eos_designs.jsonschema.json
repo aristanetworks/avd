@@ -46986,10 +46986,6 @@
                     "type": "object",
                     "description": "STUN server settings.",
                     "properties": {
-                      "local_interface": {
-                        "type": "string",
-                        "title": "Local Interface"
-                      },
                       "local_interfaces": {
                         "type": "array",
                         "minItems": 1,
