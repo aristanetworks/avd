@@ -75,10 +75,14 @@ interface Management1
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
 | Vlan340 | isis authentication text | default | - | - |
-| Vlan341 | isis authentication sha | default | - | - |
-| Vlan342 | isis authentication sha | default | - | - |
-| Vlan343 | isis authentication shared-secret | default | - | - |
-| Vlan344 | isis authentication shared-secret | default | - | - |
+| Vlan341 | isis authentication sha1 | default | - | - |
+| Vlan342 | isis authentication sha2 | default | - | - |
+| Vlan343 | isis authentication sha3 | default | - | - |
+| Vlan344 | isis authentication sha4 | default | - | - |
+| Vlan345 | isis authentication shared-secret1 | default | - | - |
+| Vlan346 | isis authentication shared-secret1 | default | - | - |
+| Vlan347 | isis authentication shared-secret2 | default | - | - |
+| Vlan348 | isis authentication shared-secret3 | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -447,22 +451,40 @@ interface Vlan340
    isis authentication key 7 <removed>
 !
 interface Vlan341
-   description isis authentication sha
+   description isis authentication sha1
    isis authentication mode sha key-id 1000 rx-disabled
 !
 interface Vlan342
-   description isis authentication sha
-   isis authentication mode sha key-id 1010 level-1
-   isis authentication mode sha key-id 1010 level-1 key-id 1010 level-2
+   description isis authentication sha2
+   isis authentication mode sha key-id 1001
 !
 interface Vlan343
-   description isis authentication shared-secret
+   description isis authentication sha3
+   isis authentication mode sha key-id 1010 level-1 rx-disabled
+   isis authentication mode sha key-id 1010 level-2 rx-disabled
+!
+interface Vlan344
+   description isis authentication sha4
+   isis authentication mode sha key-id 1011 level-1
+   isis authentication mode sha key-id 1011 level-2
+!
+interface Vlan345
+   description isis authentication shared-secret1
    isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled level-1
    isis authentication mode shared-secret profile profile1 algorithm md5 rx-disabled level-2
 !
-interface Vlan344
-   description isis authentication shared-secret
-   isis authentication mode shared-secret profile profile-both algorithm md5 rx-disabled 
+interface Vlan346
+   description isis authentication shared-secret1
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 level-1
+   isis authentication mode shared-secret profile profile1 algorithm md5 level-2
+!
+interface Vlan347
+   description isis authentication shared-secret2
+   isis authentication mode shared-secret profile profile-both algorithm md5 rx-disabled
+!
+interface Vlan348
+   description isis authentication shared-secret3
+   isis authentication mode shared-secret profile profile-both algorithm sha-256
 !
 interface Vlan501
    description SVI Description

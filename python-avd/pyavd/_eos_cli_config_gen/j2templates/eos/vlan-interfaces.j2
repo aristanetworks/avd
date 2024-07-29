@@ -311,38 +311,38 @@ interface {{ vlan_interface.name }}
 {%         if vlan_interface.isis_authentication_mode == "sha" and vlan_interface.isis_authentication_mode_sha is arista.avd.defined %}
 {%             if vlan_interface.isis_authentication_mode_sha.both.key_id is arista.avd.defined %}
 {%                 set auth_cli = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.both.key_id %}
-{%                 if vlan_interface.isis_authentication_mode_sha.both.rx_disabled is arista.avd.defined %}
+{%                 if vlan_interface.isis_authentication_mode_sha.both.rx_disabled is arista.avd.defined(true) %}
 {%                     set auth_cli = auth_cli ~ " rx-disabled" %}
 {%                 endif %}
    {{ auth_cli }}
 {%             else %}
 {%                 if vlan_interface.isis_authentication_mode_sha.level_1.key_id is arista.avd.defined %}
-{%                     if vlan_interface.isis_authentication_mode_sha.level_1.rx_disabled is arista.avd.defined %}
-{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                     set auth_cli_level1 = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.level_1.key_id ~ " level-1" %}
+{%                     if vlan_interface.isis_authentication_mode_sha.level_1.rx_disabled is arista.avd.defined(true) %}
+{%                         set auth_cli_level1 = auth_cli_level1 ~ " rx-disabled" %}
 {%                     endif %}
-{%                     set auth_cli = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.level_1.key_id ~ " level-1" %}
-   {{ auth_cli }}
+   {{ auth_cli_level1 }}
 {%                 endif %}
 {%                 if vlan_interface.isis_authentication_mode_sha.level_2.key_id is arista.avd.defined %}
-{%                     if vlan_interface.isis_authentication_mode_sha.level_2.rx_disabled is arista.avd.defined %}
-{%                         set auth_cli = auth_cli ~ " rx-disabled" %}
+{%                     set auth_cli_level2 = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.level_2.key_id ~ " level-2" %}
+{%                     if vlan_interface.isis_authentication_mode_sha.level_2.rx_disabled is arista.avd.defined(true) %}
+{%                         set auth_cli_level2 = auth_cli_level2 ~ " rx-disabled" %}
 {%                     endif %}
-{%                     set auth_cli = auth_cli ~ " key-id " ~ vlan_interface.isis_authentication_mode_sha.level_2.key_id ~ " level-2" %}
-   {{ auth_cli }}
+   {{ auth_cli_level2 }}
 {%                 endif %}
 {%             endif %}
 {%         endif %}
 {%         if vlan_interface.isis_authentication_mode == "shared-secret" and vlan_interface.isis_authentication_mode_shared_secret is arista.avd.defined %}
 {%             if vlan_interface.isis_authentication_mode_shared_secret.both.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.both.algorithm is arista.avd.defined %}
 {%                 set auth_cli = auth_cli ~ " profile " ~  vlan_interface.isis_authentication_mode_shared_secret.both.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.both.algorithm %}
-{%                 if vlan_interface.isis_authentication_mode_shared_secret.both.rx_disabled is arista.avd.defined %}
-{%                     set auth_cli = auth_cli ~ " rx-disabled " %}
+{%                 if vlan_interface.isis_authentication_mode_shared_secret.both.rx_disabled is arista.avd.defined(true) %}
+{%                     set auth_cli = auth_cli ~ " rx-disabled" %}
 {%                 endif %}
    {{ auth_cli }}
 {%             else %}
 {%                 if vlan_interface.isis_authentication_mode_shared_secret.level_1.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm is arista.avd.defined %}
 {%                     set auth_cli_level1 = auth_cli ~  " profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_1.algorithm %}
-{%                     if vlan_interface.isis_authentication_mode_shared_secret.level_1.rx_disabled is arista.avd.defined %}
+{%                     if vlan_interface.isis_authentication_mode_shared_secret.level_1.rx_disabled is arista.avd.defined(true) %}
 {%                         set auth_cli_level1 = auth_cli_level1 ~ " rx-disabled" %}
 {%                     endif %}
 {%                     set auth_cli_level1 = auth_cli_level1 ~ " level-1" %}
@@ -350,7 +350,7 @@ interface {{ vlan_interface.name }}
 {%                 endif %}
 {%                 if vlan_interface.isis_authentication_mode_shared_secret.level_2.profile is arista.avd.defined and vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm is arista.avd.defined %}
 {%                     set auth_cli_level2 = auth_cli ~ " profile " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.profile ~ " algorithm " ~ vlan_interface.isis_authentication_mode_shared_secret.level_2.algorithm %}
-{%                     if vlan_interface.isis_authentication_mode_shared_secret.level_2.rx_disabled is arista.avd.defined %}
+{%                     if vlan_interface.isis_authentication_mode_shared_secret.level_2.rx_disabled is arista.avd.defined(true) %}
 {%                         set auth_cli_level2 = auth_cli_level2 ~ " rx-disabled" %}
 {%                     endif %}
 {%                     set auth_cli_level2 = auth_cli_level2 ~ " level-2" %}
