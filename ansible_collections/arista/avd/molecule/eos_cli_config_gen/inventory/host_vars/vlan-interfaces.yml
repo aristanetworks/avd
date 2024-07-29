@@ -475,11 +475,39 @@ vlan_interfaces:
         rx_disabled: true
       level_1:
         key_id: 1010
+      level_2:
+        key_id: 1010
 
   - name: Vlan342
+    description: isis authentication sha
+    isis_authentication_mode: sha
+    isis_authentication_mode_sha:
+      level_1:
+        key_id: 1010
+      level_2:
+        key_id: 1010
+
+  - name: Vlan343
     description: isis authentication shared-secret
     isis_authentication_mode: shared-secret
     isis_authentication_mode_shared_secret:
+      level_1:
+        profile: profile1
+        algorithm: sha-1
+        rx_disabled: true
+      level_2:
+        profile: profile1
+        algorithm: md5
+        rx_disabled: true
+
+  - name: Vlan344
+    description: isis authentication shared-secret
+    isis_authentication_mode: shared-secret
+    isis_authentication_mode_shared_secret:
+      both:
+        profile: profile-both
+        algorithm: md5
+        rx_disabled: true
       level_1:
         profile: profile1
         algorithm: sha-1
