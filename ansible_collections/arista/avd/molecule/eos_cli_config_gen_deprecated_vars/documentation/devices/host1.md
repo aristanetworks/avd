@@ -12,9 +12,6 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [RADIUS Server](#radius-server)
-- [Management Security](#management-security)
-  - [Management Security Summary](#management-security-summary)
-  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -270,22 +267,6 @@ username admin privilege 15 role network-admin nopassword
 radius-server host 10.10.10.157 vrf mgt key 7 <removed>
 radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
-```
-
-## Management Security
-
-### Management Security Summary
-
-| Settings | Value |
-| -------- | ----- |
-| Entropy source | hardware |
-
-### Management Security Device Configuration
-
-```eos
-!
-management security
-   entropy source hardware
 ```
 
 ## Monitoring
