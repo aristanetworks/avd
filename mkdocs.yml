@@ -182,8 +182,8 @@ nav:
   - External Resources:
       - Ansible Collection User Guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
-  - Release Notes: docs/release-notes/4.x.x.md
-  - Porting Guide: docs/porting-guides/4.x.x.md
+  - Release Notes: docs/release-notes/5.x.x.md
+  - Porting Guide: docs/porting-guides/5.x.x.md
   - PyAVD: docs/pyavd.md
   - Versioning: docs/semantic-versioning.md
   - AVD Dev Containers:
