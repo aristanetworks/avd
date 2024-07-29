@@ -25,8 +25,8 @@ try:
 except ImportError:
     HAS_PACKAGING = False
 
-# Python >= 3.9
-MIN_PYTHON_SUPPORTED_VERSION = (3, 9)
+MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
+DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
 
 
 def _validate_python_version(info: dict, result: dict) -> bool:
@@ -54,7 +54,7 @@ def _validate_python_version(info: dict, result: dict) -> bool:
         display.error(f"Python Version running {running_version} - Minimum Version required is {min_version}", False)
         return False
     # Keeping this for next deprecation adjust the message as required
-    elif sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
+    elif DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION and sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
         result.setdefault("deprecations", []).append(
             {
                 "msg": (
