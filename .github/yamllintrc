@@ -1,4 +1,5 @@
 ---
+# Used by pre-commit. There is a similar file under the Ansible collection used by ansible-lint.
 extends: default
 
 yaml-files:
@@ -8,31 +9,51 @@ yaml-files:
 
 rules:
   braces:
-    level: warning
+    min-spaces-inside: 0
     max-spaces-inside: 1
+    level: error
   brackets:
-    level: warning
     max-spaces-inside: 1
+    level: error
   colons:
-    level: warning
+    max-spaces-after: -1
+    level: error
   commas:
-    level: warning
-  comments: disable
-  comments-indentation: disable
+    max-spaces-after: -1
+    level: error
+  comments:
+    # prettier compatibility
+    min-spaces-from-content: 1
+    level: error
+  comments-indentation: false
   document-start: disable
   empty-lines:
-    level: warning
+    max: 1
+    level: error
+    ignore:
+      - /python-avd/pyavd/**/schema/*.schema.yml
+      - /python-avd/tests/pyavd/schema/
+      - /python-avd/tests/schema_tools/artifacts/*.schema.yml
   hyphens:
-    level: warning
-  indentation:
-    level: warning
-    indent-sequences: consistent
+    level: error
+  key-duplicates:
+    forbid-duplicated-merge-keys: true
   line-length:
-    max: 350
-    level: warning
-    allow-non-breakable-inline-mappings: true
+    max: 160
+    ignore:
+      - /ansible_collections/arista/avd/molecule/**/intended/structured_configs/
+      - /ansible_collections/arista/avd/molecule/**/intended/structured_configs/cvp/
+      - /ansible_collections/arista/avd/examples/**/intended/structured_configs/cvp/
+      - /ansible_collections/arista/avd/changelogs/fragments_backup/
+      - /ansible_collections/arista/avd/tests/inventory/**/expected_output/
+      - /python-avd/pyavd/**/schema/
+      - /.github/workflows/
+  new-lines:
+    type: unix
+  indentation:
+    level: error
+    indent-sequences: consistent
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
   truthy: disable
-
-ignore: |
-  ansible_collections/arista/avd/molecule/Makefile
-  ansible_collections/arista/avd/molecule/README.md

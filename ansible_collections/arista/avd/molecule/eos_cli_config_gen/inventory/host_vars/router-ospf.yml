@@ -160,7 +160,6 @@ router_ospf:
             metric: 50
             metric_type: 1
 
-
 ethernet_interfaces:
   - name: Ethernet1
     type: routed

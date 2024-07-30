@@ -27,7 +27,6 @@ servers:
           mode: active
           channel_id: 42
 
-
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Port-channel Interfaces defined under
   connected_endpoints. {'name': 'Port-Channel42', 'description': 'server1_Description2'} conflicts with

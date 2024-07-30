@@ -4,7 +4,7 @@
 # The path is relative to the root of the repo, so this only works when executed from there.
 -e python-avd --config-settings editable_mode=compat
 ansible-core>=2.15.0,<2.18.0
-ansible-lint>=6.21.0,<24.5.0
+ansible-lint>=24.6.0
 codespell>=2.2.6
 pycodestyle
 flake8

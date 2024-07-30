@@ -9,7 +9,7 @@ import warnings
 from functools import partial, wraps
 from typing import Callable, Literal
 
-from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleTemplateError, AnsibleUndefinedVariable
+from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleUndefinedVariable
 from ansible.module_utils.basic import to_native
 from ansible.utils.display import Display
 from jinja2.exceptions import UndefinedError
@@ -34,7 +34,7 @@ class RaiseOnUse:
 def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
     plugin_map = {
         "filter": AnsibleFilterError,
-        "test": AnsibleTemplateError,
+        "test": AnsibleFilterError,
     }
 
     if plugin_type not in plugin_map:
