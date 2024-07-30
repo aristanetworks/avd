@@ -12,9 +12,6 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [RADIUS Server](#radius-server)
-- [Management Security](#management-security)
-  - [Management Security Summary](#management-security-summary)
-  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -22,7 +19,6 @@
   - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
   - [Flow Tracking](#flow-tracking)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
@@ -85,9 +81,6 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
-- [STUN](#stun)
-  - [STUN Server](#stun-server)
-  - [STUN Device Configuration](#stun-device-configuration)
 - [Maintenance Mode](#maintenance-mode)
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
@@ -273,22 +266,6 @@ radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
 ```
 
-## Management Security
-
-### Management Security Summary
-
-| Settings | Value |
-| -------- | ----- |
-| Entropy source | hardware |
-
-### Management Security Device Configuration
-
-```eos
-!
-management security
-   entropy source hardware
-```
-
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -444,32 +421,6 @@ vmtracer session session_2
    url https://192.168.0.10
    username user1
    password 7 encrypted_password
-```
-
-### Event Handler
-
-#### Event Handler Summary
-
-| Handler | Actions | Trigger | Trigger Config |
-| ------- | ------- | ------- | -------------- |
-| CONFIG_VERSIONING | bash <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config | - |
-| evpn-blacklist-recovery | bash <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging | - |
-
-#### Event Handler Device Configuration
-
-```eos
-!
-event-handler CONFIG_VERSIONING
-   trigger on-startup-config
-   action bash FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
-   delay 0
-!
-event-handler evpn-blacklist-recovery
-   trigger on-logging
-      regex EVPN-3-BLACKLISTED_DUPLICATE_MAC
-   action bash FastCli -p 15 -c "clear bgp evpn host-flap"
-   delay 300
-   asynchronous
 ```
 
 ### Flow Tracking
@@ -1861,23 +1812,6 @@ qos profile test
    mc-tx-queue 3
       bandwidth percent 50
       no priority
-```
-
-## STUN
-
-### STUN Server
-
-| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
-| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
-| Ethernet1 | - | - | - | 3478 |
-
-### STUN Device Configuration
-
-```eos
-!
-stun
-   server
-      local-interface Ethernet1
 ```
 
 ## Maintenance Mode

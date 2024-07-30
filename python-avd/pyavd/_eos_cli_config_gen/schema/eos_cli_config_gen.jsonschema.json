@@ -5923,21 +5923,6 @@
             "description": "Event Handler Name.",
             "title": "Name"
           },
-          "action_type": {
-            "type": "string",
-            "enum": [
-              "bash",
-              "increment",
-              "log"
-            ],
-            "title": "Action Type"
-          },
-          "action": {
-            "type": "string",
-            "description": "Command to execute.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.",
-            "deprecated": true,
-            "title": "Action"
-          },
           "actions": {
             "type": "object",
             "description": "Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.",
@@ -6131,12 +6116,6 @@
               "^_.+$": {}
             },
             "title": "Trigger On Maintenance"
-          },
-          "regex": {
-            "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.",
-            "deprecated": true,
-            "title": "Regex"
           },
           "asynchronous": {
             "type": "boolean",
@@ -11048,10 +11027,6 @@
     "management_security": {
       "type": "object",
       "properties": {
-        "entropy_source": {
-          "type": "string",
-          "title": "Entropy Source"
-        },
         "entropy_sources": {
           "type": "object",
           "description": "Source of entropy.",
@@ -28946,10 +28921,6 @@
           "type": "object",
           "description": "STUN server settings.",
           "properties": {
-            "local_interface": {
-              "type": "string",
-              "title": "Local Interface"
-            },
             "local_interfaces": {
               "type": "array",
               "minItems": 1,
