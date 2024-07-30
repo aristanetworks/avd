@@ -9,8 +9,6 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Gives the ability to monitor and react to Syslog messages.<br>Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,<br>customize the system behavior, and implement workarounds to problems discovered in the field.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") <span style="color:red">deprecated</span> | String |  |  |  | Command to execute.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "event_handlers.[].actions") | Dictionary |  |  |  | Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bash_command</samp>](## "event_handlers.[].actions.bash_command") | String |  |  |  | Define BASH command action. Command could be multiline also. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "event_handlers.[].actions.log") | Boolean |  |  |  | Log a message when the event is triggered. |
@@ -37,8 +35,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "event_handlers.[].trigger_on_maintenance.vrf") | String |  |  |  | VRF name. VRF can be defined for "bgp_peer" only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | String |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "event_handlers.[].trigger_on_maintenance.unit") | String |  |  |  | Name of unit. Trigger condition occurs on maintenance operation of specified unit |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") <span style="color:red">deprecated</span> | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | `False` |  | Set the action to be non-blocking.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") <span style="color:red">removed</span> | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") <span style="color:red">removed</span> | String |  |  |  | Command to execute.<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>event_handlers.actions.bash_command</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") <span style="color:red">removed</span> | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger.<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.</span> |
 
 === "YAML"
 
@@ -50,16 +50,6 @@
 
         # Event Handler Name.
       - name: <str; required; unique>
-        # This key is deprecated.
-        # Support will be removed in AVD version 5.0.0.
-        # Use <samp>event_handlers.actions</samp> instead.
-        action_type: <str; "bash" | "increment" | "log">
-
-        # Command to execute.
-        # This key is deprecated.
-        # Support will be removed in AVD version 5.0.0.
-        # Use <samp>event_handlers.actions</samp> instead.
-        action: <str>
 
         # Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.
         actions:
@@ -140,12 +130,6 @@
 
           # Name of unit. Trigger condition occurs on maintenance operation of specified unit
           unit: <str>
-
-        # Regular expression to use for searching log messages. Required for on-logging trigger.
-        # This key is deprecated.
-        # Support will be removed in AVD version 5.0.0.
-        # Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.
-        regex: <str>
 
         # Set the action to be non-blocking.
         asynchronous: <bool; default=False>
