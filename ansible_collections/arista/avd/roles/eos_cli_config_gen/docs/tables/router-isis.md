@@ -122,10 +122,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1_wait_time</samp>](## "router_isis.graceful_restart.t2.level_1_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-1 LSP database sync wait time in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2_wait_time</samp>](## "router_isis.graceful_restart.t2.level_2_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-2 LSP database sync wait time in seconds. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_isis.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the router isis in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;address_family</samp>](## "router_isis.address_family") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_isis.address_family.[]") <span style="color:red">removed</span> | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code><br>- <code>ipv4 unicast</code><br>- <code>ipv6 unicast</code> | Address Family.<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;isis_af_defaults</samp>](## "router_isis.isis_af_defaults") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_isis.isis_af_defaults.[]") <span style="color:red">removed</span> | String |  |  |  | EOS CLI rendered under the address families.<br>Example "maximum-paths 64"<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;address_family</samp>](## "router_isis.address_family") <span style="color:red">removed</span> | List, items: String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_isis.address_family.[]") | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code><br>- <code>ipv4 unicast</code><br>- <code>ipv6 unicast</code> | Address Family. |
+    | [<samp>&nbsp;&nbsp;isis_af_defaults</samp>](## "router_isis.isis_af_defaults") <span style="color:red">removed</span> | List, items: String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_isis.isis_af_defaults.[]") | String |  |  |  | EOS CLI rendered under the address families.<br>Example "maximum-paths 64"<br> |
 
 === "YAML"
 
@@ -351,6 +351,4 @@
 
       # Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.
       eos_cli: <str>
-      address_family:
-      isis_af_defaults:
     ```

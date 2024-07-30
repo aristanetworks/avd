@@ -43531,30 +43531,6 @@
                     "type": "string",
                     "description": "Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.",
                     "title": "EOS CLI"
-                  },
-                  "address_family": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "enum": [
-                        "ipv4",
-                        "ipv6",
-                        "ipv4 unicast",
-                        "ipv6 unicast"
-                      ],
-                      "description": "Address Family.\nThis key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.",
-                      "deprecated": true
-                    },
-                    "title": "Address Family"
-                  },
-                  "isis_af_defaults": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "description": "EOS CLI rendered under the address families.\nExample \"maximum-paths 64\"\n\nThis key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.",
-                      "deprecated": true
-                    },
-                    "title": "ISIS AF Defaults"
                   }
                 },
                 "required": [
