@@ -7968,6 +7968,7 @@ keys:
             description: Enables the MPLS tunneling of TTL exceeded ICMP replies.
   name_server:
     deprecation:
+      removed: true
       warning: true
       new_key: ip_name_servers
       remove_in_version: v5.0.0
