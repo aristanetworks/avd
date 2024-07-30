@@ -48,10 +48,8 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 **Tasks:**
 
 1. Include device structured configuration.
-2. TODO Collect and assert device state:
-3. Create CSV report.
-4. Read CSV file (leveraged to generate summary report).
-5. Create Markdown Summary report.
+2. Generate per device test catalog (optionally store them), run the tests against each device using the test catalogs. The results are stored as json files.
+3. Create CSV report and Markdown reports.
 
 !!! tip
     You can provide your own custom ANTA catalogs using any of the available [ANTA tests](https://anta.arista.com/stable/api/tests/) to the AVD `eos_validate_state` role. Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
@@ -195,9 +193,6 @@ skip_tests:
       - <str>
 ```
 
-TODO - check if fabric_name is still needed.
-The variable `fabric_name` is used to select the inventory group covering all devices in the report. This variable is also required for the role `eos_designs`, but the user can set a name if this role is not used. The default value is `all` pointing to the built-in inventory group `all`. Therefore all devices in the inventory will be selected for the report.
-
 The default accepted manufacturers are "Arastra, Inc." and "Arista Networks." To change this, use `accepted_xcvr_manufacturers`.
 
 By default, all fans and power supplies are expected to be in the `ok` state. However chassis switches may intentionally be missing some fans or power supplies as they are not fully populated. In this case, `accepted_fan_states` and `accepted_pwr_supply_states` can be updated to include the `notInserted` state to avoid failures on missing fans/power supplies.
@@ -208,8 +203,7 @@ The variable `validation_role.only_failed_tests` is used to limit the number of 
 
 ## Requirements
 
-TODO - check link
-Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#additional-python-libraries-required)
+Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#python-requirements-installation)
 
 ## Custom ANTA catalog
 
@@ -282,14 +276,14 @@ ansible_become_method: enable
 fabric_name: "DC1"
 
 accepted_xcvr_manufacturers:
-    - Manufacturer 1
-    - Manufacturer 2
+  - Manufacturer 1
+  - Manufacturer 2
 accepted_pwr_supply_states:
-    - ok
-    - notInserted
+  - ok
+  - notInserted
 accepted_fan_states:
-    - ok
-    - notInserted
+  - ok
+  - notInserted
 ```
 
 ### inventory/intended/structured_configs/switch1.yml
