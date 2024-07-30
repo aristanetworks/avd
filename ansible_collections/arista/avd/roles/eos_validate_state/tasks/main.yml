@@ -40,34 +40,33 @@
   tags:
     - always
 
-#########################################
-##  Run eos_validate_state using ANTA  ##
-#########################################
+- name: Run eos_validate_state_runner
+  arista.avd.eos_validate_state_runner:
+    logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
+    skip_tests: "{{ skip_tests | arista.avd.default([]) }}"
+    save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
+    device_catalog_path: "{{ test_catalogs_dir }}/{{ inventory_hostname }}-catalog.yml"
+    test_results_dir: "{{ test_results_dir }}"
+    custom_anta_catalogs_dir: "{{ custom_anta_catalogs_dir }}"
+    # cprofile_file: "anta-{{inventory_hostname}}.prof"
+  register: anta_results
+  check_mode: false
+  tags: always
 
-- name: Include ANTA tasks
-  ansible.builtin.include_tasks: "anta_tests.yml"
-  # Ensure that `use_anta` is evaluated as a boolean when using `-e` or `--extra-vars`
-  when: use_anta | bool
-  tags:
-    - always
-
-########################################################
-##  Run eos_validate_state using Ansible assert tests ##
-########################################################
-
-- name: Include Ansible assert tests
-  ansible.builtin.include_tasks: "ansible_tests.yml"
-  when: not use_anta | bool
-  tags:
-    - always
-
-#################################################
-##  Generate reports from Ansible assert tests ##
-#################################################
-
-- name: Include Ansible assert tests report tasks
-  ansible.builtin.include_tasks: "reports.yml"
-  when: not use_anta | bool
+- name: Create validation reports
+  arista.avd.eos_validate_state_reports:
+    csv_report_path: "{{ eos_validate_state_csv_report_path }}"
+    md_report_path: "{{ eos_validate_state_md_report_path }}"
+    validation_report_csv: "{{ validation_report_csv }}"
+    validation_report_md: "{{ validation_report_md }}"
+    only_failed_tests: "{{ only_failed_tests }}"
+    test_results_dir: "{{ test_results_dir }}"
+    # cprofile_file: "eos_validate_state_reports.prof"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+  when:
+    - validation_report_csv | bool or validation_report_md | bool
   tags:
     - always
     - reports

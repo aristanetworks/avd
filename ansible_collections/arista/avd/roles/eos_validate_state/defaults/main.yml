@@ -58,6 +58,3 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
 avd_structured_config_file_format: "yml"
-
-# Variable to enable ANTA eos_validate_state
-use_anta: false
