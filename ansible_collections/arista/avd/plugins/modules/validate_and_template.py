@@ -93,7 +93,7 @@ EXAMPLES = r"""
   arista.avd.validate_and_template:
     template: "eos-device-documentation.j2"
     dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-    mode: 0664
+    mode: "0o664"
     schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"

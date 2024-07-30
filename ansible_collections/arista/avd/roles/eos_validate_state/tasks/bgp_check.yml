@@ -42,13 +42,16 @@
   ansible.builtin.assert:
     that:
       - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
-    fail_msg: "Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"', '') }}"
+    fail_msg: >-
+      Session state {{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.ip_address].peerState
+      | arista.avd.default('Not configured') | replace('\"', '') }}
     quiet: yes
   loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
     loop_var: bgp_neighbor
-  when: |
-    ((router_bgp.peer_groups | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', bgp_neighbor.peer_group) | first).type == 'ipv4' and arbgp_state_results)
+  when: >-
+    ((router_bgp.peer_groups | arista.avd.default({}) | arista.avd.convert_dicts('name')
+    | selectattr('name', 'eq', bgp_neighbor.peer_group) | first).type == 'ipv4' and arbgp_state_results)
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: ip_bgp_peer_state_results
   tags:
@@ -59,13 +62,16 @@
   ansible.builtin.assert:
     that:
       - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') == 'Established'
-    fail_msg: "Session state: {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState | arista.avd.default('Not configured') | replace('\"', '') }}"
+    fail_msg: >-
+      Session state: {{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.ip_address].peerState
+      | arista.avd.default('Not configured') | replace('\"', '') }}
     quiet: yes
   loop: "{{ router_bgp.neighbors | arista.avd.default({}) | arista.avd.convert_dicts('ip_address') }}"
   loop_control:
     loop_var: bgp_neighbor
-  when: |
-    ((router_bgp.peer_groups | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', bgp_neighbor.peer_group) | first).type == 'evpn'  and arbgp_state_results)
+  when: >-
+    ((router_bgp.peer_groups | arista.avd.default({}) | arista.avd.convert_dicts('name') |
+    selectattr('name', 'eq', bgp_neighbor.peer_group) | first).type == 'evpn'  and arbgp_state_results)
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: bgp_evpn_peer_state_results
   tags:

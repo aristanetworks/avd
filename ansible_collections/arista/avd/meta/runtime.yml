@@ -18,7 +18,9 @@ plugin_routing:
     generate_route_target:
       deprecation:
         removal_version: 5.0.0
-        warning_text: Use the builtin `ansible.builtin.regex_replace` filter instead like `{{ <short_esi> | ansible.builtin.regex_replace('(\\d{2})(\\d{2}):(\\d{2})(\\d{2}):(\\d{2})(\\d{2})', '\\1:\\2:\\3:\\4:\\5:\\6') }}`
+        warning_text: >-
+          Use the builtin `ansible.builtin.regex_replace` filter instead like
+          `{{ <short_esi> | ansible.builtin.regex_replace('(\\d{2})(\\d{2}):(\\d{2})(\\d{2}):(\\d{2})(\\d{2})', '\\1:\\2:\\3:\\4:\\5:\\6') }}`
   modules:
     deploy_to_cv:
       deprecation:
