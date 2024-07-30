@@ -12,9 +12,6 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [RADIUS Server](#radius-server)
-- [Management Security](#management-security)
-  - [Management Security Summary](#management-security-summary)
-  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -84,9 +81,6 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
-- [STUN](#stun)
-  - [STUN Server](#stun-server)
-  - [STUN Device Configuration](#stun-device-configuration)
 - [Maintenance Mode](#maintenance-mode)
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
@@ -270,22 +264,6 @@ username admin privilege 15 role network-admin nopassword
 radius-server host 10.10.10.157 vrf mgt key 7 <removed>
 radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
-```
-
-## Management Security
-
-### Management Security Summary
-
-| Settings | Value |
-| -------- | ----- |
-| Entropy source | hardware |
-
-### Management Security Device Configuration
-
-```eos
-!
-management security
-   entropy source hardware
 ```
 
 ## Monitoring
@@ -1834,23 +1812,6 @@ qos profile test
    mc-tx-queue 3
       bandwidth percent 50
       no priority
-```
-
-## STUN
-
-### STUN Server
-
-| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
-| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
-| Ethernet1 | - | - | - | 3478 |
-
-### STUN Device Configuration
-
-```eos
-!
-stun
-   server
-      local-interface Ethernet1
 ```
 
 ## Maintenance Mode

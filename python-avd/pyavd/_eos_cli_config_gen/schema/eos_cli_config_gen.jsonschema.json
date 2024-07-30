@@ -11021,10 +11021,6 @@
     "management_security": {
       "type": "object",
       "properties": {
-        "entropy_source": {
-          "type": "string",
-          "title": "Entropy Source"
-        },
         "entropy_sources": {
           "type": "object",
           "description": "Source of entropy.",
@@ -28919,10 +28915,6 @@
           "type": "object",
           "description": "STUN server settings.",
           "properties": {
-            "local_interface": {
-              "type": "string",
-              "title": "Local Interface"
-            },
             "local_interfaces": {
               "type": "array",
               "minItems": 1,
