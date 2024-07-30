@@ -18,4 +18,4 @@ not_underlay_router:
 
 expected_error_message: >-
   Unexpected failure during module execution: 'underlay_router' and 'network_services.l3'
-  must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'."
+  must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'.
