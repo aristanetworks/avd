@@ -25,7 +25,6 @@ l3leaf:
         - Ethernet1
         - Ethernet2
 
-
     - name: sflow-tests-leaf2
       id: 2
       bgp_as: 65102
@@ -33,7 +32,6 @@ l3leaf:
       uplink_switch_interfaces:
         - Ethernet3
         - Ethernet4
-
 
   node_groups:
     - group: sflow-tests-leaf-mlag

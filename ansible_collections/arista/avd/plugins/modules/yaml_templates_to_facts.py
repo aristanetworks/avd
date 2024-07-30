@@ -69,7 +69,7 @@ options:
     required: false
     type: str
   mode:
-    description: File mode (ex. 0664) for dest file. See 'ansible.builtin.copy' module for details.
+    description: File mode (ex. "0o664") for dest file. See 'ansible.builtin.copy' module for details.
     required: false
     type: str
   template_output:

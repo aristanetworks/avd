@@ -124,7 +124,7 @@ snmp_server:
       community: SNMP-COMMUNITY-2
     - host: 10.6.75.122
       vrf: MGMT
-      #version: 2c should be autodetected based on community key.
+      # version: 2c should be autodetected based on community key.
       community: SNMP-COMMUNITY-2
     - host: 10.6.75.99
       vrf: MGMT
@@ -136,7 +136,7 @@ snmp_server:
           authentication_level: auth
     - host: 10.6.75.100
       vrf: MGMT
-      #version: 3 should be autodetected based on users key.
+      # version: 3 should be autodetected based on users key.
       users:
         - username: USER-READ-AUTH-PRIV
           authentication_level: priv

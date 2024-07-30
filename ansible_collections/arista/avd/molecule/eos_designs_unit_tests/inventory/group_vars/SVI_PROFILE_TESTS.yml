@@ -20,7 +20,6 @@ l3leaf:
       id: 1
       bgp_as: 65002
 
-
 #### ---- Test inheritance of svi structured_configuration ----- ###
 # Test logic for network services: vlan-interfaces
 # Structured config is not being merged recursively, but will be taken directly from the most specific level
@@ -356,7 +355,6 @@ tenants:
                 ip_address: 11.4.12.1/24
               - node: SVI_PROFILE_NODE_2
                 ip_address: 11.4.12.2/24
-
 
 #### ---- Test inheritance of svi ospf.enabled ----- ###
 # Tests logic for network services: ospf and vlan-interfaces.

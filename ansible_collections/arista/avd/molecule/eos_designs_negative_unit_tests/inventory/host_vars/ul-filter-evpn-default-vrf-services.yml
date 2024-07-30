@@ -25,6 +25,5 @@ tenants:
             name: TEST
             ip_address_virtual: 10.0.0.1/24
 
-
 expected_error_message: >-
   'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.
