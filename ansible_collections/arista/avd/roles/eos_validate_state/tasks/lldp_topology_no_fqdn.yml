@@ -19,8 +19,13 @@
     that:
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0] is defined
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName == ethernet_interface.peer
-      - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId == "\"" ~ ethernet_interface.peer_interface ~ "\""
-    fail_msg: "{{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName | default('Interface Down') | replace('\"', '') }} - {{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId | default('N/A') | replace('\"', '') }}"
+      - >-
+        lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId
+        == "\"" ~ ethernet_interface.peer_interface ~ "\""
+    fail_msg: >-
+      {{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName | default('Interface Down')
+      | replace('\"', '') }} - {{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId
+      | default('N/A') | replace('\"', '') }}
     quiet: true
   loop: "{{ ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
   loop_control:

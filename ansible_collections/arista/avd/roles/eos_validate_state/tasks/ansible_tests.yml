@@ -8,7 +8,8 @@
 - name: "Warning when not using 'use_anta: true'"
   arista.avd._emit_warning:
     message: |-
-      Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior (same as setting `use_anta: true` in older versions).
+      Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior
+      (same as setting `use_anta: true` in older versions).
       Please review the changes described on the ANTA integration page on https://avd.arista.com.
   delegate_to: localhost
   check_mode: false
@@ -21,7 +22,7 @@
   ansible.builtin.template:
     src: generate_vars_for_testing.j2
     dest: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
-    mode: 0664
+    mode: "0o664"
   delegate_to: localhost
   check_mode: false
   run_once: true
@@ -47,7 +48,9 @@
 - name: Display device platform and release information
   delegate_to: localhost
   ansible.builtin.debug:
-    msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
+    msg: >-
+      The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }}
+      model running EOS version {{ eos_version.stdout_lines.0.version }}
   tags:
     - platform_information
     - hardware

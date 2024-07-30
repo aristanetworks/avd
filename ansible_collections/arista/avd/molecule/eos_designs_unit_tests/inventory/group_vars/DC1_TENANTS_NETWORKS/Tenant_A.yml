@@ -23,7 +23,7 @@ tenant_a:
             ip_address_virtual: 10.1.10.1/24
           # SVI as integer
           - id: 111
-            vni_override: 50111 #10111 would be the calculated value.
+            vni_override: 50111 # 10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
             tags: ['opzone']
             enabled: True
@@ -38,7 +38,7 @@ tenant_a:
             profile: DERIVED_DHCP
             tags: ['opzone']
             enabled: True
-          #test ospf authentication on vlan interface
+          # test ospf authentication on vlan interface
           - id: 113
             name: Tenant_A_OP_Zone_4
             tags: [ DC1_LEAF1 ]

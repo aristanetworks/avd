@@ -17,7 +17,6 @@ spine:
       mgmt_ip: 192.168.0.21/24
       flow_tracker_type: hardware
 
-
 # P2P links between spine switches.
 core_interfaces:
   p2p_links:
@@ -40,7 +39,6 @@ core_interfaces:
     - nodes: [ flow-tracking-tests-spine1, flow-tracking-tests-spine2 ]
       interfaces: [ Ethernet12, Ethernet12 ]
       include_in_underlay_protocol: false
-
 
 # Testing the same as above with l3_edge
 l3_edge:

@@ -20,7 +20,7 @@
   ansible.builtin.template:
     src: validate_state_report-csv.j2
     dest: "{{ eos_validate_state_csv_report_path }}"
-    mode: 0664
+    mode: "0o664"
   delegate_to: localhost
   run_once: true
   when: validation_report_csv | bool
@@ -32,7 +32,7 @@
   ansible.builtin.template:
     src: validate_state_report-md.j2
     dest: "{{ eos_validate_state_md_report_path }}"
-    mode: 0664
+    mode: "0o664"
   delegate_to: localhost
   run_once: true
   when: validation_report_md | bool

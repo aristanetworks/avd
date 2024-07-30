@@ -18,7 +18,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   loop:
     - "{{ eos_validate_state_dir }}"
     - "{{ output_dir }}"
