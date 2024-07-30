@@ -4,16 +4,16 @@
  that can be found in the LICENSE file.
 #}
 {# doc - flow tracking #}
-{% if flow_tracking is arista.avd.defined or flow_trackings is arista.avd.defined %}
+{% if flow_tracking is arista.avd.defined %}
 
 ### Flow Tracking
-{%     if flow_tracking.sampled is arista.avd.defined or flow_trackings is arista.avd.defined %}
+{%     if flow_tracking.sampled is arista.avd.defined %}
 
 #### Flow Tracking Sampled
 
 | Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
 | ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
-{%         set sample_size = flow_tracking.sampled.sample | arista.avd.default(flow_trackings[0].sample, "default") %}
+{%         set sample_size = flow_tracking.sampled.sample | arista.avd.default("default") %}
 {%         set min_sample_size = flow_tracking.sampled.hardware_offload.threshold_minimum | arista.avd.default("default") %}
 {%         set hardware_offload_ipv4 = 'disabled' %}
 {%         set hardware_offload_ipv6 = 'disabled' %}
@@ -33,7 +33,7 @@
 {%             set hardware_offload_ipv6 = 'enabled' %}
 {%         endif %}
 | {{ sample_size }} | {{ min_sample_size }} | {{ hardware_offload_ipv4 }} | {{ hardware_offload_ipv6 }} | {{ encapsulations }} |
-{%         if flow_tracking.sampled.trackers is arista.avd.defined or flow_trackings[0].trackers is arista.avd.defined %}
+{%         if flow_tracking.sampled.trackers is arista.avd.defined %}
 
 ##### Trackers Summary
 
@@ -63,33 +63,6 @@
 {%                 endfor %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
 {%             endfor %}
-{# Legacy syntax #}
-{%             for flow_tracking_obj in flow_trackings | arista.avd.default([]) %}
-{%                 for tracker in flow_tracking_obj.trackers | arista.avd.natural_sort('name') %}
-{%                     set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
-{%                     set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
-{%                     set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
-{%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
-{%                     set applied_on = [] %}
-{%                     set table_size = tracker.table_size | arista.avd.default('-') %}
-{%                     for dps_interface in dps_interfaces | arista.avd.default([]) %}
-{%                         if dps_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
-{%                             do applied_on.append(dps_interface.name) %}
-{%                         endif %}
-{%                     endfor %}
-{%                     for ethernet_interface in ethernet_interfaces | arista.avd.default([]) %}
-{%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
-{%                             do applied_on.append(ethernet_interface.name) %}
-{%                         endif %}
-{%                     endfor %}
-{%                     for port_channel_interface in port_channel_interfaces | arista.avd.default([]) %}
-{%                         if port_channel_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
-{%                             do applied_on.append(port_channel_interface.name) %}
-{%                         endif %}
-{%                     endfor %}
-| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
-{%                 endfor %}
-{%             endfor %}
 
 ##### Exporters Summary
 
@@ -101,17 +74,6 @@
 {%                     set port = exporter.port | arista.avd.default("-") %}
 {%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
-{%                 endfor %}
-{%             endfor %}
-{# Legacy syntax #}
-{%             for flow_tracking_obj in flow_trackings | arista.avd.default([]) %}
-{%                 for tracker in flow_tracking_obj.trackers | arista.avd.natural_sort('name') %}
-{%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                         set host = exporter.host | arista.avd.default("-") %}
-{%                         set port = exporter.port | arista.avd.default("-") %}
-{%                         set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
-| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
-{%                     endfor %}
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
