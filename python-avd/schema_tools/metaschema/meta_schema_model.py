@@ -6,7 +6,7 @@ from __future__ import annotations
 from abc import ABC
 from enum import Enum
 from functools import cached_property
-from typing import Annotated, Any, ClassVar, Generator, List, Literal, Union
+from typing import Annotated, Any, ClassVar, Generator, List, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, constr
 
@@ -573,8 +573,5 @@ class AristaAvdSchema(AvdSchemaDict):
         return []
 
 
-# Workaround for tox until Python 3.9 is dropped
-# https://github.com/microsoft/pyright/issues/4615#issuecomment-1426685471
-AvdSchemaField = Union[AvdSchemaInt, AvdSchemaBool, AvdSchemaStr, AvdSchemaList, AvdSchemaDict]
-# AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict
+AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict
 """Alias for any of the AvdSchema field types"""
