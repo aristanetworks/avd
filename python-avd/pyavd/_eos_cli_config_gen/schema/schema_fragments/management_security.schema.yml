@@ -9,13 +9,6 @@ keys:
   management_security:
     type: dict
     keys:
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          removed: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources
       entropy_sources:
         type: dict
         description: Source of entropy.
@@ -254,3 +247,10 @@ keys:
                   local_time:
                     type: bool
                     description: Configuring secret using the local timezone from system clock. Default is UTC.
+      entropy_source:
+        type: str
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: v5.0.0
+          new_key: entropy_sources
