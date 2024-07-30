@@ -21,7 +21,7 @@ $defs:
             type: int
             convert_types:
               - str
-            #required: true # This cannot be required in defaults, since it could be set on any level.
+            # required: true # This cannot be required in defaults, since it could be set on any level.
           platform:
             documentation_options:
               table: node-type-common-configuration
@@ -333,7 +333,7 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
               hide_keys: true
-            #TODO: Add deprecation warning when introducing new keys for specific configuration.
+            # TODO: Add deprecation warning when introducing new keys for specific configuration.
             type: dict
             description: |
               Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".

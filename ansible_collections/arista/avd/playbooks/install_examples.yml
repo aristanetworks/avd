@@ -8,7 +8,7 @@
         src: "{{ examples_dir }}/"
         dest: "{{ pwd }}"
         force: false
-        mode: 0664
+        mode: "0o664"
       vars:
         pwd: "{{ lookup('env', 'PWD') }}"
         examples_dir: "{{ playbook_dir ~ '/../examples' }}"
