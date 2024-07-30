@@ -3739,7 +3739,7 @@ keys:
             warning: true
             removed: true
             remove_in_version: 5.0.0
-            new_key: event_handlers.actions
+            new_key: event_handlers.actions.bash_command
         regex:
           type: str
           deprecation:
