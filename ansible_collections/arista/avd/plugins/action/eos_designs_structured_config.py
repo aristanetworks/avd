@@ -152,7 +152,6 @@ class ActionModule(ActionBase):
         # If the argument 'dest' (filename) is set, write the output data to a file.
         if filename:
             # Depending on the file suffix of 'filename' (default: 'json') we will format the data to yaml or just write the output data directly.
-            # The Copy module used in 'write_file' will convert the output data to json automatically.
             if filename.endswith((".yml", ".yaml")):
                 result["changed"] = self.write_file(
                     content=yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
@@ -194,15 +193,13 @@ class ActionModule(ActionBase):
             bool: Indicate if the content of filename has changed.
         """
         path = Path(filename)
-        if path.exists():
-            if path.read_text(encoding="UTF-8") == content:
-                return False
-
-        else:
+        if not path.exists():
             # Create parent dirs automatically.
             path.parent.mkdir(mode=int(dir_mode, 8), parents=True, exist_ok=True)
             # Touch file
             path.touch(mode=int(file_mode, 8))
+        elif path.read_text(encoding="UTF-8") == content:
+            return False
 
         path.write_text(content, encoding="UTF-8")
         return True
