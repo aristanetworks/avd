@@ -3,9 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
 
+from pathlib import Path
+
 __metaclass__ = type
 
 import cProfile
+import json
 import pstats
 from collections import ChainMap
 
@@ -46,7 +49,8 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         eos_designs_custom_templates = self._task.args.get("eos_designs_custom_templates", [])
-        self.dest = self._task.args.get("dest", False)
+        filename = str(self._task.args.get("dest", ""))
+        file_mode = str(self._task.args.get("mode", "0o664"))
         template_output = self._task.args.get("template_output", False)
         conversion_mode = self._task.args.get("conversion_mode")
         validation_mode = self._task.args.get("validation_mode")
@@ -145,19 +149,24 @@ class ActionModule(ActionBase):
             with self._templar.set_temporary_context(available_variables=template_vars):
                 output = self._templar.template(output, fail_on_undefined=False)
 
-        # If the argument 'dest' is set, write the output data to a file.
-        if self.dest:
-            # Depending on the file suffix of 'dest' (default: 'json') we will format the data to yaml or just write the output data directly.
+        # If the argument 'dest' (filename) is set, write the output data to a file.
+        if filename:
+            # Depending on the file suffix of 'filename' (default: 'json') we will format the data to yaml or just write the output data directly.
             # The Copy module used in 'write_file' will convert the output data to json automatically.
-            if self.dest.split(".")[-1] in ["yml", "yaml"]:
-                write_file_result = self.write_file(yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130), task_vars)
+            if filename.endswith((".yml", ".yaml")):
+                result["changed"] = self.write_file(
+                    content=yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
+                    filename=filename,
+                    file_mode=file_mode,
+                )
             else:
-                write_file_result = self.write_file(output, task_vars)
+                result["changed"] = self.write_file(
+                    content=json.dumps(output),
+                    filename=filename,
+                    file_mode=file_mode,
+                )
 
-            # Overwrite result with the result from the copy operation (setting 'changed' flag accordingly)
-            result.update(write_file_result)
-
-        # If 'dest' is not set, hardcode 'changed' to true, since we don't know if something changed and later tasks may depend on this.
+        # If 'dest' (filename) is not set, hardcode 'changed' to true, since we don't know if something changed and later tasks may depend on this.
         else:
             result["changed"] = True
 
@@ -171,26 +180,29 @@ class ActionModule(ActionBase):
 
         return result
 
-    def write_file(self, content, task_vars):
+    def write_file(self, content: str, filename: str, file_mode: str = "0o664", dir_mode: str = "0o775") -> bool:
         """
-        This function implements the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
-        Reuse task data
+        This function writes the file only if the content has changed.
+
+        Parameters
+        ----------
+            content: The content to write
+            filename: Target filename
+
+        Returns
+        -------
+            bool: Indicate if the content of filename has changed.
         """
-        new_task = self._task.copy()
-        new_task.args = {
-            "dest": self.dest,
-            "mode": self._task.args.get("mode"),
-            "content": content,
-        }
+        path = Path(filename)
+        if path.exists():
+            if path.read_text(encoding="UTF-8") == content:
+                return False
 
-        copy_action = self._shared_loader_obj.action_loader.get(
-            "ansible.legacy.copy",
-            task=new_task,
-            connection=self._connection,
-            play_context=self._play_context,
-            loader=self._loader,
-            templar=self._templar,
-            shared_loader_obj=self._shared_loader_obj,
-        )
+        else:
+            # Create parent dirs automatically.
+            path.parent.mkdir(mode=int(dir_mode, 8), parents=True, exist_ok=True)
+            # Touch file
+            path.touch(mode=int(file_mode, 8))
 
-        return copy_action.run(task_vars=task_vars)
+        path.write_text(content, encoding="UTF-8")
+        return True
