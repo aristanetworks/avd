@@ -61,14 +61,17 @@ interface Port-Channel2
 
 | Field Set Name | Values |
 | -------------- | ------ |
-| IPv6-Demo | 11:22:33:44:55:66:77:88 |
+| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 |
+| IPv6-DEMO-2 | - |
 
 #### Traffic Policies Device Configuration
 
 ```eos
 !
 traffic-policies
-   field-set ipv6 prefix IPv6-Demo
+   field-set ipv6 prefix IPv6-DEMO-1
       11:22:33:44:55:66:77:88
+   !
+   field-set ipv6 prefix IPv6-DEMO-2
    !
 ```

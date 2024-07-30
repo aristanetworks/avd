@@ -87,6 +87,7 @@ interface Port-Channel2
 | -------------- | ------ |
 | DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
 | DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
+| DEMO-03 | - |
 
 #### L4 Port Field Sets
 
@@ -149,6 +150,8 @@ traffic-policies
    !
    field-set ipv4 prefix DEMO-02
       172.16.0.0/12 224.0.0.0/8
+   !
+   field-set ipv4 prefix DEMO-03
    !
    field-set l4-port SERVICE-DEMO
       10,20,80,440-450

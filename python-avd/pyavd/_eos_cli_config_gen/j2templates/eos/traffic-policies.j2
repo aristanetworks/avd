@@ -15,16 +15,24 @@ traffic-policies
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
 {%         for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
+{%             if field_set_ipv4.name is arista.avd.defined %}
    field-set ipv4 prefix {{ field_set_ipv4.name }}
+{%                 if field_set_ipv4.prefixes is arista.avd.defined %}
       {{ field_set_ipv4.prefixes | join(' ') }}
+{%                 endif %}
+{%             endif %}
    !
 {%         endfor %}
 {%     endif %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
 {%         for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
+{%             if field_set_ipv6.name is arista.avd.defined %}
    field-set ipv6 prefix {{ field_set_ipv6.name }}
+{%                 if field_set_ipv6.prefixes is arista.avd.defined %}
       {{ field_set_ipv6.prefixes | join(' ') }}
+{%                 endif %}
+{%             endif %}
    !
 {%         endfor %}
 {%     endif %}

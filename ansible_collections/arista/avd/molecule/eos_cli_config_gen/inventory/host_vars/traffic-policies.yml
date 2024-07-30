@@ -15,6 +15,7 @@ traffic_policies:
         prefixes:
           - 172.16.0.0/12
           - 224.0.0.0/8
+      - name: DEMO-03
   policies:
     - name: BLUE-C1-POLICY
       default_actions:
