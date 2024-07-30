@@ -69,12 +69,6 @@ event-handler {{ handler.name }}
 {%             else %}
    trigger {{ handler.trigger }}
 {%             endif %}
-{%             if handler.regex is arista.avd.defined %}
-      regex {{ handler.regex }}
-{%             endif %}
-{%         endif %}
-{%         if handler.action is arista.avd.defined and handler.action_type is arista.avd.defined %}
-   action {{ handler.action_type }} {{ handler.action }}
 {%         endif %}
 {%         if handler.actions.bash_command is arista.avd.defined %}
 {%             set bash_command = handler.actions.bash_command %}
