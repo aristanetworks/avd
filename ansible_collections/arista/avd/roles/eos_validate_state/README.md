@@ -294,23 +294,21 @@ accepted_fan_states:
 
 ### inventory/intended/structured_configs/switch1.yml
 
-TODO - update this with good variables following AVD 4.x.x syntax
-
 ```yaml
 router_bgp:
   neighbors:
-    10.10.10.1:
+    - ip_address: 10.10.10.1
       remote_as: 65002
-    10.10.10.3:
+    - ip_address: 10.10.10.3
       remote_as: 65003
 
 ethernet_interfaces:
-  Ethernet2:
+  - name: Ethernet2
     peer: switch3
     peer_interface: Ethernet4
     ip_address: 10.10.10.2/31
     type: routed
-  Ethernet5:
+  - name: Ethernet5
     peer: switch2
     peer_interface: Ethernet5
     ip_address: 10.10.10.0/31
@@ -324,13 +322,15 @@ mlag_configuration:
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 
-ntp_server:
+ntp:
   local_interface:
-    vrf: MGMT
     interface: Management1
-  nodes:
-    - 0.fr.pool.ntp.org
-    - 1.fr.pool.ntp.org
+    vrf: MGMT
+  servers:
+    - name: 0.fr.pool.ntp.org
+      vrf: MGMT
+    - name: 1.fr.pool.ntp.org
+      vrf: MGMT
 
 dns_domain: lab.local
 ```
