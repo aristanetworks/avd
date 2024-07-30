@@ -81,9 +81,6 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
-- [STUN](#stun)
-  - [STUN Server](#stun-server)
-  - [STUN Device Configuration](#stun-device-configuration)
 - [Maintenance Mode](#maintenance-mode)
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
@@ -1815,23 +1812,6 @@ qos profile test
    mc-tx-queue 3
       bandwidth percent 50
       no priority
-```
-
-## STUN
-
-### STUN Server
-
-| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
-| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
-| Ethernet1 | - | - | - | 3478 |
-
-### STUN Device Configuration
-
-```eos
-!
-stun
-   server
-      local-interface Ethernet1
 ```
 
 ## Maintenance Mode
