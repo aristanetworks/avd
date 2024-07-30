@@ -16688,6 +16688,7 @@ keys:
             MIB_family_name:
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 5.0.0
                 new_key: mib_family_name
               type: str

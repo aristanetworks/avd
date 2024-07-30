@@ -16,7 +16,6 @@
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
   - [Logging](#logging)
-  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Flow Tracking](#flow-tracking)
@@ -327,49 +326,6 @@ logging vrf mgt host 30.30.30.7 100 200 protocol tcp
 logging vrf mgt host 40.40.40.7 300 400
 logging vrf mgt source-interface Management0
 logging policy match match-list molecule discard
-```
-
-### SNMP
-
-#### SNMP Configuration Summary
-
-| Contact | Location | SNMP Traps | State |
-| ------- | -------- | ---------- | ----- |
-| - | - | All | Disabled |
-
-#### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-| Management1 | MGMT |
-| Loopback0 | default |
-| Loopback12 | Tenant_A_APP_Zone |
-
-#### SNMP Views Configuration
-
-| View | MIB Family Name | Status |
-| ---- | --------------- | ------ |
-| VW-WRITE | iso | Included |
-
-#### SNMP Communities
-
-| Community | Access | Access List IPv4 | Access List IPv6 | View |
-| --------- | ------ | ---------------- | ---------------- | ---- |
-| <removed> | ro | onur | - | - |
-| <removed> | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
-| <removed> | ro | - | - | - |
-
-#### SNMP Device Configuration
-
-```eos
-!
-snmp-server vrf MGMT local-interface Management1
-snmp-server local-interface Loopback0
-snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
-snmp-server view VW-WRITE iso included
-snmp-server community <removed> ro onur
-snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
-snmp-server community <removed> ro
 ```
 
 ### SFlow
