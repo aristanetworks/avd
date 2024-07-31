@@ -348,7 +348,7 @@ logging policy match match-list molecule discard
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
-| VW-WRITE | iso | Included |
+| VW-WRITE | - | Included |
 
 #### SNMP Communities
 
@@ -365,7 +365,7 @@ logging policy match match-list molecule discard
 snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
-snmp-server view VW-WRITE iso included
+snmp-server view VW-WRITE included
 snmp-server community <removed> ro onur
 snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community <removed> ro
