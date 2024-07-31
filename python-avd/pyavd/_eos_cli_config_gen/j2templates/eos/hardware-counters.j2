@@ -8,6 +8,7 @@
 !
 {%     for feature in hardware_counters.features | arista.avd.natural_sort("name") %}
 {%         set hardware_counters_cli = "" %}
+{# TODO AVD 5.0.0 remove the check in a PR#}
 {%         if feature.name is arista.avd.defined(fail_action="error", var_name="The data model 'hardware_counters' changed in AVD4.0.0. 'hardware_counters.features.name'") %}
 {%             set hardware_counters_cli = "hardware counter feature " ~ feature.name %}
 {%         endif %}
