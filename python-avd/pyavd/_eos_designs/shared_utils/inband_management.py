@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import ip_network
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import default, get
 
 if TYPE_CHECKING:
@@ -179,9 +179,6 @@ class InbandManagementMixin:
     @cached_property
     def inband_ztp(self: SharedUtils) -> bool | None:
         inband_ztp = get(self.switch_data_combined, "inband_ztp")
-        if inband_ztp and self.uplink_type != "port-channel":
-            msg = "'inband_ztp' is currently only supported for L2 switches ('uplink_type: port-channel')."
-            raise AristaAvdError(msg)
         return inband_ztp
 
     @cached_property
