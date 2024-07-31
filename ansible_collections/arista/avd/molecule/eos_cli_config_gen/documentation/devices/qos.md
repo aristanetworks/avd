@@ -93,9 +93,9 @@ interface Ethernet4
 !
 interface Ethernet6
    description SRV-POD02_Eth1
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
    qos trust cos
    qos cos 2
    service-profile experiment
@@ -105,9 +105,9 @@ interface Ethernet6
 !
 interface Ethernet7
    description Test-with-policymap
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
    service-profile qprof_testwithpolicy
    !
    uc-tx-queue 4

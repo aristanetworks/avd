@@ -686,8 +686,10 @@ ethernet_interfaces:
     channel_group:
       id: 104
       mode: active
-    mode: trunk
-    vlans: 100
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 100
     spanning_tree_portfast: edge
 
   - name: Ethernet18
@@ -719,8 +721,10 @@ ethernet_interfaces:
     channel_group:
       id: 112
       mode: active
-    mode: trunk
-    vlans: 112
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 112
     spanning_tree_portfast: edge
     lldp:
       ztp_vlan: 112

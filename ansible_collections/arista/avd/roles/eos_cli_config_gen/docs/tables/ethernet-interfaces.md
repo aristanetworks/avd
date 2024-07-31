@@ -16,17 +16,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "ethernet_interfaces.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "ethernet_interfaces.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "ethernet_interfaces.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "ethernet_interfaces.[].vlans") | String |  |  |  | List of switchport vlans as string.<br>For a trunk port this would be a range like "1-200,300".<br>For an access port this would be a single vlan "123".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "ethernet_interfaces.[].native_vlan") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "ethernet_interfaces.[].native_vlan_tag") | Boolean |  |  |  | If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].phone") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "ethernet_interfaces.[].vlans") <span style="color:red">deprecated</span> | String |  |  |  | List of switchport vlans as string.<br>For a trunk port this would be a range like "1-200,300".<br>For an access port this would be a single vlan "123".<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.access_vlan or ethernet_interfaces[].switchport.trunk.allowed_vlan</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "ethernet_interfaces.[].native_vlan") <span style="color:red">deprecated</span> | Integer |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.trunk.native_vlan</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "ethernet_interfaces.[].native_vlan_tag") <span style="color:red">deprecated</span> | Boolean |  |  |  | If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.trunk.native_vlan_tag</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].phone") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.phone</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].phone.trunk") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.phone.trunk</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].phone.vlan") <span style="color:red">deprecated</span> | Integer |  |  | Min: 1<br>Max: 4094 | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.phone.vlan</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_protocol</samp>](## "ethernet_interfaces.[].l2_protocol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "ethernet_interfaces.[].l2_protocol.encapsulation_dot1q_vlan") | Integer |  |  |  | Vlan tag to configure on sub-interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forwarding_profile</samp>](## "ethernet_interfaces.[].l2_protocol.forwarding_profile") | String |  |  |  | L2 protocol forwarding profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "ethernet_interfaces.[].trunk_groups") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "ethernet_interfaces.[].trunk_groups") <span style="color:red">deprecated</span> | List, items: String |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.trunk.groups</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].trunk_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "ethernet_interfaces.[].type") | String |  |  | Valid Values:<br>- <code>routed</code><br>- <code>switched</code><br>- <code>l3dot1q</code><br>- <code>l2dot1q</code><br>- <code>port-channel-member</code> | l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.<br>Interface will not be listed in device documentation, unless "type" is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;snmp_trap_link_change</samp>](## "ethernet_interfaces.[].snmp_trap_link_change") | Boolean |  |  |  |  |
@@ -249,7 +249,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ztp_vlan</samp>](## "ethernet_interfaces.[].lldp.ztp_vlan") | Integer |  |  |  | ZTP vlan number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_private_vlan_secondary</samp>](## "ethernet_interfaces.[].trunk_private_vlan_secondary") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "ethernet_interfaces.[].pvlan_mapping") | String |  |  |  | List of vlans as string. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].vlan_translations") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].vlan_translations") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.vlan_tanslations</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "ethernet_interfaces.[].vlan_translations.[].from") | String |  |  |  | List of vlans as string (only one vlan if direction is "both"). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "ethernet_interfaces.[].vlan_translations.[].to") | Integer |  |  |  | VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "ethernet_interfaces.[].vlan_translations.[].direction") | String |  | `both` | Valid Values:<br>- <code>in</code><br>- <code>out</code><br>- <code>both</code> |  |
@@ -426,10 +426,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "ethernet_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> | Allow/disallow VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ethernet_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out of the source interface.<br>tx multicast: Allow multicast packets only to go out of the source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "ethernet_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].switchport.phone") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].switchport.phone") | Dictionary |  |  |  | Warning: This should not be combined with `ethernet_interfaces[].phone`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].switchport.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].switchport.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | Warning: This should not be combined with `ethernet_interfaces[].phone.trunk` |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `ethernet_interfaces[].mode` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].switchport.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `ethernet_interfaces[].mode`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "ethernet_interfaces.[].switchport.pvlan_mapping") | String |  |  |  | Secondary VLAN IDs of the private VLAN mapping.<br>Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].switchport.vlan_translations") | Dictionary |  |  |  | Map packets from one VLAN to another.<br>Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.required") | Boolean |  |  |  | Drop the ingress packets that do not match any VLAN mapping. |
@@ -487,14 +487,35 @@
         # List of switchport vlans as string.
         # For a trunk port this would be a range like "1-200,300".
         # For an access port this would be a single vlan "123".
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.access_vlan or ethernet_interfaces[].switchport.trunk.allowed_vlan</samp> instead.
         vlans: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.trunk.native_vlan</samp> instead.
         native_vlan: <int>
 
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.trunk.native_vlan_tag</samp> instead.
         native_vlan_tag: <bool>
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.mode</samp> instead.
         mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.phone</samp> instead.
         phone:
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>ethernet_interfaces[].switchport.phone.trunk</samp> instead.
           trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>ethernet_interfaces[].switchport.phone.vlan</samp> instead.
           vlan: <int; 1-4094>
         l2_protocol:
 
@@ -503,6 +524,9 @@
 
           # L2 protocol forwarding profile.
           forwarding_profile: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.trunk.groups</samp> instead.
         trunk_groups:
           - <str>
 
@@ -917,6 +941,9 @@
 
         # List of vlans as string.
         pvlan_mapping: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ethernet_interfaces[].switchport.vlan_tanslations</samp> instead.
         vlan_translations:
 
             # List of vlans as string (only one vlan if direction is "both").
@@ -1259,15 +1286,17 @@
           # Set VLAN when interface is in access mode.
           # Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.
           access_vlan: <int; 1-4094>
+
+          # Warning: This should not be combined with `ethernet_interfaces[].phone`.
           phone:
 
             # Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.
             vlan: <int; 1-4094>
 
-            # Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`
+            # Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.
             trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
 
-          # Warning: This should not be combined with `ethernet_interfaces[].mode`
+          # Warning: This should not be combined with `ethernet_interfaces[].mode`.
           mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
 
           # Secondary VLAN IDs of the private VLAN mapping.

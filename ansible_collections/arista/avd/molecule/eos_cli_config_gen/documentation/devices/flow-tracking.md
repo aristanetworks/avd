@@ -168,9 +168,9 @@ interface Dps1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet40 |  - | access | - | - | - | - |
-| Ethernet41 |  - | access | - | - | - | - |
-| Ethernet42 |  - | access | - | - | - | - |
+| Ethernet40 |  - | - | - | - | - | - |
+| Ethernet41 |  - | - | - | - | - | - |
+| Ethernet42 |  - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 

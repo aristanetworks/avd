@@ -98,7 +98,7 @@ sFlow is disabled.
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
-| Port-Channel12 | trunk phone | 100 | 70 | untagged |
+| Port-Channel100 | dot1q-tunnel | 5 | 110 | tagged |
 
 ##### IPv4
 
@@ -157,9 +157,9 @@ interface Ethernet10/3
 !
 interface Ethernet10/4
    description LAG Member LACP fallback
+   switchport
    switchport trunk allowed vlan 100
    switchport mode trunk
-   switchport
    channel-group 104 mode active
    spanning-tree portfast
 !
@@ -175,9 +175,9 @@ interface Ethernet11/1
 !
 interface Ethernet11/2
    description LAG Member LACP fallback LLDP ZTP VLAN
+   switchport
    switchport trunk allowed vlan 112
    switchport mode trunk
-   switchport
    channel-group 112 mode active
    lldp tlv transmit ztp vlan 112
    spanning-tree portfast

@@ -2023,14 +2023,29 @@ keys:
             For an access port this would be a single vlan "123".
 
             '
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.access_vlan or ethernet_interfaces[].switchport.trunk.allowed_vlan
         native_vlan:
           type: int
           convert_types:
           - str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.native_vlan
         native_vlan_tag:
           type: bool
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
             takes precedence.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.native_vlan_tag
         mode:
           type: str
           valid_values:
@@ -2038,7 +2053,17 @@ keys:
           - dot1q-tunnel
           - trunk
           - trunk phone
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.mode
         phone:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.phone
           type: dict
           keys:
             trunk:
@@ -2048,12 +2073,22 @@ keys:
               - tagged phone
               - untagged
               - untagged phone
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: ethernet_interfaces[].switchport.phone.trunk
             vlan:
               type: int
               min: 1
               max: 4094
               convert_types:
               - str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: ethernet_interfaces[].switchport.phone.vlan
         l2_protocol:
           type: dict
           keys:
@@ -2069,6 +2104,11 @@ keys:
           type: list
           items:
             type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.groups
         type:
           type: str
           valid_values:
@@ -2822,6 +2862,11 @@ keys:
           - int
           description: List of vlans as string.
         vlan_translations:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.vlan_tanslations
           type: list
           items:
             type: dict
@@ -3637,6 +3682,7 @@ keys:
                 = access/dot1q-tunnel`.'
             phone:
               type: dict
+              description: 'Warning: This should not be combined with `ethernet_interfaces[].phone`.'
               keys:
                 vlan:
                   type: int
@@ -3647,7 +3693,7 @@ keys:
                   description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.'
                 trunk:
                   type: str
-                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`'
+                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.'
                   valid_values:
                   - tagged
                   - tagged phone
@@ -3660,7 +3706,7 @@ keys:
               - dot1q-tunnel
               - trunk
               - trunk phone
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`'
+              description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
             pvlan_mapping:
               type: str
               convert_types:

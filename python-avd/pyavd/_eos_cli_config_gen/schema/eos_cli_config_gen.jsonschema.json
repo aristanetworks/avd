@@ -3018,7 +3018,8 @@
           },
           "vlans": {
             "type": "string",
-            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\".\nFor an access port this would be a single vlan \"123\".\n",
+            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\".\nFor an access port this would be a single vlan \"123\".\n\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.access_vlan or ethernet_interfaces[].switchport.trunk.allowed_vlan</samp> instead.",
+            "deprecated": true,
             "title": "VLANs"
           },
           "native_vlan": {
@@ -3027,7 +3028,8 @@
           },
           "native_vlan_tag": {
             "type": "boolean",
-            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.",
+            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.trunk.native_vlan_tag</samp> instead.",
+            "deprecated": true,
             "title": "Native VLAN Tag"
           },
           "mode": {
@@ -5979,6 +5981,7 @@
               },
               "phone": {
                 "type": "object",
+                "description": "Warning: This should not be combined with `ethernet_interfaces[].phone`.",
                 "properties": {
                   "vlan": {
                     "type": "integer",
@@ -5989,7 +5992,7 @@
                   },
                   "trunk": {
                     "type": "string",
-                    "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`",
+                    "description": "Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.",
                     "enum": [
                       "tagged",
                       "tagged phone",
@@ -6013,7 +6016,7 @@
                   "trunk",
                   "trunk phone"
                 ],
-                "description": "Warning: This should not be combined with `ethernet_interfaces[].mode`",
+                "description": "Warning: This should not be combined with `ethernet_interfaces[].mode`.",
                 "title": "Mode"
               },
               "pvlan_mapping": {

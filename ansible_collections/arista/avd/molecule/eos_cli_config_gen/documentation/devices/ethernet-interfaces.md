@@ -89,7 +89,7 @@ sFlow is disabled.
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet7 |  Molecule L2 | access | - | - | - | - |
+| Ethernet7 |  Molecule L2 | - | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
 | Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
@@ -98,46 +98,46 @@ sFlow is disabled.
 | Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
 | Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
 | Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
-| Ethernet21 |  200MBit/s shape | access | - | - | - | - |
-| Ethernet22 |  10% shape | access | - | - | - | - |
-| Ethernet23 |  Error-correction encoding | access | - | - | - | - |
-| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
-| Ethernet25 |  Molecule MAC | access | - | - | - | - |
-| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
-| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
-| Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - |
-| Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
-| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
-| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
-| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
-| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
-| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
-| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - |
-| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - |
-| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - |
-| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - |
-| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - |
-| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - |
-| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - |
-| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - |
-| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
-| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
+| Ethernet21 |  200MBit/s shape | - | - | - | - | - |
+| Ethernet22 |  10% shape | - | - | - | - | - |
+| Ethernet23 |  Error-correction encoding | - | - | - | - | - |
+| Ethernet24 |  Disable error-correction encoding | - | - | - | - | - |
+| Ethernet25 |  Molecule MAC | - | - | - | - | - |
+| Ethernet27 |  EVPN-Vxlan single-active redundancy | - | - | - | - | - |
+| Ethernet28 |  EVPN-MPLS multihoming | - | - | - | - | - |
+| Ethernet29 |  DOT1X Testing - auto phone true | - | - | - | - | - |
+| Ethernet30 |  DOT1X Testing - force-authorized phone false | - | - | - | - | - |
+| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | - | - | - | - | - |
+| Ethernet32 |  DOT1X Testing - auto reauthentication | - | - | - | - | - |
+| Ethernet33 |  DOT1X Testing - pae mode authenticator | - | - | - | - | - |
+| Ethernet34 |  DOT1X Testing - authentication_failure allow | - | - | - | - | - |
+| Ethernet35 |  DOT1X Testing - authentication_failure drop | - | - | - | - | - |
+| Ethernet36 |  DOT1X Testing - host-mode single-host | - | - | - | - | - |
+| Ethernet37 |  DOT1X Testing - host-mode multi-host | - | - | - | - | - |
+| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | - | - | - | - | - |
+| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | - | - | - | - | - |
+| Ethernet40 |  DOT1X Testing - mac_based_authentication always | - | - | - | - | - |
+| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | - | - | - | - | - |
+| Ethernet42 |  DOT1X Testing - mac_based_authentication | - | - | - | - | - |
+| Ethernet43 |  DOT1X Testing - timeout values | - | - | - | - | - |
+| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | - | - | - | - | - |
+| Ethernet45 |  DOT1X Testing - all features | - | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
-| Ethernet48 |  Load Interval | access | - | - | - | - |
-| Ethernet50 |  SFlow Interface Testing - SFlow ingress enabled | access | - | - | - | - |
-| Ethernet51 |  SFlow Interface Testing - SFlow egress enabled | access | - | - | - | - |
-| Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
-| Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
-| Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
-| Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
-| Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
-| Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
-| Ethernet60 |  IP NAT Testing | access | - | - | - | - |
+| Ethernet48 |  Load Interval | - | - | - | - | - |
+| Ethernet50 |  SFlow Interface Testing - SFlow ingress enabled | - | - | - | - | - |
+| Ethernet51 |  SFlow Interface Testing - SFlow egress enabled | - | - | - | - | - |
+| Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | - | - | - | - | - |
+| Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | - | - | - | - | - |
+| Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | - | - | - | - | - |
+| Ethernet56 |  Interface with poe commands and limit in class | - | - | - | - | - |
+| Ethernet57 |  Interface with poe commands and limit in watts | - | - | - | - | - |
+| Ethernet58 |  Interface with poe disabled and no other poe keys | - | - | - | - | - |
+| Ethernet60 |  IP NAT Testing | - | - | - | - | - |
 | Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet67 |  Custom_Transceiver_Frequency | access | - | - | - | - |
-| Ethernet68 |  Custom_Transceiver_Frequency | access | - | - | - | - |
-| Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
+| Ethernet67 |  Custom_Transceiver_Frequency | - | - | - | - | - |
+| Ethernet68 |  Custom_Transceiver_Frequency | - | - | - | - | - |
+| Ethernet69 |  IP NAT service-profile | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -162,6 +162,7 @@ sFlow is disabled.
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
+| Ethernet1 | 20-30 | True |
 | Ethernet2 | - | False |
 | Ethernet15 | 111 | - |
 | Ethernet17 | - | True |
@@ -170,10 +171,6 @@ sFlow is disabled.
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
-| Ethernet16 | 120 | 130 | both |
-| Ethernet16 | 113 | 115 | in |
-| Ethernet16 | 111-112 | 110 | out |
-| Ethernet16 | 12 | 20 | both |
 
 ##### TCP MSS Clamping
 
@@ -203,6 +200,7 @@ sFlow is disabled.
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet1 | dot1q-tunnel | 5 | 110 | tagged |
 | Ethernet13 | trunk phone | 100 | 70 | untagged |
 | Ethernet61 | trunk phone | 100 | 70 | untagged phone |
 | Ethernet62 | trunk phone | 100 | 70 | tagged phone |
@@ -372,7 +370,7 @@ interface Ethernet1
    switchport phone trunk tagged
    switchport vlan translation in required
    switchport dot1q vlan tag required
-   switchport trunk allowed vlan 10-11
+   switchport trunk allowed vlan 110-111,210-211
    switchport mode dot1q-tunnel
    switchport dot1q ethertype 1536
    switchport vlan forwarding accept all
@@ -426,12 +424,11 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
-   switchport trunk allowed vlan 110-111,210-211
-   switchport mode trunk
    switchport
-   no switchport trunk private-vlan secondary
    switchport vlan translation in required
    switchport dot1q vlan tag disallowed
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
    no switchport
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
@@ -530,9 +527,9 @@ interface Ethernet6
    logging event congestion-drops
    logging event spanning-tree
    logging event storm-control discards
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
 !
@@ -594,16 +591,16 @@ interface Ethernet10
 !
 interface Ethernet11
    description interface_in_mode_access_accepting_tagged_LACP
+   switchport
    switchport access vlan 200
    switchport mode access
-   switchport
    l2-protocol encapsulation dot1q vlan 200
 !
 interface Ethernet12
    description interface_with_dot1q_tunnel
+   switchport
    switchport access vlan 300
    switchport mode dot1q-tunnel
-   switchport
 !
 interface Ethernet13
    description interface_in_mode_access_with_voice
@@ -611,41 +608,37 @@ interface Ethernet13
    no logging event congestion-drops
    no logging event spanning-tree
    no logging event storm-control discards
+   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
-   switchport
 !
 interface Ethernet14
    description SRV-POD02_Eth1
    logging event link-status
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
+   switchport
    switchport access vlan 110
    switchport mode access
-   switchport
    switchport pvlan mapping 111
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
-   switchport vlan translation 120 130
-   switchport vlan translation in 113 115
-   switchport vlan translation out 111-112 110
-   switchport vlan translation 12 20
+   switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
-   switchport
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
+   switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
-   switchport
    switchport trunk private-vlan secondary
 !
 interface Ethernet18
@@ -657,9 +650,9 @@ interface Ethernet18
 !
 interface Ethernet19
    description Switched port with no LLDP rx/tx
+   switchport
    switchport access vlan 110
    switchport mode access
-   switchport
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
@@ -861,9 +854,9 @@ interface Ethernet45
 !
 interface Ethernet46
    description native-vlan-tag-precedence
+   switchport
    switchport trunk native vlan tag
    switchport mode trunk
-   switchport
 !
 interface Ethernet47
    description IP Helper
@@ -981,11 +974,11 @@ interface Ethernet61
    no logging event congestion-drops
    no logging event spanning-tree
    no logging event storm-control discards
+   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
    switchport mode trunk phone
-   switchport
 !
 interface Ethernet62
    description interface_in_mode_access_with_voice
@@ -993,11 +986,11 @@ interface Ethernet62
    no logging event congestion-drops
    no logging event spanning-tree
    no logging event storm-control discards
+   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone
    switchport mode trunk phone
-   switchport
 !
 interface Ethernet63
    description DHCP client interface

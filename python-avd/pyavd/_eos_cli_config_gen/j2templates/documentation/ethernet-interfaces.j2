@@ -45,24 +45,28 @@
 {%             endif %}
 {%         elif ethernet_interface.type | arista.avd.default('switched') == 'switched' %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
-{%             set mode = ethernet_interface.mode | arista.avd.default("access") %}
-{%             set vlans = ethernet_interface.vlans | arista.avd.default('-') %}
-{%             if  ethernet_interface.native_vlan_tag is arista.avd.defined(true) %}
+{%             set mode = ethernet_interface.switchport.mode | arista.avd.default('-') %}
+{%             if mode in ["access", "dot1q-tunnel"] %}
+{%                 set vlans = ethernet_interface.switchport.access_vlan %}
+{%             elif mode == "trunk" %}
+{%                 set vlans = ethernet_interface.switchport.trunk.allowed_vlan %}
+{%             endif %}
+{%             if  ethernet_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
 {%                 set native_vlan = "tag" %}
 {%             else %}
-{%                 set native_vlan = ethernet_interface.native_vlan | arista.avd.default('-') %}
+{%                 set native_vlan = ethernet_interface.switchport.trunk.native_vlan | arista.avd.default('-') %}
 {%             endif %}
-{%             if ethernet_interface.trunk_groups is defined %}
+{%             if ethernet_interface.switchport.trunk.groups is defined %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = [] %}
-{%                 for trunk_group in ethernet_interface.trunk_groups | arista.avd.natural_sort %}
+{%                 for trunk_group in ethernet_interface.switchport.trunk.groups | arista.avd.natural_sort %}
 {%                     do l2.trunk_groups.append(trunk_group) %}
 {%                 endfor %}
 {%             else %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = "-" %}
 {%             endif %}
-| {{ ethernet_interface.name }} |  {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - |
+| {{ ethernet_interface.name }} |  {{ description }} | {{ mode }} | {{ vlans | arista.avd.default('-') }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - |
 {%         endif %}
 {%     endfor %}
 
@@ -118,8 +122,8 @@
 {%     set ethernet_interface_pvlan = namespace() %}
 {%     set ethernet_interface_pvlan.configured = false %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.pvlan_mapping is arista.avd.defined or
-              ethernet_interface.trunk_private_vlan_secondary is arista.avd.defined %}
+{%         if ethernet_interface.switchport.pvlan_mapping is arista.avd.defined or
+              ethernet_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined %}
 {%             set ethernet_interface_pvlan.configured = true %}
 {%             break %}
 {%         endif %}
@@ -131,10 +135,10 @@
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%             if ethernet_interface.pvlan_mapping is arista.avd.defined or
-               ethernet_interface.trunk_private_vlan_secondary is arista.avd.defined %}
-{%                 set row_pvlan_mapping = ethernet_interface.pvlan_mapping | arista.avd.default('-') %}
-{%                 set row_trunk_private_vlan_secondary = ethernet_interface.trunk_private_vlan_secondary | arista.avd.default('-') %}
+{%             if ethernet_interface.switchport.pvlan_mapping is arista.avd.defined or
+               ethernet_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined %}
+{%                 set row_pvlan_mapping = ethernet_interface.switchport.pvlan_mapping | arista.avd.default('-') %}
+{%                 set row_trunk_private_vlan_secondary = ethernet_interface.switchport.trunk.private_vlan_secondary | arista.avd.default('-') %}
 | {{ ethernet_interface.name }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
 {%             endif %}
 {%         endfor %}
@@ -143,7 +147,7 @@
 {%     set ethernet_interface_vlan_xlate = namespace() %}
 {%     set ethernet_interface_vlan_xlate.configured = false %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.vlan_translations is arista.avd.defined %}
+{%         if ethernet_interface.switchport.vlan_translations is arista.avd.defined %}
 {%             set ethernet_interface_vlan_xlate.configured = true %}
 {%             break %}
 {%         endif %}
@@ -240,7 +244,7 @@
 {# Phone Interfaces #}
 {%     set phone_interfaces = [] %}
 {%     for interface in ethernet_interfaces | arista.avd.natural_sort('name') + port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if interface.phone is arista.avd.defined %}
+{%         if interface.switchport.phone is arista.avd.defined %}
 {%             do phone_interfaces.append(interface) %}
 {%         endif %}
 {%     endfor %}
@@ -251,7 +255,7 @@
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
 {%         for phone_interface in phone_interfaces %}
-| {{ phone_interface.name }} | {{ phone_interface.mode }} | {{ phone_interface.native_vlan | arista.avd.default(1) }} | {{ phone_interface.phone.vlan | arista.avd.default('-') }} | {{ phone_interface.phone.trunk | arista.avd.default('-') }} |
+| {{ phone_interface.name }} | {{ phone_interface.switchport.mode }} | {{ phone_interface.switchport.trunk.native_vlan | arista.avd.default(1) }} | {{ phone_interface.switchport.phone.vlan | arista.avd.default('-') }} | {{ phone_interface.switchport.phone.trunk | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {# Multicast Routing #}

@@ -305,8 +305,10 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 110-111,210-211
     service_profile: experiment
     qos:
       trust: cos
@@ -343,8 +345,10 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: Test-with-policymap
-    mode: trunk
-    vlans: 110-111,210-211
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 110-111,210-211
     service_profile: qprof_testwithpolicy
     uc_tx_queues:
       - id: 4

@@ -39,7 +39,7 @@ ethernet_interfaces:
         mac_address_maximum:
           disabled: true
       trunk:
-        allowed_vlan: 10-11
+        allowed_vlan: 110-111,210-211
         native_vlan: 5
         native_vlan_tag: true
         groups:
@@ -133,9 +133,6 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
-    trunk_private_vlan_secondary: false
     tcp_mss_ceiling:
       ipv4_segment_size: 70
       direction: ingress
@@ -165,6 +162,10 @@ ethernet_interfaces:
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
     switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 110-111,210-211
+        private_vlan_secondary: false
       enabled: false
       dot1q:
         vlan_tag: disallowed
@@ -314,8 +315,10 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
+    switchport:
+      trunk:
+        allowed_vlan: 110-111,210-211
+      mode: trunk
     spanning_tree_bpduguard: enabled
     spanning_tree_bpdufilter: enabled
 
@@ -403,8 +406,9 @@ ethernet_interfaces:
   - name: Ethernet11
     description: interface_in_mode_access_accepting_tagged_LACP
     type: switched
-    mode: access
-    vlans: 200
+    switchport:
+      mode: access
+      access_vlan: 200
     l2_protocol:
       encapsulation_dot1q_vlan: 200
     spanning_tree_bpduguard: false # No config should be rendered for this case
@@ -413,8 +417,9 @@ ethernet_interfaces:
   - name: Ethernet12
     description: interface_with_dot1q_tunnel
     type: switched
-    mode: dot1q-tunnel
-    vlans: 300
+    switchport:
+      mode: dot1q-tunnel
+      access_vlan: 300
 
   - name: Ethernet13
     logging:
@@ -425,11 +430,13 @@ ethernet_interfaces:
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
-    native_vlan: 100
-    mode: "trunk phone"
-    phone:
-      trunk: untagged
-      vlan: 70
+    switchport:
+      trunk:
+        native_vlan: 100
+      mode: "trunk phone"
+      phone:
+        trunk: untagged
+        vlan: 70
 
   - name: Ethernet14
     logging:
@@ -439,38 +446,32 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 110-111,210-211
 
   - name: Ethernet15
     description: PVLAN Promiscuous Access - only one secondary
-    mode: access
-    vlans: 110
-    pvlan_mapping: 111
+    switchport:
+      mode: access
+      access_vlan: 110
+      pvlan_mapping: 111
 
   - name: Ethernet16
     description: PVLAN Promiscuous Trunk - vlan translation out
-    mode: trunk
-    vlans: 110-112
-    vlan_translations:
-      - from: 12
-        to: 20
-      - direction: out
-        from: 111-112
-        to: 110
-      - direction: in
-        from: 113
-        to: 115
-      - direction: both
-        from: 120
-        to: 130
-      - direction: in
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 110-112
 
   - name: Ethernet17
     description: PVLAN Secondary Trunk
-    mode: trunk
-    vlans: 110-112
-    trunk_private_vlan_secondary: true
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 110-112
+        private_vlan_secondary: true
 
   - name: Ethernet18
     description: PBR Description
@@ -483,8 +484,9 @@ ethernet_interfaces:
 
   - name: Ethernet19
     description: Switched port with no LLDP rx/tx
-    mode: access
-    vlans: 110
+    switchport:
+      mode: access
+      access_vlan: 110
     lldp:
       transmit: false
       receive: false
@@ -743,9 +745,11 @@ ethernet_interfaces:
 
   - name: Ethernet46
     description: native-vlan-tag-precedence
-    native_vlan_tag: true
-    native_vlan: 100
-    mode: trunk
+    switchport:
+      mode: trunk
+      trunk:
+        native_vlan_tag: true
+        native_vlan: 100
 
   - name: Ethernet47
     description: IP Helper
@@ -996,11 +1000,13 @@ ethernet_interfaces:
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
-    native_vlan: 100
-    mode: "trunk phone"
-    phone:
-      trunk: "untagged phone"
-      vlan: 70
+    switchport:
+      trunk:
+        native_vlan: 100
+      mode: "trunk phone"
+      phone:
+        trunk: "untagged phone"
+        vlan: 70
 
   - name: Ethernet62
     logging:
@@ -1011,11 +1017,13 @@ ethernet_interfaces:
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
-    native_vlan: 100
-    mode: "trunk phone"
-    phone:
-      trunk: "tagged phone"
-      vlan: 70
+    switchport:
+      trunk:
+        native_vlan: 100
+      mode: "trunk phone"
+      phone:
+        trunk: "tagged phone"
+        vlan: 70
 
   - name: Ethernet63
     description: DHCP client interface

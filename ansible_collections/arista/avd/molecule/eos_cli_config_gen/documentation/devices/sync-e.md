@@ -82,9 +82,9 @@ sync-e
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   switchport
    switchport trunk allowed vlan 2,14
    switchport mode trunk
-   switchport
    sync-e
       priority 10
 !

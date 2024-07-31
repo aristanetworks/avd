@@ -11,8 +11,10 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
     type: switched
-    mode: trunk
-    vlans: 2,14
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 2,14
     sync_e:
       enable: true
       priority: 10
