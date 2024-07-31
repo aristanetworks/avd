@@ -48499,12 +48499,6 @@
                       "description": "IPv6_address/Mask.",
                       "title": "IPv6 Address"
                     },
-                    "ipv6_address_virtual": {
-                      "type": "string",
-                      "description": "IPv6_address/Mask.\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
-                      "deprecated": true,
-                      "title": "IPv6 Address Virtual"
-                    },
                     "ipv6_address_virtuals": {
                       "type": "array",
                       "description": "The new \"ipv6_address_virtuals\" key support multiple virtual ipv6 addresses.",
@@ -48518,12 +48512,6 @@
                       "type": "string",
                       "description": "IPv6_address/Mask.",
                       "title": "IPv6 Address Link Local"
-                    },
-                    "ipv6_virtual_router_address": {
-                      "type": "string",
-                      "description": "\"ipv6_virtual_router_address\" should not be mixed with\nthe new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_virtual_router_addresses</samp> instead.",
-                      "deprecated": true,
-                      "title": "IPv6 Virtual Router Address"
                     },
                     "ipv6_virtual_router_addresses": {
                       "type": "array",
@@ -49161,46 +49149,6 @@
                         ]
                       },
                       "title": "VRRP IDs"
-                    },
-                    "vrrp": {
-                      "type": "object",
-                      "description": "\"vrrp\" should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>vrrp_ids</samp> instead.",
-                      "deprecated": true,
-                      "properties": {
-                        "virtual_router": {
-                          "type": "string",
-                          "description": "Virtual Router ID.",
-                          "title": "Virtual Router"
-                        },
-                        "priority": {
-                          "type": "integer",
-                          "description": "Instance priority.",
-                          "title": "Priority"
-                        },
-                        "advertisement_interval": {
-                          "type": "integer",
-                          "title": "Advertisement Interval"
-                        },
-                        "preempt_delay_minimum": {
-                          "type": "integer",
-                          "title": "Preempt Delay Minimum"
-                        },
-                        "ipv4": {
-                          "type": "string",
-                          "description": "Virtual IPv4 address.",
-                          "title": "IPv4"
-                        },
-                        "ipv6": {
-                          "type": "string",
-                          "description": "Virtual IPv6 address.",
-                          "title": "IPv6"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "VRRP"
                     },
                     "ip_attached_host_route_export": {
                       "type": "object",
@@ -57815,12 +57763,6 @@
                       "description": "IPv6_address/Mask.",
                       "title": "IPv6 Address"
                     },
-                    "ipv6_address_virtual": {
-                      "type": "string",
-                      "description": "IPv6_address/Mask.\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
-                      "deprecated": true,
-                      "title": "IPv6 Address Virtual"
-                    },
                     "ipv6_address_virtuals": {
                       "type": "array",
                       "description": "The new \"ipv6_address_virtuals\" key support multiple virtual ipv6 addresses.",
@@ -57834,12 +57776,6 @@
                       "type": "string",
                       "description": "IPv6_address/Mask.",
                       "title": "IPv6 Address Link Local"
-                    },
-                    "ipv6_virtual_router_address": {
-                      "type": "string",
-                      "description": "\"ipv6_virtual_router_address\" should not be mixed with\nthe new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_virtual_router_addresses</samp> instead.",
-                      "deprecated": true,
-                      "title": "IPv6 Virtual Router Address"
                     },
                     "ipv6_virtual_router_addresses": {
                       "type": "array",
@@ -58477,46 +58413,6 @@
                         ]
                       },
                       "title": "VRRP IDs"
-                    },
-                    "vrrp": {
-                      "type": "object",
-                      "description": "\"vrrp\" should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>vrrp_ids</samp> instead.",
-                      "deprecated": true,
-                      "properties": {
-                        "virtual_router": {
-                          "type": "string",
-                          "description": "Virtual Router ID.",
-                          "title": "Virtual Router"
-                        },
-                        "priority": {
-                          "type": "integer",
-                          "description": "Instance priority.",
-                          "title": "Priority"
-                        },
-                        "advertisement_interval": {
-                          "type": "integer",
-                          "title": "Advertisement Interval"
-                        },
-                        "preempt_delay_minimum": {
-                          "type": "integer",
-                          "title": "Preempt Delay Minimum"
-                        },
-                        "ipv4": {
-                          "type": "string",
-                          "description": "Virtual IPv4 address.",
-                          "title": "IPv4"
-                        },
-                        "ipv6": {
-                          "type": "string",
-                          "description": "Virtual IPv6 address.",
-                          "title": "IPv6"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "VRRP"
                     },
                     "ip_attached_host_route_export": {
                       "type": "object",
@@ -59728,12 +59624,6 @@
                 "description": "IPv6_address/Mask.",
                 "title": "IPv6 Address"
               },
-              "ipv6_address_virtual": {
-                "type": "string",
-                "description": "IPv6_address/Mask.\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
-                "deprecated": true,
-                "title": "IPv6 Address Virtual"
-              },
               "ipv6_address_virtuals": {
                 "type": "array",
                 "description": "The new \"ipv6_address_virtuals\" key support multiple virtual ipv6 addresses.",
@@ -59747,12 +59637,6 @@
                 "type": "string",
                 "description": "IPv6_address/Mask.",
                 "title": "IPv6 Address Link Local"
-              },
-              "ipv6_virtual_router_address": {
-                "type": "string",
-                "description": "\"ipv6_virtual_router_address\" should not be mixed with\nthe new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_virtual_router_addresses</samp> instead.",
-                "deprecated": true,
-                "title": "IPv6 Virtual Router Address"
               },
               "ipv6_virtual_router_addresses": {
                 "type": "array",
@@ -60390,46 +60274,6 @@
                   ]
                 },
                 "title": "VRRP IDs"
-              },
-              "vrrp": {
-                "type": "object",
-                "description": "\"vrrp\" should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>vrrp_ids</samp> instead.",
-                "deprecated": true,
-                "properties": {
-                  "virtual_router": {
-                    "type": "string",
-                    "description": "Virtual Router ID.",
-                    "title": "Virtual Router"
-                  },
-                  "priority": {
-                    "type": "integer",
-                    "description": "Instance priority.",
-                    "title": "Priority"
-                  },
-                  "advertisement_interval": {
-                    "type": "integer",
-                    "title": "Advertisement Interval"
-                  },
-                  "preempt_delay_minimum": {
-                    "type": "integer",
-                    "title": "Preempt Delay Minimum"
-                  },
-                  "ipv4": {
-                    "type": "string",
-                    "description": "Virtual IPv4 address.",
-                    "title": "IPv4"
-                  },
-                  "ipv6": {
-                    "type": "string",
-                    "description": "Virtual IPv6 address.",
-                    "title": "IPv6"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "VRRP"
               },
               "ip_attached_host_route_export": {
                 "type": "object",

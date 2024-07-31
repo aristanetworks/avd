@@ -768,15 +768,14 @@ interface Tunnel4
 | Vlan1 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 
 ##### IPv6
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - | - |
-| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - | - |
-| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - | - |
+| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | - | - | - | - | True | - | - | - |
+| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -785,15 +784,11 @@ interface Tunnel4
 interface Vlan1
    description test ipv6_address_virtual
    ipv6 enable
-   ipv6 address virtual fc00:10:10:1::1/64
 !
 interface Vlan2
    description test ipv6_address_virtual and ipv6_address_virtuals
    ipv6 enable
    ipv6 address 1b11:3a00:22b0:5200::15/64
-   ipv6 address virtual fc00:10:10:2::1/64
-   ipv6 address virtual fc00:10:11:2::1/64
-   ipv6 address virtual fc00:10:12:2::1/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
 !
@@ -801,7 +796,6 @@ interface Vlan3
    description test ipv6_address_virtual
    ipv6 enable
    ipv6 address 1b11:3a00:22b3:5200::15/64
-   ipv6 virtual-router address fc00:10:10:3::1/64
 !
 interface Vlan42
    description SVI Description
@@ -809,7 +803,6 @@ interface Vlan42
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
-   ip address virtual 10.10.42.1/24
 ```
 
 ### VXLAN Interface
