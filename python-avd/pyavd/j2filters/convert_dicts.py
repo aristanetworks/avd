@@ -8,6 +8,8 @@ import os
 
 def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_key: str | None = None) -> list:
     """
+    Convert dictionaries to lists.
+
     The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of
     dictionaries. It inserts the outer dictionary keys into each list item using the primary_key `name` (key name is
     configurable) and if there is a non-dictionary value,it inserts this value to
@@ -46,12 +48,12 @@ def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_
     secondary_key : str, optional
         Name of secondary key used when inserting dictionary values which are list into items.
 
-    Returns
+    Returns:
     -------
     any
         Returns list of dictionaries or input variable untouched if not a nested dictionary/list.
     """
-    if not isinstance(dictionary, (dict, list)) or os.environ.get("AVD_DISABLE_CONVERT_DICTS"):
+    if not isinstance(dictionary, dict | list) or os.environ.get("AVD_DISABLE_CONVERT_DICTS"):
         # Not a dictionary/list, return the original
         return dictionary
     if isinstance(dictionary, list):
@@ -66,7 +68,7 @@ def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_
                         {
                             primary_key: key,
                             secondary_key: element[key],
-                        }
+                        },
                     )
             else:
                 output.append(element)
@@ -80,18 +82,17 @@ def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_
                 {
                     primary_key: key,
                     secondary_key: dictionary[key],
-                }
+                },
             )
+        elif not isinstance(dictionary[key], dict):
+            # Not a nested dictionary
+            output.append({primary_key: key})
         else:
-            if not isinstance(dictionary[key], dict):
-                # Not a nested dictionary
-                output.append({primary_key: key})
-            else:
-                # Nested dictionary
-                output.append(
-                    {
-                        primary_key: key,
-                        **dictionary[key],
-                    }
-                )
+            # Nested dictionary
+            output.append(
+                {
+                    primary_key: key,
+                    **dictionary[key],
+                },
+            )
     return output

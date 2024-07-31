@@ -1,13 +1,9 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 #
 # Copyright (c) 2019-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
@@ -63,7 +59,7 @@ except ImportError:
     YAML_IMP_ERR = traceback.format_exc()
 
 
-def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
+def get_configlet(src_folder: str = "", prefix: str = "AVD", extension: str = "cfg") -> dict:
     """
     Get available configlets to deploy to CVP.
 
@@ -76,7 +72,7 @@ def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
     extension : str, optional
         File extension to lookup configlet file, by default 'cfg'
 
-    Returns
+    Returns:
     -------
     dict
         Dictionary of configlets found in source folder.
@@ -84,30 +80,27 @@ def get_configlet(src_folder="", prefix="AVD", extension="cfg"):
     src_configlets = glob.glob(f"{src_folder}/*.{extension}")
     configlets = {}
     for file in src_configlets:
-        if prefix != "none":
-            name = prefix + "_" + os.path.splitext(os.path.basename(file))[0]
-        else:
-            name = os.path.splitext(os.path.basename(file))[0]
-        with open(file, "r", encoding="utf8") as file:
+        name = prefix + "_" + os.path.splitext(os.path.basename(file))[0] if prefix != "none" else os.path.splitext(os.path.basename(file))[0]
+        with open(file, encoding="utf8") as file:
             data = file.read()
         configlets[name] = data
     return configlets
 
 
-def main():
+def main() -> None:
     """Main entry point for module execution."""
-    # TODO - ansible module prefers constructor over literal
+    # TODO: - ansible module prefers constructor over literal
     #        for dict
     # pylint: disable=use-dict-literal
-    argument_spec = dict(
-        configlet_dir=dict(type="str", required=True),
-        configlet_prefix=dict(type="str", required=True),
-        configlet_extension=dict(type="str", required=False, default="conf"),
-        destination=dict(type="str", required=False, default=None),
-    )
+    argument_spec = {
+        "configlet_dir": {"type": "str", "required": True},
+        "configlet_prefix": {"type": "str", "required": True},
+        "configlet_extension": {"type": "str", "required": False, "default": "conf"},
+        "destination": {"type": "str", "required": False, "default": None},
+    }
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=False)
-    result = dict(changed=False)
+    result = {"changed": False}
 
     if not HAS_YAML:
         module.fail_json(msg="yaml lib is required for this module")
@@ -115,7 +108,9 @@ def main():
     # If set, build configlet topology
     if module.params["configlet_dir"] is not None:
         result["cvp_configlets"] = get_configlet(
-            src_folder=module.params["configlet_dir"], prefix=module.params["configlet_prefix"], extension=module.params["configlet_extension"]
+            src_folder=module.params["configlet_dir"],
+            prefix=module.params["configlet_prefix"],
+            extension=module.params["configlet_extension"],
         )
 
     # Write vars to file if set by user

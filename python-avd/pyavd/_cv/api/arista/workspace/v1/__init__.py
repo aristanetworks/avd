@@ -8,26 +8,17 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import (
-    TYPE_CHECKING,
-    AsyncIterator,
-    Dict,
-    List,
-    Optional,
-)
+from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
 from .... import fmp as ___fmp__
-from ... import (
-    subscriptions as __subscriptions__,
-    time as __time__,
-)
+from ... import subscriptions as __subscriptions__
+from ... import time as __time__
 from ...configstatus import v1 as __configstatus_v1__
 from ...imagestatus import v1 as __imagestatus_v1__
-
 
 if TYPE_CHECKING:
     import grpclib.server

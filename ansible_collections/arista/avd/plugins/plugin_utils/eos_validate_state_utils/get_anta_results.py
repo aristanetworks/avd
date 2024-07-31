@@ -25,7 +25,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 if TYPE_CHECKING:
@@ -241,5 +241,5 @@ def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: Resul
                 categories=categories,
                 description=description,
                 custom_field=custom_field,
-            )
+            ),
         )

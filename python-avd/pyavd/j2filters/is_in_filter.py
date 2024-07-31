@@ -15,7 +15,7 @@ def is_in_filter(hostname: str, hostname_filter: list | None) -> bool:
     hostname_filter : list, optional
         Device filter, by default ['all']
 
-    Returns
+    Returns:
     -------
     boolean
         True if device hostname is part of filter. False if not.

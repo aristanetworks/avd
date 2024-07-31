@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import pytest
+
 from pyavd._errors import AristaAvdError
 from pyavd._utils import get_ip_from_pool
 

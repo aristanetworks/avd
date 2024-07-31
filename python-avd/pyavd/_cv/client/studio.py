@@ -4,11 +4,10 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Literal
 
-from ..api.arista.studio.v1 import (
+from pyavd._cv.api.arista.studio.v1 import (
     Inputs,
     InputsConfig,
     InputsConfigServiceStub,
@@ -27,12 +26,15 @@ from ..api.arista.studio.v1 import (
     StudioRequest,
     StudioServiceStub,
 )
-from ..api.arista.time import TimeBounds
-from ..api.fmp import RepeatedString
+from pyavd._cv.api.arista.time import TimeBounds
+from pyavd._cv.api.fmp import RepeatedString
+
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound, get_cv_client_exception
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from . import CVClient
 
 LOGGER = getLogger(__name__)
@@ -41,9 +43,7 @@ TOPOLOGY_STUDIO_ID = "TOPOLOGY"
 
 
 class StudioMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     studio_api_version: Literal["v1"] = "v1"
 
@@ -86,7 +86,7 @@ class StudioMixin:
                 # This simply means the studio itself was not changed in this workspace.
                 pass
             else:
-                raise e
+                raise
 
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
@@ -95,17 +95,17 @@ class StudioMixin:
                 StudioConfig(
                     key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
                     remove=True,
-                )
+                ),
             ],
             time=TimeBounds(start=None, end=time),
         )
         client = StudioConfigServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
+            async for _response in responses:
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
-                raise CVResourceNotFound("The studio was deleted in the workspace.", f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
-
+                msg = "The studio was deleted in the workspace."
+                raise CVResourceNotFound(msg, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
 
@@ -152,7 +152,7 @@ class StudioMixin:
             partial_eq_filter=[
                 Inputs(
                     key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
-                )
+                ),
             ],
             time=time,
         )
@@ -187,7 +187,7 @@ class StudioMixin:
                 InputsConfig(
                     key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
                     remove=True,
-                )
+                ),
             ],
             time=time,
         )
@@ -207,7 +207,7 @@ class StudioMixin:
             partial_eq_filter=[
                 Inputs(
                     key=InputsKey(studio_id=studio_id, workspace_id=""),
-                )
+                ),
             ],
             time=time,
         )
@@ -279,7 +279,7 @@ class StudioMixin:
                 # Ignore this error, since it simply means we have to check if inputs got deleted in this workspace or fetch from mainline as last resort.
                 pass
             else:
-                raise e
+                raise
 
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
@@ -325,7 +325,7 @@ class StudioMixin:
             if isinstance(e, CVResourceNotFound):
                 # Ignore this error, since it simply means we no inputs are in the studio so we will return the default value.
                 return default_value
-            raise e
+            raise
 
     async def set_studio_inputs(
         self: CVClient,
@@ -358,7 +358,7 @@ class StudioMixin:
                     path=RepeatedString(values=input_path),
                 ),
                 inputs=json.dumps(inputs),
-            )
+            ),
         )
         client = InputsConfigServiceStub(self._channel)
         try:
@@ -376,9 +376,6 @@ class StudioMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[dict]:
         """
-        TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
-              It will probably need some version detection to see if the API is supported.
-
         Get Topology Studio Inputs using arista.studio.v1.InputsService.GetAll and arista.studio.v1.InputsConfigService.GetAll APIs.
 
         Parameters:
@@ -392,7 +389,11 @@ class StudioMixin:
         """
         topology_inputs: list[dict] = []
         studio_inputs: dict = await self.get_studio_inputs(
-            studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, time=time, timeout=timeout
+            studio_id=TOPOLOGY_STUDIO_ID,
+            workspace_id=workspace_id,
+            default_value={},
+            time=time,
+            timeout=timeout,
         )
         for device_entry in studio_inputs.get("devices", []):
             if not isinstance(device_entry, dict):
@@ -419,7 +420,7 @@ class StudioMixin:
                         }
                         for interface in interfaces
                     ],
-                }
+                },
             )
         return topology_inputs
 
@@ -430,9 +431,6 @@ class StudioMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[InputsKey]:
         """
-        TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
-              It will probably need some version detection to see if the API is supported.
-
         Set Topology Studio Inputs using arista.studio.v1.InputsConfigService.Set API.
 
         Parameters:
@@ -469,7 +467,7 @@ class StudioMixin:
                         path=RepeatedString(values=["devices", str(device_index), "inputs", "device"]),
                     ),
                     inputs=json.dumps(device_info),
-                )
+                ),
             )
 
         index_offset = len(studio_inputs.get("devices", []))
@@ -489,106 +487,15 @@ class StudioMixin:
                         path=RepeatedString(values=["devices", str(device_index)]),
                     ),
                     inputs=json.dumps(device_entry),
-                )
+                ),
             )
 
         input_keys = []
         client = InputsConfigServiceStub(self._channel)
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            async for response in responses:
-                input_keys.append(response.key)
-
-            return input_keys
-
+            input_keys = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{TOPOLOGY_STUDIO_ID}, Workspace ID '{workspace_id}', Devices '{device_inputs}'") or e
 
-    # Future versions for once topology studio API is available.
-    #
-    # async def _future__get_topology_studio_inputs(
-    #     self: CVClient,
-    #     workspace_id: str,
-    #     device_ids: list[str] | None = None,
-    #     time: datetime | None = None,
-    #     timeout: float = DEFAULT_API_TIMEOUT,
-    # ) -> list[TopologyInput]:
-    #     """
-    #     TODO: Once the topology studio inputs API is public, this function can be put in place.
-    #           It will probably need some version detection to see if the API is supported.
-
-    #     Get Topology Studio Inputs using arista.studio.v1.TopologyInputsService.GetAll and arista.studio.v1.TopologyInputsConfigService.GetAll APIs.
-
-    #     Parameters:
-    #         workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
-    #         device_ids: List of Device IDs / Serial numbers to get inputs for.
-    #         time: Timestamp from which the information is fetched. `now()` if not set.
-    #         timeout: Timeout in seconds.
-
-    #     Returns:
-    #         Inputs object.
-    #     """
-    #     request = TopologyInputStreamRequest(partial_eq_filter=[], time=time)
-    #     if device_ids:
-    #         for device_id in device_ids:
-    #             request.partial_eq_filter.append(
-    #                 TopologyInput(
-    #                     key=TopologyInputKey(workspace_id=workspace_id, device_id=device_id),
-    #                 )
-    #             )
-    #     else:
-    #         request.partial_eq_filter.append(
-    #             TopologyInput(
-    #                 key=TopologyInputKey(workspace_id=workspace_id),
-    #             )
-    #         )
-    #     client = TopologyInputServiceStub(self._channel)
-    #     topology_inputs = []
-    #     try:
-    #         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-    #         async for response in responses:
-    #             topology_inputs.append(response.value)
-    #         return topology_inputs
-    #     except Exception as e:
-    #         raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Device IDs '{device_ids}'") or e
-
-    # async def _future_set_topology_studio_inputs(
-    #     self: CVClient,
-    #     workspace_id: str,
-    #     device_inputs: list[tuple[str, str]],
-    #     timeout: float = DEFAULT_API_TIMEOUT,
-    # ) -> list[TopologyInputKey]:
-    #     """
-    #     TODO: Once the topology studio inputs API is public, this function can be put in place.
-    #           It will probably need some version detection to see if the API is supported.
-
-    #     Set Topology Studio Inputs using arista.studio.v1.TopologyInputsConfigService.Set API.
-
-    #     Parameters:
-    #         workspace_id: Unique identifier of the Workspace for which the information is set.
-    #         device_inputs: List of Tuples with the format (<device_id>, <hostname>).
-    #         timeout: Timeout in seconds.
-
-    #     Returns:
-    #         TopologyInputKey objects after being set including any server-generated values.
-    #     """
-    #     request = TopologyInputConfigSetSomeRequest(
-    #         values=[
-    #             TopologyInputConfig(
-    #                 key=TopologyInputKey(workspace_id=workspace_id, device_id=device_id),
-    #                 device_info=DeviceInfo(device_id=device_id, hostname=hostname),
-    #             )
-    #             for device_id, hostname in device_inputs
-    #         ]
-    #     )
-
-    #     client = TopologyInputConfigServiceStub(self._channel)
-    #     topology_input_keys = []
-    #     try:
-    #         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
-    #         async for response in responses:
-    #             topology_input_keys.append(response.key)
-    #         return topology_input_keys
-
-    #     except Exception as e:
-    #         raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Device IDs '{device_inputs}'") or e
+        return input_keys

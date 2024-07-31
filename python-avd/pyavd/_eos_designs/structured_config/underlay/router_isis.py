@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import get
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,14 +18,13 @@ if TYPE_CHECKING:
 class RouterIsisMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_isis(self: AvdStructuredConfigUnderlay) -> dict | None:
-        """
-        return structured config for router_isis
-        """
+        """Return structured config for router_isis."""
         if self.shared_utils.underlay_isis is not True:
             return None
 
@@ -46,7 +46,7 @@ class RouterIsisMixin(UtilsMixin):
                 "local_convergence": {
                     "delay": get(self._hostvars, "isis_ti_lfa.local_convergence_delay", default="10000"),
                     "protected_prefixes": True,
-                }
+                },
             }
         ti_lfa_protection = get(self._hostvars, "isis_ti_lfa.protection")
         if ti_lfa_protection == "link":
@@ -62,7 +62,7 @@ class RouterIsisMixin(UtilsMixin):
             router_isis["advertise"] = {
                 "passive_only": get(self._hostvars, "isis_advertise_passive_only", default=False),
             }
-            # TODO - enabling IPv6 only in SR cases as per existing behavior
+            # TODO: - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
             if self.shared_utils.underlay_ipv6 is True:
                 router_isis["address_family_ipv6"] = {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths", default=4)}
@@ -83,8 +83,9 @@ class RouterIsisMixin(UtilsMixin):
                 return None
 
             if self.shared_utils.id is None:
+                msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
                 raise AristaAvdMissingVariableError(
-                    f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
+                    msg,
                 )
             system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
         else:

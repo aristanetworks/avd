@@ -12,3 +12,68 @@ extend_skip_glob = [
 profile = "black"
 skip_gitignore = true
 line_length = 160
+
+known_first_party = ["pyavd", "schema_tools"]
+
+[tool.ruff]
+line-length = 160
+extend-exclude = [
+  "python-avd/pyavd/_cv/api/**/*",
+  "python-avd/tests/**/*",
+  "ansible_collections/arista/avd/tests/**/*",
+]
+target-version = "py310"
+
+[tool.ruff.lint]
+extend-select = ["ALL"]
+ignore = [
+  "ANN101",  # Missing type annotation for `self` in method - we know what self is..
+  "ANN102",  # Missing type annotation for `cls` in classmethod - we know what cls is..
+  "D203",    # Ignoring conflicting D* warnings - one-blank-line-before-class
+  "D212",    # Ignoring conflicting D* warnings - multi-line-summary-first-line
+  "COM812",  # Ignoring conflicting rules that may cause conflicts when used with the formatter
+  "ISC001",  # Ignoring conflicting rules that may cause conflicts when used with the formatter
+  "TD002",   # We don't have require authors in TODO
+  "TD003",   # We don't have an issue link for all TODOs today
+  "FIX002",  # Line contains TODO - ignoring for ruff for now
+  "F821",    # Disable undefined-name until resolution of #10451
+  "SLF001",  # Accessing private members - TODO: Improve code
+  "D100",    # Missing docstring in public module - TODO: Improve code
+  "D101",    # Missing docstring in public class - TODO: Improve code
+  "D102",    # Missing docstring in public method - TODO: Improve code
+  "D103",    # Missing docstring in public function - TODO: Improve code
+  "D104",    # Missing docstring in public package
+  "D105",    # Missing docstring in magic method - TODO: Improve code
+  "D106",    # Missing docstring in public nested class - TODO: Improve code
+  "D107",    # Missing docstring in `__init__` - TODO: Improve code
+  "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed - TODO: Improve code
+  "C901",    # complex-structure - TODO: Improve code
+  "FBT001",  # Boolean-typed positional argument in function definition - TODO: Improve code
+  "FBT002",  # Boolean default positional argument in function definition - TODO: Improve code
+  "PD011",   # Use numpy instead of .values - False positive
+  "BLE001",  # Do not catch blind exception: `Exception - TODO: Improve code
+  "PLR2004", # Magic value used in comparison - TODO: Evaluate
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"ansible_collections/arista/avd/plugins/*/*.py" = [
+  "E402",  # Ansible plugins require a layout with imports below the docs
+]
+"python-avd/scripts/**/*.py" = [
+  "T201",  # Interactive scripts can have print
+]
+
+[tool.ruff.lint.pylint]
+max-args = 10
+max-branches = 30
+max-returns = 10
+max-statements = 100
+
+[tool.ruff.lint.isort]
+known-first-party = ["pyavd", "schema_tools"]
+
+[tool.ruff.format]
+docstring-code-format = true

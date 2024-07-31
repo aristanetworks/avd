@@ -7,9 +7,10 @@ from functools import cached_property
 from hashlib import sha1
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError, AristaAvdMissingVariableError
-from ...._utils import get, replace_or_append_item, strip_null_from_data
-from ....j2filters import natural_sort, snmp_hash
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import get, replace_or_append_item, strip_null_from_data
+from pyavd.j2filters import natural_sort, snmp_hash
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -19,7 +20,8 @@ if TYPE_CHECKING:
 class SnmpServerMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -60,13 +62,14 @@ class SnmpServerMixin(UtilsMixin):
                 "views": snmp_settings.get("views"),
                 "groups": snmp_settings.get("groups"),
                 "traps": snmp_settings.get("traps"),
-            }
+            },
         )
 
     def _snmp_engine_ids(self: AvdStructuredConfigBase, snmp_settings: dict) -> dict | None:
         """
         Return dict of engine ids if "snmp_settings.compute_local_engineid" is True.
-        Otherwise return None
+
+        Otherwise return None.
         """
         if snmp_settings.get("compute_local_engineid") is not True:
             return None
@@ -74,22 +77,25 @@ class SnmpServerMixin(UtilsMixin):
         compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
         if compute_source == "hostname_and_ip":
             # Accepting SonarLint issue: The weak sha1 is not used for encryption. Just to create a unique engine id.
-            local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode("utf-8")).hexdigest()  # NOSONAR
+            local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode()).hexdigest()  # NOSONAR
         elif compute_source == "system_mac":
             if self.shared_utils.system_mac_address is None:
-                raise AristaAvdMissingVariableError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
+                msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set!"
+                raise AristaAvdMissingVariableError(msg)
             # the default engine id on switches is derived as per the following formula
             local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
         else:
             # Unknown mode
-            raise AristaAvdError(f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'")
+            msg = f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'"
+            raise AristaAvdError(msg)
 
         return {"local": local_engine_id}
 
     def _snmp_location(self: AvdStructuredConfigBase, snmp_settings: dict) -> str | None:
         """
         Return location if "snmp_settings.location" is True.
-        Otherwise return None
+
+        Otherwise return None.
         """
         if snmp_settings.get("location") is not True:
             return None
@@ -107,7 +113,8 @@ class SnmpServerMixin(UtilsMixin):
     def _snmp_users(self: AvdStructuredConfigBase, snmp_settings: dict, engine_ids: dict | None) -> list | None:
         """
         Return users if "snmp_settings.users" is set.
-        Otherwise return None
+
+        Otherwise return None.
 
         Users will have computed localized keys if configured.
         """
@@ -154,10 +161,11 @@ class SnmpServerMixin(UtilsMixin):
 
         return snmp_users or None
 
-    def _snmp_hosts(self: AvdStructuredConfigBase, snmp_settings) -> list | None:
+    def _snmp_hosts(self: AvdStructuredConfigBase, snmp_settings: dict) -> list | None:
         """
         Return hosts if "snmp_settings.hosts" is set.
-        Otherwise return None
+
+        Otherwise return None.
 
         Hosts may have management VRFs dynamically set.
         """
@@ -191,35 +199,37 @@ class SnmpServerMixin(UtilsMixin):
                 # Add host without VRF field
                 snmp_hosts.append(host)
 
-            for vrf in natural_sort(vrfs):
-                # Add host with VRF field.
-                snmp_hosts.append({**host, "vrf": vrf})
+            # Add host with VRF field.
+            snmp_hosts.extend({**host, "vrf": vrf} for vrf in natural_sort(vrfs))
 
         return snmp_hosts or None
 
     def _snmp_local_interfaces(self: AvdStructuredConfigBase, source_interfaces_inputs: dict | None) -> list | None:
         """
         Return local_interfaces if "source_interfaces.snmp" is set.
-        Otherwise return None
-        """
 
+        Otherwise return None.
+        """
         if not source_interfaces_inputs:
             # Empty dict or None
             return None
 
         local_interfaces = self._build_source_interfaces(
-            source_interfaces_inputs.get("mgmt_interface", False), source_interfaces_inputs.get("inband_mgmt_interface", False), "SNMP"
+            source_interfaces_inputs.get("mgmt_interface", False),
+            source_interfaces_inputs.get("inband_mgmt_interface", False),
+            "SNMP",
         )
         return local_interfaces or None
 
     def _snmp_vrfs(self: AvdStructuredConfigBase, snmp_settings: dict | None) -> list | None:
         """
-        Return list of dicts for enabling/disabling SNMP for VRFs
+        Return list of dicts for enabling/disabling SNMP for VRFs.
+
         Requires one of the following options to be set under snmp_settings:
         - vrfs
         - enable_mgmt_interface_vrf
         - enable_inband_mgmt_vrf
-        Otherwise return None
+        Otherwise return None.
         """
         if snmp_settings is None:
             return None

@@ -73,9 +73,7 @@ class CVClient(
         self._verify_certs = verify_certs
 
     async def __aenter__(self) -> CVClient:
-        """
-        Using asynchronous context manager since grpclib must be initialized inside an asyncio loop.
-        """
+        """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
         self._connect()
         return self
 
@@ -108,6 +106,7 @@ class CVClient(
     def _set_token(self) -> None:
         """
         Uses username/password for authenticating via REST.
+
         Sets the session token into self._token to be used for gRPC channel.
 
         TODO: Handle multinode clusters
@@ -116,7 +115,8 @@ class CVClient(
             return
 
         if not self._username or not self._password:
-            raise CVClientException("Unable to authenticate. Missing token or username/password.")
+            msg = "Unable to authenticate. Missing token or username/password."
+            raise CVClientException(msg)
 
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
@@ -129,9 +129,13 @@ class CVClient(
 
         try:
             response = post(
-                "https://" + self._servers[0] + "/cvpservice/login/authenticate.do", auth=(self._username, self._password), verify=self._verify_certs, json={}
+                "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
+                auth=(self._username, self._password),
+                verify=self._verify_certs,
+                json={},
             )
 
             self._token = response.json()["sessionId"]
         except (KeyError, JSONDecodeError) as e:
-            raise CVClientException("Unable to get token from CloudVision server. Please supply service account token instead of username/password.") from e
+            msg = "Unable to get token from CloudVision server. Please supply service account token instead of username/password."
+            raise CVClientException(msg) from e

@@ -1,18 +1,20 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
+
+from typing import TYPE_CHECKING
 
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.inventory.group import Group
-from ansible.inventory.host import Host
-from ansible.inventory.manager import InventoryManager
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase
 from ansible.utils.display import Display
+
+if TYPE_CHECKING:
+    from ansible.inventory.host import Host
+    from ansible.inventory.manager import InventoryManager
 
 # Root container on CloudVision.
 # Shall not be changed unless CloudVision changes it in the core.
@@ -22,7 +24,7 @@ display = Display()
 
 
 class ActionModule(ActionBase):
-    def _maybe_convert_device_filter(self):
+    def _maybe_convert_device_filter(self) -> None:
         # Converting string device filter to list
         device_filter = self._task.args.get("device_filter")
         if device_filter is not None and not isinstance(device_filter, list):
@@ -67,8 +69,9 @@ class ActionModule(ActionBase):
 
         # Verify that the group referenced in 'container_root' is valid
         if container_root not in inventory_manager.groups:
+            msg = f"Group '{container_root}' given as 'container_root' argument on 'arista.avd.inventory_to_container' cannot be found in Ansible inventory"
             raise AnsibleActionFail(
-                f"Group '{container_root}' given as 'container_root' argument on 'arista.avd.inventory_to_container' cannot be found in Ansible inventory"
+                msg,
             )
 
         # cvp_topology holds the final output data
@@ -93,16 +96,19 @@ class ActionModule(ActionBase):
 
         return cvp_topology
 
-    def get_group_data(self, group: Group, device_filter: list, all_groups_from_root: set = None, parent_container: str = None) -> dict:
+    def get_group_data(self, group: Group, device_filter: list, all_groups_from_root: set | None = None, parent_container: str | None = None) -> dict:
         # Find parent container if not set
         if parent_container is None:
             # Only evaluate parent_groups which are part of all_groups_from_root. A group can have multiple parents.
             parent_groups: set = set(group.parent_groups).intersection(all_groups_from_root)
             # Ensure that we have only one parent group. Otherwise we cannot build a tree.
             if len(parent_groups) > 1:
-                raise AnsibleActionFail(
+                msg = (
                     f"arista.avd.inventory_to_container: Group '{group}' has more than one parent group ({parent_groups}) below the 'container_root'."
                     " Unable to build CloudVision container hierarchy."
+                )
+                raise AnsibleActionFail(
+                    msg,
                 )
             parent_container = parent_groups.pop().name
 

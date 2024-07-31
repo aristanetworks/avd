@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-__metaclass__ = type
 
 import json
 import os
@@ -31,7 +30,7 @@ DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
 
 def _validate_python_version(info: dict, result: dict) -> bool:
     """
-    TODO - avoid hardcoding the min supported version
+    TODO: - avoid hardcoding the min supported version.
 
     Args:
       info (dict): Dictionary to store information to present in ansible logs
@@ -65,8 +64,8 @@ def _validate_python_version(info: dict, result: dict) -> bool:
                     "version 2.15 End-Of-Life is scheduled for November 2024 and it will be the "
                     "last `ansible-core` version supporting Python version 3.9 as documented here: "
                     "https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix."
-                )
-            }
+                ),
+            },
         )
 
     return True
@@ -74,7 +73,7 @@ def _validate_python_version(info: dict, result: dict) -> bool:
 
 def _validate_python_requirements(requirements: list, info: dict) -> bool:
     """
-    Validate python lib versions
+    Validate python lib versions.
 
     Args:
       requirements (list): List of requirements for pythom modules
@@ -97,7 +96,8 @@ def _validate_python_requirements(requirements: list, info: dict) -> bool:
         try:
             req = Requirement(raw_req)
         except InvalidRequirement as exc:
-            raise AnsibleActionFail(f"Wrong format for requirement {raw_req}") from exc
+            msg = f"Wrong format for requirement {raw_req}"
+            raise AnsibleActionFail(msg) from exc
 
         try:
             installed_version = version(req.name)
@@ -115,7 +115,7 @@ def _validate_python_requirements(requirements: list, info: dict) -> bool:
                 "installed": None,
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
-            display.error(f"Python library '{req.name}' required but not found - requirement is {str(req)}", False)
+            display.error(f"Python library '{req.name}' required but not found - requirement is {req!s}", False)
             valid = False
             continue
 
@@ -134,18 +134,19 @@ def _validate_python_requirements(requirements: list, info: dict) -> bool:
             }
             display.warning(
                 f"Found {req.name} valid versions {valid_versions} among {detected_versions} from metadata - assuming a valid version is running - more"
-                " information available with -v"
+                " information available with -v",
             )
             display.v(
                 "The Arista AVD collection relies on Python built-in library `importlib.metadata` to detect running versions. In some cases where legacy"
                 " dist-info folders are leftovers in the site-packages folder, there can be misdetection of the version. This module assumes that if any"
                 " version matches the required one, then the requirement is met. This could led to false positive results. Please make sure to clean the"
-                " leftovers dist-info folders."
+                " leftovers dist-info folders.",
             )
         elif len(detected_versions) > 1:
             # More than one dist found and none matching the requirements
             display.error(
-                f"Python library '{req.name}' detected versions {detected_versions} - requirement is {str(req)} - more information available with -v", False
+                f"Python library '{req.name}' detected versions {detected_versions} - requirement is {req!s} - more information available with -v",
+                False,
             )
             requirements_dict["mismatched"][req.name] = {
                 "installed": installed_version,
@@ -154,7 +155,7 @@ def _validate_python_requirements(requirements: list, info: dict) -> bool:
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
         else:
-            display.error(f"Python library '{req.name}' version running {installed_version} - requirement is {str(req)}", False)
+            display.error(f"Python library '{req.name}' version running {installed_version} - requirement is {req!s}", False)
             requirements_dict["mismatched"][req.name] = {
                 "installed": installed_version,
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
@@ -167,7 +168,7 @@ def _validate_python_requirements(requirements: list, info: dict) -> bool:
 
 def _validate_ansible_version(collection_name: str, running_version: str, info: dict, result: dict) -> bool:
     """
-    Validate ansible version in use, running_version, based on the collection requirements
+    Validate ansible version in use, running_version, based on the collection requirements.
 
     Args:
       collection_name (str): The collection name
@@ -186,7 +187,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
         info["requires_ansible"] = str(specifiers_set)
     if not specifiers_set.contains(running_version):
         display.error(
-            f"Ansible Version running {running_version} - Requirement is {str(specifiers_set)}",
+            f"Ansible Version running {running_version} - Requirement is {specifiers_set!s}",
             False,
         )
         return False
@@ -198,8 +199,8 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
                     f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
                     " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
                     " for more details: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
-                )
-            }
+                ),
+            },
         )
 
     return True
@@ -207,7 +208,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
 
 def _validate_ansible_collections(running_collection_name: str, info: dict) -> bool:
     """
-    Verify the version of required ansible collections running based on the collection requirements
+    Verify the version of required ansible collections running based on the collection requirements.
 
     Args:
       collection_name (str): The collection name
@@ -249,7 +250,7 @@ def _validate_ansible_collections(running_collection_name: str, info: dict) -> b
                 "required_version": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
             if specifiers_set:
-                display.error(f"{collection_name} required but not found - required version is {str(specifiers_set)}", False)
+                display.error(f"{collection_name} required but not found - required version is {specifiers_set!s}", False)
             else:
                 display.error(f"{collection_name} required but not found", False)
             valid = False
@@ -263,7 +264,7 @@ def _validate_ansible_collections(running_collection_name: str, info: dict) -> b
                 "required_version": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
         else:
-            display.error(f"{collection_name} version running {installed_version} - required version is {str(specifiers_set)}", False)
+            display.error(f"{collection_name} version running {installed_version} - required version is {specifiers_set!s}", False)
             requirements_dict["mismatched"][collection_name] = {
                 "installed": installed_version,
                 "required_version": str(specifiers_set) if len(specifiers_set) > 0 else None,
@@ -275,17 +276,13 @@ def _validate_ansible_collections(running_collection_name: str, info: dict) -> b
 
 
 def _get_collection_path(collection_name: str) -> str:
-    """
-    Retrieve the collection path based on the collection_name
-    """
+    """Retrieve the collection path based on the collection_name."""
     collection = import_module(f"ansible_collections.{collection_name}")
     return os.path.dirname(collection.__file__)
 
 
 def _get_collection_version(collection_path) -> str:
-    """
-    Returns the collection version based on the collection path
-    """
+    """Returns the collection version based on the collection path."""
     # Trying to find the version based on either galaxy.yml or MANIFEST.json
     try:
         galaxy_file = os.path.join(collection_path, "galaxy.yml")
@@ -300,9 +297,7 @@ def _get_collection_version(collection_path) -> str:
 
 
 def _get_running_collection_version(running_collection_name: str, result: dict) -> None:
-    """
-    Stores the version collection in result
-    """
+    """Stores the version collection in result."""
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
@@ -338,10 +333,12 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         if not HAS_PACKAGING:
-            raise AnsibleActionFail("packaging is required to run this plugin")
+            msg = "packaging is required to run this plugin"
+            raise AnsibleActionFail(msg)
 
         if not (self._task.args and "requirements" in self._task.args):
-            raise AnsibleActionFail("The argument 'requirements' must be set")
+            msg = "The argument 'requirements' must be set"
+            raise AnsibleActionFail(msg)
 
         py_requirements = self._task.args.get("requirements")
         avd_ignore_requirements = self._task.args.get("avd_ignore_requirements", False)
@@ -349,7 +346,8 @@ class ActionModule(ActionBase):
             avd_ignore_requirements = True
 
         if not isinstance(py_requirements, list):
-            raise AnsibleActionFail("The argument 'requirements' is not a list")
+            msg = "The argument 'requirements' is not a list"
+            raise AnsibleActionFail(msg)
 
         running_ansible_version = task_vars["ansible_version"]["string"]
         running_collection_name = task_vars["ansible_collection_name"]

@@ -19,7 +19,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 LOGGER = logging.getLogger(__name__)
@@ -120,7 +120,7 @@ class ValidationMixin:
     It should be used as a mixin class in the AvdTestBase classes.
     """
 
-    # TODO @carl-baillargeon: Split the validate_data method into two methods: one for expected key-value pairs and one for required keys.
+    # TODO: @carl-baillargeon: Split the validate_data method into two methods: one for expected key-value pairs and one for required keys.
     def validate_data(
         self,
         data: dict | None = None,

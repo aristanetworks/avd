@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get, get_item
+from pyavd._utils import get, get_item
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -14,8 +14,9 @@ if TYPE_CHECKING:
 
 class UnderlayMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -89,7 +90,7 @@ class UnderlayMixin:
                     "name": f"Loopback{node_entry['loopback_number']}",
                     "description": get(node_entry, "description", default="PIM RP"),
                     "ip_address": f"{rp_entry['rp']}/32",
-                }
+                },
             )
 
         if underlay_multicast_rp_interfaces:

@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 from collections import ChainMap
+from typing import TYPE_CHECKING
 
-from ..._utils import get, merge
-from ...avd_schema_tools import AvdSchemaTools
-from ..avdfacts import AvdFacts
-from ..shared_utils import SharedUtils
+from pyavd._eos_designs.shared_utils import SharedUtils
+from pyavd._utils import get, merge
+
 from .base import AvdStructuredConfigBase
 from .connected_endpoints import AvdStructuredConfigConnectedEndpoints
 from .core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
@@ -20,6 +20,10 @@ from .mlag import AvdStructuredConfigMlag
 from .network_services import AvdStructuredConfigNetworkServices
 from .overlay import AvdStructuredConfigOverlay
 from .underlay import AvdStructuredConfigUnderlay
+
+if TYPE_CHECKING:
+    from pyavd._eos_designs.avdfacts import AvdFacts
+    from pyavd.avd_schema_tools import AvdSchemaTools
 
 AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigBase,

@@ -24,7 +24,7 @@ def get_validated_path(path_input: str | Path, *, parent: bool = False) -> Path:
     TypeError: If the input is not a string or Path object.
     FileNotFoundError: If the specified path or its parent does not exist.
     """
-    if not isinstance(path_input, (str, Path)):
+    if not isinstance(path_input, str | Path):
         msg = f"Input path {path_input} must be a string or a Path object."
         raise TypeError(msg)
     path = Path(path_input)

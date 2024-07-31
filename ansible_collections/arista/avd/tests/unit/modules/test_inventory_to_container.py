@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 import json
 import logging
@@ -80,133 +78,133 @@ TREELIB_INVALID_LEAF = "DC1"
 @pytest.fixture(scope="session")
 def inventory():
     yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
-    with open(INVENTORY_FILE, "r", encoding="utf8") as stream:
+    with open(INVENTORY_FILE, encoding="utf8") as stream:
         try:
             inventory_content = yaml.safe_load(stream)
         except yaml.YAMLError as e:
-            logging.error(e)
+            logging.exception(e)
             return None
         return inventory_content
 
 
 class TestInventoryToContainer:
-    def test_is_in_filter_default_filter(self):
+    def test_is_in_filter_default_filter(self) -> None:
         output = is_in_filter(hostname=HOSTNAME_VALID)
         assert output
 
-    def test_is_in_filter_valid_hostname(self):
+    def test_is_in_filter_valid_hostname(self) -> None:
         output = is_in_filter(hostname_filter=HOSTNAME_FILTER_VALID, hostname=HOSTNAME_VALID)
         assert output
 
-    def test_is_in_filter_invalid_hostname(self):
+    def test_is_in_filter_invalid_hostname(self) -> None:
         output = is_in_filter(hostname_filter=HOSTNAME_FILTER_VALID, hostname=HOSTNAME_INVALID)
         assert output is False
 
     # TODO: Check if this is a valid testcase. Add a type check?
-    def test_is_in_filter_invalid_filter(self):
+    def test_is_in_filter_invalid_filter(self) -> None:
         output = is_in_filter(hostname_filter=HOSTNAME_FILTER_INVALID, hostname=HOSTNAME_VALID)
         assert output
 
-    def test_isIterable_default_iterable(self):
+    def test_isIterable_default_iterable(self) -> None:
         output = isIterable()
         assert output is False
 
     @pytest.mark.parametrize("DATA", IS_ITERABLE_VALID)
-    def test_isIterable_valid_iterable(self, DATA):
+    def test_isIterable_valid_iterable(self, DATA) -> None:
         output = isIterable(DATA)
         assert output
 
     @pytest.mark.parametrize("DATA", IS_ITERABLE_INVALID)
-    def test_isIterable_invalid_iterable(self, DATA):
+    def test_isIterable_invalid_iterable(self, DATA) -> None:
         output = isIterable(DATA)
         assert output is False
 
-    def test_isLeaf_valid_leaf(self):
+    def test_isLeaf_valid_leaf(self) -> None:
         output = isLeaf(TREELIB, TREELIB_VALID_LEAF)
         assert output
 
-    def test_isLeaf_invalid_leaf(self):
+    def test_isLeaf_invalid_leaf(self) -> None:
         output = isLeaf(TREELIB, TREELIB_INVALID_LEAF)
         assert output is False
 
-    def test_isLeaf_none_leaf(self):
+    def test_isLeaf_none_leaf(self) -> None:
         output = isLeaf(TREELIB, None)
         assert output is False
 
-    def test_get_device_option_value_valid(self, inventory):
+    def test_get_device_option_value_valid(self, inventory) -> None:
         data = inventory["all"]["children"]["CVP"]["hosts"]
         output = get_device_option_value(device_data_dict=data, option_name="cv_server")
         assert output
         assert isinstance(output, dict)
 
-    def test_get_device_option_value_invalid(self, inventory):
+    def test_get_device_option_value_invalid(self, inventory) -> None:
         data = inventory["all"]["children"]["CVP"]["hosts"]
         output = get_device_option_value(device_data_dict=data, option_name="is_deployed")
         assert output is None
 
-    def test_get_device_option_value_none(self, inventory):
+    def test_get_device_option_value_none(self, inventory) -> None:
         data = inventory["all"]["children"]["CVP"]["hosts"]
         output = get_device_option_value(device_data_dict=data, option_name=None)
         assert output is None
 
-    def test_get_device_option_value_empty_data(self, inventory):
+    def test_get_device_option_value_empty_data(self, inventory) -> None:
         output = get_device_option_value(device_data_dict=None, option_name="cv_server")
         assert output is None
 
-    def test_get_devices_empty_inventory(self):
+    def test_get_devices_empty_inventory(self) -> None:
         output = get_devices(None)
         assert output is None
 
-    def test_get_devices_default_search_container(self, inventory):
+    def test_get_devices_default_search_container(self, inventory) -> None:
         output = get_devices(inventory)
         assert output is None
 
-    def test_get_devices_non_default_search_container(self, inventory):
+    def test_get_devices_non_default_search_container(self, inventory) -> None:
         output = get_devices(inventory, search_container=SEARCH_CONTAINER, devices=[])
         assert output == GET_DEVICES
 
-    def test_get_devices_preexisting_devices(self, inventory):
+    def test_get_devices_preexisting_devices(self, inventory) -> None:
         devices = ["TEST_DEVICE"]
         output = get_devices(inventory, search_container=SEARCH_CONTAINER, devices=devices)
-        assert output == ["TEST_DEVICE"] + GET_DEVICES
+        assert output == ["TEST_DEVICE", *GET_DEVICES]
 
-    def test_get_devices_preexisting_devices_with_device_filter(self, inventory):
+    def test_get_devices_preexisting_devices_with_device_filter(self, inventory) -> None:
         output = get_devices(inventory, search_container=SEARCH_CONTAINER, devices=[], device_filter=[GET_DEVICE_FILTER])
         assert [GET_DEVICE_FILTER in item for item in output]
 
     @pytest.mark.parametrize("DATA", [None])
-    def test_serialize_empty_inventory(self, DATA):
+    def test_serialize_empty_inventory(self, DATA) -> None:
         output = serialize(DATA)
         assert output is None
 
-    def test_serialize_valid_inventory(self, inventory):
+    def test_serialize_valid_inventory(self, inventory) -> None:
         output = serialize(inventory)
         assert isinstance(output, treelib.tree.Tree)
         tree_dict = json.loads(output.to_json())
-        assert (list(tree_dict.keys()))[0] == ROOT_CONTAINER
+        assert next(iter(tree_dict.keys())) == ROOT_CONTAINER
 
     @pytest.mark.parametrize("DATA", PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
-    def test_serialize_parent_container(self, DATA, inventory):
+    def test_serialize_parent_container(self, DATA, inventory) -> None:
         output = serialize(inventory, parent_container=DATA["parent"])
         assert isinstance(output, treelib.tree.Tree)
         tree_dict = json.loads(output.to_json())
-        assert (list(tree_dict.keys()))[0] == ROOT_CONTAINER
+        assert next(iter(tree_dict.keys())) == ROOT_CONTAINER
 
-    def test_serialize_none_parent_container_with_tree_topology(self, inventory):
+    def test_serialize_none_parent_container_with_tree_topology(self, inventory) -> None:
         tree = treelib.tree.Tree()
         output = serialize(inventory, tree_topology=tree)
         assert isinstance(output, treelib.tree.Tree)
         tree_dict = json.loads(output.to_json())
-        assert (list(tree_dict.keys()))[0] == "all"
+        assert next(iter(tree_dict.keys())) == "all"
 
-    def test_serialize_non_default_parent_container_with_tree_topology(self, inventory):
+    def test_serialize_non_default_parent_container_with_tree_topology(self, inventory) -> None:
         tree = treelib.tree.Tree()
         tree.create_node(NON_DEFAULT_PARENT_CONTAINER, NON_DEFAULT_PARENT_CONTAINER)
         output = serialize(inventory, parent_container=NON_DEFAULT_PARENT_CONTAINER, tree_topology=tree)
         tree_dict = json.loads(output.to_json())
-        assert (list(tree_dict.keys()))[0] == NON_DEFAULT_PARENT_CONTAINER
+        assert next(iter(tree_dict.keys())) == NON_DEFAULT_PARENT_CONTAINER
 
     @pytest.mark.parametrize("DATA", PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
-    def test_get_containers(self, DATA, inventory):
+    def test_get_containers(self, DATA, inventory) -> None:
         output = get_containers(inventory, parent_container=DATA["parent"], device_filter=["all"])
         assert output == DATA["expected_output"]

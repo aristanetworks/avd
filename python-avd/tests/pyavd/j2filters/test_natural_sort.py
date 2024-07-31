@@ -5,6 +5,7 @@
 from contextlib import nullcontext as does_not_raise
 
 import pytest
+
 from pyavd.j2filters.natural_sort import convert, natural_sort
 
 

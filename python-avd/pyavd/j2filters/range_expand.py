@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 import re
+from typing import Any
 
 
-def range_expand(range_to_expand):
-    if not isinstance(range_to_expand, (list, str)):
-        raise TypeError(f"value must be of type list or str, got {type(range_to_expand)}")
+def range_expand(range_to_expand: Any) -> list:
+    if not isinstance(range_to_expand, list | str):
+        msg = f"value must be of type list or str, got {type(range_to_expand)}"
+        raise TypeError(msg)
 
     result = []
 
@@ -64,39 +66,27 @@ def range_expand(range_to_expand):
                         prefix = groups[0]
                     if groups[4]:
                         last_module = int(groups[4])
-                    if groups[3]:
-                        first_module = int(groups[3])
-                    else:
-                        first_module = last_module
+                    first_module = int(groups[3]) if groups[3] else last_module
                     if groups[8]:
                         last_parent_interface = int(groups[8])
-                    if groups[7]:
-                        first_parent_interface = int(groups[7])
-                    else:
-                        first_parent_interface = last_parent_interface
+                    first_parent_interface = int(groups[7]) if groups[7] else last_parent_interface
                     if groups[12]:
                         last_interface = int(groups[12])
-                    if groups[11]:
-                        first_interface = int(groups[11])
-                    else:
-                        first_interface = last_interface
+                    first_interface = int(groups[11]) if groups[11] else last_interface
                     if groups[16]:
                         last_subinterface = int(groups[16])
-                    if groups[15]:
-                        first_subinterface = int(groups[15])
-                    else:
-                        first_subinterface = last_subinterface
+                    first_subinterface = int(groups[15]) if groups[15] else last_subinterface
 
                     def expand_subinterfaces(interface_string):
                         result = []
                         if last_subinterface is not None:
                             if first_subinterface > last_subinterface:
-                                raise ValueError(
+                                msg = (
                                     f"Range {one_range} could not be expanded because the first subinterface {first_subinterface} is larger than last"
                                     f" subinterface {last_subinterface} in the range."
                                 )
-                            for subinterface in range(first_subinterface, last_subinterface + 1):
-                                result.append(f"{interface_string}.{subinterface}")
+                                raise ValueError(msg)
+                            result.extend(f"{interface_string}.{subinterface}" for subinterface in range(first_subinterface, last_subinterface + 1))
                         else:
                             result.append(interface_string)
                         return result
@@ -104,50 +94,49 @@ def range_expand(range_to_expand):
                     def expand_interfaces(interface_string):
                         result = []
                         if first_interface > last_interface:
-                            raise ValueError(
+                            msg = (
                                 f"Range {one_range} could not be expanded because the first interface {first_interface} is larger than last interface"
                                 f" {last_interface} in the range."
                             )
+                            raise ValueError(msg)
                         for interface in range(first_interface, last_interface + 1):
-                            for res in expand_subinterfaces(f"{interface_string}{interface}"):
-                                result.append(res)
+                            result.extend(expand_subinterfaces(f"{interface_string}{interface}"))
                         return result
 
                     def expand_parent_interfaces(interface_string):
                         result = []
                         if last_parent_interface:
                             if first_parent_interface > last_parent_interface:
-                                raise ValueError(
+                                msg = (
                                     f"Range {one_range} could not be expanded because the first interface {first_parent_interface} is larger than last"
                                     f" interface {last_parent_interface} in the range."
                                 )
+                                raise ValueError(msg)
                             for parent_interface in range(first_parent_interface, last_parent_interface + 1):
-                                for res in expand_interfaces(f"{interface_string}{parent_interface}/"):
-                                    result.append(res)
+                                result.extend(expand_interfaces(f"{interface_string}{parent_interface}/"))
                         else:
-                            for res in expand_interfaces(f"{interface_string}"):
-                                result.append(res)
+                            result.extend(expand_interfaces(f"{interface_string}"))
                         return result
 
                     def expand_module(interface_string):
                         result = []
                         if last_module:
                             if first_module > last_module:
-                                raise ValueError(
+                                msg = (
                                     f"Range {one_range} could not be expanded because the first module {first_module} is larger than last module"
                                     f" {last_module} in the range."
                                 )
+                                raise ValueError(msg)
                             for module in range(first_module, last_module + 1):
-                                for res in expand_parent_interfaces(f"{interface_string}{module}/"):
-                                    result.append(res)
+                                result.extend(expand_parent_interfaces(f"{interface_string}{module}/"))
                         else:
-                            for res in expand_parent_interfaces(f"{interface_string}"):
-                                result.append(res)
+                            result.extend(expand_parent_interfaces(f"{interface_string}"))
                         return result
 
                     result.extend(expand_module(prefix))
 
                 else:
-                    raise ValueError(f"Invalid range, got {one_range} and found {search_result.groups()}")
+                    msg = f"Invalid range, got {one_range} and found {search_result.groups()}"
+                    raise ValueError(msg)
 
     return result

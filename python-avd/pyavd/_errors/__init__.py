@@ -5,11 +5,11 @@ import jsonschema
 
 
 class AristaAvdError(Exception):
-    def __init__(self, message="An Error has occurred in an arista.avd plugin"):
+    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin") -> None:
         self.message = message
         super().__init__(self.message)
 
-    def _json_path_to_string(self, json_path):
+    def _json_path_to_string(self, json_path: list) -> str:
         path = ""
         for index, elem in enumerate(json_path):
             if isinstance(elem, int):
@@ -27,7 +27,7 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 
 class AvdSchemaError(AristaAvdError):
-    def __init__(self, message="Schema Error", error=None):
+    def __init__(self, message: str = "Schema Error", error: jsonschema.ValidationError | None = None) -> None:
         if isinstance(error, jsonschema.SchemaError):
             self.message = f"'Schema Error: {self._json_path_to_string(error.absolute_path)}': {error.message}"
         else:
@@ -36,7 +36,7 @@ class AvdSchemaError(AristaAvdError):
 
 
 class AvdValidationError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", error=None):
+    def __init__(self, message: str = "Schema Error", error: Exception | None = None) -> None:
         if isinstance(error, (jsonschema.ValidationError)):
             self.path = self._json_path_to_string(error.absolute_path)
             self.message = f"'Validation Error: {self.path}': {error.message}"
@@ -46,7 +46,9 @@ class AvdValidationError(AristaAvdError):
 
 
 class AvdConversionWarning(AristaAvdError):
-    def __init__(self, message: str = "Data was converted to conform to schema", key=None, oldtype="unknown", newtype="unknown"):
+    def __init__(
+        self, message: str = "Data was converted to conform to schema", key: list | None = None, oldtype: str = "unknown", newtype: str = "unknown"
+    ) -> None:
         if key is not None:
             self.path = self._json_path_to_string(key)
             self.message = f"'Data Type Converted: {self.path} from '{oldtype}' to '{newtype}'"
@@ -56,7 +58,16 @@ class AvdConversionWarning(AristaAvdError):
 
 
 class AvdDeprecationWarning(AristaAvdError):
-    def __init__(self, key, new_key=None, remove_in_version=None, remove_after_date=None, url=None, removed=False):
+    def __init__(
+        self,
+        key: str,
+        new_key: str | None = None,
+        remove_in_version: str | None = None,
+        remove_after_date: str | None = None,
+        url: str | None = None,
+        *,
+        removed: bool = False,
+    ) -> None:
         messages = []
         self.path = self._json_path_to_string(key)
 
@@ -80,7 +91,7 @@ class AvdDeprecationWarning(AristaAvdError):
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):
-    def __init__(self, context: str, context_item_a: str, context_item_b: str):
+    def __init__(self, context: str, context_item_a: str, context_item_b: str) -> None:
         self.message = (
             f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
         )

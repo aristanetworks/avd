@@ -4,32 +4,33 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from deepmerge import Merger
 
 from .mergeonschema import MergeOnSchema
 
 if TYPE_CHECKING:
-    from ..._schema.avdschema import AvdSchema
+    from pyavd._schema.avdschema import AvdSchema
 
 
-def _strategy_keep(_config, _path, base, nxt):
-    """prefer base, otherwise nxt"""
+def _strategy_keep(_config: object, _path: list, base: Any, nxt: Any) -> Any:
+    """Prefer base, otherwise nxt."""
     if base is not None:
         return base
     return nxt
 
 
-def _strategy_prepend_unique(_config, _path, base, nxt):
-    """prepend nxt items without duplicates in base to base."""
+def _strategy_prepend_unique(_config: object, _path: list, base: list, nxt: list) -> list:
+    """Prepend nxt items without duplicates in base to base."""
     nxt_as_set = set(nxt)
     return nxt + [n for n in base if n not in nxt_as_set]
 
 
-def _strategy_must_match(_config, path, base, nxt):
+def _strategy_must_match(_config, path: list, base: Any, nxt: Any) -> Any:
     if base != nxt:
-        raise ValueError(f"Values of {'.'.join(path)} do not match: {base} != {nxt}")
+        msg = f"Values of {'.'.join(path)} do not match: {base} != {nxt}"
+        raise ValueError(msg)
     return base
 
 
@@ -43,9 +44,17 @@ MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
 }
 
 
-def merge(base, *nxt_list, recursive=True, list_merge="append", same_key_strategy="override", destructive_merge=True, schema: AvdSchema = None):
+def merge(
+    base: Any,
+    *nxt_list: list[Any],
+    recursive: bool = True,
+    list_merge: str = "append",
+    same_key_strategy: str = "override",
+    destructive_merge: bool = True,
+    schema: AvdSchema = None,
+) -> Any:
     """
-    Merge two or more data sets using deepmerge
+    Merge two or more data sets using deepmerge.
 
     Parameters
     ----------
@@ -71,12 +80,12 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", same_key_strateg
     schema : AvdSchema, optional
         An instance of AvdSchema can be passed to merge, to allow merging lists of dictionaries using the "primary_key" defined in the schema.
     """
-
     if not destructive_merge:
         base = deepcopy(base)
 
     if list_merge not in MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY:
-        raise ValueError(f"merge: 'list_merge' argument can only be equal to one of {list(MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.keys())}")
+        msg = f"merge: 'list_merge' argument can only be equal to one of {list(MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.keys())}"
+        raise ValueError(msg)
 
     list_strategies = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
 

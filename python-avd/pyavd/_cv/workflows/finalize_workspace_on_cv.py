@@ -4,11 +4,15 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TYPE_CHECKING
 
-from ..api.arista.workspace.v1 import ResponseStatus, WorkspaceState
-from ..client import CVClient
-from ..client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed
-from .models import CVWorkspace
+from pyavd._cv.api.arista.workspace.v1 import ResponseStatus, WorkspaceState
+from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed
+
+if TYPE_CHECKING:
+    from pyavd._cv.client import CVClient
+
+    from .models import CVWorkspace
 
 LOGGER = getLogger(__name__)
 
@@ -25,10 +29,10 @@ WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
 async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) -> None:
     """
     Finalize a Workspace from the given result.CVWorkspace object.
+
     Depending on the requested state the Workspace will be left in pending, built, submitted, abandoned or deleted.
     In-place update the workspace state and creates/updates a ChangeControl object on the result object if applicable.
     """
-
     LOGGER.info("finalize_workspace_on_cv: %s", workspace)
 
     if workspace.requested_state in (workspace.state, "pending"):
@@ -39,9 +43,12 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
     if build_result.status != ResponseStatus.SUCCESS:
         workspace.state = "build failed"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-        raise CVWorkspaceBuildFailed(
+        msg = (
             f"Failed to build workspace {workspace.id}: {build_result}. "
             f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
+        )
+        raise CVWorkspaceBuildFailed(
+            msg,
         )
 
     workspace.state = "built"
@@ -53,12 +60,14 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
     if workspace.requested_state == "submitted" and workspace.state == "built":
         workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
         submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
-            workspace_id=workspace.id, request_id=workspace_config.request_params.request_id
+            workspace_id=workspace.id,
+            request_id=workspace_config.request_params.request_id,
         )
         if submit_result.status != ResponseStatus.SUCCESS:
             workspace.state = "submit failed"
             LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-            raise CVWorkspaceSubmitFailed(f"Failed to submit workspace {workspace.id}: {submit_result}")
+            msg = f"Failed to submit workspace {workspace.id}: {submit_result}"
+            raise CVWorkspaceSubmitFailed(msg)
 
         workspace.state = "submitted"
         if cv_workspace.cc_ids.values:

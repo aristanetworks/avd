@@ -11,7 +11,7 @@ except ImportError:
 
 # https://ttl255.com/yaml-anchors-and-aliases-and-how-to-disable-them/
 class NoAliasDumper(YamlDumper):
-    def ignore_aliases(self, data):
+    def ignore_aliases(self, data) -> bool:
         return True
 
 

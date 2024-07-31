@@ -7,9 +7,9 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdError
-from ..._utils import append_if_not_duplicate, get, unique
-from ...j2filters import list_compress, range_expand
+from pyavd._errors import AristaAvdError
+from pyavd._utils import append_if_not_duplicate, get, unique
+from pyavd.j2filters import list_compress, range_expand
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts
@@ -18,28 +18,26 @@ if TYPE_CHECKING:
 class UplinksMixin:
     """
     Mixin Class used to generate some of the EosDesignsFacts.
-    Class should only be used as Mixin to the EosDesignsFacts class
+
+    Class should only be used as Mixin to the EosDesignsFacts class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def max_parallel_uplinks(self: EosDesignsFacts) -> int:
-        """
-        Exposed in avd_switch_facts
-        """
+        """Exposed in avd_switch_facts."""
         return self.shared_utils.max_parallel_uplinks
 
     @cached_property
     def max_uplink_switches(self: EosDesignsFacts) -> int:
-        """
-        Exposed in avd_switch_facts
-        """
+        """Exposed in avd_switch_facts."""
         return self.shared_utils.max_uplink_switches
 
     @cached_property
     def _uplink_port_channel_id(self: EosDesignsFacts) -> int:
         """
         For MLAG secondary get the uplink_port_channel_id from the peer's facts.
+
         We don't need to validate it (1-2000), since it will be validated on the peer.
 
         For MLAG primary or none MLAG, take the value of 'uplink_port_channel_id' if set,
@@ -53,13 +51,15 @@ class UplinksMixin:
             # MLAG Secondary
             peer_uplink_port_channel_id = self.shared_utils.mlag_peer_facts._uplink_port_channel_id
             # check that port-channel IDs are the same as on primary
-            if uplink_port_channel_id is not None:
-                if uplink_port_channel_id != peer_uplink_port_channel_id:
-                    raise AristaAvdError(
-                        f"'uplink_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_port_channel_id} and is not matching"
-                        f" {peer_uplink_port_channel_id} set on MLAG peer."
-                        " The 'uplink_port_channel_id' must be matching on MLAG peers."
-                    )
+            if uplink_port_channel_id is not None and uplink_port_channel_id != peer_uplink_port_channel_id:
+                msg = (
+                    f"'uplink_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_port_channel_id} and is not matching"
+                    f" {peer_uplink_port_channel_id} set on MLAG peer."
+                    " The 'uplink_port_channel_id' must be matching on MLAG peers."
+                )
+                raise AristaAvdError(
+                    msg,
+                )
             return peer_uplink_port_channel_id
 
         # MLAG Primary or not MLAG.
@@ -68,11 +68,11 @@ class UplinksMixin:
             uplink_port_channel_id = int("".join(re.findall(r"\d", self.shared_utils.uplink_interfaces[0])))
 
         # produce an error if the switch is MLAG and port-channel ID is above 2000
-        if self.shared_utils.mlag:
-            if not 1 <= uplink_port_channel_id <= 2000:
-                raise AristaAvdError(
-                    f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}' on '{self.shared_utils.hostname}'."
-                )
+        if self.shared_utils.mlag and not 1 <= uplink_port_channel_id <= 2000:
+            msg = f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}' on '{self.shared_utils.hostname}'."
+            raise AristaAvdError(
+                msg,
+            )
 
         return uplink_port_channel_id
 
@@ -80,6 +80,7 @@ class UplinksMixin:
     def _uplink_switch_port_channel_id(self: EosDesignsFacts) -> int:
         """
         For MLAG secondary get the uplink_switch_port_channel_id from the peer's facts.
+
         We don't need to validate it (1-2000), since it will be validated on the peer.
 
         For MLAG primary or none MLAG, take the value of 'uplink_switch_port_channel_id' if set,
@@ -94,13 +95,15 @@ class UplinksMixin:
             # MLAG Secondary
             peer_uplink_switch_port_channel_id = self.shared_utils.mlag_peer_facts._uplink_switch_port_channel_id
             # check that port-channel IDs are the same as on primary
-            if uplink_switch_port_channel_id is not None:
-                if uplink_switch_port_channel_id != peer_uplink_switch_port_channel_id:
-                    raise AristaAvdError(
-                        f"'uplink_switch_port_channel_id'expected_error_message on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and"
-                        f" is not matching {peer_uplink_switch_port_channel_id} set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG"
-                        " peers."
-                    )
+            if uplink_switch_port_channel_id is not None and uplink_switch_port_channel_id != peer_uplink_switch_port_channel_id:
+                msg = (
+                    f"'uplink_switch_port_channel_id'expected_error_message on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and"
+                    f" is not matching {peer_uplink_switch_port_channel_id} set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG"
+                    " peers."
+                )
+                raise AristaAvdError(
+                    msg,
+                )
             return peer_uplink_switch_port_channel_id
 
         # MLAG Primary or not MLAG.
@@ -111,19 +114,21 @@ class UplinksMixin:
         # produce an error if the uplink switch is MLAG and port-channel ID is above 2000
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(self.shared_utils.uplink_switches[0], required=True)
 
-        if uplink_switch_facts.shared_utils.mlag:
-            if not 1 <= uplink_switch_port_channel_id <= 2000:
-                raise AristaAvdError(
-                    f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}' on"
-                    f" '{self.shared_utils.hostname}'."
-                )
+        if uplink_switch_facts.shared_utils.mlag and not 1 <= uplink_switch_port_channel_id <= 2000:
+            msg = (
+                f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}' on"
+                f" '{self.shared_utils.hostname}'."
+            )
+            raise AristaAvdError(
+                msg,
+            )
 
         return uplink_switch_port_channel_id
 
     @cached_property
     def uplinks(self: EosDesignsFacts) -> list:
         """
-        Exposed in avd_switch_facts
+        Exposed in avd_switch_facts.
 
         List of uplinks with all parameters
 
@@ -136,21 +141,23 @@ class UplinksMixin:
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
-                raise AristaAvdError("'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'.")
+                msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'."
+                raise AristaAvdError(msg)
             get_uplink = self._get_p2p_vrfs_uplink
         elif self.shared_utils.uplink_type == "lan":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
-                raise AristaAvdError("'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'.")
+                msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'."
+                raise AristaAvdError(msg)
             if len(self.shared_utils.uplink_interfaces) > 1:
-                raise AristaAvdError(f"'uplink_type: lan' only supports a single uplink interface. Got {self.shared_utils.uplink_interfaces}.")
+                msg = f"'uplink_type: lan' only supports a single uplink interface. Got {self.shared_utils.uplink_interfaces}."
+                raise AristaAvdError(msg)
                 # TODO: Adjust error message when we add lan-port-channel support.
-                # raise AristaAvdError(
-                #     "'uplink_type: lan' only supports a single uplink interface. "
-                #     f"Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable."
-                # )
+                # uplink_type: lan' only supports a single uplink interface.
+                # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
             get_uplink = self._get_l2_uplink
         else:
-            raise AristaAvdError(f"Invalid uplink_type '{self.shared_utils.uplink_type}'.")
+            msg = f"Invalid uplink_type '{self.shared_utils.uplink_type}'."
+            raise AristaAvdError(msg)
 
         uplinks = []
         uplink_switches = self.shared_utils.uplink_switches
@@ -172,9 +179,7 @@ class UplinksMixin:
         return uplinks
 
     def _get_p2p_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
-        """
-        Return a single uplink dictionary for uplink_type p2p
-        """
+        """Return a single uplink dictionary for uplink_type p2p."""
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
         uplink = {
             "interface": uplink_interface,
@@ -220,9 +225,7 @@ class UplinksMixin:
         return uplink
 
     def _get_port_channel_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
-        """
-        Return a single uplink dictionary for uplink_type port-channel
-        """
+        """Return a single uplink dictionary for uplink_type port-channel."""
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
 
         # Reusing get_l2_uplink
@@ -251,14 +254,12 @@ class UplinksMixin:
 
     def _get_l2_uplink(
         self: EosDesignsFacts,
-        uplink_index: int,  # pylint: disable=unused-argument
+        uplink_index: int,  # pylint: disable=unused-argument # noqa: ARG002
         uplink_interface: str,
         uplink_switch: str,
         uplink_switch_interface: str,
     ) -> dict:
-        """
-        Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and TODO lan-port-channel.
-        """
+        """Return a single uplink dictionary for an L2 uplink. Reused for both uplink_type port-channel, lan and TODO: lan-port-channel."""
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
         uplink = {
             "interface": uplink_interface,
@@ -315,9 +316,7 @@ class UplinksMixin:
         return uplink
 
     def _get_p2p_vrfs_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
-        """
-        Return a single uplink dictionary for uplink_type p2p-vrfs
-        """
+        """Return a single uplink dictionary for uplink_type p2p-vrfs."""
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
 
         # Reusing regular p2p logic for main interface.
@@ -351,7 +350,12 @@ class UplinksMixin:
                     subinterface["structured_config"] = self.shared_utils.uplink_structured_config
 
                 append_if_not_duplicate(
-                    uplink["subinterfaces"], "vrf", subinterface, context="Uplink subinterfaces", context_keys=["interface", "vrf"], ignore_same_dict=True
+                    uplink["subinterfaces"],
+                    "vrf",
+                    subinterface,
+                    context="Uplink subinterfaces",
+                    context_keys=["interface", "vrf"],
+                    ignore_same_dict=True,
                 )
 
         return uplink
@@ -359,7 +363,7 @@ class UplinksMixin:
     @cached_property
     def uplink_peers(self: EosDesignsFacts) -> list:
         """
-        Exposed in avd_switch_facts
+        Exposed in avd_switch_facts.
 
         List of all **unique** uplink peers
 
@@ -373,6 +377,7 @@ class UplinksMixin:
     def _default_downlink_interfaces(self: EosDesignsFacts) -> list:
         """
         internal _default_downlink_interfaces set based on default_interfaces.
-        Parsed by downstream switches during eos_designs_facts phase
+
+        Parsed by downstream switches during eos_designs_facts phase.
         """
         return range_expand(get(self.shared_utils.default_interfaces, "downlink_interfaces", default=[]))

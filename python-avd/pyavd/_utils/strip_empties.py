@@ -3,8 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import TypeVar
 
-def strip_null_from_data(data, strip_values_tuple=(None,)):
+T = TypeVar("T")
+
+
+def strip_null_from_data(data: T, strip_values_tuple: tuple = (None,)) -> T:
     """
     strip_null_from_data Generic function to strip null entries regardless type of variable.
 
@@ -13,7 +17,7 @@ def strip_null_from_data(data, strip_values_tuple=(None,)):
     data : Any
         Data to look for null content to strip out
 
-    Returns
+    Returns:
     -------
     Any
         Cleaned data with no null.
@@ -25,9 +29,9 @@ def strip_null_from_data(data, strip_values_tuple=(None,)):
     return data
 
 
-def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {})):
+def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [], {})) -> list:
     """
-    strip_empties_from_list Remove entries with null value from a list
+    strip_empties_from_list Remove entries with null value from a list.
 
     Parameters
     ----------
@@ -36,7 +40,7 @@ def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {})):
     strip_values_tuple : tuple, optional
         Value to remove from data, by default (None, "", [], {},)
 
-    Returns
+    Returns:
     -------
     Any
         Cleaned list with no strip_values_tuple
@@ -52,9 +56,9 @@ def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {})):
     return new_data
 
 
-def strip_empties_from_dict(data, strip_values_tuple=(None, "", [], {})):
+def strip_empties_from_dict(data: dict, strip_values_tuple: tuple = (None, "", [], {})) -> dict:
     """
-    strip_empties_from_dict Remove entries with null value from a dict
+    strip_empties_from_dict Remove entries with null value from a dict.
 
     Parameters
     ----------
@@ -63,7 +67,7 @@ def strip_empties_from_dict(data, strip_values_tuple=(None, "", [], {})):
     strip_values_tuple : tuple, optional
         Value to remove from data, by default (None, "", [], {},)
 
-    Returns
+    Returns:
     -------
     Any
         Cleaned dict with no strip_values_tuple

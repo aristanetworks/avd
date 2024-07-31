@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get, get_item
-from ...j2filters import range_expand
+from pyavd._utils import get, get_item
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -15,15 +15,17 @@ if TYPE_CHECKING:
 
 class CvTopology:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def cv_topology(self: SharedUtils) -> dict | None:
         """
-        Returns the cv_topology for this device like
+        Returns the cv_topology for this device.
+
         {
             hostname: <str>,
             platform: <str | None>,
@@ -33,8 +35,8 @@ class CvTopology:
                     neighbor: <str>
                     neighbor_interface: <str>
                 }
-            ]
-
+            ].
+        }
         """
         if get(self.hostvars, "use_cv_topology") is not True:
             return None
@@ -52,11 +54,13 @@ class CvTopology:
     def cv_topology_platform(self: SharedUtils) -> str | None:
         if self.cv_topology is not None:
             return self.cv_topology.get("platform")
+        return None
 
     @cached_property
     def cv_topology_config(self: SharedUtils) -> dict:
         """
-        Returns dict with keys derived from cv topology (or empty dict)
+        Returns dict with keys derived from cv topology (or empty dict).
+
         {
             uplink_interfaces: <list>
             uplink_switches: <list>
@@ -64,7 +68,7 @@ class CvTopology:
             mlag_interfaces: <list>
             mlag_peer: <str>
             mgmt_interface: <str>
-        }
+        }.
         """
         if self.cv_topology is None:
             return {}
@@ -76,7 +80,7 @@ class CvTopology:
                 "uplink_interfaces",
                 required=True,
                 org_key="Found 'use_cv_topology:true' so 'default_interfaces.[].uplink_interfaces'",
-            )
+            ),
         )
         config = {}
         for uplink_interface in default_uplink_interfaces:
@@ -94,13 +98,13 @@ class CvTopology:
                 "mlag_interfaces",
                 required=True,
                 org_key="Found 'use_cv_topology:true' so 'default_interfaces.[].mlag_interfaces'",
-            )
+            ),
         )
         for mlag_interface in default_mlag_interfaces:
             if cv_interface := get_item(cv_interfaces, "name", mlag_interface):
                 config.setdefault("mlag_interfaces", []).append(cv_interface["name"])
                 # TODO: Set mlag_peer once we get a user-defined var for that.
-                # config["mlag_peer"] = cv_interface["neighbor"]
+                # TODO: config["mlag_peer"] = cv_interface["neighbor"]
 
         for cv_interface in cv_interfaces:
             if cv_interface["name"].startswith("Management"):

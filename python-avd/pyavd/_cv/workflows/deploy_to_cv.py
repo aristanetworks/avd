@@ -5,8 +5,9 @@ from __future__ import annotations
 
 from logging import getLogger
 
-from ..client import CVClient
-from ..client.exceptions import CVClientException
+from pyavd._cv.client import CVClient
+from pyavd._cv.client.exceptions import CVClientException
+
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import deploy_configs_to_cv
 from .deploy_cv_pathfinder_metadata_to_cv import deploy_cv_pathfinder_metadata_to_cv

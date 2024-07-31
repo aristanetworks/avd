@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """AVD schematools constants."""
+
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parents[2]

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get
+from pyavd._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -14,15 +14,16 @@ if TYPE_CHECKING:
 
 class BgpPeerGroupsMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def bgp_peer_groups(self: SharedUtils):
         """
-        Get bgp_peer_groups configurations or fallback to defaults
+        Get bgp_peer_groups configurations or fallback to defaults.
 
         Supporting legacy uppercase keys as well.
         """
@@ -61,7 +62,9 @@ class BgpPeerGroupsMixin:
 
                 if get(self.hostvars, f"bgp_peer_groups.{key}.bfd", default=default_bfd):
                     bgp_peer_groups[key]["bfd_timers"] = get(
-                        self.hostvars, f"bgp_peer_groups.{key}.bfd_timers", default={"interval": 1000, "min_rx": 1000, "multiplier": 10}
+                        self.hostvars,
+                        f"bgp_peer_groups.{key}.bfd_timers",
+                        default={"interval": 1000, "min_rx": 1000, "multiplier": 10},
                     )
 
         return bgp_peer_groups

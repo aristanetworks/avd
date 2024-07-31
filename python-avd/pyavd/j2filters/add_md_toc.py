@@ -26,23 +26,26 @@ def add_md_toc(md_input: str, skip_lines: int = 0, toc_levels: int = 3, toc_mark
         TOC will be inserted or updated between two of these markers in the MD file
         default: '<!-- toc -->'
 
-    Returns
+    Returns:
     -------
     str
         MD with added TOC
     """
-
     if not isinstance(skip_lines, int):
-        raise TypeError(f"add_md_toc 'skip_lines' argument must be an integer. Got '{skip_lines}'({type(skip_lines)}).")
+        msg = f"add_md_toc 'skip_lines' argument must be an integer. Got '{skip_lines}'({type(skip_lines)})."
+        raise TypeError(msg)
 
     if not isinstance(toc_levels, int) or toc_levels < 1:
-        raise TypeError(f"add_md_toc 'toc_levels' argument must be >0. Got '{toc_levels}'({type(skip_lines)}).")
+        msg = f"add_md_toc 'toc_levels' argument must be >0. Got '{toc_levels}'({type(skip_lines)})."
+        raise TypeError(msg)
 
     if not isinstance(toc_marker, str) or not toc_marker:
-        raise TypeError(f"add_md_toc 'toc_marker' argument must be a non-empty string. Got '{toc_marker}'({type(skip_lines)}).")
+        msg = f"add_md_toc 'toc_marker' argument must be a non-empty string. Got '{toc_marker}'({type(skip_lines)})."
+        raise TypeError(msg)
 
     if not isinstance(md_input, str):
-        raise TypeError(f"add_md_toc expects a string. Got {type(md_input)}.")
+        msg = f"add_md_toc expects a string. Got {type(md_input)}."
+        raise TypeError(msg)
 
     md_lines = md_input.split("\n")
     toc_marker_positions = []
@@ -75,8 +78,9 @@ def add_md_toc(md_input: str, skip_lines: int = 0, toc_levels: int = 3, toc_mark
             toc_lines.append(f"{prefix}[{text}](#{anchor_id})")
 
     if len(toc_marker_positions) != 2:
+        msg = f"add_md_toc expects exactly two occurrences of the toc marker '{toc_marker}' on their own lines. Found {len(toc_marker_positions)} occurrences."
         raise ValueError(
-            f"add_md_toc expects exactly two occurrences of the toc marker '{toc_marker}' on their own lines. Found {len(toc_marker_positions)} occurrences."
+            msg,
         )
 
     return "\n".join(md_lines[: toc_marker_positions[0]] + toc_lines + md_lines[toc_marker_positions[1] + 1 :])
@@ -95,7 +99,7 @@ def _get_line_info(line: str, all_anchor_ids: list[str]) -> (int, str, str):
     all_anchor_ids: list
         List of existing anchor_ids
 
-    Returns
+    Returns:
     -------
     int, str, str:
         The level of the heading, the text of the heading and the anchor_id for the heading.
@@ -110,6 +114,7 @@ def _get_line_info(line: str, all_anchor_ids: list[str]) -> (int, str, str):
 def _get_anchor_id(text: str, all_anchor_ids: list[str]) -> str:
     """
     Returns a unique anchor_id after adding it to 'all_anchor_ids'.
+
     The logic here follow the auto-id generation algorithm of the MarkDown spec.
 
     Parameters
@@ -119,7 +124,7 @@ def _get_anchor_id(text: str, all_anchor_ids: list[str]) -> str:
     all_anchor_ids: list
         List of existing anchor_ids
 
-    Returns
+    Returns:
     -------
     str:
         The anchor ID for the text.

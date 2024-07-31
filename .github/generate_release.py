@@ -3,11 +3,13 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
-generate_release.py
+generate_release.py.
 
 This script is used to generate the release.yml file as per
 https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
 """
+
+from typing import Any
 
 import yaml
 
@@ -47,13 +49,14 @@ CATEGORIES = {
 
 class SafeDumper(yaml.SafeDumper):
     """
-    Make yamllint happy
-    https://github.com/yaml/pyyaml/issues/234#issuecomment-765894586
+    Make yamllint happy.
+
+    yaml/issues/234#issuecomment-765894586.
     """
 
     # pylint: disable=R0901,W0613,W1113
 
-    def increase_indent(self, flow=False, *args, **kwargs):
+    def increase_indent(self, flow=False, *_args: Any, **_kwargs: Any) -> None:
         return super().increase_indent(flow=flow, indentless=False)
 
 
@@ -89,14 +92,14 @@ if __name__ == "__main__":
         {
             "title": "Breaking Changes",
             "labels": breaking_labels,
-        }
+        },
     )
     # Add fixes in eos_cli_config_gen
     categories_list.append(
         {
             "title": "Fixed issues in eos_cli_config_gen",
             "labels": ["rn: Fix(eos_cli_config_gen)"],
-        }
+        },
     )
 
     # Add fixes in eos_designs
@@ -104,7 +107,7 @@ if __name__ == "__main__":
         {
             "title": "Fixed issues in eos_designs",
             "labels": ["rn: Fix(eos_designs)"],
-        }
+        },
     )
     # Add fixes in eos_cli_config_gen|eos_designs or eos_designs|eos_cli_config_gen
     categories_list.append(
@@ -114,7 +117,7 @@ if __name__ == "__main__":
                 "rn: Fix(eos_cli_config_gen|eos_designs)",
                 "rn: Fix(eos_designs|eos_cli_config_gen)",
             ],
-        }
+        },
     )
 
     # Add other fixes
@@ -125,7 +128,7 @@ if __name__ == "__main__":
         {
             "title": "Other Fixed issues",
             "labels": other_fixes_labels,
-        }
+        },
     )
 
     # Add Documentation - except for PyAVD
@@ -136,7 +139,7 @@ if __name__ == "__main__":
         {
             "title": "Documentation",
             "labels": doc_labels,
-        }
+        },
     )
 
     # Add new features in eos_cli_config_gen
@@ -144,7 +147,7 @@ if __name__ == "__main__":
         {
             "title": "New features and enhancements in eos_cli_config_gen",
             "labels": ["rn: Feat(eos_cli_config_gen)"],
-        }
+        },
     )
 
     # Add new features in eos_designs
@@ -152,7 +155,7 @@ if __name__ == "__main__":
         {
             "title": "New features and enhancements in eos_designs",
             "labels": ["rn: Feat(eos_designs)"],
-        }
+        },
     )
 
     # Add new features in both eos_cli_config_gen|eos_designs or eos_designs|eos_cli_config_gen
@@ -163,7 +166,7 @@ if __name__ == "__main__":
                 "rn: Feat(eos_cli_config_gen|eos_designs)",
                 "rn: Feat(eos_designs|eos_cli_config_gen)",
             ],
-        }
+        },
     )
 
     # Add other new features
@@ -174,7 +177,7 @@ if __name__ == "__main__":
         {
             "title": "Other new features and enhancements",
             "labels": other_feat_labels,
-        }
+        },
     )
 
     # Add all PyAVD changes
@@ -183,7 +186,7 @@ if __name__ == "__main__":
         {
             "title": "PyAVD Changes",
             "labels": pyavd_labels,
-        }
+        },
     )
 
     # Add the catch all
@@ -191,7 +194,7 @@ if __name__ == "__main__":
         {
             "title": "Other Changes",
             "labels": ["*"],
-        }
+        },
     )
     with open(r"release.yml", "w", encoding="utf-8") as release_file:
         yaml.dump(
@@ -199,7 +202,7 @@ if __name__ == "__main__":
                 "changelog": {
                     "exclude": {"labels": exclude_list},
                     "categories": categories_list,
-                }
+                },
             },
             release_file,
             Dumper=SafeDumper,

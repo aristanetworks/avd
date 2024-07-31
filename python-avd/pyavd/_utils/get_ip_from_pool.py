@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import ipaddress
 
-from .._errors import AristaAvdError
+from pyavd._errors import AristaAvdError
 
 
 def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
@@ -19,17 +19,18 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
     Returns:
         IP address without mask
     """
-
     pool_network = ipaddress.ip_network(pool, strict=False)
     prefixlen_diff = prefixlen - pool_network.prefixlen
 
     try:
         subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
     except ValueError as e:
-        raise AristaAvdError(f"Prefix length {prefixlen} is smaller than pool network prefix length {pool_network.prefixlen}") from e
+        msg = f"Prefix length {prefixlen} is smaller than pool network prefix length {pool_network.prefixlen}"
+        raise AristaAvdError(msg) from e
 
     if (subnet_offset + 1) * subnet_size > pool_network.num_addresses:
-        raise AristaAvdError(f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}")
+        msg = f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}"
+        raise AristaAvdError(msg)
 
     subnet = ipaddress.ip_network((int(pool_network.network_address) + subnet_offset * subnet_size, prefixlen))
 
@@ -45,6 +46,7 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
             ip = subnet[ip_offset]
 
     except IndexError as e:
-        raise AristaAvdError(f"Unable to get {ip_offset + 1} hosts in subnet {subnet} taken from pool {pool}") from e
+        msg = f"Unable to get {ip_offset + 1} hosts in subnet {subnet} taken from pool {pool}"
+        raise AristaAvdError(msg) from e
 
     return str(ip)

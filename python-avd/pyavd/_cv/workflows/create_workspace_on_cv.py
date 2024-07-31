@@ -4,11 +4,15 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TYPE_CHECKING
 
-from ..api.arista.workspace.v1 import WorkspaceState
-from ..client import CVClient
-from ..client.exceptions import CVResourceInvalidState, CVResourceNotFound
-from .models import CVWorkspace
+from pyavd._cv.api.arista.workspace.v1 import WorkspaceState
+from pyavd._cv.client.exceptions import CVResourceInvalidState, CVResourceNotFound
+
+if TYPE_CHECKING:
+    from pyavd._cv.client import CVClient
+
+    from .models import CVWorkspace
 
 LOGGER = getLogger(__name__)
 
@@ -16,6 +20,7 @@ LOGGER = getLogger(__name__)
 async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) -> None:
     """
     Create or update a Workspace from the given workspace object.
+
     In-place update the workspace state.
     """
     LOGGER.info("create_workspace_on_cv: %s", workspace)
@@ -24,7 +29,8 @@ async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) ->
         if existing_workspace.state == WorkspaceState.PENDING:
             workspace.state = "pending"
         else:
-            raise CVResourceInvalidState("The requested workspace is not in state 'pending'")
+            msg = "The requested workspace is not in state 'pending'"
+            raise CVResourceInvalidState(msg)
     except CVResourceNotFound:
         await cv_client.create_workspace(workspace_id=workspace.id, display_name=workspace.name, description=workspace.description)
         workspace.state = "pending"

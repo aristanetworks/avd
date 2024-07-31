@@ -2,12 +2,12 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from collections import ChainMap
+from collections.abc import Generator
+from typing import Any, NoReturn
 
 import jsonschema
 import jsonschema._types
 import jsonschema.validators
-
-from .._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
 # Special handling of jsonschema <4.18 vs. >=4.18
 try:
@@ -15,8 +15,10 @@ try:
 except ImportError:
     import jsonschema._keywords as jsonschema_validators
 
+from pyavd._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
-def _unique_keys_validator(validator, unique_keys: list[str], instance: list, _schema: dict):
+
+def _unique_keys_validator(validator: object, unique_keys: list[str], instance: list, _schema: dict) -> Generator:
     if not validator.is_type(unique_keys, "list"):
         return
 
@@ -32,7 +34,7 @@ def _unique_keys_validator(validator, unique_keys: list[str], instance: list, _s
             continue
 
         # Separate all paths and values
-        paths, values = zip(*paths_and_values)
+        paths, values = zip(*paths_and_values, strict=False)
 
         key = unique_key.split(".")[-1]
         is_nested_key = unique_key != key
@@ -47,7 +49,7 @@ def _unique_keys_validator(validator, unique_keys: list[str], instance: list, _s
                 )
 
 
-def _primary_key_validator(validator, primary_key: str, instance: list, schema: dict):
+def _primary_key_validator(validator: object, primary_key: str, instance: list, schema: dict) -> Generator:
     if not validator.is_type(primary_key, "str"):
         return
 
@@ -65,15 +67,16 @@ def _primary_key_validator(validator, primary_key: str, instance: list, schema: 
         yield from _unique_keys_validator(validator, [primary_key], instance, schema)
 
 
-def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
+def _keys_validator(validator: object, keys: dict, instance: dict, schema: dict) -> Generator:
     """
-    This function validates each key with the relevant subschema
+    This function validates each key with the relevant subschema.
+
     It also includes various child key validations,
     which can only be implemented with access to the parent "keys" instance.
     - Expand dynamic_keys
     - Validate "allow_other_keys" (default is false)
     - Validate "required" under child keys
-    - Expand "dynamic_valid_values" under child keys (don't perform validation)
+    - Expand "dynamic_valid_values" under child keys (don't perform validation).
     """
     if not validator.is_type(instance, "object"):
         return
@@ -119,40 +122,38 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
         )
 
 
-def _dynamic_keys_validator(validator, _dynamic_keys: dict, instance: dict, schema: dict):
-    """
-    This function triggers the regular "keys" validator in case only dynamic_keys is set.
-    """
+def _dynamic_keys_validator(validator: object, _dynamic_keys: dict, instance: dict, schema: dict) -> Generator:
+    """This function triggers the regular "keys" validator in case only dynamic_keys is set."""
     if "keys" not in schema:
         yield from _keys_validator(validator, {}, instance, schema)
 
 
-def _ref_validator(validator, ref, instance: dict, schema: dict):
-    raise NotImplementedError("$ref must be resolved before using AvdValidator")
+def _ref_validator(_validator: object, _ref: str, _instance: dict, _schema: dict) -> NoReturn:
+    msg = "$ref must be resolved before using AvdValidator"
+    raise NotImplementedError(msg)
 
 
-def _valid_values_validator(_validator, valid_values, instance, _schema: dict):
-    """
-    This function validates if the instance conforms to the "valid_values"
-    """
+def _valid_values_validator(_validator: object, valid_values: list, instance: Any, _schema: dict) -> Generator:
+    """This function validates if the instance conforms to the "valid_values"."""
     if instance not in valid_values:
         yield jsonschema.ValidationError(f"'{instance}' is not one of {valid_values}")
 
 
-def _is_dict(_validator, instance):
-    return isinstance(instance, (dict, ChainMap))
+def _is_dict(_validator: object, instance: Any) -> bool:
+    return isinstance(instance, dict | ChainMap)
 
 
 class AvdValidator:
-    def __new__(cls, schema: dict, store: dict):
+    def __new__(cls, schema: dict, store: dict) -> object:
         """
         AvdSchemaValidator is used to validate AVD Data.
+
         It uses a combination of our own validators and builtin jsonschema validators
         mapped to our own keywords.
         We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
         since the same TypeChecker is used by the validators themselves.
         """
-        ValidatorClass = jsonschema.validators.create(
+        validator_cls = jsonschema.validators.create(
             meta_schema=store["avd_meta_schema"],
             validators={
                 "$ref": _ref_validator,
@@ -186,8 +187,7 @@ class AvdValidator:
                     "bool": jsonschema._types.is_bool,
                     "list": jsonschema._types.is_array,
                     "int": jsonschema._types.is_integer,
-                }
+                },
             ),
-            # version="0.1",
         )
-        return ValidatorClass(schema)
+        return validator_cls(schema)

@@ -5,9 +5,7 @@ from itertools import groupby as itergroupby
 
 
 def groupby(list_of_dictionaries: list, key: str):
-    """
-    Group list of dictionaries by key
-    """
+    """Group list of dictionaries by key."""
 
     def getkey(dictionary: dict):
         return dictionary.get(key)

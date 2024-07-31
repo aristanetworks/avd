@@ -21,9 +21,6 @@
 # {% if C is arista.avd.defined("c") %}  =>  true
 # {% if D is arista.avd.defined("c") %}  =>  false
 
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
 
 from ansible.errors import AnsibleTemplateError
 
@@ -38,7 +35,7 @@ except ImportError as e:
         AnsibleTemplateError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 
@@ -97,6 +94,6 @@ _value:
 """
 
 
-class TestModule(object):
-    def tests(self):
+class TestModule:
+    def tests(self) -> dict:
         return {"defined": wrap_test(PLUGIN_NAME)(defined)}

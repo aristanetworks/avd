@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, annotations, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 import json
 import logging
@@ -95,7 +93,8 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         if not HAS_PYAVD:
-            raise AnsibleActionFail("The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error")
+            msg = "The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
+            raise AnsibleActionFail(msg)
 
         # Setup module logging
         setup_module_logging(result)
@@ -112,9 +111,7 @@ class ActionModule(ActionBase):
         return run(self.deploy(validated_args, result))
 
     async def deploy(self, validated_args: dict, result: dict):
-        """
-        Prepare data, perform deployment and convert result data.
-        """
+        """Prepare data, perform deployment and convert result data."""
         LOGGER.info("deploy: %s", {**validated_args, "cv_token": "<removed>"})
         try:
             # Create CloudVision object
@@ -171,7 +168,7 @@ class ActionModule(ActionBase):
                         "warnings": result_object.warnings,
                         "errors": result_object.errors,
                         "failed": result_object.failed,
-                    }
+                    },
                 )
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
@@ -186,9 +183,16 @@ class ActionModule(ActionBase):
         return result
 
     async def build_objects(
-        self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
+        self,
+        device_list: list[str],
+        structured_config_dir: str,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
     ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
+        Build objects.
+
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
@@ -196,7 +200,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
 
         Workflow:
             Per device:
@@ -223,9 +227,16 @@ class ActionModule(ActionBase):
         return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
 
     async def build_object_for_device(
-        self, hostname: str, structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
+        self,
+        hostname: str,
+        structured_config_dir: str,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
     ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
+        Build objects for one device.
+
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
@@ -233,7 +244,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
 
         Workflow:
             Per device:
@@ -322,13 +333,13 @@ class ActionModule(ActionBase):
 
 def setup_module_logging(result: dict) -> None:
     """
-    Add a Handler to copy the logs from the plugin into Ansible output based on their level
+    Add a Handler to copy the logs from the plugin into Ansible output based on their level.
 
     Parameters:
         result: The dictionary used for the ansible module results
     """
     python_to_ansible_handler = PythonToAnsibleHandler(result, display)
     LOGGER.addHandler(python_to_ansible_handler)
-    # TODO mechanism to manipulate the logger globally for pyavd
+    # TODO: mechanism to manipulate the logger globally for pyavd
     # Keep debug to be able to see logs with `-v` and `-vvv`
     LOGGER.setLevel(logging.DEBUG)

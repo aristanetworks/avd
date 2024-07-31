@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 class PythonToAnsibleHandler(Handler):
     """
-    Logging Handler that makes a bridge between Ansible display and plugin Result objects
+    Logging Handler that makes a bridge between Ansible display and plugin Result objects.
 
     It is used to:
     * send ERROR or CRITICAL logs to result[stderr] and failed the plugins
@@ -31,15 +31,13 @@ class PythonToAnsibleHandler(Handler):
         self.result = result
 
     def emit(self, record: LogRecord) -> None:
-        """
-        Custom emit function that reads the message level
-        """
+        """Custom emit function that reads the message level."""
         message = self._format_msg(record)
         if record.levelno in [logging.CRITICAL, logging.ERROR]:
             self.result.setdefault("stderr_lines", []).append(message)
-            self.result["stderr"] = self.result.setdefault("stderr", "") + f"{str(message)}\n"
+            self.result["stderr"] = self.result.setdefault("stderr", "") + f"{message!s}\n"
             self.result["failed"] = True
-        elif record.levelno in [logging.WARN, logging.WARNING]:
+        elif record.levelno in [logging.WARNING, logging.WARNING]:
             self.result.setdefault("warnings", []).append(message)
         elif record.levelno == logging.INFO:
             self.display.v(str(message))
@@ -47,27 +45,22 @@ class PythonToAnsibleHandler(Handler):
             self.display.vvv(str(message))
 
     def _format_msg(self, record: LogRecord) -> str:
-        """
-        Used to format an augmented LogRecord that contains the 'hostname' attribute
-        """
+        """Used to format an augmented LogRecord that contains the 'hostname' attribute."""
         return f"<{record.hostname}> {self.format(record)}" if hasattr(record, "hostname") else self.format(record)
 
 
 class PythonToAnsibleContextFilter(Filter):
     """
-    Logging Filter to extend the LogRecord that goes through it with an
-    extra attribute 'hostname'. For this, it needs to be initialized with a hostname.
+    Logging Filter to extend the LogRecord that goes through it with an extra attribute 'hostname'. For this, it needs to be initialized with a hostname.
 
     This extra attribute can then be used in the PythonToAnsibleHandler to format the messages
     """
 
-    def __init__(self, hostname: str):
+    def __init__(self, hostname: str) -> None:
         super().__init__()
         self.hostname = hostname
 
     def filter(self, record: LogRecord) -> bool:
-        """
-        Add self.hostname as an attribute to the LogRecord
-        """
+        """Add self.hostname as an attribute to the LogRecord."""
         record.hostname = self.hostname
         return True

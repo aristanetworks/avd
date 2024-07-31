@@ -15,15 +15,13 @@ if TYPE_CHECKING:
 class RouterTrafficEngineering(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_traffic_engineering(self: AvdStructuredConfigOverlay) -> dict | None:
-        """
-        Return structured config for router traffic-engineering
-        """
-
+        """Return structured config for router traffic-engineering."""
         if not self.shared_utils.is_cv_pathfinder_router:
             return None
 

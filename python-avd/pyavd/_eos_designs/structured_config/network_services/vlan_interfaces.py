@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import append_if_not_duplicate, default, get, strip_empties_from_dict
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import append_if_not_duplicate, default, get, strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,17 +18,17 @@ if TYPE_CHECKING:
 class VlanInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def vlan_interfaces(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for vlan_interfaces
+        Return structured config for vlan_interfaces.
 
         Consist of svis and mlag peering vlans from filtered tenants
         """
-
         if not (self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
             return None
 
@@ -65,20 +66,21 @@ class VlanInterfacesMixin(UtilsMixin):
 
         return None
 
-    def _get_vlan_interface_config_for_svi(self: AvdStructuredConfigNetworkServices, svi, vrf) -> dict:
-        def _check_virtual_router_mac_address(vlan_interface_config: dict, variables: list):
+    def _get_vlan_interface_config_for_svi(self: AvdStructuredConfigNetworkServices, svi: dict, vrf: dict) -> dict:
+        def _check_virtual_router_mac_address(vlan_interface_config: dict, variables: list) -> None:
             """
+            Error if virtual router mac address is required but missing.
+
             Check if any variable in the list of variables is not None in vlan_interface_config
-            and if it is the case, raise an Exception if virtual_router_mac_address is None
+            and if it is the case, raise an Exception if virtual_router_mac_address is None.
 
             NOTE: SVI settings are also used for subinterfaces for uplink_type: 'lan'.
             So any changes here may also be needed in underlay.utils.UtilsMixin._get_l2_as_subint().
             """
             if any(vlan_interface_config.get(var) for var in variables) and self.shared_utils.virtual_router_mac_address is None:
                 quoted_vars = [f"'{var}'" for var in variables]
-                raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
-                )
+                msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
+                raise AristaAvdMissingVariableError(msg)
 
         interface_name = f"Vlan{svi['id']}"
         vlan_interface_config = {
@@ -116,9 +118,12 @@ class VlanInterfacesMixin(UtilsMixin):
 
             if "ip_address_virtual" in vlan_interface_config:
                 if (vrf_diagnostic_loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
-                    raise AristaAvdMissingVariableError(
+                    msg = (
                         f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{svi['tenant']}'."
                         "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
+                    )
+                    raise AristaAvdMissingVariableError(
+                        msg,
                     )
                 pim_config_ipv4["local_interface"] = f"Loopback{vrf_diagnostic_loopback}"
 
@@ -143,7 +148,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
             if vlan_interface_config.get("ipv6_address_virtuals"):
                 # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
-                vlan_interface_config["ipv6_enable"] = default(vlan_interface_config["ipv6_enable"], True)
+                vlan_interface_config["ipv6_enable"] = default(vlan_interface_config["ipv6_enable"], True)  # noqa: FBT003
 
         if vrf["name"] != "default":
             vlan_interface_config["vrf"] = vrf["name"]
@@ -153,10 +158,11 @@ class VlanInterfacesMixin(UtilsMixin):
 
         return strip_empties_from_dict(vlan_interface_config)
 
-    def _get_vlan_interface_config_for_mlag_peering(self: AvdStructuredConfigNetworkServices, vrf) -> dict:
+    def _get_vlan_interface_config_for_mlag_peering(self: AvdStructuredConfigNetworkServices, vrf: dict) -> dict:
         """
         Build config for MLAG peering SVI for the given SVI.
-        Called from vlan_interfaces and prefix_lists
+
+        Called from vlan_interfaces and prefix_lists.
         """
         vlan_interface_config = {
             "tenant": vrf["tenant"],

@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-__metaclass__ = type
 
 import os
 from collections import namedtuple
@@ -21,7 +20,7 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
 
 
 @pytest.mark.parametrize(
-    "mocked_version, expected_return",
+    ("mocked_version", "expected_return"),
     [
         (
             (2, 2, 2, "final", 0),
@@ -37,10 +36,8 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
         ),
     ],
 )
-def test__validate_python_version(mocked_version, expected_return):
-    """
-    TODO - could add the expected stderr
-    """
+def test__validate_python_version(mocked_version, expected_return) -> None:
+    """TODO: - could add the expected stderr."""
     info = {}
     result = {}  # As in ansible module result
     version_info = namedtuple("version_info", "major minor micro releaselevel serial")
@@ -62,7 +59,7 @@ def test__validate_python_version(mocked_version, expected_return):
 
 
 @pytest.mark.parametrize(
-    "n_reqs, mocked_version, requirement_version, expected_return",
+    ("n_reqs", "mocked_version", "requirement_version", "expected_return"),
     [
         pytest.param(
             1,
@@ -101,11 +98,11 @@ def test__validate_python_version(mocked_version, expected_return):
         ),
     ],
 )
-def test__validate_python_requirements(n_reqs, mocked_version, requirement_version, expected_return):
+def test__validate_python_requirements(n_reqs, mocked_version, requirement_version, expected_return) -> None:
     """
-    Running with n_reqs requirements
+    Running with n_reqs requirements.
 
-    TODO - check the results
+    TODO: - check the results
          - not testing for wrongly formatted requirements
     """
     result = {}
@@ -119,7 +116,7 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
 
 
 @pytest.mark.parametrize(
-    "mocked_running_version, deprecated_version, expected_return",
+    ("mocked_running_version", "deprecated_version", "expected_return"),
     [
         pytest.param(
             "2.16",
@@ -141,10 +138,8 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
         # ),
     ],
 )
-def test__validate_ansible_version(mocked_running_version, deprecated_version, expected_return):
-    """
-    TODO - check that the requires_ansible is picked up from the correct place
-    """
+def test__validate_ansible_version(mocked_running_version, deprecated_version, expected_return) -> None:
+    """TODO: - check that the requires_ansible is picked up from the correct place."""
     info = {}
     result = {}  # As in ansible module result
     ret = _validate_ansible_version("arista.avd", mocked_running_version, info, result)
@@ -155,7 +150,7 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
 
 
 @pytest.mark.parametrize(
-    "n_reqs, mocked_version, requirement_version, expected_return",
+    ("n_reqs", "mocked_version", "requirement_version", "expected_return"),
     [
         pytest.param(
             1,
@@ -194,11 +189,11 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
         ),
     ],
 )
-def test__validate_ansible_collections(n_reqs, mocked_version, requirement_version, expected_return):
+def test__validate_ansible_collections(n_reqs, mocked_version, requirement_version, expected_return) -> None:
     """
-    Running with n_reqs requirements
+    Running with n_reqs requirements.
 
-    TODO - check the results
+    TODO: - check the results
          - not testing for wrongly formatted collection.yml file
     """
     result = {}
@@ -211,12 +206,17 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
             for collection in metadata["collections"]:
                 collection["version"] = requirement_version
 
-    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.yaml.safe_load") as patched_safe_load, patch(
-        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path"
-    ) as patched__get_collection_path, patch(
-        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version"
-    ) as patched__get_collection_version, patch(
-        "ansible_collections.arista.avd.plugins.action.verify_requirements.open"
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.yaml.safe_load") as patched_safe_load,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path",
+        ) as patched__get_collection_path,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
+        ) as patched__get_collection_version,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements.open",
+        ),
     ):
         patched_safe_load.return_value = metadata
         patched__get_collection_path.return_value = "dummy"
@@ -229,18 +229,20 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
         assert ret == expected_return
 
 
-def test__get_running_collection_version_git_not_installed():
-    """
-    Verify that when git is not found in PATH the function returns properly
-    """
+def test__get_running_collection_version_git_not_installed() -> None:
+    """Verify that when git is not found in PATH the function returns properly."""
     # setting PATH to empty string to make sure git is not present
     os.environ["PATH"] = ""
     # setting ANSIBLE_VERBOSITY to trigger the log message when raising the exception
     os.environ["ANSIBLE_VERBOSITY"] = "3"
     result = {}
-    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path, patch(
-        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version"
-    ) as patched__get_collection_version, patch("ansible_collections.arista.avd.plugins.action.verify_requirements.display") as patched_display:
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
+        patch(
+            "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
+        ) as patched__get_collection_version,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.display") as patched_display,
+    ):
         patched__get_collection_path.return_value = "."
         patched__get_collection_version.return_value = "42.0.0"
 
