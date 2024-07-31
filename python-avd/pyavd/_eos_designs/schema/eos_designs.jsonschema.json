@@ -7222,6 +7222,9 @@
                 "title": "Units Packets"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -24657,6 +24660,9 @@
                           "title": "Units Packets"
                         }
                       },
+                      "required": [
+                        "name"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}

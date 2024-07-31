@@ -6638,6 +6638,9 @@
                 "title": "Units Packets"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
