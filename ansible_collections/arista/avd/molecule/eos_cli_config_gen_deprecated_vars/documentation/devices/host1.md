@@ -616,7 +616,6 @@ interface Ethernet47
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
-| Port-Channel30 | deprecate_filters_testing | switched | access | - | - | - | - | - | - | deaf:beed:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 
 ##### Flexible Encapsulation Interfaces
@@ -650,14 +649,6 @@ interface Port-Channel2.1000
       client dot1q 100 network client
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
-!
-interface Port-Channel30
-   description deprecate_filters_testing
-   switchport
-   evpn ethernet-segment
-      identifier deaf:beed:0303:0202:0101
       route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
 !
