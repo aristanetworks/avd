@@ -11,7 +11,6 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [RADIUS Server](#radius-server)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -244,25 +243,6 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-```
-
-### RADIUS Server
-
-#### RADIUS Server Hosts
-
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
-| mgt | 10.10.10.157 | - | - | - | - |
-| default | 10.10.10.249 | - | - | - | - |
-| default | 10.10.10.158 | - | - | - | - |
-
-#### RADIUS Server Device Configuration
-
-```eos
-!
-radius-server host 10.10.10.157 vrf mgt key 7 <removed>
-radius-server host 10.10.10.249 key 7 <removed>
-radius-server host 10.10.10.158 key 7 <removed>
 ```
 
 ## Monitoring
