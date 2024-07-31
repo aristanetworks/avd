@@ -19,7 +19,6 @@
   - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Flow Tracking](#flow-tracking)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
@@ -421,61 +420,6 @@ vmtracer session session_2
    url https://192.168.0.10
    username user1
    password 7 encrypted_password
-```
-
-### Flow Tracking
-
-#### Flow Tracking Sampled
-
-| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
-| ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
-| 666 | default | disabled | disabled | - |
-
-##### Trackers Summary
-
-| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
-| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-| T1 | 3666 | 5666 | True | 0 |  | - |
-| T2 | - | - | False | 1 |  | 614400 |
-| T3 | - | - | - | 4 |  | 100000 |
-
-##### Exporters Summary
-
-| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
-| ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
-| T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
-
-#### Flow Tracking Device Configuration
-
-```eos
-!
-flow tracking sampled
-   sample 666
-   tracker T1
-      record export on inactive timeout 3666
-      record export on interval 5666
-      record export mpls
-   tracker T2
-      exporter T2-E1
-         collector 42.42.42.42
-      flow table size 614400 entries
-   tracker T3
-      exporter T3-E1
-      exporter T3-E2
-         collector 10.10.10.10 port 777
-      exporter T3-E3
-         collector this.is.my.awesome.collector.dns.name port 888
-         format ipfix version 10
-         local interface Management1
-         template interval 424242
-      exporter T3-E4
-         collector dead:beef::cafe
-      flow table size 100000 entries
-   no shutdown
 ```
 
 ## Hardware TCAM Profile

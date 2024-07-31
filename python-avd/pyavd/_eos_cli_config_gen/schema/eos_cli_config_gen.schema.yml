@@ -3828,6 +3828,7 @@ keys:
     documentation_options:
       table: flow-tracking
     deprecation:
+      removed: true
       warning: true
       new_key: flow_tracking
       remove_in_version: v5.0.0
