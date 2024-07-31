@@ -70,7 +70,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 },
             )
 
-        # TODO should we keep this upper - or use it consistantly everywhere
+        # TODO should we keep this upper - or use it consistently everywhere
         if data.peer:
             link_peer = str(data.peer).upper()
 
