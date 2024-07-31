@@ -29,7 +29,7 @@ def convert(text: str, ignore_case: bool) -> int | str:
     return text.lower() if ignore_case else text
 
 
-def natural_sort(iterable: list | dict | str | None, sort_key: str | None = None, *, strict: bool = False, ignore_case: bool = True) -> list:
+def natural_sort(iterable: list | dict | str | None, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True) -> list:
     """Sorts an iterable in a natural (alphanumeric) order.
 
     Parameters
