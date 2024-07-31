@@ -44,7 +44,9 @@ class AvdInterfaceDescriptions(AvdFacts):
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
-        Called for each underlay ethernet interface.
+        Build an underlay Ethernet interface description.
+
+        If a jinja template is configured, use it.
 
         Available data:
             - link_type
@@ -83,7 +85,9 @@ class AvdInterfaceDescriptions(AvdFacts):
 
     def underlay_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
-        Called for each underlay port-channel interface.
+        Build an underlay Port-Channel interface description.
+
+        If a jinja template is configured, use it.
 
         Available data:
             - peer
@@ -113,10 +117,12 @@ class AvdInterfaceDescriptions(AvdFacts):
 
     def mlag_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
-        Called for each mlag ethernet interface.
+        Build an MLAG Ethernet interface description.
+
+        If a jinja template is configured, use it.
+        If not default to MLAG_PEER_<PEER>_<PEER_INTERFACE>
 
         Available data:
-            - peer
             - peer_interface
             - mpls_overlay_role
             - mpls_lsr
@@ -126,15 +132,16 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.interface_descriptions_templates.get("mlag_ethernet_interfaces"):
             return self._template(template_path, mlag_interface=data.peer_interface)
 
-        return f"MLAG_PEER_{data.peer}_{data.peer_interface}"
+        return f"MLAG_PEER_{data.mlag_peer}_{data.peer_interface}"
 
     def mlag_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
-        Called for each mlag port-channel interface.
+        Build an MLAG Port-Channel interface description.
+
+        If a jinja template is configured, use it.
+        If not, use MLAG_PEER_<PEER>_Po<MLAG_PORT_CHANNEL_ID>
 
         Available data:
-            - peer
-            - peer_channel_group_id
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
@@ -143,7 +150,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.interface_descriptions_templates.get("mlag_port_channel_interfaces"):
             return self._template(template_path)
 
-        return f"MLAG_PEER_{data.peer}_Po{data.peer_channel_group_id}"
+        return f"MLAG_PEER_{data.mlag_peer}_Po{data.mlag_port_channel_id}"
 
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
