@@ -72,7 +72,9 @@ class LoopbackInterfacesMixin(UtilsMixin):
         ):
             vtep_loopback = {
                 "name": self.shared_utils.vtep_loopback,
-                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(),
+                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
+                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
+                ),
                 "shutdown": False,
                 "ip_address": f"{self.shared_utils.vtep_ip}/32",
             }
