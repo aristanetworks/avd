@@ -70,13 +70,14 @@ class AvdInterfaceDescriptions(AvdFacts):
                 },
             )
 
+        # TODO should we keep this upper - or use it consistantly everywhere
+        if data.peer:
+            link_peer = str(data.peer).upper()
+
         if data.link_type == "underlay_p2p":
-            # TODO should we keep this upper?
-            if data.peer:
-                link_peer = str(data.peer).upper()
             desc = f"P2P_LINK_TO_{link_peer}_{data.peer_interface}"
         elif data.link_type == "underlay_l2":
-            desc = f"{data.peer}_{data.peer_interface}"
+            desc = f"{link_peer}_{data.peer_interface}"
         else:
             elems = [data.wan_carrier, data.wan_circuit_id, data.peer, data.peer_interface]
             desc = "_".join([elem for elem in elems if elem])
