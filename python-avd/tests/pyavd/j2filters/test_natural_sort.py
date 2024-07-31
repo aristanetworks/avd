@@ -1,47 +1,55 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+
+from contextlib import nullcontext as does_not_raise
+
 import pytest
 from pyavd.j2filters.natural_sort import convert, natural_sort
 
 
 class TestNaturalSortFilter:
     @pytest.mark.parametrize(
-        "item_to_convert, converted_item",
+        ("item_to_convert, converted_item, ignore_case"),
         [
-            ("100", 100),
-            ("200", 200),
-            ("ABC", "abc"),
+            ("100", 100, True),
+            ("200", 200, True),
+            ("ABC", "abc", True),
+            ("ABC", "ABC", False),
         ],
     )
-    def test_convert(self, item_to_convert, converted_item):
-        resp = convert(item_to_convert)
+    def test_convert(self, item_to_convert, converted_item, ignore_case):
+        resp = convert(item_to_convert, ignore_case)
         assert resp == converted_item
 
     @pytest.mark.parametrize(
-        "item_to_natural_sort, sort_key, sorted_list",
+        ("item_to_natural_sort, sort_key, strict, ignore_case, sorted_list, expected_raise"),
         [
-            (None, None, []),  # test with None
-            ([], None, []),  # test with blank list
-            ({}, "", []),  # test with blank dict
-            ("", None, []),  # test with blank string
-            ("access_list", None, ["_", "a", "c", "c", "e", "i", "l", "s", "s", "s", "t"]),  # test with string
-            (["1,2,3,4", "11,2,3,4", "5.6.7.8"], None, ["1,2,3,4", "5.6.7.8", "11,2,3,4"]),  # test with list of integers
-            ({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, None, ["a1", "a2", "a10", "a11"]),  # test with dict
-            (
+            pytest.param(None, None, False, True, [], does_not_raise(), id="None"),
+            pytest.param([], None, False, True, [], does_not_raise(), id="empty-list"),
+            pytest.param({}, "", False, True, [], does_not_raise(), id="empty-dict"),
+            pytest.param("", "", False, True, [], does_not_raise(), id="empty-string"),
+            pytest.param("access_list", None, False, True, ["_", "a", "c", "c", "e", "i", "l", "s", "s", "s", "t"], does_not_raise(), id="string-input"),
+            pytest.param(["1,2,3,4", "11,2,3,4", "5.6.7.8"], None, False, True, ["1,2,3,4", "5.6.7.8", "11,2,3,4"], does_not_raise(), id="list-of-integers"),
+            pytest.param({"a1": 123, "a10": 333, "a2": 2, "a11": 4456}, None, False, True, ["a1", "a2", "a10", "a11"], does_not_raise(), id="dict"),
+            pytest.param(
                 [
                     {"name": "ACL-10", "counters_per_entry": True},
                     {"name": "ACL-01", "counters_per_entry": True},
                     {"name": "ACL-05", "counters_per_entry": False},
                 ],
                 "name",
+                False,
+                True,
                 [
                     {"name": "ACL-01", "counters_per_entry": True},
                     {"name": "ACL-05", "counters_per_entry": False},
                     {"name": "ACL-10", "counters_per_entry": True},
-                ],  # test list of dict with "name" as sort_key
+                ],
+                does_not_raise(),
+                id="list-of-dict-with-sort-key",
             ),
-            (
+            pytest.param(
                 [
                     {"name": "ACL-10", "counters_per_entry": True},
                     {"sequence_numbers": {"sequence": 10}},
@@ -49,28 +57,84 @@ class TestNaturalSortFilter:
                     {"name": "ACL-05", "counters_per_entry": False},
                 ],
                 "name",
+                False,
+                True,
                 [
                     {"name": "ACL-05", "counters_per_entry": False},
                     {"name": "ACL-10", "counters_per_entry": True},
                     {"counters_per_entry": False},
                     {"sequence_numbers": {"sequence": 10}},
-                ],  # test list of dict without "name" sort_key in some entries
+                ],
+                does_not_raise(),
+                id="list-of-dict-with-sort-key-some-entries-dont-have-the-key",
             ),
-            (
+            pytest.param(
                 [
                     {"sequence_numbers": {"sequence": 10}},
                     {"counters_per_entry": False},
                     {"action": "action_command"},
                 ],
                 "name",
+                False,
+                True,
                 [
                     {"action": "action_command"},
                     {"counters_per_entry": False},
                     {"sequence_numbers": {"sequence": 10}},
                 ],
-            ),  # test test list of dict without "name" sort_key in all entries
+                does_not_raise(),
+                id="list-of-dict-with-sort-key-all-entries-dont-have-the-key",
+            ),
+            pytest.param(
+                [
+                    {"name": "default"},
+                    {"name": "D"},
+                    {"name": "E"},
+                ],
+                "name",
+                False,
+                True,
+                [
+                    {"name": "D"},
+                    {"name": "default"},
+                    {"name": "E"},
+                ],
+                does_not_raise(),
+                id="list-of-dict-with-sort-key-ignore-case",
+            ),
+            pytest.param(
+                [
+                    {"name": "default"},
+                    {"name": "D"},
+                    {"name": "E"},
+                ],
+                "name",
+                False,
+                False,
+                [
+                    {"name": "D"},
+                    {"name": "E"},
+                    {"name": "default"},
+                ],
+                does_not_raise(),
+                id="list-of-dict-with-sort-key-respect-case",
+            ),
+            pytest.param(
+                [
+                    {"name": "ACL-10", "counters_per_entry": True},
+                    {"counters_per_entry": False},
+                    {"name": "ACL-05", "counters_per_entry": False},
+                ],
+                "name",
+                True,
+                True,
+                None,
+                pytest.raises(Exception, match="Missing key 'name' in item to sort "),
+                id="list-of-dict-with-sort-key-strict-mode",
+            ),
         ],
     )
-    def test_natural_sort(self, item_to_natural_sort, sort_key, sorted_list):
-        resp = natural_sort(item_to_natural_sort, sort_key)
-        assert resp == sorted_list
+    def test_natural_sort(self, item_to_natural_sort, sort_key, strict, ignore_case, sorted_list, expected_raise):
+        with expected_raise:
+            resp = natural_sort(item_to_natural_sort, sort_key, strict=strict, ignore_case=ignore_case)
+            assert resp == sorted_list
