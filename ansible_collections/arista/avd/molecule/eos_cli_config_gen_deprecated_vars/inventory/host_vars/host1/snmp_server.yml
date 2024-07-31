@@ -26,5 +26,4 @@ snmp_server:
       vrf: Tenant_A_APP_Zone
   views:
     - name: VW-WRITE
-      mib_family_name: iso
       included: true
