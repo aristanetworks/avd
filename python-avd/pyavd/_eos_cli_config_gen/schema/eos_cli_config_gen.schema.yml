@@ -1287,6 +1287,7 @@ keys:
           '
       cvcompression:
         deprecation:
+          removed: true
           warning: true
           remove_in_version: v5.0.0
         type: str
@@ -3578,27 +3579,6 @@ keys:
         name:
           type: str
           description: Event Handler Name.
-        action_type:
-          type: str
-          valid_values:
-          - bash
-          - increment
-          - log
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
-        action:
-          type: str
-          description: 'Command to execute.
-
-            '
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
         actions:
           type: dict
           description: 'Note: `bash_command` and `log` are mutually exclusive. `bash_command`
@@ -3734,21 +3714,42 @@ keys:
               type: str
               description: Name of unit. Trigger condition occurs on maintenance operation
                 of specified unit
-        regex:
-          type: str
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 5.0.0
-            new_key: event_handlers.trigger_on_logging.regex
-          description: 'Regular expression to use for searching log messages. Required
-            for on-logging trigger.
-
-            '
         asynchronous:
           type: bool
           default: false
           description: 'Set the action to be non-blocking.
+
+            '
+        action_type:
+          type: str
+          valid_values:
+          - bash
+          - increment
+          - log
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
+        action:
+          type: str
+          description: 'Command to execute.
+
+            '
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions.bash_command
+        regex:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 5.0.0
+            new_key: event_handlers.trigger_on_logging.regex
+          description: 'Regular expression to use for searching log messages. Required
+            for on-logging trigger.
 
             '
   event_monitor:
@@ -3827,6 +3828,7 @@ keys:
     documentation_options:
       table: flow-tracking
     deprecation:
+      removed: true
       warning: true
       new_key: flow_tracking
       remove_in_version: v5.0.0
@@ -6590,12 +6592,6 @@ keys:
   management_security:
     type: dict
     keys:
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources
       entropy_sources:
         type: dict
         description: Source of entropy.
@@ -6853,6 +6849,13 @@ keys:
                     type: bool
                     description: Configuring secret using the local timezone from
                       system clock. Default is UTC.
+      entropy_source:
+        type: str
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: v5.0.0
+          new_key: entropy_sources
   management_ssh:
     type: dict
     keys:
@@ -17085,12 +17088,6 @@ keys:
         type: dict
         description: STUN server settings.
         keys:
-          local_interface:
-            type: str
-            deprecation:
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
           local_interfaces:
             type: list
             min_length: 1
@@ -17133,6 +17130,13 @@ keys:
             max: 65535
             convert_types:
             - str
+          local_interface:
+            type: str
+            deprecation:
+              removed: true
+              warning: true
+              new_key: local_interfaces
+              remove_in_version: v5.0.0
   switchport_default:
     type: dict
     keys:

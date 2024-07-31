@@ -52,7 +52,7 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:dc:01
     mlag: false
     filter:
-      always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
+      always_include_vrfs_in_tenants: [ 'all' ] # Testing that we configure all VRFs even with no VLANs.
       tags: []
     raw_eos_cli: |
       interface Loopback1010

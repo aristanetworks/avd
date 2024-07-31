@@ -10,7 +10,9 @@
       - template: "templates/template.j2"
 
 - name: Compare actual output with expected output
-  ansible.builtin.shell: diff "{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.json" "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.json"
+  ansible.builtin.shell: >-
+    diff "{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.json"
+    "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.json"
   failed_when: "diff_output.rc > 1"
   register: diff_output
   delegate_to: localhost

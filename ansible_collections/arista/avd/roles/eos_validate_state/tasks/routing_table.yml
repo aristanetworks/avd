@@ -42,7 +42,8 @@
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
     loopback0_reachability.loopback0_range is arista.avd.defined and
-    (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0'))[0].ip_address is arista.avd.defined and
+    (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name')
+    | selectattr('name', 'eq', 'Loopback0'))[0].ip_address is arista.avd.defined and
     type is arista.avd.defined('l3leaf')
   register: routing_table_loopback0_state
   tags:
