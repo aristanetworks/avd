@@ -8,7 +8,7 @@ node_type_keys:
     default_evpn_role: server
     interface_descriptions:
       # Override default interface description with a custom python module
-      python_module: custom_interface_descriptions
+      python_module: custom_interface_descriptions_with_data
       python_class_name: CustomAvdInterfaceDescriptions
 
   - key: l3leaf

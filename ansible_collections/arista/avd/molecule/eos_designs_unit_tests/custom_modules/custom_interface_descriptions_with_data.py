@@ -132,11 +132,9 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         switch_type = str(data.type).upper()
         return f"{self._custom_description_prefix}_EVPN_Overlay_Peering_{switch_type}"
 
-    def vtep_loopback_interface(self) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Implementation of custom code similar to jinja.
-
-        TODO: AVD5.0.0 Update to use InterfaceDescriptionData.
         """
         switch_type = str(self.shared_utils.type).upper()
         return f"{self._custom_description_prefix}_VTEP_VXLAN_Tunnel_Source_{switch_type}"
