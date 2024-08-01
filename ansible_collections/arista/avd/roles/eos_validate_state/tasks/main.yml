@@ -28,8 +28,6 @@
   delegate_to: localhost
   run_once: true
   check_mode: false
-  tags:
-    - always
 
 - name: Include device intended structured configuration variables
   ansible.builtin.include_vars: "{{ filename }}"
@@ -37,8 +35,6 @@
   when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-  tags:
-    - always
 
 - name: Run eos_validate_state_runner
   arista.avd.eos_validate_state_runner:
@@ -51,7 +47,6 @@
     # cprofile_file: "anta-{{inventory_hostname}}.prof"
   register: anta_results
   check_mode: false
-  tags: always
 
 - name: Create validation reports
   arista.avd.eos_validate_state_reports:
@@ -68,5 +63,4 @@
   when:
     - validation_report_csv | bool or validation_report_md | bool
   tags:
-    - always
     - reports
