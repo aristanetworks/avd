@@ -633,7 +633,6 @@ keys:
           type: str
           description: |
             IPv6_address/Mask.
-            If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured.
           deprecation:
             removed: true
             warning: true
@@ -641,9 +640,6 @@ keys:
             remove_in_version: "5.0.0"
         ipv6_virtual_router_address:
           type: str
-          description: |
-            "ipv6_virtual_router_address" should not be mixed with
-            the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
           deprecation:
             removed: true
             warning: true
@@ -651,33 +647,8 @@ keys:
             new_key: ipv6_virtual_router_addresses
         vrrp:
           type: dict
-          description: |
-            "vrrp" should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
           deprecation:
             removed: true
             warning: true
             remove_in_version: 5.0.0
             new_key: vrrp_ids
-          keys:
-            virtual_router:
-              type: str
-              description: Virtual Router ID.
-            priority:
-              type: int
-              convert_types:
-                - str
-              description: Instance priority.
-            advertisement_interval:
-              type: int
-              convert_types:
-                - str
-            preempt_delay_minimum:
-              type: int
-              convert_types:
-                - str
-            ipv4:
-              type: str
-              description: Virtual IPv4 address.
-            ipv6:
-              type: str
-              description: Virtual IPv6 address.
