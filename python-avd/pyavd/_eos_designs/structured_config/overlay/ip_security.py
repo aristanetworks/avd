@@ -28,7 +28,6 @@ class IpSecurityMixin(UtilsMixin):
         Data Plane and Control Plane.
         """
         # TODO - in future, the default algo/dh groups value must be clarified
-
         if not self.shared_utils.is_wan_router:
             return None
 
@@ -45,8 +44,9 @@ class IpSecurityMixin(UtilsMixin):
         return strip_null_from_data(ip_security)
 
     def _append_data_plane(self: AvdStructuredConfigOverlay, ip_security: dict, data_plane_config: dict) -> None:
-        """
-        In place update of ip_security
+        """In place update of ip_security for Data Plane.
+
+        When LAN HA is configured, requires the ike-policy name.
         """
         if self.shared_utils.wan_ha_ipsec:
             ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
@@ -69,7 +69,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         In place update of ip_security for control plane data
 
-        expected to be called AFTER _append_data_plane
+        expected to be called AFTER _append_data_plane as CP is used for data-plane as well if not configured.
         """
         ike_policy_name = get(control_plane_config, "ike_policy_name", default="CP-IKE-POLICY")
         sa_policy_name = get(control_plane_config, "sa_policy_name", default="CP-SA-POLICY")
@@ -81,7 +81,7 @@ class IpSecurityMixin(UtilsMixin):
         ip_security["profiles"].append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
 
         if not ip_security.get("key_controller"):
-            # If there is not data plane IPSec profile, use the control plane one for key controller
+            # If there is no data plane IPSec profile, use the control plane one for key controller
             ip_security["key_controller"] = self._key_controller(profile_name)
 
     def _ike_policy(self: AvdStructuredConfigOverlay, name: str) -> dict | None:
