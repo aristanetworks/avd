@@ -92,7 +92,7 @@ sFlow is disabled.
 | Ethernet7 |  Molecule L2 | - | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
-| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | 70 | 100 | - | - |
 | Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
 | Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
@@ -133,8 +133,8 @@ sFlow is disabled.
 | Ethernet57 |  Interface with poe commands and limit in watts | - | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | - | - | - | - | - |
 | Ethernet60 |  IP NAT Testing | - | - | - | - | - |
-| Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | 70 | 100 | - | - |
+| Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | 70 | 100 | - | - |
 | Ethernet67 |  Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet68 |  Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 |  IP NAT service-profile | - | - | - | - | - |
@@ -169,8 +169,20 @@ sFlow is disabled.
 
 ##### VLAN Translations
 
-| Interface | From VLAN ID(s) | To VLAN ID | Direction |
-| --------- | --------------- | -----------| --------- |
+| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Dot1q-tunnel |
+| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------------ |
+| Ethernet1 | both | 12 | 20 | - | - | - |
+| Ethernet1 | both | 24 | network VLAN 46 | 78 | - | - |
+| Ethernet1 | both | 24 | 46 | 78 | - | - |
+| Ethernet1 | both | 43 | 30 | - | - | True |
+| Ethernet1 | in | 10 | 24 | - | - | - |
+| Ethernet1 | in | 23 | 45 | - | - | True |
+| Ethernet1 | in | 37 | 49 | - | - | - |
+| Ethernet1 | out | 10 | 45 | - | 34 | - |
+| Ethernet1 | out | 34 | 50 | - | - | - |
+| Ethernet1 | out | 45 | all | - | - | true |
+| Ethernet1 | out | 55 | - | - | - | - |
+| Ethernet3 | out | 23 | 50 | - | - | true |
 
 ##### TCP MSS Clamping
 
@@ -447,6 +459,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
+   switchport mode trunk
    no switchport
    switchport trunk native vlan 5
    switchport vlan translation out 23 dot1q-tunnel 50

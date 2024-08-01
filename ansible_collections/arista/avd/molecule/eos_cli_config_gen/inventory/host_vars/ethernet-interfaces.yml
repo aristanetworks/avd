@@ -212,6 +212,7 @@ ethernet_interfaces:
     spanning_tree_guard: root
     tcp_mss_ceiling:
       ipv6_segment_size: 65
+    mode: trunk
     switchport:
       trunk:
         native_vlan: 5
