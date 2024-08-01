@@ -204,7 +204,7 @@ class WanMixin:
         If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return default(interface.get("public_ip"), interface["ip_address"].split("/", maxsplit=1)[0])
+            return default(interface.get("public_ip"), self.get_ip_from_ip_prefix(interface["ip_address"]))
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
@@ -222,7 +222,7 @@ class WanMixin:
                 "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
             )
 
-        return interface["ip_address"].split("/", maxsplit=1)[0]
+        return self.get_ip_from_ip_prefix(interface["ip_address"])
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict | None:

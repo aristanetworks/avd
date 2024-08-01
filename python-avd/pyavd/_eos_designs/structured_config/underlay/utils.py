@@ -314,7 +314,7 @@ class UtilsMixin:
             interface_name = l3_interface["name"]
             interface_ip: str | None = l3_interface.get("dhcp_ip") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
             if interface_ip is not None and "/" in interface_ip:
-                interface_ip = interface_ip.split("/", maxsplit=1)[0]
+                interface_ip = self.shared_utils.get_ip_from_ip_prefix(interface_ip)
             peer_ip: str | None = get(l3_interface, "peer_ip")
 
             if ipv4_acl_in is not None:

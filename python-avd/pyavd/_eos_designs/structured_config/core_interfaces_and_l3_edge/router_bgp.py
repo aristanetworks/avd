@@ -60,7 +60,7 @@ class RouterBgpMixin(UtilsMixin):
             # Remove None values
             neighbor = {key: value for key, value in neighbor.items() if value is not None}
 
-            neighbors.append({"ip_address": p2p_link["data"]["peer_ip"].split("/")[0], **neighbor})
+            neighbors.append({"ip_address": self.shared_utils.get_ip_from_ip_prefix(p2p_link["data"]["peer_ip"]), **neighbor})
 
         router_bgp = {}
         if neighbors:

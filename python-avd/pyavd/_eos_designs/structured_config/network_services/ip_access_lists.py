@@ -54,7 +54,7 @@ class IpAccesslistsMixin(UtilsMixin):
                         "sequence": 10 + i * 10,
                         "action": "deny",
                         "protocol": "ip",
-                        "source": interface_ip.split("/", maxsplit=1)[0],
+                        "source": self.shared_utils.get_ip_from_ip_prefix(interface_ip),
                         "destination": "any",
                     }
                 )

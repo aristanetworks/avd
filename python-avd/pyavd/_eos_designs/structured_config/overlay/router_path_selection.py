@@ -131,7 +131,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                     {
                         "router_ip": self._wan_ha_peer_vtep_ip(),
                         "name": self.shared_utils.wan_ha_peer,
-                        "ipv4_addresses": [ip_address.split("/")[0] for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
+                        "ipv4_addresses": [self.shared_utils.get_ip_from_ip_prefix(ip_address) for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
                     }
                 ],
             }
@@ -209,8 +209,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
                 for interface_dict in get(path_group, "interfaces", required=True):
                     if (public_ip := interface_dict.get("public_ip")) is not None:
-                        # TODO - removing mask using split but maybe a helper is clearer
-                        ipv4_addresses.append(public_ip.split("/")[0])
+                        ipv4_addresses.append(self.shared_utils.get_ip_from_ip_prefix(public_ip))
                 static_peers.append(
                     {
                         "router_ip": get(wan_route_server, "vtep_ip", required=True),

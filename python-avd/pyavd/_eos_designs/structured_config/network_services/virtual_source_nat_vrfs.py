@@ -46,7 +46,7 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
                 primary_key="name",
                 new_dict={
                     "name": vrf,
-                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
+                    "ip_address": self.shared_utils.get_ip_from_ip_prefix(loopback_interface["ip_address"]),
                 },
                 context="virtual_source_nat_vrfs",
                 context_keys=["name"],
