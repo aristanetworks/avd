@@ -64,8 +64,6 @@
   - [IP Extended Community Lists](#ip-extended-community-lists)
   - [IP Extended Community RegExp Lists](#ip-extended-community-regexp-lists)
   - [Match-lists](#match-lists)
-- [802.1X Port Security](#8021x-port-security)
-  - [802.1X Summary](#8021x-summary)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
   - [Extended Access-lists](#extended-access-lists)
@@ -641,75 +639,64 @@ interface profile TEST-PROFILE-1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
+| Ethernet1 |  - | access | 100 | - | - | - |
+| Ethernet2 |  - | trunk | 110 | 10 | ['group1', 'group2'] | - |
+| Ethernet3 |  - | trunk phone | - | tag | - | - |
+| Ethernet4 |  - | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
-##### Flexible Encapsulation Interfaces
+##### Private VLAN
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+| Ethernet4 | 2,3,4 | True |
 
-##### IPv4
+##### VLAN Translations
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
+| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Dot1q-tunnel |
+| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------------ |
+| Ethernet4 | in | 23 | 50 | - | - | - |
+| Ethernet4 | out | 25 | 49 | - | - | - |
+| Ethernet4 | both | 34 | 60 | - | - | - |
 
-##### IPv6
+##### Phone Interfaces
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet3 | trunk phone | 20 | 20 | tagged |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
-   mtu 1500
-   no switchport
-   ipv6 enable
-   ipv6 address 2002:ABDC::1/64
-   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
-   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
-   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
-!
-interface Ethernet5
-   description Molecule Routing
-   no shutdown
-   mtu 9100
-   no switchport
-   ip ospf cost 99
-   ip ospf network point-to-point
-   ip ospf authentication message-digest
-   ip ospf authentication-key 7 <removed>
-   ip ospf area 100
-   ip ospf message-digest-key 1 sha512 7 <removed>
-!
-interface Ethernet26
-   no switchport
-!
-interface Ethernet26.1
-   description TENANT_A pseudowire 1 interface
-   encapsulation vlan
-      client unmatched
-!
-interface Ethernet31
-   description DOT1X Testing - force-unauthorized - no phone
+interface Ethernet1
+   switchport access vlan 100
+   switchport mode access
    switchport
-   dot1x port-control force-unauthorized
 !
-interface Ethernet47
-   description IP Helper
-   no switchport
-   ip address 172.31.255.1/31
-   ip helper-address 10.10.64.151
-   ip helper-address 10.10.96.101 source-interface Loopback0
-   ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
-   ip helper-address 10.10.96.151 vrf MGMT
+interface Ethernet2
+   switchport trunk native vlan 10
+   switchport trunk allowed vlan 110
+   switchport mode trunk
+   switchport trunk group group1
+   switchport trunk group group2
+   switchport
+!
+interface Ethernet3
+   switchport trunk native vlan tag
+   switchport phone vlan 20
+   switchport phone trunk tagged
+   switchport mode trunk phone
+   switchport
+!
+interface Ethernet4
+   switchport vlan translation in 23 50
+   switchport vlan translation out 25 49
+   switchport vlan translation 34 60
+   switchport
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 2,3,4
 ```
 
 ### Port-Channel Interfaces
@@ -1021,12 +1008,6 @@ router general
 | ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
 | 100 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
 | 100 | 3 | normal | - | PL-OSPF-FILTERING |  |
-
-#### OSPF Interfaces
-
-| Interface | Area | Cost | Point To Point |
-| -------- | -------- | -------- | -------- |
-| Ethernet5 | 100 | 99 | True |
 
 #### Router OSPF Device Configuration
 
@@ -1525,16 +1506,6 @@ match-list input string molecule
    10 match regex ^.*MOLECULE.*$
    20 match regex ^.*TESTING.*$
 ```
-
-## 802.1X Port Security
-
-### 802.1X Summary
-
-#### 802.1X Interfaces
-
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
-| Ethernet31 | - | force-unauthorized | - | - | - | - | - | - |
 
 ## ACL
 

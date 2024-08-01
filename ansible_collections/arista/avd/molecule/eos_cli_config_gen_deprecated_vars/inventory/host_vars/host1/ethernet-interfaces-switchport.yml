@@ -1,0 +1,38 @@
+---
+### Ethernet Interfaces ###
+
+# Testing deprecated keys for switchport config in ethernet_interfaces
+ethernet_interfaces:
+  - name: Ethernet1
+    mode: access
+    vlans: 100
+
+  - name: Ethernet2
+    mode: trunk
+    vlans: 110
+    native_vlan: 10
+    trunk_groups:
+      - group1
+      - group2
+
+  - name: Ethernet3
+    native_vlan_tag: true
+    native_vlan: 20
+    mode: trunk phone
+    phone:
+      vlan: 20
+      trunk: tagged
+
+  - name: Ethernet4
+    vlan_translations:
+      - from: 23
+        to: 50
+        direction: in
+      - from: 25
+        to: 49
+        direction: out
+      - from: 34
+        to: 60
+        direction: both
+    trunk_private_vlan_secondary: true
+    pvlan_mapping: "2,3,4"

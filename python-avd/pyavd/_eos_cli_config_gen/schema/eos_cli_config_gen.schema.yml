@@ -2856,11 +2856,21 @@ keys:
               description: ZTP vlan number.
         trunk_private_vlan_secondary:
           type: bool
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.private_vlan_secondary
         pvlan_mapping:
           type: str
           convert_types:
           - int
           description: List of vlans as string.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.pvlan_mapping
         vlan_translations:
           deprecation:
             warning: true

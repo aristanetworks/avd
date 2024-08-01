@@ -4623,7 +4623,8 @@
           },
           "pvlan_mapping": {
             "type": "string",
-            "description": "List of vlans as string.",
+            "description": "List of vlans as string.\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ethernet_interfaces[].switchport.pvlan_mapping</samp> instead.",
+            "deprecated": true,
             "title": "PVLAN Mapping"
           },
           "vlan_translations": {

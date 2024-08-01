@@ -98,7 +98,7 @@ sFlow is disabled.
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
-| Port-Channel12 | trunk phone | 1 | 70 | untagged |
+| Port-Channel12 | trunk phone | 100 | 70 | untagged |
 | Port-Channel100 | dot1q-tunnel | 5 | 110 | tagged |
 
 ##### IPv4
