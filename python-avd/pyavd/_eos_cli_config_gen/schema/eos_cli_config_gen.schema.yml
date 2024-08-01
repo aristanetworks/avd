@@ -17786,6 +17786,9 @@ keys:
         ip_address:
           type: str
           description: IPv4 Address.
+        ipv6_address:
+          type: str
+          description: IPv6 Address.
   vlan_interfaces:
     type: list
     primary_key: name
