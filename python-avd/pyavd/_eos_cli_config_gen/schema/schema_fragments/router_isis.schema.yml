@@ -370,14 +370,6 @@ keys:
         description: Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.
       address_family:
         type: list
-        items:
-          type: str
-          valid_values:
-            - "ipv4"
-            - "ipv6"
-            - "ipv4 unicast"
-            - "ipv6 unicast"
-          description: Address Family.
         deprecation:
           removed: true
           warning: true
@@ -385,11 +377,6 @@ keys:
           remove_in_version: "5.0.0"
       isis_af_defaults:
         type: list
-        items:
-          type: str
-          description: |
-            EOS CLI rendered under the address families.
-            Example "maximum-paths 64"
         deprecation:
           removed: true
           warning: true
