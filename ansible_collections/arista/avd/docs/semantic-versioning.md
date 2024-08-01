@@ -57,7 +57,6 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Action: `inventory_to_container` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `set_vars` | ✅ | ✅ | |
 | Action: `verify_requirements` | ✘ | ✘ | Internal plugin, not intended for external use. |
-| Action: `_emit_warning` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Test: `contains` | ✅ | ✅ | |
 | Test: `defined` | ✅ | ✅ | |
 | Test: `global_vars` | ✅ | ✅ | |
