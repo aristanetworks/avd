@@ -41,9 +41,6 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Filter: `decrypt` | ✅ | ✅ | |
 | Filter: `default` | ✅ | ✅ | |
 | Filter: `encrypt` | ✅ | ✅ | |
-| Filter: `generate_esi` | ✅ | ✅ | |
-| Filter: `generate_lacp_id` | ✅ | ✅ | |
-| Filter: `generate_route_target` | ✅ | ✅ | |
 | Filter: `hide_passwords` | ✅ | ✅ | |
 | Filter: `is_in_filter` | ✅ | ✅ | |
 | Filter: `list_compress` | ✅ | ✅ | |
