@@ -25,10 +25,10 @@ def create_store(load_from_yaml=False, force_rebuild=False) -> dict[str, dict]:
     }
     The function is cached to save time on multiple calls.
 
-    If load_from_yaml is True it will read and return unresolved schemas from yml/json files.
+    If load_from_yaml is True it will read and return unresolved schemas from yml files.
 
     If force_rebuild is True or if this is the first time running AVD after changing schemas/upgrade/install
-    the schema yml/json files will be read, fully resolved, saved as pickle to a file and returned in the
+    the schema yml files will be read, fully resolved, saved as pickle to a file and returned in the
     store dict.
     """
     store = {}
@@ -74,7 +74,7 @@ def _should_recompile_schemas() -> bool:
 
 def _create_store_from_yaml() -> dict[str, dict]:
     """
-    Returns a schema store loaded from yaml/json files with $ref
+    Returns a schema store loaded from yaml files with $ref
     """
     store = {}
     for id, schema_file in SCHEMA_PATHS.items():
