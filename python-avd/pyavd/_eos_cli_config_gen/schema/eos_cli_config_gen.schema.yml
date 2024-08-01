@@ -6389,6 +6389,7 @@ keys:
       enable_vrfs:
         type: list
         deprecation:
+          removed: true
           warning: true
           new_key: transport.grpc
           remove_in_version: 5.0.0
@@ -6413,6 +6414,7 @@ keys:
         type: dict
         deprecation:
           warning: true
+          removed: true
           new_key: provider
           remove_in_version: 5.0.0
         description: 'These should not be mixed with the new keys above.
