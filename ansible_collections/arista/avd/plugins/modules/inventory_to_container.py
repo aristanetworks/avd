@@ -90,6 +90,7 @@ try:
 except ImportError:
     HAS_TREELIB = False
     TREELIB_IMP_ERR = traceback.format_exc()
+    Node = Tree = object
 YAML_IMP_ERR = None
 try:
     import yaml
