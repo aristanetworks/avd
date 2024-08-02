@@ -82,7 +82,7 @@ from ansible.module_utils.errors import AnsibleValidationError
 TREELIB_IMP_ERR = None
 
 try:
-    from treelib import Tree, Node
+    from treelib import Node, Tree
 
     HAS_TREELIB = True
 except ImportError:
