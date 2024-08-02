@@ -1,26 +1,26 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-#
-# arista.avd.defined
-#
-# Example:
-# A is undefined
-# B is none
-# C is "c"
-# D is "d"
-#
-# Jinja test examples:
-# {% if A is arista.avd.defined %}  =>  false
-# {% if B is arista.avd.defined %}  =>  false
-# {% if C is arista.avd.defined %}  =>  true
-# {% if D is arista.avd.defined %}  =>  true
-#
-# {% if A is arista.avd.defined("c") %}  =>  false
-# {% if B is arista.avd.defined("c") %}  =>  false
-# {% if C is arista.avd.defined("c") %}  =>  true
-# {% if D is arista.avd.defined("c") %}  =>  false
 
+"""
+arista.avd.defined test plugin.
+
+Example:
+A is undefined
+B is none
+C is "c"
+D is "d"
+
+Jinja test examples:
+{% if A is arista.avd.defined %}  =>  false
+{% if B is arista.avd.defined %}  =>  false
+{% if C is arista.avd.defined %}  =>  true
+{% if D is arista.avd.defined %}  =>  true
+{% if A is arista.avd.defined("c") %}  =>  false
+{% if B is arista.avd.defined("c") %}  =>  false
+{% if C is arista.avd.defined("c") %}  =>  true
+{% if D is arista.avd.defined("c") %}  =>  false
+"""
 
 from ansible.errors import AnsibleTemplateError
 
