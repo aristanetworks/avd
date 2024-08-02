@@ -6,7 +6,6 @@
   - [Management Interfaces](#management-interfaces)
   - [Domain Lookup](#domain-lookup)
   - [Management SSH](#management-ssh)
-  - [Management API gNMI](#management-api-gnmi)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -162,28 +161,6 @@ management ssh
    !
    vrf mgt
       no shutdown
-```
-
-### Management API gNMI
-
-#### Management API gNMI Summary
-
-| VRF with gNMI | OCTA |
-| ------------- | ---- |
-| MGMT | enabled |
-| MONITORING | enabled |
-
-#### Management API gNMI Device Configuration
-
-```eos
-!
-management api gnmi
-   transport grpc MGMT
-      ip access-group ACL-GNMI
-      vrf MGMT
-   transport grpc MONITORING
-      vrf MONITORING
-   provider eos-native
 ```
 
 ### Management API HTTP
