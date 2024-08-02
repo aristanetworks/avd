@@ -523,12 +523,6 @@ roles/eos_cli_config_gen/docs/tables/management-ssh.md
 roles/eos_cli_config_gen/docs/tables/management-tech-support.md
 --8<--
 
-### Name server
-
---8<--
-roles/eos_cli_config_gen/docs/tables/name-server.md
---8<--
-
 ### NTP
 
 --8<--
