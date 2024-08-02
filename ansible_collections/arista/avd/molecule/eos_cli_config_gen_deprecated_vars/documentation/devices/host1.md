@@ -616,7 +616,6 @@ interface Ethernet47
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
-| Port-Channel30 | deprecate_filters_testing | switched | access | - | - | - | - | - | - | deaf:beed:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 
 ##### Flexible Encapsulation Interfaces
@@ -650,14 +649,6 @@ interface Port-Channel2.1000
       client dot1q 100 network client
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
-!
-interface Port-Channel30
-   description deprecate_filters_testing
-   switchport
-   evpn ethernet-segment
-      identifier deaf:beed:0303:0202:0101
       route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
 !
@@ -756,60 +747,39 @@ interface Tunnel4
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan1 | test ipv6_address_virtual | default | - | - |
-| Vlan2 | test ipv6_address_virtual and ipv6_address_virtuals | default | - | - |
-| Vlan3 | test ipv6_address_virtual | default | - | - |
-| Vlan42 | SVI Description | default | - | False |
+| Vlan2 | test ipv6_nd_prefixes | default | - | - |
+| Vlan42 | test ip_helpers | default | - | False |
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan1 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  -  |  -  |  -  |  -  |
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - | - |
-| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - | - |
-| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | - | - | - | True | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan1
-   description test ipv6_address_virtual
-   ipv6 enable
-   ipv6 address virtual fc00:10:10:1::1/64
-!
 interface Vlan2
-   description test ipv6_address_virtual and ipv6_address_virtuals
+   description test ipv6_nd_prefixes
    ipv6 enable
    ipv6 address 1b11:3a00:22b0:5200::15/64
-   ipv6 address virtual fc00:10:10:2::1/64
-   ipv6 address virtual fc00:10:11:2::1/64
-   ipv6 address virtual fc00:10:12:2::1/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
 !
-interface Vlan3
-   description test ipv6_address_virtual
-   ipv6 enable
-   ipv6 address 1b11:3a00:22b3:5200::15/64
-   ipv6 virtual-router address fc00:10:10:3::1/64
-!
 interface Vlan42
-   description SVI Description
+   description test ip_helpers
    no shutdown
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
-   ip address virtual 10.10.42.1/24
 ```
 
 ### VXLAN Interface
