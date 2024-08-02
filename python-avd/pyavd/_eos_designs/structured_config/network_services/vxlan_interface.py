@@ -169,7 +169,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                 )
 
             # NOTE: this can never be None here, it would be caught previously in the code
-            id = default(
+            vrf_id = default(
                 vrf.get("vrf_id"),
                 vrf.get("vrf_vni"),
             )
@@ -189,7 +189,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
                         underlay_l3_multicast_group_ipv4_pool,
                         vni,
-                        id,
+                        vrf_id,
                         underlay_l3_mcast_group_ipv4_pool_offset,
                     )
 

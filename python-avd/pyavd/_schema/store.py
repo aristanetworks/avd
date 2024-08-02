@@ -16,6 +16,6 @@ def create_store(*, load_from_yaml: bool = False) -> dict:
     store = {}
     for schema_id, schema_file in PICKLED_SCHEMAS.items():
         with Path(schema_file).open("rb") as file:
-            store[schema_id] = load(file)
+            store[schema_id] = load(file)  # noqa: S301
 
     return store

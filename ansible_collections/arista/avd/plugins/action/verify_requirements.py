@@ -6,7 +6,9 @@ import json
 import os
 import sys
 from importlib.metadata import Distribution, PackageNotFoundError, version
+from pathlib import Path
 from subprocess import PIPE, Popen
+from typing import Any
 
 import yaml
 from ansible import constants as C
@@ -319,13 +321,13 @@ def _get_running_collection_version(running_collection_name: str, result: dict) 
 
     result["collection"] = {
         "name": running_collection_name,
-        "path": os.path.dirname(os.path.dirname(collection_path)),
+        "path": Path(collection_path).parents[1],
         "version": version,
     }
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
 

@@ -106,7 +106,7 @@ class AnsibleEOSDevice(AntaDevice):
         if __DEBUG__:
             yield "_connection", connection_vars
 
-    async def _collect(self, command: AntaCommand, *, collection_id: str | None = None) -> None:
+    async def _collect(self, command: AntaCommand, *, collection_id: str | None = None) -> None:  # noqa: ARG002
         """Collect device command result using Ansible HttpApi connection plugin.
 
         Supports outformat 'json' and 'text' as output structure.
@@ -114,6 +114,9 @@ class AnsibleEOSDevice(AntaDevice):
         Args:
         ----
             command (AntaCommand): The command to collect.
+
+        Keyword Args:
+        -------------
             collection_id (str, optional): This parameter is not used in this implementation. Defaults to None.
 
         If there is an exception while collecting the command, the exception will be propagated

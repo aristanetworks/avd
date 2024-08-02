@@ -348,12 +348,12 @@ class RouterBgpMixin(UtilsMixin):
             bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name_tuple_for_l2vlans)
             for vlan_aware_bundle_name_tuple, l2vlans in bundle_groups:
                 bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
-                l2vlans = list(l2vlans)
+                l2vlans_list = list(l2vlans)
 
                 if is_evpn_vlan_bundle:
-                    l2vlans_bundle_dict[bundle_name] = l2vlans
+                    l2vlans_bundle_dict[bundle_name] = l2vlans_list
                 else:
-                    l2vlans_non_bundle_list[bundle_name] = l2vlans
+                    l2vlans_non_bundle_list[bundle_name] = l2vlans_list
 
             # For SVIs
             vrf_svis_bundle_dict = {}
@@ -365,12 +365,12 @@ class RouterBgpMixin(UtilsMixin):
                 bundle_groups_svis = itertools_groupby(sorted_svi_list, self._get_vlan_aware_bundle_name_tuple_for_svis)
                 for vlan_aware_bundle_name_tuple, svis in bundle_groups_svis:
                     bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
-                    svis = list(svis)
+                    svis_list = list(svis)
 
                     if is_evpn_vlan_bundle:
-                        vrf_svis_bundle_dict[vrf["name"]][bundle_name] = svis
+                        vrf_svis_bundle_dict[vrf["name"]][bundle_name] = svis_list
                     else:
-                        vrf_svis_non_bundle_dict[vrf["name"]] = svis
+                        vrf_svis_non_bundle_dict[vrf["name"]] = svis_list
 
             tenant_svis_l2vlans_dict[tenant["name"]]["svi_bundle"] = vrf_svis_bundle_dict
             tenant_svis_l2vlans_dict[tenant["name"]]["svi_non_bundle"] = vrf_svis_non_bundle_dict
@@ -576,7 +576,7 @@ class RouterBgpMixin(UtilsMixin):
                     )
 
             # L2VLANs and SVIs which have an evpn_vlan_bundle defined
-            for bundle_name, bundle_dict in l2vlan_svi_vlan_aware_bundles.items():
+            for bundle_dict in l2vlan_svi_vlan_aware_bundles.values():
                 evpn_vlan_bundle = bundle_dict["evpn_vlan_bundle"]
                 l2vlans_svis = bundle_dict["l2vlan_svis"]
 
@@ -787,7 +787,13 @@ class RouterBgpMixin(UtilsMixin):
 
         return f"{admin_subfield}:{self.shared_utils.get_vrf_id(vrf)}"
 
-    def get_vlan_aware_bundle_rd(self: AvdStructuredConfigNetworkServices, id: int, tenant: dict, is_vrf: bool, rd_override: str | None = None) -> str:
+    def get_vlan_aware_bundle_rd(
+        self: AvdStructuredConfigNetworkServices,
+        id: int,  # noqa: A002
+        tenant: dict,
+        is_vrf: bool,
+        rd_override: str | None = None,
+    ) -> str:
         """Return a string with the route-destinguisher for one VLAN Aware Bundle."""
         admin_subfield = self.shared_utils.overlay_rd_type_vrf_admin_subfield if is_vrf else self.shared_utils.overlay_rd_type_admin_subfield
 
@@ -802,7 +808,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def get_vlan_aware_bundle_rt(
         self: AvdStructuredConfigNetworkServices,
-        id: int,
+        id: int,  # noqa: A002
         vni: int,
         tenant: dict,
         is_vrf: bool,

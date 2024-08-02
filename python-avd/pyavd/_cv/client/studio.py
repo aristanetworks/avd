@@ -78,7 +78,6 @@ class StudioMixin:
         client = StudioServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            return response.value
         except Exception as e:  # pylint: disable=broad-exception-caught
             e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
             if isinstance(e, CVResourceNotFound):
@@ -87,6 +86,9 @@ class StudioMixin:
                 pass
             else:
                 raise
+        else:
+            # We get here if no exception was raised, meaining the studio was changed in the workspace.
+            return response.value
 
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
@@ -118,9 +120,10 @@ class StudioMixin:
         client = StudioServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            return response.value
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+        return response.value
 
     async def get_studio_inputs(
         self: CVClient,
@@ -194,7 +197,7 @@ class StudioMixin:
         client = InputsConfigServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
+            async for _response in responses:
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
                 return default_value
 
@@ -223,10 +226,10 @@ class StudioMixin:
                     data=studio_inputs,
                     value=json.loads(response.value.inputs),
                 )
-
-            return studio_inputs or default_value
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+        return studio_inputs or default_value
 
     async def get_studio_inputs_with_path(
         self: CVClient,
@@ -267,12 +270,6 @@ class StudioMixin:
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-
-            # We only get a response if the inputs are set/changed in the workspace.
-            if response.value.inputs is not None:
-                return json.loads(response.value.inputs)
-            return default_value
-
         except Exception as e:  # pylint: disable=broad-exception-caught
             e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
             if isinstance(e, CVResourceNotFound) and workspace_id != "":
@@ -280,6 +277,12 @@ class StudioMixin:
                 pass
             else:
                 raise
+        else:
+            # We get here if no exception was raised.
+            # We only get a response if the inputs are set/changed in the workspace.
+            if response.value.inputs is not None:
+                return json.loads(response.value.inputs)
+            return default_value
 
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
@@ -297,7 +300,7 @@ class StudioMixin:
         client = InputsConfigServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
+            async for _response in responses:
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
                 return default_value
 
@@ -317,15 +320,16 @@ class StudioMixin:
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            if response.value.inputs is not None:
-                return json.loads(response.value.inputs)
-            return default_value
         except Exception as e:  # pylint: disable=broad-exception-caught
             e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
             if isinstance(e, CVResourceNotFound):
                 # Ignore this error, since it simply means we no inputs are in the studio so we will return the default value.
                 return default_value
             raise
+
+        if response.value.inputs is not None:
+            return json.loads(response.value.inputs)
+        return default_value
 
     async def set_studio_inputs(
         self: CVClient,
@@ -363,10 +367,10 @@ class StudioMixin:
         client = InputsConfigServiceStub(self._channel)
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
+
+        return response.value
 
     async def get_topology_studio_inputs(
         self: CVClient,

@@ -21,7 +21,7 @@ class BgpPeerGroupsMixin:
     """
 
     @cached_property
-    def bgp_peer_groups(self: SharedUtils):
+    def bgp_peer_groups(self: SharedUtils) -> dict | None:
         """
         Get bgp_peer_groups configurations or fallback to defaults.
 
@@ -30,8 +30,8 @@ class BgpPeerGroupsMixin:
         if not self.underlay_router:
             return None
 
-        BGP_PEER_GROUPS = [
-            # (key, default_name, default_bfd)
+        default_bgp_peer_groups = [
+            # key, default_name, default_bfd
             # Default BFD is set to None when not True, to avoid generating config for disabling BFD
             ("ipv4_underlay_peers", "IPv4-UNDERLAY-PEERS", None),
             ("mlag_ipv4_underlay_peer", "MLAG-IPv4-UNDERLAY-PEER", None),
@@ -45,7 +45,7 @@ class BgpPeerGroupsMixin:
         ]
 
         bgp_peer_groups = {}
-        for key, default_name, default_bfd in BGP_PEER_GROUPS:
+        for key, default_name, default_bfd in default_bgp_peer_groups:
             bgp_peer_groups[key] = {
                 "name": get(self.hostvars, f"bgp_peer_groups.{key}.name", default=default_name),
                 "password": get(self.hostvars, f"bgp_peer_groups.{key}.password"),

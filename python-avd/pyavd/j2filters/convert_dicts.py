@@ -63,13 +63,13 @@ def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_
                 output.append({primary_key: element})
             elif primary_key not in element and secondary_key is not None:
                 # if element of nested dictionary is a dictionary but primary key is missing, insert primary and secondary keys.
-                for key in element:
-                    output.append(
-                        {
-                            primary_key: key,
-                            secondary_key: element[key],
-                        },
-                    )
+                output.extend(
+                    {
+                        primary_key: key,
+                        secondary_key: element[key],
+                    }
+                    for key in element
+                )
             else:
                 output.append(element)
         return output

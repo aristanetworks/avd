@@ -47,9 +47,9 @@ class L3InterfacesMixin:
         return get(self.hostvars, "l3_interface_profiles", default=[])
 
     # TODO: Add sflow knob under fabric_sflow to cover l3_interfaces defined under the node_types.
-    # @cached_property
-    # def _l3_interfaces_sflow(self) -> bool | None:
-    #     return get(self._hostvars, f"fabric_sflow.{self.data_model}")
+    # TODO: @cached_property
+    # TODO: def _l3_interfaces_sflow(self) -> bool | None:
+    # TODO:    return get(self._hostvars, f"fabric_sflow.{self.data_model}")
 
     @cached_property
     def l3_interfaces(self: SharedUtils) -> list:

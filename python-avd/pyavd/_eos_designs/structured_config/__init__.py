@@ -50,7 +50,7 @@ The order is important, since later modules can overwrite or read config created
 
 
 def get_structured_config(
-    vars: dict,
+    vars: dict,  # noqa: A002
     input_schema_tools: AvdSchemaTools,
     output_schema_tools: AvdSchemaTools,
     result: dict,

@@ -45,7 +45,7 @@ class AvdValidationError(AristaAvdError):
         super().__init__(self.message)
 
 
-class AvdConversionWarning(AristaAvdError):
+class AvdConversionWarning(AristaAvdError):  # noqa: N818
     def __init__(
         self, message: str = "Data was converted to conform to schema", key: list | None = None, oldtype: str = "unknown", newtype: str = "unknown"
     ) -> None:
@@ -57,7 +57,7 @@ class AvdConversionWarning(AristaAvdError):
         super().__init__(self.message)
 
 
-class AvdDeprecationWarning(AristaAvdError):
+class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
     def __init__(
         self,
         key: str,

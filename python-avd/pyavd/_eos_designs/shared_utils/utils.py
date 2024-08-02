@@ -51,7 +51,7 @@ class UtilsMixin:
             msg = f"Error during templating of template: {template_file}"
             raise AristaAvdError(msg) from e
 
-    @lru_cache
+    @lru_cache  # noqa: B019
     def get_merged_port_profile(self: SharedUtils, profile_name: str) -> list:
         """Return list of merged "port_profiles" where "parent_profile" has been applied."""
         port_profile = get_item(self.port_profiles, "profile", profile_name, default={})

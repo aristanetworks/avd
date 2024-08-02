@@ -106,8 +106,8 @@ class VlansMixin:
             for switch_regex in network_port_item.get("switches", []):
                 # The match test is built on Python re.match which tests from the beginning of the string #}
                 # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
-                switch_regex = rf"^{switch_regex}$"
-                if not re.match(switch_regex, self.shared_utils.hostname):
+                raw_switch_regex = rf"^{switch_regex}$"
+                if not re.match(raw_switch_regex, self.shared_utils.hostname):
                     # Skip entry if no match
                     continue
 

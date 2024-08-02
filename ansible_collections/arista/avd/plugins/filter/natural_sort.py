@@ -75,7 +75,7 @@ _value:
 
 
 class FilterModule:
-    def filters(self):
+    def filters(self) -> dict:
         return {
             "natural_sort": wrap_filter(PLUGIN_NAME)(natural_sort),
         }

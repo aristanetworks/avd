@@ -12,11 +12,11 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_d
 
 class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
     @cached_property
-    def _custom_description_prefix(self):
+    def _custom_description_prefix(self) -> str:
         return get(self._hostvars, "description_prefix", "")
 
     @cached_property
-    def _switch_type(self):
+    def _switch_type(self) -> str:
         return get(self._hostvars, "switch.type", "")
 
     def underlay_ethernet_interfaces(self, link_type: str, link_peer: str, link_peer_interface: str) -> str:

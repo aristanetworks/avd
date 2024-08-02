@@ -315,7 +315,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         self,
         underlay_l3_multicast_group_ipv4_pool: str,
         vrf_vni: int,
-        vrf_id: int,  # pylint: disable=unused-argument
+        vrf_id: int,  # pylint: disable=unused-argument # noqa: ARG002
         evpn_underlay_l3_multicast_group_ipv4_pool_offset: int,
     ) -> str:
         """

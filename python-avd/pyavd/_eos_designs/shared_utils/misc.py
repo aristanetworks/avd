@@ -210,12 +210,12 @@ class MiscMixin:
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
-        DEFAULT_BFD_MULTIHOP = {
+        default_bfd_multihop = {
             "interval": 300,
             "min_rx": 300,
             "multiplier": 3,
         }
-        return get(self.hostvars, "bfd_multihop", default=DEFAULT_BFD_MULTIHOP)
+        return get(self.hostvars, "bfd_multihop", default=default_bfd_multihop)
 
     @cached_property
     def evpn_ebgp_multihop(self: SharedUtils) -> int:
@@ -252,8 +252,8 @@ class MiscMixin:
 
         NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
-        DEFAULT_NETWORK_SERVICES_KEYS = [{"name": "tenants"}]
-        network_services_keys = get(self.hostvars, "network_services_keys", default=DEFAULT_NETWORK_SERVICES_KEYS)
+        default_network_services_keys = [{"name": "tenants"}]
+        network_services_keys = get(self.hostvars, "network_services_keys", default=default_network_services_keys)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
 

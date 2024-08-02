@@ -43,7 +43,7 @@ async def deploy_to_cv(
     cv_pathfinder_metadata: list[CVPathfinderMetadata] | None = None,
     skip_missing_devices: bool = False,
     strict_tags: bool = True,
-    timeouts: CVTimeOuts | None = None,  # pylint: disable=unused-argument
+    timeouts: CVTimeOuts | None = None,  # pylint: disable=unused-argument # noqa: ARG001
 ) -> DeployToCvResult:
     """
     Deploy various objects to CloudVision.

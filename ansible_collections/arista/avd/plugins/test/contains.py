@@ -79,5 +79,5 @@ _value:
 
 
 class TestModule:
-    def tests(self):
+    def tests(self) -> dict:
         return {"contains": wrap_test(PLUGIN_NAME)(contains)}

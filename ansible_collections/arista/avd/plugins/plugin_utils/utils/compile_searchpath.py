@@ -1,10 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from os.path import join as path_join
+from pathlib import Path
 
 
-def compile_searchpath(searchpath: list):
+def compile_searchpath(searchpath: list) -> list:
     """
     Create a new searchpath by inserting new items with <>/templates into the existing searchpath.
 
@@ -28,6 +28,6 @@ def compile_searchpath(searchpath: list):
     """
     newsearchpath = []
     for p in searchpath:
-        newsearchpath.append(path_join(p, "templates"))
+        newsearchpath.append(Path(p, "templates"))
         newsearchpath.append(p)
     return newsearchpath

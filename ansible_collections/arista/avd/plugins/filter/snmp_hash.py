@@ -72,5 +72,5 @@ _value:
 
 
 class FilterModule:
-    def filters(self):
+    def filters(self) -> dict:
         return {"snmp_hash": wrap_filter(PLUGIN_NAME)(snmp_hash)}

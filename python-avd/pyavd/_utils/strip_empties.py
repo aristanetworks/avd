@@ -48,11 +48,14 @@ def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [
     new_data = []
     for v in data:
         if isinstance(v, dict):
-            v = strip_empties_from_dict(v, strip_values_tuple)
+            stripped_v = strip_empties_from_dict(v, strip_values_tuple)
         elif isinstance(v, list):
-            v = strip_empties_from_list(v, strip_values_tuple)
-        if v not in strip_values_tuple:
-            new_data.append(v)
+            stripped_v = strip_empties_from_list(v, strip_values_tuple)
+        else:
+            stripped_v = v
+
+        if stripped_v not in strip_values_tuple:
+            new_data.append(stripped_v)
     return new_data
 
 
@@ -75,9 +78,11 @@ def strip_empties_from_dict(data: dict, strip_values_tuple: tuple = (None, "", [
     new_data = {}
     for k, v in data.items():
         if isinstance(v, dict):
-            v = strip_empties_from_dict(v, strip_values_tuple)
+            stripped_v = strip_empties_from_dict(v, strip_values_tuple)
         elif isinstance(v, list):
-            v = strip_empties_from_list(v, strip_values_tuple)
-        if v not in strip_values_tuple:
-            new_data[k] = v
+            stripped_v = strip_empties_from_list(v, strip_values_tuple)
+        else:
+            stripped_v = v
+        if stripped_v not in strip_values_tuple:
+            new_data[k] = stripped_v
     return new_data

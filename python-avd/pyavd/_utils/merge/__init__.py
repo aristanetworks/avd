@@ -27,7 +27,7 @@ def _strategy_prepend_unique(_config: object, _path: list, base: list, nxt: list
     return nxt + [n for n in base if n not in nxt_as_set]
 
 
-def _strategy_must_match(_config, path: list, base: Any, nxt: Any) -> Any:
+def _strategy_must_match(_config: object, path: list, base: Any, nxt: Any) -> Any:
     if base != nxt:
         msg = f"Values of {'.'.join(path)} do not match: {base} != {nxt}"
         raise ValueError(msg)
@@ -113,11 +113,12 @@ def merge(
         if isinstance(nxt, list):
             for nxt_item in nxt:
                 if not destructive_merge:
-                    nxt_item = deepcopy(nxt_item)
-                merger.merge(base, nxt_item)
+                    merger.merge(base, deepcopy(nxt_item))
+                else:
+                    merger.merge(base, nxt_item)
+        elif not destructive_merge:
+            merger.merge(base, deepcopy(nxt))
         else:
-            if not destructive_merge:
-                nxt = deepcopy(nxt)
             merger.merge(base, nxt)
 
     return base

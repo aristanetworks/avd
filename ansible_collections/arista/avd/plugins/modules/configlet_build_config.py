@@ -43,9 +43,8 @@ EXAMPLES = r"""
     configlet_extension: 'cfg'
 """
 
-import glob
-import os
 import traceback
+from pathlib import Path
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -77,21 +76,18 @@ def get_configlet(src_folder: str = "", prefix: str = "AVD", extension: str = "c
     dict
         Dictionary of configlets found in source folder.
     """
-    src_configlets = glob.glob(f"{src_folder}/*.{extension}")
+    src_configlets = Path(src_folder).glob(f"*.{extension}")
     configlets = {}
     for file in src_configlets:
-        name = prefix + "_" + os.path.splitext(os.path.basename(file))[0] if prefix != "none" else os.path.splitext(os.path.basename(file))[0]
-        with open(file, encoding="utf8") as file:
-            data = file.read()
+        name = prefix + "_" + file.stem if prefix != "none" else file.stem
+        with file.open(encoding="utf8") as stream:
+            data = stream.read()
         configlets[name] = data
     return configlets
 
 
 def main() -> None:
     """Main entry point for module execution."""
-    # TODO: - ansible module prefers constructor over literal
-    #        for dict
-    # pylint: disable=use-dict-literal
     argument_spec = {
         "configlet_dir": {"type": "str", "required": True},
         "configlet_prefix": {"type": "str", "required": True},
@@ -115,7 +111,7 @@ def main() -> None:
 
     # Write vars to file if set by user
     if module.params["destination"] is not None:
-        with open(module.params["destination"], "w", encoding="utf8") as file:
+        with Path(module.params["destination"]).open("w", encoding="utf8") as file:
             yaml.dump(result, file)
 
     module.exit_json(**result)

@@ -96,7 +96,7 @@ class IpSecurityMixin(UtilsMixin):
         """
         sa_policy = {"name": name}
         if self.shared_utils.is_cv_pathfinder_router:
-            # TODO, provide options to change this cv_pathfinder_wide
+            # TODO: provide options to change this cv_pathfinder_wide
             sa_policy["esp"] = {"encryption": "aes256gcm128"}
             sa_policy["pfs_dh_group"] = 14
         return sa_policy

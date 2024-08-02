@@ -147,7 +147,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def mlag_port_channel_interface(
         self,
-        data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR
+        data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
     ) -> str:
         """
         Called for each mlag port-channel interface.

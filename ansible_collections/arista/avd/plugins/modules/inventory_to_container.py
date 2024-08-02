@@ -74,9 +74,8 @@ EXAMPLES = r"""
     save_topology: true
 """
 
-import glob
-import os
 import traceback
+from pathlib import Path
 from typing import Any
 
 from ansible.module_utils.basic import AnsibleModule
@@ -193,14 +192,14 @@ def get_configlet(src_folder: str = "", prefix: str = "AVD", extension: str = "c
     if device_filter is None:
         device_filter = ["all"]
 
-    src_configlets = glob.glob(src_folder + "/*." + extension)
+    src_configlets = Path(src_folder).glob(f"*.{extension}")
     configlets = {}
     for file in src_configlets:
         # Build structure only if configlet match device_filter.
-        if is_in_filter(hostname=os.path.splitext(os.path.basename(file))[0], hostname_filter=device_filter):
-            name = prefix + "_" + os.path.splitext(os.path.basename(file))[0] if prefix != "none" else os.path.splitext(os.path.basename(file))[0]
-            with open(file, encoding="utf8") as file:
-                data = file.read()
+        if is_in_filter(hostname=file.stem, hostname_filter=device_filter):
+            name = prefix + "_" + file.stem if prefix != "none" else file.stem
+            with file.open(encoding="utf8") as stream:
+                data = stream.read()
             configlets[name] = data
     return configlets
 

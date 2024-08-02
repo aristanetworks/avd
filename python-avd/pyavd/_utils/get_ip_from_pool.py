@@ -39,7 +39,7 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
             # This is a regular subnet. Skip the network address and raise if we hit the broadcast address.
             # >= because ip_offset is 0-based.
             if ip_offset >= (subnet_size - 2):
-                raise IndexError
+                raise IndexError  # noqa: TRY301
             ip = subnet[ip_offset + 1]
         else:
             # This is a linknet (/31 or /127) or a single IP (/32 or /128)

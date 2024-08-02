@@ -40,12 +40,12 @@ class AvdSchema:
         Force loading the YAML schema files into the store. By default schemas are loaded from pickled files.
     """
 
-    def __init__(self, schema: dict | None = None, schema_id: str | None = None, load_store_from_yaml=False) -> None:
+    def __init__(self, schema: dict | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
         self.store = create_store(load_from_yaml=load_store_from_yaml)
         self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
         self.load_schema(schema, schema_id)
 
-    def validate_schema(self, schema: dict):
+    def validate_schema(self, schema: dict) -> Generator:
         validation_errors = self._schema_validator.iter_errors(schema)
         for validation_error in validation_errors:
             yield self._error_handler(validation_error)

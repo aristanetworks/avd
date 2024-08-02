@@ -77,7 +77,7 @@ class SnmpServerMixin(UtilsMixin):
         compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
         if compute_source == "hostname_and_ip":
             # Accepting SonarLint issue: The weak sha1 is not used for encryption. Just to create a unique engine id.
-            local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode()).hexdigest()  # NOSONAR
+            local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
         elif compute_source == "system_mac":
             if self.shared_utils.system_mac_address is None:
                 msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set!"

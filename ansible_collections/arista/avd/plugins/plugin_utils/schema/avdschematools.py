@@ -210,14 +210,14 @@ class AvdSchemaTools:
                 continue
             message = f"[{self.hostname}]: {exception}"
             if mode == "error":
-                self.ansible_display.error(message, False)
+                self.ansible_display.error(message, wrap_text=False)
             elif mode == "info":
                 self.ansible_display.display(message)
             elif mode == "debug":
                 self.ansible_display.v(message)
             else:
-                # mode == "warning"
-                self.ansible_display.warning(message, False)
+                # when mode == "warning"
+                self.ansible_display.warning(message, wrap_text=False)
         return counter
 
     def validate_schema(self) -> int:
@@ -230,7 +230,7 @@ class AvdSchemaTools:
         exceptions = self.avdschema.validate_schema(self.avdschema._schema)
         return self.handle_validation_exceptions(exceptions, "error")
 
-    def build_result_message(self, conversions: int = 0, validation_errors: int = 0, schema_validation_errors: int = 0):
+    def build_result_message(self, conversions: int = 0, validation_errors: int = 0, schema_validation_errors: int = 0) -> str | None:
         result_messages = []
 
         if conversions:

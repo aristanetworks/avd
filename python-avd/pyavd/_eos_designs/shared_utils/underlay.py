@@ -112,7 +112,7 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_ospf_area(self: SharedUtils) -> str:
-        return get(self.hostvars, "underlay_ospf_area", default="0.0.0.0")
+        return get(self.hostvars, "underlay_ospf_area", default="0.0.0.0")  # noqa: S104
 
     @cached_property
     def underlay_filter_peer_as(self: SharedUtils) -> bool:

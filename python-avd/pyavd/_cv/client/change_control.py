@@ -73,10 +73,10 @@ class ChangeControlMixin:
 
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+        return response.value
 
     async def set_change_control(
         self: CVClient,
@@ -108,10 +108,10 @@ class ChangeControlMixin:
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+        return response.value
 
     async def approve_change_control(
         self: CVClient,
@@ -145,10 +145,10 @@ class ChangeControlMixin:
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Approving Change Control ID '{change_control_id}' for timestamp '{timestamp}'") or e
+
+        return response.value
 
     async def start_change_control(
         self: CVClient,
@@ -177,10 +177,10 @@ class ChangeControlMixin:
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+        return response.value
 
     async def wait_for_change_control_state(
         self: CVClient,

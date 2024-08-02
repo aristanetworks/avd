@@ -84,6 +84,7 @@ options:
 
 
 import os
+from pathlib import Path
 from typing import Any
 
 from ansible.errors import AnsibleParserError
@@ -97,22 +98,22 @@ FOUND: list = []
 
 
 class VarsModule(BaseVarsPlugin):
-    def find_variable_source(self, path: str, loader: object):
+    def find_variable_source(self, path: str, loader: object) -> list:
         """Return the source files from which to load data, if the path is a directory - lookup vars file inside."""
         global_vars_paths = self.get_option("paths")
         extensions = self.get_option("_valid_extensions")
 
         found_files = []
         for g_path in global_vars_paths:
-            b_opath = os.path.realpath(to_bytes(os.path.join(path, g_path)))
+            b_opath = os.path.realpath(to_bytes(Path(path).joinpath(g_path)))
             opath = to_text(b_opath)
             try:
-                if not os.path.exists(b_opath):
+                if not Path.exists(b_opath):
                     # file does not exist, skip it
                     self._display.vvv(f"Path: {opath} does not exist - skipping")
                     continue
                 self._display.vvv(f"Adding Path: {opath} to global variables")
-                if os.path.isdir(b_opath):
+                if Path.is_dir(b_opath):
                     self._display.debug(f"\tProcessing dir {opath}")
                     res = loader._get_dir_vars_files(opath, extensions)
                     self._display.debug(f"Found variable files {res!s}")
@@ -127,7 +128,7 @@ class VarsModule(BaseVarsPlugin):
 
     def get_vars(self, loader: object, path: str, entities: Any, _cache: bool = True) -> dict:
         """Return global variables for the `all` group in the inventory file."""
-        global FOUND
+        global FOUND  # noqa: PLW0603
         if not isinstance(entities, list):
             entities = [entities]
 

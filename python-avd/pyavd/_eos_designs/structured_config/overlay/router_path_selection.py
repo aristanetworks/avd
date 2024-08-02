@@ -191,12 +191,13 @@ class RouterPathSelectionMixin(UtilsMixin):
         static_peers = []
         for wan_route_server_name, wan_route_server in self.shared_utils.filtered_wan_route_servers.items():
             if (path_group := get_item(get(wan_route_server, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
-                ipv4_addresses = []
+                ipv4_addresses = [
+                    # TODO: - removing mask using split but maybe a helper is clearer
+                    public_ip.split("/")[0]
+                    for interface_dict in get(path_group, "interfaces", required=True)
+                    if (public_ip := interface_dict.get("public_ip")) is not None
+                ]
 
-                for interface_dict in get(path_group, "interfaces", required=True):
-                    if (public_ip := interface_dict.get("public_ip")) is not None:
-                        # TODO: - removing mask using split but maybe a helper is clearer
-                        ipv4_addresses.append(public_ip.split("/")[0])
                 static_peers.append(
                     {
                         "router_ip": get(wan_route_server, "vtep_ip", required=True),

@@ -84,11 +84,7 @@ class WanMixin:
         if not self.is_wan_router:
             return []
 
-        wan_interfaces = []
-        for interface in self.l3_interfaces:
-            if get(interface, "wan_carrier") is not None:
-                wan_interfaces.append(interface)
-
+        wan_interfaces = [interface for interface in self.l3_interfaces if get(interface, "wan_carrier") is not None]
         if not wan_interfaces:
             msg = "At least one WAN interface must be configured on a WAN router. Add WAN interfaces under `l3_interfaces` node setting with `wan_carrier` set."
             raise AristaAvdError(

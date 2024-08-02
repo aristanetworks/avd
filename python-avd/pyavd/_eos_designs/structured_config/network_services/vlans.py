@@ -86,7 +86,7 @@ class VlansMixin(UtilsMixin):
 
         return None
 
-    def _get_vlan_config(self: AvdStructuredConfigNetworkServices, vlan) -> dict:
+    def _get_vlan_config(self: AvdStructuredConfigNetworkServices, vlan: dict) -> dict:
         """
         Return structured config for one given vlan.
 

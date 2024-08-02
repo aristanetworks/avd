@@ -147,7 +147,7 @@ def load_custom_catalogs(catalog_files: list[Path]) -> dict:
             with file.open("r", encoding="UTF-8") as fd:
                 catalog = load(fd, Loader=CSafeLoader)
                 catalog_list.append(catalog)
-        except (OSError, YAMLError) as error:
+        except (OSError, YAMLError) as error:  # noqa: PERF203
             msg = f"Failed to load the custom ANTA catalog from {file}: {error!s}"
             raise AristaAvdError(msg) from error
 

@@ -5,7 +5,81 @@
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from typing import Any
+
+
+@dataclass
+class InterfaceData:
+    one_range: str
+    first_interface: int | None = None
+    last_interface: int | None = None
+    first_subinterface: int | None = None
+    last_subinterface: int | None = None
+    first_parent_interface: int | None = None
+    last_parent_interface: int | None = None
+    first_module: int | None = None
+    last_module: int | None = None
+
+
+def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list:
+    result = []
+    if data.last_subinterface is not None:
+        if data.first_subinterface > data.last_subinterface:
+            msg = (
+                f"Range {data.one_range} could not be expanded because the first subinterface {data.first_subinterface} is larger than last"
+                f" subinterface {data.last_subinterface} in the range."
+            )
+            raise ValueError(msg)
+        result.extend(f"{interface_string}.{subinterface}" for subinterface in range(data.first_subinterface, data.last_subinterface + 1))
+    else:
+        result.append(interface_string)
+    return result
+
+
+def expand_interfaces(interface_string: str, data: InterfaceData) -> list:
+    result = []
+    if data.first_interface > data.last_interface:
+        msg = (
+            f"Range {data.one_range} could not be expanded because the first interface {data.first_interface} is larger than last interface"
+            f" {data.last_interface} in the range."
+        )
+        raise ValueError(msg)
+    for interface in range(data.first_interface, data.last_interface + 1):
+        result.extend(expand_subinterfaces(f"{interface_string}{interface}", data))
+    return result
+
+
+def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list:
+    result = []
+    if data.last_parent_interface:
+        if data.first_parent_interface > data.last_parent_interface:
+            msg = (
+                f"Range {data.one_range} could not be expanded because the first interface {data.first_parent_interface} is larger than last"
+                f" interface {data.last_parent_interface} in the range."
+            )
+            raise ValueError(msg)
+        for parent_interface in range(data.first_parent_interface, data.last_parent_interface + 1):
+            result.extend(expand_interfaces(f"{interface_string}{parent_interface}/", data))
+    else:
+        result.extend(expand_interfaces(f"{interface_string}", data))
+    return result
+
+
+def expand_module(interface_string: str, data: InterfaceData) -> list:
+    result = []
+    if data.last_module:
+        if data.first_module > data.last_module:
+            msg = (
+                f"Range {data.one_range} could not be expanded because the first module {data.first_module} is larger than last module"
+                f" {data.last_module} in the range."
+            )
+            raise ValueError(msg)
+        for module in range(data.first_module, data.last_module + 1):
+            result.extend(expand_parent_interfaces(f"{interface_string}{module}/", data))
+    else:
+        result.extend(expand_parent_interfaces(f"{interface_string}", data))
+    return result
 
 
 def range_expand(range_to_expand: Any) -> list:
@@ -57,83 +131,24 @@ def range_expand(range_to_expand: Any) -> list:
             if search_result:
                 if len(search_result.groups()) == regex_groups:
                     groups = search_result.groups()
-                    first_module = last_module = None
-                    first_parent_interface = last_parent_interface = None
-                    first_interface = last_interface = None
-                    first_subinterface = last_subinterface = None
+                    data = InterfaceData(one_range=one_range)
                     # Set prefix if found (otherwise use last set prefix)
                     if groups[0]:
                         prefix = groups[0]
                     if groups[4]:
-                        last_module = int(groups[4])
-                    first_module = int(groups[3]) if groups[3] else last_module
+                        data.last_module = int(groups[4])
+                    data.first_module = int(groups[3]) if groups[3] else data.last_module
                     if groups[8]:
-                        last_parent_interface = int(groups[8])
-                    first_parent_interface = int(groups[7]) if groups[7] else last_parent_interface
+                        data.last_parent_interface = int(groups[8])
+                    data.first_parent_interface = int(groups[7]) if groups[7] else data.last_parent_interface
                     if groups[12]:
-                        last_interface = int(groups[12])
-                    first_interface = int(groups[11]) if groups[11] else last_interface
+                        data.last_interface = int(groups[12])
+                    data.first_interface = int(groups[11]) if groups[11] else data.last_interface
                     if groups[16]:
-                        last_subinterface = int(groups[16])
-                    first_subinterface = int(groups[15]) if groups[15] else last_subinterface
+                        data.last_subinterface = int(groups[16])
+                    data.first_subinterface = int(groups[15]) if groups[15] else data.last_subinterface
 
-                    def expand_subinterfaces(interface_string):
-                        result = []
-                        if last_subinterface is not None:
-                            if first_subinterface > last_subinterface:
-                                msg = (
-                                    f"Range {one_range} could not be expanded because the first subinterface {first_subinterface} is larger than last"
-                                    f" subinterface {last_subinterface} in the range."
-                                )
-                                raise ValueError(msg)
-                            result.extend(f"{interface_string}.{subinterface}" for subinterface in range(first_subinterface, last_subinterface + 1))
-                        else:
-                            result.append(interface_string)
-                        return result
-
-                    def expand_interfaces(interface_string):
-                        result = []
-                        if first_interface > last_interface:
-                            msg = (
-                                f"Range {one_range} could not be expanded because the first interface {first_interface} is larger than last interface"
-                                f" {last_interface} in the range."
-                            )
-                            raise ValueError(msg)
-                        for interface in range(first_interface, last_interface + 1):
-                            result.extend(expand_subinterfaces(f"{interface_string}{interface}"))
-                        return result
-
-                    def expand_parent_interfaces(interface_string):
-                        result = []
-                        if last_parent_interface:
-                            if first_parent_interface > last_parent_interface:
-                                msg = (
-                                    f"Range {one_range} could not be expanded because the first interface {first_parent_interface} is larger than last"
-                                    f" interface {last_parent_interface} in the range."
-                                )
-                                raise ValueError(msg)
-                            for parent_interface in range(first_parent_interface, last_parent_interface + 1):
-                                result.extend(expand_interfaces(f"{interface_string}{parent_interface}/"))
-                        else:
-                            result.extend(expand_interfaces(f"{interface_string}"))
-                        return result
-
-                    def expand_module(interface_string):
-                        result = []
-                        if last_module:
-                            if first_module > last_module:
-                                msg = (
-                                    f"Range {one_range} could not be expanded because the first module {first_module} is larger than last module"
-                                    f" {last_module} in the range."
-                                )
-                                raise ValueError(msg)
-                            for module in range(first_module, last_module + 1):
-                                result.extend(expand_parent_interfaces(f"{interface_string}{module}/"))
-                        else:
-                            result.extend(expand_parent_interfaces(f"{interface_string}"))
-                        return result
-
-                    result.extend(expand_module(prefix))
+                    result.extend(expand_module(prefix, data))
 
                 else:
                     msg = f"Invalid range, got {one_range} and found {search_result.groups()}"

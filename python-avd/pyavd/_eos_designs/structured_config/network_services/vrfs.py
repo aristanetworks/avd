@@ -73,7 +73,7 @@ class VrfsMixin(UtilsMixin):
 
         return None
 
-    def _has_ipv6(self: AvdStructuredConfigNetworkServices, vrf) -> bool:
+    def _has_ipv6(self: AvdStructuredConfigNetworkServices, vrf: dict) -> bool:
         """
         Return bool if IPv6 is configured in the given VRF.
 

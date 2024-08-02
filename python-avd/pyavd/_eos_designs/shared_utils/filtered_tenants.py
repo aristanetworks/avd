@@ -37,15 +37,11 @@ class FilteredTenantsMixin:
         filter_tenants = self.filter_tenants
         for network_services_key in self.network_services_keys:
             tenants = convert_dicts(get(self.hostvars, network_services_key["name"]), "name")
-            for tenant in tenants:
-                if tenant["name"] in filter_tenants or "all" in filter_tenants:
-                    filtered_tenants.append(
-                        {
-                            **tenant,
-                            "l2vlans": self.filtered_l2vlans(tenant),
-                            "vrfs": self.filtered_vrfs(tenant),
-                        },
-                    )
+            filtered_tenants.extend(
+                {**tenant, "l2vlans": self.filtered_l2vlans(tenant), "vrfs": self.filtered_vrfs(tenant)}
+                for tenant in tenants
+                if tenant["name"] in filter_tenants or "all" in filter_tenants
+            )
 
         no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
         if self.is_wan_router and no_vrf_default:
@@ -63,7 +59,7 @@ class FilteredTenantsMixin:
                             "static_routes": [],
                             "loopbacks": [],
                             "additional_route_targets": [],
-                        },
+                        }
                     ],
                     "l2vlans": [],
                 },
@@ -388,10 +384,10 @@ class FilteredTenantsMixin:
         endpoint_vlans = self.get_switch_fact("endpoint_vlans", required=False)
         if not endpoint_vlans:
             return []
-        return [int(id) for id in range_expand(endpoint_vlans)]
+        return [int(vlan_id) for vlan_id in range_expand(endpoint_vlans)]
 
     @staticmethod
-    def get_vrf_id(vrf, required: bool = True) -> int | None:
+    def get_vrf_id(vrf: dict, required: bool = True) -> int | None:
         vrf_id = default(vrf.get("vrf_id"), vrf.get("vrf_vni"))
         if vrf_id is None:
             if required:

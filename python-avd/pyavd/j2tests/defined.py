@@ -65,11 +65,11 @@ def defined(
             warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was expected but not set. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
             else:
                 warning_msg = "A variable was expected but not set. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
         elif str(fail_action).lower() == "error":
             if var_name is not None:
@@ -87,11 +87,11 @@ def defined(
             warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
             else:
                 warning_msg = f"A variable was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
         elif str(fail_action).lower() == "error":
             if var_name is not None:
@@ -108,11 +108,11 @@ def defined(
             warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
             else:
                 warning_msg = f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
         elif str(fail_action).lower() == "error":
             if var_name is not None:

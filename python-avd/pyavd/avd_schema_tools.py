@@ -22,8 +22,10 @@ class AvdSchemaTools:
         The data conversion is done in-place (updating the original "data" dict).
 
         Args:
+            schema:
+                Optional AVD schema as dict
             schema_id:
-                Name of AVD Schema to use for conversion and validation.
+                Optional Name of AVD Schema to load from store
         """
         # pylint: disable=import-outside-toplevel
         from ._schema.avdschema import AvdSchema

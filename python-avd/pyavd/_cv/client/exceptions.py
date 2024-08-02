@@ -32,7 +32,7 @@ def get_cv_client_exception(exception: Exception, cv_client_details: str | None 
     return None
 
 
-class CVClientException(Exception):
+class CVClientException(Exception):  # noqa: N818
     """Base exception."""
 
 
