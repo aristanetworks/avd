@@ -99,9 +99,7 @@ class UplinksMixin:
                     f" is not matching {peer_uplink_switch_port_channel_id} set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG"
                     " peers."
                 )
-                raise AristaAvdError(
-                    msg,
-                )
+                raise AristaAvdError(msg)
             return peer_uplink_switch_port_channel_id
 
         # MLAG Primary or not MLAG.
@@ -117,9 +115,7 @@ class UplinksMixin:
                 f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}' on"
                 f" '{self.shared_utils.hostname}'."
             )
-            raise AristaAvdError(
-                msg,
-            )
+            raise AristaAvdError(msg)
 
         return uplink_switch_port_channel_id
 

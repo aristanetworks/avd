@@ -69,9 +69,7 @@ class ActionModule(ActionBase):
         # Verify that the group referenced in 'container_root' is valid
         if container_root not in inventory_manager.groups:
             msg = f"Group '{container_root}' given as 'container_root' argument on 'arista.avd.inventory_to_container' cannot be found in Ansible inventory"
-            raise AnsibleActionFail(
-                msg,
-            )
+            raise AnsibleActionFail(msg)
 
         # cvp_topology holds the final output data
         cvp_topology = {}

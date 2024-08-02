@@ -83,17 +83,13 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         if get(self._hostvars, "evpn_multicast") is True and self.shared_utils.vtep is True:
             if not (self.shared_utils.underlay_multicast is True and self.shared_utils.igmp_snooping_enabled is not False):
                 msg = "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
-                raise AristaAvdError(
-                    msg,
-                )
+                raise AristaAvdError(msg)
 
             if self.shared_utils.mlag is True:
                 peer_eos_designs_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
                 if self.shared_utils.overlay_rd_type_admin_subfield == peer_eos_designs_facts.shared_utils.overlay_rd_type_admin_subfield:
                     msg = "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
-                    raise AristaAvdError(
-                        msg,
-                    )
+                    raise AristaAvdError(msg)
             return True
         return None
 
