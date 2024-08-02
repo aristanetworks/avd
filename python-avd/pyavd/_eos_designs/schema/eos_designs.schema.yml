@@ -467,27 +467,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
-      IPv4_UNDERLAY_PEERS:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.ipv4_underlay_peers
-          removed: true
-          remove_in_version: 4.0.0
-      MLAG_IPv4_UNDERLAY_PEER:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.mlag_ipv4_underlay_peer
-          removed: true
-          remove_in_version: 4.0.0
-      EVPN_OVERLAY_PEERS:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.evpn_overlay_peers
-          removed: true
-          remove_in_version: 4.0.0
   bgp_update_wait_install:
     documentation_options:
       table: bgp-settings
