@@ -982,7 +982,6 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | evpn |
 | Remote AS | 65001 |
-| Listen range prefix | 10.10.10.0/24 |
 | Source | Loopback0 |
 
 #### BGP Neighbors
@@ -992,8 +991,6 @@ ASN Notation: asplain
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
-| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
-| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
@@ -1069,7 +1066,6 @@ ASN Notation: asplain
 !
 router bgp 65101
    router-id 192.168.255.3
-   bgp listen range 10.10.10.0/24 peer-group EVPN-OVERLAY-PEERS peer-filter myfilter
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -1097,7 +1093,6 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      neighbor EVPN-OVERLAY-PEERS next-hop address-family ipv6 originate
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
@@ -1139,17 +1134,6 @@ router bgp 65101
       redistribute static route-map RM-CONN-2-BGP
       !
       address-family ipv4
-         neighbor 10.2.3.4 activate
-         neighbor 10.2.3.4 prefix-list PL-TEST-IN-AF4 in
-         neighbor 10.2.3.4 prefix-list PL-TEST-OUT-AF4 out
-         neighbor 10.2.3.5 activate
-         neighbor 10.2.3.5 prefix-list PL-TEST-IN in
-         neighbor 10.2.3.5 prefix-list PL-TEST-OUT out
-         neighbor 10.255.251.1 prefix-list PL-TEST-IN in
-         neighbor 10.255.251.1 prefix-list PL-TEST-OUT out
-      !
-      address-family ipv4
-         neighbor TEST_PEER_GRP activate
          neighbor 10.2.3.4 activate
          neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
          neighbor 10.2.3.5 activate

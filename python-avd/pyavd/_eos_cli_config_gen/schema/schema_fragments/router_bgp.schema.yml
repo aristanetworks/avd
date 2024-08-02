@@ -241,16 +241,6 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
-            peer_filter:
-              type: str
-              description: |
-                Peer-filter name.
-                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
-                the new `listen_ranges` key above to avoid conflicts.
-              deprecation:
-                warning: true
-                remove_in_version: 5.0.0
-                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -419,16 +409,6 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
-            bgp_listen_range_prefix:
-              type: str
-              description: |
-                IP prefix range.
-                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
-                the new `listen_ranges` key above to avoid conflicts.
-              deprecation:
-                warning: true
-                remove_in_version: 5.0.0
-                new_key: listen_ranges
             session_tracker:
               type: str
             shared_secret:
@@ -454,6 +434,20 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            peer_filter:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
+            bgp_listen_range_prefix:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
       neighbors:
         type: list
         primary_key: ip_address
@@ -748,20 +742,6 @@ keys:
               type: bool
             as_set:
               type: bool
-            advertise_map:
-              type: str
-              description: Route-map name.
-              deprecation:
-                removed: true
-                warning: true
-                remove_in_version: v4.9.0
-            supress_map:
-              type: str
-              description: Route-map name.
-              deprecation:
-                removed: true
-                warning: true
-                remove_in_version: v4.9.0
             summary_only:
               type: bool
             attribute_map:
@@ -1395,7 +1375,7 @@ keys:
                       type: bool
                       deprecation:
                         warning: true
-                        removed: false
+                        removed: true
                         new_key: address_family_ipv6
                         remove_in_version: 5.0.0
                 prefix_list_in:
@@ -2750,6 +2730,7 @@ keys:
                     description: Inbound prefix-list name.
                     deprecation:
                       warning: true
+                      removed: true
                       new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in"
                       remove_in_version: 5.0.0
                   prefix_list_out:
@@ -2757,6 +2738,7 @@ keys:
                     description: Outbound prefix-list name.
                     deprecation:
                       warning: true
+                      removed: true
                       new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out"
                       remove_in_version: 5.0.0
             neighbor_interfaces:
@@ -2846,20 +2828,6 @@ keys:
                     type: bool
                   as_set:
                     type: bool
-                  advertise_map:
-                    type: str
-                    description: Route-map name.
-                    deprecation:
-                      removed: true
-                      warning: true
-                      remove_in_version: v4.9.0
-                  supress_map:
-                    type: str
-                    description: Route-map name.
-                    deprecation:
-                      removed: true
-                      warning: true
-                      remove_in_version: v4.9.0
                   summary_only:
                     type: bool
                   attribute_map:
@@ -3438,84 +3406,9 @@ keys:
                 - dict
               deprecation:
                 warning: true
+                removed: true
                 new_key: address_family_*
                 remove_in_version: 5.0.0
-              items:
-                type: dict
-                keys:
-                  address_family:
-                    type: str
-                  bgp:
-                    type: dict
-                    keys:
-                      missing_policy:
-                        type: dict
-                        keys:
-                          direction_in_action:
-                            type: str
-                            valid_values:
-                              - "deny"
-                              - "deny-in-out"
-                              - "permit"
-                          direction_out_action:
-                            type: str
-                            valid_values:
-                              - "deny"
-                              - "deny-in-out"
-                              - "permit"
-                      additional_paths:
-                        type: list
-                        items:
-                          type: str
-                  neighbors:
-                    type: list
-                    primary_key: ip_address
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        ip_address:
-                          type: str
-                        activate:
-                          type: bool
-                        route_map_in:
-                          type: str
-                          description: Inbound route-map name.
-                        route_map_out:
-                          type: str
-                          description: Outbound route-map name.
-                  peer_groups:
-                    type: list
-                    primary_key: name
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        name:
-                          type: str
-                          description: Peer-group name.
-                        activate:
-                          type: bool
-                        next_hop:
-                          type: dict
-                          keys:
-                            address_family_ipv6_originate:
-                              type: bool
-                  networks:
-                    type: list
-                    primary_key: prefix
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        prefix:
-                          type: str
-                          description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
-                        route_map:
-                          type: str
             eos_cli:
               type: str
               description: |
