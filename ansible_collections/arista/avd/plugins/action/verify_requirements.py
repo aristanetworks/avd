@@ -220,8 +220,7 @@ def _validate_ansible_collections(running_collection_name: str, info: dict) -> b
     valid = True
 
     collection_path = _get_collection_path(running_collection_name)
-    collections_file = Path(collection_path, "collections.yml")
-    with collections_file.open("rb") as fd:
+    with Path(collection_path, "collections.yml").open("rb") as fd:
         metadata = yaml.safe_load(fd)
     if "collections" not in metadata:
         # no requirements
@@ -279,7 +278,7 @@ def _validate_ansible_collections(running_collection_name: str, info: dict) -> b
 def _get_collection_path(collection_name: str) -> str:
     """Retrieve the collection path based on the collection_name."""
     collection = import_module(f"ansible_collections.{collection_name}")
-    return str(Path(collection.__file__).parent)
+    return str(Path(collection.__file__))
 
 
 def _get_collection_version(collection_path: str) -> str:

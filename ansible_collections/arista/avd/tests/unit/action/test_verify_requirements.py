@@ -22,18 +22,9 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
 @pytest.mark.parametrize(
     ("mocked_version", "expected_return"),
     [
-        (
-            (2, 2, 2, "final", 0),
-            False,
-        ),
-        (
-            (MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1], 42, "final", 0),
-            True,
-        ),
-        (
-            (MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1] + 1, 42, "final", 0),
-            True,
-        ),
+        ((2, 2, 2, "final", 0), False),
+        ((MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1], 42, "final", 0), True),
+        ((MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1] + 1, 42, "final", 0), True),
     ],
 )
 def test__validate_python_version(mocked_version, expected_return) -> None:
@@ -152,41 +143,11 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
 @pytest.mark.parametrize(
     ("n_reqs", "mocked_version", "requirement_version", "expected_return"),
     [
-        pytest.param(
-            1,
-            "4.3",
-            ">=4.2",
-            True,
-            id="valid version",
-        ),
-        pytest.param(
-            1,
-            "4.3",
-            None,
-            True,
-            id="no required version",
-        ),
-        pytest.param(
-            2,
-            "4.0",
-            ">=4.2",
-            False,
-            id="invalid version",
-        ),
-        pytest.param(
-            1,
-            None,
-            ">=4.2",
-            False,
-            id="missing requirement",
-        ),
-        pytest.param(
-            0,
-            None,
-            None,
-            True,
-            id="no requirement",
-        ),
+        pytest.param(1, "4.3", ">=4.2", True, id="valid version"),
+        pytest.param(1, "4.3", None, True, id="no required version"),
+        pytest.param(2, "4.0", ">=4.2", False, id="invalid version"),
+        pytest.param(1, None, ">=4.2", False, id="missing requirement"),
+        pytest.param(0, None, None, True, id="no requirement"),
     ],
 )
 def test__validate_ansible_collections(n_reqs, mocked_version, requirement_version, expected_return) -> None:
@@ -219,10 +180,10 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
         ),
     ):
         patched_safe_load.return_value = metadata
-        patched__get_collection_path.return_value = "dummy"
+        patched__get_collection_path.return_value = "/collections/foo/bar"
         if mocked_version is None and n_reqs > 0:
             # First call is for arista.avd
-            patched__get_collection_path.side_effect = ["dummy", ModuleNotFoundError()]
+            patched__get_collection_path.side_effect = ["/collections/foo/bar", ModuleNotFoundError()]
         patched__get_collection_version.return_value = mocked_version
 
         ret = _validate_ansible_collections("arista.avd", result)
