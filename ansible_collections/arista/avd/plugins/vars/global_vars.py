@@ -83,14 +83,13 @@ options:
 """
 
 
-import os
 from pathlib import Path
 from typing import Any
 
 from ansible.errors import AnsibleParserError
 from ansible.inventory.group import Group
 from ansible.inventory.host import Host
-from ansible.module_utils._text import to_bytes, to_native, to_text
+from ansible.module_utils._text import to_native
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 
@@ -105,21 +104,20 @@ class VarsModule(BaseVarsPlugin):
 
         found_files = []
         for g_path in global_vars_paths:
-            b_opath = os.path.realpath(to_bytes(Path(path).joinpath(g_path)))
-            opath = to_text(b_opath)
             try:
-                if not Path.exists(b_opath):
+                opath = Path(path, g_path)
+                if not opath.exists():
                     # file does not exist, skip it
                     self._display.vvv(f"Path: {opath} does not exist - skipping")
                     continue
                 self._display.vvv(f"Adding Path: {opath} to global variables")
-                if Path.is_dir(b_opath):
+                if opath.is_dir():
                     self._display.debug(f"\tProcessing dir {opath}")
-                    res = loader._get_dir_vars_files(opath, extensions)
+                    res = loader._get_dir_vars_files(str(opath), extensions)
                     self._display.debug(f"Found variable files {res!s}")
                     found_files.extend(res)
                 else:
-                    found_files.append(b_opath)
+                    found_files.append(str(path))
 
             except Exception as e:
                 raise AnsibleParserError(to_native(e)) from e
@@ -128,7 +126,7 @@ class VarsModule(BaseVarsPlugin):
 
     def get_vars(self, loader: object, path: str, entities: Any, _cache: bool = True) -> dict:
         """Return global variables for the `all` group in the inventory file."""
-        global FOUND  # noqa: PLW0603
+        global FOUND  # noqa: PLW0603 TODO: improve to avoid using global
         if not isinstance(entities, list):
             entities = [entities]
 
