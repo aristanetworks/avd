@@ -1217,24 +1217,6 @@ keys:
       '
     type: bool
     default: false
-  evpn_rd_type:
-    documentation_options:
-      table: evpn-settings
-    type: dict
-    deprecation:
-      warning: true
-      new_key: overlay_rd_type
-      removed: true
-      remove_in_version: 4.0.0
-  evpn_rt_type:
-    documentation_options:
-      table: evpn-settings
-    type: dict
-    deprecation:
-      warning: true
-      new_key: overlay_rt_type
-      removed: true
-      remove_in_version: 4.0.0
   evpn_short_esi_prefix:
     documentation_options:
       table: evpn-settings
@@ -4197,16 +4179,6 @@ keys:
 
       '
     type: str
-  vxlan_vlan_aware_bundles:
-    documentation_options:
-      table: evpn-settings
-    deprecation:
-      warning: true
-      new_key: evpn_vlan_aware_bundles
-      removed: true
-      remove_in_version: 4.0.0
-    type: bool
-    default: false
   wan_carriers:
     documentation_options:
       table: wan-path-groups-and-carriers
@@ -4442,15 +4414,6 @@ keys:
                     name:
                       type: str
                       description: Interface name.
-                    ip_address:
-                      type: str
-                      description: The public IPv4 address (without mask) of the Route
-                        Reflector for this path-group.
-                      deprecation:
-                        warning: true
-                        new_key: public_ip
-                        removed: true
-                        remove_in_version: 4.7.0
                     public_ip:
                       type: str
                       description: The public IPv4 address (without mask) of the Route
@@ -5257,14 +5220,6 @@ $defs:
 
               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
               devices.'
-          esi:
-            type: str
-            description: Format xxxx:xxxx:xxxx.
-            deprecation:
-              warning: true
-              removed: true
-              remove_in_version: 4.0.0
-              new_key: short_esi
           short_esi:
             type: str
             description: In format xxxx:xxxx:xxxx or "auto".
@@ -5471,16 +5426,6 @@ $defs:
                   over description.
 
                   '
-              server_ports:
-                type: list
-                deprecation:
-                  warning: true
-                  removed: true
-                  new_key: endpoint_ports
-                  remove_in_version: 4.0.0
-                items:
-                  type: str
-                  description: Used for documentation purposes.
   flow_tracking_link:
     type: dict
     keys:
