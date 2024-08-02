@@ -54,7 +54,6 @@ keys:
               hardware counter feature route ipv4 vrf test 192.168.0.0/24
               ```
 
-        # primary_key: name
         # no primary key to allow multiple times the same name
         items:
           type: dict
@@ -92,6 +91,7 @@ keys:
                 - vni encap
                 - vtep decap
                 - vtep encap
+              required: true
             direction:
               type: str
               valid_values:
