@@ -210,7 +210,7 @@ def test__get_running_collection_version_git_not_installed() -> None:
         patched__get_collection_path.return_value = "."
         patched__get_collection_version.return_value = "42.0.0"
         # TODO: Path is less kind than os.path was
-        patched_Path.return_value = Path("/collections/foo/bar")
+        patched_Path.return_value = Path("/collections/foo/bar/__synthetic__/blah")
 
         _get_running_collection_version("dummy", result)
         patched_display.vvv.assert_called_once_with("Could not find 'git' executable, returning collection version")
