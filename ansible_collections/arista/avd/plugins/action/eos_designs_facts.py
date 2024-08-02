@@ -59,9 +59,7 @@ class ActionModule(ActionBase):
                 "which must point to an Ansible Group containing the hosts."
                 f"play_hosts: {ansible_play_hosts_all}"
             )
-            raise AnsibleActionFail(
-                msg,
-            )
+            raise AnsibleActionFail(msg)
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
