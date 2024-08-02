@@ -77,7 +77,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         elements = [self._custom_description_prefix, peer, adapter_port_channel_description]
         return "_".join([str(element) for element in elements if element is not None])
 
-    def overlay_loopback_interface(self, _overlay_loopback_description: str | None = None) -> str:
+    def overlay_loopback_interface(self, overlay_loopback_description: str | None = None) -> str:  # noqa: ARG002
         """
         Implementation of custom code similar to jinja.
 
