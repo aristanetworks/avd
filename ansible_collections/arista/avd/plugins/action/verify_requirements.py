@@ -320,7 +320,7 @@ def _get_running_collection_version(running_collection_name: str, result: dict) 
 
     result["collection"] = {
         "name": running_collection_name,
-        "path": Path(collection_path).parents[1],
+        "path": str(Path(collection_path).parents[1]),
         "version": version,
     }
 
