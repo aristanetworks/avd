@@ -203,9 +203,9 @@ interface Port-Channel1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4085 |  default  |  172.21.110.4/24  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan4085 |  default  |  172.21.110.4/24  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
