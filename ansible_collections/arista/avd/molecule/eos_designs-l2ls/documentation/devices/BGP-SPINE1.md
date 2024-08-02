@@ -293,14 +293,14 @@ interface Loopback0
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan1 |  default  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |  -  |
-| Vlan200 |  default  |  -  |  10.1.200.1/24  |  -  |  -  |  -  |  -  |
-| Vlan220 |  default  |  -  |  10.1.220.1/24  |  -  |  -  |  -  |  -  |
-| Vlan4092 |  default  |  172.23.254.2/24  |  -  |  172.23.254.1  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.254.0/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan1 |  default  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
+| Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |
+| Vlan200 |  default  |  -  |  10.1.200.1/24  |  -  |  -  |  -  |
+| Vlan220 |  default  |  -  |  10.1.220.1/24  |  -  |  -  |  -  |
+| Vlan4092 |  default  |  172.23.254.2/24  |  -  |  172.23.254.1  |  -  |  -  |
+| Vlan4094 |  default  |  192.168.254.0/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

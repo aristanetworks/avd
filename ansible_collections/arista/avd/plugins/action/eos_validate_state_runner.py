@@ -51,10 +51,6 @@ class ActionModule(ActionBase):
         ansible_connection = self._connection
         ansible_check_mode = task_vars.get("ansible_check_mode", False)
         is_deployed = task_vars.get("is_deployed", True)
-        ansible_tags = {
-            "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
-            "ansible_skip_tags": task_vars.get("ansible_skip_tags", ()),
-        }
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
 
@@ -92,7 +88,6 @@ class ActionModule(ActionBase):
                 config_manager=config_manager,
                 logging_level=logging_level,
                 skip_tests=skip_tests,
-                ansible_tags=ansible_tags,
                 save_catalog_name=catalog_path,
                 custom_anta_catalogs=custom_anta_catalogs,
                 # This convert Ansible Check Mode to dry_run
