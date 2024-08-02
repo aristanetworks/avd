@@ -9,6 +9,7 @@ This script is used to generate the release.yml file as per
 https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
 """
 
+from pathlib import Path
 from typing import Any
 
 import yaml
@@ -39,9 +40,9 @@ CATEGORIES = {
     "Fix": "Bug Fixes",
     "Cut": "Cut",
     "Doc": "Documentation",
-    # "CI": "CI",
+    # Excluding "CI": "CI",
     "Bump": "Bump",
-    # "Test": "Test",
+    # Excluding "Test": "Test",
     "Revert": "Revert",
     "Refactor": "Refactoring",
 }
@@ -56,7 +57,7 @@ class SafeDumper(yaml.SafeDumper):
 
     # pylint: disable=R0901,W0613,W1113
 
-    def increase_indent(self, flow=False, *_args: Any, **_kwargs: Any) -> None:
+    def increase_indent(self, flow: bool = False, *_args: Any, **_kwargs: Any) -> None:
         return super().increase_indent(flow=flow, indentless=False)
 
 
@@ -196,7 +197,7 @@ if __name__ == "__main__":
             "labels": ["*"],
         },
     )
-    with open(r"release.yml", "w", encoding="utf-8") as release_file:
+    with Path("release.yml").open("w", encoding="utf-8") as release_file:
         yaml.dump(
             {
                 "changelog": {

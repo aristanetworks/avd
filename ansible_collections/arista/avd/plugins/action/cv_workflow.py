@@ -9,6 +9,7 @@ from asyncio import gather, run
 from dataclasses import asdict
 from pathlib import Path
 from string import Template
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -83,7 +84,7 @@ if HAS_PYAVD:
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
 
         if task_vars is None:
@@ -110,7 +111,7 @@ class ActionModule(ActionBase):
         # Running asyncio coroutine to deploy everything.
         return run(self.deploy(validated_args, result))
 
-    async def deploy(self, validated_args: dict, result: dict):
+    async def deploy(self, validated_args: dict, result: dict) -> dict:
         """Prepare data, perform deployment and convert result data."""
         LOGGER.info("deploy: %s", {**validated_args, "cv_token": "<removed>"})
         try:
@@ -132,7 +133,7 @@ class ActionModule(ActionBase):
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
                 result.update(
-                    cloudvision=dict(asdict(cloudvision), token="<removed>"),
+                    cloudvision=dict(asdict(cloudvision), token="<removed>"),  # noqa: S106
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
@@ -256,7 +257,9 @@ class ActionModule(ActionBase):
         TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)
-        with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(mode="r", encoding="UTF-8") as structured_config_stream:
+        with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(  # noqa: ASYNC101
+            mode="r", encoding="UTF-8"
+        ) as structured_config_stream:
             if structured_config_suffix in ["yml", "yaml"]:
                 interesting_keys = ("is_deployed", "serial_number", "metadata")
                 in_interesting_context = False
@@ -268,7 +271,7 @@ class ActionModule(ActionBase):
                     else:
                         in_interesting_context = False
 
-                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)
+                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
             else:
                 # Load as JSON
                 structured_config = json.load(structured_config_stream)
@@ -288,11 +291,11 @@ class ActionModule(ActionBase):
         eos_config_objects = [CVEosConfig(file=config_file_path, device=device_object, configlet_name=configlet_name)]
 
         # Build device tag objects for this device.
-        # metadata:
-        #   cv_tags:
-        #     device_tags:
-        #     - name: topology_hint_datacenter
-        #       value: DC1
+        # ! metadata:
+        # !   cv_tags:
+        # !     device_tags:
+        # !     - name: topology_hint_datacenter
+        # !       value: DC1
         device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
         device_tag_objects = [
             CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
@@ -301,13 +304,13 @@ class ActionModule(ActionBase):
         ]
 
         # Build interface tag objects for this device.
-        # metadata:
-        #   cv_tags:
-        #     interface_tags:
-        #     - interface: Ethernet3
-        #       tags:
-        #       - name: peer_device_interface
-        #         value: Ethernet3
+        # ! metadata:
+        # !  cv_tags:
+        # !    interface_tags:
+        # !    - interface: Ethernet3
+        # !      tags:
+        # !      - name: peer_device_interface
+        # !        value: Ethernet3
         all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
         interface_tag_objects = [
             CVInterfaceTag(

@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_d
 
 class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
     @cached_property
-    def _custom_description_prefix(self):
+    def _custom_description_prefix(self) -> str:
         return get(self._hostvars, "description_prefix", "")
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
@@ -123,11 +123,11 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         Called per device.
 
         Available data:
-            - description
-            - mpls_overlay_role
-            - mpls_lsr
-            - overlay_routing_protocol
-            - type.
+        - description
+        - mpls_overlay_role
+        - mpls_lsr
+        - overlay_routing_protocol
+        - type
         """
         switch_type = str(data.type).upper()
         return f"{self._custom_description_prefix}_EVPN_Overlay_Peering_{switch_type}"

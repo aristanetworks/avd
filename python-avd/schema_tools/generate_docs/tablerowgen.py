@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from abc import ABC
 from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
@@ -36,7 +35,7 @@ class TableRow(BaseModel):
         return f"| {self.key} | {self.type} | {self.required or ''} | {self.default or ''} | {self.restrictions or ''} | {self.description or ''} |"
 
 
-class TableRowGenBase(ABC):
+class TableRowGenBase:
     """
     Base class to be used with schema pydantic models.
 

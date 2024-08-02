@@ -107,7 +107,7 @@ class StudioMixin:
             async for _response in responses:
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
                 msg = "The studio was deleted in the workspace."
-                raise CVResourceNotFound(msg, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
+                raise CVResourceNotFound(msg, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")  # noqa: TRY301 TODO: Improve error handling
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
 

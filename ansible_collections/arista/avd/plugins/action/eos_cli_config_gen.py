@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
+from typing import Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
@@ -49,7 +50,7 @@ class ActionModule(ActionBase):
     """Action Module for eos_cli_config_gen."""
 
     @cprofile()
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> None:
         """Ansible Action entry point."""
         if task_vars is None:
             task_vars = {}
@@ -94,7 +95,7 @@ class ActionModule(ActionBase):
             )
             LOGGER.debug("Validating structured configuration [done].")
         except Exception as e:
-            LOGGER.exception(e)
+            LOGGER.exception(e)  # noqa: TRY401 TODO: Improve code
             return result
 
         if result.get("failed"):
@@ -289,9 +290,9 @@ def read_vars(filename: Path | str) -> dict:
 
     with filename.open(mode="r", encoding="UTF-8") as stream:
         if filename.suffix in [".yml", ".yaml"]:
-            return yaml.load(stream, Loader=YamlLoader)
-        elif filename.suffix == ".json":
+            return yaml.load(stream, Loader=YamlLoader)  # noqa: S506 TODO: Figure out if we can move to safeloader everywhere
+        if filename.suffix == ".json":
             return json.load(stream)
-        else:
-            msg = f"Unsupported file suffix for file '{filename}'"
-            raise NotImplementedError(msg)
+
+        msg = f"Unsupported file suffix for file '{filename}'"
+        raise NotImplementedError(msg)

@@ -5,6 +5,7 @@
 
 import cProfile
 import pstats
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -29,7 +30,7 @@ except ImportError as e:
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> None:
         if task_vars is None:
             task_vars = {}
 
@@ -185,7 +186,7 @@ class ActionModule(ActionBase):
 
         return avd_switch_facts
 
-    def render_avd_switch_facts(self, avd_switch_facts_instances: dict):
+    def render_avd_switch_facts(self, avd_switch_facts_instances: dict) -> dict:
         """
         Run the render method on each EosDesignsFacts object.
 

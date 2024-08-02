@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#
 # Copyright (c) 2019-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
@@ -76,20 +74,26 @@ EXAMPLES = r"""
 
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.errors import AnsibleValidationError
 
 TREELIB_IMP_ERR = None
-try:
-    from treelib import Node, Tree
+
+if TYPE_CHECKING:
+    import treelib
 
     HAS_TREELIB = True
-except ImportError:
-    HAS_TREELIB = False
-    TREELIB_IMP_ERR = traceback.format_exc()
-    Node = Tree = object
+else:
+    try:
+        import treelib
+
+        HAS_TREELIB = True
+    except ImportError:
+        HAS_TREELIB = False
+        TREELIB_IMP_ERR = traceback.format_exc()
+
 YAML_IMP_ERR = None
 try:
     import yaml
@@ -125,12 +129,10 @@ def is_in_filter(hostname_filter: list | None = None, hostname: str = "eos") -> 
     if hostname_filter is None:
         hostname_filter = ["all"]
 
-    if "all" in hostname_filter or any(element in hostname for element in hostname_filter):
-        return True
-    return False
+    return "all" in hostname_filter or any(element in hostname for element in hostname_filter)
 
 
-def isIterable(testing_object: Any = None) -> bool | None:
+def is_iterable(testing_object: Any = None) -> bool | None:
     """
     Test if an object is iterable or not.
 
@@ -149,7 +151,7 @@ def isIterable(testing_object: Any = None) -> bool | None:
     return True
 
 
-def isLeaf(tree: Tree, nid: Node) -> bool:
+def is_leaf(tree: treelib.Tree, nid: treelib.Node) -> bool:
     """
     Test if NodeID is a leaf with no nid attached to it.
 
@@ -223,7 +225,7 @@ def get_device_option_value(device_data_dict: dict, option_name: str) -> str | N
     string
         Value set for variable, else None
     """
-    if isIterable(device_data_dict):
+    if is_iterable(device_data_dict):
         for option in device_data_dict:
             if option_name == option:
                 return device_data_dict[option]
@@ -231,7 +233,7 @@ def get_device_option_value(device_data_dict: dict, option_name: str) -> str | N
     return None
 
 
-def serialize_yaml_inventory_data(dict_inventory: dict, parent_container: str | None = None, tree_topology: Tree | None = None) -> Tree:
+def serialize_yaml_inventory_data(dict_inventory: dict, parent_container: str | None = None, tree_topology: treelib.Tree | None = None) -> treelib.Tree:
     """
     Build a tree topology from YAML inventory file content.
 
@@ -249,24 +251,24 @@ def serialize_yaml_inventory_data(dict_inventory: dict, parent_container: str | 
     treelib.Tree
         complete container tree topology.
     """
-    if isIterable(dict_inventory):
+    if is_iterable(dict_inventory):
         # Working with ROOT container for Fabric
         if tree_topology is None:
             # initiate tree topology and add ROOT under Tenant
-            tree_topology = Tree()
+            tree_topology = treelib.Tree()
             tree_topology.create_node("Tenant", "Tenant")
             parent_container = "Tenant"
 
         # Recursive Inventory read
         for k1, v1 in dict_inventory.items():
             # Read a leaf
-            if isIterable(v1) and "children" not in v1:
+            if is_iterable(v1) and "children" not in v1:
                 tree_topology.create_node(k1, k1, parent=parent_container)
             # If subgroup has kids
-            if isIterable(v1) and "children" in v1:
+            if is_iterable(v1) and "children" in v1:
                 tree_topology.create_node(k1, k1, parent=parent_container)
                 serialize_yaml_inventory_data(dict_inventory=v1["children"], parent_container=k1, tree_topology=tree_topology)
-            elif k1 == "children" and isIterable(v1):
+            elif k1 == "children" and is_iterable(v1):
                 # Extract sub-group information
                 for k2, v2 in v1.items():
                     # Add subgroup to tree
@@ -304,7 +306,7 @@ def get_devices(dict_inventory: dict | None, search_container: str | None = None
 
     for k1, v1 in dict_inventory.items():
         # Read a leaf
-        if k1 == search_container and isIterable(v1) and "hosts" in v1:
+        if k1 == search_container and is_iterable(v1) and "hosts" in v1:
             for dev, data in v1["hosts"].items():
                 if (
                     is_in_filter(hostname_filter=device_filter, hostname=dev)
@@ -312,9 +314,9 @@ def get_devices(dict_inventory: dict | None, search_container: str | None = None
                 ):
                     devices.append(dev)
         # If subgroup has kids
-        if isIterable(v1) and "children" in v1:
+        if is_iterable(v1) and "children" in v1:
             get_devices(dict_inventory=v1["children"], search_container=search_container, devices=devices, device_filter=device_filter)
-        elif k1 == "children" and isIterable(v1):
+        elif k1 == "children" and is_iterable(v1):
             # Extract sub-group information
             for v2 in v1.values():
                 get_devices(dict_inventory=v2, search_container=search_container, devices=devices, device_filter=device_filter)
@@ -350,7 +352,7 @@ def get_containers(inventory_content: dict, parent_container: str, device_filter
             if container == parent_container:
                 data["parent_container"] = CVP_ROOT_CONTAINER
             elif parent.tag != CVP_ROOT_CONTAINER:
-                if isLeaf(tree=tree_dc, nid=container):
+                if is_leaf(tree=tree_dc, nid=container):
                     devices = get_devices(dict_inventory=inventory_content, search_container=container, devices=[], device_filter=device_filter)
                     data["devices"] = devices
                 data["parent_container"] = parent.tag
@@ -360,9 +362,6 @@ def get_containers(inventory_content: dict, parent_container: str, device_filter
 
 def main() -> None:
     """Main entry point for module execution."""
-    # TODO: - ansible module prefers constructor over literal
-    #        for dict
-    # pylint: disable=use-dict-literal
     argument_spec = {
         "inventory": {"type": "str", "required": False},
         "container_root": {"type": "str", "required": True},
@@ -389,7 +388,7 @@ def main() -> None:
         parent_container = module.params["container_root"]
         # Build containers & devices topology
         inventory_content = ""
-        with open(inventory_file, encoding="utf8") as stream:
+        with Path(inventory_file).open(encoding="utf8") as stream:
             try:
                 # add a constructor to return "!VAULT" for inline vault variables
                 # to avoid the parse

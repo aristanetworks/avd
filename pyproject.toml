@@ -67,8 +67,12 @@ convention = "google"
 "ansible_collections/arista/avd/roles/eos_validate_state/python_modules/**/*.py" = [
   "INP001",  # implicit namespace package. Add an `__init__.py` - Will be fixed once moved to PyAVD
 ]
+"ansible_collections/arista/avd/molecule/eos_designs_unit_tests/custom_modules/*.py" = [
+  "INP001",  # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
+]
 "python-avd/scripts/**/*.py" = [
   "T201",  # Interactive scripts can have print
+  "INP001",  # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
 ]
 "python-avd/pyavd/_cv/client/*.py" = [
   "B904",  # Within an `except` clause, raise exceptions with `raise - TODO: Improve code
@@ -76,9 +80,9 @@ convention = "google"
 
 [tool.ruff.lint.pylint]
 max-args = 12
-max-branches = 40
+max-branches = 54
 max-returns = 10
-max-statements = 100
+max-statements = 148
 
 [tool.ruff.lint.isort]
 known-first-party = ["pyavd", "schema_tools"]

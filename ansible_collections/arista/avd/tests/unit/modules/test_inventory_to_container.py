@@ -16,8 +16,8 @@ from ansible_collections.arista.avd.plugins.modules.inventory_to_container impor
     get_device_option_value,
     get_devices,
     is_in_filter,
-    isIterable,
-    isLeaf,
+    is_iterable,
+    is_leaf,
 )
 from ansible_collections.arista.avd.plugins.modules.inventory_to_container import serialize_yaml_inventory_data as serialize
 
@@ -105,30 +105,30 @@ class TestInventoryToContainer:
         output = is_in_filter(hostname_filter=HOSTNAME_FILTER_INVALID, hostname=HOSTNAME_VALID)
         assert output
 
-    def test_isIterable_default_iterable(self) -> None:
-        output = isIterable()
+    def test_is_iterable_default_iterable(self) -> None:
+        output = is_iterable()
         assert output is False
 
     @pytest.mark.parametrize("DATA", IS_ITERABLE_VALID)
-    def test_isIterable_valid_iterable(self, DATA) -> None:
-        output = isIterable(DATA)
+    def test_is_iterable_valid_iterable(self, DATA) -> None:
+        output = is_iterable(DATA)
         assert output
 
     @pytest.mark.parametrize("DATA", IS_ITERABLE_INVALID)
-    def test_isIterable_invalid_iterable(self, DATA) -> None:
-        output = isIterable(DATA)
+    def test_is_iterable_invalid_iterable(self, DATA) -> None:
+        output = is_iterable(DATA)
         assert output is False
 
-    def test_isLeaf_valid_leaf(self) -> None:
-        output = isLeaf(TREELIB, TREELIB_VALID_LEAF)
+    def test_is_leaf_valid_leaf(self) -> None:
+        output = is_leaf(TREELIB, TREELIB_VALID_LEAF)
         assert output
 
-    def test_isLeaf_invalid_leaf(self) -> None:
-        output = isLeaf(TREELIB, TREELIB_INVALID_LEAF)
+    def test_is_leaf_invalid_leaf(self) -> None:
+        output = is_leaf(TREELIB, TREELIB_INVALID_LEAF)
         assert output is False
 
-    def test_isLeaf_none_leaf(self) -> None:
-        output = isLeaf(TREELIB, None)
+    def test_is_leaf_none_leaf(self) -> None:
+        output = is_leaf(TREELIB, None)
         assert output is False
 
     def test_get_device_option_value_valid(self, inventory) -> None:

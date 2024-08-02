@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from abc import ABC
 from textwrap import indent
 from typing import TYPE_CHECKING
 
@@ -68,7 +67,7 @@ class YamlLine(BaseModel):
         return "" if self.annotation is None else f" # ({annotation_number})!"
 
 
-class YamlLineGenBase(ABC):
+class YamlLineGenBase:
     """
     Base class to be used with schema pydantic models.
 

@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
@@ -29,7 +30,7 @@ class ActionModule(ActionBase):
             display.debug(f"device_filter must be of type list, got '{device_filter}' of type {type(device_filter)} instead. Converting...")
             self._task.args["device_filter"] = [device_filter]
 
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
 
@@ -50,12 +51,12 @@ class ActionModule(ActionBase):
             file_data_keys = ["cvp_configlets", "cvp_topology"]
             file_data = {key: result[key] for key in file_data_keys if key in result}
 
-            with open(destination, "w", encoding="utf8") as file:
+            with Path(destination).open("w", encoding="utf8") as file:
                 yaml.dump(file_data, file, Dumper=AnsibleDumper)
 
         return result
 
-    def build_cvp_topology_from_inventory(self, task_vars, module_args: dict) -> dict:
+    def build_cvp_topology_from_inventory(self, task_vars: dict, module_args: dict) -> dict:
         # Inventory Manager is the Ansible Class handling everything about hosts and groups
         inventory_manager: InventoryManager = task_vars["hostvars"]._inventory
 
