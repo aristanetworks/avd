@@ -1273,6 +1273,14 @@
   },
   {
     "name": "dc1-leaf1b",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf1b",
     "test": "VerifyUptime",
     "categories": [
       "system"

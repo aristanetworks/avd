@@ -90,42 +90,42 @@ interface Management1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
-| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
-| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
-| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
-| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |  -  |
-| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
-| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
-| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
-| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
-| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
-| Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
-| Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
-| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |
+| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |
+| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |
+| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |
+| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |
+| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |
+| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |
+| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
+| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
+| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |
+| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |
+| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
+| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |
+| Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |
+| Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
+| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |
+| Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |
+| Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
+| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
+| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |
+| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |
+| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |
 
 ##### IP NAT: Source Static
 
@@ -153,25 +153,25 @@ interface Management1
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - |
-| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - |
-| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - |
-| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - |
-| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - |
-| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - | - |
-| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | True | True | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | True | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | True | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | True | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | True | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | True | - | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | True | - | - | - |
 
 ##### VRRP Details
 

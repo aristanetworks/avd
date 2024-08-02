@@ -62,13 +62,3 @@ $defs:
                 type: list
                 description: |
                   Unique description per port. When set, takes priority over description.
-              server_ports:
-                type: list
-                deprecation:
-                  warning: true
-                  removed: true
-                  new_key: endpoint_ports
-                  remove_in_version: "4.0.0"
-                items:
-                  type: str
-                  description: Used for documentation purposes.
