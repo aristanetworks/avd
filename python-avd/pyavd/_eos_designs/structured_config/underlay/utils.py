@@ -236,9 +236,7 @@ class UtilsMixin:
                 f"set on SVI for uplink_native_vlan '{link['native_vlan']}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu or change/remove the uplink_native_vlan setting."
             )
-            raise AristaAvdError(
-                msg,
-            )
+            raise AristaAvdError(msg)
         return main_interface, [interface for interface in interfaces if interface["name"] != link["interface"]]
 
     def _get_l2_as_subint(self: AvdStructuredConfigUnderlay, link: dict, svi: dict, vrf: dict) -> dict:
@@ -274,9 +272,7 @@ class UtilsMixin:
                 f"set on the SVI '{svi_id}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu."
             )
-            raise AristaAvdError(
-                msg,
-            )
+            raise AristaAvdError(msg)
 
         # Only set VRRPv4 if ip_address is set
         if subinterface["ip_address"] is not None:

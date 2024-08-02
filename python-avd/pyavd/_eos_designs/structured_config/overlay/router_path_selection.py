@@ -88,9 +88,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                                 f"Invalid value '{interval}' for dps_keepalive.interval - "
                                 f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{pg_name}]"
                             )
-                            raise AristaAvdError(
-                                msg,
-                            )
+                            raise AristaAvdError(msg)
                         path_group_data["keepalive"] = {
                             "interval": int(interval),
                             "failure_threshold": get(keepalive, "failure_threshold", default=5),
