@@ -73,9 +73,7 @@ class BugExposureKey(aristaproto.Message):
      BugExposure model
     """
 
-    device_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """device_id is the device ID"""
 
     acknowledgement: "Acknowledgement" = aristaproto.enum_field(2)
@@ -110,17 +108,13 @@ class BugExposure(aristaproto.Message):
      with type CVE
     """
 
-    bug_count: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_INT32
-    )
+    bug_count: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
     """
     bug_count is the number of bug alerts
      with type Bug
     """
 
-    cve_count: Optional[int] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_INT32
-    )
+    cve_count: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
     """
     cve_count is the number of bug alerts
      with type CVE
@@ -251,7 +245,7 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "BugExposureResponse":
         return await self._unary_unary(
             "/arista.bugexposure.v1.BugExposureService/GetOne",
@@ -268,7 +262,7 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["BugExposureStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/GetAll",
@@ -286,7 +280,7 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["BugExposureStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/Subscribe",
@@ -304,7 +298,7 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.bugexposure.v1.BugExposureService/GetMeta",
@@ -321,7 +315,7 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/SubscribeMeta",
@@ -336,34 +330,22 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
 
 class BugExposureServiceBase(ServiceBase):
 
-    async def get_one(
-        self, bug_exposure_request: "BugExposureRequest"
-    ) -> "BugExposureResponse":
+    async def get_one(self, bug_exposure_request: "BugExposureRequest") -> "BugExposureResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, bug_exposure_stream_request: "BugExposureStreamRequest"
-    ) -> AsyncIterator["BugExposureStreamResponse"]:
+    async def get_all(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator["BugExposureStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, bug_exposure_stream_request: "BugExposureStreamRequest"
-    ) -> AsyncIterator["BugExposureStreamResponse"]:
+    async def subscribe(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator["BugExposureStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, bug_exposure_stream_request: "BugExposureStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, bug_exposure_stream_request: "BugExposureStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[BugExposureRequest, BugExposureResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[BugExposureRequest, BugExposureResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -390,16 +372,12 @@ class BugExposureServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[BugExposureStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[BugExposureStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[BugExposureStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[BugExposureStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

@@ -46,17 +46,13 @@ class MatchPolicy(aristaproto.Enum):
 class ConfigletKey(aristaproto.Message):
     """ConfigletKey uniquely identifies a static configlet."""
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     workspace_id identifies the workspace within which the static configlet resides
      empty string ("") stands for the "mainline".
     """
 
-    configlet_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    configlet_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """configlet_id is the static configlet ID."""
 
 
@@ -64,9 +60,7 @@ class ConfigletKey(aristaproto.Message):
 class Filter(aristaproto.Message):
     """Filter is used to filter static configlets."""
 
-    include_body: Optional[bool] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_BOOL
-    )
+    include_body: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
     """include_body specifies the static configlet body is to be included."""
 
 
@@ -79,19 +73,13 @@ class Configlet(aristaproto.Message):
     """
 
     key: "ConfigletKey" = aristaproto.message_field(1)
-    display_name: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """display_name is the display name of the static configlet."""
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """description is the description of the static configlet."""
 
-    migrated_from: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    migrated_from: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     migrated_from is populated with the source configlet name when migrated
      from network provisioning to studio.
@@ -103,17 +91,13 @@ class Configlet(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(6)
     """created_at is the time when the Configlet was created."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        7, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
     """created_by is the user who created the Configlet."""
 
     last_modified_at: datetime = aristaproto.message_field(8)
     """last_modified_at is the time when the Configlet was last modified."""
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        9, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
     """last_modified_by is the user who last modified the Configlet."""
 
     digest: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
@@ -136,19 +120,13 @@ class ConfigletConfig(aristaproto.Message):
      Other data fields are not allowed when this field is set to true.
     """
 
-    display_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """display_name is the display name of the static configlet."""
 
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """description is the description of the static configlet."""
 
-    migrated_from: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    migrated_from: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     migrated_from is populated with the source configlet name when migrated
      from network provisioning to studio.
@@ -162,14 +140,10 @@ class ConfigletConfig(aristaproto.Message):
 class ConfigletAssignmentKey(aristaproto.Message):
     """ConfigletAssignmentKey uniquely identifies a configlet assignment"""
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """workspace_id is the unique identifier of the workspace."""
 
-    configlet_assignment_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    configlet_assignment_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     configlet_assignment_id is the unique identifier of the configlet_assignment.
     """
@@ -192,12 +166,8 @@ class ConfigletAssignmentConfig(aristaproto.Message):
     """
 
     key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    display_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     configlet_ids: "___fmp__.RepeatedString" = aristaproto.message_field(5)
     """configlet_ids is the list of configlets to be assigned"""
 
@@ -233,12 +203,8 @@ class ConfigletAssignment(aristaproto.Message):
     """
 
     key: "ConfigletAssignmentKey" = aristaproto.message_field(1)
-    display_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     configlet_ids: "___fmp__.RepeatedString" = aristaproto.message_field(5)
     """configlet_ids is the list of configlets which are assigned"""
 
@@ -254,9 +220,7 @@ class ConfigletAssignment(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(9)
     """created_at is the time when the ConfigletAssignment was created."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        10, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
     """created_by is the user who created the ConfigletAssignment."""
 
     last_modified_at: datetime = aristaproto.message_field(11)
@@ -265,9 +229,7 @@ class ConfigletAssignment(aristaproto.Message):
      was last modified.
     """
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        12, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
     """
     last_modified_by is the user who last modified the ConfigletAssignment.
     """
@@ -437,9 +399,7 @@ class ConfigletBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -603,9 +563,7 @@ class ConfigletAssignmentBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -769,9 +727,7 @@ class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -782,9 +738,7 @@ class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ConfigletAssignmentConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["ConfigletAssignmentConfigStreamResponse"] = (
-        aristaproto.message_field(1)
-    )
+    responses: List["ConfigletAssignmentConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1055,9 +1009,7 @@ class ConfigletConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1199,7 +1151,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletService/GetOne",
@@ -1216,7 +1168,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletService/GetSome",
@@ -1234,7 +1186,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletService/GetAll",
@@ -1252,7 +1204,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletService/Subscribe",
@@ -1270,7 +1222,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletService/GetMeta",
@@ -1287,7 +1239,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletService/SubscribeMeta",
@@ -1305,7 +1257,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletService/GetAllBatched",
@@ -1323,7 +1275,7 @@ class ConfigletServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletService/SubscribeBatched",
@@ -1343,7 +1295,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletAssignmentResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentService/GetOne",
@@ -1360,7 +1312,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentService/GetSome",
@@ -1378,7 +1330,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentService/GetAll",
@@ -1396,7 +1348,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentService/Subscribe",
@@ -1414,7 +1366,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentService/GetMeta",
@@ -1431,7 +1383,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentService/SubscribeMeta",
@@ -1449,7 +1401,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentService/GetAllBatched",
@@ -1467,7 +1419,7 @@ class ConfigletAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentService/SubscribeBatched",
@@ -1487,7 +1439,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletAssignmentConfigResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetOne",
@@ -1504,7 +1456,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetSome",
@@ -1522,7 +1474,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetAll",
@@ -1540,7 +1492,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/Subscribe",
@@ -1558,7 +1510,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetMeta",
@@ -1575,7 +1527,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/SubscribeMeta",
@@ -1593,7 +1545,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletAssignmentConfigSetResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/Set",
@@ -1610,7 +1562,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/SetSome",
@@ -1628,7 +1580,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletAssignmentConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/Delete",
@@ -1645,7 +1597,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/DeleteSome",
@@ -1663,7 +1615,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/DeleteAll",
@@ -1681,7 +1633,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/GetAllBatched",
@@ -1699,7 +1651,7 @@ class ConfigletAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletAssignmentConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletAssignmentConfigService/SubscribeBatched",
@@ -1719,7 +1671,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletConfigResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletConfigService/GetOne",
@@ -1736,7 +1688,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/GetSome",
@@ -1754,7 +1706,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/GetAll",
@@ -1772,7 +1724,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/Subscribe",
@@ -1790,7 +1742,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletConfigService/GetMeta",
@@ -1807,7 +1759,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/SubscribeMeta",
@@ -1825,7 +1777,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletConfigSetResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletConfigService/Set",
@@ -1842,7 +1794,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/SetSome",
@@ -1860,7 +1812,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ConfigletConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.configlet.v1.ConfigletConfigService/Delete",
@@ -1877,7 +1829,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/DeleteSome",
@@ -1895,7 +1847,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/DeleteAll",
@@ -1913,7 +1865,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/GetAllBatched",
@@ -1931,7 +1883,7 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ConfigletConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configlet.v1.ConfigletConfigService/SubscribeBatched",
@@ -1946,49 +1898,31 @@ class ConfigletConfigServiceStub(aristaproto.ServiceStub):
 
 class ConfigletServiceBase(ServiceBase):
 
-    async def get_one(
-        self, configlet_request: "ConfigletRequest"
-    ) -> "ConfigletResponse":
+    async def get_one(self, configlet_request: "ConfigletRequest") -> "ConfigletResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, configlet_some_request: "ConfigletSomeRequest"
-    ) -> AsyncIterator["ConfigletSomeResponse"]:
+    async def get_some(self, configlet_some_request: "ConfigletSomeRequest") -> AsyncIterator["ConfigletSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, configlet_stream_request: "ConfigletStreamRequest"
-    ) -> AsyncIterator["ConfigletStreamResponse"]:
+    async def get_all(self, configlet_stream_request: "ConfigletStreamRequest") -> AsyncIterator["ConfigletStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, configlet_stream_request: "ConfigletStreamRequest"
-    ) -> AsyncIterator["ConfigletStreamResponse"]:
+    async def subscribe(self, configlet_stream_request: "ConfigletStreamRequest") -> AsyncIterator["ConfigletStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, configlet_stream_request: "ConfigletStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, configlet_stream_request: "ConfigletStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, configlet_stream_request: "ConfigletStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, configlet_stream_request: "ConfigletStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, configlet_batched_stream_request: "ConfigletBatchedStreamRequest"
-    ) -> AsyncIterator["ConfigletBatchedStreamResponse"]:
+    async def get_all_batched(self, configlet_batched_stream_request: "ConfigletBatchedStreamRequest") -> AsyncIterator["ConfigletBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, configlet_batched_stream_request: "ConfigletBatchedStreamRequest"
-    ) -> AsyncIterator["ConfigletBatchedStreamResponse"]:
+    async def subscribe_batched(self, configlet_batched_stream_request: "ConfigletBatchedStreamRequest") -> AsyncIterator["ConfigletBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[ConfigletRequest, ConfigletResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigletRequest, ConfigletResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -2026,16 +1960,12 @@ class ConfigletServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[ConfigletStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigletStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[ConfigletStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigletStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2120,34 +2050,22 @@ class ConfigletServiceBase(ServiceBase):
 
 class ConfigletAssignmentServiceBase(ServiceBase):
 
-    async def get_one(
-        self, configlet_assignment_request: "ConfigletAssignmentRequest"
-    ) -> "ConfigletAssignmentResponse":
+    async def get_one(self, configlet_assignment_request: "ConfigletAssignmentRequest") -> "ConfigletAssignmentResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, configlet_assignment_some_request: "ConfigletAssignmentSomeRequest"
-    ) -> AsyncIterator["ConfigletAssignmentSomeResponse"]:
+    async def get_some(self, configlet_assignment_some_request: "ConfigletAssignmentSomeRequest") -> AsyncIterator["ConfigletAssignmentSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest"
-    ) -> AsyncIterator["ConfigletAssignmentStreamResponse"]:
+    async def get_all(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> AsyncIterator["ConfigletAssignmentStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest"
-    ) -> AsyncIterator["ConfigletAssignmentStreamResponse"]:
+    async def subscribe(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> AsyncIterator["ConfigletAssignmentStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, configlet_assignment_stream_request: "ConfigletAssignmentStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2299,9 +2217,7 @@ class ConfigletAssignmentServiceBase(ServiceBase):
 
 class ConfigletAssignmentConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, configlet_assignment_config_request: "ConfigletAssignmentConfigRequest"
-    ) -> "ConfigletAssignmentConfigResponse":
+    async def get_one(self, configlet_assignment_config_request: "ConfigletAssignmentConfigRequest") -> "ConfigletAssignmentConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(
@@ -2592,59 +2508,37 @@ class ConfigletAssignmentConfigServiceBase(ServiceBase):
 
 class ConfigletConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, configlet_config_request: "ConfigletConfigRequest"
-    ) -> "ConfigletConfigResponse":
+    async def get_one(self, configlet_config_request: "ConfigletConfigRequest") -> "ConfigletConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, configlet_config_some_request: "ConfigletConfigSomeRequest"
-    ) -> AsyncIterator["ConfigletConfigSomeResponse"]:
+    async def get_some(self, configlet_config_some_request: "ConfigletConfigSomeRequest") -> AsyncIterator["ConfigletConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, configlet_config_stream_request: "ConfigletConfigStreamRequest"
-    ) -> AsyncIterator["ConfigletConfigStreamResponse"]:
+    async def get_all(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> AsyncIterator["ConfigletConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, configlet_config_stream_request: "ConfigletConfigStreamRequest"
-    ) -> AsyncIterator["ConfigletConfigStreamResponse"]:
+    async def subscribe(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> AsyncIterator["ConfigletConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, configlet_config_stream_request: "ConfigletConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, configlet_config_stream_request: "ConfigletConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, configlet_config_stream_request: "ConfigletConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, configlet_config_set_request: "ConfigletConfigSetRequest"
-    ) -> "ConfigletConfigSetResponse":
+    async def set(self, configlet_config_set_request: "ConfigletConfigSetRequest") -> "ConfigletConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, configlet_config_set_some_request: "ConfigletConfigSetSomeRequest"
-    ) -> AsyncIterator["ConfigletConfigSetSomeResponse"]:
+    async def set_some(self, configlet_config_set_some_request: "ConfigletConfigSetSomeRequest") -> AsyncIterator["ConfigletConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, configlet_config_delete_request: "ConfigletConfigDeleteRequest"
-    ) -> "ConfigletConfigDeleteResponse":
+    async def delete(self, configlet_config_delete_request: "ConfigletConfigDeleteRequest") -> "ConfigletConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, configlet_config_delete_some_request: "ConfigletConfigDeleteSomeRequest"
-    ) -> AsyncIterator["ConfigletConfigDeleteSomeResponse"]:
+    async def delete_some(self, configlet_config_delete_some_request: "ConfigletConfigDeleteSomeRequest") -> AsyncIterator["ConfigletConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, configlet_config_delete_all_request: "ConfigletConfigDeleteAllRequest"
-    ) -> AsyncIterator["ConfigletConfigDeleteAllResponse"]:
+    async def delete_all(self, configlet_config_delete_all_request: "ConfigletConfigDeleteAllRequest") -> AsyncIterator["ConfigletConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(

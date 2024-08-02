@@ -7,7 +7,7 @@
 # This file has been @generated
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
 
 import aristaproto
@@ -62,9 +62,7 @@ class AccountConfig(aristaproto.Message):
      enabled by default.
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """description is a comment describing the service account."""
 
     groups: "___fmp__.RepeatedString" = aristaproto.message_field(4)
@@ -85,9 +83,7 @@ class Account(aristaproto.Message):
     status determines whether the service account is enabled or disabled.
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """description is a comment describing the service account."""
 
     groups: "___fmp__.RepeatedString" = aristaproto.message_field(4)
@@ -95,9 +91,7 @@ class Account(aristaproto.Message):
     groups is a list of roles that the service account inherits permissions from.
     """
 
-    created_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     created_by is the name of the entity that created the service account.
     """
@@ -129,9 +123,7 @@ class TokenConfig(aristaproto.Message):
     user is the name of the service account that the token is generated for.
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     description is a short name or comment used to identify the service account token.
     """
@@ -160,9 +152,7 @@ class Token(aristaproto.Message):
     user is the name of the service account that the token is generated for.
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     description is a short name or comment used to identify the service account token.
     """
@@ -172,9 +162,7 @@ class Token(aristaproto.Message):
     valid_until is the time that the service account token will be valid until.
     """
 
-    created_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     created_by is the name of the entity that created the service account token.
     """
@@ -893,7 +881,7 @@ class AccountServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AccountResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountService/GetOne",
@@ -910,7 +898,7 @@ class AccountServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountService/GetSome",
@@ -928,7 +916,7 @@ class AccountServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountService/GetAll",
@@ -946,7 +934,7 @@ class AccountServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountService/Subscribe",
@@ -964,7 +952,7 @@ class AccountServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountService/GetMeta",
@@ -981,7 +969,7 @@ class AccountServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountService/SubscribeMeta",
@@ -1001,7 +989,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AccountConfigResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/GetOne",
@@ -1018,7 +1006,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/GetSome",
@@ -1036,7 +1024,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/GetAll",
@@ -1054,7 +1042,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/Subscribe",
@@ -1072,7 +1060,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/GetMeta",
@@ -1089,7 +1077,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/SubscribeMeta",
@@ -1107,7 +1095,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AccountConfigSetResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/Set",
@@ -1124,7 +1112,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/SetSome",
@@ -1142,7 +1130,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AccountConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.AccountConfigService/Delete",
@@ -1159,7 +1147,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/DeleteSome",
@@ -1177,7 +1165,7 @@ class AccountConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AccountConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.AccountConfigService/DeleteAll",
@@ -1197,7 +1185,7 @@ class TokenServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TokenResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenService/GetOne",
@@ -1214,7 +1202,7 @@ class TokenServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenService/GetSome",
@@ -1232,7 +1220,7 @@ class TokenServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenService/GetAll",
@@ -1250,7 +1238,7 @@ class TokenServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenService/Subscribe",
@@ -1268,7 +1256,7 @@ class TokenServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenService/GetMeta",
@@ -1285,7 +1273,7 @@ class TokenServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenService/SubscribeMeta",
@@ -1305,7 +1293,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TokenConfigResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/GetOne",
@@ -1322,7 +1310,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/GetSome",
@@ -1340,7 +1328,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/GetAll",
@@ -1358,7 +1346,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/Subscribe",
@@ -1376,7 +1364,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/GetMeta",
@@ -1393,7 +1381,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/SubscribeMeta",
@@ -1411,7 +1399,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TokenConfigSetResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/Set",
@@ -1428,7 +1416,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/SetSome",
@@ -1446,7 +1434,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "TokenConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.serviceaccount.v1.TokenConfigService/Delete",
@@ -1463,7 +1451,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/DeleteSome",
@@ -1481,7 +1469,7 @@ class TokenConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["TokenConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.serviceaccount.v1.TokenConfigService/DeleteAll",
@@ -1499,41 +1487,27 @@ class AccountServiceBase(ServiceBase):
     async def get_one(self, account_request: "AccountRequest") -> "AccountResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, account_some_request: "AccountSomeRequest"
-    ) -> AsyncIterator["AccountSomeResponse"]:
+    async def get_some(self, account_some_request: "AccountSomeRequest") -> AsyncIterator["AccountSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, account_stream_request: "AccountStreamRequest"
-    ) -> AsyncIterator["AccountStreamResponse"]:
+    async def get_all(self, account_stream_request: "AccountStreamRequest") -> AsyncIterator["AccountStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, account_stream_request: "AccountStreamRequest"
-    ) -> AsyncIterator["AccountStreamResponse"]:
+    async def subscribe(self, account_stream_request: "AccountStreamRequest") -> AsyncIterator["AccountStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, account_stream_request: "AccountStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, account_stream_request: "AccountStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, account_stream_request: "AccountStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, account_stream_request: "AccountStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[AccountRequest, AccountResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AccountRequest, AccountResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[AccountSomeRequest, AccountSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[AccountSomeRequest, AccountSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -1563,16 +1537,12 @@ class AccountServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[AccountStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AccountStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[AccountStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AccountStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1623,59 +1593,37 @@ class AccountServiceBase(ServiceBase):
 
 class AccountConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, account_config_request: "AccountConfigRequest"
-    ) -> "AccountConfigResponse":
+    async def get_one(self, account_config_request: "AccountConfigRequest") -> "AccountConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, account_config_some_request: "AccountConfigSomeRequest"
-    ) -> AsyncIterator["AccountConfigSomeResponse"]:
+    async def get_some(self, account_config_some_request: "AccountConfigSomeRequest") -> AsyncIterator["AccountConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, account_config_stream_request: "AccountConfigStreamRequest"
-    ) -> AsyncIterator["AccountConfigStreamResponse"]:
+    async def get_all(self, account_config_stream_request: "AccountConfigStreamRequest") -> AsyncIterator["AccountConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, account_config_stream_request: "AccountConfigStreamRequest"
-    ) -> AsyncIterator["AccountConfigStreamResponse"]:
+    async def subscribe(self, account_config_stream_request: "AccountConfigStreamRequest") -> AsyncIterator["AccountConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, account_config_stream_request: "AccountConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, account_config_stream_request: "AccountConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, account_config_stream_request: "AccountConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, account_config_stream_request: "AccountConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, account_config_set_request: "AccountConfigSetRequest"
-    ) -> "AccountConfigSetResponse":
+    async def set(self, account_config_set_request: "AccountConfigSetRequest") -> "AccountConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, account_config_set_some_request: "AccountConfigSetSomeRequest"
-    ) -> AsyncIterator["AccountConfigSetSomeResponse"]:
+    async def set_some(self, account_config_set_some_request: "AccountConfigSetSomeRequest") -> AsyncIterator["AccountConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, account_config_delete_request: "AccountConfigDeleteRequest"
-    ) -> "AccountConfigDeleteResponse":
+    async def delete(self, account_config_delete_request: "AccountConfigDeleteRequest") -> "AccountConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, account_config_delete_some_request: "AccountConfigDeleteSomeRequest"
-    ) -> AsyncIterator["AccountConfigDeleteSomeResponse"]:
+    async def delete_some(self, account_config_delete_some_request: "AccountConfigDeleteSomeRequest") -> AsyncIterator["AccountConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, account_config_delete_all_request: "AccountConfigDeleteAllRequest"
-    ) -> AsyncIterator["AccountConfigDeleteAllResponse"]:
+    async def delete_all(self, account_config_delete_all_request: "AccountConfigDeleteAllRequest") -> AsyncIterator["AccountConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(
@@ -1719,16 +1667,12 @@ class AccountConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AccountConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1861,41 +1805,27 @@ class TokenServiceBase(ServiceBase):
     async def get_one(self, token_request: "TokenRequest") -> "TokenResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, token_some_request: "TokenSomeRequest"
-    ) -> AsyncIterator["TokenSomeResponse"]:
+    async def get_some(self, token_some_request: "TokenSomeRequest") -> AsyncIterator["TokenSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, token_stream_request: "TokenStreamRequest"
-    ) -> AsyncIterator["TokenStreamResponse"]:
+    async def get_all(self, token_stream_request: "TokenStreamRequest") -> AsyncIterator["TokenStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, token_stream_request: "TokenStreamRequest"
-    ) -> AsyncIterator["TokenStreamResponse"]:
+    async def subscribe(self, token_stream_request: "TokenStreamRequest") -> AsyncIterator["TokenStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, token_stream_request: "TokenStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, token_stream_request: "TokenStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, token_stream_request: "TokenStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, token_stream_request: "TokenStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[TokenRequest, TokenResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TokenRequest, TokenResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[TokenSomeRequest, TokenSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TokenSomeRequest, TokenSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -1903,9 +1833,7 @@ class TokenServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[TokenStreamRequest, TokenStreamResponse]"
-    ) -> None:
+    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TokenStreamRequest, TokenStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -1913,9 +1841,7 @@ class TokenServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[TokenStreamRequest, TokenStreamResponse]"
-    ) -> None:
+    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TokenStreamRequest, TokenStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -1923,16 +1849,12 @@ class TokenServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[TokenStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TokenStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[TokenStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TokenStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1983,64 +1905,40 @@ class TokenServiceBase(ServiceBase):
 
 class TokenConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, token_config_request: "TokenConfigRequest"
-    ) -> "TokenConfigResponse":
+    async def get_one(self, token_config_request: "TokenConfigRequest") -> "TokenConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, token_config_some_request: "TokenConfigSomeRequest"
-    ) -> AsyncIterator["TokenConfigSomeResponse"]:
+    async def get_some(self, token_config_some_request: "TokenConfigSomeRequest") -> AsyncIterator["TokenConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, token_config_stream_request: "TokenConfigStreamRequest"
-    ) -> AsyncIterator["TokenConfigStreamResponse"]:
+    async def get_all(self, token_config_stream_request: "TokenConfigStreamRequest") -> AsyncIterator["TokenConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, token_config_stream_request: "TokenConfigStreamRequest"
-    ) -> AsyncIterator["TokenConfigStreamResponse"]:
+    async def subscribe(self, token_config_stream_request: "TokenConfigStreamRequest") -> AsyncIterator["TokenConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, token_config_stream_request: "TokenConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, token_config_stream_request: "TokenConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, token_config_stream_request: "TokenConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, token_config_stream_request: "TokenConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, token_config_set_request: "TokenConfigSetRequest"
-    ) -> "TokenConfigSetResponse":
+    async def set(self, token_config_set_request: "TokenConfigSetRequest") -> "TokenConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, token_config_set_some_request: "TokenConfigSetSomeRequest"
-    ) -> AsyncIterator["TokenConfigSetSomeResponse"]:
+    async def set_some(self, token_config_set_some_request: "TokenConfigSetSomeRequest") -> AsyncIterator["TokenConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, token_config_delete_request: "TokenConfigDeleteRequest"
-    ) -> "TokenConfigDeleteResponse":
+    async def delete(self, token_config_delete_request: "TokenConfigDeleteRequest") -> "TokenConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, token_config_delete_some_request: "TokenConfigDeleteSomeRequest"
-    ) -> AsyncIterator["TokenConfigDeleteSomeResponse"]:
+    async def delete_some(self, token_config_delete_some_request: "TokenConfigDeleteSomeRequest") -> AsyncIterator["TokenConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, token_config_delete_all_request: "TokenConfigDeleteAllRequest"
-    ) -> AsyncIterator["TokenConfigDeleteAllResponse"]:
+    async def delete_all(self, token_config_delete_all_request: "TokenConfigDeleteAllRequest") -> AsyncIterator["TokenConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[TokenConfigRequest, TokenConfigResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TokenConfigRequest, TokenConfigResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -2078,16 +1976,12 @@ class TokenConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TokenConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

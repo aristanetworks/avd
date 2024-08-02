@@ -276,17 +276,13 @@ class AutofillProviderType(aristaproto.Enum):
 class StudioKey(aristaproto.Message):
     """StudioKey uniquely identifies a studio."""
 
-    studio_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    studio_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     studio_id uniquely identifies the studio in the workspace indicated
      by `workspace_id`.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     workspace_id identifies the workspace within which the studio resides.
     """
@@ -312,9 +308,7 @@ class StudioConfig(aristaproto.Message):
      field is set to true.
     """
 
-    display_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     display_name is the name of this studio as displayed on the UI.
      This and remaining fields are config fields, with workspace changes to be applied
@@ -322,9 +316,7 @@ class StudioConfig(aristaproto.Message):
      in the workspace only if the studio is modified (via this resource).
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """description is a brief description of the studio."""
 
     template: "Template" = aristaproto.message_field(5)
@@ -347,19 +339,13 @@ class StudioSummary(aristaproto.Message):
     key: "StudioKey" = aristaproto.message_field(1)
     """key uniquely identifies the studio."""
 
-    display_name: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """display_name is the name of this studio as displayed on the UI."""
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """description is a brief description of the studio."""
 
-    immutable: Optional[bool] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_BOOL
-    )
+    immutable: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
     """
     immutable indicates if read-write studio management
      access over a given studio is granted or not.
@@ -387,9 +373,7 @@ class Entity(aristaproto.Message):
     last_modified_at: datetime = aristaproto.message_field(2)
     """last_modified_at is the time at which the entity was last modified."""
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     last_modified_by is the name of the user that last modified the entity.
     """
@@ -402,9 +386,7 @@ class Entity(aristaproto.Message):
 class Entities(aristaproto.Message):
     """Entities is a list of Entity."""
 
-    values: Dict[str, "Entity"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "Entity"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """
     values is a map from entity type name to entity
      The possible keys to this map are ENTITY_TYPE_STUDIO,
@@ -423,24 +405,18 @@ class Studio(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(2)
     """created_at is the time at which the studio was created."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """created_by is the name of the user that created the studio."""
 
     last_modified_at: datetime = aristaproto.message_field(4)
     """last_modified_at is the time at which the studio was last modified."""
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     last_modified_by is the name of the user that last modified the studio.
     """
 
-    display_name: Optional[str] = aristaproto.message_field(
-        6, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
     """
     display_name is the name of this studio as displayed on the UI.
      This and remaining fields are config fields, with workspace changes applied on top of
@@ -448,9 +424,7 @@ class Studio(aristaproto.Message):
      the studio is modified (via the `StudioConfig` resource).
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        7, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
     """description is a brief description of the studio."""
 
     template: "Template" = aristaproto.message_field(8)
@@ -465,9 +439,7 @@ class Studio(aristaproto.Message):
      by `template`.
     """
 
-    from_package: Optional[str] = aristaproto.message_field(
-        11, wraps=aristaproto.TYPE_STRING
-    )
+    from_package: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
     """
     from_package indicates that this studio was created by a package, and can only be modified
      by the packaging service.
@@ -514,9 +486,7 @@ class AssignedTags(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(2)
     """created_at is the time at which the assignment was first created."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """created_by is the name of the user that created the assignment."""
 
     last_modified_at: datetime = aristaproto.message_field(4)
@@ -524,9 +494,7 @@ class AssignedTags(aristaproto.Message):
     last_modified_at is the time at which the assignment was last modified.
     """
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     last_modified_by is the name of the user that last modified the assignment.
     """
@@ -542,17 +510,13 @@ class AssignedTags(aristaproto.Message):
 class InputsKey(aristaproto.Message):
     """InputsKey identifies a set of inputs for a particular studio."""
 
-    studio_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    studio_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     studio_id uniquely identifies the studio in the workspace indicated
      by `workspace_id`.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     workspace_id uniquely identifies the workspace in which the studio resides.
     """
@@ -648,17 +612,13 @@ class Inputs(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(2)
     """created_at is the time at which the inputs were first set."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """created_by is the name of the user that first set the inputs."""
 
     last_modified_at: datetime = aristaproto.message_field(4)
     """last_modified_at is the time at which the inputs were last modified."""
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     last_modified_by is the name of the user that last modified the inputs.
     """
@@ -691,9 +651,7 @@ class BooleanInputFieldProps(aristaproto.Message):
      boolean field in a studio input schema.
     """
 
-    default_value: Optional[bool] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_BOOL
-    )
+    default_value: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
     """default_value is the default value of the boolean."""
 
 
@@ -704,9 +662,7 @@ class IntegerInputFieldProps(aristaproto.Message):
      integer field in a studio input schema.
     """
 
-    default_value: Optional[int] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_INT64
-    )
+    default_value: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_INT64)
     """default_value is the default value of the integer."""
 
     static_options: "___fmp__.RepeatedInt64" = aristaproto.message_field(2)
@@ -739,9 +695,7 @@ class IntegerInputFieldProps(aristaproto.Message):
      values for this integer.
     """
 
-    extra_values_allowed: Optional[bool] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_BOOL
-    )
+    extra_values_allowed: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
     """
     extra_values_allowed allows adding values to the field in
      addition to what's allowed by static_options/dynamic_options.
@@ -755,9 +709,7 @@ class FloatInputFieldProps(aristaproto.Message):
      float field in a studio input schema.
     """
 
-    default_value: Optional[float] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_FLOAT
-    )
+    default_value: Optional[float] = aristaproto.message_field(2, wraps=aristaproto.TYPE_FLOAT)
     """default_value is the default value of the float."""
 
     static_options: "___fmp__.RepeatedFloat" = aristaproto.message_field(3)
@@ -782,9 +734,7 @@ class FloatInputFieldProps(aristaproto.Message):
      possible values for this float.
     """
 
-    extra_values_allowed: Optional[bool] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_BOOL
-    )
+    extra_values_allowed: Optional[bool] = aristaproto.message_field(5, wraps=aristaproto.TYPE_BOOL)
     """
     extra_values_allowed allows adding values to the field in
      addition to what's allowed by static_options/dynamic_options.
@@ -798,9 +748,7 @@ class StringInputFieldProps(aristaproto.Message):
      string field in a studio input schema.
     """
 
-    default_value: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    default_value: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """default_value is the default value of the string."""
 
     static_options: "___fmp__.RepeatedString" = aristaproto.message_field(3)
@@ -855,9 +803,7 @@ class StringInputFieldProps(aristaproto.Message):
      * `"url"`: a URL (e.g., http://www.google.com)
     """
 
-    is_secret: Optional[bool] = aristaproto.message_field(
-        8, wraps=aristaproto.TYPE_BOOL
-    )
+    is_secret: Optional[bool] = aristaproto.message_field(8, wraps=aristaproto.TYPE_BOOL)
     """
     is_secret specifies whether the string is a secret and its
      value should be masked. E.g., if this is set to `true` and
@@ -865,9 +811,7 @@ class StringInputFieldProps(aristaproto.Message):
      masked as `"**********"`.
     """
 
-    extra_values_allowed: Optional[bool] = aristaproto.message_field(
-        9, wraps=aristaproto.TYPE_BOOL
-    )
+    extra_values_allowed: Optional[bool] = aristaproto.message_field(9, wraps=aristaproto.TYPE_BOOL)
     """
     extra_values_allowed allows adding values to the field in
      addition to what's allowed by static_options/dynamic_options.
@@ -895,9 +839,7 @@ class CollectionInputFieldProps(aristaproto.Message):
      collection field in a studio input schema.
     """
 
-    base_field_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    base_field_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     base_field_id (required) identifies the field in the schema
      that should be used as the type for each element in the
@@ -920,9 +862,7 @@ class ResolverInputFieldProps(aristaproto.Message):
      resolver field in a studio input schema.
     """
 
-    base_field_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    base_field_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     base_field_id (required) identifies the field in the schema
      to which the resolver query maps.
@@ -934,18 +874,14 @@ class ResolverInputFieldProps(aristaproto.Message):
     input_mode: "ResolverFieldInputMode" = aristaproto.enum_field(3)
     """input_mode (required) is the input mode of the resolver."""
 
-    input_tag_label: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    input_tag_label: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     input_tag_label can be used when `input_mode` is one of
      `RESOLVER_FIELD_INPUT_MODE_SINGLE_*_TAG` and it specifies
      the tag label must be used in the resolver query.
     """
 
-    tag_filter_query: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    tag_filter_query: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     tag_filter_query limits the set of elements that the
      resolver query can return. E.g., `"device:D1,D2"` will
@@ -963,27 +899,21 @@ class TagMatcherInputFieldProps(aristaproto.Message):
     tag_matcher_mode: "TagMatcherFieldMode" = aristaproto.enum_field(1)
     """tag_matcher_mode (required) is the tag mode of the matcher."""
 
-    tag_matcher_label: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    tag_matcher_label: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     tag_matcher_label can be used when `tag_matcher_mode` is one of
      `TAG_MATCHER_FIELD_MODE_SINGLE_*_TAG` and it specifies
      the tag label which must be used in the match query.
     """
 
-    tag_filter_query: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    tag_filter_query: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     tag_filter_query limits the set of devices that the
      match query can return. E.g., `"device:D1,D2"` will
      constrain results to the devices D1 and D2.
     """
 
-    resolver_filtering_allowed: Optional[bool] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_BOOL
-    )
+    resolver_filtering_allowed: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
     """
     resolver_filtering_allowed indicates whether results of the
      match query be filtered based on what any parent resolvers
@@ -1013,9 +943,7 @@ class InputField(aristaproto.Message):
     label: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """label (required) is the label of the field as displayed on the UI."""
 
-    description: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """description is a short description of the field."""
 
     required: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
@@ -1066,9 +994,7 @@ class InputField(aristaproto.Message):
      `INPUT_FIELD_TYPE_RESOLVER`.
     """
 
-    auto_fill_action_id: Optional[str] = aristaproto.message_field(
-        14, wraps=aristaproto.TYPE_STRING
-    )
+    auto_fill_action_id: Optional[str] = aristaproto.message_field(14, wraps=aristaproto.TYPE_STRING)
     """
     auto_fill_action_id identifies the autofill action that can be
      used to automatically populate the value of this field on the
@@ -1086,9 +1012,7 @@ class InputField(aristaproto.Message):
 class InputFields(aristaproto.Message):
     """InputFields is a collection of `InputField`."""
 
-    values: Dict[str, "InputField"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "InputField"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """values (required) is a map from input field ID to `InputField`."""
 
 
@@ -1127,9 +1051,7 @@ class SecretInput(aristaproto.Message):
     key: "InputsKey" = aristaproto.message_field(1)
     """key identifies the secret in the studio inputs."""
 
-    plain_text: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    plain_text: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """plain_text is the unmasked value of the secret."""
 
 
@@ -1137,24 +1059,18 @@ class SecretInput(aristaproto.Message):
 class AutofillActionKey(aristaproto.Message):
     """AutofillActionKey identifies an autofill action."""
 
-    studio_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    studio_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     studio_id uniquely identifies the studio in the workspace indicated
      by `workspace_id`.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     workspace_id uniquely identifies the workspace in which the studio resides.
     """
 
-    input_field_id: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    input_field_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     input_field_id uniquely identifies the input field within the schema associated
      with the action indicated by `action_id`.
@@ -1177,16 +1093,12 @@ class AutofillActionConfig(aristaproto.Message):
      workspace merges. Other data fields are not allowed if this field is set to true.
     """
 
-    action_id: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    action_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     action_id uniquely identifies the autofill action associated with the input field.
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     description is an optional field to describe the autofill action that will be
      displayed in a tooltip in the UI when the user hovers over the button to run
@@ -1217,31 +1129,23 @@ class AutofillAction(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(2)
     """created_at is the time at which the inputs were first set."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """created_by is the name of the user that first set the inputs."""
 
     last_modified_at: datetime = aristaproto.message_field(4)
     """last_modified_at is the time at which the inputs were last modified."""
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     last_modified_by is the name of the user that last modified the inputs.
     """
 
-    action_id: Optional[str] = aristaproto.message_field(
-        6, wraps=aristaproto.TYPE_STRING
-    )
+    action_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
     """
     action_id uniquely identifies the autofill action associated with the input field.
     """
 
-    description: Optional[str] = aristaproto.message_field(
-        7, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
     """
     description is an optional field to describe the autofill action that will be
      displayed in a tooltip in the UI when the user hovers over the button to run
@@ -1266,9 +1170,7 @@ class AutofillArgumentProviders(aristaproto.Message):
     AutofillArgumentProviders is a map of dynamic argument name to argument provider information.
     """
 
-    values: Dict[str, "AutofillArgumentProvider"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "AutofillArgumentProvider"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """
     values is a map of dynamic argument name to argument provider information.
     """
@@ -1463,9 +1365,7 @@ class AssignedTagsBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1629,9 +1529,7 @@ class AssignedTagsConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1909,9 +1807,7 @@ class AutofillActionBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -2075,9 +1971,7 @@ class AutofillActionConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -2357,9 +2251,7 @@ class InputsBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -2521,9 +2413,7 @@ class InputsConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -2799,9 +2689,7 @@ class SecretInputBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -2963,9 +2851,7 @@ class StudioBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -3127,9 +3013,7 @@ class StudioConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -3405,9 +3289,7 @@ class StudioSummaryBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -3433,7 +3315,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AssignedTagsResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AssignedTagsService/GetOne",
@@ -3450,7 +3332,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsService/GetSome",
@@ -3468,7 +3350,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsService/GetAll",
@@ -3486,7 +3368,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsService/Subscribe",
@@ -3504,7 +3386,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AssignedTagsService/GetMeta",
@@ -3521,7 +3403,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsService/SubscribeMeta",
@@ -3539,7 +3421,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsService/GetAllBatched",
@@ -3557,7 +3439,7 @@ class AssignedTagsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsService/SubscribeBatched",
@@ -3577,7 +3459,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AssignedTagsConfigResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AssignedTagsConfigService/GetOne",
@@ -3594,7 +3476,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/GetSome",
@@ -3612,7 +3494,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/GetAll",
@@ -3630,7 +3512,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/Subscribe",
@@ -3648,7 +3530,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AssignedTagsConfigService/GetMeta",
@@ -3665,7 +3547,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/SubscribeMeta",
@@ -3683,7 +3565,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AssignedTagsConfigSetResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AssignedTagsConfigService/Set",
@@ -3700,7 +3582,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/SetSome",
@@ -3718,7 +3600,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AssignedTagsConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AssignedTagsConfigService/Delete",
@@ -3735,7 +3617,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/DeleteSome",
@@ -3753,7 +3635,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/DeleteAll",
@@ -3771,7 +3653,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/GetAllBatched",
@@ -3789,7 +3671,7 @@ class AssignedTagsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignedTagsConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AssignedTagsConfigService/SubscribeBatched",
@@ -3809,7 +3691,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AutofillActionResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AutofillActionService/GetOne",
@@ -3826,7 +3708,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionService/GetSome",
@@ -3844,7 +3726,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionService/GetAll",
@@ -3862,7 +3744,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionService/Subscribe",
@@ -3880,7 +3762,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AutofillActionService/GetMeta",
@@ -3897,7 +3779,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionService/SubscribeMeta",
@@ -3915,7 +3797,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionService/GetAllBatched",
@@ -3933,7 +3815,7 @@ class AutofillActionServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionService/SubscribeBatched",
@@ -3953,7 +3835,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AutofillActionConfigResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AutofillActionConfigService/GetOne",
@@ -3970,7 +3852,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/GetSome",
@@ -3988,7 +3870,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/GetAll",
@@ -4006,7 +3888,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/Subscribe",
@@ -4024,7 +3906,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AutofillActionConfigService/GetMeta",
@@ -4041,7 +3923,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/SubscribeMeta",
@@ -4059,7 +3941,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AutofillActionConfigSetResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AutofillActionConfigService/Set",
@@ -4076,7 +3958,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/SetSome",
@@ -4094,7 +3976,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AutofillActionConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.studio.v1.AutofillActionConfigService/Delete",
@@ -4111,7 +3993,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/DeleteSome",
@@ -4129,7 +4011,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/DeleteAll",
@@ -4147,7 +4029,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/GetAllBatched",
@@ -4165,7 +4047,7 @@ class AutofillActionConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AutofillActionConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.AutofillActionConfigService/SubscribeBatched",
@@ -4185,7 +4067,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "InputsResponse":
         return await self._unary_unary(
             "/arista.studio.v1.InputsService/GetOne",
@@ -4202,7 +4084,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsService/GetSome",
@@ -4220,7 +4102,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsService/GetAll",
@@ -4238,7 +4120,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsService/Subscribe",
@@ -4256,7 +4138,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.InputsService/GetMeta",
@@ -4273,7 +4155,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsService/SubscribeMeta",
@@ -4291,7 +4173,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsService/GetAllBatched",
@@ -4309,7 +4191,7 @@ class InputsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsService/SubscribeBatched",
@@ -4329,7 +4211,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "InputsConfigResponse":
         return await self._unary_unary(
             "/arista.studio.v1.InputsConfigService/GetOne",
@@ -4346,7 +4228,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/GetSome",
@@ -4364,7 +4246,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/GetAll",
@@ -4382,7 +4264,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/Subscribe",
@@ -4400,7 +4282,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.InputsConfigService/GetMeta",
@@ -4417,7 +4299,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/SubscribeMeta",
@@ -4435,7 +4317,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "InputsConfigSetResponse":
         return await self._unary_unary(
             "/arista.studio.v1.InputsConfigService/Set",
@@ -4452,7 +4334,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/SetSome",
@@ -4470,7 +4352,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "InputsConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.studio.v1.InputsConfigService/Delete",
@@ -4487,7 +4369,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/DeleteSome",
@@ -4505,7 +4387,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/DeleteAll",
@@ -4523,7 +4405,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/GetAllBatched",
@@ -4541,7 +4423,7 @@ class InputsConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["InputsConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.InputsConfigService/SubscribeBatched",
@@ -4561,7 +4443,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "SecretInputResponse":
         return await self._unary_unary(
             "/arista.studio.v1.SecretInputService/GetOne",
@@ -4578,7 +4460,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SecretInputSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.SecretInputService/GetSome",
@@ -4596,7 +4478,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SecretInputStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.SecretInputService/GetAll",
@@ -4614,7 +4496,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SecretInputStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.SecretInputService/Subscribe",
@@ -4632,7 +4514,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.SecretInputService/GetMeta",
@@ -4649,7 +4531,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.SecretInputService/SubscribeMeta",
@@ -4667,7 +4549,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SecretInputBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.SecretInputService/GetAllBatched",
@@ -4685,7 +4567,7 @@ class SecretInputServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SecretInputBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.SecretInputService/SubscribeBatched",
@@ -4705,7 +4587,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "StudioResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioService/GetOne",
@@ -4722,7 +4604,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioService/GetSome",
@@ -4740,7 +4622,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioService/GetAll",
@@ -4758,7 +4640,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioService/Subscribe",
@@ -4776,7 +4658,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioService/GetMeta",
@@ -4793,7 +4675,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioService/SubscribeMeta",
@@ -4811,7 +4693,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioService/GetAllBatched",
@@ -4829,7 +4711,7 @@ class StudioServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioService/SubscribeBatched",
@@ -4849,7 +4731,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "StudioConfigResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioConfigService/GetOne",
@@ -4866,7 +4748,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/GetSome",
@@ -4884,7 +4766,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/GetAll",
@@ -4902,7 +4784,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/Subscribe",
@@ -4920,7 +4802,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioConfigService/GetMeta",
@@ -4937,7 +4819,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/SubscribeMeta",
@@ -4955,7 +4837,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "StudioConfigSetResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioConfigService/Set",
@@ -4972,7 +4854,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/SetSome",
@@ -4990,7 +4872,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "StudioConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioConfigService/Delete",
@@ -5007,7 +4889,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/DeleteSome",
@@ -5025,7 +4907,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/DeleteAll",
@@ -5043,7 +4925,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/GetAllBatched",
@@ -5061,7 +4943,7 @@ class StudioConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioConfigService/SubscribeBatched",
@@ -5081,7 +4963,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "StudioSummaryResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioSummaryService/GetOne",
@@ -5098,7 +4980,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioSummarySomeResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioSummaryService/GetSome",
@@ -5116,7 +4998,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioSummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioSummaryService/GetAll",
@@ -5134,7 +5016,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioSummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioSummaryService/Subscribe",
@@ -5152,7 +5034,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.studio.v1.StudioSummaryService/GetMeta",
@@ -5169,7 +5051,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioSummaryService/SubscribeMeta",
@@ -5187,7 +5069,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioSummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioSummaryService/GetAllBatched",
@@ -5205,7 +5087,7 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["StudioSummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.studio.v1.StudioSummaryService/SubscribeBatched",
@@ -5220,34 +5102,22 @@ class StudioSummaryServiceStub(aristaproto.ServiceStub):
 
 class AssignedTagsServiceBase(ServiceBase):
 
-    async def get_one(
-        self, assigned_tags_request: "AssignedTagsRequest"
-    ) -> "AssignedTagsResponse":
+    async def get_one(self, assigned_tags_request: "AssignedTagsRequest") -> "AssignedTagsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, assigned_tags_some_request: "AssignedTagsSomeRequest"
-    ) -> AsyncIterator["AssignedTagsSomeResponse"]:
+    async def get_some(self, assigned_tags_some_request: "AssignedTagsSomeRequest") -> AsyncIterator["AssignedTagsSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, assigned_tags_stream_request: "AssignedTagsStreamRequest"
-    ) -> AsyncIterator["AssignedTagsStreamResponse"]:
+    async def get_all(self, assigned_tags_stream_request: "AssignedTagsStreamRequest") -> AsyncIterator["AssignedTagsStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, assigned_tags_stream_request: "AssignedTagsStreamRequest"
-    ) -> AsyncIterator["AssignedTagsStreamResponse"]:
+    async def subscribe(self, assigned_tags_stream_request: "AssignedTagsStreamRequest") -> AsyncIterator["AssignedTagsStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, assigned_tags_stream_request: "AssignedTagsStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, assigned_tags_stream_request: "AssignedTagsStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, assigned_tags_stream_request: "AssignedTagsStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, assigned_tags_stream_request: "AssignedTagsStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -5260,9 +5130,7 @@ class AssignedTagsServiceBase(ServiceBase):
     ) -> AsyncIterator["AssignedTagsBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[AssignedTagsRequest, AssignedTagsResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AssignedTagsRequest, AssignedTagsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -5300,16 +5168,12 @@ class AssignedTagsServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[AssignedTagsStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AssignedTagsStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[AssignedTagsStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AssignedTagsStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -5394,49 +5258,31 @@ class AssignedTagsServiceBase(ServiceBase):
 
 class AssignedTagsConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, assigned_tags_config_request: "AssignedTagsConfigRequest"
-    ) -> "AssignedTagsConfigResponse":
+    async def get_one(self, assigned_tags_config_request: "AssignedTagsConfigRequest") -> "AssignedTagsConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, assigned_tags_config_some_request: "AssignedTagsConfigSomeRequest"
-    ) -> AsyncIterator["AssignedTagsConfigSomeResponse"]:
+    async def get_some(self, assigned_tags_config_some_request: "AssignedTagsConfigSomeRequest") -> AsyncIterator["AssignedTagsConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest"
-    ) -> AsyncIterator["AssignedTagsConfigStreamResponse"]:
+    async def get_all(self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest") -> AsyncIterator["AssignedTagsConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest"
-    ) -> AsyncIterator["AssignedTagsConfigStreamResponse"]:
+    async def subscribe(self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest") -> AsyncIterator["AssignedTagsConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, assigned_tags_config_stream_request: "AssignedTagsConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, assigned_tags_config_set_request: "AssignedTagsConfigSetRequest"
-    ) -> "AssignedTagsConfigSetResponse":
+    async def set(self, assigned_tags_config_set_request: "AssignedTagsConfigSetRequest") -> "AssignedTagsConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, assigned_tags_config_set_some_request: "AssignedTagsConfigSetSomeRequest"
-    ) -> AsyncIterator["AssignedTagsConfigSetSomeResponse"]:
+    async def set_some(self, assigned_tags_config_set_some_request: "AssignedTagsConfigSetSomeRequest") -> AsyncIterator["AssignedTagsConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, assigned_tags_config_delete_request: "AssignedTagsConfigDeleteRequest"
-    ) -> "AssignedTagsConfigDeleteResponse":
+    async def delete(self, assigned_tags_config_delete_request: "AssignedTagsConfigDeleteRequest") -> "AssignedTagsConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(
@@ -5679,34 +5525,22 @@ class AssignedTagsConfigServiceBase(ServiceBase):
 
 class AutofillActionServiceBase(ServiceBase):
 
-    async def get_one(
-        self, autofill_action_request: "AutofillActionRequest"
-    ) -> "AutofillActionResponse":
+    async def get_one(self, autofill_action_request: "AutofillActionRequest") -> "AutofillActionResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, autofill_action_some_request: "AutofillActionSomeRequest"
-    ) -> AsyncIterator["AutofillActionSomeResponse"]:
+    async def get_some(self, autofill_action_some_request: "AutofillActionSomeRequest") -> AsyncIterator["AutofillActionSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, autofill_action_stream_request: "AutofillActionStreamRequest"
-    ) -> AsyncIterator["AutofillActionStreamResponse"]:
+    async def get_all(self, autofill_action_stream_request: "AutofillActionStreamRequest") -> AsyncIterator["AutofillActionStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, autofill_action_stream_request: "AutofillActionStreamRequest"
-    ) -> AsyncIterator["AutofillActionStreamResponse"]:
+    async def subscribe(self, autofill_action_stream_request: "AutofillActionStreamRequest") -> AsyncIterator["AutofillActionStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, autofill_action_stream_request: "AutofillActionStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, autofill_action_stream_request: "AutofillActionStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, autofill_action_stream_request: "AutofillActionStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, autofill_action_stream_request: "AutofillActionStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -5762,16 +5596,12 @@ class AutofillActionServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[AutofillActionStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AutofillActionStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[AutofillActionStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AutofillActionStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -5856,19 +5686,13 @@ class AutofillActionServiceBase(ServiceBase):
 
 class AutofillActionConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, autofill_action_config_request: "AutofillActionConfigRequest"
-    ) -> "AutofillActionConfigResponse":
+    async def get_one(self, autofill_action_config_request: "AutofillActionConfigRequest") -> "AutofillActionConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, autofill_action_config_some_request: "AutofillActionConfigSomeRequest"
-    ) -> AsyncIterator["AutofillActionConfigSomeResponse"]:
+    async def get_some(self, autofill_action_config_some_request: "AutofillActionConfigSomeRequest") -> AsyncIterator["AutofillActionConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest"
-    ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
+    async def get_all(self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest") -> AsyncIterator["AutofillActionConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(
@@ -5876,19 +5700,13 @@ class AutofillActionConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, autofill_action_config_set_request: "AutofillActionConfigSetRequest"
-    ) -> "AutofillActionConfigSetResponse":
+    async def set(self, autofill_action_config_set_request: "AutofillActionConfigSetRequest") -> "AutofillActionConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(
@@ -5897,9 +5715,7 @@ class AutofillActionConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["AutofillActionConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, autofill_action_config_delete_request: "AutofillActionConfigDeleteRequest"
-    ) -> "AutofillActionConfigDeleteResponse":
+    async def delete(self, autofill_action_config_delete_request: "AutofillActionConfigDeleteRequest") -> "AutofillActionConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(
@@ -6145,51 +5961,33 @@ class InputsServiceBase(ServiceBase):
     async def get_one(self, inputs_request: "InputsRequest") -> "InputsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, inputs_some_request: "InputsSomeRequest"
-    ) -> AsyncIterator["InputsSomeResponse"]:
+    async def get_some(self, inputs_some_request: "InputsSomeRequest") -> AsyncIterator["InputsSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, inputs_stream_request: "InputsStreamRequest"
-    ) -> AsyncIterator["InputsStreamResponse"]:
+    async def get_all(self, inputs_stream_request: "InputsStreamRequest") -> AsyncIterator["InputsStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, inputs_stream_request: "InputsStreamRequest"
-    ) -> AsyncIterator["InputsStreamResponse"]:
+    async def subscribe(self, inputs_stream_request: "InputsStreamRequest") -> AsyncIterator["InputsStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, inputs_stream_request: "InputsStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, inputs_stream_request: "InputsStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, inputs_stream_request: "InputsStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, inputs_stream_request: "InputsStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, inputs_batched_stream_request: "InputsBatchedStreamRequest"
-    ) -> AsyncIterator["InputsBatchedStreamResponse"]:
+    async def get_all_batched(self, inputs_batched_stream_request: "InputsBatchedStreamRequest") -> AsyncIterator["InputsBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, inputs_batched_stream_request: "InputsBatchedStreamRequest"
-    ) -> AsyncIterator["InputsBatchedStreamResponse"]:
+    async def subscribe_batched(self, inputs_batched_stream_request: "InputsBatchedStreamRequest") -> AsyncIterator["InputsBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[InputsRequest, InputsResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[InputsRequest, InputsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[InputsSomeRequest, InputsSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[InputsSomeRequest, InputsSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -6197,9 +5995,7 @@ class InputsServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[InputsStreamRequest, InputsStreamResponse]"
-    ) -> None:
+    async def __rpc_get_all(self, stream: "grpclib.server.Stream[InputsStreamRequest, InputsStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -6207,9 +6003,7 @@ class InputsServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[InputsStreamRequest, InputsStreamResponse]"
-    ) -> None:
+    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[InputsStreamRequest, InputsStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -6217,16 +6011,12 @@ class InputsServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[InputsStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[InputsStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[InputsStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[InputsStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -6311,59 +6101,37 @@ class InputsServiceBase(ServiceBase):
 
 class InputsConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, inputs_config_request: "InputsConfigRequest"
-    ) -> "InputsConfigResponse":
+    async def get_one(self, inputs_config_request: "InputsConfigRequest") -> "InputsConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, inputs_config_some_request: "InputsConfigSomeRequest"
-    ) -> AsyncIterator["InputsConfigSomeResponse"]:
+    async def get_some(self, inputs_config_some_request: "InputsConfigSomeRequest") -> AsyncIterator["InputsConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, inputs_config_stream_request: "InputsConfigStreamRequest"
-    ) -> AsyncIterator["InputsConfigStreamResponse"]:
+    async def get_all(self, inputs_config_stream_request: "InputsConfigStreamRequest") -> AsyncIterator["InputsConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, inputs_config_stream_request: "InputsConfigStreamRequest"
-    ) -> AsyncIterator["InputsConfigStreamResponse"]:
+    async def subscribe(self, inputs_config_stream_request: "InputsConfigStreamRequest") -> AsyncIterator["InputsConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, inputs_config_stream_request: "InputsConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, inputs_config_stream_request: "InputsConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, inputs_config_stream_request: "InputsConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, inputs_config_stream_request: "InputsConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, inputs_config_set_request: "InputsConfigSetRequest"
-    ) -> "InputsConfigSetResponse":
+    async def set(self, inputs_config_set_request: "InputsConfigSetRequest") -> "InputsConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, inputs_config_set_some_request: "InputsConfigSetSomeRequest"
-    ) -> AsyncIterator["InputsConfigSetSomeResponse"]:
+    async def set_some(self, inputs_config_set_some_request: "InputsConfigSetSomeRequest") -> AsyncIterator["InputsConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, inputs_config_delete_request: "InputsConfigDeleteRequest"
-    ) -> "InputsConfigDeleteResponse":
+    async def delete(self, inputs_config_delete_request: "InputsConfigDeleteRequest") -> "InputsConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, inputs_config_delete_some_request: "InputsConfigDeleteSomeRequest"
-    ) -> AsyncIterator["InputsConfigDeleteSomeResponse"]:
+    async def delete_some(self, inputs_config_delete_some_request: "InputsConfigDeleteSomeRequest") -> AsyncIterator["InputsConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, inputs_config_delete_all_request: "InputsConfigDeleteAllRequest"
-    ) -> AsyncIterator["InputsConfigDeleteAllResponse"]:
+    async def delete_all(self, inputs_config_delete_all_request: "InputsConfigDeleteAllRequest") -> AsyncIterator["InputsConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -6376,9 +6144,7 @@ class InputsConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["InputsConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[InputsConfigRequest, InputsConfigResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[InputsConfigRequest, InputsConfigResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -6416,16 +6182,12 @@ class InputsConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[InputsConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[InputsConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[InputsConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[InputsConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -6589,34 +6351,22 @@ class InputsConfigServiceBase(ServiceBase):
 
 class SecretInputServiceBase(ServiceBase):
 
-    async def get_one(
-        self, secret_input_request: "SecretInputRequest"
-    ) -> "SecretInputResponse":
+    async def get_one(self, secret_input_request: "SecretInputRequest") -> "SecretInputResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, secret_input_some_request: "SecretInputSomeRequest"
-    ) -> AsyncIterator["SecretInputSomeResponse"]:
+    async def get_some(self, secret_input_some_request: "SecretInputSomeRequest") -> AsyncIterator["SecretInputSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, secret_input_stream_request: "SecretInputStreamRequest"
-    ) -> AsyncIterator["SecretInputStreamResponse"]:
+    async def get_all(self, secret_input_stream_request: "SecretInputStreamRequest") -> AsyncIterator["SecretInputStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, secret_input_stream_request: "SecretInputStreamRequest"
-    ) -> AsyncIterator["SecretInputStreamResponse"]:
+    async def subscribe(self, secret_input_stream_request: "SecretInputStreamRequest") -> AsyncIterator["SecretInputStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, secret_input_stream_request: "SecretInputStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, secret_input_stream_request: "SecretInputStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, secret_input_stream_request: "SecretInputStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, secret_input_stream_request: "SecretInputStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -6629,9 +6379,7 @@ class SecretInputServiceBase(ServiceBase):
     ) -> AsyncIterator["SecretInputBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[SecretInputRequest, SecretInputResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SecretInputRequest, SecretInputResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -6669,16 +6417,12 @@ class SecretInputServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[SecretInputStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SecretInputStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[SecretInputStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SecretInputStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -6766,51 +6510,33 @@ class StudioServiceBase(ServiceBase):
     async def get_one(self, studio_request: "StudioRequest") -> "StudioResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, studio_some_request: "StudioSomeRequest"
-    ) -> AsyncIterator["StudioSomeResponse"]:
+    async def get_some(self, studio_some_request: "StudioSomeRequest") -> AsyncIterator["StudioSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, studio_stream_request: "StudioStreamRequest"
-    ) -> AsyncIterator["StudioStreamResponse"]:
+    async def get_all(self, studio_stream_request: "StudioStreamRequest") -> AsyncIterator["StudioStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, studio_stream_request: "StudioStreamRequest"
-    ) -> AsyncIterator["StudioStreamResponse"]:
+    async def subscribe(self, studio_stream_request: "StudioStreamRequest") -> AsyncIterator["StudioStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, studio_stream_request: "StudioStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, studio_stream_request: "StudioStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, studio_stream_request: "StudioStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, studio_stream_request: "StudioStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, studio_batched_stream_request: "StudioBatchedStreamRequest"
-    ) -> AsyncIterator["StudioBatchedStreamResponse"]:
+    async def get_all_batched(self, studio_batched_stream_request: "StudioBatchedStreamRequest") -> AsyncIterator["StudioBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, studio_batched_stream_request: "StudioBatchedStreamRequest"
-    ) -> AsyncIterator["StudioBatchedStreamResponse"]:
+    async def subscribe_batched(self, studio_batched_stream_request: "StudioBatchedStreamRequest") -> AsyncIterator["StudioBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[StudioRequest, StudioResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[StudioRequest, StudioResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[StudioSomeRequest, StudioSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[StudioSomeRequest, StudioSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -6818,9 +6544,7 @@ class StudioServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[StudioStreamRequest, StudioStreamResponse]"
-    ) -> None:
+    async def __rpc_get_all(self, stream: "grpclib.server.Stream[StudioStreamRequest, StudioStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -6828,9 +6552,7 @@ class StudioServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[StudioStreamRequest, StudioStreamResponse]"
-    ) -> None:
+    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[StudioStreamRequest, StudioStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -6838,16 +6560,12 @@ class StudioServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[StudioStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[StudioStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[StudioStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[StudioStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -6932,59 +6650,37 @@ class StudioServiceBase(ServiceBase):
 
 class StudioConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, studio_config_request: "StudioConfigRequest"
-    ) -> "StudioConfigResponse":
+    async def get_one(self, studio_config_request: "StudioConfigRequest") -> "StudioConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, studio_config_some_request: "StudioConfigSomeRequest"
-    ) -> AsyncIterator["StudioConfigSomeResponse"]:
+    async def get_some(self, studio_config_some_request: "StudioConfigSomeRequest") -> AsyncIterator["StudioConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, studio_config_stream_request: "StudioConfigStreamRequest"
-    ) -> AsyncIterator["StudioConfigStreamResponse"]:
+    async def get_all(self, studio_config_stream_request: "StudioConfigStreamRequest") -> AsyncIterator["StudioConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, studio_config_stream_request: "StudioConfigStreamRequest"
-    ) -> AsyncIterator["StudioConfigStreamResponse"]:
+    async def subscribe(self, studio_config_stream_request: "StudioConfigStreamRequest") -> AsyncIterator["StudioConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, studio_config_stream_request: "StudioConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, studio_config_stream_request: "StudioConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, studio_config_stream_request: "StudioConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, studio_config_stream_request: "StudioConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, studio_config_set_request: "StudioConfigSetRequest"
-    ) -> "StudioConfigSetResponse":
+    async def set(self, studio_config_set_request: "StudioConfigSetRequest") -> "StudioConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, studio_config_set_some_request: "StudioConfigSetSomeRequest"
-    ) -> AsyncIterator["StudioConfigSetSomeResponse"]:
+    async def set_some(self, studio_config_set_some_request: "StudioConfigSetSomeRequest") -> AsyncIterator["StudioConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, studio_config_delete_request: "StudioConfigDeleteRequest"
-    ) -> "StudioConfigDeleteResponse":
+    async def delete(self, studio_config_delete_request: "StudioConfigDeleteRequest") -> "StudioConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, studio_config_delete_some_request: "StudioConfigDeleteSomeRequest"
-    ) -> AsyncIterator["StudioConfigDeleteSomeResponse"]:
+    async def delete_some(self, studio_config_delete_some_request: "StudioConfigDeleteSomeRequest") -> AsyncIterator["StudioConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, studio_config_delete_all_request: "StudioConfigDeleteAllRequest"
-    ) -> AsyncIterator["StudioConfigDeleteAllResponse"]:
+    async def delete_all(self, studio_config_delete_all_request: "StudioConfigDeleteAllRequest") -> AsyncIterator["StudioConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -6997,9 +6693,7 @@ class StudioConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["StudioConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[StudioConfigRequest, StudioConfigResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[StudioConfigRequest, StudioConfigResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -7037,16 +6731,12 @@ class StudioConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[StudioConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[StudioConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[StudioConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[StudioConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -7210,34 +6900,22 @@ class StudioConfigServiceBase(ServiceBase):
 
 class StudioSummaryServiceBase(ServiceBase):
 
-    async def get_one(
-        self, studio_summary_request: "StudioSummaryRequest"
-    ) -> "StudioSummaryResponse":
+    async def get_one(self, studio_summary_request: "StudioSummaryRequest") -> "StudioSummaryResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, studio_summary_some_request: "StudioSummarySomeRequest"
-    ) -> AsyncIterator["StudioSummarySomeResponse"]:
+    async def get_some(self, studio_summary_some_request: "StudioSummarySomeRequest") -> AsyncIterator["StudioSummarySomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, studio_summary_stream_request: "StudioSummaryStreamRequest"
-    ) -> AsyncIterator["StudioSummaryStreamResponse"]:
+    async def get_all(self, studio_summary_stream_request: "StudioSummaryStreamRequest") -> AsyncIterator["StudioSummaryStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, studio_summary_stream_request: "StudioSummaryStreamRequest"
-    ) -> AsyncIterator["StudioSummaryStreamResponse"]:
+    async def subscribe(self, studio_summary_stream_request: "StudioSummaryStreamRequest") -> AsyncIterator["StudioSummaryStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, studio_summary_stream_request: "StudioSummaryStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, studio_summary_stream_request: "StudioSummaryStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, studio_summary_stream_request: "StudioSummaryStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, studio_summary_stream_request: "StudioSummaryStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -7291,16 +6969,12 @@ class StudioSummaryServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[StudioSummaryStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[StudioSummaryStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[StudioSummaryStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[StudioSummaryStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

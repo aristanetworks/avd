@@ -191,9 +191,7 @@ class StageConfigMap(aristaproto.Message):
      That is, execute tasks `101` and `102` in parallel, then task `103`, then task `104`.
     """
 
-    values: Dict[str, "StageConfig"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "StageConfig"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """values is a map from stage ID to `StageConfig`."""
 
 
@@ -207,9 +205,7 @@ class ChangeConfig(aristaproto.Message):
     name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """name is the name of the change."""
 
-    root_stage_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    root_stage_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     root_stage_id is the ID of the root stage or the stage that
      should execute first.
@@ -318,9 +314,7 @@ class StageMap(aristaproto.Message):
      to a `Stage` instead of `StageConfig`.
     """
 
-    values: Dict[str, "Stage"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "Stage"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """values is a map from stage ID to `Stage`."""
 
 
@@ -334,9 +328,7 @@ class Change(aristaproto.Message):
     name: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """name is the name of the change."""
 
-    root_stage_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    root_stage_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     root_stage_id is the ID of the root stage or the stage that
      should execute first.
@@ -644,9 +636,7 @@ class ApproveConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -936,9 +926,7 @@ class ChangeControlBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1102,9 +1090,7 @@ class ChangeControlConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1246,7 +1232,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ApproveConfigResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ApproveConfigService/GetOne",
@@ -1263,7 +1249,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/GetSome",
@@ -1281,7 +1267,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/GetAll",
@@ -1299,7 +1285,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/Subscribe",
@@ -1317,7 +1303,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ApproveConfigService/GetMeta",
@@ -1334,7 +1320,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/SubscribeMeta",
@@ -1352,7 +1338,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ApproveConfigSetResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ApproveConfigService/Set",
@@ -1369,7 +1355,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/SetSome",
@@ -1387,7 +1373,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ApproveConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ApproveConfigService/Delete",
@@ -1404,7 +1390,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/DeleteSome",
@@ -1422,7 +1408,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/DeleteAll",
@@ -1440,7 +1426,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/GetAllBatched",
@@ -1458,7 +1444,7 @@ class ApproveConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ApproveConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ApproveConfigService/SubscribeBatched",
@@ -1478,7 +1464,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ChangeControlResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ChangeControlService/GetOne",
@@ -1495,7 +1481,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlService/GetSome",
@@ -1513,7 +1499,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlService/GetAll",
@@ -1531,7 +1517,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlService/Subscribe",
@@ -1549,7 +1535,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ChangeControlService/GetMeta",
@@ -1566,7 +1552,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlService/SubscribeMeta",
@@ -1584,7 +1570,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlService/GetAllBatched",
@@ -1602,7 +1588,7 @@ class ChangeControlServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlService/SubscribeBatched",
@@ -1622,7 +1608,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ChangeControlConfigResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ChangeControlConfigService/GetOne",
@@ -1639,7 +1625,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/GetSome",
@@ -1657,7 +1643,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/GetAll",
@@ -1675,7 +1661,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/Subscribe",
@@ -1693,7 +1679,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ChangeControlConfigService/GetMeta",
@@ -1710,7 +1696,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/SubscribeMeta",
@@ -1728,7 +1714,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ChangeControlConfigSetResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ChangeControlConfigService/Set",
@@ -1745,7 +1731,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/SetSome",
@@ -1763,7 +1749,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ChangeControlConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.changecontrol.v1.ChangeControlConfigService/Delete",
@@ -1780,7 +1766,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/DeleteSome",
@@ -1798,7 +1784,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/DeleteAll",
@@ -1816,7 +1802,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/GetAllBatched",
@@ -1834,7 +1820,7 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ChangeControlConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.changecontrol.v1.ChangeControlConfigService/SubscribeBatched",
@@ -1849,59 +1835,37 @@ class ChangeControlConfigServiceStub(aristaproto.ServiceStub):
 
 class ApproveConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, approve_config_request: "ApproveConfigRequest"
-    ) -> "ApproveConfigResponse":
+    async def get_one(self, approve_config_request: "ApproveConfigRequest") -> "ApproveConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, approve_config_some_request: "ApproveConfigSomeRequest"
-    ) -> AsyncIterator["ApproveConfigSomeResponse"]:
+    async def get_some(self, approve_config_some_request: "ApproveConfigSomeRequest") -> AsyncIterator["ApproveConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, approve_config_stream_request: "ApproveConfigStreamRequest"
-    ) -> AsyncIterator["ApproveConfigStreamResponse"]:
+    async def get_all(self, approve_config_stream_request: "ApproveConfigStreamRequest") -> AsyncIterator["ApproveConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, approve_config_stream_request: "ApproveConfigStreamRequest"
-    ) -> AsyncIterator["ApproveConfigStreamResponse"]:
+    async def subscribe(self, approve_config_stream_request: "ApproveConfigStreamRequest") -> AsyncIterator["ApproveConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, approve_config_stream_request: "ApproveConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, approve_config_stream_request: "ApproveConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, approve_config_stream_request: "ApproveConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, approve_config_stream_request: "ApproveConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, approve_config_set_request: "ApproveConfigSetRequest"
-    ) -> "ApproveConfigSetResponse":
+    async def set(self, approve_config_set_request: "ApproveConfigSetRequest") -> "ApproveConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, approve_config_set_some_request: "ApproveConfigSetSomeRequest"
-    ) -> AsyncIterator["ApproveConfigSetSomeResponse"]:
+    async def set_some(self, approve_config_set_some_request: "ApproveConfigSetSomeRequest") -> AsyncIterator["ApproveConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, approve_config_delete_request: "ApproveConfigDeleteRequest"
-    ) -> "ApproveConfigDeleteResponse":
+    async def delete(self, approve_config_delete_request: "ApproveConfigDeleteRequest") -> "ApproveConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, approve_config_delete_some_request: "ApproveConfigDeleteSomeRequest"
-    ) -> AsyncIterator["ApproveConfigDeleteSomeResponse"]:
+    async def delete_some(self, approve_config_delete_some_request: "ApproveConfigDeleteSomeRequest") -> AsyncIterator["ApproveConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, approve_config_delete_all_request: "ApproveConfigDeleteAllRequest"
-    ) -> AsyncIterator["ApproveConfigDeleteAllResponse"]:
+    async def delete_all(self, approve_config_delete_all_request: "ApproveConfigDeleteAllRequest") -> AsyncIterator["ApproveConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -1955,16 +1919,12 @@ class ApproveConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[ApproveConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ApproveConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[ApproveConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ApproveConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2128,34 +2088,22 @@ class ApproveConfigServiceBase(ServiceBase):
 
 class ChangeControlServiceBase(ServiceBase):
 
-    async def get_one(
-        self, change_control_request: "ChangeControlRequest"
-    ) -> "ChangeControlResponse":
+    async def get_one(self, change_control_request: "ChangeControlRequest") -> "ChangeControlResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, change_control_some_request: "ChangeControlSomeRequest"
-    ) -> AsyncIterator["ChangeControlSomeResponse"]:
+    async def get_some(self, change_control_some_request: "ChangeControlSomeRequest") -> AsyncIterator["ChangeControlSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, change_control_stream_request: "ChangeControlStreamRequest"
-    ) -> AsyncIterator["ChangeControlStreamResponse"]:
+    async def get_all(self, change_control_stream_request: "ChangeControlStreamRequest") -> AsyncIterator["ChangeControlStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, change_control_stream_request: "ChangeControlStreamRequest"
-    ) -> AsyncIterator["ChangeControlStreamResponse"]:
+    async def subscribe(self, change_control_stream_request: "ChangeControlStreamRequest") -> AsyncIterator["ChangeControlStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, change_control_stream_request: "ChangeControlStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, change_control_stream_request: "ChangeControlStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, change_control_stream_request: "ChangeControlStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, change_control_stream_request: "ChangeControlStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2209,16 +2157,12 @@ class ChangeControlServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[ChangeControlStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ChangeControlStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[ChangeControlStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ChangeControlStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2303,39 +2247,25 @@ class ChangeControlServiceBase(ServiceBase):
 
 class ChangeControlConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, change_control_config_request: "ChangeControlConfigRequest"
-    ) -> "ChangeControlConfigResponse":
+    async def get_one(self, change_control_config_request: "ChangeControlConfigRequest") -> "ChangeControlConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, change_control_config_some_request: "ChangeControlConfigSomeRequest"
-    ) -> AsyncIterator["ChangeControlConfigSomeResponse"]:
+    async def get_some(self, change_control_config_some_request: "ChangeControlConfigSomeRequest") -> AsyncIterator["ChangeControlConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, change_control_config_stream_request: "ChangeControlConfigStreamRequest"
-    ) -> AsyncIterator["ChangeControlConfigStreamResponse"]:
+    async def get_all(self, change_control_config_stream_request: "ChangeControlConfigStreamRequest") -> AsyncIterator["ChangeControlConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, change_control_config_stream_request: "ChangeControlConfigStreamRequest"
-    ) -> AsyncIterator["ChangeControlConfigStreamResponse"]:
+    async def subscribe(self, change_control_config_stream_request: "ChangeControlConfigStreamRequest") -> AsyncIterator["ChangeControlConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, change_control_config_stream_request: "ChangeControlConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, change_control_config_stream_request: "ChangeControlConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, change_control_config_stream_request: "ChangeControlConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, change_control_config_stream_request: "ChangeControlConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, change_control_config_set_request: "ChangeControlConfigSetRequest"
-    ) -> "ChangeControlConfigSetResponse":
+    async def set(self, change_control_config_set_request: "ChangeControlConfigSetRequest") -> "ChangeControlConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(
@@ -2344,9 +2274,7 @@ class ChangeControlConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["ChangeControlConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, change_control_config_delete_request: "ChangeControlConfigDeleteRequest"
-    ) -> "ChangeControlConfigDeleteResponse":
+    async def delete(self, change_control_config_delete_request: "ChangeControlConfigDeleteRequest") -> "ChangeControlConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(

@@ -28,9 +28,7 @@ if TYPE_CHECKING:
 class AssignmentKey(aristaproto.Message):
     """AssignmentKey allows to uniquely identify an assignment."""
 
-    system_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    system_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """system_id is the unique identifier of a device."""
 
 
@@ -235,9 +233,7 @@ class AssignmentBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -263,7 +259,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "AssignmentResponse":
         return await self._unary_unary(
             "/arista.redirector.v1.AssignmentService/GetOne",
@@ -280,7 +276,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignmentSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.redirector.v1.AssignmentService/GetSome",
@@ -298,7 +294,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignmentStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.redirector.v1.AssignmentService/GetAll",
@@ -316,7 +312,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignmentStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.redirector.v1.AssignmentService/Subscribe",
@@ -334,7 +330,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.redirector.v1.AssignmentService/GetMeta",
@@ -351,7 +347,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.redirector.v1.AssignmentService/SubscribeMeta",
@@ -369,7 +365,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignmentBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.redirector.v1.AssignmentService/GetAllBatched",
@@ -387,7 +383,7 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["AssignmentBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.redirector.v1.AssignmentService/SubscribeBatched",
@@ -402,49 +398,31 @@ class AssignmentServiceStub(aristaproto.ServiceStub):
 
 class AssignmentServiceBase(ServiceBase):
 
-    async def get_one(
-        self, assignment_request: "AssignmentRequest"
-    ) -> "AssignmentResponse":
+    async def get_one(self, assignment_request: "AssignmentRequest") -> "AssignmentResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, assignment_some_request: "AssignmentSomeRequest"
-    ) -> AsyncIterator["AssignmentSomeResponse"]:
+    async def get_some(self, assignment_some_request: "AssignmentSomeRequest") -> AsyncIterator["AssignmentSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, assignment_stream_request: "AssignmentStreamRequest"
-    ) -> AsyncIterator["AssignmentStreamResponse"]:
+    async def get_all(self, assignment_stream_request: "AssignmentStreamRequest") -> AsyncIterator["AssignmentStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, assignment_stream_request: "AssignmentStreamRequest"
-    ) -> AsyncIterator["AssignmentStreamResponse"]:
+    async def subscribe(self, assignment_stream_request: "AssignmentStreamRequest") -> AsyncIterator["AssignmentStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, assignment_stream_request: "AssignmentStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, assignment_stream_request: "AssignmentStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, assignment_stream_request: "AssignmentStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, assignment_stream_request: "AssignmentStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, assignment_batched_stream_request: "AssignmentBatchedStreamRequest"
-    ) -> AsyncIterator["AssignmentBatchedStreamResponse"]:
+    async def get_all_batched(self, assignment_batched_stream_request: "AssignmentBatchedStreamRequest") -> AsyncIterator["AssignmentBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, assignment_batched_stream_request: "AssignmentBatchedStreamRequest"
-    ) -> AsyncIterator["AssignmentBatchedStreamResponse"]:
+    async def subscribe_batched(self, assignment_batched_stream_request: "AssignmentBatchedStreamRequest") -> AsyncIterator["AssignmentBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[AssignmentRequest, AssignmentResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[AssignmentRequest, AssignmentResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -482,16 +460,12 @@ class AssignmentServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[AssignmentStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[AssignmentStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[AssignmentStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[AssignmentStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

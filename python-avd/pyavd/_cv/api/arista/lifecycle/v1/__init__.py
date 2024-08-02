@@ -31,9 +31,7 @@ class DeviceLifecycleSummaryKey(aristaproto.Message):
      DeviceLifecycleSummary model
     """
 
-    device_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """device_id is the device ID"""
 
 
@@ -101,9 +99,7 @@ class DeviceLifecycleSummary(aristaproto.Message):
      a device
     """
 
-    hardware_lifecycle_summary: "HardwareLifecycleSummary" = aristaproto.message_field(
-        3
-    )
+    hardware_lifecycle_summary: "HardwareLifecycleSummary" = aristaproto.message_field(3)
     """
     hardware_lifecycle_summary is the hardware lifecycle summary
      of a device
@@ -224,7 +220,7 @@ class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceLifecycleSummaryResponse":
         return await self._unary_unary(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetOne",
@@ -241,7 +237,7 @@ class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceLifecycleSummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetAll",
@@ -259,7 +255,7 @@ class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceLifecycleSummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/Subscribe",
@@ -277,7 +273,7 @@ class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/GetMeta",
@@ -294,7 +290,7 @@ class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.lifecycle.v1.DeviceLifecycleSummaryService/SubscribeMeta",
@@ -309,9 +305,7 @@ class DeviceLifecycleSummaryServiceStub(aristaproto.ServiceStub):
 
 class DeviceLifecycleSummaryServiceBase(ServiceBase):
 
-    async def get_one(
-        self, device_lifecycle_summary_request: "DeviceLifecycleSummaryRequest"
-    ) -> "DeviceLifecycleSummaryResponse":
+    async def get_one(self, device_lifecycle_summary_request: "DeviceLifecycleSummaryRequest") -> "DeviceLifecycleSummaryResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(

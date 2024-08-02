@@ -17,8 +17,6 @@ from aristaproto.grpc.grpclib_server import ServiceBase
 from .... import fmp as ___fmp__
 from ... import subscriptions as __subscriptions__
 from ... import time as __time__
-from ...configstatus import v1 as __configstatus_v1__
-from ...imagestatus import v1 as __imagestatus_v1__
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -329,9 +327,7 @@ class ImageValidationSkipCause(aristaproto.Enum):
 class RequestParams(aristaproto.Message):
     """RequestParams define the parameters for a Request."""
 
-    request_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    request_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """
     request_id is the unique ID of the request. This is used to identify
      the Response for the request in Responses.
@@ -356,9 +352,7 @@ class Response(aristaproto.Message):
 class Responses(aristaproto.Message):
     """Responses is a collection of responses for completed requests."""
 
-    values: Dict[str, "Response"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "Response"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """values is a map from request ID to Response."""
 
 
@@ -366,9 +360,7 @@ class Responses(aristaproto.Message):
 class WorkspaceKey(aristaproto.Message):
     """WorkspaceKey uniquely identifies a workspace."""
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """workspace_id is the unique ID of the workspace."""
 
 
@@ -379,14 +371,10 @@ class WorkspaceConfig(aristaproto.Message):
     key: "WorkspaceKey" = aristaproto.message_field(1)
     """key identifies the workspace."""
 
-    display_name: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """display_name is the user-defined name of the workspace."""
 
-    description: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """description is a brief description of the workspace."""
 
     request: "Request" = aristaproto.enum_field(4)
@@ -409,25 +397,19 @@ class Workspace(aristaproto.Message):
     created_at: datetime = aristaproto.message_field(2)
     """created_at indicates when the workspace was created."""
 
-    created_by: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """created_by indicates who created the workspace."""
 
     last_modified_at: datetime = aristaproto.message_field(4)
     """last_modified_at indicates when the workspace was last updated."""
 
-    last_modified_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """last_modified_by indicates who last updated the workspace."""
 
     state: "WorkspaceState" = aristaproto.enum_field(6)
     """state describes the status of the workspace."""
 
-    last_build_id: Optional[str] = aristaproto.message_field(
-        7, wraps=aristaproto.TYPE_STRING
-    )
+    last_build_id: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
     """
     last_build_id is the last build ID that was set in a WorkspaceBuild
      for this workspace.
@@ -445,9 +427,7 @@ class Workspace(aristaproto.Message):
      of submitting this workspace.
     """
 
-    needs_build: Optional[bool] = aristaproto.message_field(
-        10, wraps=aristaproto.TYPE_BOOL
-    )
+    needs_build: Optional[bool] = aristaproto.message_field(10, wraps=aristaproto.TYPE_BOOL)
     """
     needs_build indicates whether a rebuild of the workspace is necessary
      in order to submit it.
@@ -456,22 +436,16 @@ class Workspace(aristaproto.Message):
     last_rebased_at: datetime = aristaproto.message_field(11)
     """last_rebased_at indicates when the workspace was last rebased."""
 
-    needs_rebase: Optional[bool] = aristaproto.message_field(
-        12, wraps=aristaproto.TYPE_BOOL
-    )
+    needs_rebase: Optional[bool] = aristaproto.message_field(12, wraps=aristaproto.TYPE_BOOL)
     """
     needs_rebase indicates whether a rebase of the workspace is necessary
      in order to submit it.
     """
 
-    display_name: Optional[str] = aristaproto.message_field(
-        13, wraps=aristaproto.TYPE_STRING
-    )
+    display_name: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
     """display_name is the user-defined name of the workspace."""
 
-    description: Optional[str] = aristaproto.message_field(
-        14, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(14, wraps=aristaproto.TYPE_STRING)
     """description is a brief description of the workspace."""
 
 
@@ -481,9 +455,7 @@ class InputError(aristaproto.Message):
     InputError holds the details for an error on a studio input field or value.
     """
 
-    field_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    field_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """field_id is the ID of the input field."""
 
     path: "___fmp__.RepeatedString" = aristaproto.message_field(2)
@@ -528,9 +500,7 @@ class InputValidationResults(aristaproto.Message):
     InputValidationResults is a collection of InputValidationResult (one per studio).
     """
 
-    values: Dict[str, "InputValidationResult"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "InputValidationResult"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """values is map from studio ID to InputValidationResult."""
 
 
@@ -541,14 +511,10 @@ class TemplateError(aristaproto.Message):
      template against its inputs.
     """
 
-    line_num: Optional[int] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_UINT32
-    )
+    line_num: Optional[int] = aristaproto.message_field(1, wraps=aristaproto.TYPE_UINT32)
     """line_num is the number of the line on which the error occurred."""
 
-    exception: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    exception: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     exception is the type of the exception thrown during the script execution.
      E.g., AssertionError, etc.
@@ -557,9 +523,7 @@ class TemplateError(aristaproto.Message):
     detail: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """detail holds the details of the exception. E.g., a full backtrace."""
 
-    exception_msg: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    exception_msg: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     exception_msg is the message of the exception thrown during the script execution.
     """
@@ -582,21 +546,15 @@ class ConfigletBuildResult(aristaproto.Message):
     template_errors are errors that occured during studio template evaluation.
     """
 
-    generated_config: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    generated_config: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     generated_config is the EOS CLI config that was generated from the stage.
     """
 
-    other_error: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    other_error: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """other_error is any other miscellaneous error."""
 
-    execution_id: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    execution_id: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     execution_id is the unique ID for the execution of the template. This ID
      can be used to retrieve logs generated by the template.
@@ -614,9 +572,7 @@ class ConfigletBuildResults(aristaproto.Message):
     ConfigletBuildResults is a collection of ConfigletBuildResult (one per studio).
     """
 
-    values: Dict[str, "ConfigletBuildResult"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
-    )
+    values: Dict[str, "ConfigletBuildResult"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
     """values is a map from studio ID to ConfigletBuildResult."""
 
 
@@ -652,9 +608,7 @@ class ImageValidationResult(aristaproto.Message):
     warnings: "__imagestatus_v1__.ImageWarnings" = aristaproto.message_field(3)
     """warnings are any warnings about the generated image."""
 
-    image_input_error: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    image_input_error: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """image_input_error indicates any errors in image inputs."""
 
 
@@ -662,9 +616,7 @@ class ImageValidationResult(aristaproto.Message):
 class BuildStageState(aristaproto.Message):
     """BuildStageState holds the state per build stage."""
 
-    values: Dict[str, "BuildState"] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_ENUM
-    )
+    values: Dict[str, "BuildState"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_ENUM)
     """
     values is a map from build stage to build state.
      The possible keys to this map are BUILD_STAGE_UNSPECIFIED,
@@ -679,17 +631,13 @@ class AuthzResult(aristaproto.Message):
     AuthzResult has the result of the authorization check for workspace changes.
     """
 
-    has_unauthorized_tag_change: Optional[bool] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_BOOL
-    )
+    has_unauthorized_tag_change: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
     """
     has_unauthorized_tag_change is true when there is a tag assignment that results
      in change in permissions and the subject is not authorized to do it.
     """
 
-    has_unauthorized_device_change: Optional[bool] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_BOOL
-    )
+    has_unauthorized_device_change: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
     """
     has_unauthorized_device_change is true when there is atleast 1 device
      for which the subject doesn't have provision permission.
@@ -706,14 +654,10 @@ class AuthzResult(aristaproto.Message):
 class WorkspaceBuildKey(aristaproto.Message):
     """WorkspaceBuildKey uniquely identifies a build for a workspace."""
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """workspace_id is the ID of the workspace."""
 
-    build_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    build_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """build_id is the ID of the build."""
 
 
@@ -733,9 +677,7 @@ class WorkspaceBuild(aristaproto.Message):
      the per-device build result is computed.
     """
 
-    built_by: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    built_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """built_by is the details of subject who built the workspace."""
 
     authz_result: "AuthzResult" = aristaproto.message_field(6)
@@ -749,19 +691,13 @@ class WorkspaceBuildDetailsKey(aristaproto.Message):
      device in a workspace.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """workspace_id is the ID of the workspace."""
 
-    build_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    build_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """build_id is the ID of the build."""
 
-    device_id: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """device_id is the ID of the device."""
 
 
@@ -798,9 +734,7 @@ class WorkspaceBuildDetails(aristaproto.Message):
     image_validation_result: "ImageValidationResult" = aristaproto.message_field(7)
     """image_validation_result is the result of the image validation stage."""
 
-    config_validation_skip_cause: "ConfigValidationSkipCause" = aristaproto.enum_field(
-        8
-    )
+    config_validation_skip_cause: "ConfigValidationSkipCause" = aristaproto.enum_field(8)
     """
     config_validation_skip_cause is the reason, if any, that the config
      validation stage was skipped.
@@ -983,9 +917,7 @@ class WorkspaceBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1147,9 +1079,7 @@ class WorkspaceBuildBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1313,9 +1243,7 @@ class WorkspaceBuildDetailsBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1326,9 +1254,7 @@ class WorkspaceBuildDetailsBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class WorkspaceBuildDetailsBatchedStreamResponse(aristaproto.Message):
-    responses: List["WorkspaceBuildDetailsStreamResponse"] = aristaproto.message_field(
-        1
-    )
+    responses: List["WorkspaceBuildDetailsStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1481,9 +1407,7 @@ class WorkspaceConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1625,7 +1549,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "WorkspaceResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceService/GetOne",
@@ -1642,7 +1566,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceService/GetSome",
@@ -1660,7 +1584,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceService/GetAll",
@@ -1678,7 +1602,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceService/Subscribe",
@@ -1696,7 +1620,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceService/GetMeta",
@@ -1713,7 +1637,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceService/SubscribeMeta",
@@ -1731,7 +1655,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceService/GetAllBatched",
@@ -1749,7 +1673,7 @@ class WorkspaceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceService/SubscribeBatched",
@@ -1769,7 +1693,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "WorkspaceBuildResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceBuildService/GetOne",
@@ -1786,7 +1710,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildService/GetSome",
@@ -1804,7 +1728,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildService/GetAll",
@@ -1822,7 +1746,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildService/Subscribe",
@@ -1840,7 +1764,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceBuildService/GetMeta",
@@ -1857,7 +1781,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildService/SubscribeMeta",
@@ -1875,7 +1799,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildService/GetAllBatched",
@@ -1893,7 +1817,7 @@ class WorkspaceBuildServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildService/SubscribeBatched",
@@ -1913,7 +1837,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "WorkspaceBuildDetailsResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetOne",
@@ -1930,7 +1854,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildDetailsSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetSome",
@@ -1948,7 +1872,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildDetailsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAll",
@@ -1966,7 +1890,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildDetailsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/Subscribe",
@@ -1984,7 +1908,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetMeta",
@@ -2001,7 +1925,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/SubscribeMeta",
@@ -2019,7 +1943,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildDetailsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAllBatched",
@@ -2037,7 +1961,7 @@ class WorkspaceBuildDetailsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceBuildDetailsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceBuildDetailsService/SubscribeBatched",
@@ -2057,7 +1981,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "WorkspaceConfigResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/GetOne",
@@ -2074,7 +1998,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/GetSome",
@@ -2092,7 +2016,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/GetAll",
@@ -2110,7 +2034,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/Subscribe",
@@ -2128,7 +2052,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/GetMeta",
@@ -2145,7 +2069,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/SubscribeMeta",
@@ -2163,7 +2087,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "WorkspaceConfigSetResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/Set",
@@ -2180,7 +2104,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/SetSome",
@@ -2198,7 +2122,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "WorkspaceConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.workspace.v1.WorkspaceConfigService/Delete",
@@ -2215,7 +2139,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/DeleteSome",
@@ -2233,7 +2157,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/DeleteAll",
@@ -2251,7 +2175,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/GetAllBatched",
@@ -2269,7 +2193,7 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["WorkspaceConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.workspace.v1.WorkspaceConfigService/SubscribeBatched",
@@ -2284,49 +2208,31 @@ class WorkspaceConfigServiceStub(aristaproto.ServiceStub):
 
 class WorkspaceServiceBase(ServiceBase):
 
-    async def get_one(
-        self, workspace_request: "WorkspaceRequest"
-    ) -> "WorkspaceResponse":
+    async def get_one(self, workspace_request: "WorkspaceRequest") -> "WorkspaceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, workspace_some_request: "WorkspaceSomeRequest"
-    ) -> AsyncIterator["WorkspaceSomeResponse"]:
+    async def get_some(self, workspace_some_request: "WorkspaceSomeRequest") -> AsyncIterator["WorkspaceSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, workspace_stream_request: "WorkspaceStreamRequest"
-    ) -> AsyncIterator["WorkspaceStreamResponse"]:
+    async def get_all(self, workspace_stream_request: "WorkspaceStreamRequest") -> AsyncIterator["WorkspaceStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, workspace_stream_request: "WorkspaceStreamRequest"
-    ) -> AsyncIterator["WorkspaceStreamResponse"]:
+    async def subscribe(self, workspace_stream_request: "WorkspaceStreamRequest") -> AsyncIterator["WorkspaceStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, workspace_stream_request: "WorkspaceStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, workspace_stream_request: "WorkspaceStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, workspace_stream_request: "WorkspaceStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, workspace_stream_request: "WorkspaceStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, workspace_batched_stream_request: "WorkspaceBatchedStreamRequest"
-    ) -> AsyncIterator["WorkspaceBatchedStreamResponse"]:
+    async def get_all_batched(self, workspace_batched_stream_request: "WorkspaceBatchedStreamRequest") -> AsyncIterator["WorkspaceBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, workspace_batched_stream_request: "WorkspaceBatchedStreamRequest"
-    ) -> AsyncIterator["WorkspaceBatchedStreamResponse"]:
+    async def subscribe_batched(self, workspace_batched_stream_request: "WorkspaceBatchedStreamRequest") -> AsyncIterator["WorkspaceBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[WorkspaceRequest, WorkspaceResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[WorkspaceRequest, WorkspaceResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -2364,16 +2270,12 @@ class WorkspaceServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2458,34 +2360,22 @@ class WorkspaceServiceBase(ServiceBase):
 
 class WorkspaceBuildServiceBase(ServiceBase):
 
-    async def get_one(
-        self, workspace_build_request: "WorkspaceBuildRequest"
-    ) -> "WorkspaceBuildResponse":
+    async def get_one(self, workspace_build_request: "WorkspaceBuildRequest") -> "WorkspaceBuildResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, workspace_build_some_request: "WorkspaceBuildSomeRequest"
-    ) -> AsyncIterator["WorkspaceBuildSomeResponse"]:
+    async def get_some(self, workspace_build_some_request: "WorkspaceBuildSomeRequest") -> AsyncIterator["WorkspaceBuildSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, workspace_build_stream_request: "WorkspaceBuildStreamRequest"
-    ) -> AsyncIterator["WorkspaceBuildStreamResponse"]:
+    async def get_all(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> AsyncIterator["WorkspaceBuildStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, workspace_build_stream_request: "WorkspaceBuildStreamRequest"
-    ) -> AsyncIterator["WorkspaceBuildStreamResponse"]:
+    async def subscribe(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> AsyncIterator["WorkspaceBuildStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, workspace_build_stream_request: "WorkspaceBuildStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, workspace_build_stream_request: "WorkspaceBuildStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, workspace_build_stream_request: "WorkspaceBuildStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2541,16 +2431,12 @@ class WorkspaceBuildServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[WorkspaceBuildStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2635,14 +2521,10 @@ class WorkspaceBuildServiceBase(ServiceBase):
 
 class WorkspaceBuildDetailsServiceBase(ServiceBase):
 
-    async def get_one(
-        self, workspace_build_details_request: "WorkspaceBuildDetailsRequest"
-    ) -> "WorkspaceBuildDetailsResponse":
+    async def get_one(self, workspace_build_details_request: "WorkspaceBuildDetailsRequest") -> "WorkspaceBuildDetailsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, workspace_build_details_some_request: "WorkspaceBuildDetailsSomeRequest"
-    ) -> AsyncIterator["WorkspaceBuildDetailsSomeResponse"]:
+    async def get_some(self, workspace_build_details_some_request: "WorkspaceBuildDetailsSomeRequest") -> AsyncIterator["WorkspaceBuildDetailsSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
@@ -2818,59 +2700,37 @@ class WorkspaceBuildDetailsServiceBase(ServiceBase):
 
 class WorkspaceConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, workspace_config_request: "WorkspaceConfigRequest"
-    ) -> "WorkspaceConfigResponse":
+    async def get_one(self, workspace_config_request: "WorkspaceConfigRequest") -> "WorkspaceConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, workspace_config_some_request: "WorkspaceConfigSomeRequest"
-    ) -> AsyncIterator["WorkspaceConfigSomeResponse"]:
+    async def get_some(self, workspace_config_some_request: "WorkspaceConfigSomeRequest") -> AsyncIterator["WorkspaceConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, workspace_config_stream_request: "WorkspaceConfigStreamRequest"
-    ) -> AsyncIterator["WorkspaceConfigStreamResponse"]:
+    async def get_all(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> AsyncIterator["WorkspaceConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, workspace_config_stream_request: "WorkspaceConfigStreamRequest"
-    ) -> AsyncIterator["WorkspaceConfigStreamResponse"]:
+    async def subscribe(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> AsyncIterator["WorkspaceConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, workspace_config_stream_request: "WorkspaceConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, workspace_config_stream_request: "WorkspaceConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, workspace_config_stream_request: "WorkspaceConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, workspace_config_set_request: "WorkspaceConfigSetRequest"
-    ) -> "WorkspaceConfigSetResponse":
+    async def set(self, workspace_config_set_request: "WorkspaceConfigSetRequest") -> "WorkspaceConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, workspace_config_set_some_request: "WorkspaceConfigSetSomeRequest"
-    ) -> AsyncIterator["WorkspaceConfigSetSomeResponse"]:
+    async def set_some(self, workspace_config_set_some_request: "WorkspaceConfigSetSomeRequest") -> AsyncIterator["WorkspaceConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, workspace_config_delete_request: "WorkspaceConfigDeleteRequest"
-    ) -> "WorkspaceConfigDeleteResponse":
+    async def delete(self, workspace_config_delete_request: "WorkspaceConfigDeleteRequest") -> "WorkspaceConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, workspace_config_delete_some_request: "WorkspaceConfigDeleteSomeRequest"
-    ) -> AsyncIterator["WorkspaceConfigDeleteSomeResponse"]:
+    async def delete_some(self, workspace_config_delete_some_request: "WorkspaceConfigDeleteSomeRequest") -> AsyncIterator["WorkspaceConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, workspace_config_delete_all_request: "WorkspaceConfigDeleteAllRequest"
-    ) -> AsyncIterator["WorkspaceConfigDeleteAllResponse"]:
+    async def delete_all(self, workspace_config_delete_all_request: "WorkspaceConfigDeleteAllRequest") -> AsyncIterator["WorkspaceConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(

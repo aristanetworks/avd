@@ -120,9 +120,7 @@ class EventComponent(aristaproto.Message):
     type: "ComponentType" = aristaproto.enum_field(1)
     """type is the type of component"""
 
-    components: Dict[str, str] = aristaproto.map_field(
-        2, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING
-    )
+    components: Dict[str, str] = aristaproto.map_field(2, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
     """components identifies the entity on which the event occurred"""
 
 
@@ -182,9 +180,7 @@ class EventNote(aristaproto.Message):
     note: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """note is the text of the note"""
 
-    note_creator: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    note_creator: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """note_creator is the creator of the note"""
 
 
@@ -208,9 +204,7 @@ class EventKey(aristaproto.Message):
 class EventData(aristaproto.Message):
     """EventData is additional event data"""
 
-    data: Dict[str, str] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING
-    )
+    data: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
     """data is event data specific to the type of this event"""
 
 
@@ -223,9 +217,7 @@ class EventNotesConfig(aristaproto.Message):
            to Set.
     """
 
-    notes: Dict[int, "EventNoteConfig"] = aristaproto.map_field(
-        1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE
-    )
+    notes: Dict[int, "EventNoteConfig"] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE)
     """notes is keyed by desired note time in Unix time, in milliseconds"""
 
 
@@ -257,9 +249,7 @@ class EventAnnotationConfig(aristaproto.Message):
 class EventNotes(aristaproto.Message):
     """EventNotes is the notes of an event state"""
 
-    notes: Dict[int, "EventNote"] = aristaproto.map_field(
-        1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE
-    )
+    notes: Dict[int, "EventNote"] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE)
     """notes is keyed by the time desired"""
 
 
@@ -276,14 +266,10 @@ class Event(aristaproto.Message):
     title: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """title is the title of the event"""
 
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """description is the description of the event"""
 
-    event_type: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    event_type: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """event_type is the type of the event"""
 
     data: "EventData" = aristaproto.message_field(6)
@@ -304,9 +290,7 @@ class Event(aristaproto.Message):
     read: "EventRead" = aristaproto.message_field(11)
     """read is the read status of the event"""
 
-    rule_id: Optional[str] = aristaproto.message_field(
-        12, wraps=aristaproto.TYPE_STRING
-    )
+    rule_id: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
     """rule_id is the label of the rule associated with the event"""
 
 
@@ -337,9 +321,7 @@ class UserEventCreationConfig(aristaproto.Message):
     title: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """title is the title of the event"""
 
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """description is the description of the event"""
 
     rule_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
@@ -959,7 +941,7 @@ class EventServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "EventResponse":
         return await self._unary_unary(
             "/arista.event.v1.EventService/GetOne",
@@ -976,7 +958,7 @@ class EventServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventService/GetSome",
@@ -994,7 +976,7 @@ class EventServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventService/GetAll",
@@ -1012,7 +994,7 @@ class EventServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventService/Subscribe",
@@ -1030,7 +1012,7 @@ class EventServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.event.v1.EventService/GetMeta",
@@ -1047,7 +1029,7 @@ class EventServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventService/SubscribeMeta",
@@ -1067,7 +1049,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "EventAnnotationConfigResponse":
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/GetOne",
@@ -1084,7 +1066,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventAnnotationConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/GetSome",
@@ -1102,7 +1084,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventAnnotationConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/GetAll",
@@ -1120,7 +1102,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventAnnotationConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/Subscribe",
@@ -1138,7 +1120,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/GetMeta",
@@ -1155,7 +1137,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/SubscribeMeta",
@@ -1173,7 +1155,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "EventAnnotationConfigSetResponse":
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/Set",
@@ -1190,7 +1172,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventAnnotationConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/SetSome",
@@ -1208,7 +1190,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "EventAnnotationConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.event.v1.EventAnnotationConfigService/Delete",
@@ -1225,7 +1207,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventAnnotationConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/DeleteSome",
@@ -1243,7 +1225,7 @@ class EventAnnotationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["EventAnnotationConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.EventAnnotationConfigService/DeleteAll",
@@ -1263,7 +1245,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "UserEventCreationConfigResponse":
         return await self._unary_unary(
             "/arista.event.v1.UserEventCreationConfigService/GetOne",
@@ -1280,7 +1262,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["UserEventCreationConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/GetSome",
@@ -1298,7 +1280,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["UserEventCreationConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/GetAll",
@@ -1316,7 +1298,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["UserEventCreationConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/Subscribe",
@@ -1334,7 +1316,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.event.v1.UserEventCreationConfigService/GetMeta",
@@ -1351,7 +1333,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/SubscribeMeta",
@@ -1369,7 +1351,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "UserEventCreationConfigSetResponse":
         return await self._unary_unary(
             "/arista.event.v1.UserEventCreationConfigService/Set",
@@ -1386,7 +1368,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["UserEventCreationConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/SetSome",
@@ -1404,7 +1386,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "UserEventCreationConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.event.v1.UserEventCreationConfigService/Delete",
@@ -1421,7 +1403,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["UserEventCreationConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/DeleteSome",
@@ -1439,7 +1421,7 @@ class UserEventCreationConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["UserEventCreationConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.event.v1.UserEventCreationConfigService/DeleteAll",
@@ -1457,41 +1439,27 @@ class EventServiceBase(ServiceBase):
     async def get_one(self, event_request: "EventRequest") -> "EventResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, event_some_request: "EventSomeRequest"
-    ) -> AsyncIterator["EventSomeResponse"]:
+    async def get_some(self, event_some_request: "EventSomeRequest") -> AsyncIterator["EventSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, event_stream_request: "EventStreamRequest"
-    ) -> AsyncIterator["EventStreamResponse"]:
+    async def get_all(self, event_stream_request: "EventStreamRequest") -> AsyncIterator["EventStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, event_stream_request: "EventStreamRequest"
-    ) -> AsyncIterator["EventStreamResponse"]:
+    async def subscribe(self, event_stream_request: "EventStreamRequest") -> AsyncIterator["EventStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, event_stream_request: "EventStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, event_stream_request: "EventStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, event_stream_request: "EventStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, event_stream_request: "EventStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[EventRequest, EventResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[EventRequest, EventResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[EventSomeRequest, EventSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[EventSomeRequest, EventSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -1499,9 +1467,7 @@ class EventServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[EventStreamRequest, EventStreamResponse]"
-    ) -> None:
+    async def __rpc_get_all(self, stream: "grpclib.server.Stream[EventStreamRequest, EventStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -1509,9 +1475,7 @@ class EventServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[EventStreamRequest, EventStreamResponse]"
-    ) -> None:
+    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[EventStreamRequest, EventStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -1519,16 +1483,12 @@ class EventServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[EventStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[EventStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[EventStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[EventStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1579,14 +1539,10 @@ class EventServiceBase(ServiceBase):
 
 class EventAnnotationConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, event_annotation_config_request: "EventAnnotationConfigRequest"
-    ) -> "EventAnnotationConfigResponse":
+    async def get_one(self, event_annotation_config_request: "EventAnnotationConfigRequest") -> "EventAnnotationConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, event_annotation_config_some_request: "EventAnnotationConfigSomeRequest"
-    ) -> AsyncIterator["EventAnnotationConfigSomeResponse"]:
+    async def get_some(self, event_annotation_config_some_request: "EventAnnotationConfigSomeRequest") -> AsyncIterator["EventAnnotationConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
@@ -1613,9 +1569,7 @@ class EventAnnotationConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, event_annotation_config_set_request: "EventAnnotationConfigSetRequest"
-    ) -> "EventAnnotationConfigSetResponse":
+    async def set(self, event_annotation_config_set_request: "EventAnnotationConfigSetRequest") -> "EventAnnotationConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(
@@ -1824,9 +1778,7 @@ class EventAnnotationConfigServiceBase(ServiceBase):
 
 class UserEventCreationConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, user_event_creation_config_request: "UserEventCreationConfigRequest"
-    ) -> "UserEventCreationConfigResponse":
+    async def get_one(self, user_event_creation_config_request: "UserEventCreationConfigRequest") -> "UserEventCreationConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(

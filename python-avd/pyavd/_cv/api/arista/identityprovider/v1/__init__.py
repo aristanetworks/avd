@@ -47,9 +47,7 @@ class ProtocolBinding(aristaproto.Enum):
 class OAuthKey(aristaproto.Message):
     """OAuthKey contains OAuth provider ID."""
 
-    provider_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    provider_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """provider_id is the ID of the OAuth provider."""
 
 
@@ -60,9 +58,7 @@ class OAuthConfig(aristaproto.Message):
     key: "OAuthKey" = aristaproto.message_field(1)
     """key is the ID of the OAuth provider."""
 
-    endpoint: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    endpoint: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     endpoint is the URL that identifies an OAuth authorization server.
      This endpoint is used to interact with the provider. It must be a
@@ -70,17 +66,13 @@ class OAuthConfig(aristaproto.Message):
      and optionally, port and path components, but no query or fragment components.
     """
 
-    client_id: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    client_id: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     client_id is the ID that the OAuth authorization server issues to the
      registered client.
     """
 
-    client_secret: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    client_secret: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     client_secret is the secret that the OAuth authorization server issues
      to the registered client.
@@ -93,17 +85,13 @@ class OAuthConfig(aristaproto.Message):
      Otherwise, this defaults to the set of algorithms that the provider supports.
     """
 
-    link_to_shared_provider: Optional[bool] = aristaproto.message_field(
-        6, wraps=aristaproto.TYPE_BOOL
-    )
+    link_to_shared_provider: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
     """
     link_to_shared_provider indicates whether or not use the provider as a shared
      provider. This is an optional field and set to false by default.
     """
 
-    jwks_uri: Optional[str] = aristaproto.message_field(
-        7, wraps=aristaproto.TYPE_STRING
-    )
+    jwks_uri: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
     """
     jwks_uri is where signing keys are downloaded. This is an optional field.
      Only needed if the default construction from endpoint would be incorrect.
@@ -115,9 +103,7 @@ class OAuthConfig(aristaproto.Message):
      This is an optional field. If not set, all domains are accepted by default.
     """
 
-    roles_scope_name: Optional[str] = aristaproto.message_field(
-        9, wraps=aristaproto.TYPE_STRING
-    )
+    roles_scope_name: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
     """
     roles_scope_name is the name for a scope tied to a claim that holds
      CloudVision roles in ID Token. CloudVision uses scope values to specify
@@ -128,9 +114,7 @@ class OAuthConfig(aristaproto.Message):
      also needs to be set.
     """
 
-    bearer_token_introspection_endpoint: Optional[str] = aristaproto.message_field(
-        10, wraps=aristaproto.TYPE_STRING
-    )
+    bearer_token_introspection_endpoint: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
     """
     bearer_token_introspection_endpoint is the provider instrospection endpoint used
      in Bearer Token based login support for CloudVision. This is an optional field.
@@ -138,9 +122,7 @@ class OAuthConfig(aristaproto.Message):
      the provider to log in automated user accounts.
     """
 
-    roles_claim_name: Optional[str] = aristaproto.message_field(
-        11, wraps=aristaproto.TYPE_STRING
-    )
+    roles_claim_name: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
     """
     roles_claim_name is the name for a claim that holds CloudVision roles in ID Token.
      CloudVision uses this value to look up roles in the ID Token.
@@ -154,9 +136,7 @@ class OAuthConfig(aristaproto.Message):
 class SamlKey(aristaproto.Message):
     """SAMLKey contains SAML Provider ID."""
 
-    provider_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    provider_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """provider_id is the ID of the SAML provider."""
 
 
@@ -167,17 +147,13 @@ class SamlConfig(aristaproto.Message):
     key: "SamlKey" = aristaproto.message_field(1)
     """key is the ID of the SAML provider."""
 
-    idp_issuer: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    idp_issuer: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     idp_issuer identifies the SAML provider. There is no restriction on its format
      other than a string to carry the issuer's name.
     """
 
-    idp_metadata_url: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    idp_metadata_url: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     idp_metadata_url is the URL that CloudVision uses to fetch the
      SAML provider metadata.
@@ -189,17 +165,13 @@ class SamlConfig(aristaproto.Message):
      request to the SAML provider.
     """
 
-    email_attrname: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    email_attrname: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     email_attrname specifies the Attribute name for email ID in Assertion of SAMLResponse
      from the SAML provider.
     """
 
-    link_to_shared_provider: Optional[bool] = aristaproto.message_field(
-        6, wraps=aristaproto.TYPE_BOOL
-    )
+    link_to_shared_provider: Optional[bool] = aristaproto.message_field(6, wraps=aristaproto.TYPE_BOOL)
     """
     link_to_shared_provider indicates whether or not use the provider as a shared
      provider. This is an optional field and set to false by default.
@@ -211,26 +183,20 @@ class SamlConfig(aristaproto.Message):
      This is an optional field. If not set, all domains are accepted by default.
     """
 
-    force_saml_authn: Optional[bool] = aristaproto.message_field(
-        8, wraps=aristaproto.TYPE_BOOL
-    )
+    force_saml_authn: Optional[bool] = aristaproto.message_field(8, wraps=aristaproto.TYPE_BOOL)
     """
     force_saml_authn indicates wether or not enable force authentication in SAML login.
      This is an optional field. If not set, it defaults to false.
     """
 
-    roles_attrname: Optional[str] = aristaproto.message_field(
-        9, wraps=aristaproto.TYPE_STRING
-    )
+    roles_attrname: Optional[str] = aristaproto.message_field(9, wraps=aristaproto.TYPE_STRING)
     """
     roles_attrname specifies the Attribute name for CloudVision roles in the Assertion
      of SAMLResponse. This is an optional field. If not set, CloudVision determines that
      mapping roles from the provider is disabled.
     """
 
-    org_attrname: Optional[str] = aristaproto.message_field(
-        10, wraps=aristaproto.TYPE_STRING
-    )
+    org_attrname: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
     """
     org_attrname specifies the Attribute name for CloudVision organization/tenant in
      the Assertion of SAMLResponse. This is an optional field. CloudVision supports use
@@ -247,9 +213,7 @@ class SamlConfig(aristaproto.Message):
      is not specified.
     """
 
-    username_attrname: Optional[str] = aristaproto.message_field(
-        11, wraps=aristaproto.TYPE_STRING
-    )
+    username_attrname: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
     """
     username_attrname specifies Attribute name for CloudVision users' username in the
      Assertion of SAMLResponse. This is an optional field as long as mapping roles from
@@ -421,9 +385,7 @@ class OAuthConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -699,9 +661,7 @@ class SamlConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -841,7 +801,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "OAuthConfigResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/GetOne",
@@ -858,7 +818,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/GetSome",
@@ -876,7 +836,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/GetAll",
@@ -894,7 +854,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/Subscribe",
@@ -912,7 +872,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/GetMeta",
@@ -929,7 +889,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/SubscribeMeta",
@@ -947,7 +907,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "OAuthConfigSetResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/Set",
@@ -964,7 +924,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/SetSome",
@@ -982,7 +942,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "OAuthConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.OAuthConfigService/Delete",
@@ -999,7 +959,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/DeleteSome",
@@ -1017,7 +977,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/DeleteAll",
@@ -1035,7 +995,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/GetAllBatched",
@@ -1053,7 +1013,7 @@ class OAuthConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["OAuthConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.OAuthConfigService/SubscribeBatched",
@@ -1073,7 +1033,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "SamlConfigResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/GetOne",
@@ -1090,7 +1050,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/GetSome",
@@ -1108,7 +1068,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/GetAll",
@@ -1126,7 +1086,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/Subscribe",
@@ -1144,7 +1104,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/GetMeta",
@@ -1161,7 +1121,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/SubscribeMeta",
@@ -1179,7 +1139,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "SamlConfigSetResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/Set",
@@ -1196,7 +1156,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/SetSome",
@@ -1214,7 +1174,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "SamlConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.identityprovider.v1.SAMLConfigService/Delete",
@@ -1231,7 +1191,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/DeleteSome",
@@ -1249,7 +1209,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/DeleteAll",
@@ -1267,7 +1227,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/GetAllBatched",
@@ -1285,7 +1245,7 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["SamlConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.identityprovider.v1.SAMLConfigService/SubscribeBatched",
@@ -1300,59 +1260,37 @@ class SamlConfigServiceStub(aristaproto.ServiceStub):
 
 class OAuthConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, o_auth_config_request: "OAuthConfigRequest"
-    ) -> "OAuthConfigResponse":
+    async def get_one(self, o_auth_config_request: "OAuthConfigRequest") -> "OAuthConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, o_auth_config_some_request: "OAuthConfigSomeRequest"
-    ) -> AsyncIterator["OAuthConfigSomeResponse"]:
+    async def get_some(self, o_auth_config_some_request: "OAuthConfigSomeRequest") -> AsyncIterator["OAuthConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, o_auth_config_stream_request: "OAuthConfigStreamRequest"
-    ) -> AsyncIterator["OAuthConfigStreamResponse"]:
+    async def get_all(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> AsyncIterator["OAuthConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, o_auth_config_stream_request: "OAuthConfigStreamRequest"
-    ) -> AsyncIterator["OAuthConfigStreamResponse"]:
+    async def subscribe(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> AsyncIterator["OAuthConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, o_auth_config_stream_request: "OAuthConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, o_auth_config_stream_request: "OAuthConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, o_auth_config_stream_request: "OAuthConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, o_auth_config_set_request: "OAuthConfigSetRequest"
-    ) -> "OAuthConfigSetResponse":
+    async def set(self, o_auth_config_set_request: "OAuthConfigSetRequest") -> "OAuthConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, o_auth_config_set_some_request: "OAuthConfigSetSomeRequest"
-    ) -> AsyncIterator["OAuthConfigSetSomeResponse"]:
+    async def set_some(self, o_auth_config_set_some_request: "OAuthConfigSetSomeRequest") -> AsyncIterator["OAuthConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, o_auth_config_delete_request: "OAuthConfigDeleteRequest"
-    ) -> "OAuthConfigDeleteResponse":
+    async def delete(self, o_auth_config_delete_request: "OAuthConfigDeleteRequest") -> "OAuthConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, o_auth_config_delete_some_request: "OAuthConfigDeleteSomeRequest"
-    ) -> AsyncIterator["OAuthConfigDeleteSomeResponse"]:
+    async def delete_some(self, o_auth_config_delete_some_request: "OAuthConfigDeleteSomeRequest") -> AsyncIterator["OAuthConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, o_auth_config_delete_all_request: "OAuthConfigDeleteAllRequest"
-    ) -> AsyncIterator["OAuthConfigDeleteAllResponse"]:
+    async def delete_all(self, o_auth_config_delete_all_request: "OAuthConfigDeleteAllRequest") -> AsyncIterator["OAuthConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -1365,9 +1303,7 @@ class OAuthConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["OAuthConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[OAuthConfigRequest, OAuthConfigResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[OAuthConfigRequest, OAuthConfigResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -1405,16 +1341,12 @@ class OAuthConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[OAuthConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1578,74 +1510,46 @@ class OAuthConfigServiceBase(ServiceBase):
 
 class SamlConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, saml_config_request: "SamlConfigRequest"
-    ) -> "SamlConfigResponse":
+    async def get_one(self, saml_config_request: "SamlConfigRequest") -> "SamlConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, saml_config_some_request: "SamlConfigSomeRequest"
-    ) -> AsyncIterator["SamlConfigSomeResponse"]:
+    async def get_some(self, saml_config_some_request: "SamlConfigSomeRequest") -> AsyncIterator["SamlConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, saml_config_stream_request: "SamlConfigStreamRequest"
-    ) -> AsyncIterator["SamlConfigStreamResponse"]:
+    async def get_all(self, saml_config_stream_request: "SamlConfigStreamRequest") -> AsyncIterator["SamlConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, saml_config_stream_request: "SamlConfigStreamRequest"
-    ) -> AsyncIterator["SamlConfigStreamResponse"]:
+    async def subscribe(self, saml_config_stream_request: "SamlConfigStreamRequest") -> AsyncIterator["SamlConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, saml_config_stream_request: "SamlConfigStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, saml_config_stream_request: "SamlConfigStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, saml_config_stream_request: "SamlConfigStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, saml_config_stream_request: "SamlConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, saml_config_set_request: "SamlConfigSetRequest"
-    ) -> "SamlConfigSetResponse":
+    async def set(self, saml_config_set_request: "SamlConfigSetRequest") -> "SamlConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(
-        self, saml_config_set_some_request: "SamlConfigSetSomeRequest"
-    ) -> AsyncIterator["SamlConfigSetSomeResponse"]:
+    async def set_some(self, saml_config_set_some_request: "SamlConfigSetSomeRequest") -> AsyncIterator["SamlConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(
-        self, saml_config_delete_request: "SamlConfigDeleteRequest"
-    ) -> "SamlConfigDeleteResponse":
+    async def delete(self, saml_config_delete_request: "SamlConfigDeleteRequest") -> "SamlConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(
-        self, saml_config_delete_some_request: "SamlConfigDeleteSomeRequest"
-    ) -> AsyncIterator["SamlConfigDeleteSomeResponse"]:
+    async def delete_some(self, saml_config_delete_some_request: "SamlConfigDeleteSomeRequest") -> AsyncIterator["SamlConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(
-        self, saml_config_delete_all_request: "SamlConfigDeleteAllRequest"
-    ) -> AsyncIterator["SamlConfigDeleteAllResponse"]:
+    async def delete_all(self, saml_config_delete_all_request: "SamlConfigDeleteAllRequest") -> AsyncIterator["SamlConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest"
-    ) -> AsyncIterator["SamlConfigBatchedStreamResponse"]:
+    async def get_all_batched(self, saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest") -> AsyncIterator["SamlConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest"
-    ) -> AsyncIterator["SamlConfigBatchedStreamResponse"]:
+    async def subscribe_batched(self, saml_config_batched_stream_request: "SamlConfigBatchedStreamRequest") -> AsyncIterator["SamlConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[SamlConfigRequest, SamlConfigResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SamlConfigRequest, SamlConfigResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -1683,16 +1587,12 @@ class SamlConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SamlConfigStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

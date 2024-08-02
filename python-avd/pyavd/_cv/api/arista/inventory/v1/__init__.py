@@ -101,9 +101,7 @@ class ExtendedAttributes(aristaproto.Message):
      or attributes the device reports.
     """
 
-    feature_enabled: Dict[str, bool] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL
-    )
+    feature_enabled: Dict[str, bool] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL)
     """
     feature_enabled is a map of feature name to enabled status.
      If a feature is missing from this map it can be assumed off.
@@ -114,9 +112,7 @@ class ExtendedAttributes(aristaproto.Message):
 class DeviceKey(aristaproto.Message):
     """DeviceKey uniquely identifies a single device."""
 
-    device_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """device_id is the unique identifier of the device."""
 
 
@@ -127,9 +123,7 @@ class DeviceConfiguration(aristaproto.Message):
      device, as defined in https://github.com/aristanetworks/cloudvision-go.
     """
 
-    options: Dict[str, str] = aristaproto.map_field(
-        1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING
-    )
+    options: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
     """
     options is a map from device option to value.
 
@@ -146,9 +140,7 @@ class UuidKey(aristaproto.Message):
     UUIDKey is a key that holds a UUID for an onboarding or decommissioning request.
     """
 
-    request_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    request_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """request_id should be a UUID for the request."""
 
 
@@ -173,16 +165,12 @@ class DeviceOnboardingConfig(aristaproto.Message):
     key: "UuidKey" = aristaproto.message_field(1)
     """key identifies the request to onboard the device at hostname_or_ip."""
 
-    hostname_or_ip: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    hostname_or_ip: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     hostname_or_ip is a hostname or an IP at which the device can be reached.
     """
 
-    device_type: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    device_type: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
     device_type describes the method by which to retrieve information for the
      device. The value should be "eos" for eos devices. For third-party devices,
@@ -202,9 +190,7 @@ class DeviceOnboarding(aristaproto.Message):
     key identifies the request for which to retrieve an onboarding status.
     """
 
-    device_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """device_id is the unique device ID that is discovered via onboarding."""
 
     status: "OnboardingStatus" = aristaproto.enum_field(3)
@@ -215,9 +201,7 @@ class DeviceOnboarding(aristaproto.Message):
     error is the error that caused status to become ONBOARDING_STATUS_FAILURE.
     """
 
-    status_message: Optional[str] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_STRING
-    )
+    status_message: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
     """
     status_message contains information on the status of the onboarding attempt,
      if any. This is generally an unstructured log message that is for display
@@ -246,9 +230,7 @@ class DeviceDecommissioningConfig(aristaproto.Message):
     key: "UuidKey" = aristaproto.message_field(1)
     """key identifies the request to decommission the device."""
 
-    device_id: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     device_id is the unique device ID that was discovered via onboarding.
     """
@@ -279,9 +261,7 @@ class DeviceDecommissioning(aristaproto.Message):
     error is the error that caused status to become DECOMMISSIONING_STATUS_FAILURE.
     """
 
-    status_message: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    status_message: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """
     status_message contains information on the status of the decommissioning attempt,
      if any. This is generally an unstructured log message that is for display
@@ -296,41 +276,29 @@ class Device(aristaproto.Message):
     key: "DeviceKey" = aristaproto.message_field(1)
     """key uniquely identifies the device."""
 
-    software_version: Optional[str] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_STRING
-    )
+    software_version: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
     software_version gives the currently running device software version.
     """
 
-    model_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    model_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """model_name describes the hardware model of this device."""
 
-    hardware_revision: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    hardware_revision: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """hardware_revision describes any revisional data to the model name."""
 
     fqdn: Optional[str] = aristaproto.message_field(10, wraps=aristaproto.TYPE_STRING)
     """fqdn gives the device's fully qualified domain name."""
 
-    hostname: Optional[str] = aristaproto.message_field(
-        11, wraps=aristaproto.TYPE_STRING
-    )
+    hostname: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
     """hostname is the hostname as reported on the device."""
 
-    domain_name: Optional[str] = aristaproto.message_field(
-        12, wraps=aristaproto.TYPE_STRING
-    )
+    domain_name: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
     """
     domain_name provides the domain name on which the device is registered.
     """
 
-    system_mac_address: Optional[str] = aristaproto.message_field(
-        13, wraps=aristaproto.TYPE_STRING
-    )
+    system_mac_address: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
     """system_mac_address provides the MAC address of the management port."""
 
     boot_time: datetime = aristaproto.message_field(20)
@@ -374,9 +342,7 @@ class ProvisionedDevice(aristaproto.Message):
     ip_address is the current (post-provisioning) IP address of the device.
     """
 
-    provisioning_group_name: Optional[str] = aristaproto.message_field(
-        6, wraps=aristaproto.TYPE_STRING
-    )
+    provisioning_group_name: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
     """
     provisioning_group_name is the name of the group (also known as a container)
      to which the device belongs. Any provisioning operation performed on this
@@ -551,9 +517,7 @@ class DeviceBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -717,9 +681,7 @@ class DeviceDecommissioningBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -730,9 +692,7 @@ class DeviceDecommissioningBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class DeviceDecommissioningBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceDecommissioningStreamResponse"] = aristaproto.message_field(
-        1
-    )
+    responses: List["DeviceDecommissioningStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -803,9 +763,7 @@ class DeviceDecommissioningConfigSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class DeviceDecommissioningConfigStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(
-        1
-    )
+    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
      This requires all provided fields to be equal to the response.
@@ -859,9 +817,7 @@ class DeviceDecommissioningConfigStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class DeviceDecommissioningConfigBatchedStreamRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(
-        1
-    )
+    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
      This requires all provided fields to be equal to the response.
@@ -889,9 +845,7 @@ class DeviceDecommissioningConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -902,9 +856,7 @@ class DeviceDecommissioningConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class DeviceDecommissioningConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceDecommissioningConfigStreamResponse"] = (
-        aristaproto.message_field(1)
-    )
+    responses: List["DeviceDecommissioningConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1002,9 +954,7 @@ class DeviceDecommissioningConfigDeleteSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class DeviceDecommissioningConfigDeleteAllRequest(aristaproto.Message):
-    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(
-        1
-    )
+    partial_eq_filter: List["DeviceDecommissioningConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a DeleteAll.
      This requires all provided fields to be equal to the response.
@@ -1177,9 +1127,7 @@ class DeviceOnboardingBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1343,9 +1291,7 @@ class DeviceOnboardingConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1356,9 +1302,7 @@ class DeviceOnboardingConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class DeviceOnboardingConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["DeviceOnboardingConfigStreamResponse"] = aristaproto.message_field(
-        1
-    )
+    responses: List["DeviceOnboardingConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1629,9 +1573,7 @@ class ProvisionedDeviceBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1657,7 +1599,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceService/GetOne",
@@ -1674,7 +1616,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceService/GetSome",
@@ -1692,7 +1634,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceService/GetAll",
@@ -1710,7 +1652,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceService/Subscribe",
@@ -1728,7 +1670,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceService/GetMeta",
@@ -1745,7 +1687,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceService/SubscribeMeta",
@@ -1763,7 +1705,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceService/GetAllBatched",
@@ -1781,7 +1723,7 @@ class DeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceService/SubscribeBatched",
@@ -1801,7 +1743,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceDecommissioningResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningService/GetOne",
@@ -1818,7 +1760,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningService/GetSome",
@@ -1836,7 +1778,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningService/GetAll",
@@ -1854,7 +1796,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningService/Subscribe",
@@ -1872,7 +1814,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningService/GetMeta",
@@ -1889,7 +1831,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningService/SubscribeMeta",
@@ -1907,7 +1849,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningService/GetAllBatched",
@@ -1925,7 +1867,7 @@ class DeviceDecommissioningServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningService/SubscribeBatched",
@@ -1945,7 +1887,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceDecommissioningConfigResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetOne",
@@ -1962,7 +1904,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetSome",
@@ -1980,7 +1922,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetAll",
@@ -1998,7 +1940,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/Subscribe",
@@ -2016,7 +1958,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetMeta",
@@ -2033,7 +1975,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/SubscribeMeta",
@@ -2051,7 +1993,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceDecommissioningConfigSetResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/Set",
@@ -2068,7 +2010,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/SetSome",
@@ -2086,7 +2028,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceDecommissioningConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/Delete",
@@ -2103,7 +2045,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/DeleteSome",
@@ -2121,7 +2063,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/DeleteAll",
@@ -2139,7 +2081,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/GetAllBatched",
@@ -2157,7 +2099,7 @@ class DeviceDecommissioningConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceDecommissioningConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceDecommissioningConfigService/SubscribeBatched",
@@ -2177,7 +2119,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceOnboardingResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingService/GetOne",
@@ -2194,7 +2136,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingService/GetSome",
@@ -2212,7 +2154,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingService/GetAll",
@@ -2230,7 +2172,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingService/Subscribe",
@@ -2248,7 +2190,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingService/GetMeta",
@@ -2265,7 +2207,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingService/SubscribeMeta",
@@ -2283,7 +2225,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingService/GetAllBatched",
@@ -2301,7 +2243,7 @@ class DeviceOnboardingServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingService/SubscribeBatched",
@@ -2321,7 +2263,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceOnboardingConfigResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetOne",
@@ -2338,7 +2280,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetSome",
@@ -2356,7 +2298,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetAll",
@@ -2374,7 +2316,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/Subscribe",
@@ -2392,7 +2334,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetMeta",
@@ -2409,7 +2351,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/SubscribeMeta",
@@ -2427,7 +2369,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceOnboardingConfigSetResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/Set",
@@ -2444,7 +2386,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/SetSome",
@@ -2462,7 +2404,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "DeviceOnboardingConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.DeviceOnboardingConfigService/Delete",
@@ -2479,7 +2421,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/DeleteSome",
@@ -2497,7 +2439,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/DeleteAll",
@@ -2515,7 +2457,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/GetAllBatched",
@@ -2533,7 +2475,7 @@ class DeviceOnboardingConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["DeviceOnboardingConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.DeviceOnboardingConfigService/SubscribeBatched",
@@ -2553,7 +2495,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ProvisionedDeviceResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.ProvisionedDeviceService/GetOne",
@@ -2570,7 +2512,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProvisionedDeviceSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.ProvisionedDeviceService/GetSome",
@@ -2588,7 +2530,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProvisionedDeviceStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.ProvisionedDeviceService/GetAll",
@@ -2606,7 +2548,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProvisionedDeviceStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.ProvisionedDeviceService/Subscribe",
@@ -2624,7 +2566,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.inventory.v1.ProvisionedDeviceService/GetMeta",
@@ -2641,7 +2583,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.ProvisionedDeviceService/SubscribeMeta",
@@ -2659,7 +2601,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProvisionedDeviceBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.ProvisionedDeviceService/GetAllBatched",
@@ -2677,7 +2619,7 @@ class ProvisionedDeviceServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProvisionedDeviceBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.inventory.v1.ProvisionedDeviceService/SubscribeBatched",
@@ -2695,51 +2637,33 @@ class DeviceServiceBase(ServiceBase):
     async def get_one(self, device_request: "DeviceRequest") -> "DeviceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, device_some_request: "DeviceSomeRequest"
-    ) -> AsyncIterator["DeviceSomeResponse"]:
+    async def get_some(self, device_some_request: "DeviceSomeRequest") -> AsyncIterator["DeviceSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, device_stream_request: "DeviceStreamRequest"
-    ) -> AsyncIterator["DeviceStreamResponse"]:
+    async def get_all(self, device_stream_request: "DeviceStreamRequest") -> AsyncIterator["DeviceStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, device_stream_request: "DeviceStreamRequest"
-    ) -> AsyncIterator["DeviceStreamResponse"]:
+    async def subscribe(self, device_stream_request: "DeviceStreamRequest") -> AsyncIterator["DeviceStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, device_stream_request: "DeviceStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, device_stream_request: "DeviceStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, device_stream_request: "DeviceStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, device_stream_request: "DeviceStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, device_batched_stream_request: "DeviceBatchedStreamRequest"
-    ) -> AsyncIterator["DeviceBatchedStreamResponse"]:
+    async def get_all_batched(self, device_batched_stream_request: "DeviceBatchedStreamRequest") -> AsyncIterator["DeviceBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, device_batched_stream_request: "DeviceBatchedStreamRequest"
-    ) -> AsyncIterator["DeviceBatchedStreamResponse"]:
+    async def subscribe_batched(self, device_batched_stream_request: "DeviceBatchedStreamRequest") -> AsyncIterator["DeviceBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[DeviceRequest, DeviceResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DeviceRequest, DeviceResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[DeviceSomeRequest, DeviceSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[DeviceSomeRequest, DeviceSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -2747,9 +2671,7 @@ class DeviceServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[DeviceStreamRequest, DeviceStreamResponse]"
-    ) -> None:
+    async def __rpc_get_all(self, stream: "grpclib.server.Stream[DeviceStreamRequest, DeviceStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -2757,9 +2679,7 @@ class DeviceServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[DeviceStreamRequest, DeviceStreamResponse]"
-    ) -> None:
+    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[DeviceStreamRequest, DeviceStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -2767,16 +2687,12 @@ class DeviceServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[DeviceStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DeviceStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[DeviceStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DeviceStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2861,14 +2777,10 @@ class DeviceServiceBase(ServiceBase):
 
 class DeviceDecommissioningServiceBase(ServiceBase):
 
-    async def get_one(
-        self, device_decommissioning_request: "DeviceDecommissioningRequest"
-    ) -> "DeviceDecommissioningResponse":
+    async def get_one(self, device_decommissioning_request: "DeviceDecommissioningRequest") -> "DeviceDecommissioningResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, device_decommissioning_some_request: "DeviceDecommissioningSomeRequest"
-    ) -> AsyncIterator["DeviceDecommissioningSomeResponse"]:
+    async def get_some(self, device_decommissioning_some_request: "DeviceDecommissioningSomeRequest") -> AsyncIterator["DeviceDecommissioningSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
@@ -3338,34 +3250,22 @@ class DeviceDecommissioningConfigServiceBase(ServiceBase):
 
 class DeviceOnboardingServiceBase(ServiceBase):
 
-    async def get_one(
-        self, device_onboarding_request: "DeviceOnboardingRequest"
-    ) -> "DeviceOnboardingResponse":
+    async def get_one(self, device_onboarding_request: "DeviceOnboardingRequest") -> "DeviceOnboardingResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, device_onboarding_some_request: "DeviceOnboardingSomeRequest"
-    ) -> AsyncIterator["DeviceOnboardingSomeResponse"]:
+    async def get_some(self, device_onboarding_some_request: "DeviceOnboardingSomeRequest") -> AsyncIterator["DeviceOnboardingSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest"
-    ) -> AsyncIterator["DeviceOnboardingStreamResponse"]:
+    async def get_all(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> AsyncIterator["DeviceOnboardingStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest"
-    ) -> AsyncIterator["DeviceOnboardingStreamResponse"]:
+    async def subscribe(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> AsyncIterator["DeviceOnboardingStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, device_onboarding_stream_request: "DeviceOnboardingStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -3517,14 +3417,10 @@ class DeviceOnboardingServiceBase(ServiceBase):
 
 class DeviceOnboardingConfigServiceBase(ServiceBase):
 
-    async def get_one(
-        self, device_onboarding_config_request: "DeviceOnboardingConfigRequest"
-    ) -> "DeviceOnboardingConfigResponse":
+    async def get_one(self, device_onboarding_config_request: "DeviceOnboardingConfigRequest") -> "DeviceOnboardingConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, device_onboarding_config_some_request: "DeviceOnboardingConfigSomeRequest"
-    ) -> AsyncIterator["DeviceOnboardingConfigSomeResponse"]:
+    async def get_some(self, device_onboarding_config_some_request: "DeviceOnboardingConfigSomeRequest") -> AsyncIterator["DeviceOnboardingConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
@@ -3551,9 +3447,7 @@ class DeviceOnboardingConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(
-        self, device_onboarding_config_set_request: "DeviceOnboardingConfigSetRequest"
-    ) -> "DeviceOnboardingConfigSetResponse":
+    async def set(self, device_onboarding_config_set_request: "DeviceOnboardingConfigSetRequest") -> "DeviceOnboardingConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(
@@ -3808,34 +3702,22 @@ class DeviceOnboardingConfigServiceBase(ServiceBase):
 
 class ProvisionedDeviceServiceBase(ServiceBase):
 
-    async def get_one(
-        self, provisioned_device_request: "ProvisionedDeviceRequest"
-    ) -> "ProvisionedDeviceResponse":
+    async def get_one(self, provisioned_device_request: "ProvisionedDeviceRequest") -> "ProvisionedDeviceResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, provisioned_device_some_request: "ProvisionedDeviceSomeRequest"
-    ) -> AsyncIterator["ProvisionedDeviceSomeResponse"]:
+    async def get_some(self, provisioned_device_some_request: "ProvisionedDeviceSomeRequest") -> AsyncIterator["ProvisionedDeviceSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest"
-    ) -> AsyncIterator["ProvisionedDeviceStreamResponse"]:
+    async def get_all(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> AsyncIterator["ProvisionedDeviceStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest"
-    ) -> AsyncIterator["ProvisionedDeviceStreamResponse"]:
+    async def subscribe(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> AsyncIterator["ProvisionedDeviceStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, provisioned_device_stream_request: "ProvisionedDeviceStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(

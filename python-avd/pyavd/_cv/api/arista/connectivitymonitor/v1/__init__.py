@@ -27,9 +27,7 @@ if TYPE_CHECKING:
 class ProbeKey(aristaproto.Message):
     """ProbeKey uniquely identifies a connectivity monitor probe."""
 
-    device_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """device_id is the id of the device in the probe."""
 
     host: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
@@ -46,9 +44,7 @@ class ProbeStatsKey(aristaproto.Message):
      per source interface.
     """
 
-    device_id: Optional[str] = aristaproto.message_field(
-        1, wraps=aristaproto.TYPE_STRING
-    )
+    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """device_id is the id of the device in the probe."""
 
     host: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
@@ -57,9 +53,7 @@ class ProbeStatsKey(aristaproto.Message):
     vrf: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """vrf is the name of the VRF in the probe."""
 
-    source_intf: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    source_intf: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """source_intf is the name of the interface in the probe."""
 
 
@@ -77,14 +71,10 @@ class Probe(aristaproto.Message):
     ip_addr: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """ip_addr is the IP Address of the probe."""
 
-    host_name: Optional[str] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_STRING
-    )
+    host_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """host_name is the name of the host of the probe."""
 
-    description: Optional[str] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_STRING
-    )
+    description: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """description is the description of the probe."""
 
 
@@ -97,35 +87,27 @@ class ProbeStats(aristaproto.Message):
     key: "ProbeStatsKey" = aristaproto.message_field(1)
     """key uniquely identifies the connectivity monitor probe."""
 
-    latency_millis: Optional[float] = aristaproto.message_field(
-        2, wraps=aristaproto.TYPE_DOUBLE
-    )
+    latency_millis: Optional[float] = aristaproto.message_field(2, wraps=aristaproto.TYPE_DOUBLE)
     """
     latency_millis is the latency between the device interface and the host.
      Value is in milliseconds.
     """
 
-    jitter_millis: Optional[float] = aristaproto.message_field(
-        3, wraps=aristaproto.TYPE_DOUBLE
-    )
+    jitter_millis: Optional[float] = aristaproto.message_field(3, wraps=aristaproto.TYPE_DOUBLE)
     """
     jitter_millis is the amount of jitter experienced by requests
      between the device interface and host.
      Value is in milliseconds.
     """
 
-    http_response_time_millis: Optional[float] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_DOUBLE
-    )
+    http_response_time_millis: Optional[float] = aristaproto.message_field(4, wraps=aristaproto.TYPE_DOUBLE)
     """
     http_response_time_millis is the amount of time taken to respond to a http
      request between the device interface and the host.
      Value is in milliseconds.
     """
 
-    packet_loss_percent: Optional[int] = aristaproto.message_field(
-        5, wraps=aristaproto.TYPE_INT64
-    )
+    packet_loss_percent: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT64)
     """
     packet_loss_percent is the amount of packet loss experienced
      by requests between the device interface and host.
@@ -300,9 +282,7 @@ class ProbeBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -464,9 +444,7 @@ class ProbeStatsBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
+    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -492,7 +470,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ProbeResponse":
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeService/GetOne",
@@ -509,7 +487,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/GetSome",
@@ -527,7 +505,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/GetAll",
@@ -545,7 +523,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/Subscribe",
@@ -563,7 +541,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeService/GetMeta",
@@ -580,7 +558,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/SubscribeMeta",
@@ -598,7 +576,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/GetAllBatched",
@@ -616,7 +594,7 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/SubscribeBatched",
@@ -636,7 +614,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "ProbeStatsResponse":
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetOne",
@@ -653,7 +631,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStatsSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetSome",
@@ -671,7 +649,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStatsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetAll",
@@ -689,7 +667,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStatsStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/Subscribe",
@@ -707,7 +685,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetMeta",
@@ -724,7 +702,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/SubscribeMeta",
@@ -742,7 +720,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStatsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetAllBatched",
@@ -760,7 +738,7 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
+        metadata: Optional["MetadataLike"] = None,
     ) -> AsyncIterator["ProbeStatsBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/SubscribeBatched",
@@ -778,51 +756,33 @@ class ProbeServiceBase(ServiceBase):
     async def get_one(self, probe_request: "ProbeRequest") -> "ProbeResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, probe_some_request: "ProbeSomeRequest"
-    ) -> AsyncIterator["ProbeSomeResponse"]:
+    async def get_some(self, probe_some_request: "ProbeSomeRequest") -> AsyncIterator["ProbeSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, probe_stream_request: "ProbeStreamRequest"
-    ) -> AsyncIterator["ProbeStreamResponse"]:
+    async def get_all(self, probe_stream_request: "ProbeStreamRequest") -> AsyncIterator["ProbeStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, probe_stream_request: "ProbeStreamRequest"
-    ) -> AsyncIterator["ProbeStreamResponse"]:
+    async def subscribe(self, probe_stream_request: "ProbeStreamRequest") -> AsyncIterator["ProbeStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, probe_stream_request: "ProbeStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, probe_stream_request: "ProbeStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, probe_stream_request: "ProbeStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, probe_stream_request: "ProbeStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, probe_batched_stream_request: "ProbeBatchedStreamRequest"
-    ) -> AsyncIterator["ProbeBatchedStreamResponse"]:
+    async def get_all_batched(self, probe_batched_stream_request: "ProbeBatchedStreamRequest") -> AsyncIterator["ProbeBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, probe_batched_stream_request: "ProbeBatchedStreamRequest"
-    ) -> AsyncIterator["ProbeBatchedStreamResponse"]:
+    async def subscribe_batched(self, probe_batched_stream_request: "ProbeBatchedStreamRequest") -> AsyncIterator["ProbeBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[ProbeRequest, ProbeResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ProbeRequest, ProbeResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(
-        self, stream: "grpclib.server.Stream[ProbeSomeRequest, ProbeSomeResponse]"
-    ) -> None:
+    async def __rpc_get_some(self, stream: "grpclib.server.Stream[ProbeSomeRequest, ProbeSomeResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -830,9 +790,7 @@ class ProbeServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(
-        self, stream: "grpclib.server.Stream[ProbeStreamRequest, ProbeStreamResponse]"
-    ) -> None:
+    async def __rpc_get_all(self, stream: "grpclib.server.Stream[ProbeStreamRequest, ProbeStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -840,9 +798,7 @@ class ProbeServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(
-        self, stream: "grpclib.server.Stream[ProbeStreamRequest, ProbeStreamResponse]"
-    ) -> None:
+    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[ProbeStreamRequest, ProbeStreamResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -850,16 +806,12 @@ class ProbeServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[ProbeStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ProbeStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[ProbeStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ProbeStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -944,49 +896,31 @@ class ProbeServiceBase(ServiceBase):
 
 class ProbeStatsServiceBase(ServiceBase):
 
-    async def get_one(
-        self, probe_stats_request: "ProbeStatsRequest"
-    ) -> "ProbeStatsResponse":
+    async def get_one(self, probe_stats_request: "ProbeStatsRequest") -> "ProbeStatsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(
-        self, probe_stats_some_request: "ProbeStatsSomeRequest"
-    ) -> AsyncIterator["ProbeStatsSomeResponse"]:
+    async def get_some(self, probe_stats_some_request: "ProbeStatsSomeRequest") -> AsyncIterator["ProbeStatsSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(
-        self, probe_stats_stream_request: "ProbeStatsStreamRequest"
-    ) -> AsyncIterator["ProbeStatsStreamResponse"]:
+    async def get_all(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> AsyncIterator["ProbeStatsStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(
-        self, probe_stats_stream_request: "ProbeStatsStreamRequest"
-    ) -> AsyncIterator["ProbeStatsStreamResponse"]:
+    async def subscribe(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> AsyncIterator["ProbeStatsStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(
-        self, probe_stats_stream_request: "ProbeStatsStreamRequest"
-    ) -> "MetaResponse":
+    async def get_meta(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(
-        self, probe_stats_stream_request: "ProbeStatsStreamRequest"
-    ) -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, probe_stats_batched_stream_request: "ProbeStatsBatchedStreamRequest"
-    ) -> AsyncIterator["ProbeStatsBatchedStreamResponse"]:
+    async def get_all_batched(self, probe_stats_batched_stream_request: "ProbeStatsBatchedStreamRequest") -> AsyncIterator["ProbeStatsBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(
-        self, probe_stats_batched_stream_request: "ProbeStatsBatchedStreamRequest"
-    ) -> AsyncIterator["ProbeStatsBatchedStreamResponse"]:
+    async def subscribe_batched(self, probe_stats_batched_stream_request: "ProbeStatsBatchedStreamRequest") -> AsyncIterator["ProbeStatsBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(
-        self, stream: "grpclib.server.Stream[ProbeStatsRequest, ProbeStatsResponse]"
-    ) -> None:
+    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ProbeStatsRequest, ProbeStatsResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -1024,16 +958,12 @@ class ProbeStatsServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(
-        self, stream: "grpclib.server.Stream[ProbeStatsStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ProbeStatsStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(
-        self, stream: "grpclib.server.Stream[ProbeStatsStreamRequest, MetaResponse]"
-    ) -> None:
+    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ProbeStatsStreamRequest, MetaResponse]") -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
