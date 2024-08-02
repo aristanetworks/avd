@@ -11325,14 +11325,14 @@ keys:
                 warning: true
                 removed: true
                 remove_in_version: 5.0.0
-                new_key: listen_ranges
+                new_key: router_bgp.listen_ranges[].peer_filter
             bgp_listen_range_prefix:
               type: str
               deprecation:
                 warning: true
                 removed: true
                 remove_in_version: 5.0.0
-                new_key: listen_ranges
+                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
