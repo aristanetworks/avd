@@ -5,6 +5,7 @@
 import os
 from collections import namedtuple
 from importlib.metadata import PackageNotFoundError
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -209,8 +210,8 @@ def test__get_running_collection_version_git_not_installed() -> None:
         patched__get_collection_path.return_value = "."
         patched__get_collection_version.return_value = "42.0.0"
         # TODO: Path is less kind than os.path was
-        patched_Path.return_value = ""
+        patched_Path.return_value = Path("/collections/foo/bar")
 
         _get_running_collection_version("dummy", result)
         patched_display.vvv.assert_called_once_with("Could not find 'git' executable, returning collection version")
-    assert result == {"collection": {"name": "dummy", "path": "", "version": "42.0.0"}}
+    assert result == {"collection": {"name": "dummy", "path": "/collections/foo/bar", "version": "42.0.0"}}
