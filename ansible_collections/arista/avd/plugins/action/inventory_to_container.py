@@ -106,9 +106,7 @@ class ActionModule(ActionBase):
                     f"arista.avd.inventory_to_container: Group '{group}' has more than one parent group ({parent_groups}) below the 'container_root'."
                     " Unable to build CloudVision container hierarchy."
                 )
-                raise AnsibleActionFail(
-                    msg,
-                )
+                raise AnsibleActionFail(msg)
             parent_container = parent_groups.pop().name
 
         # Build list of devices under the group
