@@ -152,7 +152,7 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
 )
 def test__validate_ansible_collections(n_reqs, mocked_version, requirement_version, expected_return) -> None:
     """
-    Running with n_reqs requirements.
+    Running with n_reqs requirements in the collection file.
 
     TODO: - check the results
          - not testing for wrongly formatted collection.yml file
@@ -168,6 +168,7 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
                 collection["version"] = requirement_version
 
     with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.Path.open"),
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.yaml.safe_load") as patched_safe_load,
         patch(
             "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path",
