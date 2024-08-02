@@ -1360,6 +1360,12 @@ keys:
                     route_map:
                       description: Route-map name.
                       type: str
+                prefix_list_in:
+                  type: str
+                  description: Inbound prefix-list name.
+                prefix_list_out:
+                  type: str
+                  description: Outbound prefix-list name.
                 next_hop:
                   type: dict
                   keys:
@@ -1378,12 +1384,6 @@ keys:
                         removed: true
                         new_key: address_family_ipv6
                         remove_in_version: 5.0.0
-                prefix_list_in:
-                  type: str
-                  description: Inbound prefix-list name.
-                prefix_list_out:
-                  type: str
-                  description: Outbound prefix-list name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -3399,6 +3399,10 @@ keys:
                         type: str
                       activate:
                         type: bool
+            eos_cli:
+              type: str
+              description: |
+                Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
             address_families:
               type: list
               primary_key: address_family
@@ -3409,10 +3413,6 @@ keys:
                 removed: true
                 new_key: address_family_*
                 remove_in_version: 5.0.0
-            eos_cli:
-              type: str
-              description: |
-                Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
       session_trackers:
         type: list
         primary_key: name
