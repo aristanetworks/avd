@@ -120,7 +120,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
 {%     endif %}
-{%     if port_channel_interface.evpn_ethernet_segment.identifier is arista.avd.defined or port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
+{%     if port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
 {%         if port_channel_interface.evpn_ethernet_segment.identifier is arista.avd.defined %}
       identifier {{ port_channel_interface.evpn_ethernet_segment.identifier }}
