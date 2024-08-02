@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from functools import cached_property
 from ipaddress import ip_interface
-from typing import Mapping
 
 from ansible.errors import AnsibleActionFail
 
@@ -22,7 +22,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 LOGGER = logging.getLogger(__name__)
@@ -88,7 +88,7 @@ class ConfigManager:
     def _get_loopback_mappings(self) -> dict:
         """Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
 
-        Returns
+        Returns:
         -------
             dict: A dictionary containing:
             - "loopback0_mapping": A list of tuples where each tuple contains a hostname and its Loopback0 IP address.

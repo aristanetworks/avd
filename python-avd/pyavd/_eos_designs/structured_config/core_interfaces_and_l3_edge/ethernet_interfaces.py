@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate
+from pyavd._utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,14 +17,13 @@ if TYPE_CHECKING:
 class EthernetInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ethernet_interfaces(self: AvdStructuredConfigCoreInterfacesAndL3Edge) -> list | None:
-        """
-        Return structured config for ethernet_interfaces
-        """
+        """Return structured config for ethernet_interfaces."""
         ethernet_interfaces = []
 
         for p2p_link in self._filtered_p2p_links:

@@ -13,7 +13,8 @@ if TYPE_CHECKING:
 class UtilsMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to an AvdInterfaceDescriptions class
+
+    Class should only be used as Mixin to an AvdInterfaceDescriptions class.
     """
 
     @cached_property

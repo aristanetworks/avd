@@ -3,11 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 
-from ..api.arista.changecontrol.v1 import (
+from pyavd._cv.api.arista.changecontrol.v1 import (
     ApproveConfig,
     ApproveConfigServiceStub,
     ApproveConfigSetRequest,
@@ -24,9 +23,12 @@ from ..api.arista.changecontrol.v1 import (
     ChangeControlStreamRequest,
     FlagConfig,
 )
+
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from aristaproto import _DateTime
 
     from . import CVClient
@@ -42,9 +44,7 @@ CHANGE_CONTROL_STATUS_MAP = {
 
 
 class ChangeControlMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     workspace_api_version: Literal["v1"] = "v1"
 
@@ -55,7 +55,7 @@ class ChangeControlMixin:
         timeout: float = 10.0,
     ) -> ChangeControl:
         """
-        Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
+        Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API.
 
         Parameters:
             change_control_id: Unique identifier of the Change Control.
@@ -73,10 +73,10 @@ class ChangeControlMixin:
 
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+        return response.value
 
     async def set_change_control(
         self: CVClient,
@@ -86,7 +86,7 @@ class ChangeControlMixin:
         timeout: float = 10.0,
     ) -> ChangeControlConfigSetResponse:
         """
-        Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API
+        Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API.
 
         Parameters:
             change_control_id: Unique identifier of the Change Control.
@@ -102,16 +102,16 @@ class ChangeControlMixin:
             value=ChangeControlConfig(
                 key=ChangeControlKey(id=change_control_id),
                 change=ChangeConfig(name=name, notes=description),
-            )
+            ),
         )
         client = ChangeControlConfigServiceStub(self._channel)
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+        return response.value
 
     async def approve_change_control(
         self: CVClient,
@@ -121,7 +121,7 @@ class ChangeControlMixin:
         timeout: float = 10.0,
     ) -> ApproveConfig:
         """
-        Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
+        Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API.
 
         Parameters:
             change_control_id: Unique identifier of the Change Control.
@@ -139,16 +139,16 @@ class ChangeControlMixin:
                 key=ChangeControlKey(id=change_control_id),
                 approve=FlagConfig(value=True, notes=description),
                 version=timestamp,
-            )
+            ),
         )
         client = ApproveConfigServiceStub(self._channel)
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Approving Change Control ID '{change_control_id}' for timestamp '{timestamp}'") or e
+
+        return response.value
 
     async def start_change_control(
         self: CVClient,
@@ -157,7 +157,7 @@ class ChangeControlMixin:
         timeout: float = 10.0,
     ) -> ChangeControlConfig:
         """
-        Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API
+        Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API.
 
         Parameters:
             change_control_id: Unique identifier of the Change Control.
@@ -171,16 +171,16 @@ class ChangeControlMixin:
             value=ChangeControlConfig(
                 key=ChangeControlKey(id=change_control_id),
                 start=FlagConfig(value=True, notes=description),
-            )
+            ),
         )
         client = ChangeControlConfigServiceStub(self._channel)
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+
+        return response.value
 
     async def wait_for_change_control_state(
         self: CVClient,
@@ -190,6 +190,7 @@ class ChangeControlMixin:
     ) -> ChangeControl:
         """
         Monitor a Change control using arista.changecontrol.v1.ChangeControlService.Subscribe API for a response to the given cc_id.
+
         Blocks until a response is returned or timed out.
 
         Parameters:
@@ -204,7 +205,7 @@ class ChangeControlMixin:
             partial_eq_filter=[
                 ChangeControl(
                     key=ChangeControlKey(id=cc_id),
-                )
+                ),
             ],
         )
         client = ChangeControlServiceStub(self._channel)
@@ -212,10 +213,9 @@ class ChangeControlMixin:
             responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
                 LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
-                if hasattr(response, "value"):
-                    if response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
-                        LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
-                        return response.value
+                if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
+                    LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
+                    return response.value
                 LOGGER.debug("wait_for_change_control_complete: Status of change control is '%s.'", response)
 
         except Exception as e:

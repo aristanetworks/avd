@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+from typing import Any
 
 from jinja2.runtime import Undefined
 from jinja2.utils import Namespace
@@ -15,12 +16,12 @@ def convert(text: str, ignore_case: bool) -> int | str:
     Converts the string to an integer if it is a digit, otherwise converts
     it to lower case if ignore_case is True.
 
-    Parameters
-    ----------
+    Args:
+    -----
         text (str): Input string.
         ignore_case (bool): If ignore_case is True, strings are applied lower() function.
 
-    Returns
+    Returns:
     -------
         int | str: Converted string.
     """
@@ -32,25 +33,25 @@ def convert(text: str, ignore_case: bool) -> int | str:
 def natural_sort(iterable: list | dict | str | None, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True) -> list:
     """Sorts an iterable in a natural (alphanumeric) order.
 
-    Parameters
-    ----------
+    Args:
+    -----
         iterable (list | dict | str | None): Input iterable.
         sort_key (str | None, optional): Key to sort by, defaults to None.
         strict (bool, optional): If strict is True, raise an error is the sort_key is missing.
         ignore_case (bool, optional): If ignore_case is True, strings are applied lower() function.
 
-    Returns
+    Returns:
     -------
         list: Sorted iterable.
 
-    Raises
+    Raises:
     ------
         KeyError, AttributeError: if strict=True and sort_key is not present in an item in the iterable.
     """
     if isinstance(iterable, Undefined) or iterable is None:
         return []
 
-    def alphanum_key(key):
+    def alphanum_key(key: Any) -> list:
         pattern = r"(\d+)"
         if sort_key is not None and isinstance(key, dict):
             if strict and sort_key not in key:

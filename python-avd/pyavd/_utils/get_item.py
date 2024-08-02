@@ -1,21 +1,24 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .._errors import AristaAvdMissingVariableError
+from typing import Any
+
+from pyavd._errors import AristaAvdMissingVariableError
 
 
 def get_item(
     list_of_dicts: list,
-    key,
-    value,
-    default=None,
-    required=False,
-    case_sensitive=False,  # pylint: disable=unused-argument
-    var_name=None,
-    custom_error_msg=None,
-):
+    key: Any,
+    value: Any,
+    default: Any = None,
+    *,
+    required: bool = False,
+    _case_sensitive: bool = False,
+    var_name: str | None = None,
+    custom_error_msg: str | None = None,
+) -> Any:
     """
-    Get one dictionary from a list of dictionaries by matching the given key and value
+    Get one dictionary from a list of dictionaries by matching the given key and value.
 
     Returns the supplied default value or None if there is no match and "required" is False.
 
@@ -40,17 +43,16 @@ def get_item(
     custom_error_msg : str
         Custom error message to raise when required is True and the value is not found
 
-    Returns
+    Returns:
     -------
     any
         Dict or default value
 
-    Raises
+    Raises:
     ------
     AristaAvdMissingVariableError
         If the key and value is not found and "required" == True
     """
-
     if var_name is None:
         var_name = key
 

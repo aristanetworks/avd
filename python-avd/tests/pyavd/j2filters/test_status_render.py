@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import pytest
+
 from pyavd.j2filters import status_render
 
 STATE_STRINGS = [("PASS", "github", ":white_check_mark:"), ("fail", "github", ":x:"), ("FAIL", "test", "FAIL")]

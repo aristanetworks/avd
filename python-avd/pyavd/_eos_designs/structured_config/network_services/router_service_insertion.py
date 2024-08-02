@@ -15,13 +15,14 @@ if TYPE_CHECKING:
 class RouterServiceInsertionMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_service_insertion(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Return structured config for router_service_insertion
+        Return structured config for router_service_insertion.
 
         Only used for CV Pathfinder edge routers today
         """

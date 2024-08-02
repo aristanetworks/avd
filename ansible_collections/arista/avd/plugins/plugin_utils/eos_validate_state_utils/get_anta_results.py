@@ -25,7 +25,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 if TYPE_CHECKING:
@@ -147,7 +147,7 @@ def load_custom_catalogs(catalog_files: list[Path]) -> dict:
             with file.open("r", encoding="UTF-8") as fd:
                 catalog = load(fd, Loader=CSafeLoader)
                 catalog_list.append(catalog)
-        except (OSError, YAMLError) as error:
+        except (OSError, YAMLError) as error:  # noqa: PERF203 TODO: Investigate and improve code to avoid try/except inside loop
             msg = f"Failed to load the custom ANTA catalog from {file}: {error!s}"
             raise AristaAvdError(msg) from error
 
@@ -241,5 +241,5 @@ def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: Resul
                 categories=categories,
                 description=description,
                 custom_field=custom_field,
-            )
+            ),
         )

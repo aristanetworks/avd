@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get, get_item, strip_empties_from_dict
+from pyavd._utils import append_if_not_duplicate, get, get_item, strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,14 +17,13 @@ if TYPE_CHECKING:
 class ApplicationTrafficRecognitionMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def application_traffic_recognition(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        Return structured config for application_traffic_recognition if wan router
-        """
+        """Return structured config for application_traffic_recognition if wan router."""
         if not self.shared_utils.is_wan_router:
             return None
 
@@ -48,9 +48,10 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
 
     def _generate_control_plane_application_profile(self: AvdStructuredConfigNetworkServices, app_dict: dict) -> None:
         """
-        Generate an application profile using a single application matching:
+        Generate an application profile using a single application matching.
+
         * the device Pathfinders vtep_ips as destination for non Pathfinders.
-        * the device Pathfinder vtep_ip as source
+        * the device Pathfinder vtep_ip as source.
 
         Create a structure as follow. If any object already exist, it is kept as defined by user and override the defaults.
 
@@ -96,9 +97,9 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                 "applications": [
                     {
                         "name": self._wan_control_plane_application,
-                    }
+                    },
                 ],
-            }
+            },
         )
         # Adding the application
         ipv4_applications = get(app_dict, "applications.ipv4_applications", [])
@@ -109,7 +110,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                 {
                     "name": self._wan_control_plane_application,
                     "dest_prefix_set_name": self._wan_cp_app_dst_prefix,
-                }
+                },
             )
             # Adding the field-set based on the connected Pathfinder router-ids
             ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
@@ -120,17 +121,17 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                 {
                     "name": self._wan_cp_app_dst_prefix,
                     "prefix_values": pathfinder_vtep_ips,
-                }
+                },
             )
         elif self.shared_utils.is_wan_server:
             app_dict.setdefault("applications", {}).setdefault("ipv4_applications", []).append(
                 {
                     "name": self._wan_control_plane_application,
                     "src_prefix_set_name": self._wan_cp_app_src_prefix,
-                }
+                },
             )
             app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
-                {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.vtep_ip}/32"]}
+                {"name": self._wan_cp_app_src_prefix, "prefix_values": [f"{self.shared_utils.vtep_ip}/32"]},
             )
 
     def _filtered_application_classification(self: AvdStructuredConfigNetworkServices) -> dict:
@@ -145,10 +146,11 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         # Application profiles first
         application_profiles = []
 
-        def _append_object_to_list_of_dicts(path: str, obj_name: str, list_of_dicts: list, message: str | None = None, required=True) -> None:
+        def _append_object_to_list_of_dicts(path: str, obj_name: str, list_of_dicts: list, message: str | None = None, *, required: bool = True) -> None:
             """
-            Helper function
-            Technically impossible to get a duplicate, just reusing the method when the same application is used in multiple places
+            Helper function.
+
+            Technically impossible to get a duplicate, just reusing the method when the same application is used in multiple places.
             """
             if (
                 obj := get_item(

@@ -6,6 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
+
 from pyavd._utils import strip_null_from_data
 
 STRIP_EMPTIES_LIST = {
