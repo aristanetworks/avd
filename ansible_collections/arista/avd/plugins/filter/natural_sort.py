@@ -47,6 +47,16 @@ options:
     description: Key to sort on when sorting a list of dictionaries
     type: string
     version_added: "3.0.0"
+  strict:
+    description: When `sort_key` is set, setting strict to true will trigger an exception if the `sort_key` is missing in any items in the input.
+    type: bool
+    default: true
+    version_added: "5.0.0"
+  ignore_case:
+    description: When true, strings are coerced to lower case before being compared.
+    type: bool
+    default: true
+    version_added: "5.0.0"
 """
 
 EXAMPLES = r"""
