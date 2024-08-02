@@ -79,38 +79,34 @@
 {%                     endif %}
 {#                     -- Protocol #}
 {%                     set row.protocols = "" %}
+{%                     set row.src_port = [] %}
+{%                     set row.dst_port = [] %}
 {%                     if match.protocols is arista.avd.defined %}
 {%                         set row.protocols = match.protocols | map(attribute='protocol') | join('<br/>') %}
-{%                     else %}
-{%                         set row.protocols = "ANY" %}
-{%                     endif %}
-{#                     -- Source Port #}
-{%                     set row.src_port = "" %}
-{%                     if match.protocols is arista.avd.defined %}
+{#                         -- Source/Destination Port #}
 {%                         for protocol in match.protocols %}
 {%                             if protocol.src_field is arista.avd.defined %}
-{%                                 set row.src_port = protocol.src_field %}
+{%                                 do row.src_port.append(protocol.src_field) %}
 {%                             elif protocol.src_port is arista.avd.defined %}
-{%                                 set row.src_port = protocol.src_port %}
+{%                                 do row.src_port.append(protocol.src_port) %}
+{%                             elif protocol.dst_field is arista.avd.defined %}
+{%                                 do row.dst_port.append(protocol.dst_field) %}
+{%                             elif protocol.dst_port is arista.avd.defined %}
+{%                                 do row.dst_port.append(protocol.dst_port) %}
 {%                             endif %}
 {%                         endfor %}
-{%                         if row.src_port == "" %}
+{%                         if row.src_port %}
+{%                             set row.src_port = row.src_port | join('<br/>') %}
+{%                         else %}
 {%                             set row.src_port = "ANY" %}
 {%                         endif %}
-{%                     endif %}
-{#                     -- Destination Port #}
-{%                     set row.dst_port = "" %}
-{%                     if match.protocols is arista.avd.defined %}
-{%                         for protocol in match.protocols %}
-{%                             if protocol.dst_field is arista.avd.defined %}
-{%                                 set row.dst_port = protocol.dst_field %}
-{%                             elif protocol.dst_port is arista.avd.defined %}
-{%                                 set row.dst_port = protocol.dst_port %}
-{%                             endif %}
-{%                         endfor %}
-{%                         if row.dst_port == "" %}
+{%                         if row.dst_port %}
+{%                             set row.dst_port = row.dst_port | join('<br/>') %}
+{%                         else %}
 {%                             set row.dst_port = "ANY" %}
 {%                         endif %}
+{%                     else %}
+{%                         set row.protocols = "ANY" %}
 {%                     endif %}
 {#                     -- Action management #}
 {%                     set row.actions = [] %}

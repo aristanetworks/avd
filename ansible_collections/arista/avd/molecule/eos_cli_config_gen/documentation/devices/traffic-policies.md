@@ -101,14 +101,14 @@ interface Port-Channel2
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | SERVICE-DEMO | ANY | action: PASS<br/>traffic-class: 5 |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>SERVICE-DEMO | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | ANY | SERVICE-DEMO | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
 | BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | ANY | icmp | ANY | ANY | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
 | BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | tcp | ANY | ANY | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-06 | ipv4 | ANY | ANY | neighbors<br/>ip<br/>udp<br/>tcp<br/>icmp | SERVICE-DEMO | 1,10-20 | action: PASS |
-| BLUE-C1-POLICY-07 | ipv4 | ANY | 10.0.0.0/8<br/>192.168.0.0/16 | ANY |  |  | default action: PASS |
-| BLUE-C1-POLICY-08 | ipv4 | ANY | DEMO-01 | udp<br/>tcp | ANY | SERVICE-DEMO | default action: PASS |
+| BLUE-C1-POLICY-06 | ipv4 | ANY | ANY | neighbors<br/>ip<br/>udp<br/>tcp<br/>icmp | 22<br/>SERVICE-DEMO | 1,10-20 | action: PASS |
+| BLUE-C1-POLICY-07 | ipv4 | ANY | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | [] | [] | default action: PASS |
+| BLUE-C1-POLICY-08 | ipv4 | ANY | DEMO-01 | udp<br/>tcp | ANY | 1,10-20<br/>SERVICE-DEMO | default action: PASS |
 
 ##### BLUE-C2-POLICY
 
