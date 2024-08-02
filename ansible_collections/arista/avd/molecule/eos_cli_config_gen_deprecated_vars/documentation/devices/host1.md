@@ -686,16 +686,16 @@ interface Tunnel4
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  -  |  -  |  -  |  -  |
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | - | - | - | - | True | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | - | - | - | True | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
