@@ -122,7 +122,7 @@ vlan 4092
 | --------- | ---- | ----------- | ---------- | --------------- |
 | Ethernet12 | trunk phone | 100 | 200 | untagged |
 | Ethernet13 | trunk phone | 100 | 200 | untagged |
-| Ethernet14 | trunk phone | 1 | 200 | untagged |
+| Ethernet14 | trunk phone | - | 200 | untagged |
 
 #### Ethernet Interfaces Device Configuration
 

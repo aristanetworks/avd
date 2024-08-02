@@ -642,7 +642,7 @@ interface profile TEST-PROFILE-1
 | Ethernet1 |  - | access | 100 | - | - | - |
 | Ethernet2 |  - | trunk | 110 | 10 | ['group1', 'group2'] | - |
 | Ethernet3 |  - | trunk phone | - | tag | - | - |
-| Ethernet4 |  - | access | - | - | - | - |
+| Ethernet4 |  - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -654,11 +654,11 @@ interface profile TEST-PROFILE-1
 
 ##### VLAN Translations
 
-| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Dot1q-tunnel |
-| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------------ |
-| Ethernet4 | in | 23 | 50 | - | - | - |
-| Ethernet4 | out | 25 | 49 | - | - | - |
-| Ethernet4 | both | 34 | 60 | - | - | - |
+| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Ethernet4 | in | 23 | 50 | - | - | - | - |
+| Ethernet4 | out | 25 | 49 | - | - | - | - |
+| Ethernet4 | both | 34 | 60 | - | - | - | - |
 
 ##### Phone Interfaces
 
