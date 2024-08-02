@@ -7,6 +7,8 @@
 type: dict
 keys:
   radius_servers:
+    documentation_options:
+      table: radius-server
     deprecation:
       warning: true
       removed: true

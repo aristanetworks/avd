@@ -10517,6 +10517,8 @@ keys:
         type: str
         description: Name of global TLS profile.
   radius_servers:
+    documentation_options:
+      table: radius-server
     deprecation:
       warning: true
       removed: true
