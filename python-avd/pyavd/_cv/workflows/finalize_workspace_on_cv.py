@@ -47,9 +47,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
             f"Failed to build workspace {workspace.id}: {build_result}. "
             f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
         )
-        raise CVWorkspaceBuildFailed(
-            msg,
-        )
+        raise CVWorkspaceBuildFailed(msg)
 
     workspace.state = "built"
     LOGGER.info("finalize_workspace_on_cv: %s", workspace)
