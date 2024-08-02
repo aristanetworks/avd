@@ -69,10 +69,7 @@ class MergeOnSchema:
 
         except Exception as e:
             msg = f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} using primary key '{primary_key}'"
-            raise RuntimeError(
-                msg,
-            ) from e
-
+            raise RuntimeError(msg) from e
         # If all nxt items got merged, we can just return the updated base.
         if len(merged_nxt_indexes) == len(nxt):
             return base
@@ -89,10 +86,5 @@ class MergeOnSchema:
                 f"An issue occurred after schema-based deepmerge for the schema path {path} using primary key '{primary_key}', "
                 f"while preparing remaining items with to be merged with regular strategies. Merged indexes were {merged_nxt_indexes}"
             )
-            raise RuntimeError(
-                msg,
-            ) from e
-
-        # Since we did inplace updates of both nxt and base, we return STRATEGY_END
-        # so deepmerge will run the next strategy on the remaining nxt items.
+            raise RuntimeError(msg) from e
         return STRATEGY_END

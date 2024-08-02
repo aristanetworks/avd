@@ -79,9 +79,7 @@ def add_md_toc(md_input: str, skip_lines: int = 0, toc_levels: int = 3, toc_mark
 
     if len(toc_marker_positions) != 2:
         msg = f"add_md_toc expects exactly two occurrences of the toc marker '{toc_marker}' on their own lines. Found {len(toc_marker_positions)} occurrences."
-        raise ValueError(
-            msg,
-        )
+        raise ValueError(msg)
 
     return "\n".join(md_lines[: toc_marker_positions[0]] + toc_lines + md_lines[toc_marker_positions[1] + 1 :])
 

@@ -51,7 +51,7 @@ class SafeDumper(yaml.SafeDumper):
     """
     Make yamllint happy.
 
-    yaml/issues/234#issuecomment-765894586.
+    https://github.com/yaml/pyyaml/issues/234#issuecomment-765894586
     """
 
     # pylint: disable=R0901,W0613,W1113

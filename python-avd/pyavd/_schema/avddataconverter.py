@@ -202,7 +202,7 @@ class AvdDataConverter:
           removed: bool
           remove_in_version: str
           remove_after_date: str
-          url: str.
+          url: str
         """
         if not deprecation.get("warning", True):
             return

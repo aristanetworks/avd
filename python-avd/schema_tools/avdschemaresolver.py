@@ -72,9 +72,7 @@ class AvdSchemaResolver:
                 f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
                 "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$'."
             )
-            raise RuntimeError(
-                msg,
-            ) from None
+            raise RuntimeError(msg) from None
         ref_schema = deepcopy(resolved.contents)
         resolved_schema.pop("$ref")
         merge(resolved_schema, ref_schema, same_key_strategy="use_existing", list_merge="replace")

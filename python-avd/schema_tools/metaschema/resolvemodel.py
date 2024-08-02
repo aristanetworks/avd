@@ -31,9 +31,7 @@ def merge_schema_from_ref(schema: dict) -> dict:
             f"Incompatible schema types from ref '{ref}' ref type '{ref_schema['type']}' schema type '{schema['type']}'\nschema: {schema}\nref_schema:"
             f" {ref_schema})"
         )
-        raise ValueError(
-            msg,
-        )
+        raise ValueError(msg)
 
     return conservative_merger.merge(schema, ref_schema)
 

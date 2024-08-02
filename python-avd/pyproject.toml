@@ -123,3 +123,8 @@ exclude_also = [
     "^blocks = {}",
     "^debug_info =.*",
 ]
+
+[tool.ruff]
+# Extend the `pyproject.toml` file in the parent directory...
+# Should not be needed, but the ruff vscode extension does not seem to respect the ruff behavior of ignoring files without tool.ruff
+extend = "../pyproject.toml"
