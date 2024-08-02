@@ -8,14 +8,23 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterator,
+    Dict,
+    List,
+    Optional,
+)
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+from ... import (
+    subscriptions as __subscriptions__,
+    time as __time__,
+)
+
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -192,6 +201,12 @@ class ErrorCode(aristaproto.Enum):
      with a non-2GB EOS or a non-2GB device is incompatible with a 2GB-EOS.
     """
 
+    EOS_EXTENSION_VERSION_INCOMPATIBLE = 16
+    """
+    ERROR_CODE_EOS_EXTENSION_VERSION_INCOMPATIBLE represents the case where the given extension
+     version doesn't support the given EOS version.
+    """
+
 
 class WarningCode(aristaproto.Enum):
     """WarningCode indicates warnings produced during image validations."""
@@ -296,6 +311,19 @@ class WarningCode(aristaproto.Enum):
     """
 
 
+class InfoCode(aristaproto.Enum):
+    """InfoCode indicates info messages produced during image validations."""
+
+    UNSPECIFIED = 0
+    """INFO_CODE_UNSPECIFIED indicates info code is unspecified."""
+
+    NEWER_VERSION_AVAILABLE = 1
+    """
+    INFO_CODE_NEWER_VERSION_AVAILABLE represents cases where a newer EOS maintainance
+     release is available for download.
+    """
+
+
 @dataclass(eq=False, repr=False)
 class SoftwareImage(aristaproto.Message):
     """
@@ -348,7 +376,9 @@ class Extension(aristaproto.Message):
     version: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """version is the version of the extension."""
 
-    reboot_required: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+    reboot_required: Optional[bool] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_BOOL
+    )
     """
     reboot_required indicates whether applying/deleting this extension
      would result in a reboot.
@@ -366,12 +396,16 @@ class Extension(aristaproto.Message):
      installed or force installed.
     """
 
-    status_detail: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    status_detail: Optional[str] = aristaproto.message_field(
+        6, wraps=aristaproto.TYPE_STRING
+    )
     """
     status_detail gives the details behind installation of the extension.
     """
 
-    is_embedded: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
+    is_embedded: Optional[bool] = aristaproto.message_field(
+        7, wraps=aristaproto.TYPE_BOOL
+    )
     """
     is_embedded indicates whether the extension is embedded in the EOS swi
      or not.
@@ -410,7 +444,9 @@ class ComplianceStatusBySup(aristaproto.Message):
      supervisor.
     """
 
-    values: Dict[str, "ComplianceStatus"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    values: Dict[str, "ComplianceStatus"] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
+    )
     """values is the mapping of supervisor type to compliance code."""
 
 
@@ -421,19 +457,25 @@ class RebootRequired(aristaproto.Message):
      terminattr and extension for the switch as a whole.
     """
 
-    software_image_reboot_required: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
+    software_image_reboot_required: Optional[bool] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_BOOL
+    )
     """
     software_image_reboot_required indicates whether reboot is required
      for the software image being applied.
     """
 
-    terminattr_reboot_required: Optional[bool] = aristaproto.message_field(2, wraps=aristaproto.TYPE_BOOL)
+    terminattr_reboot_required: Optional[bool] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_BOOL
+    )
     """
     terminattr_reboot_required indicates whether reboot is required
      for the terminattr being applied/deleted.
     """
 
-    extension_reboot_required: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+    extension_reboot_required: Optional[bool] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_BOOL
+    )
     """
     extension_reboot_required indicates whether reboot is required
      for the extensions being applied/deleted.
@@ -464,7 +506,9 @@ class SoftwareImageDiffsBySup(aristaproto.Message):
      supervisor.
     """
 
-    values: Dict[str, "SoftwareImageDiff"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    values: Dict[str, "SoftwareImageDiff"] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
+    )
     """values is the mapping of supervisor type to image diff."""
 
 
@@ -491,7 +535,9 @@ class TerminAttrDiffsBySup(aristaproto.Message):
     TerminAttrDiffsBySup is the terminattr diff information for each supervisor.
     """
 
-    values: Dict[str, "ExtensionDiff"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    values: Dict[str, "ExtensionDiff"] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
+    )
     """values is the mapping of supervisor type to terminattr diff."""
 
 
@@ -512,7 +558,9 @@ class ExtensionDiffsBySup(aristaproto.Message):
     ExtensionDiffsBySup is the extension diff information for each supervisor.
     """
 
-    values: Dict[str, "ExtensionDiffs"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    values: Dict[str, "ExtensionDiffs"] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
+    )
     """values is the mapping of supervisor type to extension diff."""
 
 
@@ -538,13 +586,17 @@ class ImageSummary(aristaproto.Message):
     dual_sup: Optional[bool] = aristaproto.message_field(4, wraps=aristaproto.TYPE_BOOL)
     """dual_sup indicates if a device is a dual supervisor."""
 
-    active_slot: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
+    active_slot: Optional[int] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_INT32
+    )
     """
     active_slot indicates the physical slot number for the the active
      supervisor.
     """
 
-    standby_slot: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT32)
+    standby_slot: Optional[int] = aristaproto.message_field(
+        6, wraps=aristaproto.TYPE_INT32
+    )
     """
     standby_slot indicates the physical slot number for the standby
      supervisor.
@@ -587,7 +639,9 @@ class ImageSummary(aristaproto.Message):
 class SummaryKey(aristaproto.Message):
     """SummaryKey uniquely identifies a device summary request."""
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    device_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """device_id is the serial number of the device"""
 
 
@@ -604,13 +658,19 @@ class Summary(aristaproto.Message):
     errors: "ImageErrors" = aristaproto.message_field(3)
     """
     errors are the image errors encountered while validating the image. These are
-     displayed on the change control review page (for changes made outside the workspace).
+     displayed on the workspace build results page.
     """
 
     warnings: "ImageWarnings" = aristaproto.message_field(4)
     """
     warnings are the image warnings encountered while validating the image. These are
-     displayed on the change control review page (for changes made outside the workspace).
+     displayed on the workspace build results page.
+    """
+
+    infos: "ImageInfos" = aristaproto.message_field(5)
+    """
+    infos are the image infos encountered while validating the image. These are
+     displayed on the workspace build results page.
     """
 
 
@@ -624,7 +684,9 @@ class ImageError(aristaproto.Message):
     error_code: "ErrorCode" = aristaproto.enum_field(2)
     """error_code is the error code."""
 
-    error_msg: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    error_msg: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
     """error_msg provides a description of the error."""
 
 
@@ -649,7 +711,9 @@ class ImageWarning(aristaproto.Message):
     warning_code: "WarningCode" = aristaproto.enum_field(2)
     """warning_code is the warning code."""
 
-    warning_msg: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    warning_msg: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
     """warning_msg provides a description of the warning."""
 
 
@@ -662,6 +726,32 @@ class ImageWarnings(aristaproto.Message):
 
     values: List["ImageWarning"] = aristaproto.message_field(1)
     """values is a list of image warnings."""
+
+
+@dataclass(eq=False, repr=False)
+class ImageInfo(aristaproto.Message):
+    """ImageInfo wraps `InfoCode` enum with a reason string."""
+
+    sku: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    """sku represents the name of the sku."""
+
+    info_code: "InfoCode" = aristaproto.enum_field(2)
+    """info_code is the info code."""
+
+    info_msg: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
+    """info_msg provides a description of the info."""
+
+
+@dataclass(eq=False, repr=False)
+class ImageInfos(aristaproto.Message):
+    """
+    ImageInfos is the list of info messages reported by CVP when handling image validations.
+    """
+
+    values: List["ImageInfo"] = aristaproto.message_field(1)
+    """values is a list of image infos."""
 
 
 @dataclass(eq=False, repr=False)
@@ -828,7 +918,9 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -854,7 +946,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "SummaryResponse":
         return await self._unary_unary(
             "/arista.imagestatus.v1.SummaryService/GetOne",
@@ -871,7 +963,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummarySomeResponse"]:
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetSome",
@@ -889,7 +981,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetAll",
@@ -907,7 +999,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/Subscribe",
@@ -925,7 +1017,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.imagestatus.v1.SummaryService/GetMeta",
@@ -942,7 +1034,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/SubscribeMeta",
@@ -960,7 +1052,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetAllBatched",
@@ -978,7 +1070,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/SubscribeBatched",
@@ -996,33 +1088,51 @@ class SummaryServiceBase(ServiceBase):
     async def get_one(self, summary_request: "SummaryRequest") -> "SummaryResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, summary_some_request: "SummarySomeRequest") -> AsyncIterator["SummarySomeResponse"]:
+    async def get_some(
+        self, summary_some_request: "SummarySomeRequest"
+    ) -> AsyncIterator["SummarySomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator["SummaryStreamResponse"]:
+    async def get_all(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> AsyncIterator["SummaryStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator["SummaryStreamResponse"]:
+    async def subscribe(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> AsyncIterator["SummaryStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, summary_stream_request: "SummaryStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator["SummaryBatchedStreamResponse"]:
+    async def get_all_batched(
+        self, summary_batched_stream_request: "SummaryBatchedStreamRequest"
+    ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator["SummaryBatchedStreamResponse"]:
+    async def subscribe_batched(
+        self, summary_batched_stream_request: "SummaryBatchedStreamRequest"
+    ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]") -> None:
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SummarySomeRequest, SummarySomeResponse]") -> None:
+    async def __rpc_get_some(
+        self, stream: "grpclib.server.Stream[SummarySomeRequest, SummarySomeResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -1052,12 +1162,16 @@ class SummaryServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

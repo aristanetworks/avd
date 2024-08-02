@@ -8,15 +8,24 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterator,
+    Dict,
+    List,
+    Optional,
+)
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
 from .... import fmp as ___fmp__
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+from ... import (
+    subscriptions as __subscriptions__,
+    time as __time__,
+)
+
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -52,20 +61,28 @@ class Dimensions(aristaproto.Message):
 class WidgetStyles(aristaproto.Message):
     """WidgetStyles represents the widget's panel appearance."""
 
-    hide_title: Optional[bool] = aristaproto.message_field(1, wraps=aristaproto.TYPE_BOOL)
+    hide_title: Optional[bool] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_BOOL
+    )
     """
     hide_title is used to hint the dashboard that the widget title must be hidden.
     """
 
-    background_color: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    background_color: Optional[str] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_STRING
+    )
     """background_color is used to set the widget's background color."""
 
-    hide_horizontal_bar: Optional[bool] = aristaproto.message_field(3, wraps=aristaproto.TYPE_BOOL)
+    hide_horizontal_bar: Optional[bool] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_BOOL
+    )
     """
     hide_horizontal_bar is used to hint the dashboard that the title separator must be hidden.
     """
 
-    title_size: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    title_size: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """title_size is used to set widget's title size."""
 
 
@@ -105,7 +122,9 @@ class Widget(aristaproto.Message):
      Internal data vary based on the widget type `type` and is managed by the client.
     """
 
-    location: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
+    location: Optional[str] = aristaproto.message_field(
+        7, wraps=aristaproto.TYPE_STRING
+    )
     """
     location is used as a position display hint, used and managed by the UI.
     """
@@ -129,7 +148,9 @@ class Widgets(aristaproto.Message):
 class DashboardKey(aristaproto.Message):
     """DashboardKey represents the dashboard unique identifier."""
 
-    dashboard_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    dashboard_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """dashboard_id holds the id of the dashboard"""
 
 
@@ -146,7 +167,9 @@ class DashboardConfig(aristaproto.Message):
     name: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """name is the dashboard name, displayed at the top of the dashboard."""
 
-    description: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    description: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
     """
     description may include details about what is displayed in the dashboard.
     """
@@ -162,20 +185,28 @@ class DashboardMetadata(aristaproto.Message):
      is read-only.
     """
 
-    schema_version: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    schema_version: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """schema_version is managed internally."""
 
-    legacy_key: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    legacy_key: Optional[str] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_STRING
+    )
     """
     legacy_key holds the key of a previous version of the dashboard, in case it was migrated.
     """
 
-    legacy_version: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    legacy_version: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
     """
     legacy_version tells from which version the dashboard was migrated from.
     """
 
-    from_package: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    from_package: Optional[str] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_STRING
+    )
     """
     from_package records the contributing package key and version, if applicable.
     """
@@ -208,7 +239,9 @@ class Dashboard(aristaproto.Message):
      Old dashboards may not have this field set.
     """
 
-    created_by: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    created_by: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
     """
     created_by keeps the name of the user who first created this dashboard.
      Old dashboards may not have this field set.
@@ -220,7 +253,9 @@ class Dashboard(aristaproto.Message):
      Old dashboards may not have this field set.
     """
 
-    last_modified_by: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
+    last_modified_by: Optional[str] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_STRING
+    )
     """
     last_modified_by holds the username who last updated this dashboard.
      Old dashboards may not have this field set.
@@ -232,7 +267,9 @@ class Dashboard(aristaproto.Message):
     name: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
     """name is the dashboard name, displayed at the top of the dashboard."""
 
-    description: Optional[str] = aristaproto.message_field(8, wraps=aristaproto.TYPE_STRING)
+    description: Optional[str] = aristaproto.message_field(
+        8, wraps=aristaproto.TYPE_STRING
+    )
     """
     description may include details about what is displayed in the dashboard.
     """
@@ -430,7 +467,9 @@ class DashboardBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -594,7 +633,9 @@ class DashboardConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -839,7 +880,9 @@ class GlobalDashboardConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -850,7 +893,9 @@ class GlobalDashboardConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class GlobalDashboardConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["GlobalDashboardConfigStreamResponse"] = aristaproto.message_field(1)
+    responses: List["GlobalDashboardConfigStreamResponse"] = aristaproto.message_field(
+        1
+    )
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -892,7 +937,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "DashboardResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.DashboardService/GetOne",
@@ -909,7 +954,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardService/GetSome",
@@ -927,7 +972,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardService/GetAll",
@@ -945,7 +990,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardService/Subscribe",
@@ -963,7 +1008,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.DashboardService/GetMeta",
@@ -980,7 +1025,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardService/SubscribeMeta",
@@ -998,7 +1043,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardService/GetAllBatched",
@@ -1016,7 +1061,7 @@ class DashboardServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardService/SubscribeBatched",
@@ -1036,7 +1081,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "DashboardConfigResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.DashboardConfigService/GetOne",
@@ -1053,7 +1098,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/GetSome",
@@ -1071,7 +1116,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/GetAll",
@@ -1089,7 +1134,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/Subscribe",
@@ -1107,7 +1152,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.DashboardConfigService/GetMeta",
@@ -1124,7 +1169,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/SubscribeMeta",
@@ -1142,7 +1187,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "DashboardConfigSetResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.DashboardConfigService/Set",
@@ -1159,7 +1204,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/SetSome",
@@ -1177,7 +1222,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "DashboardConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.DashboardConfigService/Delete",
@@ -1194,7 +1239,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/DeleteSome",
@@ -1212,7 +1257,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/DeleteAll",
@@ -1230,7 +1275,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/GetAllBatched",
@@ -1248,7 +1293,7 @@ class DashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["DashboardConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.DashboardConfigService/SubscribeBatched",
@@ -1268,7 +1313,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "GlobalDashboardConfigResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.GlobalDashboardConfigService/GetOne",
@@ -1285,7 +1330,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["GlobalDashboardConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.GlobalDashboardConfigService/GetAll",
@@ -1303,7 +1348,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["GlobalDashboardConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.GlobalDashboardConfigService/Subscribe",
@@ -1321,7 +1366,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.GlobalDashboardConfigService/SubscribeMeta",
@@ -1339,7 +1384,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "GlobalDashboardConfigSetResponse":
         return await self._unary_unary(
             "/arista.dashboard.v1.GlobalDashboardConfigService/Set",
@@ -1356,7 +1401,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["GlobalDashboardConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.GlobalDashboardConfigService/GetAllBatched",
@@ -1374,7 +1419,7 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["GlobalDashboardConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.dashboard.v1.GlobalDashboardConfigService/SubscribeBatched",
@@ -1389,31 +1434,49 @@ class GlobalDashboardConfigServiceStub(aristaproto.ServiceStub):
 
 class DashboardServiceBase(ServiceBase):
 
-    async def get_one(self, dashboard_request: "DashboardRequest") -> "DashboardResponse":
+    async def get_one(
+        self, dashboard_request: "DashboardRequest"
+    ) -> "DashboardResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, dashboard_some_request: "DashboardSomeRequest") -> AsyncIterator["DashboardSomeResponse"]:
+    async def get_some(
+        self, dashboard_some_request: "DashboardSomeRequest"
+    ) -> AsyncIterator["DashboardSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, dashboard_stream_request: "DashboardStreamRequest") -> AsyncIterator["DashboardStreamResponse"]:
+    async def get_all(
+        self, dashboard_stream_request: "DashboardStreamRequest"
+    ) -> AsyncIterator["DashboardStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, dashboard_stream_request: "DashboardStreamRequest") -> AsyncIterator["DashboardStreamResponse"]:
+    async def subscribe(
+        self, dashboard_stream_request: "DashboardStreamRequest"
+    ) -> AsyncIterator["DashboardStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, dashboard_stream_request: "DashboardStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, dashboard_stream_request: "DashboardStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, dashboard_stream_request: "DashboardStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, dashboard_stream_request: "DashboardStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(self, dashboard_batched_stream_request: "DashboardBatchedStreamRequest") -> AsyncIterator["DashboardBatchedStreamResponse"]:
+    async def get_all_batched(
+        self, dashboard_batched_stream_request: "DashboardBatchedStreamRequest"
+    ) -> AsyncIterator["DashboardBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(self, dashboard_batched_stream_request: "DashboardBatchedStreamRequest") -> AsyncIterator["DashboardBatchedStreamResponse"]:
+    async def subscribe_batched(
+        self, dashboard_batched_stream_request: "DashboardBatchedStreamRequest"
+    ) -> AsyncIterator["DashboardBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[DashboardRequest, DashboardResponse]") -> None:
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[DashboardRequest, DashboardResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -1451,12 +1514,16 @@ class DashboardServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[DashboardStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[DashboardStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[DashboardStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[DashboardStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1541,37 +1608,59 @@ class DashboardServiceBase(ServiceBase):
 
 class DashboardConfigServiceBase(ServiceBase):
 
-    async def get_one(self, dashboard_config_request: "DashboardConfigRequest") -> "DashboardConfigResponse":
+    async def get_one(
+        self, dashboard_config_request: "DashboardConfigRequest"
+    ) -> "DashboardConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, dashboard_config_some_request: "DashboardConfigSomeRequest") -> AsyncIterator["DashboardConfigSomeResponse"]:
+    async def get_some(
+        self, dashboard_config_some_request: "DashboardConfigSomeRequest"
+    ) -> AsyncIterator["DashboardConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, dashboard_config_stream_request: "DashboardConfigStreamRequest") -> AsyncIterator["DashboardConfigStreamResponse"]:
+    async def get_all(
+        self, dashboard_config_stream_request: "DashboardConfigStreamRequest"
+    ) -> AsyncIterator["DashboardConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, dashboard_config_stream_request: "DashboardConfigStreamRequest") -> AsyncIterator["DashboardConfigStreamResponse"]:
+    async def subscribe(
+        self, dashboard_config_stream_request: "DashboardConfigStreamRequest"
+    ) -> AsyncIterator["DashboardConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, dashboard_config_stream_request: "DashboardConfigStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, dashboard_config_stream_request: "DashboardConfigStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, dashboard_config_stream_request: "DashboardConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, dashboard_config_stream_request: "DashboardConfigStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(self, dashboard_config_set_request: "DashboardConfigSetRequest") -> "DashboardConfigSetResponse":
+    async def set(
+        self, dashboard_config_set_request: "DashboardConfigSetRequest"
+    ) -> "DashboardConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(self, dashboard_config_set_some_request: "DashboardConfigSetSomeRequest") -> AsyncIterator["DashboardConfigSetSomeResponse"]:
+    async def set_some(
+        self, dashboard_config_set_some_request: "DashboardConfigSetSomeRequest"
+    ) -> AsyncIterator["DashboardConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(self, dashboard_config_delete_request: "DashboardConfigDeleteRequest") -> "DashboardConfigDeleteResponse":
+    async def delete(
+        self, dashboard_config_delete_request: "DashboardConfigDeleteRequest"
+    ) -> "DashboardConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(self, dashboard_config_delete_some_request: "DashboardConfigDeleteSomeRequest") -> AsyncIterator["DashboardConfigDeleteSomeResponse"]:
+    async def delete_some(
+        self, dashboard_config_delete_some_request: "DashboardConfigDeleteSomeRequest"
+    ) -> AsyncIterator["DashboardConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(self, dashboard_config_delete_all_request: "DashboardConfigDeleteAllRequest") -> AsyncIterator["DashboardConfigDeleteAllResponse"]:
+    async def delete_all(
+        self, dashboard_config_delete_all_request: "DashboardConfigDeleteAllRequest"
+    ) -> AsyncIterator["DashboardConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -1802,7 +1891,9 @@ class DashboardConfigServiceBase(ServiceBase):
 
 class GlobalDashboardConfigServiceBase(ServiceBase):
 
-    async def get_one(self, global_dashboard_config_request: "GlobalDashboardConfigRequest") -> "GlobalDashboardConfigResponse":
+    async def get_one(
+        self, global_dashboard_config_request: "GlobalDashboardConfigRequest"
+    ) -> "GlobalDashboardConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
@@ -1823,7 +1914,9 @@ class GlobalDashboardConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(self, global_dashboard_config_set_request: "GlobalDashboardConfigSetRequest") -> "GlobalDashboardConfigSetResponse":
+    async def set(
+        self, global_dashboard_config_set_request: "GlobalDashboardConfigSetRequest"
+    ) -> "GlobalDashboardConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(

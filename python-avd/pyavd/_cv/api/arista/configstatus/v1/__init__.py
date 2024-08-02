@@ -8,14 +8,23 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterator,
+    Dict,
+    List,
+    Optional,
+)
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+from ... import (
+    subscriptions as __subscriptions__,
+    time as __time__,
+)
+
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -139,11 +148,15 @@ class ConfigError(aristaproto.Message):
     """
 
     error_code: "ErrorCode" = aristaproto.enum_field(1)
-    error_msg: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    error_msg: Optional[str] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_STRING
+    )
     line_num: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
     """Line_num represents line number, if any"""
 
-    configlet_name: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    configlet_name: Optional[str] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_STRING
+    )
     """
     Configlet_name represents the originating configlet name. Configlet_name
      and line_num point to the line where config warning or config error originate.
@@ -160,13 +173,19 @@ class DiffEntry(aristaproto.Message):
     """DiffEntry represents one entry in a Diff"""
 
     op: "DiffOp" = aristaproto.enum_field(1)
-    a_line_num: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
+    a_line_num: Optional[int] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_INT32
+    )
     """line number in A this diff applies to"""
 
-    b_line_num: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
+    b_line_num: Optional[int] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_INT32
+    )
     """line number in B this diff applies to"""
 
-    b_parent_line_num: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
+    b_parent_line_num: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_INT32
+    )
     """line number of the parent command in B"""
 
     a_line: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
@@ -181,7 +200,9 @@ class DiffEntry(aristaproto.Message):
     b_filter_code: "ConfigFilterCode" = aristaproto.enum_field(8)
     """Config filter code of the line in B"""
 
-    a_parent_line_num: Optional[int] = aristaproto.message_field(9, wraps=aristaproto.TYPE_INT32)
+    a_parent_line_num: Optional[int] = aristaproto.message_field(
+        9, wraps=aristaproto.TYPE_INT32
+    )
     """line number of the parent command in A"""
 
 
@@ -199,7 +220,9 @@ class ConfigSource(aristaproto.Message):
     """
 
     source_type: "ConfigSourceType" = aristaproto.enum_field(1)
-    source_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    source_id: Optional[str] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_STRING
+    )
     """
     source_id identifier to distinguish between multiple instances of the source type
      source_id is :
@@ -221,25 +244,39 @@ class ConfigSummary(aristaproto.Message):
     """ConfigSummary represents device configuration summary."""
 
     sync: "ConfigSyncCode" = aristaproto.enum_field(1)
-    nop_lines: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
+    nop_lines: Optional[int] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_INT32
+    )
     """Number of lines with code no-operation"""
 
-    ignored_lines: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
+    ignored_lines: Optional[int] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_INT32
+    )
     """Number of lines with code IGNORE"""
 
-    added_lines: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
+    added_lines: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_INT32
+    )
     """Number of lines with code ADD"""
 
-    deleted_lines: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
+    deleted_lines: Optional[int] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_INT32
+    )
     """Number of lines with code DELETE"""
 
-    changed_lines: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT32)
+    changed_lines: Optional[int] = aristaproto.message_field(
+        6, wraps=aristaproto.TYPE_INT32
+    )
     """Number of lines with code CHANGE"""
 
-    designed_config_errors: Optional[int] = aristaproto.message_field(7, wraps=aristaproto.TYPE_INT32)
+    designed_config_errors: Optional[int] = aristaproto.message_field(
+        7, wraps=aristaproto.TYPE_INT32
+    )
     """Number of designed config errors"""
 
-    designed_config_warnings: Optional[int] = aristaproto.message_field(8, wraps=aristaproto.TYPE_INT32)
+    designed_config_warnings: Optional[int] = aristaproto.message_field(
+        8, wraps=aristaproto.TYPE_INT32
+    )
     """Number of designed config warnings"""
 
     running_config_update_time: datetime = aristaproto.message_field(9)
@@ -248,17 +285,23 @@ class ConfigSummary(aristaproto.Message):
     designed_config_update_time: datetime = aristaproto.message_field(10)
     """Timestamp at which designed config is updated"""
 
-    running_config_uri: Optional[str] = aristaproto.message_field(11, wraps=aristaproto.TYPE_STRING)
+    running_config_uri: Optional[str] = aristaproto.message_field(
+        11, wraps=aristaproto.TYPE_STRING
+    )
     """
     The HTTP URI client can use to GET running config and associated errors
     """
 
-    designed_config_uri: Optional[str] = aristaproto.message_field(12, wraps=aristaproto.TYPE_STRING)
+    designed_config_uri: Optional[str] = aristaproto.message_field(
+        12, wraps=aristaproto.TYPE_STRING
+    )
     """
     The HTTP URI client can use to GET designed config and associated errors
     """
 
-    diff_uri: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
+    diff_uri: Optional[str] = aristaproto.message_field(
+        13, wraps=aristaproto.TYPE_STRING
+    )
     """The HTTP URI client can use to GET config diff and associated errors"""
 
     digest: Optional[str] = aristaproto.message_field(14, wraps=aristaproto.TYPE_STRING)
@@ -269,7 +312,9 @@ class ConfigSummary(aristaproto.Message):
 class ConfigKey(aristaproto.Message):
     """ConfigKey uniquely identifies a config request."""
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    device_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """Device_id is the serial number of the device"""
 
     type: "ConfigType" = aristaproto.enum_field(2)
@@ -291,7 +336,9 @@ class Configuration(aristaproto.Message):
 class ConfigDiffKey(aristaproto.Message):
     """ConfigDiffKey uniquely identifies a configuration diff request"""
 
-    a_device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    a_device_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """
     A_device_id is the serial number of the device on A side (left hand side)
     """
@@ -304,7 +351,9 @@ class ConfigDiffKey(aristaproto.Message):
     A_time is the time at which to fetch config on A side (left hand side)
     """
 
-    b_device_id: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
+    b_device_id: Optional[str] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_STRING
+    )
     """
     B_device_id is the serial number of the device on B side (right hand side)
     """
@@ -333,7 +382,9 @@ class ConfigDiff(aristaproto.Message):
 class SummaryKey(aristaproto.Message):
     """SummaryKey uniquely identifies a device summary request"""
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    device_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """Device_id is the serial number of the device"""
 
 
@@ -364,19 +415,29 @@ class SecurityProfileComplianceSummary(aristaproto.Message):
     """
 
     sync: "ConfigSyncCode" = aristaproto.enum_field(1)
-    nop_lines: Optional[int] = aristaproto.message_field(2, wraps=aristaproto.TYPE_INT32)
+    nop_lines: Optional[int] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_INT32
+    )
     """nop_lines is the number of lines with code no-operation"""
 
-    ignored_lines: Optional[int] = aristaproto.message_field(3, wraps=aristaproto.TYPE_INT32)
+    ignored_lines: Optional[int] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_INT32
+    )
     """ignored_lines is the number of lines with code IGNORE"""
 
-    added_lines: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_INT32)
+    added_lines: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_INT32
+    )
     """added_lines is the number of lines with code ADD"""
 
-    deleted_lines: Optional[int] = aristaproto.message_field(5, wraps=aristaproto.TYPE_INT32)
+    deleted_lines: Optional[int] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_INT32
+    )
     """deleted_lines is the number of lines with code DELETE"""
 
-    changed_lines: Optional[int] = aristaproto.message_field(6, wraps=aristaproto.TYPE_INT32)
+    changed_lines: Optional[int] = aristaproto.message_field(
+        6, wraps=aristaproto.TYPE_INT32
+    )
     """changed_lines is the Number of lines with code CHANGE"""
 
     digest: Optional[str] = aristaproto.message_field(7, wraps=aristaproto.TYPE_STRING)
@@ -585,7 +646,9 @@ class ConfigDiffBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -747,7 +810,9 @@ class ConfigurationBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -911,7 +976,9 @@ class SecurityProfileBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1075,7 +1142,9 @@ class SecurityProfileDiffBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1239,7 +1308,9 @@ class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1250,7 +1321,9 @@ class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SecurityProfileDiffSummaryBatchedStreamResponse(aristaproto.Message):
-    responses: List["SecurityProfileDiffSummaryStreamResponse"] = aristaproto.message_field(1)
+    responses: List["SecurityProfileDiffSummaryStreamResponse"] = (
+        aristaproto.message_field(1)
+    )
     """
     Values are the values deemed relevant to the initiating request.
      The length of this structure is guaranteed to be between (inclusive) 1 and
@@ -1401,7 +1474,9 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1427,7 +1502,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "ConfigDiffResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigDiffService/GetOne",
@@ -1444,7 +1519,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigDiffSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/GetSome",
@@ -1462,7 +1537,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigDiffStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/GetAll",
@@ -1480,7 +1555,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigDiffStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/Subscribe",
@@ -1498,7 +1573,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigDiffService/GetMeta",
@@ -1515,7 +1590,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/SubscribeMeta",
@@ -1533,7 +1608,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigDiffBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/GetAllBatched",
@@ -1551,7 +1626,7 @@ class ConfigDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigDiffBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigDiffService/SubscribeBatched",
@@ -1571,7 +1646,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "ConfigurationResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigurationService/GetOne",
@@ -1588,7 +1663,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigurationSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/GetSome",
@@ -1606,7 +1681,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigurationStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/GetAll",
@@ -1624,7 +1699,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigurationStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/Subscribe",
@@ -1642,7 +1717,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.ConfigurationService/GetMeta",
@@ -1659,7 +1734,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/SubscribeMeta",
@@ -1677,7 +1752,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigurationBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/GetAllBatched",
@@ -1695,7 +1770,7 @@ class ConfigurationServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["ConfigurationBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.ConfigurationService/SubscribeBatched",
@@ -1715,7 +1790,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "SecurityProfileResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileService/GetOne",
@@ -1732,7 +1807,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileService/GetSome",
@@ -1750,7 +1825,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileService/GetAll",
@@ -1768,7 +1843,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileService/Subscribe",
@@ -1786,7 +1861,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileService/GetMeta",
@@ -1803,7 +1878,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileService/SubscribeMeta",
@@ -1821,7 +1896,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileService/GetAllBatched",
@@ -1839,7 +1914,7 @@ class SecurityProfileServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileService/SubscribeBatched",
@@ -1859,7 +1934,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "SecurityProfileDiffResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetOne",
@@ -1876,7 +1951,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetSome",
@@ -1894,7 +1969,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetAll",
@@ -1912,7 +1987,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/Subscribe",
@@ -1930,7 +2005,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetMeta",
@@ -1947,7 +2022,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/SubscribeMeta",
@@ -1965,7 +2040,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/GetAllBatched",
@@ -1983,7 +2058,7 @@ class SecurityProfileDiffServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffService/SubscribeBatched",
@@ -2003,7 +2078,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "SecurityProfileDiffSummaryResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetOne",
@@ -2020,7 +2095,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffSummarySomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetSome",
@@ -2038,7 +2113,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffSummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAll",
@@ -2056,7 +2131,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffSummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/Subscribe",
@@ -2074,7 +2149,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetMeta",
@@ -2091,7 +2166,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/SubscribeMeta",
@@ -2109,7 +2184,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffSummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAllBatched",
@@ -2127,7 +2202,7 @@ class SecurityProfileDiffSummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SecurityProfileDiffSummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SecurityProfileDiffSummaryService/SubscribeBatched",
@@ -2147,7 +2222,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "SummaryResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SummaryService/GetOne",
@@ -2164,7 +2239,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummarySomeResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SummaryService/GetSome",
@@ -2182,7 +2257,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SummaryService/GetAll",
@@ -2200,7 +2275,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SummaryService/Subscribe",
@@ -2218,7 +2293,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.configstatus.v1.SummaryService/GetMeta",
@@ -2235,7 +2310,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SummaryService/SubscribeMeta",
@@ -2253,7 +2328,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SummaryService/GetAllBatched",
@@ -2271,7 +2346,7 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.configstatus.v1.SummaryService/SubscribeBatched",
@@ -2286,31 +2361,49 @@ class SummaryServiceStub(aristaproto.ServiceStub):
 
 class ConfigDiffServiceBase(ServiceBase):
 
-    async def get_one(self, config_diff_request: "ConfigDiffRequest") -> "ConfigDiffResponse":
+    async def get_one(
+        self, config_diff_request: "ConfigDiffRequest"
+    ) -> "ConfigDiffResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, config_diff_some_request: "ConfigDiffSomeRequest") -> AsyncIterator["ConfigDiffSomeResponse"]:
+    async def get_some(
+        self, config_diff_some_request: "ConfigDiffSomeRequest"
+    ) -> AsyncIterator["ConfigDiffSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> AsyncIterator["ConfigDiffStreamResponse"]:
+    async def get_all(
+        self, config_diff_stream_request: "ConfigDiffStreamRequest"
+    ) -> AsyncIterator["ConfigDiffStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> AsyncIterator["ConfigDiffStreamResponse"]:
+    async def subscribe(
+        self, config_diff_stream_request: "ConfigDiffStreamRequest"
+    ) -> AsyncIterator["ConfigDiffStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, config_diff_stream_request: "ConfigDiffStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, config_diff_stream_request: "ConfigDiffStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, config_diff_stream_request: "ConfigDiffStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(self, config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest") -> AsyncIterator["ConfigDiffBatchedStreamResponse"]:
+    async def get_all_batched(
+        self, config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest"
+    ) -> AsyncIterator["ConfigDiffBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(self, config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest") -> AsyncIterator["ConfigDiffBatchedStreamResponse"]:
+    async def subscribe_batched(
+        self, config_diff_batched_stream_request: "ConfigDiffBatchedStreamRequest"
+    ) -> AsyncIterator["ConfigDiffBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[ConfigDiffRequest, ConfigDiffResponse]") -> None:
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[ConfigDiffRequest, ConfigDiffResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -2348,12 +2441,16 @@ class ConfigDiffServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[ConfigDiffStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2438,22 +2535,34 @@ class ConfigDiffServiceBase(ServiceBase):
 
 class ConfigurationServiceBase(ServiceBase):
 
-    async def get_one(self, configuration_request: "ConfigurationRequest") -> "ConfigurationResponse":
+    async def get_one(
+        self, configuration_request: "ConfigurationRequest"
+    ) -> "ConfigurationResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, configuration_some_request: "ConfigurationSomeRequest") -> AsyncIterator["ConfigurationSomeResponse"]:
+    async def get_some(
+        self, configuration_some_request: "ConfigurationSomeRequest"
+    ) -> AsyncIterator["ConfigurationSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, configuration_stream_request: "ConfigurationStreamRequest") -> AsyncIterator["ConfigurationStreamResponse"]:
+    async def get_all(
+        self, configuration_stream_request: "ConfigurationStreamRequest"
+    ) -> AsyncIterator["ConfigurationStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, configuration_stream_request: "ConfigurationStreamRequest") -> AsyncIterator["ConfigurationStreamResponse"]:
+    async def subscribe(
+        self, configuration_stream_request: "ConfigurationStreamRequest"
+    ) -> AsyncIterator["ConfigurationStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, configuration_stream_request: "ConfigurationStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, configuration_stream_request: "ConfigurationStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, configuration_stream_request: "ConfigurationStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, configuration_stream_request: "ConfigurationStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2507,12 +2616,16 @@ class ConfigurationServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[ConfigurationStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2597,22 +2710,34 @@ class ConfigurationServiceBase(ServiceBase):
 
 class SecurityProfileServiceBase(ServiceBase):
 
-    async def get_one(self, security_profile_request: "SecurityProfileRequest") -> "SecurityProfileResponse":
+    async def get_one(
+        self, security_profile_request: "SecurityProfileRequest"
+    ) -> "SecurityProfileResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, security_profile_some_request: "SecurityProfileSomeRequest") -> AsyncIterator["SecurityProfileSomeResponse"]:
+    async def get_some(
+        self, security_profile_some_request: "SecurityProfileSomeRequest"
+    ) -> AsyncIterator["SecurityProfileSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> AsyncIterator["SecurityProfileStreamResponse"]:
+    async def get_all(
+        self, security_profile_stream_request: "SecurityProfileStreamRequest"
+    ) -> AsyncIterator["SecurityProfileStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> AsyncIterator["SecurityProfileStreamResponse"]:
+    async def subscribe(
+        self, security_profile_stream_request: "SecurityProfileStreamRequest"
+    ) -> AsyncIterator["SecurityProfileStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, security_profile_stream_request: "SecurityProfileStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, security_profile_stream_request: "SecurityProfileStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, security_profile_stream_request: "SecurityProfileStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2764,22 +2889,34 @@ class SecurityProfileServiceBase(ServiceBase):
 
 class SecurityProfileDiffServiceBase(ServiceBase):
 
-    async def get_one(self, security_profile_diff_request: "SecurityProfileDiffRequest") -> "SecurityProfileDiffResponse":
+    async def get_one(
+        self, security_profile_diff_request: "SecurityProfileDiffRequest"
+    ) -> "SecurityProfileDiffResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, security_profile_diff_some_request: "SecurityProfileDiffSomeRequest") -> AsyncIterator["SecurityProfileDiffSomeResponse"]:
+    async def get_some(
+        self, security_profile_diff_some_request: "SecurityProfileDiffSomeRequest"
+    ) -> AsyncIterator["SecurityProfileDiffSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
+    async def get_all(
+        self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest"
+    ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
+    async def subscribe(
+        self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest"
+    ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2931,7 +3068,9 @@ class SecurityProfileDiffServiceBase(ServiceBase):
 
 class SecurityProfileDiffSummaryServiceBase(ServiceBase):
 
-    async def get_one(self, security_profile_diff_summary_request: "SecurityProfileDiffSummaryRequest") -> "SecurityProfileDiffSummaryResponse":
+    async def get_one(
+        self, security_profile_diff_summary_request: "SecurityProfileDiffSummaryRequest"
+    ) -> "SecurityProfileDiffSummaryResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(
@@ -3116,33 +3255,51 @@ class SummaryServiceBase(ServiceBase):
     async def get_one(self, summary_request: "SummaryRequest") -> "SummaryResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, summary_some_request: "SummarySomeRequest") -> AsyncIterator["SummarySomeResponse"]:
+    async def get_some(
+        self, summary_some_request: "SummarySomeRequest"
+    ) -> AsyncIterator["SummarySomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator["SummaryStreamResponse"]:
+    async def get_all(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> AsyncIterator["SummaryStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator["SummaryStreamResponse"]:
+    async def subscribe(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> AsyncIterator["SummaryStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, summary_stream_request: "SummaryStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, summary_stream_request: "SummaryStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator["SummaryBatchedStreamResponse"]:
+    async def get_all_batched(
+        self, summary_batched_stream_request: "SummaryBatchedStreamRequest"
+    ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator["SummaryBatchedStreamResponse"]:
+    async def subscribe_batched(
+        self, summary_batched_stream_request: "SummaryBatchedStreamRequest"
+    ) -> AsyncIterator["SummaryBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]") -> None:
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[SummarySomeRequest, SummarySomeResponse]") -> None:
+    async def __rpc_get_some(
+        self, stream: "grpclib.server.Stream[SummarySomeRequest, SummarySomeResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -3172,12 +3329,16 @@ class SummaryServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[SummaryStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

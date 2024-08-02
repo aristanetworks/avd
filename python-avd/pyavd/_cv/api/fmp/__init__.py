@@ -7,7 +7,10 @@
 # This file has been @generated
 
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import (
+    Dict,
+    List,
+)
 
 import aristaproto
 
@@ -191,7 +194,9 @@ class RepeatedBytes(aristaproto.Message):
 class MapInt64Double(aristaproto.Message):
     """Wrapper message for `map<int64, double>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_DOUBLE)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_DOUBLE
+    )
     """The map<int64, double> values."""
 
 
@@ -199,7 +204,9 @@ class MapInt64Double(aristaproto.Message):
 class MapInt64Float(aristaproto.Message):
     """Wrapper message for `map<int64, float>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_FLOAT)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_FLOAT
+    )
     """The map<int64, float> values."""
 
 
@@ -207,7 +214,9 @@ class MapInt64Float(aristaproto.Message):
 class MapInt64Int64(aristaproto.Message):
     """Wrapper message for `map<int64, int64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_INT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_INT64
+    )
     """The map<int64, int64> values."""
 
 
@@ -215,7 +224,9 @@ class MapInt64Int64(aristaproto.Message):
 class MapInt64UInt64(aristaproto.Message):
     """Wrapper message for `map<int64, uint64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_UINT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_UINT64
+    )
     """The map<int64, uint64> values."""
 
 
@@ -223,7 +234,9 @@ class MapInt64UInt64(aristaproto.Message):
 class MapInt64Int32(aristaproto.Message):
     """Wrapper message for `map<int64, int32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_INT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_INT32
+    )
     """The map<int64, int32> values."""
 
 
@@ -231,7 +244,9 @@ class MapInt64Int32(aristaproto.Message):
 class MapInt64UInt32(aristaproto.Message):
     """Wrapper message for `map<int64, uint32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_UINT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_UINT32
+    )
     """The map<int64, uint32> values."""
 
 
@@ -239,7 +254,9 @@ class MapInt64UInt32(aristaproto.Message):
 class MapInt64Bool(aristaproto.Message):
     """Wrapper message for `map<int64, bool>`."""
 
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_BOOL)
+    values: Dict[int, bool] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_BOOL
+    )
     """The map<int64, bool> values."""
 
 
@@ -247,7 +264,9 @@ class MapInt64Bool(aristaproto.Message):
 class MapInt64String(aristaproto.Message):
     """Wrapper message for `map<int64, string>`."""
 
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_STRING)
+    values: Dict[int, str] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_STRING
+    )
     """The map<int64, string> values."""
 
 
@@ -255,7 +274,9 @@ class MapInt64String(aristaproto.Message):
 class MapInt64Bytes(aristaproto.Message):
     """Wrapper message for `map<int64, bytes>`."""
 
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_BYTES)
+    values: Dict[int, bytes] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT64, aristaproto.TYPE_BYTES
+    )
     """The map<int64, bytes> values."""
 
 
@@ -263,7 +284,9 @@ class MapInt64Bytes(aristaproto.Message):
 class MapUInt64Double(aristaproto.Message):
     """Wrapper message for `map<uint64, double>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_DOUBLE)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_DOUBLE
+    )
     """The map<uint64, double> values."""
 
 
@@ -271,7 +294,9 @@ class MapUInt64Double(aristaproto.Message):
 class MapUInt64Float(aristaproto.Message):
     """Wrapper message for `map<uint64, float>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_FLOAT)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_FLOAT
+    )
     """The map<uint64, float> values."""
 
 
@@ -279,7 +304,9 @@ class MapUInt64Float(aristaproto.Message):
 class MapUInt64Int64(aristaproto.Message):
     """Wrapper message for `map<uint64, int64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_INT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_INT64
+    )
     """The map<uint64, int64> values."""
 
 
@@ -287,7 +314,9 @@ class MapUInt64Int64(aristaproto.Message):
 class MapUInt64UInt64(aristaproto.Message):
     """Wrapper message for `map<uint64, uint64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT64
+    )
     """The map<uint64, uint64> values."""
 
 
@@ -295,7 +324,9 @@ class MapUInt64UInt64(aristaproto.Message):
 class MapUInt64Int32(aristaproto.Message):
     """Wrapper message for `map<uint64, int32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_INT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_INT32
+    )
     """The map<uint64, int32> values."""
 
 
@@ -303,7 +334,9 @@ class MapUInt64Int32(aristaproto.Message):
 class MapUInt64UInt32(aristaproto.Message):
     """Wrapper message for `map<uint64, uint32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_UINT32
+    )
     """The map<uint64, uint32> values."""
 
 
@@ -311,7 +344,9 @@ class MapUInt64UInt32(aristaproto.Message):
 class MapUInt64Bool(aristaproto.Message):
     """Wrapper message for `map<uint64, bool>`."""
 
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_BOOL)
+    values: Dict[int, bool] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_BOOL
+    )
     """The map<uint64, bool> values."""
 
 
@@ -319,7 +354,9 @@ class MapUInt64Bool(aristaproto.Message):
 class MapUInt64String(aristaproto.Message):
     """Wrapper message for `map<uint64, string>`."""
 
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_STRING)
+    values: Dict[int, str] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_STRING
+    )
     """The map<uint64, string> values."""
 
 
@@ -327,7 +364,9 @@ class MapUInt64String(aristaproto.Message):
 class MapUInt64Bytes(aristaproto.Message):
     """Wrapper message for `map<uint64, bytes>`."""
 
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_UINT64, aristaproto.TYPE_BYTES)
+    values: Dict[int, bytes] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT64, aristaproto.TYPE_BYTES
+    )
     """The map<uint64, bytes> values."""
 
 
@@ -335,7 +374,9 @@ class MapUInt64Bytes(aristaproto.Message):
 class MapInt32Double(aristaproto.Message):
     """Wrapper message for `map<int32, double>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_DOUBLE)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_DOUBLE
+    )
     """The map<int32, double> values."""
 
 
@@ -343,7 +384,9 @@ class MapInt32Double(aristaproto.Message):
 class MapInt32Float(aristaproto.Message):
     """Wrapper message for `map<int32, float>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_FLOAT)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_FLOAT
+    )
     """The map<int32, float> values."""
 
 
@@ -351,7 +394,9 @@ class MapInt32Float(aristaproto.Message):
 class MapInt32Int64(aristaproto.Message):
     """Wrapper message for `map<int32, int64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_INT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_INT64
+    )
     """The map<int32, int64> values."""
 
 
@@ -359,7 +404,9 @@ class MapInt32Int64(aristaproto.Message):
 class MapInt32UInt64(aristaproto.Message):
     """Wrapper message for `map<int32, uint64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_UINT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_UINT64
+    )
     """The map<int32, uint64> values."""
 
 
@@ -367,7 +414,9 @@ class MapInt32UInt64(aristaproto.Message):
 class MapInt32Int32(aristaproto.Message):
     """Wrapper message for `map<int32, int32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_INT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_INT32
+    )
     """The map<int32, int32> values."""
 
 
@@ -375,7 +424,9 @@ class MapInt32Int32(aristaproto.Message):
 class MapInt32UInt32(aristaproto.Message):
     """Wrapper message for `map<int32, uint32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_UINT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_UINT32
+    )
     """The map<int32, uint32> values."""
 
 
@@ -383,7 +434,9 @@ class MapInt32UInt32(aristaproto.Message):
 class MapInt32Bool(aristaproto.Message):
     """Wrapper message for `map<int32, bool>`."""
 
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_BOOL)
+    values: Dict[int, bool] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_BOOL
+    )
     """The map<int32, bool> values."""
 
 
@@ -391,7 +444,9 @@ class MapInt32Bool(aristaproto.Message):
 class MapInt32String(aristaproto.Message):
     """Wrapper message for `map<int32, string>`."""
 
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_STRING)
+    values: Dict[int, str] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_STRING
+    )
     """The map<int32, string> values."""
 
 
@@ -399,7 +454,9 @@ class MapInt32String(aristaproto.Message):
 class MapInt32Bytes(aristaproto.Message):
     """Wrapper message for `map<int32, bytes>`."""
 
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_INT32, aristaproto.TYPE_BYTES)
+    values: Dict[int, bytes] = aristaproto.map_field(
+        1, aristaproto.TYPE_INT32, aristaproto.TYPE_BYTES
+    )
     """The map<int32, bytes> values."""
 
 
@@ -407,7 +464,9 @@ class MapInt32Bytes(aristaproto.Message):
 class MapUInt32Double(aristaproto.Message):
     """Wrapper message for `map<uint32, double>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_DOUBLE)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_DOUBLE
+    )
     """The map<uint32, double> values."""
 
 
@@ -415,7 +474,9 @@ class MapUInt32Double(aristaproto.Message):
 class MapUInt32Float(aristaproto.Message):
     """Wrapper message for `map<uint32, float>`."""
 
-    values: Dict[int, float] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_FLOAT)
+    values: Dict[int, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_FLOAT
+    )
     """The map<uint32, float> values."""
 
 
@@ -423,7 +484,9 @@ class MapUInt32Float(aristaproto.Message):
 class MapUInt32Int64(aristaproto.Message):
     """Wrapper message for `map<uint32, int64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_INT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_INT64
+    )
     """The map<uint32, int64> values."""
 
 
@@ -431,7 +494,9 @@ class MapUInt32Int64(aristaproto.Message):
 class MapUInt32UInt64(aristaproto.Message):
     """Wrapper message for `map<uint32, uint64>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT64)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT64
+    )
     """The map<uint32, uint64> values."""
 
 
@@ -439,7 +504,9 @@ class MapUInt32UInt64(aristaproto.Message):
 class MapUInt32Int32(aristaproto.Message):
     """Wrapper message for `map<uint32, int32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_INT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_INT32
+    )
     """The map<uint32, int32> values."""
 
 
@@ -447,7 +514,9 @@ class MapUInt32Int32(aristaproto.Message):
 class MapUInt32UInt32(aristaproto.Message):
     """Wrapper message for `map<uint32, uint32>`."""
 
-    values: Dict[int, int] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT32)
+    values: Dict[int, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_UINT32
+    )
     """The map<uint32, uint32> values."""
 
 
@@ -455,7 +524,9 @@ class MapUInt32UInt32(aristaproto.Message):
 class MapUInt32Bool(aristaproto.Message):
     """Wrapper message for `map<uint32, bool>`."""
 
-    values: Dict[int, bool] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_BOOL)
+    values: Dict[int, bool] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_BOOL
+    )
     """The map<uint32, bool> values."""
 
 
@@ -463,7 +534,9 @@ class MapUInt32Bool(aristaproto.Message):
 class MapUInt32String(aristaproto.Message):
     """Wrapper message for `map<uint32, string>`."""
 
-    values: Dict[int, str] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_STRING)
+    values: Dict[int, str] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_STRING
+    )
     """The map<uint32, string> values."""
 
 
@@ -471,7 +544,9 @@ class MapUInt32String(aristaproto.Message):
 class MapUInt32Bytes(aristaproto.Message):
     """Wrapper message for `map<uint32, bytes>`."""
 
-    values: Dict[int, bytes] = aristaproto.map_field(1, aristaproto.TYPE_UINT32, aristaproto.TYPE_BYTES)
+    values: Dict[int, bytes] = aristaproto.map_field(
+        1, aristaproto.TYPE_UINT32, aristaproto.TYPE_BYTES
+    )
     """The map<uint32, bytes> values."""
 
 
@@ -479,7 +554,9 @@ class MapUInt32Bytes(aristaproto.Message):
 class MapBoolDouble(aristaproto.Message):
     """Wrapper message for `map<bool, double>`."""
 
-    values: Dict[bool, float] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_DOUBLE)
+    values: Dict[bool, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_DOUBLE
+    )
     """The map<bool, double> values."""
 
 
@@ -487,7 +564,9 @@ class MapBoolDouble(aristaproto.Message):
 class MapBoolFloat(aristaproto.Message):
     """Wrapper message for `map<bool, float>`."""
 
-    values: Dict[bool, float] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_FLOAT)
+    values: Dict[bool, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_FLOAT
+    )
     """The map<bool, float> values."""
 
 
@@ -495,7 +574,9 @@ class MapBoolFloat(aristaproto.Message):
 class MapBoolInt64(aristaproto.Message):
     """Wrapper message for `map<bool, int64>`."""
 
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_INT64)
+    values: Dict[bool, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_INT64
+    )
     """The map<bool, int64> values."""
 
 
@@ -503,7 +584,9 @@ class MapBoolInt64(aristaproto.Message):
 class MapBoolUInt64(aristaproto.Message):
     """Wrapper message for `map<bool, uint64>`."""
 
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT64)
+    values: Dict[bool, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT64
+    )
     """The map<bool, uint64> values."""
 
 
@@ -511,7 +594,9 @@ class MapBoolUInt64(aristaproto.Message):
 class MapBoolInt32(aristaproto.Message):
     """Wrapper message for `map<bool, int32>`."""
 
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_INT32)
+    values: Dict[bool, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_INT32
+    )
     """The map<bool, int32> values."""
 
 
@@ -519,7 +604,9 @@ class MapBoolInt32(aristaproto.Message):
 class MapBoolUInt32(aristaproto.Message):
     """Wrapper message for `map<bool, uint32>`."""
 
-    values: Dict[bool, int] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT32)
+    values: Dict[bool, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_UINT32
+    )
     """The map<bool, uint32> values."""
 
 
@@ -527,7 +614,9 @@ class MapBoolUInt32(aristaproto.Message):
 class MapBoolBool(aristaproto.Message):
     """Wrapper message for `map<bool, bool>`."""
 
-    values: Dict[bool, bool] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_BOOL)
+    values: Dict[bool, bool] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_BOOL
+    )
     """The map<bool, bool> values."""
 
 
@@ -535,7 +624,9 @@ class MapBoolBool(aristaproto.Message):
 class MapBoolString(aristaproto.Message):
     """Wrapper message for `map<bool, string>`."""
 
-    values: Dict[bool, str] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_STRING)
+    values: Dict[bool, str] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_STRING
+    )
     """The map<bool, string> values."""
 
 
@@ -543,7 +634,9 @@ class MapBoolString(aristaproto.Message):
 class MapBoolBytes(aristaproto.Message):
     """Wrapper message for `map<bool, bytes>`."""
 
-    values: Dict[bool, bytes] = aristaproto.map_field(1, aristaproto.TYPE_BOOL, aristaproto.TYPE_BYTES)
+    values: Dict[bool, bytes] = aristaproto.map_field(
+        1, aristaproto.TYPE_BOOL, aristaproto.TYPE_BYTES
+    )
     """The map<bool, bytes> values."""
 
 
@@ -551,7 +644,9 @@ class MapBoolBytes(aristaproto.Message):
 class MapStringDouble(aristaproto.Message):
     """Wrapper message for `map<string, double>`."""
 
-    values: Dict[str, float] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_DOUBLE)
+    values: Dict[str, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_DOUBLE
+    )
     """The map<string, double> values."""
 
 
@@ -559,7 +654,9 @@ class MapStringDouble(aristaproto.Message):
 class MapStringFloat(aristaproto.Message):
     """Wrapper message for `map<string, float>`."""
 
-    values: Dict[str, float] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_FLOAT)
+    values: Dict[str, float] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_FLOAT
+    )
     """The map<string, float> values."""
 
 
@@ -567,7 +664,9 @@ class MapStringFloat(aristaproto.Message):
 class MapStringInt64(aristaproto.Message):
     """Wrapper message for `map<string, int64>`."""
 
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_INT64)
+    values: Dict[str, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_INT64
+    )
     """The map<string, int64> values."""
 
 
@@ -575,7 +674,9 @@ class MapStringInt64(aristaproto.Message):
 class MapStringUInt64(aristaproto.Message):
     """Wrapper message for `map<string, uint64>`."""
 
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_UINT64)
+    values: Dict[str, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_UINT64
+    )
     """The map<string, uint64> values."""
 
 
@@ -583,7 +684,9 @@ class MapStringUInt64(aristaproto.Message):
 class MapStringInt32(aristaproto.Message):
     """Wrapper message for `map<string, int32>`."""
 
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_INT32)
+    values: Dict[str, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_INT32
+    )
     """The map<string, int32> values."""
 
 
@@ -591,7 +694,9 @@ class MapStringInt32(aristaproto.Message):
 class MapStringUInt32(aristaproto.Message):
     """Wrapper message for `map<string, uint32>`."""
 
-    values: Dict[str, int] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_UINT32)
+    values: Dict[str, int] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_UINT32
+    )
     """The map<string, uint32> values."""
 
 
@@ -599,7 +704,9 @@ class MapStringUInt32(aristaproto.Message):
 class MapStringBool(aristaproto.Message):
     """Wrapper message for `map<string, bool>`."""
 
-    values: Dict[str, bool] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL)
+    values: Dict[str, bool] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_BOOL
+    )
     """The map<string, bool> values."""
 
 
@@ -607,7 +714,9 @@ class MapStringBool(aristaproto.Message):
 class MapStringString(aristaproto.Message):
     """Wrapper message for `map<string, string>`."""
 
-    values: Dict[str, str] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING)
+    values: Dict[str, str] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_STRING
+    )
     """The map<string, string> values."""
 
 
@@ -615,5 +724,7 @@ class MapStringString(aristaproto.Message):
 class MapStringBytes(aristaproto.Message):
     """Wrapper message for `map<string, bytes>`."""
 
-    values: Dict[str, bytes] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_BYTES)
+    values: Dict[str, bytes] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_BYTES
+    )
     """The map<string, bytes> values."""

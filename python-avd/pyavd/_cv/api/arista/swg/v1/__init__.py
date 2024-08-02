@@ -8,15 +8,24 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterator,
+    Dict,
+    List,
+    Optional,
+)
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
 from .... import fmp as ___fmp__
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+from ... import (
+    subscriptions as __subscriptions__,
+    time as __time__,
+)
+
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -38,7 +47,9 @@ class ServiceName(aristaproto.Enum):
 class SwgKey(aristaproto.Message):
     """SwgKey identifies a device and a secure web gateway service"""
 
-    device_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    device_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """device_id is id of a device"""
 
     service_name: "ServiceName" = aristaproto.enum_field(2)
@@ -58,10 +69,14 @@ class Location(aristaproto.Message):
     country: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """country is the country where a device or endpoint is located"""
 
-    latitude: Optional[float] = aristaproto.message_field(4, wraps=aristaproto.TYPE_FLOAT)
+    latitude: Optional[float] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_FLOAT
+    )
     """latitude is the latitude of a device's or an endpoint's location"""
 
-    longitude: Optional[float] = aristaproto.message_field(5, wraps=aristaproto.TYPE_FLOAT)
+    longitude: Optional[float] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_FLOAT
+    )
     """longitude is the longitude of a device's or an endpoint's location"""
 
 
@@ -72,7 +87,9 @@ class VpnEndpoint(aristaproto.Message):
     ip_address: "___fmp__.IpAddress" = aristaproto.message_field(1)
     """ip_address is the IP address of a SWG endpoint"""
 
-    datacenter: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
+    datacenter: Optional[str] = aristaproto.message_field(
+        2, wraps=aristaproto.TYPE_STRING
+    )
     """datacenter of a SWG endpoint"""
 
     endpoint_location: "Location" = aristaproto.message_field(3)
@@ -83,7 +100,9 @@ class VpnEndpoint(aristaproto.Message):
 class VpnEndpoints(aristaproto.Message):
     """VpnEndpoints represents a collection of SWG endpoints"""
 
-    values: Dict[str, "VpnEndpoint"] = aristaproto.map_field(1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE)
+    values: Dict[str, "VpnEndpoint"] = aristaproto.map_field(
+        1, aristaproto.TYPE_STRING, aristaproto.TYPE_MESSAGE
+    )
     """
     values is a map of vpn endpoints.
      Valid keys are "primary", "secondary" and "tertiary"
@@ -100,7 +119,9 @@ class EndpointStatus(aristaproto.Message):
     vpn_endpoints: "VpnEndpoints" = aristaproto.message_field(2)
     """vpn_endpoints represents a collection of SWG endpoints"""
 
-    cloud_name: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
+    cloud_name: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
     """
     cloud_name represents the cloud name assigned to the user
      by the SWG administrator
@@ -285,7 +306,9 @@ class EndpointConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -563,7 +586,9 @@ class EndpointStatusBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -589,7 +614,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "EndpointConfigResponse":
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/GetOne",
@@ -606,7 +631,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/GetSome",
@@ -624,7 +649,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/GetAll",
@@ -642,7 +667,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/Subscribe",
@@ -660,7 +685,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/GetMeta",
@@ -677,7 +702,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/SubscribeMeta",
@@ -695,7 +720,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "EndpointConfigSetResponse":
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/Set",
@@ -712,7 +737,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/SetSome",
@@ -730,7 +755,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "EndpointConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/Delete",
@@ -747,7 +772,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/DeleteSome",
@@ -765,7 +790,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/DeleteAll",
@@ -783,7 +808,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/GetAllBatched",
@@ -801,7 +826,7 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/SubscribeBatched",
@@ -821,7 +846,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "EndpointStatusResponse":
         return await self._unary_unary(
             "/arista.swg.v1.EndpointStatusService/GetOne",
@@ -838,7 +863,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointStatusSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/GetSome",
@@ -856,7 +881,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointStatusStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/GetAll",
@@ -874,7 +899,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointStatusStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/Subscribe",
@@ -892,7 +917,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.swg.v1.EndpointStatusService/GetMeta",
@@ -909,7 +934,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/SubscribeMeta",
@@ -927,7 +952,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointStatusBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/GetAllBatched",
@@ -945,7 +970,7 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["EndpointStatusBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/SubscribeBatched",
@@ -960,37 +985,59 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
 
 class EndpointConfigServiceBase(ServiceBase):
 
-    async def get_one(self, endpoint_config_request: "EndpointConfigRequest") -> "EndpointConfigResponse":
+    async def get_one(
+        self, endpoint_config_request: "EndpointConfigRequest"
+    ) -> "EndpointConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, endpoint_config_some_request: "EndpointConfigSomeRequest") -> AsyncIterator["EndpointConfigSomeResponse"]:
+    async def get_some(
+        self, endpoint_config_some_request: "EndpointConfigSomeRequest"
+    ) -> AsyncIterator["EndpointConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> AsyncIterator["EndpointConfigStreamResponse"]:
+    async def get_all(
+        self, endpoint_config_stream_request: "EndpointConfigStreamRequest"
+    ) -> AsyncIterator["EndpointConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> AsyncIterator["EndpointConfigStreamResponse"]:
+    async def subscribe(
+        self, endpoint_config_stream_request: "EndpointConfigStreamRequest"
+    ) -> AsyncIterator["EndpointConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, endpoint_config_stream_request: "EndpointConfigStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, endpoint_config_stream_request: "EndpointConfigStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(self, endpoint_config_set_request: "EndpointConfigSetRequest") -> "EndpointConfigSetResponse":
+    async def set(
+        self, endpoint_config_set_request: "EndpointConfigSetRequest"
+    ) -> "EndpointConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(self, endpoint_config_set_some_request: "EndpointConfigSetSomeRequest") -> AsyncIterator["EndpointConfigSetSomeResponse"]:
+    async def set_some(
+        self, endpoint_config_set_some_request: "EndpointConfigSetSomeRequest"
+    ) -> AsyncIterator["EndpointConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(self, endpoint_config_delete_request: "EndpointConfigDeleteRequest") -> "EndpointConfigDeleteResponse":
+    async def delete(
+        self, endpoint_config_delete_request: "EndpointConfigDeleteRequest"
+    ) -> "EndpointConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(self, endpoint_config_delete_some_request: "EndpointConfigDeleteSomeRequest") -> AsyncIterator["EndpointConfigDeleteSomeResponse"]:
+    async def delete_some(
+        self, endpoint_config_delete_some_request: "EndpointConfigDeleteSomeRequest"
+    ) -> AsyncIterator["EndpointConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(self, endpoint_config_delete_all_request: "EndpointConfigDeleteAllRequest") -> AsyncIterator["EndpointConfigDeleteAllResponse"]:
+    async def delete_all(
+        self, endpoint_config_delete_all_request: "EndpointConfigDeleteAllRequest"
+    ) -> AsyncIterator["EndpointConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -1046,12 +1093,16 @@ class EndpointConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[EndpointConfigStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[EndpointConfigStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[EndpointConfigStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[EndpointConfigStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -1215,22 +1266,34 @@ class EndpointConfigServiceBase(ServiceBase):
 
 class EndpointStatusServiceBase(ServiceBase):
 
-    async def get_one(self, endpoint_status_request: "EndpointStatusRequest") -> "EndpointStatusResponse":
+    async def get_one(
+        self, endpoint_status_request: "EndpointStatusRequest"
+    ) -> "EndpointStatusResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, endpoint_status_some_request: "EndpointStatusSomeRequest") -> AsyncIterator["EndpointStatusSomeResponse"]:
+    async def get_some(
+        self, endpoint_status_some_request: "EndpointStatusSomeRequest"
+    ) -> AsyncIterator["EndpointStatusSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> AsyncIterator["EndpointStatusStreamResponse"]:
+    async def get_all(
+        self, endpoint_status_stream_request: "EndpointStatusStreamRequest"
+    ) -> AsyncIterator["EndpointStatusStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> AsyncIterator["EndpointStatusStreamResponse"]:
+    async def subscribe(
+        self, endpoint_status_stream_request: "EndpointStatusStreamRequest"
+    ) -> AsyncIterator["EndpointStatusStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, endpoint_status_stream_request: "EndpointStatusStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, endpoint_status_stream_request: "EndpointStatusStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -1286,12 +1349,16 @@ class EndpointStatusServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[EndpointStatusStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[EndpointStatusStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[EndpointStatusStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[EndpointStatusStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,

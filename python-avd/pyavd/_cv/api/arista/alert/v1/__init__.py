@@ -7,16 +7,28 @@
 # This file has been @generated
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
-from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
+from datetime import (
+    datetime,
+    timedelta,
+)
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterator,
+    Dict,
+    List,
+    Optional,
+)
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
 from .... import fmp as ___fmp__
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+from ... import (
+    subscriptions as __subscriptions__,
+    time as __time__,
+)
+
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -563,6 +575,9 @@ class Settings(aristaproto.Message):
     zoom: "ZoomSettings" = aristaproto.message_field(19)
     """zoom is the global default settings for zoom"""
 
+    webhook: "WebhookSettings" = aristaproto.message_field(20)
+    """webhook is the auth settings for webhook"""
+
 
 @dataclass(eq=False, repr=False)
 class EmailSettings(aristaproto.Message):
@@ -605,7 +620,7 @@ class EmailSettings(aristaproto.Message):
     azure_o_auth: "AzureOAuth" = aristaproto.message_field(7)
     """
     azure_o_auth used for auth when using an Azure smtp server
-     uses auth_username
+     uses auth_username, scopes is not required as we use https://outlook.office365.com/.default
     """
 
 
@@ -633,7 +648,14 @@ class AzureOAuth(aristaproto.Message):
     auth_uri: Optional[str] = aristaproto.message_field(
         4, wraps=aristaproto.TYPE_STRING
     )
-    """auth_uri is the URI used for OAuth"""
+    """
+    auth_uri is the URI used for OAuth
+     this should always be https://login.microsoftonline.com/ unless using a very custom
+     set up, where the Azure enviroment is not running on microsoft servers
+    """
+
+    scopes: "___fmp__.RepeatedString" = aristaproto.message_field(5)
+    """scopes are the scopes that auth is granted for"""
 
 
 @dataclass(eq=False, repr=False)
@@ -742,6 +764,17 @@ class MsTeamsSettings(aristaproto.Message):
 
     url: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
     """url is the url of the webhook to send alerts to"""
+
+
+@dataclass(eq=False, repr=False)
+class WebhookSettings(aristaproto.Message):
+    """WebhookSettings contain the settings for sending alerts to a Webhook"""
+
+    azure_o_auth: "AzureOAuth" = aristaproto.message_field(1)
+    """
+    azure_o_auth used for auth when using an Azure smtp server
+     uses auth_username
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -1456,6 +1489,11 @@ class WebhookEndpoint(aristaproto.Message):
      alert when true.
     """
 
+    settings_override: "WebhookSettings" = aristaproto.message_field(6)
+    """
+    settings_override is the override for the webhook global endpoint settings
+    """
+
 
 @dataclass(eq=False, repr=False)
 class SlackEndpoint(aristaproto.Message):
@@ -1943,48 +1981,6 @@ class AlertStreamResponse(aristaproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class AlertBatchedStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-     If this field is populated, at least one of the two time fields are required.
-
-     For GetAll, the fields start and end can be used as follows:
-
-       * end: Returns the state of each Alert at end.
-         * Each Alert response is fully-specified (all fields set).
-       * start: Returns the state of each Alert at start, followed by updates until now.
-         * Each Alert response at start is fully-specified, but updates may be partial.
-       * start and end: Returns the state of each Alert at start, followed by updates
-         until end.
-         * Each Alert response at start is fully-specified, but updates until end may
-           be partial.
-
-     This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-     MaxMessages is required to be at least 1.
-     The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-     INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertBatchedStreamResponse(aristaproto.Message):
-    responses: List["AlertStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-     The length of this structure is guaranteed to be between (inclusive) 1 and
-     min(req.max_messages, INTERNAL_BATCH_LIMIT).
-    """
-
-
-@dataclass(eq=False, repr=False)
 class AlertConfigRequest(aristaproto.Message):
     time: datetime = aristaproto.message_field(2)
     """
@@ -2050,48 +2046,6 @@ class AlertConfigStreamResponse(aristaproto.Message):
      Under non-subscribe requests, this value should always be INITIAL. In a subscription,
      once all initial data is streamed and the client begins to receive modification updates,
      you should not see INITIAL again.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertConfigBatchedStreamRequest(aristaproto.Message):
-    time: "__time__.TimeBounds" = aristaproto.message_field(3)
-    """
-    TimeRange allows limiting response data to within a specified time window.
-     If this field is populated, at least one of the two time fields are required.
-
-     For GetAll, the fields start and end can be used as follows:
-
-       * end: Returns the state of each AlertConfig at end.
-         * Each AlertConfig response is fully-specified (all fields set).
-       * start: Returns the state of each AlertConfig at start, followed by updates until now.
-         * Each AlertConfig response at start is fully-specified, but updates may be partial.
-       * start and end: Returns the state of each AlertConfig at start, followed by updates
-         until end.
-         * Each AlertConfig response at start is fully-specified, but updates until end may
-           be partial.
-
-     This field is not allowed in the Subscribe RPC.
-    """
-
-    max_messages: Optional[int] = aristaproto.message_field(
-        4, wraps=aristaproto.TYPE_UINT32
-    )
-    """
-    MaxMessages limits the maximum number of messages that can be contained in one batch.
-     MaxMessages is required to be at least 1.
-     The maximum number of messages in a batch is min(max_messages, INTERNAL_BATCH_LIMIT)
-     INTERNAL_BATCH_LIMIT is set based on the maximum message size.
-    """
-
-
-@dataclass(eq=False, repr=False)
-class AlertConfigBatchedStreamResponse(aristaproto.Message):
-    responses: List["AlertConfigStreamResponse"] = aristaproto.message_field(1)
-    """
-    Values are the values deemed relevant to the initiating request.
-     The length of this structure is guaranteed to be between (inclusive) 1 and
-     min(req.max_messages, INTERNAL_BATCH_LIMIT).
     """
 
 
@@ -2599,42 +2553,6 @@ class AlertServiceStub(aristaproto.ServiceStub):
         ):
             yield response
 
-    async def get_all_batched(
-        self,
-        alert_batched_stream_request: "AlertBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
-    ) -> AsyncIterator["AlertBatchedStreamResponse"]:
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertService/GetAllBatched",
-            alert_batched_stream_request,
-            AlertBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        alert_batched_stream_request: "AlertBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
-    ) -> AsyncIterator["AlertBatchedStreamResponse"]:
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertService/SubscribeBatched",
-            alert_batched_stream_request,
-            AlertBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
 
 class AlertConfigServiceStub(aristaproto.ServiceStub):
     async def get_one(
@@ -2724,42 +2642,6 @@ class AlertConfigServiceStub(aristaproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
-
-    async def get_all_batched(
-        self,
-        alert_config_batched_stream_request: "AlertConfigBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
-    ) -> AsyncIterator["AlertConfigBatchedStreamResponse"]:
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertConfigService/GetAllBatched",
-            alert_config_batched_stream_request,
-            AlertConfigBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
-
-    async def subscribe_batched(
-        self,
-        alert_config_batched_stream_request: "AlertConfigBatchedStreamRequest",
-        *,
-        timeout: Optional[float] = None,
-        deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None
-    ) -> AsyncIterator["AlertConfigBatchedStreamResponse"]:
-        async for response in self._unary_stream(
-            "/arista.alert.v1.AlertConfigService/SubscribeBatched",
-            alert_config_batched_stream_request,
-            AlertConfigBatchedStreamResponse,
-            timeout=timeout,
-            deadline=deadline,
-            metadata=metadata,
-        ):
-            yield response
 
 
 class DefaultTemplateServiceStub(aristaproto.ServiceStub):
@@ -3158,16 +3040,6 @@ class AlertServiceBase(ServiceBase):
     ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(
-        self, alert_batched_stream_request: "AlertBatchedStreamRequest"
-    ) -> AsyncIterator["AlertBatchedStreamResponse"]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, alert_batched_stream_request: "AlertBatchedStreamRequest"
-    ) -> AsyncIterator["AlertBatchedStreamResponse"]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
     async def __rpc_get_one(
         self, stream: "grpclib.server.Stream[AlertRequest, AlertResponse]"
     ) -> None:
@@ -3205,28 +3077,6 @@ class AlertServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all_batched(
-        self,
-        stream: "grpclib.server.Stream[AlertBatchedStreamRequest, AlertBatchedStreamResponse]",
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self,
-        stream: "grpclib.server.Stream[AlertBatchedStreamRequest, AlertBatchedStreamResponse]",
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/arista.alert.v1.AlertService/GetOne": grpclib.const.Handler(
@@ -3252,18 +3102,6 @@ class AlertServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_STREAM,
                 AlertStreamRequest,
                 MetaResponse,
-            ),
-            "/arista.alert.v1.AlertService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertBatchedStreamRequest,
-                AlertBatchedStreamResponse,
-            ),
-            "/arista.alert.v1.AlertService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertBatchedStreamRequest,
-                AlertBatchedStreamResponse,
             ),
         }
 
@@ -3293,16 +3131,6 @@ class AlertConfigServiceBase(ServiceBase):
     async def set(
         self, alert_config_set_request: "AlertConfigSetRequest"
     ) -> "AlertConfigSetResponse":
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def get_all_batched(
-        self, alert_config_batched_stream_request: "AlertConfigBatchedStreamRequest"
-    ) -> AsyncIterator["AlertConfigBatchedStreamResponse"]:
-        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
-
-    async def subscribe_batched(
-        self, alert_config_batched_stream_request: "AlertConfigBatchedStreamRequest"
-    ) -> AsyncIterator["AlertConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(
@@ -3352,28 +3180,6 @@ class AlertConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
-    async def __rpc_get_all_batched(
-        self,
-        stream: "grpclib.server.Stream[AlertConfigBatchedStreamRequest, AlertConfigBatchedStreamResponse]",
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.get_all_batched,
-            stream,
-            request,
-        )
-
-    async def __rpc_subscribe_batched(
-        self,
-        stream: "grpclib.server.Stream[AlertConfigBatchedStreamRequest, AlertConfigBatchedStreamResponse]",
-    ) -> None:
-        request = await stream.recv_message()
-        await self._call_rpc_handler_server_stream(
-            self.subscribe_batched,
-            stream,
-            request,
-        )
-
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/arista.alert.v1.AlertConfigService/GetOne": grpclib.const.Handler(
@@ -3405,18 +3211,6 @@ class AlertConfigServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 AlertConfigSetRequest,
                 AlertConfigSetResponse,
-            ),
-            "/arista.alert.v1.AlertConfigService/GetAllBatched": grpclib.const.Handler(
-                self.__rpc_get_all_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertConfigBatchedStreamRequest,
-                AlertConfigBatchedStreamResponse,
-            ),
-            "/arista.alert.v1.AlertConfigService/SubscribeBatched": grpclib.const.Handler(
-                self.__rpc_subscribe_batched,
-                grpclib.const.Cardinality.UNARY_STREAM,
-                AlertConfigBatchedStreamRequest,
-                AlertConfigBatchedStreamResponse,
             ),
         }
 

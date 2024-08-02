@@ -8,15 +8,24 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator, Dict, List, Optional
+from typing import (
+    TYPE_CHECKING,
+    AsyncIterator,
+    Dict,
+    List,
+    Optional,
+)
 
 import aristaproto
 import grpclib
 from aristaproto.grpc.grpclib_server import ServiceBase
 
 from .... import fmp as ___fmp__
-from ... import subscriptions as __subscriptions__
-from ... import time as __time__
+from ... import (
+    subscriptions as __subscriptions__,
+    time as __time__,
+)
+
 
 if TYPE_CHECKING:
     import grpclib.server
@@ -102,7 +111,9 @@ class CreatorType(aristaproto.Enum):
 class TagKey(aristaproto.Message):
     """TagKey uniquely identifies a tag."""
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    workspace_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """
     workspace_id is the ID of a workspace. The special ID ""
      identifies the location where merged tags reside.
@@ -170,7 +181,9 @@ class TagAssignmentKey(aristaproto.Message):
      a tag and a network element.
     """
 
-    workspace_id: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    workspace_id: Optional[str] = aristaproto.message_field(
+        1, wraps=aristaproto.TYPE_STRING
+    )
     """
     workspace_id is the ID of a workspace. The special ID ""
      identifies the location where merged assignments reside.
@@ -191,10 +204,14 @@ class TagAssignmentKey(aristaproto.Message):
     value: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
     """value is the value of a tag."""
 
-    device_id: Optional[str] = aristaproto.message_field(5, wraps=aristaproto.TYPE_STRING)
+    device_id: Optional[str] = aristaproto.message_field(
+        5, wraps=aristaproto.TYPE_STRING
+    )
     """device_id identifies a device."""
 
-    interface_id: Optional[str] = aristaproto.message_field(6, wraps=aristaproto.TYPE_STRING)
+    interface_id: Optional[str] = aristaproto.message_field(
+        6, wraps=aristaproto.TYPE_STRING
+    )
     """interface_id identifies an interface on a device."""
 
     element_sub_type: "ElementSubType" = aristaproto.enum_field(7)
@@ -406,7 +423,9 @@ class TagBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -568,7 +587,9 @@ class TagAssignmentBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -732,7 +753,9 @@ class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1010,7 +1033,9 @@ class TagConfigBatchedStreamRequest(aristaproto.Message):
      This field is not allowed in the Subscribe RPC.
     """
 
-    max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
+    max_messages: Optional[int] = aristaproto.message_field(
+        4, wraps=aristaproto.TYPE_UINT32
+    )
     """
     MaxMessages limits the maximum number of messages that can be contained in one batch.
      MaxMessages is required to be at least 1.
@@ -1143,7 +1168,12 @@ class TagConfigDeleteAllResponse(aristaproto.Message):
 
 class TagServiceStub(aristaproto.ServiceStub):
     async def get_one(
-        self, tag_request: "TagRequest", *, timeout: Optional[float] = None, deadline: Optional["Deadline"] = None, metadata: Optional["MetadataLike"] = None
+        self,
+        tag_request: "TagRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagService/GetOne",
@@ -1160,7 +1190,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagService/GetSome",
@@ -1178,7 +1208,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagService/GetAll",
@@ -1196,7 +1226,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagService/Subscribe",
@@ -1214,7 +1244,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagService/GetMeta",
@@ -1231,7 +1261,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagService/SubscribeMeta",
@@ -1249,7 +1279,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagService/GetAllBatched",
@@ -1267,7 +1297,7 @@ class TagServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagService/SubscribeBatched",
@@ -1287,7 +1317,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagAssignmentResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentService/GetOne",
@@ -1304,7 +1334,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentService/GetSome",
@@ -1322,7 +1352,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentService/GetAll",
@@ -1340,7 +1370,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentService/Subscribe",
@@ -1358,7 +1388,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentService/GetMeta",
@@ -1375,7 +1405,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentService/SubscribeMeta",
@@ -1393,7 +1423,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentService/GetAllBatched",
@@ -1411,7 +1441,7 @@ class TagAssignmentServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentService/SubscribeBatched",
@@ -1431,7 +1461,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagAssignmentConfigResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/GetOne",
@@ -1448,7 +1478,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/GetSome",
@@ -1466,7 +1496,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/GetAll",
@@ -1484,7 +1514,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/Subscribe",
@@ -1502,7 +1532,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/GetMeta",
@@ -1519,7 +1549,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/SubscribeMeta",
@@ -1537,7 +1567,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagAssignmentConfigSetResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/Set",
@@ -1554,7 +1584,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/SetSome",
@@ -1572,7 +1602,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagAssignmentConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagAssignmentConfigService/Delete",
@@ -1589,7 +1619,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/DeleteSome",
@@ -1607,7 +1637,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/DeleteAll",
@@ -1625,7 +1655,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/GetAllBatched",
@@ -1643,7 +1673,7 @@ class TagAssignmentConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagAssignmentConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagAssignmentConfigService/SubscribeBatched",
@@ -1663,7 +1693,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagConfigResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagConfigService/GetOne",
@@ -1680,7 +1710,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/GetSome",
@@ -1698,7 +1728,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/GetAll",
@@ -1716,7 +1746,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/Subscribe",
@@ -1734,7 +1764,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "MetaResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagConfigService/GetMeta",
@@ -1751,7 +1781,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["MetaResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/SubscribeMeta",
@@ -1769,7 +1799,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagConfigSetResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagConfigService/Set",
@@ -1786,7 +1816,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigSetSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/SetSome",
@@ -1804,7 +1834,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> "TagConfigDeleteResponse":
         return await self._unary_unary(
             "/arista.tag.v2.TagConfigService/Delete",
@@ -1821,7 +1851,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigDeleteSomeResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/DeleteSome",
@@ -1839,7 +1869,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigDeleteAllResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/DeleteAll",
@@ -1857,7 +1887,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/GetAllBatched",
@@ -1875,7 +1905,7 @@ class TagConfigServiceStub(aristaproto.ServiceStub):
         *,
         timeout: Optional[float] = None,
         deadline: Optional["Deadline"] = None,
-        metadata: Optional["MetadataLike"] = None,
+        metadata: Optional["MetadataLike"] = None
     ) -> AsyncIterator["TagConfigBatchedStreamResponse"]:
         async for response in self._unary_stream(
             "/arista.tag.v2.TagConfigService/SubscribeBatched",
@@ -1893,33 +1923,49 @@ class TagServiceBase(ServiceBase):
     async def get_one(self, tag_request: "TagRequest") -> "TagResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, tag_some_request: "TagSomeRequest") -> AsyncIterator["TagSomeResponse"]:
+    async def get_some(
+        self, tag_some_request: "TagSomeRequest"
+    ) -> AsyncIterator["TagSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, tag_stream_request: "TagStreamRequest") -> AsyncIterator["TagStreamResponse"]:
+    async def get_all(
+        self, tag_stream_request: "TagStreamRequest"
+    ) -> AsyncIterator["TagStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, tag_stream_request: "TagStreamRequest") -> AsyncIterator["TagStreamResponse"]:
+    async def subscribe(
+        self, tag_stream_request: "TagStreamRequest"
+    ) -> AsyncIterator["TagStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, tag_stream_request: "TagStreamRequest") -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, tag_stream_request: "TagStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, tag_stream_request: "TagStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(self, tag_batched_stream_request: "TagBatchedStreamRequest") -> AsyncIterator["TagBatchedStreamResponse"]:
+    async def get_all_batched(
+        self, tag_batched_stream_request: "TagBatchedStreamRequest"
+    ) -> AsyncIterator["TagBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(self, tag_batched_stream_request: "TagBatchedStreamRequest") -> AsyncIterator["TagBatchedStreamResponse"]:
+    async def subscribe_batched(
+        self, tag_batched_stream_request: "TagBatchedStreamRequest"
+    ) -> AsyncIterator["TagBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TagRequest, TagResponse]") -> None:
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[TagRequest, TagResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
 
-    async def __rpc_get_some(self, stream: "grpclib.server.Stream[TagSomeRequest, TagSomeResponse]") -> None:
+    async def __rpc_get_some(
+        self, stream: "grpclib.server.Stream[TagSomeRequest, TagSomeResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_some,
@@ -1927,7 +1973,9 @@ class TagServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_all(self, stream: "grpclib.server.Stream[TagStreamRequest, TagStreamResponse]") -> None:
+    async def __rpc_get_all(
+        self, stream: "grpclib.server.Stream[TagStreamRequest, TagStreamResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.get_all,
@@ -1935,7 +1983,9 @@ class TagServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_subscribe(self, stream: "grpclib.server.Stream[TagStreamRequest, TagStreamResponse]") -> None:
+    async def __rpc_subscribe(
+        self, stream: "grpclib.server.Stream[TagStreamRequest, TagStreamResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe,
@@ -1943,12 +1993,16 @@ class TagServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[TagStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[TagStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2033,22 +2087,34 @@ class TagServiceBase(ServiceBase):
 
 class TagAssignmentServiceBase(ServiceBase):
 
-    async def get_one(self, tag_assignment_request: "TagAssignmentRequest") -> "TagAssignmentResponse":
+    async def get_one(
+        self, tag_assignment_request: "TagAssignmentRequest"
+    ) -> "TagAssignmentResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, tag_assignment_some_request: "TagAssignmentSomeRequest") -> AsyncIterator["TagAssignmentSomeResponse"]:
+    async def get_some(
+        self, tag_assignment_some_request: "TagAssignmentSomeRequest"
+    ) -> AsyncIterator["TagAssignmentSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> AsyncIterator["TagAssignmentStreamResponse"]:
+    async def get_all(
+        self, tag_assignment_stream_request: "TagAssignmentStreamRequest"
+    ) -> AsyncIterator["TagAssignmentStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> AsyncIterator["TagAssignmentStreamResponse"]:
+    async def subscribe(
+        self, tag_assignment_stream_request: "TagAssignmentStreamRequest"
+    ) -> AsyncIterator["TagAssignmentStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, tag_assignment_stream_request: "TagAssignmentStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, tag_assignment_stream_request: "TagAssignmentStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, tag_assignment_stream_request: "TagAssignmentStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
@@ -2102,12 +2168,16 @@ class TagAssignmentServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[TagAssignmentStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2192,25 +2262,39 @@ class TagAssignmentServiceBase(ServiceBase):
 
 class TagAssignmentConfigServiceBase(ServiceBase):
 
-    async def get_one(self, tag_assignment_config_request: "TagAssignmentConfigRequest") -> "TagAssignmentConfigResponse":
+    async def get_one(
+        self, tag_assignment_config_request: "TagAssignmentConfigRequest"
+    ) -> "TagAssignmentConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, tag_assignment_config_some_request: "TagAssignmentConfigSomeRequest") -> AsyncIterator["TagAssignmentConfigSomeResponse"]:
+    async def get_some(
+        self, tag_assignment_config_some_request: "TagAssignmentConfigSomeRequest"
+    ) -> AsyncIterator["TagAssignmentConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> AsyncIterator["TagAssignmentConfigStreamResponse"]:
+    async def get_all(
+        self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest"
+    ) -> AsyncIterator["TagAssignmentConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> AsyncIterator["TagAssignmentConfigStreamResponse"]:
+    async def subscribe(
+        self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest"
+    ) -> AsyncIterator["TagAssignmentConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, tag_assignment_config_stream_request: "TagAssignmentConfigStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(self, tag_assignment_config_set_request: "TagAssignmentConfigSetRequest") -> "TagAssignmentConfigSetResponse":
+    async def set(
+        self, tag_assignment_config_set_request: "TagAssignmentConfigSetRequest"
+    ) -> "TagAssignmentConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(
@@ -2219,7 +2303,9 @@ class TagAssignmentConfigServiceBase(ServiceBase):
     ) -> AsyncIterator["TagAssignmentConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(self, tag_assignment_config_delete_request: "TagAssignmentConfigDeleteRequest") -> "TagAssignmentConfigDeleteResponse":
+    async def delete(
+        self, tag_assignment_config_delete_request: "TagAssignmentConfigDeleteRequest"
+    ) -> "TagAssignmentConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(
@@ -2462,46 +2548,74 @@ class TagAssignmentConfigServiceBase(ServiceBase):
 
 class TagConfigServiceBase(ServiceBase):
 
-    async def get_one(self, tag_config_request: "TagConfigRequest") -> "TagConfigResponse":
+    async def get_one(
+        self, tag_config_request: "TagConfigRequest"
+    ) -> "TagConfigResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_some(self, tag_config_some_request: "TagConfigSomeRequest") -> AsyncIterator["TagConfigSomeResponse"]:
+    async def get_some(
+        self, tag_config_some_request: "TagConfigSomeRequest"
+    ) -> AsyncIterator["TagConfigSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all(self, tag_config_stream_request: "TagConfigStreamRequest") -> AsyncIterator["TagConfigStreamResponse"]:
+    async def get_all(
+        self, tag_config_stream_request: "TagConfigStreamRequest"
+    ) -> AsyncIterator["TagConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe(self, tag_config_stream_request: "TagConfigStreamRequest") -> AsyncIterator["TagConfigStreamResponse"]:
+    async def subscribe(
+        self, tag_config_stream_request: "TagConfigStreamRequest"
+    ) -> AsyncIterator["TagConfigStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_meta(self, tag_config_stream_request: "TagConfigStreamRequest") -> "MetaResponse":
+    async def get_meta(
+        self, tag_config_stream_request: "TagConfigStreamRequest"
+    ) -> "MetaResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_meta(self, tag_config_stream_request: "TagConfigStreamRequest") -> AsyncIterator["MetaResponse"]:
+    async def subscribe_meta(
+        self, tag_config_stream_request: "TagConfigStreamRequest"
+    ) -> AsyncIterator["MetaResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set(self, tag_config_set_request: "TagConfigSetRequest") -> "TagConfigSetResponse":
+    async def set(
+        self, tag_config_set_request: "TagConfigSetRequest"
+    ) -> "TagConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def set_some(self, tag_config_set_some_request: "TagConfigSetSomeRequest") -> AsyncIterator["TagConfigSetSomeResponse"]:
+    async def set_some(
+        self, tag_config_set_some_request: "TagConfigSetSomeRequest"
+    ) -> AsyncIterator["TagConfigSetSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete(self, tag_config_delete_request: "TagConfigDeleteRequest") -> "TagConfigDeleteResponse":
+    async def delete(
+        self, tag_config_delete_request: "TagConfigDeleteRequest"
+    ) -> "TagConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_some(self, tag_config_delete_some_request: "TagConfigDeleteSomeRequest") -> AsyncIterator["TagConfigDeleteSomeResponse"]:
+    async def delete_some(
+        self, tag_config_delete_some_request: "TagConfigDeleteSomeRequest"
+    ) -> AsyncIterator["TagConfigDeleteSomeResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def delete_all(self, tag_config_delete_all_request: "TagConfigDeleteAllRequest") -> AsyncIterator["TagConfigDeleteAllResponse"]:
+    async def delete_all(
+        self, tag_config_delete_all_request: "TagConfigDeleteAllRequest"
+    ) -> AsyncIterator["TagConfigDeleteAllResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def get_all_batched(self, tag_config_batched_stream_request: "TagConfigBatchedStreamRequest") -> AsyncIterator["TagConfigBatchedStreamResponse"]:
+    async def get_all_batched(
+        self, tag_config_batched_stream_request: "TagConfigBatchedStreamRequest"
+    ) -> AsyncIterator["TagConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def subscribe_batched(self, tag_config_batched_stream_request: "TagConfigBatchedStreamRequest") -> AsyncIterator["TagConfigBatchedStreamResponse"]:
+    async def subscribe_batched(
+        self, tag_config_batched_stream_request: "TagConfigBatchedStreamRequest"
+    ) -> AsyncIterator["TagConfigBatchedStreamResponse"]:
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
-    async def __rpc_get_one(self, stream: "grpclib.server.Stream[TagConfigRequest, TagConfigResponse]") -> None:
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[TagConfigRequest, TagConfigResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_one(request)
         await stream.send_message(response)
@@ -2539,12 +2653,16 @@ class TagConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_get_meta(self, stream: "grpclib.server.Stream[TagConfigStreamRequest, MetaResponse]") -> None:
+    async def __rpc_get_meta(
+        self, stream: "grpclib.server.Stream[TagConfigStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.get_meta(request)
         await stream.send_message(response)
 
-    async def __rpc_subscribe_meta(self, stream: "grpclib.server.Stream[TagConfigStreamRequest, MetaResponse]") -> None:
+    async def __rpc_subscribe_meta(
+        self, stream: "grpclib.server.Stream[TagConfigStreamRequest, MetaResponse]"
+    ) -> None:
         request = await stream.recv_message()
         await self._call_rpc_handler_server_stream(
             self.subscribe_meta,
@@ -2552,7 +2670,9 @@ class TagConfigServiceBase(ServiceBase):
             request,
         )
 
-    async def __rpc_set(self, stream: "grpclib.server.Stream[TagConfigSetRequest, TagConfigSetResponse]") -> None:
+    async def __rpc_set(
+        self, stream: "grpclib.server.Stream[TagConfigSetRequest, TagConfigSetResponse]"
+    ) -> None:
         request = await stream.recv_message()
         response = await self.set(request)
         await stream.send_message(response)
