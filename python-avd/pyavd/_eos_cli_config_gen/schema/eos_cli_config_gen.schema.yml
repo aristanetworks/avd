@@ -7946,24 +7946,14 @@ keys:
             type: bool
             description: Enables the MPLS tunneling of TTL exceeded ICMP replies.
   name_server:
+    documentation_options:
+      table: ip-name-servers
     deprecation:
+      removed: true
       warning: true
       new_key: ip_name_servers
       remove_in_version: v5.0.0
     type: dict
-    keys:
-      source:
-        type: dict
-        keys:
-          vrf:
-            description: VRF Name.
-            type: str
-            convert_types:
-            - int
-      nodes:
-        type: list
-        items:
-          type: str
   ntp:
     type: dict
     keys:
