@@ -22,6 +22,11 @@ plugin_routing:
           Use the builtin `ansible.builtin.regex_replace` filter instead like
           `{{ <short_esi> | ansible.builtin.regex_replace('(\\d{2})(\\d{2}):(\\d{2})(\\d{2}):(\\d{2})(\\d{2})', '\\1:\\2:\\3:\\4:\\5:\\6') }}`
   modules:
+    _emit_warning:
+      tombstone:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd._emit_warning' action plugin is not longer used by AVD.
     deploy_to_cv:
       tombstone:
         removal_version: 5.0.0
@@ -47,6 +52,11 @@ plugin_routing:
           The internal 'arista.avd.yaml_templates_to_facts' action plugin is no longer used by AVD.
           The plugin is released as open source, so it can be copied and reused according to the license and copyright.
   action:
+    _emit_warning:
+      tombstone:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd._emit_warning' action plugin is not longer used by AVD.
     deploy_to_cv:
       tombstone:
         removal_version: 5.0.0
