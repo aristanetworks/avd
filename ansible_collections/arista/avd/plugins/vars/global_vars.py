@@ -117,7 +117,7 @@ class VarsModule(BaseVarsPlugin):
                     self._display.debug(f"Found variable files {res!s}")
                     found_files.extend(res)
                 else:
-                    found_files.append(str(path))
+                    found_files.append(str(opath))
 
             except Exception as e:
                 raise AnsibleParserError(to_native(e)) from e
