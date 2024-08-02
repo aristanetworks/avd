@@ -10,7 +10,7 @@ from pyavd._errors import AristaAvdError
 from pyavd._utils import get, get_item, merge, template_var
 
 if TYPE_CHECKING:
-    from pyavd.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
 
     from . import SharedUtils
 

@@ -4,7 +4,7 @@
 from pathlib import Path
 
 
-def compile_searchpath(searchpath: list) -> list:
+def compile_searchpath(searchpath: list) -> list[str]:
     """
     Create a new searchpath by inserting new items with <>/templates into the existing searchpath.
 
@@ -28,6 +28,6 @@ def compile_searchpath(searchpath: list) -> list:
     """
     newsearchpath = []
     for p in searchpath:
-        newsearchpath.append(Path(p, "templates"))
+        newsearchpath.append(str(Path(p, "templates")))
         newsearchpath.append(p)
     return newsearchpath
