@@ -3,12 +3,8 @@
 # Testing vlan_interfaces as dict of dict
 # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 vlan_interfaces:
-  Vlan1:
-    description: test ipv6_address_virtual
-    ipv6_enable: true
-
   Vlan2:
-    description: test ipv6_address_virtual and ipv6_address_virtuals
+    description: test ipv6_nd_prefixes
     ipv6_enable: true
     ipv6_address: 1b11:3a00:22b0:5200::15/64
     ipv6_nd_managed_config_flag: true
@@ -19,11 +15,6 @@ vlan_interfaces:
         valid_lifetime: infinite
         preferred_lifetime: infinite
         no_autoconfig_flag: true
-
-  Vlan3:
-    description: test ipv6_address_virtual
-    ipv6_enable: true
-    ipv6_address: 1b11:3a00:22b3:5200::15/64
 
   Vlan42:
     description: SVI Description
