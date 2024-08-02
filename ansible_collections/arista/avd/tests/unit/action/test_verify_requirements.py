@@ -199,6 +199,7 @@ def test__get_running_collection_version_git_not_installed() -> None:
     os.environ["ANSIBLE_VERBOSITY"] = "3"
     result = {}
     with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.Path.open"),
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
         patch(
             "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
