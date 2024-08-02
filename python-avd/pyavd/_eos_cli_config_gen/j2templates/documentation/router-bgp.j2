@@ -178,9 +178,6 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             if peer_group.route_reflector_client is arista.avd.defined %}
 | Route Reflector Client | Yes |
 {%             endif %}
-{%             if peer_group.bgp_listen_range_prefix is arista.avd.defined %}
-| Listen range prefix | {{ peer_group.bgp_listen_range_prefix }} |
-{%             endif %}
 {%             if peer_group.next_hop_self is arista.avd.defined(true) %}
 | Next-hop self | True |
 {%             endif %}
