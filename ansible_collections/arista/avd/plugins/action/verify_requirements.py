@@ -278,7 +278,7 @@ def _validate_ansible_collections(running_collection_name: str, info: dict) -> b
 def _get_collection_path(collection_name: str) -> str:
     """Retrieve the collection path based on the collection_name."""
     collection = import_module(f"ansible_collections.{collection_name}")
-    return str(Path(collection.__file__))
+    return str(Path(collection.__file__).parent)
 
 
 def _get_collection_version(collection_path: str) -> str:
