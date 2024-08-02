@@ -74,25 +74,21 @@ EXAMPLES = r"""
 
 import traceback
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.errors import AnsibleValidationError
 
 TREELIB_IMP_ERR = None
 
-if TYPE_CHECKING:
-    import treelib
+try:
+    from treelib import Tree, Node
 
     HAS_TREELIB = True
-else:
-    try:
-        import treelib
-
-        HAS_TREELIB = True
-    except ImportError:
-        HAS_TREELIB = False
-        TREELIB_IMP_ERR = traceback.format_exc()
+except ImportError:
+    HAS_TREELIB = False
+    TREELIB_IMP_ERR = traceback.format_exc()
+    Tree = Node = object
 
 YAML_IMP_ERR = None
 try:
@@ -151,15 +147,15 @@ def is_iterable(testing_object: Any = None) -> bool | None:
     return True
 
 
-def is_leaf(tree: treelib.Tree, nid: treelib.Node) -> bool:
+def is_leaf(tree: Tree, nid: Node) -> bool:
     """
     Test if NodeID is a leaf with no nid attached to it.
 
     Parameters
     ----------
-    tree : treelib.Tree
+    tree : Tree
         Tree where NID is defined.
-    nid : treelib.Node
+    nid : Node
         NodeID to test.
 
     Returns:
@@ -233,7 +229,7 @@ def get_device_option_value(device_data_dict: dict, option_name: str) -> str | N
     return None
 
 
-def serialize_yaml_inventory_data(dict_inventory: dict, parent_container: str | None = None, tree_topology: treelib.Tree | None = None) -> treelib.Tree:
+def serialize_yaml_inventory_data(dict_inventory: dict, parent_container: str | None = None, tree_topology: Tree | None = None) -> Tree:
     """
     Build a tree topology from YAML inventory file content.
 
@@ -243,19 +239,19 @@ def serialize_yaml_inventory_data(dict_inventory: dict, parent_container: str | 
         Inventory YAML content.
     parent_container : str, optional
         Registration of container N-1 for recursive function, by default None
-    tree_topology : treelib.Tree, optional
+    tree_topology : Tree, optional
         Tree topology built over iteration, by default None
 
     Returns:
     -------
-    treelib.Tree
+    Tree
         complete container tree topology.
     """
     if is_iterable(dict_inventory):
         # Working with ROOT container for Fabric
         if tree_topology is None:
             # initiate tree topology and add ROOT under Tenant
-            tree_topology = treelib.Tree()
+            tree_topology = Tree()
             tree_topology.create_node("Tenant", "Tenant")
             parent_container = "Tenant"
 
