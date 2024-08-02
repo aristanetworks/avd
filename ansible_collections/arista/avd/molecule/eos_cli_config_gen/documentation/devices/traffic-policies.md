@@ -107,7 +107,7 @@ interface Port-Channel2
 | BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | tcp | ANY | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-06 | ipv4 | ANY | ANY | neighbors<br/>ip<br/>udp<br/>tcp<br/>icmp | 22<br/>SERVICE-DEMO | 1,10-20 | action: PASS |
-| BLUE-C1-POLICY-07 | ipv4 | ANY | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | [] | [] | default action: PASS |
+| BLUE-C1-POLICY-07 | ipv4 | ANY | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | ANY | ANY | default action: PASS |
 | BLUE-C1-POLICY-08 | ipv4 | ANY | DEMO-01 | udp<br/>tcp | ANY | 1,10-20<br/>SERVICE-DEMO | default action: PASS |
 
 ##### BLUE-C2-POLICY

@@ -107,6 +107,8 @@
 {%                         endif %}
 {%                     else %}
 {%                         set row.protocols = "ANY" %}
+{%                         set row.src_port = "ANY" %}
+{%                         set row.dst_port = "ANY" %}
 {%                     endif %}
 {#                     -- Action management #}
 {%                     set row.actions = [] %}
