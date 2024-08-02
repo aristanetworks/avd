@@ -6390,38 +6390,17 @@ keys:
       enable_vrfs:
         type: list
         deprecation:
+          removed: true
           warning: true
           new_key: transport.grpc
           remove_in_version: 5.0.0
-        primary_key: name
-        convert_types:
-        - dict
-        description: 'These should not be mixed with the new keys above.
-
-          '
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: VRF name.
-              convert_types:
-              - int
-            access_group:
-              type: str
-              description: Standard IPv4 ACL name.
       octa:
         type: dict
         deprecation:
           warning: true
+          removed: true
           new_key: provider
           remove_in_version: 5.0.0
-        description: 'These should not be mixed with the new keys above.
-
-          Octa activates `eos-native` provider and it is the only provider currently
-          supported by EOS.
-
-          '
   management_api_http:
     type: dict
     keys:
@@ -9155,30 +9134,6 @@ keys:
             route_target:
               type: str
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-        esi:
-          type: str
-          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
-
-            If both "esi" and "evpn_ethernet_segment.identifier" are defined, the
-            new variable takes precedence.
-
-            '
-          deprecation:
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: 5.0.0
-        rt:
-          type: str
-          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-
-            If both "rt" and "evpn_ethernet_segment.route_target" are defined, the
-            new variable takes precedence.
-
-            '
-          deprecation:
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: 5.0.0
         lacp_id:
           type: str
           description: LACP ID with format xxxx.xxxx.xxxx.
@@ -9535,6 +9490,26 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration.
+        esi:
+          type: str
+          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
+
+            '
+          deprecation:
+            removed: true
+            warning: true
+            new_key: evpn_ethernet_segment.identifier
+            remove_in_version: 5.0.0
+        rt:
+          type: str
+          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
+
+            '
+          deprecation:
+            removed: true
+            warning: true
+            new_key: evpn_ethernet_segment.route_target
+            remove_in_version: 5.0.0
   prefix_lists:
     type: list
     primary_key: name
@@ -10507,24 +10482,14 @@ keys:
         type: str
         description: Name of global TLS profile.
   radius_servers:
+    documentation_options:
+      table: radius-server
     deprecation:
       warning: true
+      removed: true
       new_key: radius_server.hosts
       remove_in_version: v5.0.0
     type: list
-    items:
-      type: dict
-      keys:
-        host:
-          type: str
-          description: Host IP address or name.
-        vrf:
-          type: str
-          convert_types:
-          - int
-        key:
-          type: str
-          description: Encrypted key.
   redundancy:
     type: dict
     keys:

@@ -6,11 +6,9 @@
   - [Management Interfaces](#management-interfaces)
   - [Domain Lookup](#domain-lookup)
   - [Management SSH](#management-ssh)
-  - [Management API gNMI](#management-api-gnmi)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [RADIUS Server](#radius-server)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -164,28 +162,6 @@ management ssh
       no shutdown
 ```
 
-### Management API gNMI
-
-#### Management API gNMI Summary
-
-| VRF with gNMI | OCTA |
-| ------------- | ---- |
-| MGMT | enabled |
-| MONITORING | enabled |
-
-#### Management API gNMI Device Configuration
-
-```eos
-!
-management api gnmi
-   transport grpc MGMT
-      ip access-group ACL-GNMI
-      vrf MGMT
-   transport grpc MONITORING
-      vrf MONITORING
-   provider eos-native
-```
-
 ### Management API HTTP
 
 #### Management API HTTP Summary
@@ -227,25 +203,6 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-```
-
-### RADIUS Server
-
-#### RADIUS Server Hosts
-
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
-| mgt | 10.10.10.157 | - | - | - | - |
-| default | 10.10.10.249 | - | - | - | - |
-| default | 10.10.10.158 | - | - | - | - |
-
-#### RADIUS Server Device Configuration
-
-```eos
-!
-radius-server host 10.10.10.157 vrf mgt key 7 <removed>
-radius-server host 10.10.10.249 key 7 <removed>
-radius-server host 10.10.10.158 key 7 <removed>
 ```
 
 ## Monitoring
@@ -598,7 +555,7 @@ interface Ethernet47
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | - |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 
 ##### Flexible Encapsulation Interfaces
@@ -616,9 +573,6 @@ interface Port-Channel1
    switchport
    switchport trunk allowed vlan 2-3000
    switchport mode trunk
-   evpn ethernet-segment
-      identifier 0000:0000:0404:0404:0303
-      route-target import 04:04:03:03:02:02
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel2
@@ -630,9 +584,6 @@ interface Port-Channel2.1000
    vlan id 1000
    encapsulation vlan
       client dot1q 100 network client
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel51
