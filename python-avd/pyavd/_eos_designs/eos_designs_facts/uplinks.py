@@ -57,9 +57,7 @@ class UplinksMixin:
                     f" {peer_uplink_port_channel_id} set on MLAG peer."
                     " The 'uplink_port_channel_id' must be matching on MLAG peers."
                 )
-                raise AristaAvdError(
-                    msg,
-                )
+                raise AristaAvdError(msg)
             return peer_uplink_port_channel_id
 
         # MLAG Primary or not MLAG.
