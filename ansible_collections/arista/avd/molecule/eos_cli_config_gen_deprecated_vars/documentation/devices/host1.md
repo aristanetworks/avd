@@ -757,7 +757,7 @@ interface Tunnel4
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan2 | test ipv6_nd_prefixes | default | - | - |
-| Vlan42 | SVI Description | default | - | False |
+| Vlan42 | test ip_helpers | default | - | False |
 
 ##### IPv4
 
@@ -784,7 +784,7 @@ interface Vlan2
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
 !
 interface Vlan42
-   description SVI Description
+   description test ip_helpers
    no shutdown
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0

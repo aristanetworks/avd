@@ -17,7 +17,7 @@ vlan_interfaces:
         no_autoconfig_flag: true
 
   Vlan42:
-    description: SVI Description
+    description: test ip_helpers
     shutdown: false
     # Testing ip_helpers as dict of dict
     # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
