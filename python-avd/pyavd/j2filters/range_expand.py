@@ -83,7 +83,7 @@ def expand_module(interface_string: str, data: InterfaceData) -> list:
 
 
 def range_expand(range_to_expand: Any) -> list:
-    if not isinstance(range_to_expand, list | str):
+    if not isinstance(range_to_expand, (list, str)):
         msg = f"value must be of type list or str, got {type(range_to_expand)}"
         raise TypeError(msg)
 

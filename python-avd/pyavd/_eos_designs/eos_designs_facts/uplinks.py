@@ -68,9 +68,7 @@ class UplinksMixin:
         # produce an error if the switch is MLAG and port-channel ID is above 2000
         if self.shared_utils.mlag and not 1 <= uplink_port_channel_id <= 2000:
             msg = f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}' on '{self.shared_utils.hostname}'."
-            raise AristaAvdError(
-                msg,
-            )
+            raise AristaAvdError(msg)
 
         return uplink_port_channel_id
 

@@ -84,7 +84,7 @@ def add_md_toc(md_input: str, skip_lines: int = 0, toc_levels: int = 3, toc_mark
     return "\n".join(md_lines[: toc_marker_positions[0]] + toc_lines + md_lines[toc_marker_positions[1] + 1 :])
 
 
-def _get_line_info(line: str, all_anchor_ids: list[str]) -> (int, str, str):
+def _get_line_info(line: str, all_anchor_ids: list[str]) -> tuple[int, str, str]:
     """Split heading and return level, text and anchor_id.
 
     Since we know the line is already a heading, we can assume correct formatting.

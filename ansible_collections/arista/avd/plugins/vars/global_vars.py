@@ -137,7 +137,7 @@ class VarsModule(BaseVarsPlugin):
 
         variables = {}
         for entity in entities:
-            if not isinstance(entity, Host | Group):
+            if not isinstance(entity, (Host, Group)):
                 # Changed the error message because the TYPE_REGEX of ansible was triggering
                 # unidiomatic-typecheck because of the `or` word before the type  call...
                 msg = f"Supplied entity is of type {type(entity)} but must be of type Host or Group instead"

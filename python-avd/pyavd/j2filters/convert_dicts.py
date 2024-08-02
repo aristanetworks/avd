@@ -53,7 +53,7 @@ def convert_dicts(dictionary: dict | list, primary_key: str = "name", secondary_
     any
         Returns list of dictionaries or input variable untouched if not a nested dictionary/list.
     """
-    if not isinstance(dictionary, dict | list) or os.environ.get("AVD_DISABLE_CONVERT_DICTS"):
+    if not isinstance(dictionary, (dict, list)) or os.environ.get("AVD_DISABLE_CONVERT_DICTS"):
         # Not a dictionary/list, return the original
         return dictionary
     if isinstance(dictionary, list):

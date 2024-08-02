@@ -140,7 +140,7 @@ def _valid_values_validator(_validator: object, valid_values: list, instance: An
 
 
 def _is_dict(_validator: object, instance: Any) -> bool:
-    return isinstance(instance, dict | ChainMap)
+    return isinstance(instance, (dict, ChainMap))
 
 
 class AvdValidator:

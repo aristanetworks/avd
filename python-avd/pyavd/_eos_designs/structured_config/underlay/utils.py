@@ -201,9 +201,7 @@ class UtilsMixin:
                 "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
                 f"under 'wan_carriers'. 'ipv4_acl_in' is missing on interface '{interface_name}'."
             )
-            raise AristaAvdError(
-                msg,
-            )
+            raise AristaAvdError(msg)
 
         return strip_empties_from_dict(interface)
 

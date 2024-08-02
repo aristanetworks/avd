@@ -183,7 +183,7 @@ class YamlLineGenBase:
         """
         return (
             self.schema.default is not None
-            and isinstance(self.schema.default, list | dict)
+            and isinstance(self.schema.default, (list, dict))
             and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40)
         )
 

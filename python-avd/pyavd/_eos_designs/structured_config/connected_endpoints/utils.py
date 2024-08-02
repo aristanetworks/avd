@@ -53,9 +53,7 @@ class UtilsMixin:
                             f" connected_endpoint '{connected_endpoint['name']}' under '{connected_endpoints_key['key']}'."
                             " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )
-                        raise AristaAvdError(
-                            msg,
-                        )
+                        raise AristaAvdError(msg)
 
                     filtered_adapters.append(adapter_settings)
 

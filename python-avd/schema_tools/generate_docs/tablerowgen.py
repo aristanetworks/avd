@@ -178,7 +178,7 @@ class TableRowGenBase:
     def render_default(self) -> str | None:
         """Should render markdown for "default" field."""
         if self.schema.default is not None:
-            if isinstance(self.schema.default, list | dict) and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40):
+            if isinstance(self.schema.default, (list, dict)) and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40):
                 return "See (+) on YAML tab"
 
             return f"`{self.schema.default}`"

@@ -47,10 +47,8 @@ class OverlayMixin:
     @cached_property
     def mpls_route_reflectors(self: EosDesignsFacts) -> list | None:
         """Exposed in avd_switch_facts."""
-        if (
-            self.shared_utils.underlay_router is True
-            and self.mpls_overlay_role in ["client", "server"]
-            or (self.evpn_role in ["client", "server"] and self.overlay["evpn_mpls"])
+        if self.shared_utils.underlay_router is True and (
+            self.mpls_overlay_role in ["client", "server"] or (self.evpn_role in ["client", "server"] and self.overlay["evpn_mpls"])
         ):
             return get(self.shared_utils.switch_data_combined, "mpls_route_reflectors")
         return None

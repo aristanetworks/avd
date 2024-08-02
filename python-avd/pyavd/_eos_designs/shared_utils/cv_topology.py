@@ -68,7 +68,7 @@ class CvTopology:
             mlag_interfaces: <list>
             mlag_peer: <str>
             mgmt_interface: <str>
-        }.
+        }
         """
         if self.cv_topology is None:
             return {}

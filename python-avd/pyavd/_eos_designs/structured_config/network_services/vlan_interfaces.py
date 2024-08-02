@@ -122,9 +122,7 @@ class VlanInterfacesMixin(UtilsMixin):
                         f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{svi['tenant']}'."
                         "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdMissingVariableError(msg)
                 pim_config_ipv4["local_interface"] = f"Loopback{vrf_diagnostic_loopback}"
 
             if pim_config_ipv4:

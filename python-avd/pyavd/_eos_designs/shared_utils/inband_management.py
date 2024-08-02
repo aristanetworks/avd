@@ -154,9 +154,7 @@ class InbandManagementMixin:
 
         if self.id is None:
             msg = f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ipv6_address from inband_mgmt_ipv6_subnet"
-            raise AristaAvdMissingVariableError(
-                msg,
-            )
+            raise AristaAvdMissingVariableError(msg)
 
         subnet = ip_network(self.inband_mgmt_ipv6_subnet, strict=False)
         inband_mgmt_ipv6_address = str(subnet[3 + self.id])

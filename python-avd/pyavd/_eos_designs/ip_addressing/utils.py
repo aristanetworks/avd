@@ -183,15 +183,11 @@ class UtilsMixin:
                 f"Unable to assign IPs for uplinks. 'uplink_ipv4_pool' ({uplink_pool}) on this switch cannot be combined "
                 f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
             )
-            raise AristaAvdError(
-                msg,
-            )
+            raise AristaAvdError(msg)
 
         if uplink_pool is None and downlink_pool is None:
             msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches"
-            raise AristaAvdMissingVariableError(
-                msg,
-            )
+            raise AristaAvdMissingVariableError(msg)
 
         if uplink_pool is not None:
             return (uplink_pool, uplink_offset)

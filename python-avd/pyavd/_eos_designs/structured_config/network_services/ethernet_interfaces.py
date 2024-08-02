@@ -53,9 +53,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for l3_interfaces for"
                                 f" {vrf['name']} in {tenant['name']}"
                             )
-                            raise AristaAvdError(
-                                msg,
-                            )
+                            raise AristaAvdError(msg)
 
                         for node_index, node_name in enumerate(l3_interface["nodes"]):
                             if node_name != self.shared_utils.hostname:
