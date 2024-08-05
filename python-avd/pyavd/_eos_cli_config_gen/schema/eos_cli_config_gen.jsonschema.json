@@ -14968,7 +14968,8 @@
           },
           "vlans": {
             "type": "string",
-            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\".\nFor an access port this would be a single vlan \"123\".\n",
+            "description": "List of switchport vlans as string.\nFor a trunk port this would be a range like \"1-200,300\".\nFor an access port this would be a single vlan \"123\".\n\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>port_channel_interfaces[].switchport.access_vlan or port_channel_interfaces[].switchport.trunk.allowed_vlan</samp> instead.",
+            "deprecated": true,
             "title": "VLANs"
           },
           "snmp_trap_link_change": {
@@ -15103,13 +15104,15 @@
           },
           "native_vlan": {
             "type": "integer",
-            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.",
+            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>port_channel_interfaces[].switchport.trunk.native_vlan</samp> instead.",
+            "deprecated": true,
             "title": "Native VLAN"
           },
           "native_vlan_tag": {
             "type": "boolean",
             "default": false,
-            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.",
+            "description": "If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>port_channel_interfaces[].switchport.trunk.native_vlan_tag</samp> instead.",
+            "deprecated": true,
             "title": "Native VLAN Tag"
           },
           "link_tracking_groups": {
@@ -15384,7 +15387,8 @@
           },
           "pvlan_mapping": {
             "type": "string",
-            "description": "List of vlans as string.",
+            "description": "List of vlans as string.\nThis key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>port_channel_interfaces[].switchport.pvlan_mapping</samp> instead.",
+            "deprecated": true,
             "title": "PVLAN Mapping"
           },
           "vlan_translations": {

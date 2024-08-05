@@ -23,25 +23,32 @@
                                                                       first %}
 {%             if port_channel_interface.type | arista.avd.default('switched') == 'switched' %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                 set mode = port_channel_interface.mode | arista.avd.default("access") %}
-{%                 set vlans = port_channel_interface.vlans | arista.avd.default('-') %}
-{%                 if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}
+{%                 set mode = port_channel_interface.switchport.mode | arista.avd.default(port_channel_interface.mode, '-') %}
+{%                 if port_channel_interface.switchport.access_vlan is arista.avd.defined or
+                    port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                     set vlans = [] %}
+{%                     if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
+{%                         do vlans.append(port_channel_interface.switchport.access_vlan) %}
+{%                     endif %}
+{%                     if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                         set allowed_vlans = port_channel_interface.switchport.trunk.allowed_vlan | string | arista.avd.range_expand %}
+{%                         for allowed_vlan in allowed_vlans %}
+{%                             do vlans.append(allowed_vlan | int) %}
+{%                         endfor %}
+{%                     endif %}
+{%                     set vlans = vlans | arista.avd.list_compress %}
+{%                 else %}
+{%                     set vlans = port_channel_interface.vlans | arista.avd.default('-') %}
+{%                 endif %}
+{%                 if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) or
+                    port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
 {%                     set native_vlan = "tag" %}
 {%                 else %}
-{%                     set native_vlan = port_channel_interface.native_vlan | arista.avd.default('-') %}
+{%                     set native_vlan = port_channel_interface.switchport.trunk.native_vlan | arista.avd.default(port_channel_interface.native_vlan, '-') %}
 {%                 endif %}
 {%                 set channel_group = ethernet_interface.channel_group.id %}
-{%                 if port_channel_interface.trunk_groups is arista.avd.defined %}
-{%                     set l2 = namespace() %}
-{%                     set l2.trunk_groups = [] %}
-{%                     for trunk_group in port_channel_interface.trunk_groups | arista.avd.natural_sort %}
-{%                         do l2.trunk_groups.append(trunk_group) %}
-{%                     endfor %}
-{%                 else %}
-{%                     set l2 = namespace() %}
-{%                     set l2.trunk_groups = "-" %}
-{%                 endif %}
-| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
+{%                 set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default(port_channel_interface.trunk_groups, '-') %}
+| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ trunk_groups }} | {{ channel_group }} |
 {%             endif %}
 {%         elif ethernet_interface.type | arista.avd.default('switched') == 'switched' %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
@@ -50,10 +57,10 @@
                 ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
 {%                 set vlans = [] %}
 {%                 if ethernet_interface.switchport.access_vlan is arista.avd.defined %}
-{%                     do vlans.append(ethernet_interface.switchport.access_vlan | int) %}
+{%                     do vlans.append(ethernet_interface.switchport.access_vlan) %}
 {%                 endif %}
 {%                 if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
-{%                     set allowed_vlans = ethernet_interface.switchport.trunk.allowed_vlan | arista.avd.range_expand %}
+{%                     set allowed_vlans = ethernet_interface.switchport.trunk.allowed_vlan | string | arista.avd.range_expand %}
 {%                     for allowed_vlan in allowed_vlans %}
 {%                         do vlans.append(allowed_vlan | int) %}
 {%                     endfor %}

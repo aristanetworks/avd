@@ -1,11 +1,9 @@
 ---
 ### Port-Channel Interfaces ###
-
-# Testing port_channel_interfaces as dict of dict
-# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+# Testing deprecated keys for switchport config in port-channel_interfaces
 port_channel_interfaces:
   # Testing deprecated esi and rt variables on port-channel interfaces/subinterfaces
-  Port-Channel1:
+  - name: Port-Channel1
     description: SRV01_bond0
     vlans: 2-3000
     mode: trunk
@@ -13,44 +11,36 @@ port_channel_interfaces:
     rt: 04:04:03:03:02:02
     lacp_id: 0303.0202.0101
 
-  Port-Channel2:
-    description: Flexencap Port-Channel
-    type: routed
-  Port-Channel2.1000:
-    type: l2dot1q
-    description: L2 Subinterface
-    vlan_id: 1000
-    encapsulation_vlan:
-      client:
-        dot1q:
-          vlan: 100
-      network:
-        client: true
-    esi: 0000:0000:0303:0202:0101
-    rt: 03:03:02:02:01:01
-    lacp_id: 0303.0202.0101
+  - name: Port-Channel2
+    mode: access
+    vlans: 100
 
-  # Testing deprecated filter plugins to be remove in AVD 5.0.0
-  Port-Channel30:
-    description: deprecate_filters_testing
-    esi: "{{ '0303:0202:0101' | arista.avd.generate_esi('deaf:beed:') }}"
-    rt: "{{ '0303:0202:0101' | arista.avd.generate_route_target }}"
-    lacp_id: "{{ '0303:0202:0101' | arista.avd.generate_lacp_id }}"
-
-  Port-Channel51:
-    description: ipv6_prefix
-    vlans: 1-500
+  - name: Port-Channel3
     mode: trunk
-    # Testing ipv6_nd_prefixes as dict of dict
-    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
-    ipv6_nd_prefixes:
-      a1::/64:
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    vlans: 110
+    native_vlan: 10
+    trunk_groups:
+      - group1
+      - group2
 
-  Port-Channel100:
-    type: routed
-    logging:
-      event:
-        link_status: true
+  - name: Port-Channel4
+    native_vlan_tag: true
+    native_vlan: 20
+    mode: trunk phone
+    phone:
+      vlan: 20
+      trunk: tagged
+
+  - name: Port-Channel5
+    vlan_translations:
+      - from: 23
+        to: 50
+        direction: in
+      - from: 25
+        to: 49
+        direction: out
+      - from: 34
+        to: 60
+        direction: both
+    trunk_private_vlan_secondary: true
+    pvlan_mapping: "2,3,4"

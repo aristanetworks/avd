@@ -18,28 +18,35 @@
 {%         if port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set type = port_channel_interface.type | arista.avd.default("switched") %}
-{%             set mode = port_channel_interface.mode | arista.avd.default("access") %}
-{%             set vlans = port_channel_interface.vlans | arista.avd.default("-") %}
-{%             if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}
+{%             set mode = port_channel_interface.switchport.mode | arista.avd.default(port_channel_interface.mode, '-') %}
+{%             if port_channel_interface.switchport.access_vlan is arista.avd.defined or
+                port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                 set vlans = [] %}
+{%                 if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
+{%                     do vlans.append(port_channel_interface.switchport.access_vlan) %}
+{%                 endif %}
+{%                 if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                     set allowed_vlans = port_channel_interface.switchport.trunk.allowed_vlan | string | arista.avd.range_expand %}
+{%                     for allowed_vlan in allowed_vlans %}
+{%                         do vlans.append(allowed_vlan | int) %}
+{%                     endfor %}
+{%                 endif %}
+{%                 set vlans = vlans | arista.avd.list_compress %}
+{%             else %}
+{%                 set vlans = port_channel_interface.vlans | arista.avd.default('-') %}
+{%             endif %}
+{%             if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) or
+                port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
 {%                 set native_vlan = "tag" %}
 {%             else %}
-{%                 set native_vlan = port_channel_interface.native_vlan | arista.avd.default("-") %}
+{%                 set native_vlan = port_channel_interface.switchport.trunk.native_vlan | arista.avd.default(port_channel_interface.native_vlan, '-') %}
 {%             endif %}
-{%             if port_channel_interface.trunk_groups is defined %}
-{%                 set l2 = namespace() %}
-{%                 set l2.trunk_groups = [] %}
-{%                 for trunk_group in port_channel_interface.trunk_groups | arista.avd.natural_sort %}
-{%                     do l2.trunk_groups.append(trunk_group) %}
-{%                 endfor %}
-{%             else %}
-{%                 set l2 = namespace() %}
-{%                 set l2.trunk_groups = "-" %}
-{%             endif %}
+{%             set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default(port_channel_interface.trunk_groups, '-') %}
 {%             set lacp_fallback_timeout = port_channel_interface.lacp_fallback_timeout | arista.avd.default("-") %}
 {%             set lacp_fallback_mode = port_channel_interface.lacp_fallback_mode | arista.avd.default("-") %}
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
 {%             set esi = port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi, "-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
 {%         endif %}
 {%     endfor %}
 {# Encapsulation #}
@@ -94,7 +101,9 @@
 {%     set port_channel_interface_pvlan.configured = false %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.pvlan_mapping is arista.avd.defined or
-              port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined %}
+            port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined or
+            port_channel_interface.switchport.pvlan_mapping is arista.avd.defined or
+            port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined %}
 {%             set port_channel_interface_pvlan.configured = true %}
 {%             break %}
 {%         endif %}
@@ -106,10 +115,9 @@
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%             if port_channel_interface.pvlan_mapping is arista.avd.defined or
-               port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined %}
-{%                 set row_pvlan_mapping = port_channel_interface.pvlan_mapping | arista.avd.default('-') %}
-{%                 set row_trunk_private_vlan_secondary = port_channel_interface.trunk_private_vlan_secondary | arista.avd.default('-') %}
+{%             set row_pvlan_mapping = port_channel_interface.switchport.pvlan_mapping | arista.avd.default(port_channel_interface.pvlan_mapping, '-') %}
+{%             set row_trunk_private_vlan_secondary = port_channel_interface.switchport.trunk.private_vlan_secondary | arista.avd.default(port_channel_interface.trunk_private_vlan_secondary, '-') %}
+{%             if row_pvlan_mapping != '-' or row_trunk_private_vlan_secondary != '-' %}
 | {{ port_channel_interface.name }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
 {%             endif %}
 {%         endfor %}
@@ -118,7 +126,8 @@
 {%     set port_channel_interface_vlan_xlate = namespace() %}
 {%     set port_channel_interface_vlan_xlate.configured = false %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.vlan_translations is arista.avd.defined %}
+{%         if port_channel_interface.switchport.vlan_translations is arista.avd.defined or
+            port_channel_interface.vlan_translations is arista.avd.defined %}
 {%             set port_channel_interface_vlan_xlate.configured = true %}
 {%             break %}
 {%         endif %}
@@ -127,14 +136,29 @@
 
 ##### VLAN Translations
 
-| Interface | From VLAN ID(s) | To VLAN ID | Direction |
-| --------- | --------------- | -----------| --------- |
+| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%             if port_channel_interface.vlan_translations is arista.avd.defined %}
+{%             if port_channel_interface.switchport.vlan_translations is arista.avd.defined %}
+{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
+| {{ port_channel_interface.name }} | both | {{ vlan_translation.from }} | {{ vlan_translation.to | arista.avd.default('-') }} | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | - | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
+{%                 endfor %}
+{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_in | arista.avd.natural_sort('from') %}
+| {{ port_channel_interface.name }} | in | {{ vlan_translation.from }} | {{ vlan_translation.to | arista.avd.default('-') }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
+{%                 endfor %}
+{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort('from') %}
+{%                     set to_vlan_id = vlan_translation.dot1q_tunnel.all | arista.avd.default( vlan_translation.dot1q_tunnel.to, vlan_translation.to, "-") %}
+{%                     if vlan_translation.dot1q_tunnel.all is arista.avd.defined or
+                        vlan_translation.dot1q_tunnel.to is arista.avd.defined %}
+{%                         set dot1q_tunnel = "True" %}
+{%                     endif %}
+| {{ port_channel_interface.name }} | out | {{ vlan_translation.from }} | {{ to_vlan_id | arista.avd.default('-') }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ dot1q_tunnel | arista.avd.default(vlan_translation.dot1q_tunnel, '-') }} |
+{%                 endfor %}
+{%             elif port_channel_interface.vlan_translations is arista.avd.defined %}
 {%                 for vlan_translation in port_channel_interface.vlan_translations | arista.avd.natural_sort %}
 {%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
 {%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
-| {{ port_channel_interface.name }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }} |
+| {{ port_channel_interface.name }} | {{ row_direction }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | - | - | - | - |
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

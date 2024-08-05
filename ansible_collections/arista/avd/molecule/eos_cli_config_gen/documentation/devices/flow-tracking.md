@@ -201,7 +201,7 @@ interface Ethernet42
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel42 | - | switched | access | - | - | - | - | - | - | - |
+| Port-Channel42 | - | switched | - | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

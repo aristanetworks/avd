@@ -56,6 +56,11 @@ keys:
             List of switchport vlans as string.
             For a trunk port this would be a range like "1-200,300".
             For an access port this would be a single vlan "123".
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.access_vlan or port_channel_interfaces[].switchport.trunk.allowed_vlan
         snmp_trap_link_change:
           type: bool
         type:
@@ -141,15 +146,30 @@ keys:
             - dot1q-tunnel
             - trunk
             - trunk phone
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.mode
         native_vlan:
           type: int
           convert_types:
             - str
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.native_vlan
         native_vlan_tag:
           type: bool
           default: false
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.native_vlan_tag
         link_tracking_groups:
           type: list
           primary_key: name
@@ -166,18 +186,33 @@ keys:
                   - downstream
         phone:
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.phone
           keys:
             trunk:
               type: str
               valid_values:
                 - tagged
                 - untagged
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: port_channel_interfaces[].switchport.phone.trunk
             vlan:
               type: int
               convert_types:
                 - str
               min: 1
               max: 4094
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: port_channel_interfaces[].switchport.phone.vlan
         l2_protocol:
           type: dict
           keys:
@@ -206,6 +241,11 @@ keys:
           type: list
           items:
             type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.groups
         lacp_fallback_timeout:
           type: int
           description: Timeout in seconds.
@@ -299,12 +339,27 @@ keys:
                   type: bool
         trunk_private_vlan_secondary:
           type: bool
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.private_vlan_secondary
         pvlan_mapping:
           type: str
           description: List of vlans as string.
           convert_types:
             - int
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.pvlan_mapping
         vlan_translations:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.vlan_tanslations
           type: list
           items:
             type: dict

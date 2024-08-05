@@ -665,6 +665,7 @@ interface profile TEST-PROFILE-1
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
 | Ethernet3 | trunk phone | 20 | 20 | tagged |
+| Port-Channel4 | trunk phone | 20 | 20 | tagged |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -708,14 +709,24 @@ interface Ethernet4
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
-| Port-Channel30 | deprecate_filters_testing | switched | access | - | - | - | - | - | - | deaf:beed:0303:0202:0101 |
-| Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
+| Port-Channel2 | - | switched | access | 100 | - | - | - | - | - | - |
+| Port-Channel3 | - | switched | trunk | 110 | 10 | ['group1', 'group2'] | - | - | - | - |
+| Port-Channel4 | - | switched | trunk phone | - | tag | - | - | - | - | - |
+| Port-Channel5 | - | switched | - | - | - | - | - | - | - | - |
 
-##### Flexible Encapsulation Interfaces
+##### Private VLAN
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel2.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+| Port-Channel5 | 2,3,4 | True |
+
+##### VLAN Translations
+
+| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Port-Channel5 | in | 23 | 50 | - | - | - | - |
+| Port-Channel5 | out | 25 | 49 | - | - | - | - |
+| Port-Channel5 | both | 34 | 60 | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -732,37 +743,31 @@ interface Port-Channel1
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel2
-   description Flexencap Port-Channel
-   no switchport
-!
-interface Port-Channel2.1000
-   description L2 Subinterface
-   vlan id 1000
-   encapsulation vlan
-      client dot1q 100 network client
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
-!
-interface Port-Channel30
-   description deprecate_filters_testing
    switchport
-   evpn ethernet-segment
-      identifier deaf:beed:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
+   switchport access vlan 100
 !
-interface Port-Channel51
-   description ipv6_prefix
+interface Port-Channel3
    switchport
-   switchport trunk allowed vlan 1-500
+   switchport trunk allowed vlan 110
+   switchport trunk native vlan 10
    switchport mode trunk
-   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+   switchport trunk group group1
+   switchport trunk group group2
 !
-interface Port-Channel100
-   logging event link-status
-   no switchport
+interface Port-Channel4
+   switchport
+   switchport trunk native vlan tag
+   switchport phone vlan 20
+   switchport phone trunk tagged
+   switchport mode trunk phone
+!
+interface Port-Channel5
+   switchport
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 2,3,4
+   switchport vlan translation in 23 50
+   switchport vlan translation out 25 49
+   switchport vlan translation 34 60
 ```
 
 ### Loopback Interfaces

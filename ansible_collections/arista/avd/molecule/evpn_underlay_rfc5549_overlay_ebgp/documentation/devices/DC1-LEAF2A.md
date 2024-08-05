@@ -386,7 +386,7 @@ vlan 4094
 | Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
 | Ethernet10 | server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
-| Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
+| Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *- | *- | *- | *- | 12 |
 
 *Inherited from Port-Channel Interface
 
@@ -474,7 +474,7 @@ interface Ethernet12
 | Port-Channel7 | DC1-L2LEAF1A_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | - |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
-| Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
+| Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | - | - | - | - | - | - | 12 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

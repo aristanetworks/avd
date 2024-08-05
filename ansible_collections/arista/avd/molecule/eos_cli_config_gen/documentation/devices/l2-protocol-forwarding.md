@@ -144,7 +144,7 @@ interface Ethernet1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2PF test | switched | access | - | - | - | - | - | - | - |
+| Port-Channel1 | L2PF test | switched | - | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
