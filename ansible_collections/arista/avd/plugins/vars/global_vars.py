@@ -143,8 +143,8 @@ class VarsModule(BaseVarsPlugin):
             if entity.name != "all":
                 continue
 
-            for path in FOUND:
-                new_data = loader.load_from_file(path, cache=True, unsafe=True)
+            for found_path in FOUND:
+                new_data = loader.load_from_file(found_path, cache=True, unsafe=True)
                 if new_data:
                     variables = combine_vars(variables, new_data)
 
