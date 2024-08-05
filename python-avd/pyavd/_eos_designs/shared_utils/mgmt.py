@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdMissingVariableError
-from ..._utils import default, get
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import default, get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -15,18 +15,21 @@ if TYPE_CHECKING:
 
 class MgmtMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def mgmt_interface(self: SharedUtils) -> str | None:
         """
+        mgmt_interface.
+
         mgmt_interface is inherited from
         Global var mgmt_interface ->
           Platform Settings management_interface ->
-            Fabric Topology data model mgmt_interface
+            Fabric Topology data model mgmt_interface.
         """
         return default(
             get(self.switch_data_combined, "mgmt_interface"),
@@ -66,14 +69,16 @@ class MgmtMixin:
         default_mgmt_method = get(self.hostvars, "default_mgmt_method", default="oob")
         if default_mgmt_method == "oob":
             if (self.mgmt_ip is None) and (self.ipv6_mgmt_ip is None):
-                raise AristaAvdMissingVariableError("'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to bet set.")
+                msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to bet set."
+                raise AristaAvdMissingVariableError(msg)
 
             return default_mgmt_method
 
         if default_mgmt_method == "inband":
             # Check for missing interface
             if self.inband_mgmt_interface is None:
-                raise AristaAvdMissingVariableError("'default_mgmt_method: inband' requires 'inband_mgmt_interface' to be set.")
+                msg = "'default_mgmt_method: inband' requires 'inband_mgmt_interface' to be set."
+                raise AristaAvdMissingVariableError(msg)
 
             return default_mgmt_method
 

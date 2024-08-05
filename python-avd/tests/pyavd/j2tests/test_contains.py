@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import pytest
 from jinja2.runtime import Undefined
+
 from pyavd.j2tests.contains import contains
 
 TEST_DATA = [

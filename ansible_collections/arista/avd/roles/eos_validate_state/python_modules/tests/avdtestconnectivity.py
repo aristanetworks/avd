@@ -14,9 +14,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestP2PIPReachability(AvdTestBase):
-    """
-    AvdTestP2PIPReachability class for P2P IP reachability tests.
-    """
+    """AvdTestP2PIPReachability class for P2P IP reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -57,17 +55,15 @@ class AvdTestP2PIPReachability(AvdTestBase):
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestInbandReachability(AvdTestBase):
-    """
-    AvdTestInbandReachability class for inband management reachability tests.
-    """
+    """AvdTestInbandReachability class for inband management reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -106,17 +102,15 @@ class AvdTestInbandReachability(AvdTestBase):
                         "VerifyReachability": {
                             "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
                             "result_overwrite": {"custom_field": custom_field},
-                        }
-                    }
+                        },
+                    },
                 )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestLoopback0Reachability(AvdTestBase):
-    """
-    AvdTestLoopback0Reachability class for Loopback0 reachability tests.
-    """
+    """AvdTestLoopback0Reachability class for Loopback0 reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -156,17 +150,15 @@ class AvdTestLoopback0Reachability(AvdTestBase):
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestDpsReachability(AvdTestBase):
-    """
-    AvdTestDpsReachability class for DPS reachability tests.
-    """
+    """AvdTestDpsReachability class for DPS reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -174,10 +166,10 @@ class AvdTestDpsReachability(AvdTestBase):
     def test_definition(self) -> dict | None:
         """
         Generates the proper ANTA test definition for all DPS reachability tests.
+
         Returns:
             dict | None: ANTA test definition if there are tests to run, otherwise None.
         """
-
         anta_tests = []
 
         # Skip the test if the host is not a WAN VTEP
@@ -208,9 +200,7 @@ class AvdTestDpsReachability(AvdTestBase):
 
 
 class AvdTestLLDPTopology(AvdTestBase):
-    """
-    AvdTestLLDPTopology class for the LLDP topology tests.
-    """
+    """AvdTestLLDPTopology class for the LLDP topology tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -256,11 +246,11 @@ class AvdTestLLDPTopology(AvdTestBase):
                                 "port": str(interface["name"]),
                                 "neighbor_device": str(peer),
                                 "neighbor_port": str(interface["peer_interface"]),
-                            }
+                            },
                         ],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None

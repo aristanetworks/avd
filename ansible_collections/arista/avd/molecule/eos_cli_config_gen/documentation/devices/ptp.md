@@ -39,6 +39,8 @@ interface Management1
 
 ### PTP
 
+PTP Profile: g8275.1
+
 #### PTP Summary
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
@@ -53,6 +55,7 @@ ptp clock-identity 11:11:11:11:11:11
 ptp source ip 1.1.2.3
 ptp priority1 101
 ptp priority2 102
+ptp profile g8275.1
 ptp ttl 12
 ptp domain 17
 ptp message-type general dscp 36 default
@@ -126,6 +129,7 @@ interface Ethernet6
    ptp transport ipv4
    ptp announce timeout 9
    ptp delay-req interval -7
+   ptp profile g8275.1 destination mac-address non-forwardable
    ptp role dynamic
 ```
 
@@ -151,6 +155,7 @@ interface Port-Channel5
    mlag 5
    ptp enable
    ptp mpass
+   ptp profile g8275.1 destination mac-address forwardable
    ptp delay-mechanism e2e
    ptp sync-message interval 1
    ptp role dynamic

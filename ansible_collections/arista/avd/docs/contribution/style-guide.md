@@ -10,22 +10,22 @@ This page lists guidelines for developing Python code or Jinja2 templates in the
 
 ## Python code style
 
-As AVD is an Ansible collection, we're required to follow guidelines from the official [Ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
+For the Ansible collection `arista.avd.`, we are required to follow guidelines from the official [Ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
 
-Furthermore, the CI Pipeline (& pre-commit) for AVD enforces the following:
+For PyAVD and other areas we follow common good practices as enforced by Ruff and Pylint.
+
+The CI Pipeline (& pre-commit) for AVD enforces the following:
 
 - Maximum line length of 160
-- [Black](https://black.readthedocs.io/en/stable/index.html) version 24.3.0
-- [isort](https://pycqa.github.io/isort/) version 5.13.2
-- [Flake-8](https://flake8.pycqa.org/en/4.0.1/index.html) version 4.0.1
-- [pylint](https://pylint.pycqa.org/en/2.6/) version 2.6.0
+- [Ruff](https://docs.astral.sh/ruff/) version >=0.5.6
+- [pylint](https://pylint.readthedocs.io/en/stable/) version >=3.2.6
 
 Configurations for the above tools can be found in:
 
 - [pyproject.toml](https://github.com/aristanetworks/avd/blob/devel/pyproject.toml)
 - [.pre-commit-config.yaml](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml)
-- [.flake8](https://github.com/aristanetworks/avd/blob/devel/.flake8)
-- [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc)
+- [pylintrc](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/pylintrc) for the Ansible Collection
+- [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc) for everything else
 
 ## Jinja2 Syntax and guidelines
 

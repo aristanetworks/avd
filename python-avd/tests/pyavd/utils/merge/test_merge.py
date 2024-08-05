@@ -9,6 +9,7 @@ import os
 
 import pytest
 import yaml
+
 from pyavd._schema.avdschema import AvdSchema
 from pyavd._utils import merge
 

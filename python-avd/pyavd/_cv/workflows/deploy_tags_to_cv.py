@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TYPE_CHECKING
 
-from ..client import CVClient
 from .models import CVDeviceTag, CVInterfaceTag, CVWorkspace
+
+if TYPE_CHECKING:
+    from pyavd._cv.client import CVClient
 
 LOGGER = getLogger(__name__)
 
@@ -44,12 +47,9 @@ async def deploy_tags_to_cv(
     if not tags:
         return
 
-    if isinstance(tags[0], CVInterfaceTag):
-        tag_type = "interface"
-    else:
-        tag_type = "device"
+    tag_type = "interface" if isinstance(tags[0], CVInterfaceTag) else "device"
 
-    # Build Todo with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
+    # Build TODO: with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
     skipped_tags.extend(tag for tag in tags if tag.device is not None and not tag.device._exists_on_cv)
     todo_tags = [tag for tag in tags if tag.device is None or tag.device._exists_on_cv]
 
@@ -67,7 +67,7 @@ async def deploy_tags_to_cv(
     if tags_to_add:
         await cv_client.set_tags(workspace_id=workspace.id, tags=[(tag.label, tag.value) for tag in tags_to_add], element_type=tag_type)
 
-    # Remove entries with no assignment from todo and add to deployed.
+    # Remove entries with no assignment from TODO: and add to deployed.
     deployed_tags.extend(tag for tag in todo_tags if tag.device is None)
     todo_tags = [tag for tag in todo_tags if tag.device is not None]
 
@@ -86,7 +86,7 @@ async def deploy_tags_to_cv(
     ]
     LOGGER.info("deploy_tags_to_cv: Got %s tag assignments", len(existing_assignments))
 
-    # Move all existing assignments from todo to deployed.
+    # Move all existing assignments from TODO: to deployed.
     deployed_tags.extend(tag for tag in todo_tags if (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) in existing_assignments)
     todo_tags = [tag for tag in todo_tags if (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) not in existing_assignments]
 
@@ -98,7 +98,7 @@ async def deploy_tags_to_cv(
             element_type=tag_type,
         )
 
-    # Move all todo to deployed.
+    # Move all TODO: to deployed.
     deployed_tags.extend(todo_tags)
 
     # Now we start removing assignments depending on strict_tags or not.

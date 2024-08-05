@@ -306,7 +306,9 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.33/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
@@ -315,7 +317,9 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.35/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet5
@@ -324,7 +328,9 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.37/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet5
@@ -333,7 +339,9 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.39/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet5
    description MLAG_PEER_DC1-SVC3A_Ethernet5
@@ -435,11 +443,11 @@ interface Loopback1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3019 |  Tenant_B_OP_Zone  |  10.255.252.7/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.7/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |
+| Vlan3019 |  Tenant_B_OP_Zone  |  10.255.252.7/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.7/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

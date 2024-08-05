@@ -1,13 +1,11 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, annotations, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 import logging
 from json import dump
-from typing import TYPE_CHECKING, Mapping
+from typing import TYPE_CHECKING, Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
@@ -22,6 +20,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
     from pathlib import Path
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
@@ -31,13 +30,13 @@ LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 
 class AnsibleNoAliasDumper(AnsibleDumper):
-    def ignore_aliases(self, data):
+    def ignore_aliases(self, _data: Any) -> bool:
         return True
 
 
 class ActionModule(ActionBase):
     # @cprofile()
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = True
 
         if task_vars is None:
@@ -51,10 +50,6 @@ class ActionModule(ActionBase):
         ansible_connection = self._connection
         ansible_check_mode = task_vars.get("ansible_check_mode", False)
         is_deployed = task_vars.get("is_deployed", True)
-        ansible_tags = {
-            "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
-            "ansible_skip_tags": task_vars.get("ansible_skip_tags", ()),
-        }
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
 
@@ -70,7 +65,11 @@ class ActionModule(ActionBase):
         # Get task arguments and validate them
         try:
             logging_level = get_validated_value(
-                data=self._task.args, key="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS
+                data=self._task.args,
+                key="logging_level",
+                expected_type=str,
+                default_value="WARNING",
+                allowed_values=LOGGING_LEVELS,
             )
             skip_tests = get_validated_value(data=self._task.args, key="skip_tests", expected_type=list, default_value=[])
             save_catalog = get_validated_value(data=self._task.args, key="save_catalog", expected_type=bool, default_value=False)
@@ -92,7 +91,6 @@ class ActionModule(ActionBase):
                 config_manager=config_manager,
                 logging_level=logging_level,
                 skip_tests=skip_tests,
-                ansible_tags=ansible_tags,
                 save_catalog_name=catalog_path,
                 custom_anta_catalogs=custom_anta_catalogs,
                 # This convert Ansible Check Mode to dry_run
@@ -168,6 +166,6 @@ def setup_module_logging(hostname: str, result: dict) -> None:
     python_to_ansible_handler = PythonToAnsibleHandler(result, display)
     python_to_ansible_handler.addFilter(python_to_ansible_filter)
     LOGGER.addHandler(python_to_ansible_handler)
-    # TODO mechanism to manipulate the logger globally for pyavd
+    # TODO: mechanism to manipulate the logger globally for pyavd
     # Keep debug to be able to see logs with `-v` and `-vvv`
     LOGGER.setLevel(logging.DEBUG)

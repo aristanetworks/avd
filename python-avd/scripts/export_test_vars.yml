@@ -25,7 +25,7 @@
       ansible.builtin.file:
         path: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}/{{ item }}"
         state: directory
-        mode: 0775
+        mode: "0o775"
       run_once: true
       loop:
         - vars

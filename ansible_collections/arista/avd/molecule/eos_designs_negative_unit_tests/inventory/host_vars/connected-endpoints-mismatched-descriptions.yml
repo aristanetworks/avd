@@ -17,4 +17,6 @@ servers:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
 
-expected_error_message: "Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for OLD_SW-1/7, adapter switch_ports ['Ethernet9', 'Ethernet10']."
+expected_error_message: >-
+  Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter.
+  Check configuration for OLD_SW-1/7, adapter switch_ports ['Ethernet9', 'Ethernet10'].

@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from functools import cached_property
 from ipaddress import ip_interface
-from typing import Mapping
 
 from ansible.errors import AnsibleActionFail
 
@@ -22,7 +22,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 LOGGER = logging.getLogger(__name__)
@@ -89,7 +89,7 @@ class ConfigManager:
         """Get the dps_mapping list."""
         return self._get_loopback_mappings["dps_mapping"]
 
-    def _get_ip_address(self, host, interfaces, vtep_interface):
+    def _get_ip_address(self, host: str, interfaces: list, vtep_interface: str) -> tuple[str, str]:
         """Retrieve the IP address for a given VTEP interface on a host.
 
         Parameters
@@ -101,7 +101,7 @@ class ConfigManager:
         vtep_interface: str
             The name of the VTEP interface.
 
-        Returns
+        Returns:
         -------
         tuple
             A tuple containing the hostname and IP address if found, else None.
@@ -118,7 +118,7 @@ class ConfigManager:
     def _get_loopback_mappings(self) -> dict:
         """Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
 
-        Returns
+        Returns:
         -------
             dict: A dictionary containing:
             - "loopback0_mapping": A list of tuples where each tuple contains a hostname and its Loopback0 IP address.

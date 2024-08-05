@@ -16,14 +16,13 @@ if TYPE_CHECKING:
 class IpNatMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ip_nat(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        Returns structured config for ip_nat
-        """
+        """Returns structured config for ip_nat."""
         if not self.shared_utils.is_cv_pathfinder_client:
             return None
 

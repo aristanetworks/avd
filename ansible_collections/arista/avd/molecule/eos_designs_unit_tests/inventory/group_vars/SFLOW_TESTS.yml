@@ -42,7 +42,6 @@ core_interfaces:
       interfaces: [ Ethernet11, Ethernet11 ]
       include_in_underlay_protocol: false
 
-
 # Testing the same as above with l3_edge
 l3_edge:
   p2p_links:

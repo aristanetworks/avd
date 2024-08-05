@@ -9,13 +9,16 @@ The test checks if a passed variable is defined, and if specified, its value and
 from __future__ import annotations
 
 import warnings
+from typing import Any
 
 from jinja2.runtime import Undefined
 
 
-def defined(value, test_value=None, var_type=None, fail_action=None, var_name=None, run_tests=False):
+def defined(
+    value: Any, test_value: Any = None, var_type: str | None = None, fail_action: str | None = None, var_name: str | None = None, *, run_tests: bool = False
+) -> bool | tuple[bool, int]:
     """
-    defined - Ansible test plugin to test if a variable is defined and not none
+    defined - Ansible test plugin to test if a variable is defined and not none.
 
     Arista.avd.defined will test value if defined and is not none and return true or false.
     If test_value is supplied, the value must also pass == test_value to return true.
@@ -51,9 +54,9 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
     var_name : <string>, optional
         Optional string to use as variable name in warning or error messages
 
-    Returns
+    Returns:
     -------
-    boolean
+    bool
         True if variable matches criteria, False in other cases.
     """
     if isinstance(value, Undefined) or value is None:
@@ -62,16 +65,18 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
             warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was expected but not set. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
             else:
                 warning_msg = "A variable was expected but not set. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
         elif str(fail_action).lower() == "error":
             if var_name is not None:
-                raise ValueError(f"{var_name} was expected but not set!")
-            raise ValueError("A variable was expected but not set!")
+                msg = f"{var_name} was expected but not set!"
+                raise ValueError(msg)
+            msg = "A variable was expected but not set!"
+            raise ValueError(msg)
         if run_tests:
             return False, warnings_count
         return False
@@ -82,16 +87,18 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
             warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
             else:
                 warning_msg = f"A variable was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
         elif str(fail_action).lower() == "error":
             if var_name is not None:
-                raise ValueError(f"{var_name} was set to {value} but we expected {test_value}!")
-            raise ValueError(f"A variable was set to {value} but we expected {test_value}!")
+                msg = f"{var_name} was set to {value} but we expected {test_value}!"
+                raise ValueError(msg)
+            msg = f"A variable was set to {value} but we expected {test_value}!"
+            raise ValueError(msg)
         if run_tests:
             return False, warnings_count
         return False
@@ -101,16 +108,18 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
             warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
             else:
                 warning_msg = f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}. Output may be incorrect or incomplete!"
-                warnings.warn(warning_msg)
+                warnings.warn(warning_msg)  # noqa: B028
                 warnings_count["[WARNING]: " + warning_msg] = warnings_count.get("[WARNING]: " + warning_msg, 0) + 1
         elif str(fail_action).lower() == "error":
             if var_name is not None:
-                raise ValueError(f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
-            raise ValueError(f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
+                msg = f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}!"
+                raise ValueError(msg)
+            msg = f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}!"
+            raise ValueError(msg)
         if run_tests:
             return False, warnings_count
         return False

@@ -298,7 +298,9 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.41/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet6
@@ -307,7 +309,9 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.43/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet6
@@ -316,7 +320,9 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.45/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet6
@@ -325,7 +331,9 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.47/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet5
    description MLAG_PEER_DC1-BL1B_Ethernet5
@@ -407,10 +415,10 @@ interface Loopback1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4093 |  default  |  10.255.251.10/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.10/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan4093 |  default  |  10.255.251.10/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.10/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

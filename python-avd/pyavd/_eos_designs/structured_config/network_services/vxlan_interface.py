@@ -6,9 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, NoReturn
 
-from ...._errors import AristaAvdError, AristaAvdMissingVariableError
-from ...._utils import append_if_not_duplicate, default, get, get_item, unique
-from ....j2filters import natural_sort, range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import append_if_not_duplicate, default, get, get_item, unique
+from pyavd.j2filters import natural_sort, range_expand
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,13 +19,14 @@ if TYPE_CHECKING:
 class VxlanInterfaceMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def vxlan_interface(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Returns structured config for vxlan_interface
+        Returns structured config for vxlan_interface.
 
         Only used for VTEPs and for WAN
 
@@ -117,13 +119,11 @@ class VxlanInterfaceMixin(UtilsMixin):
             "Vxlan1": {
                 "description": f"{self.shared_utils.hostname}_VTEP",
                 "vxlan": vxlan,
-            }
+            },
         }
 
     def _get_vxlan_interface_config_for_vrf(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict, vrfs: list, vlans: list, vnis: list) -> None:
-        """
-        In place updates of the vlans, vnis and vrfs list
-        """
+        """In place updates of the vlans, vnis and vrfs list."""
         if self.shared_utils.network_services_l2:
             for svi in vrf["svis"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(svi, tenant):
@@ -169,7 +169,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                 )
 
             # NOTE: this can never be None here, it would be caught previously in the code
-            id = default(
+            vrf_id = default(
                 vrf.get("vrf_id"),
                 vrf.get("vrf_vni"),
             )
@@ -187,7 +187,10 @@ class VxlanInterfaceMixin(UtilsMixin):
                     )
                     underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
                     vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
-                        underlay_l3_multicast_group_ipv4_pool, vni, id, underlay_l3_mcast_group_ipv4_pool_offset
+                        underlay_l3_multicast_group_ipv4_pool,
+                        vni,
+                        vrf_id,
+                        underlay_l3_mcast_group_ipv4_pool_offset,
                     )
 
                 # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
@@ -208,9 +211,9 @@ class VxlanInterfaceMixin(UtilsMixin):
                     context_keys=["name", "vni"],
                 )
 
-    def _get_vxlan_interface_config_for_vlan(self: AvdStructuredConfigNetworkServices, vlan, tenant) -> dict:
+    def _get_vxlan_interface_config_for_vlan(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> dict:
         """
-        vxlan_interface logic for one vlan
+        vxlan_interface logic for one vlan.
 
         Can be used for both svis and l2vlans
         """
@@ -237,7 +240,9 @@ class VxlanInterfaceMixin(UtilsMixin):
             )
             underlay_l2_multicast_group_ipv4_pool_offset = get(tenant, "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset", default=0)
             vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l2_multicast_group(
-                underlay_l2_multicast_group_ipv4_pool, vlan_id, underlay_l2_multicast_group_ipv4_pool_offset
+                underlay_l2_multicast_group_ipv4_pool,
+                vlan_id,
+                underlay_l2_multicast_group_ipv4_pool_offset,
             )
 
         if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni:
@@ -270,7 +275,8 @@ class VxlanInterfaceMixin(UtilsMixin):
         overlay_her_flood_list_scope = get(self._hostvars, "overlay_her_flood_list_scope")
 
         if overlay_her_flood_list_scope == "dc" and self.shared_utils.dc_name is None:
-            raise AristaAvdMissingVariableError("'dc_name' is required with 'overlay_her_flood_list_scope: dc'")
+            msg = "'dc_name' is required with 'overlay_her_flood_list_scope: dc'"
+            raise AristaAvdMissingVariableError(msg)
 
         for peer in self.shared_utils.all_fabric_devices:
             if peer == self.shared_utils.hostname:

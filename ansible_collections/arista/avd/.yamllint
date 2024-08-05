@@ -1,9 +1,10 @@
 ---
-# Based on ansible-lint config
+# Based on ansible-lint config - https://ansible.readthedocs.io/projects/lint/rules/yaml/#yamllint-configuration
 extends: default
 
 rules:
   braces:
+    min-spaces-inside: 0
     max-spaces-inside: 1
     level: error
   brackets:
@@ -15,19 +16,33 @@ rules:
   commas:
     max-spaces-after: -1
     level: error
-  comments: disable
-  comments-indentation: disable
+  comments:
+    # prettier compatibility
+    min-spaces-from-content: 1
+    level: error
+  comments-indentation: false
   document-start: disable
   empty-lines:
-    max: 3
+    max: 1
     level: error
   hyphens:
     level: error
-  indentation: disable
-  key-duplicates: enable
-  line-length: disable
-  new-line-at-end-of-file: disable
+  key-duplicates:
+    forbid-duplicated-merge-keys: true
+  line-length:
+    max: 160
+    ignore:
+      - /molecule/**/intended/structured_configs/
+      - /molecule/**/intended/structured_configs/cvp/
+      - /examples/**/intended/structured_configs/cvp/
+      - /changelogs/fragments_backup/
+      - /tests/inventory/**/expected_output
   new-lines:
     type: unix
-  trailing-spaces: disable
+  indentation:
+    level: error
+    indent-sequences: consistent
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
   truthy: disable

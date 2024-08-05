@@ -16,6 +16,7 @@ LOGGER = logging.getLogger(__name__)
 class AvdTestStun(AvdTestBase):
     """
     AvdTestStun class for STUN tests.
+
     Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios.
     The list of expected translations for each device is built by searching through router_path_selection.path_groups.local_interfaces.
     """
@@ -64,8 +65,8 @@ class AvdTestStun(AvdTestBase):
                     "VerifyStunClient": {
                         "stun_clients": [{"source_address": source_address, "source_port": source_port}],
                         "result_overwrite": {"custom_field": f"Source IPv4 Address: {source_address} Source Port: {source_port}"},
-                    }
-                }
+                    },
+                },
             )
 
         # Return the ANTA tests as a dictionary

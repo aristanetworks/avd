@@ -16,19 +16,19 @@ if TYPE_CHECKING:
 class StaticRoutesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def static_routes(self: AvdStructuredConfigNetworkServices) -> list[dict] | None:
         """
-        Returns structured config for static_routes
+        Returns structured config for static_routes.
 
         Consist of
         - static_routes defined under the vrfs
         - static routes added automatically for VARP with prefixes
         """
-
         if not self.shared_utils.network_services_l3:
             return None
 

@@ -7,13 +7,12 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..shared_utils import SharedUtils
+    from pyavd._eos_designs.shared_utils import SharedUtils
 
 
 class InterfaceDescriptionData:
     """
-    This class is used as transport of data between AVD code and
-    instances of AvdInterfaceDescriptions class or subclasses hereof.
+    This class is used as transport of data between AVD code and instances of AvdInterfaceDescriptions class or subclasses hereof.
 
     Attributes starting with _ are internal and may change at any time.
 
@@ -59,7 +58,7 @@ class InterfaceDescriptionData:
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
-    ):
+    ) -> None:
         self._shared_utils = shared_utils
         self.description = description
         self.interface = interface
