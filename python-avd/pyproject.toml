@@ -78,11 +78,15 @@ include = ["pyavd*"]
 version = {attr = "pyavd.__version__"}
 
 [tool.black]
+# Black has been replaced with Ruff.
+# This section should be removed later, but kept here to avoid IDE extensions from messing up the code.
 line-length = 160
 
 force-exclude = '''pyavd/_cv/api/.*'''
 
 [tool.isort]
+# Isort has been replaced with Ruff.
+# This section should be removed later, but kept here to avoid IDE extensions from messing up the code.
 profile = "black"
 skip_gitignore = true
 line_length = 160

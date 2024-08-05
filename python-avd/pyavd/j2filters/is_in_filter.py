@@ -24,6 +24,4 @@ def is_in_filter(hostname: str, hostname_filter: list | None) -> bool:
         hostname_filter = ["all"]
     if "all" in hostname_filter:
         return True
-    if any(element in hostname for element in hostname_filter):
-        return True
-    return False
+    return any(element in hostname for element in hostname_filter)
