@@ -80,8 +80,6 @@ class VrfsMixin(UtilsMixin):
         Expects a VRF definition coming from filtered_tenants, where all keys have been set and filtered
         """
         for svi in vrf["svis"]:
-            if svi.get("ipv6_address_virtual") is not None:
-                return True
 
             if len(svi.get("ipv6_address_virtuals", [])) > 0:
                 return True
