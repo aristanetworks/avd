@@ -87,8 +87,6 @@ $defs:
       ip_helpers:
         type: list
         primary_key: ip_helper
-        convert_types:
-          - dict
         description: IP helper for DHCP relay.
         items:
           type: dict

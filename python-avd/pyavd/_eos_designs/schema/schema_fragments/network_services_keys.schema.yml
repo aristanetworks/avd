@@ -9,8 +9,6 @@ keys:
   network_services_keys:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     description: |
       Network Services can be grouped by using separate keys.
       The keys can be customized to provide a better better organization or grouping of your data.

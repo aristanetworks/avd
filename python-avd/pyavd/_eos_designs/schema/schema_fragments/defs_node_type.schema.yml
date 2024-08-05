@@ -1402,8 +1402,6 @@ $defs:
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
-        convert_types:
-          - dict
         primary_key: group
         items:
           "$ref": "eos_designs#/$defs/node_type/keys/defaults"
@@ -1421,8 +1419,6 @@ $defs:
       nodes:
         description: Define variables per node.
         type: list
-        convert_types:
-          - dict
         primary_key: name
         items:
           "$ref": "eos_designs#/$defs/node_type/keys/defaults"
