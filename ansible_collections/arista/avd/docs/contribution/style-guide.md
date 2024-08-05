@@ -12,9 +12,9 @@ This page lists guidelines for developing Python code or Jinja2 templates in the
 
 For the Ansible collection `arista.avd.`, we are required to follow guidelines from the official [Ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
 
-For PyAVD and other areas we will follow common good practices.
+For PyAVD and other areas we follow common good practices as enforced by Ruff and Pylint.
 
-Furthermore, the CI Pipeline (& pre-commit) for AVD enforces the following:
+The CI Pipeline (& pre-commit) for AVD enforces the following:
 
 - Maximum line length of 160
 - [Ruff](https://docs.astral.sh/ruff/) version >=0.5.6
