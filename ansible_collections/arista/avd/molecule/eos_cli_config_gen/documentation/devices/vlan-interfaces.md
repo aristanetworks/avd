@@ -128,6 +128,15 @@ interface Management1
 | Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |
 | Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |
 | Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan340 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan341 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan342 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan343 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan344 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan345 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan346 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan347 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan348 |  default  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |
 | Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |

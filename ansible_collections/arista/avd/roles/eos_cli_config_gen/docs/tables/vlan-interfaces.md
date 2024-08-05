@@ -156,6 +156,31 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_passive</samp>](## "vlan_interfaces.[].isis_passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "vlan_interfaces.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "vlan_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "vlan_interfaces.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>text</code><br>- <code>md5</code><br>- <code>sha</code><br>- <code>shared-secret</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "vlan_interfaces.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode_shared_secret</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret") | Dictionary |  |  |  | Required for authentication mode `shared-secret`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.both") | Dictionary |  |  |  | When set `both` takes precedence over `level_1` and `level_2`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.both.rx_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.both.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.both.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_1") | Dictionary |  |  |  | Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_1.rx_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_1.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_1.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_2") | Dictionary |  |  |  | Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_2.rx_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_2.profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "vlan_interfaces.[].isis_authentication_mode_shared_secret.level_2.algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha-512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode_sha</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha") | Dictionary |  |  |  | Required for authentication mode `sha`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.both") | Dictionary |  |  |  | When set `both` takes precedence over `level_1` and `level_2`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.both.rx_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.both.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.level_1") | Dictionary |  |  |  | Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.level_1.rx_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.level_1.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.level_2") | Dictionary |  |  |  | Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.level_2.rx_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "vlan_interfaces.[].isis_authentication_mode_sha.level_2.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "vlan_interfaces.[].mtu") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_autostate</samp>](## "vlan_interfaces.[].no_autostate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrrp_ids</samp>](## "vlan_interfaces.[].vrrp_ids") | List, items: Dictionary |  |  |  | Improved "vrrp" data model to support multiple VRRP IDs. |
@@ -500,6 +525,49 @@
         isis_passive: <bool>
         isis_metric: <int>
         isis_network_point_to_point: <bool>
+        isis_authentication_mode: <str; "text" | "md5" | "sha" | "shared-secret">
+
+        # Type-7 encrypted password.
+        isis_authentication_key: <str>
+
+        # Required for authentication mode `shared-secret`.
+        isis_authentication_mode_shared_secret:
+
+          # When set `both` takes precedence over `level_1` and `level_2`.
+          both:
+            rx_disabled: <bool>
+            profile: <str; required>
+            algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+
+          # Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+          level_1:
+            rx_disabled: <bool>
+            profile: <str; required>
+            algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+
+          # Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+          level_2:
+            rx_disabled: <bool>
+            profile: <str; required>
+            algorithm: <str; "md5" | "sha-1" | "sha-224" | "sha-256" | "sha-384" | "sha-512"; required>
+
+        # Required for authentication mode `sha`.
+        isis_authentication_mode_sha:
+
+          # When set `both` takes precedence over `level_1` and `level_2`.
+          both:
+            rx_disabled: <bool>
+            key_id: <int; 1-65535; required>
+
+          # Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
+          level_1:
+            rx_disabled: <bool>
+            key_id: <int; 1-65535; required>
+
+          # Authentication settings for level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
+          level_2:
+            rx_disabled: <bool>
+            key_id: <int; 1-65535; required>
         mtu: <int>
         no_autostate: <bool>
 
