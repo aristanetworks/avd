@@ -1,12 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, annotations, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 from json import JSONDecodeError, load
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -16,6 +14,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_validated_path, get_validated_value
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
     from pathlib import Path
 
 PLUGIN_NAME = "arista.avd.eos_validate_state_reports"
@@ -27,7 +26,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 
@@ -51,7 +50,7 @@ def _test_results_gen(input_path: Path) -> Generator[dict, None, None]:
 
 class ActionModule(ActionBase):
     # @cprofile()
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
 
@@ -88,11 +87,11 @@ class ActionModule(ActionBase):
                     # Getting the host results JSON file saved by eos_validate_state_runner action plugin
                     result_path = get_validated_path(path_input=test_results_dir / f"{host}-results.json", parent=False)
                     # Process the host test results
-                    for test_result in _test_results_gen(input_path=result_path):
-                        try:
+                    try:
+                        for test_result in _test_results_gen(input_path=result_path):
                             test_results.update_results(test_result)
-                        except TypeError as error:
-                            display.warning(f"Failed to update the test results of host {host}: {error}")
+                    except TypeError as error:
+                        display.warning(f"Failed to update the test results of host {host}: {error}")
                 except (JSONDecodeError, OSError, TypeError, FileNotFoundError) as error:
                     display.warning(f"Failed to load the test results of host {host}: {error}")
 

@@ -4,14 +4,11 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP Name Servers](#ip-name-servers)
   - [Domain Lookup](#domain-lookup)
   - [Management SSH](#management-ssh)
-  - [Management API gNMI](#management-api-gnmi)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [RADIUS Server](#radius-server)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -41,7 +38,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
-  - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [Queue Monitor](#queue-monitor)
@@ -113,22 +109,6 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### IP Name Servers
-
-#### IP Name Servers Summary
-
-| Name Server | VRF | Priority |
-| ----------- | --- | -------- |
-| 10.10.128.10 | mgt | - |
-| 10.10.129.10 | mgt | - |
-
-#### IP Name Servers Device Configuration
-
-```eos
-ip name-server vrf mgt 10.10.128.10
-ip name-server vrf mgt 10.10.129.10
-```
-
 ### Domain Lookup
 
 #### DNS Domain Lookup Summary
@@ -181,28 +161,6 @@ management ssh
       no shutdown
 ```
 
-### Management API gNMI
-
-#### Management API gNMI Summary
-
-| VRF with gNMI | OCTA |
-| ------------- | ---- |
-| MGMT | enabled |
-| MONITORING | enabled |
-
-#### Management API gNMI Device Configuration
-
-```eos
-!
-management api gnmi
-   transport grpc MGMT
-      ip access-group ACL-GNMI
-      vrf MGMT
-   transport grpc MONITORING
-      vrf MONITORING
-   provider eos-native
-```
-
 ### Management API HTTP
 
 #### Management API HTTP Summary
@@ -244,25 +202,6 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-```
-
-### RADIUS Server
-
-#### RADIUS Server Hosts
-
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
-| mgt | 10.10.10.157 | - | - | - | - |
-| default | 10.10.10.249 | - | - | - | - |
-| default | 10.10.10.158 | - | - | - | - |
-
-#### RADIUS Server Device Configuration
-
-```eos
-!
-radius-server host 10.10.10.157 vrf mgt key 7 <removed>
-radius-server host 10.10.10.249 key 7 <removed>
-radius-server host 10.10.10.158 key 7 <removed>
 ```
 
 ## Monitoring
@@ -615,8 +554,7 @@ interface Ethernet47
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
-| Port-Channel30 | deprecate_filters_testing | switched | access | - | - | - | - | - | - | deaf:beed:0303:0202:0101 |
+| Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | - |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 
 ##### Flexible Encapsulation Interfaces
@@ -634,9 +572,6 @@ interface Port-Channel1
    switchport
    switchport trunk allowed vlan 2-3000
    switchport mode trunk
-   evpn ethernet-segment
-      identifier 0000:0000:0404:0404:0303
-      route-target import 04:04:03:03:02:02
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel2
@@ -648,17 +583,6 @@ interface Port-Channel2.1000
    vlan id 1000
    encapsulation vlan
       client dot1q 100 network client
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
-!
-interface Port-Channel30
-   description deprecate_filters_testing
-   switchport
-   evpn ethernet-segment
-      identifier deaf:beed:0303:0202:0101
-      route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel51
@@ -756,60 +680,39 @@ interface Tunnel4
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan1 | test ipv6_address_virtual | default | - | - |
-| Vlan2 | test ipv6_address_virtual and ipv6_address_virtuals | default | - | - |
-| Vlan3 | test ipv6_address_virtual | default | - | - |
-| Vlan42 | SVI Description | default | - | False |
+| Vlan2 | test ipv6_nd_prefixes | default | - | - |
+| Vlan42 | test ip_helpers | default | - | False |
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan1 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  -  |  -  |  -  |  -  |
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - | - |
-| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - | - |
-| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | - | - | - | True | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan1
-   description test ipv6_address_virtual
-   ipv6 enable
-   ipv6 address virtual fc00:10:10:1::1/64
-!
 interface Vlan2
-   description test ipv6_address_virtual and ipv6_address_virtuals
+   description test ipv6_nd_prefixes
    ipv6 enable
    ipv6 address 1b11:3a00:22b0:5200::15/64
-   ipv6 address virtual fc00:10:10:2::1/64
-   ipv6 address virtual fc00:10:11:2::1/64
-   ipv6 address virtual fc00:10:12:2::1/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
 !
-interface Vlan3
-   description test ipv6_address_virtual
-   ipv6 enable
-   ipv6 address 1b11:3a00:22b3:5200::15/64
-   ipv6 virtual-router address fc00:10:10:3::1/64
-!
 interface Vlan42
-   description SVI Description
+   description test ip_helpers
    no shutdown
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
-   ip address virtual 10.10.42.1/24
 ```
 
 ### VXLAN Interface
@@ -935,35 +838,6 @@ router ospf 100
    area 3 filter prefix-list PL-OSPF-FILTERING
 ```
 
-### Router ISIS
-
-#### Router ISIS Summary
-
-| Settings | Value |
-| -------- | ----- |
-| Instance | EVPN_UNDERLAY |
-| Address Family | ipv4 unicast, ipv6 unicast |
-
-#### ISIS Interfaces Summary
-
-| Interface | ISIS Instance | ISIS Metric | Interface Mode |
-| --------- | ------------- | ----------- | -------------- |
-
-#### Router ISIS Device Configuration
-
-```eos
-!
-router isis EVPN_UNDERLAY
-   !
-   address-family ipv4 unicast
-      maximum-paths 2
-      fast-reroute ti-lfa mode link-protection
-   address-family ipv6 unicast
-      maximum-paths 2
-      fast-reroute ti-lfa mode link-protection
-   !
-```
-
 ### Router BGP
 
 ASN Notation: asplain
@@ -982,7 +856,6 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | evpn |
 | Remote AS | 65001 |
-| Listen range prefix | 10.10.10.0/24 |
 | Source | Loopback0 |
 
 #### BGP Neighbors
@@ -992,8 +865,6 @@ ASN Notation: asplain
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
-| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
-| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
@@ -1069,7 +940,6 @@ ASN Notation: asplain
 !
 router bgp 65101
    router-id 192.168.255.3
-   bgp listen range 10.10.10.0/24 peer-group EVPN-OVERLAY-PEERS peer-filter myfilter
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -1097,7 +967,6 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      neighbor EVPN-OVERLAY-PEERS next-hop address-family ipv6 originate
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
@@ -1143,19 +1012,6 @@ router bgp 65101
          neighbor 10.2.3.4 prefix-list PL-TEST-IN-AF4 in
          neighbor 10.2.3.4 prefix-list PL-TEST-OUT-AF4 out
          neighbor 10.2.3.5 activate
-         neighbor 10.2.3.5 prefix-list PL-TEST-IN in
-         neighbor 10.2.3.5 prefix-list PL-TEST-OUT out
-         neighbor 10.255.251.1 prefix-list PL-TEST-IN in
-         neighbor 10.255.251.1 prefix-list PL-TEST-OUT out
-      !
-      address-family ipv4
-         neighbor TEST_PEER_GRP activate
-         neighbor 10.2.3.4 activate
-         neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
-         neighbor 10.2.3.5 activate
-         neighbor 10.2.3.5 route-map RM-10.2.3.5-SET-NEXT-HOP-IN in
-         network 10.0.0.0/8
-         network 100.64.0.0/10 route-map RM-10.2.3.4
 ```
 
 ### PBR Policy Maps

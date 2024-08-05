@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError
-from ...._utils import get, strip_null_from_data
+from pyavd._errors import AristaAvdError
+from pyavd._utils import get, strip_null_from_data
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,14 +18,13 @@ if TYPE_CHECKING:
 class NtpMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ntp(self: AvdStructuredConfigBase) -> dict | None:
-        """
-        ntp set based on "ntp_settings" data-model.
-        """
+        """Ntp set based on "ntp_settings" data-model."""
         ntp_settings = get(self._hostvars, "ntp_settings")
         if not ntp_settings:
             return None
@@ -36,7 +36,7 @@ class NtpMixin(UtilsMixin):
                 "authenticate_servers_only": ntp_settings.get("authenticate_servers_only"),
                 "authentication_keys": ntp_settings.get("authentication_keys"),
                 "trusted_keys": ntp_settings.get("trusted_keys"),
-            }
+            },
         )
 
         if "servers" not in ntp_settings:
@@ -56,7 +56,8 @@ class NtpMixin(UtilsMixin):
         if server_vrf == "use_mgmt_interface_vrf":
             has_mgmt_ip = (self.shared_utils.mgmt_ip is not None) or (self.shared_utils.ipv6_mgmt_ip is not None)
             if not has_mgmt_ip:
-                raise AristaAvdError("'ntp_settings.server_vrf' is set to 'use_mgmt_interface_vrf' but this node is missing an 'mgmt_ip'")
+                msg = "'ntp_settings.server_vrf' is set to 'use_mgmt_interface_vrf' but this node is missing an 'mgmt_ip'"
+                raise AristaAvdError(msg)
             # Replacing server_vrf with mgmt_interface_vrf
             server_vrf = self.shared_utils.mgmt_interface_vrf
             ntp["local_interface"] = {
@@ -65,7 +66,8 @@ class NtpMixin(UtilsMixin):
             }
         elif server_vrf == "use_inband_mgmt_vrf":
             if self.shared_utils.inband_mgmt_interface is None:
-                raise AristaAvdError("'ntp_settings.server_vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management")
+                msg = "'ntp_settings.server_vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management"
+                raise AristaAvdError(msg)
             # self.shared_utils.inband_mgmt_vrf returns None for the default VRF.
             # Replacing server_vrf with inband_mgmt_vrf or "default"
             server_vrf = self.shared_utils.inband_mgmt_vrf or "default"

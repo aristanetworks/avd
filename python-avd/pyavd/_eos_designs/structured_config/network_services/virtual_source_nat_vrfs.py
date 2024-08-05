@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, strip_null_from_data
+from pyavd._utils import append_if_not_duplicate, strip_null_from_data
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,13 +16,14 @@ if TYPE_CHECKING:
 class VirtualSourceNatVrfsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def virtual_source_nat_vrfs(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for virtual_source_nat_vrfs
+        Return structured config for virtual_source_nat_vrfs.
 
         Only used by VTEPs with L2 and L3 services
         Using data from loopback_interfaces to avoid duplicating logic

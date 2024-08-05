@@ -7,7 +7,8 @@ from collections import defaultdict
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
+from pyavd._utils import get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,13 +18,14 @@ if TYPE_CHECKING:
 class RouterInternetExitMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_internet_exit(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Return structured config for router_internet_exit
+        Return structured config for router_internet_exit.
 
         Only used for CV Pathfinder edge routers today
         """

@@ -8,7 +8,7 @@ from functools import lru_cache
 
 from deepmerge import conservative_merger
 
-from ..store import create_store
+from schema_tools.store import create_store
 
 
 def merge_schema_from_ref(schema: dict) -> dict:
@@ -27,13 +27,13 @@ def merge_schema_from_ref(schema: dict) -> dict:
     ref_schema = merge_schema_from_ref(get_schema_from_ref(ref))
     if ref_schema["type"] != schema["type"]:
         # TODO: Consider if this should be a pyavd specific error
-        raise ValueError(
+        msg = (
             f"Incompatible schema types from ref '{ref}' ref type '{ref_schema['type']}' schema type '{schema['type']}'\nschema: {schema}\nref_schema:"
             f" {ref_schema})"
         )
+        raise ValueError(msg)
 
-    merged_schema = conservative_merger.merge(schema, ref_schema)
-    return merged_schema
+    return conservative_merger.merge(schema, ref_schema)
 
 
 @lru_cache
@@ -46,17 +46,20 @@ def get_schema_from_ref(ref: str) -> dict:
     schema_store = create_store()
 
     if "#" not in ref:
-        raise ValueError("Missing # in ref")
+        msg = "Missing # in ref"
+        raise ValueError(msg)
 
     schema_name, ref = ref.split("#", maxsplit=1)
     if schema_name not in schema_store:
-        raise KeyError(f"Invalid schema name '{schema_name}'")
+        msg = f"Invalid schema name '{schema_name}'"
+        raise KeyError(msg)
 
     schema = schema_store[schema_name]
     path = ref.split("/")
     ref_schema = walk_schema(schema, path)
     if ref_schema is None:
-        raise KeyError(f"Unable to resolve schema ref '{ref}' for schema '{schema_name}'")
+        msg = f"Unable to resolve schema ref '{ref}' for schema '{schema_name}'"
+        raise KeyError(msg)
 
     return ref_schema
 

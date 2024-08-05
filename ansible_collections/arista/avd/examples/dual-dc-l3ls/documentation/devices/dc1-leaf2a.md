@@ -419,16 +419,16 @@ interface Loopback11
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan11 |  VRF10  |  -  |  10.10.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan12 |  VRF10  |  -  |  10.10.12.1/24  |  -  |  -  |  -  |  -  |
-| Vlan21 |  VRF11  |  -  |  10.10.21.1/24  |  -  |  -  |  -  |  -  |
-| Vlan22 |  VRF11  |  -  |  10.10.22.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3009 |  VRF10  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  VRF11  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.1.68/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan11 |  VRF10  |  -  |  10.10.11.1/24  |  -  |  -  |  -  |
+| Vlan12 |  VRF10  |  -  |  10.10.12.1/24  |  -  |  -  |  -  |
+| Vlan21 |  VRF11  |  -  |  10.10.21.1/24  |  -  |  -  |  -  |
+| Vlan22 |  VRF11  |  -  |  10.10.22.1/24  |  -  |  -  |  -  |
+| Vlan3009 |  VRF10  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |
+| Vlan3010 |  VRF11  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |
+| Vlan4093 |  default  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.1.68/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

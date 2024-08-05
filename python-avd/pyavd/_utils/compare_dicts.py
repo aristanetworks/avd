@@ -8,7 +8,7 @@ def compare_dicts(dict1: dict, dict2: dict, ignore_keys: set[str] | None = None)
     """
     Efficient comparison of dicts, where we can ignore certain keys.
 
-    Returns
+    Returns:
     -------
     bool
         Do dict1 and dict2 match

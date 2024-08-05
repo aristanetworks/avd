@@ -9,15 +9,13 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
-from ..bgp_constants import BGP_ADDRESS_FAMILIES
+from ..bgp_constants import BGP_ADDRESS_FAMILIES  # noqa: TID252 Will be fixed when moving to pyavd
 
 LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestRoutingTable(AvdTestBase):
-    """
-    AvdTestRoutingTable class for routing table entry verification tests.
-    """
+    """AvdTestRoutingTable class for routing table entry verification tests."""
 
     anta_module = "anta.tests.routing.generic"
 
@@ -37,7 +35,6 @@ class AvdTestRoutingTable(AvdTestBase):
 
             Avoids duplicate tests for the same IP address (e.g. MLAG VTEPs).
             """
-
             processed_ips = set()
 
             for peer, ip in mapping:
@@ -50,8 +47,8 @@ class AvdTestRoutingTable(AvdTestBase):
                             "VerifyRoutingTableEntry": {
                                 "routes": [ip],
                                 "result_overwrite": {"custom_field": f"Route: {ip} - Peer: {peer}"},
-                            }
-                        }
+                            },
+                        },
                     )
                     processed_ips.add(ip)
 
@@ -82,11 +79,11 @@ class AvdTestBGP(AvdTestBase):
     """
 
     anta_module = "anta.tests.routing"
-    anta_tests = {}
+    anta_tests = {}  # noqa: RUF012
 
     def add_test(self, afi: str, bgp_neighbor_ip: str, bgp_peer: str, description: str, safi: str | None = None) -> dict:
         """Add a BGP test definition with the proper input parameters."""
-        custom_field = f"BGP {description} Peer: {''.join([bgp_peer, ' (IP: ', bgp_neighbor_ip, ')']) if bgp_peer is not None else bgp_neighbor_ip}"
+        custom_field = f"BGP {description} Peer: {f'{bgp_peer} (IP: {bgp_neighbor_ip})' if bgp_peer is not None else bgp_neighbor_ip}"
 
         address_family = {"afi": afi, "peers": [bgp_neighbor_ip]}
         if safi:
@@ -137,7 +134,7 @@ class AvdTestBGP(AvdTestBase):
     def test_definition(self) -> dict | None:
         """Generates the proper ANTA test definition for all BGP tests.
 
-        Returns
+        Returns:
         -------
             test_definition (dict): ANTA test definition.
 

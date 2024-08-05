@@ -9,9 +9,10 @@ from itertools import groupby as itertools_groupby
 from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import append_if_not_duplicate, default, get, get_item, merge, strip_empties_from_dict
-from ....j2filters import list_compress, natural_sort
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import append_if_not_duplicate, default, get, get_item, merge, strip_empties_from_dict
+from pyavd.j2filters import list_compress, natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -21,19 +22,19 @@ if TYPE_CHECKING:
 class RouterBgpMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_bgp(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Return the structured config for router_bgp
+        Return the structured config for router_bgp.
 
         Changing legacy behavior is to only render this on vtep or mpls_ler
         by instead skipping vlans/bundles if not vtep or mpls_ler
         TODO: Fix so this also works for L2LS with VRFs
         """
-
         if not self.shared_utils.bgp:
             return None
 
@@ -52,18 +53,16 @@ class RouterBgpMixin(UtilsMixin):
             merge(router_bgp, self._router_bgp_mlag_peer_group())
 
         # Strip None values from vlan before returning
-        router_bgp = {key: value for key, value in router_bgp.items() if value is not None}
-        return router_bgp
+        return {key: value for key, value in router_bgp.items() if value is not None}
 
     def _router_bgp_peer_groups(self: AvdStructuredConfigNetworkServices) -> dict:
         """
-        Return the structured config for router_bgp.peer_groups
+        Return the structured config for router_bgp.peer_groups.
 
         Covers two areas:
         - bgp_peer_groups defined under the vrf including ipv4/ipv6 address_families.
         - adding route-map to the underlay peer-group in case of services in vrf default
         """
-
         if not self.shared_utils.network_services_l3:
             return {}
 
@@ -75,13 +74,13 @@ class RouterBgpMixin(UtilsMixin):
                 if not (vrf["bgp_peers"] or vrf.get("bgp_peer_groups")):
                     continue
 
-                vrf_peer_peergroups = set(peer["peer_group"] for peer in vrf["bgp_peers"] if "peer_group" in peer)
+                vrf_peer_peergroups = {peer["peer_group"] for peer in vrf["bgp_peers"] if "peer_group" in peer}
                 peer_groups.extend(
                     [
                         peer_group
                         for peer_group in vrf.get("bgp_peer_groups", [])
                         if (self.shared_utils.hostname in peer_group.get("nodes", []) or peer_group["name"] in vrf_peer_peergroups)
-                    ]
+                    ],
                 )
                 peer_peergroups.update(vrf_peer_peergroups)
 
@@ -90,13 +89,12 @@ class RouterBgpMixin(UtilsMixin):
                     peer_group
                     for peer_group in tenant.get("bgp_peer_groups", [])
                     if (self.shared_utils.hostname in peer_group.get("nodes", []) or peer_group["name"] in peer_peergroups)
-                ]
+                ],
             )
 
         router_bgp = {"peer_groups": []}
         if peer_groups:
             for peer_group in peer_groups:
-
                 peer_group.pop("nodes", None)
                 for af in ["address_family_ipv4", "address_family_ipv6"]:
                     if not (af_peer_group := peer_group.pop(af, None)):
@@ -124,7 +122,7 @@ class RouterBgpMixin(UtilsMixin):
                     "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                     "type": "ipv4",
                     "route_map_out": "RM-BGP-UNDERLAY-PEERS-OUT",
-                }
+                },
             )
 
         if router_bgp["peer_groups"]:
@@ -135,7 +133,7 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for router_bgp.vrfs
+        Return structured config for router_bgp.vrfs.
 
         TODO: Optimize this to allow bgp VRF config without overlays (vtep or mpls)
         """
@@ -194,7 +192,7 @@ class RouterBgpMixin(UtilsMixin):
                             "activate": True,
                             "prefix_list_in": bgp_peer.pop("prefix_list_in", None),
                             "prefix_list_out": bgp_peer.pop("prefix_list_out", None),
-                        }
+                        },
                     )
 
                     append_if_not_duplicate(
@@ -253,9 +251,7 @@ class RouterBgpMixin(UtilsMixin):
         return vrfs or None
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(self: AvdStructuredConfigNetworkServices, bgp_vrf: dict, vrf: dict, vrf_address_families: list) -> None:
-        """
-        In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs
-        """
+        """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
         vrf_name = vrf["name"]
 
         bgp_vrf["rd"] = self.get_vrf_rd(vrf)
@@ -300,9 +296,7 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}
 
     def _update_router_bgp_vrf_mlag_neighbor_cfg(self: AvdStructuredConfigNetworkServices, bgp_vrf: dict, vrf: dict, tenant: dict, vlan_id: int) -> None:
-        """
-        In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs
-        """
+        """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
         if not self._mlag_ibgp_peering_redistribute(vrf, tenant):
             bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
 
@@ -314,7 +308,7 @@ class RouterBgpMixin(UtilsMixin):
                     "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"],
                     "remote_as": self.shared_utils.bgp_as,
                     "description": self.shared_utils.mlag_peer,
-                }
+                },
             )
         else:
             if (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is None:
@@ -328,7 +322,7 @@ class RouterBgpMixin(UtilsMixin):
                 {
                     "ip_address": ip_address,
                     "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"],
-                }
+                },
             )
             if self.shared_utils.underlay_rfc5549:
                 bgp_vrf.setdefault("address_family_ipv4", {}).setdefault("neighbors", []).append(
@@ -337,9 +331,9 @@ class RouterBgpMixin(UtilsMixin):
                         "next_hop": {
                             "address_family_ipv6": {
                                 "enabled": False,
-                            }
+                            },
                         },
-                    }
+                    },
                 )
 
     def _router_bgp_sorted_vlans_and_svis_lists(self: AvdStructuredConfigNetworkServices) -> dict:
@@ -354,12 +348,12 @@ class RouterBgpMixin(UtilsMixin):
             bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name_tuple_for_l2vlans)
             for vlan_aware_bundle_name_tuple, l2vlans in bundle_groups:
                 bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
-                l2vlans = list(l2vlans)
+                l2vlans_list = list(l2vlans)
 
                 if is_evpn_vlan_bundle:
-                    l2vlans_bundle_dict[bundle_name] = l2vlans
+                    l2vlans_bundle_dict[bundle_name] = l2vlans_list
                 else:
-                    l2vlans_non_bundle_list[bundle_name] = l2vlans
+                    l2vlans_non_bundle_list[bundle_name] = l2vlans_list
 
             # For SVIs
             vrf_svis_bundle_dict = {}
@@ -371,12 +365,12 @@ class RouterBgpMixin(UtilsMixin):
                 bundle_groups_svis = itertools_groupby(sorted_svi_list, self._get_vlan_aware_bundle_name_tuple_for_svis)
                 for vlan_aware_bundle_name_tuple, svis in bundle_groups_svis:
                     bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
-                    svis = list(svis)
+                    svis_list = list(svis)
 
                     if is_evpn_vlan_bundle:
-                        vrf_svis_bundle_dict[vrf["name"]][bundle_name] = svis
+                        vrf_svis_bundle_dict[vrf["name"]][bundle_name] = svis_list
                     else:
-                        vrf_svis_non_bundle_dict[vrf["name"]] = svis
+                        vrf_svis_non_bundle_dict[vrf["name"]] = svis_list
 
             tenant_svis_l2vlans_dict[tenant["name"]]["svi_bundle"] = vrf_svis_bundle_dict
             tenant_svis_l2vlans_dict[tenant["name"]]["svi_non_bundle"] = vrf_svis_non_bundle_dict
@@ -385,10 +379,8 @@ class RouterBgpMixin(UtilsMixin):
 
         return tenant_svis_l2vlans_dict
 
-    def _router_bgp_vlans(self: AvdStructuredConfigNetworkServices, tenant_svis_l2vlans_dict) -> list | None:
-        """
-        Return structured config for router_bgp.vlans
-        """
+    def _router_bgp_vlans(self: AvdStructuredConfigNetworkServices, tenant_svis_l2vlans_dict: dict) -> list | None:
+        """Return structured config for router_bgp.vlans."""
         if not (
             self.shared_utils.network_services_l2
             and "evpn" in self.shared_utils.overlay_address_families
@@ -431,10 +423,8 @@ class RouterBgpMixin(UtilsMixin):
 
         return vlans or None
 
-    def _router_bgp_vlans_vlan(self: AvdStructuredConfigNetworkServices, vlan, tenant, vrf) -> dict | None:
-        """
-        Return structured config for one given vlan under router_bgp.vlans
-        """
+    def _router_bgp_vlans_vlan(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict, vrf: dict) -> dict | None:
+        """Return structured config for one given vlan under router_bgp.vlans."""
         if vlan.get("vxlan") is False:
             return None
 
@@ -451,7 +441,7 @@ class RouterBgpMixin(UtilsMixin):
         }
         if (
             self.shared_utils.evpn_gateway_vxlan_l2
-            and default(vlan.get("evpn_l2_multi_domain"), vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain"), True) is True
+            and default(vlan.get("evpn_l2_multi_domain"), vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain"), True) is True  # noqa: FBT003
         ):
             bgp_vlan["rd_evpn_domain"] = {"domain": "remote", "rd": vlan_rd}
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
@@ -461,8 +451,7 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vlan["redistribute_routes"].append("igmp")
 
         # Strip None values from vlan before returning
-        bgp_vlan = {key: value for key, value in bgp_vlan.items() if value is not None}
-        return bgp_vlan
+        return {key: value for key, value in bgp_vlan.items() if value is not None}
 
     @cached_property
     def _evpn_vlan_bundles(self) -> list:
@@ -473,9 +462,7 @@ class RouterBgpMixin(UtilsMixin):
         return get(self._hostvars, "evpn_vlan_aware_bundles", default=False)
 
     def _get_vlan_aware_bundle_name_tuple_for_l2vlans(self: AvdStructuredConfigNetworkServices, vlan: dict) -> tuple[str, bool] | None:
-        """
-        Return a tuple with string with the vlan-aware-bundle name for one VLAN and a boolean saying if this is a evpn_vlan_bundle.
-        """
+        """Return a tuple with string with the vlan-aware-bundle name for one VLAN and a boolean saying if this is a evpn_vlan_bundle."""
         if vlan.get("evpn_vlan_bundle") is not None:
             return (str(vlan.get("evpn_vlan_bundle")), True)
         return (str(vlan.get("name")), False)
@@ -483,6 +470,7 @@ class RouterBgpMixin(UtilsMixin):
     def _get_vlan_aware_bundle_name_tuple_for_svis(self: AvdStructuredConfigNetworkServices, vlan: dict) -> tuple[str, bool] | None:
         """
         Return a tuple with string with the vlan-aware-bundle name for one VLAN and a boolean saying if this is a evpn_vlan_bundle.
+
         If no bundle is configured, it will return an empty string as name, since the calling function will then get all svis without bundle
         grouped under "".
         """
@@ -491,20 +479,19 @@ class RouterBgpMixin(UtilsMixin):
         return ("", False)
 
     def _get_evpn_vlan_bundle(self: AvdStructuredConfigNetworkServices, vlan: dict, bundle_name: str) -> dict:
-        """
-        Return an evpn_vlan_bundle dict if it exists, else raise an exception.
-        """
+        """Return an evpn_vlan_bundle dict if it exists, else raise an exception."""
         if (evpn_vlan_bundle := get_item(self._evpn_vlan_bundles, "name", bundle_name)) is None:
-            raise AristaAvdMissingVariableError(
+            msg = (
                 "The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurrence seen for svi/l2vlan"
                 f" {vlan['id']} in Tenant '{vlan['tenant']}' and evpn_vlan_bundle '{vlan['evpn_vlan_bundle']}'."
+            )
+            raise AristaAvdMissingVariableError(
+                msg,
             )
         return evpn_vlan_bundle
 
     def _get_svi_l2vlan_bundle(self: AvdStructuredConfigNetworkServices, evpn_vlan_bundle: dict, tenant: dict, vlans: list) -> dict | None:
-        """
-        Return an bundle config for a svi or l2vlan.
-        """
+        """Return an bundle config for a svi or l2vlan."""
         bundle = self._router_bgp_vlan_aware_bundle(
             name=evpn_vlan_bundle["name"],
             vlans=vlans,
@@ -527,11 +514,8 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def _router_bgp_vlan_aware_bundles(self: AvdStructuredConfigNetworkServices, tenant_svis_l2vlans_dict) -> list | None:
-        """
-        Return structured config for router_bgp.vlan_aware_bundles
-        """
-
+    def _router_bgp_vlan_aware_bundles(self: AvdStructuredConfigNetworkServices, tenant_svis_l2vlans_dict: dict) -> list | None:
+        """Return structured config for router_bgp.vlan_aware_bundles."""
         if not self.shared_utils.network_services_l2 or not self.shared_utils.overlay_evpn:
             return None
 
@@ -592,7 +576,7 @@ class RouterBgpMixin(UtilsMixin):
                     )
 
             # L2VLANs and SVIs which have an evpn_vlan_bundle defined
-            for bundle_name, bundle_dict in l2vlan_svi_vlan_aware_bundles.items():
+            for bundle_dict in l2vlan_svi_vlan_aware_bundles.values():
                 evpn_vlan_bundle = bundle_dict["evpn_vlan_bundle"]
                 l2vlans_svis = bundle_dict["l2vlan_svis"]
 
@@ -614,9 +598,7 @@ class RouterBgpMixin(UtilsMixin):
         return bundles or None
 
     def _router_bgp_vlan_aware_bundles_vrf(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict, vlans: list[dict]) -> dict | None:
-        """
-        Return structured config for one vrf under router_bgp.vlan_aware_bundles
-        """
+        """Return structured config for one vrf under router_bgp.vlan_aware_bundles."""
         return self._router_bgp_vlan_aware_bundle(
             name=vrf["name"],
             vlans=vlans,
@@ -627,11 +609,18 @@ class RouterBgpMixin(UtilsMixin):
         )
 
     def _router_bgp_vlan_aware_bundle(
-        self: AvdStructuredConfigNetworkServices, name: str, vlans: list, rd: str, rt: str, evpn_l2_multi_domain: bool, tenant: dict
+        self: AvdStructuredConfigNetworkServices,
+        name: str,
+        vlans: list,
+        rd: str,
+        rt: str,
+        evpn_l2_multi_domain: bool,
+        tenant: dict,
     ) -> dict | None:
         """
         Return structured config for one vlan-aware-bundle.
-        Used for VRFs and bundles defined under "evpn_vlan_bundles" referred by l2vlans and SVIs
+
+        Used for VRFs and bundles defined under "evpn_vlan_bundles" referred by l2vlans and SVIs.
         """
         vlans = [vlan for vlan in vlans if vlan.get("vxlan") is not False]
         if not vlans:
@@ -659,6 +648,7 @@ class RouterBgpMixin(UtilsMixin):
     def _rt_admin_subfield(self: AvdStructuredConfigNetworkServices) -> str | None:
         """
         Return a string with the route-target admin subfield unless set to "vrf_id" or "vrf_vni" or "id".
+
         Returns None if not set, since the calling functions will use
         per-vlan numbers by default.
         """
@@ -674,28 +664,32 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def get_vlan_mac_vrf_id(self: AvdStructuredConfigNetworkServices, vlan, tenant) -> int:
+    def get_vlan_mac_vrf_id(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> int:
         mac_vrf_id_base = default(tenant.get("mac_vrf_id_base"), tenant.get("mac_vrf_vni_base"))
         if mac_vrf_id_base is None:
-            raise AristaAvdMissingVariableError(
+            msg = (
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
                 f"Unable to set EVPN RD/RT for vlan {vlan['id']} in Tenant '{vlan['tenant']}'"
+            )
+            raise AristaAvdMissingVariableError(
+                msg,
             )
         return mac_vrf_id_base + int(vlan["id"])
 
-    def get_vlan_mac_vrf_vni(self: AvdStructuredConfigNetworkServices, vlan, tenant) -> int:
+    def get_vlan_mac_vrf_vni(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> int:
         mac_vrf_vni_base = default(tenant.get("mac_vrf_vni_base"), tenant.get("mac_vrf_id_base"))
         if mac_vrf_vni_base is None:
-            raise AristaAvdMissingVariableError(
+            msg = (
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
                 f"Unable to set EVPN RD/RT for vlan {vlan['id']} in Tenant '{vlan['tenant']}'"
             )
+            raise AristaAvdMissingVariableError(
+                msg,
+            )
         return mac_vrf_vni_base + int(vlan["id"])
 
-    def get_vlan_rd(self: AvdStructuredConfigNetworkServices, vlan, tenant) -> str:
-        """
-        Return a string with the route-destinguisher for one VLAN
-        """
+    def get_vlan_rd(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> str:
+        """Return a string with the route-destinguisher for one VLAN."""
         rd_override = default(vlan.get("rd_override"), vlan.get("rt_override"), vlan.get("vni_override"))
 
         if ":" in str(rd_override):
@@ -713,9 +707,7 @@ class RouterBgpMixin(UtilsMixin):
         return f"{self.shared_utils.overlay_rd_type_admin_subfield}:{assigned_number_subfield}"
 
     def get_vlan_rt(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> str:
-        """
-        Return a string with the route-target for one VLAN
-        """
+        """Return a string with the route-target for one VLAN."""
         rt_override = default(vlan.get("rt_override"), vlan.get("vni_override"))
 
         if ":" in str(rt_override):
@@ -747,6 +739,7 @@ class RouterBgpMixin(UtilsMixin):
     def _vrf_rt_admin_subfield(self: AvdStructuredConfigNetworkServices) -> str | None:
         """
         Return a string with the VRF route-target admin subfield unless set to "vrf_id" or "vrf_vni" or "id".
+
         Returns None if not set, since the calling functions will use
         per-vrf numbers by default.
         """
@@ -762,10 +755,8 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def get_vrf_rd(self: AvdStructuredConfigNetworkServices, vrf) -> str:
-        """
-        Return a string with the route-destinguisher for one VRF
-        """
+    def get_vrf_rd(self: AvdStructuredConfigNetworkServices, vrf: dict) -> str:
+        """Return a string with the route-destinguisher for one VRF."""
         rd_override = default(vrf.get("rd_override"))
 
         if ":" in str(rd_override):
@@ -777,9 +768,7 @@ class RouterBgpMixin(UtilsMixin):
         return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.shared_utils.get_vrf_id(vrf)}"
 
     def get_vrf_rt(self: AvdStructuredConfigNetworkServices, vrf: dict) -> str:
-        """
-        Return a string with the route-target for one VRF
-        """
+        """Return a string with the route-target for one VRF."""
         rt_override = default(vrf.get("rt_override"))
 
         if ":" in str(rt_override):
@@ -798,14 +787,15 @@ class RouterBgpMixin(UtilsMixin):
 
         return f"{admin_subfield}:{self.shared_utils.get_vrf_id(vrf)}"
 
-    def get_vlan_aware_bundle_rd(self: AvdStructuredConfigNetworkServices, id: int, tenant: dict, is_vrf: bool, rd_override: str | None = None) -> str:
-        """
-        Return a string with the route-destinguisher for one VLAN Aware Bundle
-        """
-        if is_vrf:
-            admin_subfield = self.shared_utils.overlay_rd_type_vrf_admin_subfield
-        else:
-            admin_subfield = self.shared_utils.overlay_rd_type_admin_subfield
+    def get_vlan_aware_bundle_rd(
+        self: AvdStructuredConfigNetworkServices,
+        id: int,  # noqa: A002
+        tenant: dict,
+        is_vrf: bool,
+        rd_override: str | None = None,
+    ) -> str:
+        """Return a string with the route-destinguisher for one VLAN Aware Bundle."""
+        admin_subfield = self.shared_utils.overlay_rd_type_vrf_admin_subfield if is_vrf else self.shared_utils.overlay_rd_type_admin_subfield
 
         if rd_override is not None:
             if ":" in str(rd_override):
@@ -817,11 +807,14 @@ class RouterBgpMixin(UtilsMixin):
         return f"{admin_subfield}:{bundle_number}"
 
     def get_vlan_aware_bundle_rt(
-        self: AvdStructuredConfigNetworkServices, id: int, vni: int, tenant: dict, is_vrf: bool, rt_override: str | None = None
+        self: AvdStructuredConfigNetworkServices,
+        id: int,  # noqa: A002
+        vni: int,
+        tenant: dict,
+        is_vrf: bool,
+        rt_override: str | None = None,
     ) -> str:
-        """
-        Return a string with the route-target for one VLAN Aware Bundle
-        """
+        """Return a string with the route-target for one VLAN Aware Bundle."""
         if rt_override is not None and ":" in str(rt_override):
             return rt_override
 
@@ -843,7 +836,7 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def _router_bgp_redistribute_routes(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for router_bgp.redistribute_routes
+        Return structured config for router_bgp.redistribute_routes.
 
         Add redistribute static to default if either "redistribute_in_overlay" is set or
         "redistribute_in_underlay" and underlay protocol is BGP.
@@ -864,10 +857,7 @@ class RouterBgpMixin(UtilsMixin):
 
     @cached_property
     def _router_bgp_vpws(self: AvdStructuredConfigNetworkServices) -> list[dict] | None:
-        """
-        Return structured config for router_bgp.vpws
-        """
-
+        """Return structured config for router_bgp.vpws."""
         if not (self.shared_utils.network_services_l1 and self.shared_utils.overlay_ler and self.shared_utils.overlay_evpn_mpls):
             return None
 
@@ -901,7 +891,7 @@ class RouterBgpMixin(UtilsMixin):
                                     "name": f"{point_to_point_service['name']}_{subif_number}",
                                     "id_local": int(endpoint["id"]) + subif_number,
                                     "id_remote": int(remote_endpoint["id"]) + subif_number,
-                                }
+                                },
                             )
 
                     else:
@@ -910,7 +900,7 @@ class RouterBgpMixin(UtilsMixin):
                                 "name": f"{point_to_point_service['name']}",
                                 "id_local": int(endpoint["id"]),
                                 "id_remote": int(remote_endpoint["id"]),
-                            }
+                            },
                         )
 
             if pseudowires:
@@ -923,7 +913,7 @@ class RouterBgpMixin(UtilsMixin):
                         "rd": rd,
                         "route_targets": {"import_export": rt},
                         "pseudowires": pseudowires,
-                    }
+                    },
                 )
 
         if vpws:
@@ -933,8 +923,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _router_bgp_mlag_peer_group(self: AvdStructuredConfigNetworkServices) -> dict:
         """
-        Return a partial router_bgp structured_config covering the MLAG peer_group
-        and associated address_family activations
+        Return a partial router_bgp structured_config covering the MLAG peer_group and associated address_family activations.
 
         TODO: Partially duplicated from mlag. Should be moved to a common class
         """
@@ -963,8 +952,8 @@ class RouterBgpMixin(UtilsMixin):
                     {
                         "name": peer_group_name,
                         "activate": True,
-                    }
-                ]
+                    },
+                ],
             }
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}

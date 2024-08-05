@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 from ansible.errors import AnsibleFilterError
 
@@ -18,7 +16,7 @@ except ImportError as e:
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 DOCUMENTATION = r"""
@@ -52,7 +50,6 @@ _value:
 """
 
 
-class FilterModule(object):
-
-    def filters(self):
+class FilterModule:
+    def filters(self) -> dict:
         return {"status_render": wrap_filter(PLUGIN_NAME)(status_render)}

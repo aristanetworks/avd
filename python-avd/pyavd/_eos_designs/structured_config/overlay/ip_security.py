@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get, strip_null_from_data
+from pyavd._utils import get, strip_null_from_data
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,18 +17,19 @@ if TYPE_CHECKING:
 class IpSecurityMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ip_security(self: AvdStructuredConfigOverlay) -> dict | None:
         """
-        ip_security set based on wan_ipsec_profiles data_model
+        ip_security set based on wan_ipsec_profiles data_model.
 
         If `data_plane` is not configured, `control_plane` data is used for both
         Data Plane and Control Plane.
         """
-        # TODO - in future, the default algo/dh groups value must be clarified
+        # TODO: - in future, the default algo/dh groups value must be clarified
 
         if not self.shared_utils.is_wan_router:
             return None
@@ -45,13 +47,8 @@ class IpSecurityMixin(UtilsMixin):
         return strip_null_from_data(ip_security)
 
     def _append_data_plane(self: AvdStructuredConfigOverlay, ip_security: dict, data_plane_config: dict) -> None:
-        """
-        In place update of ip_security
-        """
-        if self.shared_utils.wan_ha_ipsec:
-            ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
-        else:
-            ike_policy_name = None
+        """In place update of ip_security."""
+        ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY") if self.shared_utils.wan_ha_ipsec else None
         sa_policy_name = get(data_plane_config, "sa_policy_name", default="DP-SA-POLICY")
         profile_name = get(data_plane_config, "profile_name", default="DP-PROFILE")
         key = get(data_plane_config, "shared_key", required=True)
@@ -67,7 +64,7 @@ class IpSecurityMixin(UtilsMixin):
 
     def _append_control_plane(self: AvdStructuredConfigOverlay, ip_security: dict, control_plane_config: dict) -> None:
         """
-        In place update of ip_security for control plane data
+        In place update of ip_security for control plane data.
 
         expected to be called AFTER _append_data_plane
         """
@@ -85,9 +82,7 @@ class IpSecurityMixin(UtilsMixin):
             ip_security["key_controller"] = self._key_controller(profile_name)
 
     def _ike_policy(self: AvdStructuredConfigOverlay, name: str) -> dict | None:
-        """
-        Return an IKE policy
-        """
+        """Return an IKE policy."""
         return {
             "name": name,
             "local_id": self.shared_utils.vtep_ip,
@@ -95,20 +90,20 @@ class IpSecurityMixin(UtilsMixin):
 
     def _sa_policy(self: AvdStructuredConfigOverlay, name: str) -> dict | None:
         """
-        Return an SA policy
+        Return an SA policy.
 
         By default using aes256gcm128 as GCM variants give higher performance.
         """
         sa_policy = {"name": name}
         if self.shared_utils.is_cv_pathfinder_router:
-            # TODO, provide options to change this cv_pathfinder_wide
+            # TODO: provide options to change this cv_pathfinder_wide
             sa_policy["esp"] = {"encryption": "aes256gcm128"}
             sa_policy["pfs_dh_group"] = 14
         return sa_policy
 
     def _profile(self: AvdStructuredConfigOverlay, profile_name: str, ike_policy_name: str | None, sa_policy_name: str, key: str) -> dict | None:
         """
-        Return one IPsec Profile
+        Return one IPsec Profile.
 
         The expectation is that potential None values are stripped later.
 
@@ -130,9 +125,7 @@ class IpSecurityMixin(UtilsMixin):
         }
 
     def _key_controller(self: AvdStructuredConfigOverlay, profile_name: str) -> dict | None:
-        """
-        Return a key_controller structure if the device is not a RR or pathfinder
-        """
+        """Return a key_controller structure if the device is not a RR or pathfinder."""
         if self.shared_utils.is_wan_server:
             return None
 

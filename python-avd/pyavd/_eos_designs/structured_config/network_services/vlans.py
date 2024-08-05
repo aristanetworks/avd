@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate
-from ....j2filters import natural_sort
+from pyavd._utils import append_if_not_duplicate
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,7 +18,8 @@ if TYPE_CHECKING:
 class VlansMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -30,7 +32,6 @@ class VlansMixin(UtilsMixin):
         This function also detects duplicate vlans and raise an error in case of duplicates between
         SVIs in all VRFs and L2VLANs deployed on this device.
         """
-
         if not self.shared_utils.network_services_l2:
             return None
 
@@ -72,7 +73,12 @@ class VlansMixin(UtilsMixin):
             for l2vlan in tenant["l2vlans"]:
                 vlan = self._get_vlan_config(l2vlan)
                 append_if_not_duplicate(
-                    list_of_dicts=vlans, primary_key="id", new_dict=vlan, context="L2VLANs", context_keys=["id", "name", "tenant"], ignore_keys={"tenant"}
+                    list_of_dicts=vlans,
+                    primary_key="id",
+                    new_dict=vlan,
+                    context="L2VLANs",
+                    context_keys=["id", "name", "tenant"],
+                    ignore_keys={"tenant"},
                 )
 
         if vlans:
@@ -80,9 +86,9 @@ class VlansMixin(UtilsMixin):
 
         return None
 
-    def _get_vlan_config(self: AvdStructuredConfigNetworkServices, vlan) -> dict:
+    def _get_vlan_config(self: AvdStructuredConfigNetworkServices, vlan: dict) -> dict:
         """
-        Return structured config for one given vlan
+        Return structured config for one given vlan.
 
         Can be used for svis and l2vlans
         """

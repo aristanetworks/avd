@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get, get_item
+from pyavd._utils import append_if_not_duplicate, get, get_item
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,18 +17,18 @@ if TYPE_CHECKING:
 class LoopbackInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def loopback_interfaces(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for loopback_interfaces
+        Return structured config for loopback_interfaces.
 
         Used for Tenant vrf loopback interfaces
         This function is also called from virtual_source_nat_vrfs to avoid duplicate logic
         """
-
         if not self.shared_utils.network_services_l3:
             return None
 

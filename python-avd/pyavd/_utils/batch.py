@@ -7,13 +7,11 @@ from itertools import islice
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Generator, Iterable
+    from collections.abc import Generator, Iterable
 
 
 def batch(iterable: Iterable, size: int) -> Generator[Iterable]:
-    """
-    Returns a Generator of lists containing 'size' items. The final list may be shorter.
-    """
+    """Returns a Generator of lists containing 'size' items. The final list may be shorter."""
     iterator = iter(iterable)
     while batch := list(islice(iterator, size)):
         yield batch

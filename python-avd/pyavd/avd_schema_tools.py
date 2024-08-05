@@ -3,26 +3,29 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
+
     from ._errors import AvdDeprecationWarning
     from .validation_result import ValidationResult
 
 
 class AvdSchemaTools:
-    """
-    Tools that wrap the various schema components for easy use
-    """
+    """Tools that wrap the various schema components for easy use."""
 
-    def __init__(self, schema: dict = None, schema_id: str = None) -> None:
+    def __init__(self, schema: dict | None = None, schema_id: str | None = None) -> None:
         """
-        Convert data according to the schema (convert_types)
+        Convert data according to the schema (convert_types).
+
         The data conversion is done in-place (updating the original "data" dict).
 
         Args:
+            schema:
+                Optional AVD schema as dict
             schema_id:
-                Name of AVD Schema to use for conversion and validation.
+                Optional Name of AVD Schema to load from store
         """
         # pylint: disable=import-outside-toplevel
         from ._schema.avdschema import AvdSchema
@@ -33,7 +36,8 @@ class AvdSchemaTools:
 
     def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
         """
-        Convert data according to the schema (convert_types)
+        Convert data according to the schema (convert_types).
+
         The data conversion is done in-place (updating the original "data" dict).
 
         Args:
@@ -67,7 +71,7 @@ class AvdSchemaTools:
 
     def validate_data(self, data: dict) -> ValidationResult:
         """
-        Validate data according to the schema
+        Validate data according to the schema.
 
         Args:
             data:
@@ -110,7 +114,7 @@ class AvdSchemaTools:
 
     def convert_and_validate_data(self, data: dict) -> dict:
         """
-        Convert and validate data according to the schema
+        Convert and validate data according to the schema.
 
         Returns dictionary to be compatible with Ansible plugin. Called from vendored "get_structured_config".
 
@@ -118,7 +122,7 @@ class AvdSchemaTools:
             data:
                 Input variables which are to be validated according to the schema.
 
-        Returns
+        Returns:
             dict :
                 failed : bool
                     True if data is invalid. Otherwise False.
