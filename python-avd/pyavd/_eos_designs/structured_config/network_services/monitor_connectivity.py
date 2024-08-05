@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, strip_empties_from_dict
+from pyavd._utils import append_if_not_duplicate, strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,13 +17,14 @@ if TYPE_CHECKING:
 class MonitorConnectivityMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def monitor_connectivity(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Return structured config for monitor_connectivity
+        Return structured config for monitor_connectivity.
 
         Only used for CV Pathfinder edge routers today
         """
@@ -35,17 +37,14 @@ class MonitorConnectivityMixin(UtilsMixin):
 
         for policy in self._filtered_internet_exit_policies:
             for connection in policy["connections"]:
-                if connection["type"] == "tunnel":
-                    interface_name = f"Tunnel{connection['tunnel_id']}"
-                else:
-                    interface_name = connection["source_interface"]
+                interface_name = f"Tunnel{connection['tunnel_id']}" if connection["type"] == "tunnel" else connection["source_interface"]
 
                 interface_set_name = f"SET-{self.shared_utils.sanitize_interface_name(interface_name)}"
                 interface_sets.append(
                     {
                         "name": interface_set_name,
                         "interfaces": interface_name,
-                    }
+                    },
                 )
 
                 host = {

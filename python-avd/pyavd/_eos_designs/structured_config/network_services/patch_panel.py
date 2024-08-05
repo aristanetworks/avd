@@ -7,8 +7,9 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get
-from ....j2filters import natural_sort
+from pyavd._utils import append_if_not_duplicate, get
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,15 +19,13 @@ if TYPE_CHECKING:
 class PatchPanelMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def patch_panel(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        Return structured config for patch_panel
-        """
-
+        """Return structured config for patch_panel."""
         if not self.shared_utils.network_services_l1:
             return None
 
@@ -67,7 +66,7 @@ class PatchPanelMixin(UtilsMixin):
                                         "id": "2",
                                         "type": "pseudowire",
                                         "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}_{subif['number']}",
-                                    }
+                                    },
                                 )
                             append_if_not_duplicate(
                                 list_of_dicts=patches,
@@ -85,7 +84,7 @@ class PatchPanelMixin(UtilsMixin):
                                     "id": "1",
                                     "type": "interface",
                                     "endpoint": f"{interface}",
-                                }
+                                },
                             ],
                         }
                         if point_to_point_service.get("type") == "vpws-pseudowire":
@@ -94,7 +93,7 @@ class PatchPanelMixin(UtilsMixin):
                                     "id": "2",
                                     "type": "pseudowire",
                                     "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}",
-                                }
+                                },
                             )
                         append_if_not_duplicate(
                             list_of_dicts=patches,

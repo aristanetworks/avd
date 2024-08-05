@@ -4,6 +4,7 @@
 from copy import deepcopy
 from functools import lru_cache
 from hashlib import sha1
+from pathlib import Path
 from pickle import HIGHEST_PROTOCOL
 from pickle import dump as pickle_dump
 from pickle import load as pickle_load
@@ -15,9 +16,11 @@ from .constants import PICKLED_SCHEMAS, SCHEMA_PATHS
 
 
 @lru_cache
-def create_store(load_from_yaml=False, force_rebuild=False) -> dict[str, dict]:
+def create_store(*, load_from_yaml: bool = False, force_rebuild: bool = False) -> dict[str, dict]:
     """
-    Create and return a schema store which is a dict of all our schemas like
+    Create and return a schema store.
+
+    A schema store is a dict of all our schemas like
     {
         "avd_meta_schema": {...avd meta schema as dict...},
         "eos_cli_config_gen": {...schema as dict...},
@@ -42,17 +45,15 @@ def create_store(load_from_yaml=False, force_rebuild=False) -> dict[str, dict]:
         return _compile_schemas()
 
     # Load from Pickle.
-    for id, schema_file in PICKLED_SCHEMAS.items():
-        with open(schema_file, "rb") as file:
-            store[id] = pickle_load(file)
+    for schema_id, schema_file in PICKLED_SCHEMAS.items():
+        with Path(schema_file).open("rb") as file:
+            store[schema_id] = pickle_load(file)  # noqa: S301
 
     return store
 
 
 def _should_recompile_schemas() -> bool:
-    """
-    Returns true if pickled schemas should be recompiled
-    """
+    """Returns true if pickled schemas should be recompiled."""
     # Check if any pickled schema is missing
     for pickle_file in PICKLED_SCHEMAS.values():
         if not pickle_file.exists():
@@ -73,21 +74,21 @@ def _should_recompile_schemas() -> bool:
 
 
 def _create_store_from_yaml() -> dict[str, dict]:
-    """
-    Returns a schema store loaded from yaml files with $ref
-    """
+    """Returns a schema store loaded from yaml files with $ref."""
     store = {}
-    for id, schema_file in SCHEMA_PATHS.items():
-        with open(schema_file, "r", encoding="UTF-8") as stream:
-            store[id] = safe_load(stream)
+    for schema_id, schema_file in SCHEMA_PATHS.items():
+        with Path(schema_file).open(encoding="UTF-8") as stream:
+            store[schema_id] = safe_load(stream)
     return store
 
 
 def _compile_schemas() -> dict:
     """
-    Load schemas from yaml files,
+    Resolve full schemas and save as pickle files.
+
+    Load schemas from yaml files
     create a temporary "store",
-    resolve all $refs and save the resulting schemas as pickles
+    resolve all $refs and save the resulting schemas as pickles.
     """
     schema_store = _create_store_from_yaml()
 
@@ -123,7 +124,8 @@ def _compile_schemas() -> dict:
 
 def _resolve_schema(schema: dict, store: dict) -> dict:
     """
-    Get fully resolved schema (where all $ref has been expanded recursively)
+    Get fully resolved schema (where all $ref has been expanded recursively).
+
     .schemaresolver performs inplace update of the argument so we give it a copy of the existing schema.
     """
     resolved_schema = deepcopy(schema)

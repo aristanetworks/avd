@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ....j2filters import natural_sort
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class RouteMapsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def route_maps(self: AvdStructuredConfigOverlay) -> list | None:
-        """
-        Return structured config for route_maps
-        """
-
+        """Return structured config for route_maps."""
         if self.shared_utils.overlay_cvx:
             return None
 
@@ -32,7 +31,7 @@ class RouteMapsMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if self.shared_utils.evpn_prevent_readvertise_to_server is True:
-                remote_asns = natural_sort(set(rs_dict.get("bgp_as") for route_server, rs_dict in self._evpn_route_servers.items()))
+                remote_asns = natural_sort({rs_dict.get("bgp_as") for route_server, rs_dict in self._evpn_route_servers.items()})
                 for remote_asn in remote_asns:
                     route_map_name = f"RM-EVPN-FILTER-AS{remote_asn}"
                     route_maps.append(
@@ -49,7 +48,7 @@ class RouteMapsMixin(UtilsMixin):
                                     "type": "permit",
                                 },
                             ],
-                        }
+                        },
                     )
 
         elif self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_vtep and self.shared_utils.evpn_role != "server":
@@ -68,7 +67,7 @@ class RouteMapsMixin(UtilsMixin):
                             "type": "permit",
                         },
                     ],
-                }
+                },
             )
 
             route_maps.append(
@@ -81,7 +80,7 @@ class RouteMapsMixin(UtilsMixin):
                             "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
                         },
                     ],
-                }
+                },
             )
 
             if self.shared_utils.wan_ha:
@@ -96,7 +95,7 @@ class RouteMapsMixin(UtilsMixin):
                                 "set": ["tag 50"],
                             },
                         ],
-                    }
+                    },
                 )
                 route_maps.append(
                     {
@@ -116,7 +115,7 @@ class RouteMapsMixin(UtilsMixin):
                                 "set": ["local-preference 75"],
                             },
                         ],
-                    }
+                    },
                 )
 
         if route_maps:

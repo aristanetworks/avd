@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+
 from .application_traffic_recognition import ApplicationTrafficRecognitionMixin
 from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
@@ -94,10 +95,11 @@ class AvdStructuredConfigNetworkServices(
 
     def render(self) -> dict:
         """
-        Wrap class render function with a check if one of the following vars are True
+        Wrap class render function with a check if one of the following vars are True.
+
         - node_type_keys.[].network_services_l2
         - node_type_keys.[].network_services_l3
-        - node_type_keys.[].network_services_l1
+        - node_type_keys.[].network_services_l1.
         """
         if self.shared_utils.any_network_services:
             return super().render()

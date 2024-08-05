@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate
+from pyavd._utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,13 +17,14 @@ if TYPE_CHECKING:
 class TunnelInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def tunnel_interfaces(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for tunnel_interfaces
+        Return structured config for tunnel_interfaces.
 
         Only used for CV Pathfinder edge routers today
         """

@@ -2512,10 +2512,10 @@ interface Port-Channel983
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.9/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.10/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan10 |  default  |  10.10.10.9/24  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  192.168.0.10/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

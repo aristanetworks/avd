@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
-from ....j2filters import natural_sort
+from pyavd._utils import get
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigOverlay
@@ -16,13 +16,14 @@ if TYPE_CHECKING:
 class UtilsMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def _avd_overlay_peers(self: AvdStructuredConfigOverlay) -> list:
         """
-        Returns a list of overlay peers for the device
+        Returns a list of overlay peers for the device.
 
         This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
         and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
@@ -49,7 +50,7 @@ class UtilsMixin:
 
             else:
                 # Server not found in inventory, adding manually
-                # TODO - what if the values are None - this is not handled by the template today
+                # TODO: - what if the values are None - this is not handled by the template today
                 bgp_as = str(_as) if (_as := gw_remote_peer_dict.get("bgp_as")) else None
                 ip_address = gw_remote_peer_dict.get("ip_address")
 
@@ -107,14 +108,10 @@ class UtilsMixin:
         return self.shared_utils.mpls_overlay_role == "server" or (self.shared_utils.evpn_role == "server" and self.shared_utils.overlay_evpn_mpls)
 
     def _is_peer_mpls_client(self: AvdStructuredConfigOverlay, peer_facts: dict) -> bool:
-        return peer_facts.get("mpls_overlay_role", None) == "client" or (
-            peer_facts.get("evpn_role", None) == "client" and get(peer_facts, "overlay.evpn_mpls") is True
-        )
+        return peer_facts.get("mpls_overlay_role") == "client" or (peer_facts.get("evpn_role") == "client" and get(peer_facts, "overlay.evpn_mpls") is True)
 
     def _is_peer_mpls_server(self: AvdStructuredConfigOverlay, peer_facts: dict) -> bool:
-        return peer_facts.get("mpls_overlay_role", None) == "server" or (
-            peer_facts.get("evpn_role", None) == "server" and get(peer_facts, "overlay.evpn_mpls") is True
-        )
+        return peer_facts.get("mpls_overlay_role") == "server" or (peer_facts.get("evpn_role") == "server" and get(peer_facts, "overlay.evpn_mpls") is True)
 
     @cached_property
     def _ipvpn_gateway_local_as(self: AvdStructuredConfigOverlay) -> str | None:
@@ -229,7 +226,9 @@ class UtilsMixin:
                 continue
 
             if self.shared_utils.hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in get(
-                self._hostvars, "switch.mpls_route_reflectors", default=[]
+                self._hostvars,
+                "switch.mpls_route_reflectors",
+                default=[],
             ):
                 self._append_peer(mpls_rr_peers, avd_peer, peer_facts)
 
@@ -237,14 +236,14 @@ class UtilsMixin:
 
     def _append_peer(self: AvdStructuredConfigOverlay, peers_dict: dict, peer_name: str, peer_facts: dict) -> None:
         """
-        Retrieve bgp_as and "overlay.peering_address" from peer_facts and append
-        a new peer to peers_dict
+        Retrieve bgp_as and "overlay.peering_address" from peer_facts and append a new peer to peers_dict.
+
         {
             peer_name: {
                 "bgp_as": bgp_as,
                 "ip_address": overlay.peering_address,
             }
-        }
+        }.
         """
         bgp_as = peer_facts.get("bgp_as")
         peers_dict[peer_name] = {
@@ -263,7 +262,7 @@ class UtilsMixin:
 
     def _stun_server_profile_name(self: AvdStructuredConfigOverlay, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
         """
-        Return a string to use as the name of the stun server_profile
+        Return a string to use as the name of the stun server_profile.
 
         `/` are not allowed, `.` are allowed so
         Ethernet1/1.1 is transformed into Ethernet1_1.1
@@ -273,9 +272,7 @@ class UtilsMixin:
 
     @cached_property
     def _stun_server_profiles(self: AvdStructuredConfigOverlay) -> dict:
-        """
-        Return a dictionary of _stun_server_profiles with ip_address per local path_group
-        """
+        """Return a dictionary of _stun_server_profiles with ip_address per local path_group."""
         stun_server_profiles = {}
         for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
             for path_group in data.get("wan_path_groups", []):
@@ -290,6 +287,5 @@ class UtilsMixin:
         return stun_server_profiles
 
     def _wan_ha_peer_vtep_ip(self) -> str:
-        """ """
         peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
         return get(peer_facts, "vtep_ip", required=True)
