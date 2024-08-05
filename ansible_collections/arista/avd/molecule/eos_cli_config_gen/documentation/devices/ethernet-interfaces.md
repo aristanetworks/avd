@@ -142,6 +142,8 @@ sFlow is disabled.
 | Ethernet68 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 | IP NAT service-profile | - | - | - | - | - |
 | Ethernet70 |  dot1x_aaa_unresponsive | access | - | - | - | - |
+| Ethernet71 |  dot1x_aaa_unresponsive1 | access | - | - | - | - |
+| Ethernet72 |  dot1x_aaa_unresponsive2 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -1151,6 +1153,23 @@ interface Ethernet70
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
    dot1x mac based access-list
+!
+interface Ethernet71
+   description dot1x_aaa_unresponsive1
+   no shutdown
+   switchport
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
+!
+interface Ethernet72
+   description dot1x_aaa_unresponsive2
+   no shutdown
+   switchport
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
 ```
 
 ## BFD
@@ -1206,6 +1225,8 @@ interface Ethernet70
 | Ethernet44 | - | - | - | - | - | - | - | - |
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
 | Ethernet70 | - | - | - | - | - | - | - | - |
+| Ethernet71 | - | - | - | - | - | - | - | - |
+| Ethernet72 | - | - | - | - | - | - | - | - |
 
 ## Power Over Ethernet (PoE)
 

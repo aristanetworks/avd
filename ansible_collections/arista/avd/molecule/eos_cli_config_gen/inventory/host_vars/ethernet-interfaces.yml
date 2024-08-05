@@ -1372,3 +1372,30 @@ ethernet_interfaces:
             traffic_allow: true
             apply_alternate: true
       mac_based_access_list: true
+  - name: Ethernet71
+    description: dot1x_aaa_unresponsive1
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          eap_response: success
+          action:
+            traffic_allow_vlan: 10
+            traffic_allow_access_list: acl1
+          phone_action:
+            apply_cached_results: true
+            cached_results_timeout:
+              time_duration: 10
+              time_duration_unit: hours
+      mac_based_access_list: true
+  - name: Ethernet72
+    description: dot1x_aaa_unresponsive2
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          eap_response: success
+          action:
+            traffic_allow_vlan: 10
+            traffic_allow_access_list: acl1
+      mac_based_access_list: true
