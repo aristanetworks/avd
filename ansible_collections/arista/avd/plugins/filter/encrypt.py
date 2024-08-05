@@ -14,7 +14,7 @@ except ImportError as e:
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 DOCUMENTATION = r"""
@@ -100,8 +100,8 @@ _value:
 """
 
 
-class FilterModule(object):
-    def filters(self):
+class FilterModule:
+    def filters(self) -> dict:
         return {
             "encrypt": wrap_filter(PLUGIN_NAME)(encrypt),
         }

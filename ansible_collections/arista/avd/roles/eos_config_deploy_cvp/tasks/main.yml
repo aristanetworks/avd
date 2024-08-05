@@ -7,7 +7,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   loop:
     - "{{ structured_cvp_dir }}"
   delegate_to: localhost

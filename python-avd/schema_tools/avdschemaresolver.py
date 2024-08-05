@@ -4,18 +4,23 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from typing import TYPE_CHECKING
 
-from pyavd._utils import merge
 from referencing import Registry, Specification
 from referencing.exceptions import PointerToNowhere
 from referencing.jsonschema import DRAFT7, _legacy_anchor_in_dollar_id, _legacy_dollar_id, _maybe_in_subresource_crazy_items_dependencies
 
+from pyavd._utils import merge
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
 
 class AvdSchemaResolver:
-    def __init__(self, base_schema_name: str, store: dict):
+    def __init__(self, base_schema_name: str, store: dict) -> None:
         self.resolver = self.create_resolver(store, base_uri=base_schema_name)
 
-    def resolve(self, resolved_schema: dict):
+    def resolve(self, resolved_schema: dict) -> dict:
         methods = {
             "items": self._items,
             "keys": self._keys,
@@ -28,7 +33,7 @@ class AvdSchemaResolver:
 
         return resolved_schema
 
-    def _keys(self, resolved_schema: dict):
+    def _keys(self, resolved_schema: dict) -> None:
         for key in resolved_schema["keys"]:
             # Resolve the child schema
             # Repeat in case new refs inherited from the first ref.
@@ -37,7 +42,7 @@ class AvdSchemaResolver:
 
             self.resolve(resolved_schema["keys"][key])
 
-    def _dynamic_keys(self, resolved_schema: dict):
+    def _dynamic_keys(self, resolved_schema: dict) -> None:
         for key in resolved_schema["dynamic_keys"]:
             # Resolve the child schema
             # Repeat in case new refs inherited from the first ref.
@@ -46,7 +51,7 @@ class AvdSchemaResolver:
 
             self.resolve(resolved_schema["dynamic_keys"][key])
 
-    def _items(self, resolved_schema: dict):
+    def _items(self, resolved_schema: dict) -> None:
         # Resolve the child schema
         # Repeat in case new refs inherited from the first ref.
         while "$ref" in resolved_schema["items"]:
@@ -54,29 +59,28 @@ class AvdSchemaResolver:
 
         self.resolve(resolved_schema["items"])
 
-    def _ref_on_child(self, resolved_schema: dict):
+    def _ref_on_child(self, resolved_schema: dict) -> None:
         """
-        This function resolves the $ref referenced schema,
-        then merges with any schema defined at the same level
+        This function resolves the $ref referenced schema, then merges with any schema defined at the same level.
 
         In place update of supplied resolved_schema
         """
         try:
             resolved = self.resolver.lookup(resolved_schema["$ref"])
         except PointerToNowhere:
-            raise RuntimeError(
-                (
-                    f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
-                    "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$'."
-                )
-            ) from None
+            msg = (
+                f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
+                "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$'."
+            )
+            raise RuntimeError(msg) from None
         ref_schema = deepcopy(resolved.contents)
         resolved_schema.pop("$ref")
         merge(resolved_schema, ref_schema, same_key_strategy="use_existing", list_merge="replace")
 
-    def create_resolver(self, store: dict, base_uri=""):
+    def create_resolver(self, store: dict, base_uri: str = "") -> object:
         """
         Returns a resolver which can resolve "$ref" references across all AVD schemas.
+
         The given "base_uri" can be used for relative references (currently not used in AVD).
         """
         registry = self.create_registry(store)
@@ -97,15 +101,13 @@ class AvdSchemaResolver:
         from "referencing" which are also used for the builtin DRAFT7 specification.
         """
 
-        def subresources(schema: dict):
-            """
-            Generator of childschemas
-            """
-            if "keys" in schema and schema["keys"]:
+        def subresources(schema: dict) -> Generator[dict, None, None]:
+            """Generator of childschemas."""
+            if schema.get("keys"):
                 yield from schema["keys"].values()
-            if "dynamic_keys" in schema and schema["dynamic_keys"]:
+            if schema.get("dynamic_keys"):
                 yield from schema["dynamic_keys"].values()
-            if "$defs" in schema and schema["$defs"]:
+            if schema.get("$defs"):
                 yield from schema["$defs"].values()
             if "items" in schema:
                 yield schema["items"]

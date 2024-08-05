@@ -105,7 +105,6 @@ l3leaf:
             - Ethernet8
           flow_tracker_type: hardware
 
-
 servers:
   - name: single-interface-true
     adapters:

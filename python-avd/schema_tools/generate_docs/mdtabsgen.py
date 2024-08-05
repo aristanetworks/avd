@@ -4,17 +4,20 @@
 from __future__ import annotations
 
 from textwrap import indent
+from typing import TYPE_CHECKING
 
-from ..constants import LICENSE_HEADER
-from ..metaschema.meta_schema_model import AristaAvdSchema
+from schema_tools.constants import LICENSE_HEADER
+
 from .tablegen import get_table
 from .yamlgen import get_yaml
+
+if TYPE_CHECKING:
+    from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 
 def get_md_tabs(schema: AristaAvdSchema, target_table: str | None = None) -> str:
     """
-    Generate the content of a markdown file with mkdocs tabs containing documentation
-    of of the schema optionally filtered using "target_table".
+    Generate the content of a markdown file with mkdocs tabs containing documentation of of the schema optionally filtered using "target_table".
 
     - Table tab contains a markdown table.
     - YAML tab contains a markdown code block with YAML.

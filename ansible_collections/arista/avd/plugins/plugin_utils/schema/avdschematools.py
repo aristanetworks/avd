@@ -3,12 +3,16 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import Generator
+from typing import TYPE_CHECKING
 
 from ansible.errors import AnsibleActionFail
-from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
+    from ansible.utils.display import Display
 
 try:
     from pyavd._errors import AristaAvdError, AvdDeprecationWarning
@@ -25,19 +29,17 @@ DEFAULT_VALIDATION_MODE = "warning"
 
 
 class AvdSchemaTools:
-    """
-    Tools that wrap the various schema components for easy reuse in Ansible plugins
-    """
+    """Tools that wrap the various schema components for easy reuse in Ansible plugins."""
 
     def __init__(
         self,
         hostname: str,
         ansible_display: Display,
-        schema: dict = None,
-        schema_id: str = None,
-        conversion_mode: str = None,
-        validation_mode: str = None,
-        plugin_name: str = None,
+        schema: dict | None = None,
+        schema_id: str | None = None,
+        conversion_mode: str | None = None,
+        validation_mode: str | None = None,
+        plugin_name: str | None = None,
     ) -> None:
         self._set_schema(schema, schema_id)
         self.hostname = hostname
@@ -48,22 +50,26 @@ class AvdSchemaTools:
 
     def _set_schema(self, schema: dict | None, schema_id: str | None) -> None:
         if schema is None and schema_id is None:
-            raise AnsibleActionFail("Either argument 'schema' or 'schema_id' must be set")
+            msg = "Either argument 'schema' or 'schema_id' must be set"
+            raise AnsibleActionFail(msg)
 
         try:
             self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
         except AristaAvdError as e:
-            raise AnsibleActionFail("Invalid Schema!") from e
+            msg = "Invalid Schema!"
+            raise AnsibleActionFail(msg) from e
 
     def _set_conversion_mode(self, conversion_mode: str | None) -> None:
         if conversion_mode is None:
             conversion_mode = DEFAULT_CONVERSION_MODE
 
         if not isinstance(conversion_mode, str):
-            raise AnsibleActionFail("The argument 'conversion_mode' must be a string")
+            msg = "The argument 'conversion_mode' must be a string"
+            raise AnsibleActionFail(msg)
 
         if conversion_mode not in VALID_CONVERSION_MODES:
-            raise AnsibleActionFail(f"Invalid value '{conversion_mode}' for the argument 'conversion_mode'. Must be one of {VALID_CONVERSION_MODES}")
+            msg = f"Invalid value '{conversion_mode}' for the argument 'conversion_mode'. Must be one of {VALID_CONVERSION_MODES}"
+            raise AnsibleActionFail(msg)
 
         self.conversion_mode = conversion_mode
 
@@ -72,34 +78,48 @@ class AvdSchemaTools:
             validation_mode = DEFAULT_VALIDATION_MODE
 
         if not isinstance(validation_mode, str):
-            raise AnsibleActionFail("The argument 'validation_mode' must be a string")
+            msg = "The argument 'validation_mode' must be a string"
+            raise AnsibleActionFail(msg)
 
         if validation_mode not in VALID_VALIDATION_MODES:
-            raise AnsibleActionFail(f"Invalid value '{validation_mode}' for the argument 'validation_mode'. Must be one of {VALID_VALIDATION_MODES}")
+            msg = f"Invalid value '{validation_mode}' for the argument 'validation_mode'. Must be one of {VALID_VALIDATION_MODES}"
+            raise AnsibleActionFail(msg)
 
         self.validation_mode = validation_mode
 
     def convert_data(self, data: dict) -> int:
         """
-        Convert data according to the schema (convert_types)
+        Convert data according to the schema (convert_types).
+
         The data conversion is done in-place (updating the original "data" dict).
 
-        Returns
+        Returns:
         -------
         int : number of conversions done
         """
         if self.conversion_mode == "disabled":
             return 0
 
-        # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
-        exceptions = self.avdschema.convert(data)
-        return self.handle_validation_exceptions(exceptions, self.conversion_mode)
+        # avd_schema.convert returns a generator, which we iterate through with list() to perform the actual conversions.
+        # TODO: AVD 5.0.0 Remove the conversion to list and deprecation warning
+        exceptions = list(self.avdschema.convert(data))
+        if exceptions:
+            exceptions.insert(
+                0,
+                AvdDeprecationWarning(
+                    key=["dict-of-dicts to list-of-dicts automatic conversion"],
+                    remove_in_version="5.0.0",
+                    url="'https://avd.arista.com/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts'",
+                ),
+            )
+        # Forcing exceptions to be a generator
+        return self.handle_validation_exceptions((exception for exception in exceptions), self.conversion_mode)
 
     def validate_data(self, data: dict) -> int:
         """
-        Validate data according to the schema
+        Validate data according to the schema.
 
-        Returns
+        Returns:
         -------
         int : number of validation errors
         """
@@ -112,7 +132,7 @@ class AvdSchemaTools:
 
     def convert_and_validate_data(self, data: dict, return_counters: bool = False) -> dict:
         """
-        Convert & Validate data according to the schema
+        Convert & Validate data according to the schema.
 
         Calls conversion and validation methods and gather resulting messages
 
@@ -146,6 +166,7 @@ class AvdSchemaTools:
     def handle_validation_exceptions(self, exceptions: Generator, mode: str) -> int:
         """
         Iterate through the Generator of exceptions.
+
         This method is actually where the content of the generator gets executed.
 
         It displays various messages depending on the `mode` parameter
@@ -172,7 +193,7 @@ class AvdSchemaTools:
                             date=exception.date,
                             collection_name=self.plugin_name,
                             removed=exception.removed,
-                        )
+                        ),
                     )
 
                 self.ansible_display.deprecated(
@@ -189,28 +210,27 @@ class AvdSchemaTools:
                 continue
             message = f"[{self.hostname}]: {exception}"
             if mode == "error":
-                self.ansible_display.error(message, False)
+                self.ansible_display.error(message, wrap_text=False)
             elif mode == "info":
                 self.ansible_display.display(message)
             elif mode == "debug":
                 self.ansible_display.v(message)
             else:
-                # mode == "warning"
-                self.ansible_display.warning(message, False)
+                # when mode == "warning"
+                self.ansible_display.warning(message, wrap_text=False)
         return counter
 
     def validate_schema(self) -> int:
         """
-        Validate the loaded schema according to the meta-schema
+        Validate the loaded schema according to the meta-schema.
 
         Returns int with number of validation errors
         """
-
         # avd_schema.validate_schema returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.validate_schema(self.avdschema._schema)
         return self.handle_validation_exceptions(exceptions, "error")
 
-    def build_result_message(self, conversions: int = 0, validation_errors: int = 0, schema_validation_errors: int = 0):
+    def build_result_message(self, conversions: int = 0, validation_errors: int = 0, schema_validation_errors: int = 0) -> str | None:
         result_messages = []
 
         if conversions:

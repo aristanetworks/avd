@@ -666,6 +666,9 @@ class ImageValidationResult(aristaproto.Message):
     )
     """image_input_error indicates any errors in image inputs."""
 
+    infos: "__imagestatus_v1__.ImageInfos" = aristaproto.message_field(5)
+    """infos are any info messages about the generated image."""
+
 
 @dataclass(eq=False, repr=False)
 class BuildStageState(aristaproto.Message):

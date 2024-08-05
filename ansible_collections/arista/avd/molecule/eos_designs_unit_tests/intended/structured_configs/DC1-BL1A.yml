@@ -476,6 +476,27 @@ ethernet_interfaces:
   description: DC1-BL1A descriptions preferred over single description
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
+- name: Ethernet12
+  peer_type: l3_interface
+  ip_address: 10.10.40.10/24
+  mtu: 9000
+  shutdown: false
+  description: test l3 interfaces acls
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
+  type: routed
+  vrf: Tenant_A_L3_VRF_Zone
+- name: Ethernet13.10
+  peer_type: l3_interface
+  ip_address: 10.10.40.20/24
+  mtu: 9000
+  shutdown: false
+  description: test l3 interfaces acls
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 10
+  vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet7
   peer_type: l3_interface
   ip_address: 10.10.10.10/24
@@ -495,6 +516,10 @@ ethernet_interfaces:
   - id: 2
     hash_algorithm: sha512
     key: AQQvKeimxJu+uGQ/yYvv9w==
+- name: Ethernet13
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 - name: Ethernet4000
   description: My test
   ip_address: 10.3.2.1/21
@@ -558,6 +583,35 @@ vlans:
 - id: 350
   name: Tenant_C_WAN_Zone_1
   tenant: Tenant_C
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.40.10
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.40.20
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.10.40.10
+    destination: any
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.10.40.20
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

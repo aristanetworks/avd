@@ -4,9 +4,7 @@
 #
 # def arista.avd.add_md_toc
 #
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 from ansible.errors import AnsibleFilterError
 
@@ -21,7 +19,7 @@ except ImportError as e:
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 DOCUMENTATION = r"""
@@ -67,7 +65,7 @@ tasks:
   copy:
     content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
     dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-    mode: 0664
+    mode: "0o664"
 """
 
 RETURN = r"""
@@ -78,6 +76,6 @@ _value:
 """
 
 
-class FilterModule(object):
-    def filters(self):
+class FilterModule:
+    def filters(self) -> dict:
         return {"add_md_toc": wrap_filter(PLUGIN_NAME)(add_md_toc)}

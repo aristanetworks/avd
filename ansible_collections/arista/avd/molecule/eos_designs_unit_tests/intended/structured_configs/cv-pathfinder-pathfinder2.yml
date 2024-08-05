@@ -448,6 +448,8 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+    application_transports:
+    - rtp
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
@@ -459,6 +461,7 @@ application_traffic_recognition:
   - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-2
+    - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
   applications:
     ipv4_applications:
@@ -472,6 +475,12 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
+    - name: CUSTOM-DSCP-APPLICATION
+      dscp_ranges:
+      - ef
+      - 12-14
+      - cs6
+      - '42'
     - name: APP-CONTROL-PLANE
       src_prefix_set_name: PFX-LOCAL-VTEP-IP
   field_sets:
@@ -517,47 +526,35 @@ vxlan_interface:
         vni: 66
       - name: ATTRACTED-VRF-FROM-UPLINK
         vni: 166
-flow_tracking:
-  hardware:
-    trackers:
-    - name: FLOW-TRACKER
-      record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 metadata:
-  cv_tags:
-    device_tags:
-    - name: Role
-      value: pathfinder
-    - name: Region
-      value: AVD_Land_East
-    - name: PathfinderSet
-      value: PATHFINDERS
-    interface_tags:
-    - interface: Ethernet1
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: SFR
-      - name: Circuit
-        value: '999'
-    - interface: Ethernet2
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: ATT-MPLS
-      - name: Circuit
-        value: '10999'
   cv_pathfinder:
+    applications:
+      profiles:
+      - name: VIDEO
+        builtin_applications:
+        - name: skype
+        user_defined_applications:
+        - name: CUSTOM-APPLICATION-1
+        categories:
+        - category: VIDEO1
+        transport_protocols:
+        - rtp
+      - name: VOICE
+        builtin_applications:
+        - name: CUSTOM-VOICE-APPLICATION
+      - name: MPLS-ONLY
+      - name: APP-PROFILE-CONTROL-PLANE
+        user_defined_applications:
+        - name: APP-CONTROL-PLANE
+      categories:
+        builtin_applications:
+        - name: microsoft-teams
+          category: VIDEO1
+        user_defined_applications:
+        - name: CUSTOM-APPLICATION-2
+          category: VIDEO1
+        - name: CUSTOM-DSCP-APPLICATION
+          category: VIDEO1
     role: pathfinder
     ssl_profile: profileB
     vtep_ip: 192.168.144.3
@@ -644,6 +641,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - APP-PROFILE-CONTROL-PLANE
       - id: 3
         name: DEFAULT-AVT-POLICY-VIDEO
         pathgroups:
@@ -655,6 +654,8 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VIDEO
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
@@ -671,6 +672,7 @@ metadata:
       avts:
       - constraints:
           jitter: 42
+          hop_count: lowest
         id: 2
         name: PROD-AVT-POLICY-VOICE
         pathgroups:
@@ -680,6 +682,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
       - constraints:
           lossrate: 42.0
         id: 4
@@ -693,6 +697,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VIDEO
       - id: 5
         name: PROD-AVT-POLICY-MPLS-ONLY
         pathgroups:
@@ -700,6 +706,8 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - MPLS-ONLY
       - id: 1
         name: PROD-AVT-POLICY-DEFAULT
         pathgroups:
@@ -723,6 +731,8 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VIDEO
       - id: 1
         name: DEFAULT-AVT-POLICY-DEFAULT
         pathgroups:
@@ -746,6 +756,8 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+        application_profiles:
+        - VOICE
       - id: 1
         name: TRANSIT-AVT-POLICY-DEFAULT
         pathgroups:
@@ -773,3 +785,42 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    - name: Region
+      value: AVD_Land_East
+    - name: PathfinderSet
+      value: PATHFINDERS
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: SFR
+      - name: Circuit
+        value: '999'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT-MPLS
+      - name: Circuit
+        value: '10999'
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

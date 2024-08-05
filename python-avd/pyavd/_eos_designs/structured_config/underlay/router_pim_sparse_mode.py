@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get, get_item
+from pyavd._utils import get, get_item
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,17 +17,17 @@ if TYPE_CHECKING:
 class RouterPimSparseModeMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_pim_sparse_mode(self: AvdStructuredConfigUnderlay) -> dict | None:
         """
-        return structured config for router_pim_sparse_mode
+        return structured config for router_pim_sparse_mode.
 
         Used for to configure multicast RPs for the underlay
         """
-
         if self.shared_utils.underlay_multicast_rps is None:
             return None
 
@@ -59,14 +60,14 @@ class RouterPimSparseModeMixin(UtilsMixin):
                             }
                             for node in nodes
                         ],
-                    }
+                    },
                 )
 
         if rp_addresses:
             router_pim_sparse_mode = {
                 "ipv4": {
                     "rp_addresses": rp_addresses,
-                }
+                },
             }
             if anycast_rps:
                 router_pim_sparse_mode["ipv4"]["anycast_rps"] = anycast_rps

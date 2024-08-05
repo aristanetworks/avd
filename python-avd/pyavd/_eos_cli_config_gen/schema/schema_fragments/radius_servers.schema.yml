@@ -7,21 +7,11 @@
 type: dict
 keys:
   radius_servers:
+    documentation_options:
+      table: radius-server
     deprecation:
       warning: true
+      removed: true
       new_key: radius_server.hosts
       remove_in_version: v5.0.0
     type: list
-    items:
-      type: dict
-      keys:
-        host:
-          type: str
-          description: Host IP address or name.
-        vrf:
-          type: str
-          convert_types:
-            - int
-        key:
-          type: str
-          description: Encrypted key.

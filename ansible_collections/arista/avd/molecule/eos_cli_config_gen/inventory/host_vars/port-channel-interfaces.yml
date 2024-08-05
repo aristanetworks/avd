@@ -533,7 +533,6 @@ port_channel_interfaces:
     mode: dot1q-tunnel
     vlans: 115
 
-
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5

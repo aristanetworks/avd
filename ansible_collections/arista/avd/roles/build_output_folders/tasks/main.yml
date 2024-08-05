@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "{{ output_dir }}"
     state: absent
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -16,7 +16,7 @@
   ansible.builtin.file:
     path: "{{ output_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -24,7 +24,7 @@
   ansible.builtin.file:
     path: "{{ structured_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -32,7 +32,7 @@
   ansible.builtin.file:
     path: "{{ eos_config_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -40,7 +40,7 @@
   ansible.builtin.file:
     path: "{{ structured_cvp_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -48,7 +48,7 @@
   ansible.builtin.file:
     path: "{{ documentation_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -56,7 +56,7 @@
   ansible.builtin.file:
     path: "{{ fabric_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -64,7 +64,7 @@
   ansible.builtin.file:
     path: "{{ devices_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -72,7 +72,7 @@
   ansible.builtin.file:
     path: "{{ post_running_config_backup_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -80,7 +80,7 @@
   ansible.builtin.file:
     path: "{{ pre_running_config_backup_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -88,7 +88,7 @@
   ansible.builtin.file:
     path: "{{ eos_validate_state_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -96,7 +96,7 @@
   ansible.builtin.file:
     path: "{{ custom_anta_catalogs_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True
 
@@ -104,6 +104,6 @@
   ansible.builtin.file:
     path: "{{ snapshots_backup_dir }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   delegate_to: localhost
   run_once: True

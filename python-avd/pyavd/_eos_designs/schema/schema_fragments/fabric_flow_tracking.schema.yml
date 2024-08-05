@@ -40,7 +40,7 @@ keys:
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       l3_interfaces:
-        description: Enable flow-tracking on all node.l3_interfaces.
+        description: Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       dps_interfaces:

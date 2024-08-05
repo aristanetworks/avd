@@ -15,20 +15,16 @@ if TYPE_CHECKING:
 class AgentsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def agents(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for agents
-        """
-
+        """Return structured config for agents."""
         if not self.shared_utils.is_wan_router:
             return None
 
-        agents = [
+        return [
             {"name": "KernelFib", "environment_variables": [{"name": "KERNELFIB_PROGRAM_ALL_ECMP", "value": "1"}]},
         ]
-
-        return agents

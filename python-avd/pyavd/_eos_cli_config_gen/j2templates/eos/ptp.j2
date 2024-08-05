@@ -18,6 +18,9 @@ ptp priority1 {{ ptp.priority1 }}
 {%     if ptp.priority2 is arista.avd.defined %}
 ptp priority2 {{ ptp.priority2 }}
 {%     endif %}
+{%     if ptp.profile is arista.avd.defined %}
+ptp profile {{ ptp.profile }}
+{%     endif %}
 {%     if ptp.ttl is arista.avd.defined %}
 ptp ttl {{ ptp.ttl }}
 {%     endif %}

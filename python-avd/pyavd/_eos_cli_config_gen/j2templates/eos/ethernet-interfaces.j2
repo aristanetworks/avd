@@ -800,6 +800,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ptp.delay_req is arista.avd.defined %}
    ptp delay-req interval {{ ethernet_interface.ptp.delay_req }}
 {%     endif %}
+{%     if ethernet_interface.ptp.profile.g8275_1.destination_mac_address is arista.avd.defined %}
+   ptp profile g8275.1 destination mac-address {{ ethernet_interface.ptp.profile.g8275_1.destination_mac_address }}
+{%     endif %}
 {%     if ethernet_interface.ptp.role is arista.avd.defined %}
    ptp role {{ ethernet_interface.ptp.role }}
 {%     endif %}
@@ -960,6 +963,12 @@ interface {{ ethernet_interface.name }}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
+{%     endif %}
+{%     if ethernet_interface.sync_e.enable is arista.avd.defined(true) %}
+   sync-e
+{%         if ethernet_interface.sync_e.priority is arista.avd.defined %}
+      priority {{ ethernet_interface.sync_e.priority }}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}

@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_d
 
 class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
     @cached_property
-    def _custom_description_prefix(self):
+    def _custom_description_prefix(self) -> str:
         return get(self._hostvars, "description_prefix", "")
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
@@ -27,10 +27,12 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - mpls_lsr
             - overlay_routing_protocol
             - type
+            - vrf
         """
         link_peer = str(data.peer).upper()
         if data.link_type == "underlay_p2p":
-            return f"{self._custom_description_prefix}_P2P_LINK_TO_{link_peer}_{data.peer_interface}"
+            vrf_desc = f" VRF {data.vrf}" if data.vrf else ""
+            return f"{self._custom_description_prefix}_P2P_LINK_TO_{link_peer}_{data.peer_interface}{vrf_desc}"
 
         if data.link_type == "underlay_l2":
             return f"{self._custom_description_prefix}_{link_peer}_{data.peer_interface}"
@@ -118,12 +120,14 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
 
     def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called per device.
+
         Available data:
-            - description
-            - mpls_overlay_role
-            - mpls_lsr
-            - overlay_routing_protocol
-            - type
+        - description
+        - mpls_overlay_role
+        - mpls_lsr
+        - overlay_routing_protocol
+        - type
         """
         switch_type = str(data.type).upper()
         return f"{self._custom_description_prefix}_EVPN_Overlay_Peering_{switch_type}"
@@ -131,7 +135,8 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
     def vtep_loopback_interface(self) -> str:
         """
         Implementation of custom code similar to jinja.
-        TODO: AVD5.0.0 Update to use InterfaceDescriptionData
+
+        TODO: AVD5.0.0 Update to use InterfaceDescriptionData.
         """
         switch_type = str(self.shared_utils.type).upper()
         return f"{self._custom_description_prefix}_VTEP_VXLAN_Tunnel_Source_{switch_type}"

@@ -6,9 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ...._errors import AristaAvdError
-from ...._utils import append_if_not_duplicate, get
-from ....j2filters import natural_sort
+from pyavd._errors import AristaAvdError
+from pyavd._utils import append_if_not_duplicate, get
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,7 +19,8 @@ if TYPE_CHECKING:
 class IpAccesslistsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -32,7 +34,7 @@ class IpAccesslistsMixin(UtilsMixin):
                     "protocol": "ip",
                     "source": "any",
                     "destination": "any",
-                }
+                },
             ],
         }
 
@@ -56,7 +58,7 @@ class IpAccesslistsMixin(UtilsMixin):
                         "protocol": "ip",
                         "source": interface_ip.split("/", maxsplit=1)[0],
                         "destination": "any",
-                    }
+                    },
                 )
             entries.append(
                 {
@@ -65,13 +67,14 @@ class IpAccesslistsMixin(UtilsMixin):
                     "protocol": "ip",
                     "source": "any",
                     "destination": "any",
-                }
+                },
             )
 
             return {
                 "name": self.get_internet_exit_nat_acl_name("direct"),
                 "entries": entries,
             }
+        return None
 
     def _acl_internet_exit_user_defined(self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]) -> dict | None:
         acl_name = self.get_internet_exit_nat_acl_name(internet_exit_policy_type)
@@ -87,7 +90,8 @@ class IpAccesslistsMixin(UtilsMixin):
 
         # TODO: We still have one nat for all interfaces, need to also add logic to make nat per interface
         # if acl needs substitution
-        raise AristaAvdError(f"ipv4_acls[name={acl_name}] field substitution is not supported for internet exit access lists")
+        msg = f"ipv4_acls[name={acl_name}] field substitution is not supported for internet exit access lists"
+        raise AristaAvdError(msg)
 
     def _acl_internet_exit(self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]) -> dict | None:
         acls = self._acl_internet_exit_user_defined(internet_exit_policy_type)
@@ -102,14 +106,17 @@ class IpAccesslistsMixin(UtilsMixin):
 
     @cached_property
     def ip_access_lists(self: AvdStructuredConfigNetworkServices) -> list | None:
-        """
-        Return structured config for ip_access_lists.
-        """
+        """Return structured config for ip_access_lists."""
         ip_access_lists = []
         if self._svi_acls:
             for interface_acls in self._svi_acls.values():
                 for acl in interface_acls.values():
                     append_if_not_duplicate(ip_access_lists, "name", acl, context="IPv4 Access lists for SVI", context_keys=["name"])
+
+        if self._l3_interface_acls:
+            for l3_interface_acl in self._l3_interface_acls.values():
+                for acl in l3_interface_acl.values():
+                    append_if_not_duplicate(ip_access_lists, "name", acl, context="IPv4 Access lists for L3 interface", context_keys=["name"])
 
         for ie_policy_type in self._filtered_internet_exit_policy_types:
             acls = self._acl_internet_exit(ie_policy_type)

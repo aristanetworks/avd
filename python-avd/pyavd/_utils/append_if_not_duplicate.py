@@ -3,7 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from .._errors import AristaAvdDuplicateDataError
+from pyavd._errors import AristaAvdDuplicateDataError
+
 from .compare_dicts import compare_dicts
 from .get import get
 from .get_item import get_item
@@ -44,7 +45,7 @@ def append_if_not_duplicate(
         Often if is relevant to ignore the 'tenant' key so duplicate configs across multiple
         tenants can be ignored since tenant is not part of the output config.
 
-    Raises
+    Raises:
     ------
     AristaAvdDuplicateDataError
         If a duplicate is found.

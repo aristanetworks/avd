@@ -21,7 +21,7 @@ $defs:
             type: int
             convert_types:
               - str
-            #required: true # This cannot be required in defaults, since it could be set on any level.
+            # required: true # This cannot be required in defaults, since it could be set on any level.
           platform:
             documentation_options:
               table: node-type-common-configuration
@@ -333,7 +333,7 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
               hide_keys: true
-            #TODO: Add deprecation warning when introducing new keys for specific configuration.
+            # TODO: Add deprecation warning when introducing new keys for specific configuration.
             type: dict
             description: |
               Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
@@ -420,12 +420,30 @@ $defs:
             description: IPv4 subnet for Loopback0 allocation.
             type: str
             format: ipv4_cidr
+          loopback_ipv4_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: |-
+              IPv4 address without mask for Loopback0.
+              When set, it takes precedence over `loopback_ipv4_pool`.
+              Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+            type: str
+            format: ipv4
           vtep_loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description: IPv4 subnet for VTEP-Loopback allocation.
             type: str
             format: ipv4_cidr
+          vtep_loopback_ipv4_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: |-
+              IPv4 address without mask for VTEP-Loopback.
+              When set, it takes precedence over `vtep_loopback_ipv4_pool`.
+              Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+            type: str
+            format: ipv4
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -774,7 +792,7 @@ $defs:
             description: |-
               IP address family used to establish MLAG Peer Link (control link).
               `ipv6` requires EOS version 4.31.1F or higher.
-              Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).
+              Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_peer_l3_vlan` set to 4094).
             type: str
             valid_values:
               - ipv4

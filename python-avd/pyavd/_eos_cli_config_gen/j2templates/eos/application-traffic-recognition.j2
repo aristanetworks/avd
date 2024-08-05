@@ -40,6 +40,9 @@ application traffic recognition
 {%             if application.protocol_ranges is arista.avd.defined %}
       protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
 {%             endif %}
+{%             if application.dscp_ranges is arista.avd.defined %}
+      dscp {{ application.dscp_ranges | join(" ") }}
+{%             endif %}
 {%         endfor %}
 {%         for application in application_traffic_recognition.applications.l4_applications | arista.avd.natural_sort('name') %}
    !
@@ -73,7 +76,7 @@ application traffic recognition
 {%     for category in application_traffic_recognition.categories | arista.avd.natural_sort('name') %}
    !
    category {{ category.name }}
-{%         for app_details in category.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
+{%         for app_details in category.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service', strict=False) %}
 {%             if app_details.service is  arista.avd.defined %}
       application {{ app_details.name }} service {{ app_details.service }}
 {%             else %}
@@ -84,7 +87,7 @@ application traffic recognition
 {%     for application_profile in application_traffic_recognition.application_profiles | arista.avd.natural_sort('name') %}
    !
    application-profile {{ application_profile.name }}
-{%         for application in application_profile.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
+{%         for application in application_profile.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service', strict=False) %}
 {%             if application.service is arista.avd.defined %}
       application {{ application.name }} service {{ application.service }}
 {%             else %}
