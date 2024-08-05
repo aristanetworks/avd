@@ -5199,13 +5199,6 @@ $defs:
 
               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
               devices.'
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -5316,6 +5309,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              removed: true
+              warning: true
+              remove_in_version: 5.0.0
+              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state`
