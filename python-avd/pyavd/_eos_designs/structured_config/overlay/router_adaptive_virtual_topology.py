@@ -15,14 +15,13 @@ if TYPE_CHECKING:
 class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_adaptive_virtual_topology(self: AvdStructuredConfigOverlay) -> dict | None:
-        """
-        Return structured config for router adaptive-virtual-topology (AVT)
-        """
+        """Return structured config for router adaptive-virtual-topology (AVT)."""
         if not self.shared_utils.is_cv_pathfinder_router:
             return None
 

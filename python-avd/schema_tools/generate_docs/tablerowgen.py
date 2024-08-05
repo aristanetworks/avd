@@ -3,15 +3,16 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from abc import ABC
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
 from .utils import render_schema_field
 
 if TYPE_CHECKING:
-    from ..metaschema.meta_schema_model import AvdSchemaField
+    from collections.abc import Generator
+
+    from schema_tools.metaschema.meta_schema_model import AvdSchemaField
 
 LEGACY_OUTPUT = False
 
@@ -19,6 +20,7 @@ LEGACY_OUTPUT = False
 class TableRow(BaseModel):
     """
     Dataclass for one table row.
+
     Content is markdown formatted so it can be rendered directly.
     """
 
@@ -29,11 +31,11 @@ class TableRow(BaseModel):
     restrictions: str | None = None
     description: str | None = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"| {self.key} | {self.type} | {self.required or ''} | {self.default or ''} | {self.restrictions or ''} | {self.description or ''} |"
 
 
-class TableRowGenBase(ABC):
+class TableRowGenBase:
     """
     Base class to be used with schema pydantic models.
 
@@ -73,7 +75,7 @@ class TableRowGenBase(ABC):
 
     def get_indentation(self) -> str:
         """
-        Indentation is two spaces for dicts and 4 spaces for lists (so the hyphen will be indented 2)
+        Indentation is two spaces for dicts and 4 spaces for lists (so the hyphen will be indented 2).
 
         For the variable {"my":{"random":{"list":[<str>]}}} the schema._path would be ["my", "random", "list", []].
         The indentation would be 4*2-2+2 = 8 spaces. Since all items are simple values (not a dict with keys)
@@ -99,9 +101,7 @@ class TableRowGenBase(ABC):
         return i * indentation_count
 
     def get_deprecation_label(self) -> str | None:
-        """
-        Returns None or a markdown formatted colored string with the deprecation status.
-        """
+        """Returns None or a markdown formatted colored string with the deprecation status."""
         if self.schema.deprecation is None:
             return ""
 
@@ -110,9 +110,7 @@ class TableRowGenBase(ABC):
         return f' <span style="color:red">{label}</span>'
 
     def get_deprecation_description(self) -> str | None:
-        """
-        Returns None or a markdown formatted colored string with the deprecation description.
-        """
+        """Returns None or a markdown formatted colored string with the deprecation description."""
         if self.schema.deprecation is None:
             return None
 
@@ -141,9 +139,7 @@ class TableRowGenBase(ABC):
         return f'<span style="color:red">{description}</span>'
 
     def render_key(self) -> str:
-        """
-        Renders markdown for "key" field including mouse-over and deprecation label with color.
-        """
+        """Renders markdown for "key" field including mouse-over and deprecation label with color."""
         path = ".".join(self.schema._path)
 
         if self.schema._key:
@@ -161,9 +157,7 @@ class TableRowGenBase(ABC):
         return f'[<samp>{self.get_indentation()}{key}</samp>](## "{path}"){self.get_deprecation_label()}'
 
     def render_type(self) -> str:
-        """
-        Renders markdown for "type" field.
-        """
+        """Renders markdown for "type" field."""
         type_converters = {
             "str": "String",
             "int": "Integer",
@@ -174,28 +168,24 @@ class TableRowGenBase(ABC):
         return type_converters[self.schema.type]
 
     def render_required(self) -> str | None:
-        """
-        Render markdown for "required" field.
-        """
+        """Render markdown for "required" field."""
         if self.schema._is_primary_key:
             return "Required, Unique" if self.schema._is_unique else "Required"
         if self.schema.required:
             return "Required"
+        return None
 
     def render_default(self) -> str | None:
-        """
-        Should render markdown for "default" field.
-        """
+        """Should render markdown for "default" field."""
         if self.schema.default is not None:
             if isinstance(self.schema.default, (list, dict)) and (len(self.schema.default) > 1 or len(str(self.schema.default)) > 40):
                 return "See (+) on YAML tab"
 
             return f"`{self.schema.default}`"
+        return None
 
     def render_description(self) -> str | None:
-        """
-        Renders markdown for "description" field including deprecation text with color.
-        """
+        """Renders markdown for "description" field including deprecation text with color."""
         descriptions = []
         if self.schema.description:
             descriptions.append(self.schema.description.replace("\n", "<br>"))
@@ -210,14 +200,13 @@ class TableRowGenBase(ABC):
         yield from []
 
     def render_restrictions(self) -> str | None:
-        """
-        Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell.
-        """
+        """Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell."""
         return "<br>".join(self.get_restrictions()) or None
 
     def get_restrictions(self) -> list:
         """
         Returns a list of field restrictions to be rendered in the docs.
+
         Only covers generic restrictions. Should be overridden in type specific subclasses.
         """
         restrictions = []
@@ -247,6 +236,7 @@ class TableRowGenInt(TableRowGenBase):
     def get_restrictions(self) -> list:
         """
         Returns a list of field restrictions to be rendered in the docs.
+
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -264,6 +254,7 @@ class TableRowGenStr(TableRowGenBase):
     def get_restrictions(self) -> list:
         """
         Returns a list of field restrictions to be rendered in the docs.
+
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -290,9 +281,7 @@ class TableRowGenStr(TableRowGenBase):
 
 class TableRowGenList(TableRowGenBase):
     def render_type(self) -> str:
-        """
-        Renders markdown for "type" field.
-        """
+        """Renders markdown for "type" field."""
         type_converters = {
             "str": "String",
             "int": "Integer",
@@ -309,6 +298,7 @@ class TableRowGenList(TableRowGenBase):
     def get_restrictions(self) -> list:
         """
         Returns a list of field restrictions to be rendered in the docs.
+
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -322,7 +312,7 @@ class TableRowGenList(TableRowGenBase):
         return restrictions
 
     def render_children(self) -> Generator[TableRow]:
-        """yields TableRow from each child class"""
+        """Yields TableRow from each child class."""
         if not self.schema.items:
             return
 
@@ -339,8 +329,7 @@ class TableRowGenList(TableRowGenBase):
 
 class TableRowGenDict(TableRowGenBase):
     def render_children(self) -> Generator[TableRow]:
-        """yields TableRow from each child class"""
-
+        """Yields TableRow from each child class."""
         if self.schema.documentation_options and self.schema.documentation_options.hide_keys:
             # Skip generating table fields for children, if "hide_keys" is set.
             return

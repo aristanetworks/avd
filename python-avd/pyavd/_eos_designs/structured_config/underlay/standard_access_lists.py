@@ -15,17 +15,17 @@ if TYPE_CHECKING:
 class StandardAccessListsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def standard_access_lists(self: AvdStructuredConfigUnderlay) -> list | None:
         """
-        return structured config for standard_access_lists
+        return structured config for standard_access_lists.
 
         Used for to configure ACLs used by multicast RPs for the underlay
         """
-
         if self.shared_utils.underlay_multicast_rps is None:
             return None
 
@@ -44,7 +44,7 @@ class StandardAccessListsMixin(UtilsMixin):
                         }
                         for index, group in enumerate(rp_entry["groups"])
                     ],
-                }
+                },
             )
 
         if standard_access_lists:

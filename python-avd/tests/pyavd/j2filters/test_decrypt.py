@@ -6,6 +6,7 @@ from __future__ import annotations
 from contextlib import nullcontext as does_not_raise
 
 import pytest
+
 from pyavd.j2filters import decrypt
 
 
@@ -27,8 +28,6 @@ from pyavd.j2filters import decrypt
     ],
 )
 def test_decrypt(password, passwd_type, key, kwargs, expected_raise):
-    """
-    Test decrypt method for non existing and existing type
-    """
+    """Test decrypt method for non existing and existing type."""
     with expected_raise:
         decrypt(password, passwd_type=passwd_type, key=key, **kwargs)

@@ -16,5 +16,6 @@ def hide_passwords(value: str, hide_passwords: bool = False) -> str:
 
     """
     if not isinstance(hide_passwords, bool):
-        raise TypeError(f"{hide_passwords} in hide_passwords filter is not of type bool")
+        msg = f"{hide_passwords} in hide_passwords filter is not of type bool"
+        raise TypeError(msg)
     return "<removed>" if hide_passwords else value

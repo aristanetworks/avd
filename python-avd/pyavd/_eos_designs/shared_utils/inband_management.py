@@ -7,8 +7,8 @@ from functools import cached_property
 from ipaddress import ip_network
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdError, AristaAvdMissingVariableError
-from ..._utils import default, get
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import default, get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -16,8 +16,9 @@ if TYPE_CHECKING:
 
 class InbandManagementMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -74,7 +75,7 @@ class InbandManagementMixin:
     @cached_property
     def inband_mgmt_gateway(self: SharedUtils) -> str | None:
         """
-        Inband management gateway
+        Inband management gateway.
 
         If inband_mgmt_ip is set but not via inband_mgmt_subnet we return the value of inband_mgmt_gateway.
 
@@ -89,12 +90,12 @@ class InbandManagementMixin:
             return get(self.switch_data_combined, "inband_mgmt_gateway")
 
         subnet = ip_network(self.inband_mgmt_subnet, strict=False)
-        return f"{str(subnet[1])}"
+        return f"{subnet[1]!s}"
 
     @cached_property
     def inband_mgmt_ipv6_gateway(self: SharedUtils) -> str | None:
         """
-        Inband management ipv6 gateway
+        Inband management ipv6 gateway.
 
         If inband_mgmt_ipv6_address is set but not via inband_mgmt_ipv6_subnet we return the value of inband_mgmt_ipv6_gateway.
 
@@ -109,16 +110,17 @@ class InbandManagementMixin:
             return get(self.switch_data_combined, "inband_mgmt_ipv6_gateway")
 
         subnet = ip_network(self.inband_mgmt_ipv6_subnet, strict=False)
-        return f"{str(subnet[1])}"
+        return f"{subnet[1]!s}"
 
     @cached_property
     def inband_mgmt_ip(self: SharedUtils) -> str | None:
         """
-        Inband management IP
+        Inband management IP.
+
         Set to either:
           - Value of inband_mgmt_ip
           - deducted IP from inband_mgmt_subnet & id
-          - None
+          - None.
         """
         if (inband_mgmt_ip := get(self.switch_data_combined, "inband_mgmt_ip")) is not None:
             return inband_mgmt_ip
@@ -127,7 +129,8 @@ class InbandManagementMixin:
             return None
 
         if self.id is None:
-            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ip from inband_mgmt_subnet")
+            msg = f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ip from inband_mgmt_subnet"
+            raise AristaAvdMissingVariableError(msg)
 
         subnet = ip_network(self.inband_mgmt_subnet, strict=False)
         inband_mgmt_ip = str(subnet[3 + self.id])
@@ -136,11 +139,12 @@ class InbandManagementMixin:
     @cached_property
     def inband_mgmt_ipv6_address(self: SharedUtils) -> str | None:
         """
-        Inband management IPv6 Address
+        Inband management IPv6 Address.
+
         Set to either:
           - Value of inband_mgmt_ipv6_address
           - deduced IP from inband_mgmt_ipv6_subnet & id
-          - None
+          - None.
         """
         if (inband_mgmt_ipv6_address := get(self.switch_data_combined, "inband_mgmt_ipv6_address")) is not None:
             return inband_mgmt_ipv6_address
@@ -149,9 +153,8 @@ class InbandManagementMixin:
             return None
 
         if self.id is None:
-            raise AristaAvdMissingVariableError(
-                f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ipv6_address from inband_mgmt_ipv6_subnet"
-            )
+            msg = f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ipv6_address from inband_mgmt_ipv6_subnet"
+            raise AristaAvdMissingVariableError(msg)
 
         subnet = ip_network(self.inband_mgmt_ipv6_subnet, strict=False)
         inband_mgmt_ipv6_address = str(subnet[3 + self.id])
@@ -160,7 +163,7 @@ class InbandManagementMixin:
     @cached_property
     def inband_mgmt_interface(self: SharedUtils) -> str | None:
         """
-        Inband management Interface used only to set as source interface on various management protocols
+        Inband management Interface used only to set as source interface on various management protocols.
 
         For L2 switches defaults to Vlan<inband_mgmt_vlan>
         For all other devices set to value of inband_mgmt_interface or None
@@ -176,8 +179,9 @@ class InbandManagementMixin:
     @cached_property
     def inband_ztp(self: SharedUtils) -> bool | None:
         inband_ztp = get(self.switch_data_combined, "inband_ztp")
-        if inband_ztp and not self.uplink_type == "port-channel":
-            raise AristaAvdError("'inband_ztp' is currently only supported for L2 switches ('uplink_type: port-channel').")
+        if inband_ztp and self.uplink_type != "port-channel":
+            msg = "'inband_ztp' is currently only supported for L2 switches ('uplink_type: port-channel')."
+            raise AristaAvdError(msg)
         return inband_ztp
 
     @cached_property

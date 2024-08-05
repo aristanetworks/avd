@@ -13,18 +13,16 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestInterfacesState(AvdTestBase):
-    """
-    AvdTestInterfacesState class for interfaces state tests.
-    """
+    """AvdTestInterfacesState class for interfaces state tests."""
 
     anta_module = "anta.tests.interfaces"
-    interfaces_to_test = [
+    interfaces_to_test = (
         "ethernet_interfaces",
         "port_channel_interfaces",
         "vlan_interfaces",
         "loopback_interfaces",
         "dps_interfaces",
-    ]
+    )
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -34,7 +32,6 @@ class AvdTestInterfacesState(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-
         anta_tests = []
 
         required_keys = ["name", "shutdown"]

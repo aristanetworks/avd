@@ -4041,6 +4041,7 @@ keys:
               - vni encap
               - vtep decap
               - vtep encap
+              required: true
             direction:
               type: str
               valid_values:
@@ -6389,38 +6390,17 @@ keys:
       enable_vrfs:
         type: list
         deprecation:
+          removed: true
           warning: true
           new_key: transport.grpc
           remove_in_version: 5.0.0
-        primary_key: name
-        convert_types:
-        - dict
-        description: 'These should not be mixed with the new keys above.
-
-          '
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: VRF name.
-              convert_types:
-              - int
-            access_group:
-              type: str
-              description: Standard IPv4 ACL name.
       octa:
         type: dict
         deprecation:
           warning: true
+          removed: true
           new_key: provider
           remove_in_version: 5.0.0
-        description: 'These should not be mixed with the new keys above.
-
-          Octa activates `eos-native` provider and it is the only provider currently
-          supported by EOS.
-
-          '
   management_api_http:
     type: dict
     keys:
@@ -7966,24 +7946,14 @@ keys:
             type: bool
             description: Enables the MPLS tunneling of TTL exceeded ICMP replies.
   name_server:
+    documentation_options:
+      table: ip-name-servers
     deprecation:
+      removed: true
       warning: true
       new_key: ip_name_servers
       remove_in_version: v5.0.0
     type: dict
-    keys:
-      source:
-        type: dict
-        keys:
-          vrf:
-            description: VRF Name.
-            type: str
-            convert_types:
-            - int
-      nodes:
-        type: list
-        items:
-          type: str
   ntp:
     type: dict
     keys:
@@ -9164,30 +9134,6 @@ keys:
             route_target:
               type: str
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-        esi:
-          type: str
-          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
-
-            If both "esi" and "evpn_ethernet_segment.identifier" are defined, the
-            new variable takes precedence.
-
-            '
-          deprecation:
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: 5.0.0
-        rt:
-          type: str
-          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-
-            If both "rt" and "evpn_ethernet_segment.route_target" are defined, the
-            new variable takes precedence.
-
-            '
-          deprecation:
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: 5.0.0
         lacp_id:
           type: str
           description: LACP ID with format xxxx.xxxx.xxxx.
@@ -9544,6 +9490,26 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration.
+        esi:
+          type: str
+          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
+
+            '
+          deprecation:
+            removed: true
+            warning: true
+            new_key: evpn_ethernet_segment.identifier
+            remove_in_version: 5.0.0
+        rt:
+          type: str
+          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
+
+            '
+          deprecation:
+            removed: true
+            warning: true
+            new_key: evpn_ethernet_segment.route_target
+            remove_in_version: 5.0.0
   prefix_lists:
     type: list
     primary_key: name
@@ -10516,24 +10482,14 @@ keys:
         type: str
         description: Name of global TLS profile.
   radius_servers:
+    documentation_options:
+      table: radius-server
     deprecation:
       warning: true
+      removed: true
       new_key: radius_server.hosts
       remove_in_version: v5.0.0
     type: list
-    items:
-      type: dict
-      keys:
-        host:
-          type: str
-          description: Host IP address or name.
-        vrf:
-          type: str
-          convert_types:
-          - int
-        key:
-          type: str
-          description: Encrypted key.
   redundancy:
     type: dict
     keys:
@@ -11114,20 +11070,6 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
-            peer_filter:
-              type: str
-              description: 'Peer-filter name.
-
-                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed
-                with
-
-                the new `listen_ranges` key above to avoid conflicts.
-
-                '
-              deprecation:
-                warning: true
-                remove_in_version: 5.0.0
-                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -11308,20 +11250,6 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
-            bgp_listen_range_prefix:
-              type: str
-              description: 'IP prefix range.
-
-                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed
-                with
-
-                the new `listen_ranges` key above to avoid conflicts.
-
-                '
-              deprecation:
-                warning: true
-                remove_in_version: 5.0.0
-                new_key: listen_ranges
             session_tracker:
               type: str
             shared_secret:
@@ -11347,6 +11275,20 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            peer_filter:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 5.0.0
+                new_key: router_bgp.listen_ranges[].peer_filter
+            bgp_listen_range_prefix:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 5.0.0
+                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -11656,20 +11598,6 @@ keys:
               type: bool
             as_set:
               type: bool
-            advertise_map:
-              type: str
-              description: Route-map name.
-              deprecation:
-                removed: true
-                warning: true
-                remove_in_version: v4.9.0
-            supress_map:
-              type: str
-              description: Route-map name.
-              deprecation:
-                removed: true
-                warning: true
-                remove_in_version: v4.9.0
             summary_only:
               type: bool
             attribute_map:
@@ -12300,6 +12228,12 @@ keys:
                     route_map:
                       description: Route-map name.
                       type: str
+                prefix_list_in:
+                  type: str
+                  description: Inbound prefix-list name.
+                prefix_list_out:
+                  type: str
+                  description: Outbound prefix-list name.
                 next_hop:
                   type: dict
                   keys:
@@ -12315,15 +12249,9 @@ keys:
                       type: bool
                       deprecation:
                         warning: true
-                        removed: false
+                        removed: true
                         new_key: address_family_ipv6
                         remove_in_version: 5.0.0
-                prefix_list_in:
-                  type: str
-                  description: Inbound prefix-list name.
-                prefix_list_out:
-                  type: str
-                  description: Outbound prefix-list name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -13717,6 +13645,7 @@ keys:
                     description: Inbound prefix-list name.
                     deprecation:
                       warning: true
+                      removed: true
                       new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
                         or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
                       remove_in_version: 5.0.0
@@ -13725,6 +13654,7 @@ keys:
                     description: Outbound prefix-list name.
                     deprecation:
                       warning: true
+                      removed: true
                       new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
                         or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
                       remove_in_version: 5.0.0
@@ -13812,20 +13742,6 @@ keys:
                     type: bool
                   as_set:
                     type: bool
-                  advertise_map:
-                    type: str
-                    description: Route-map name.
-                    deprecation:
-                      removed: true
-                      warning: true
-                      remove_in_version: v4.9.0
-                  supress_map:
-                    type: str
-                    description: Route-map name.
-                    deprecation:
-                      removed: true
-                      warning: true
-                      remove_in_version: v4.9.0
                   summary_only:
                     type: bool
                   attribute_map:
@@ -14424,6 +14340,12 @@ keys:
                         type: str
                       activate:
                         type: bool
+            eos_cli:
+              type: str
+              description: 'Multiline EOS CLI rendered directly on the Router BGP,
+                VRF definition in the final EOS configuration.
+
+                '
             address_families:
               type: list
               primary_key: address_family
@@ -14431,90 +14353,9 @@ keys:
               - dict
               deprecation:
                 warning: true
+                removed: true
                 new_key: address_family_*
                 remove_in_version: 5.0.0
-              items:
-                type: dict
-                keys:
-                  address_family:
-                    type: str
-                  bgp:
-                    type: dict
-                    keys:
-                      missing_policy:
-                        type: dict
-                        keys:
-                          direction_in_action:
-                            type: str
-                            valid_values:
-                            - deny
-                            - deny-in-out
-                            - permit
-                          direction_out_action:
-                            type: str
-                            valid_values:
-                            - deny
-                            - deny-in-out
-                            - permit
-                      additional_paths:
-                        type: list
-                        items:
-                          type: str
-                  neighbors:
-                    type: list
-                    primary_key: ip_address
-                    convert_types:
-                    - dict
-                    items:
-                      type: dict
-                      keys:
-                        ip_address:
-                          type: str
-                        activate:
-                          type: bool
-                        route_map_in:
-                          type: str
-                          description: Inbound route-map name.
-                        route_map_out:
-                          type: str
-                          description: Outbound route-map name.
-                  peer_groups:
-                    type: list
-                    primary_key: name
-                    convert_types:
-                    - dict
-                    items:
-                      type: dict
-                      keys:
-                        name:
-                          type: str
-                          description: Peer-group name.
-                        activate:
-                          type: bool
-                        next_hop:
-                          type: dict
-                          keys:
-                            address_family_ipv6_originate:
-                              type: bool
-                  networks:
-                    type: list
-                    primary_key: prefix
-                    convert_types:
-                    - dict
-                    items:
-                      type: dict
-                      keys:
-                        prefix:
-                          type: str
-                          description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
-                        route_map:
-                          type: str
-            eos_cli:
-              type: str
-              description: 'Multiline EOS CLI rendered directly on the Router BGP,
-                VRF definition in the final EOS configuration.
-
-                '
       session_trackers:
         type: list
         primary_key: name
@@ -17945,18 +17786,6 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
-        ipv6_address_virtual:
-          type: str
-          description: 'IPv6_address/Mask.
-
-            If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
-            addresses will be configured.
-
-            '
-          deprecation:
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: 5.0.0
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual
@@ -17967,17 +17796,6 @@ keys:
         ipv6_address_link_local:
           type: str
           description: IPv6_address/Mask.
-        ipv6_virtual_router_address:
-          type: str
-          description: '"ipv6_virtual_router_address" should not be mixed with
-
-            the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
-
-            '
-          deprecation:
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
         ipv6_virtual_router_addresses:
           type: list
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
@@ -18361,39 +18179,6 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
-        vrrp:
-          type: dict
-          description: '"vrrp" should not be mixed with the new "vrrp_ids" key above
-            to avoid conflicts.
-
-            '
-          deprecation:
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids
-          keys:
-            virtual_router:
-              type: str
-              description: Virtual Router ID.
-            priority:
-              type: int
-              convert_types:
-              - str
-              description: Instance priority.
-            advertisement_interval:
-              type: int
-              convert_types:
-              - str
-            preempt_delay_minimum:
-              type: int
-              convert_types:
-              - str
-            ipv4:
-              type: str
-              description: Virtual IPv4 address.
-            ipv6:
-              type: str
-              description: Virtual IPv6 address.
         ip_attached_host_route_export:
           type: dict
           keys:
@@ -18474,6 +18259,30 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
             the final EOS configuration.
+        ipv6_address_virtual:
+          type: str
+          description: 'IPv6_address/Mask.
+
+            '
+          deprecation:
+            removed: true
+            warning: true
+            new_key: ipv6_address_virtuals
+            remove_in_version: 5.0.0
+        ipv6_virtual_router_address:
+          type: str
+          deprecation:
+            removed: true
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: ipv6_virtual_router_addresses
+        vrrp:
+          type: dict
+          deprecation:
+            removed: true
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: vrrp_ids
   vlan_internal_order:
     type: dict
     keys:

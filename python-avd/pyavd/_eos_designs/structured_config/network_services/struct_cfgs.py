@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate
+from pyavd._utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class StructCfgsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def struct_cfgs(self: AvdStructuredConfigNetworkServices) -> list | None:
-        """
-        Return the combined structured config from VRFs
-        """
-
+        """Return the combined structured config from VRFs."""
         if not self.shared_utils.network_services_l3:
             return None
 

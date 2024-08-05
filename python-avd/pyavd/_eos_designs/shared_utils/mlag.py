@@ -6,21 +6,23 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_interface
 from re import findall
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from ..._errors import AristaAvdError, AristaAvdMissingVariableError
-from ..._utils import default, get
-from ...j2filters import range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import default, get
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from ..eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+
     from . import SharedUtils
 
 
 class MlagMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -34,9 +36,7 @@ class MlagMixin:
 
     @cached_property
     def group(self: SharedUtils) -> str | None:
-        """
-        group set to "node_group" name or None
-        """
+        """Group set to "node_group" name or None."""
         return get(self.switch_data, "group")
 
     @cached_property
@@ -55,7 +55,7 @@ class MlagMixin:
                 get(self.cv_topology_config, "mlag_interfaces"),
                 get(self.default_interfaces, "mlag_interfaces"),
                 [],
-            )
+            ),
         )
 
     @cached_property
@@ -85,7 +85,8 @@ class MlagMixin:
                 return "primary"
             if self.switch_data_node_group_nodes[1]["name"] == self.hostname:
                 return "secondary"
-            raise AristaAvdError("Unable to detect MLAG role")
+            msg = "Unable to detect MLAG role"
+            raise AristaAvdError(msg)
         return None
 
     @cached_property
@@ -94,7 +95,8 @@ class MlagMixin:
             return self.switch_data_node_group_nodes[1]["name"]
         if self.mlag_role == "secondary":
             return self.switch_data_node_group_nodes[0]["name"]
-        raise AristaAvdError("Unable to find MLAG peer within same node group")
+        msg = "Unable to find MLAG peer within same node group"
+        raise AristaAvdError(msg)
 
     @cached_property
     def mlag_l3(self: SharedUtils) -> bool:
@@ -123,7 +125,7 @@ class MlagMixin:
     def mlag_peer_id(self: SharedUtils) -> int:
         return self.get_mlag_peer_fact("id")
 
-    def get_mlag_peer_fact(self: SharedUtils, key, required=True):
+    def get_mlag_peer_fact(self: SharedUtils, key: str, required: bool = True) -> Any:
         return get(self.mlag_peer_facts, key, required=required, org_key=f"avd_switch_facts.({self.mlag_peer}).switch.{key}")
 
     @cached_property
@@ -139,45 +141,48 @@ class MlagMixin:
 
     @cached_property
     def mlag_ip(self: SharedUtils) -> str | None:
-        """
-        Render ipv4 address for mlag_ip using dynamically loaded python module.
-        """
+        """Render ipv4 address for mlag_ip using dynamically loaded python module."""
         if self.mlag_role == "primary":
             return self.ip_addressing.mlag_ip_primary()
         if self.mlag_role == "secondary":
             return self.ip_addressing.mlag_ip_secondary()
+        return None
 
     @cached_property
     def mlag_l3_ip(self: SharedUtils) -> str | None:
-        """
-        Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
-        """
+        """Render ipv4 address for mlag_l3_ip using dynamically loaded python module."""
         if self.mlag_peer_l3_vlan is None:
             return None
         if self.mlag_role == "primary":
             return self.ip_addressing.mlag_l3_ip_primary()
         if self.mlag_role == "secondary":
             return self.ip_addressing.mlag_l3_ip_secondary()
+        return None
 
     @cached_property
     def mlag_switch_ids(self: SharedUtils) -> dict | None:
         """
-        Returns the switch id's of both primary and secondary switches for a given node group
-        {"primary": int, "secondary": int}
+        Returns the switch id's of both primary and secondary switches for a given node group.
+
+        {"primary": int, "secondary": int}.
         """
         if self.mlag_role == "primary":
             if self.id is None:
-                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
+                msg = f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids"
+                raise AristaAvdMissingVariableError(msg)
             return {"primary": self.id, "secondary": self.mlag_peer_id}
         if self.mlag_role == "secondary":
             if self.id is None:
-                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
+                msg = f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids"
+                raise AristaAvdMissingVariableError(msg)
             return {"primary": self.mlag_peer_id, "secondary": self.id}
+        return None
 
     @cached_property
     def mlag_port_channel_id(self: SharedUtils) -> int:
         if not self.mlag_interfaces:
-            raise AristaAvdMissingVariableError(f"'mlag_interfaces' not set on '{self.hostname}.")
+            msg = f"'mlag_interfaces' not set on '{self.hostname}."
+            raise AristaAvdMissingVariableError(msg)
         default_mlag_port_channel_id = int("".join(findall(r"\d", self.mlag_interfaces[0])))
         return get(self.switch_data_combined, "mlag_port_channel_id", default_mlag_port_channel_id)
 

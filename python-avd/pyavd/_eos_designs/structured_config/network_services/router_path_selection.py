@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get, strip_empties_from_dict
+from pyavd._utils import append_if_not_duplicate, get, strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class RouterPathSelectionMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_path_selection(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        Return structured config for router path-selection (DPS)
-        """
-
+        """Return structured config for router path-selection (DPS)."""
         if not self.shared_utils.is_wan_router:
             return None
 
@@ -41,15 +40,13 @@ class RouterPathSelectionMixin(UtilsMixin):
                 {
                     "policies": self._autovpn_policies(),
                     "vrfs": vrfs,
-                }
+                },
             )
 
         return strip_empties_from_dict(router_path_selection)
 
     def _wan_load_balance_policies(self: AvdStructuredConfigNetworkServices) -> list:
-        """
-        Return a list of load balance policies
-        """
+        """Return a list of load balance policies."""
         load_balance_policies = []
         for policy in self._filtered_wan_policies:
             for match in policy.get("matches", []):
@@ -72,9 +69,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         return load_balance_policies
 
     def _autovpn_policies(self: AvdStructuredConfigNetworkServices) -> list:
-        """
-        Return a list of policies for AutoVPN
-        """
+        """Return a list of policies for AutoVPN."""
         policies = []
         for policy in self._filtered_wan_policies:
             autovpn_policy = {"name": policy["name"], "rules": []}
@@ -84,7 +79,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                         "id": 10 * index,
                         "application_profile": match["application_profile"],
                         "load_balance": match["load_balance_policy"]["name"],
-                    }
+                    },
                 )
             if (default_match := policy.get("default_match")) is not None:
                 autovpn_policy["default_match"] = {"load_balance": default_match["load_balance_policy"]["name"]}

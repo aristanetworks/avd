@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get
+from pyavd._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -14,23 +14,24 @@ if TYPE_CHECKING:
 
 class BgpPeerGroupsMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def bgp_peer_groups(self: SharedUtils):
+    def bgp_peer_groups(self: SharedUtils) -> dict | None:
         """
-        Get bgp_peer_groups configurations or fallback to defaults
+        Get bgp_peer_groups configurations or fallback to defaults.
 
         Supporting legacy uppercase keys as well.
         """
         if not self.underlay_router:
             return None
 
-        BGP_PEER_GROUPS = [
-            # (key, default_name, default_bfd)
+        default_bgp_peer_groups = [
+            # key, default_name, default_bfd
             # Default BFD is set to None when not True, to avoid generating config for disabling BFD
             ("ipv4_underlay_peers", "IPv4-UNDERLAY-PEERS", None),
             ("mlag_ipv4_underlay_peer", "MLAG-IPv4-UNDERLAY-PEER", None),
@@ -44,7 +45,7 @@ class BgpPeerGroupsMixin:
         ]
 
         bgp_peer_groups = {}
-        for key, default_name, default_bfd in BGP_PEER_GROUPS:
+        for key, default_name, default_bfd in default_bgp_peer_groups:
             bgp_peer_groups[key] = {
                 "name": get(self.hostvars, f"bgp_peer_groups.{key}.name", default=default_name),
                 "password": get(self.hostvars, f"bgp_peer_groups.{key}.password"),
@@ -61,7 +62,9 @@ class BgpPeerGroupsMixin:
 
                 if get(self.hostvars, f"bgp_peer_groups.{key}.bfd", default=default_bfd):
                     bgp_peer_groups[key]["bfd_timers"] = get(
-                        self.hostvars, f"bgp_peer_groups.{key}.bfd_timers", default={"interval": 1000, "min_rx": 1000, "multiplier": 10}
+                        self.hostvars,
+                        f"bgp_peer_groups.{key}.bfd_timers",
+                        default={"interval": 1000, "min_rx": 1000, "multiplier": 10},
                     )
 
         return bgp_peer_groups

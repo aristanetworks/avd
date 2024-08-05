@@ -15,15 +15,13 @@ if TYPE_CHECKING:
 class RouterOspfMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_ospf(self: AvdStructuredConfigCoreInterfacesAndL3Edge) -> dict | None:
-        """
-        Return structured config for router_ospf
-        """
-
+        """Return structured config for router_ospf."""
         if not self.shared_utils.underlay_ospf:
             return None
 
@@ -36,8 +34,8 @@ class RouterOspfMixin(UtilsMixin):
                     {
                         "id": self.shared_utils.underlay_ospf_process_id,
                         "no_passive_interfaces": no_passive_interfaces,
-                    }
-                ]
+                    },
+                ],
             }
 
         return None

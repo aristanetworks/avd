@@ -49,6 +49,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
         templar=None,
     )
     if result.get("failed"):
-        raise AristaAvdError(f"{[str(error) for error in result['errors']]}")
+        msg = f"{[str(error) for error in result['errors']]}"
+        raise AristaAvdError(msg)
 
     return structured_config
