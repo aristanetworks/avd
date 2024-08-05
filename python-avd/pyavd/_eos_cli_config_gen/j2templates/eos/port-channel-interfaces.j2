@@ -218,10 +218,10 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
 {%     endif %}
-{%     if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined or port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
+{%     if port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
-{%         if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined %}
-      identifier {{ port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) }}
+{%         if port_channel_interface.evpn_ethernet_segment.identifier is arista.avd.defined %}
+      identifier {{ port_channel_interface.evpn_ethernet_segment.identifier }}
 {%         endif %}
 {%         if port_channel_interface.evpn_ethernet_segment.redundancy is arista.avd.defined %}
       redundancy {{ port_channel_interface.evpn_ethernet_segment.redundancy }}
@@ -255,8 +255,8 @@ interface {{ port_channel_interface.name }}
 {%         if port_channel_interface.evpn_ethernet_segment.mpls.shared_index is arista.avd.defined %}
       mpls shared index {{ port_channel_interface.evpn_ethernet_segment.mpls.shared_index }}
 {%         endif %}
-{%         if port_channel_interface.evpn_ethernet_segment.route_target | arista.avd.default(port_channel_interface.rt) is arista.avd.defined %}
-      route-target import {{ port_channel_interface.evpn_ethernet_segment.route_target | arista.avd.default(port_channel_interface.rt) }}
+{%         if port_channel_interface.evpn_ethernet_segment.route_target is arista.avd.defined %}
+      route-target import {{ port_channel_interface.evpn_ethernet_segment.route_target }}
 {%         endif %}
 {%     endif %}
 {%     if port_channel_interface.snmp_trap_link_change is arista.avd.defined(false) %}

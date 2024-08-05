@@ -15,14 +15,13 @@ if TYPE_CHECKING:
 class AsPathMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def as_path(self: AvdStructuredConfigUnderlay) -> dict | None:
-        """
-        Return structured config for as_path.
-        """
+        """Return structured config for as_path."""
         if self.shared_utils.underlay_routing_protocol != "ebgp":
             return None
 
@@ -37,7 +36,7 @@ class AsPathMixin(UtilsMixin):
                             "match": self.shared_utils.bgp_as,
                         },
                     ],
-                }
+                },
             )
 
         if access_lists:

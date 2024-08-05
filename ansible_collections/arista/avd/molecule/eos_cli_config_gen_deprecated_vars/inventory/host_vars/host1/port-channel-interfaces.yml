@@ -1,16 +1,6 @@
----
 ### Port-Channel Interfaces ###
 # Testing deprecated keys for switchport config in port-channel_interfaces
 port_channel_interfaces:
-  # Testing deprecated esi and rt variables on port-channel interfaces/subinterfaces
-  - name: Port-Channel1
-    description: SRV01_bond0
-    vlans: 2-3000
-    mode: trunk
-    esi: 0000:0000:0404:0404:0303
-    rt: 04:04:03:03:02:02
-    lacp_id: 0303.0202.0101
-
   - name: Port-Channel2
     mode: access
     vlans: 100

@@ -7,8 +7,9 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get, groupby, merge, strip_null_from_data
-from ....j2filters import range_expand
+from pyavd._utils import append_if_not_duplicate, get, groupby, merge, strip_null_from_data
+from pyavd.j2filters import range_expand
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,14 +19,13 @@ if TYPE_CHECKING:
 class MonitorSessionsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def monitor_sessions(self: AvdStructuredConfigConnectedEndpoints) -> list | None:
-        """
-        Return structured_config for monitor_sessions
-        """
+        """Return structured_config for monitor_sessions."""
         if not self._monitor_session_configs:
             return None
 
@@ -33,14 +33,14 @@ class MonitorSessionsMixin(UtilsMixin):
 
         for session_name, session_configs in groupby(self._monitor_session_configs, "name"):
             # Convert iterator to list since we can only access it once.
-            session_configs = list(session_configs)
-            merged_settings = merge({}, session_configs, destructive_merge=False)
+            session_configs_list = list(session_configs)
+            merged_settings = merge({}, session_configs_list, destructive_merge=False)
             monitor_session = {
                 "name": session_name,
                 "sources": [],
-                "destinations": [session["interface"] for session in session_configs if session.get("role") == "destination"],
+                "destinations": [session["interface"] for session in session_configs_list if session.get("role") == "destination"],
             }
-            source_sessions = [session for session in session_configs if session.get("role") == "source"]
+            source_sessions = [session for session in session_configs_list if session.get("role") == "source"]
             for session in source_sessions:
                 source = {
                     "name": session["interface"],
@@ -72,9 +72,7 @@ class MonitorSessionsMixin(UtilsMixin):
 
     @cached_property
     def _monitor_session_configs(self: AvdStructuredConfigConnectedEndpoints) -> list:
-        """
-        Return list of monitor session configs extracted from every interface
-        """
+        """Return list of monitor session configs extracted from every interface."""
         monitor_session_configs = []
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:

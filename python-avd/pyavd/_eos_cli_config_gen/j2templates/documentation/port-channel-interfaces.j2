@@ -195,7 +195,7 @@
 {%         for evpn_es_po_interface in evpn_es_po_interfaces | arista.avd.natural_sort('name') %}
 {%             set esi = evpn_es_po_interface.evpn_ethernet_segment.identifier | arista.avd.default(evpn_es_po_interface.esi, "-") %}
 {%             set redundancy = evpn_es_po_interface.evpn_ethernet_segment.redundancy | arista.avd.default("all-active") %}
-{%             set rt = evpn_es_po_interface.evpn_ethernet_segment.route_target | arista.avd.default(evpn_es_po_interface.rt, "-") %}
+{%             set rt = evpn_es_po_interface.evpn_ethernet_segment.route_target | arista.avd.default("-") %}
 | {{ evpn_es_po_interface.name }} | {{ esi }} | {{ redundancy }} | {{ rt }} |
 {%         endfor %}
 {%         if evpn_dfe_po_interfaces | length > 0 %}

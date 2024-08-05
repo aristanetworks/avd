@@ -1075,6 +1075,14 @@
   },
   {
     "name": "dc1-svc-leaf1a",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-svc-leaf1a",
     "test": "VerifyUptime",
     "categories": [
       "system"

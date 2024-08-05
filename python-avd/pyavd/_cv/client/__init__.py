@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import ssl
+from typing import TYPE_CHECKING
 
 from grpclib.client import Channel
 from requests import JSONDecodeError, post
@@ -17,6 +18,10 @@ from .swg import SwgMixin
 from .tag import TagMixin
 from .utils import UtilsMixin
 from .workspace import WorkspaceMixin
+
+if TYPE_CHECKING:
+    from types import TracebackType
+    from typing import Self
 
 
 class CVClient(
@@ -72,22 +77,19 @@ class CVClient(
         self._password = password
         self._verify_certs = verify_certs
 
-    async def __aenter__(self) -> CVClient:
-        """
-        Using asynchronous context manager since grpclib must be initialized inside an asyncio loop.
-        """
+    async def __aenter__(self) -> Self:
+        """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
         self._connect()
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+    async def __aexit__(self, _exc_type: type[BaseException] | None, _exc_val: BaseException | None, _exc_tb: TracebackType | None) -> None:
         self._channel.close()
         self._channel = None
 
     def _connect(self) -> None:
-        # TODO:
-        # - Verify connection
-        # - Handle multinode clusters
-        # - Detect supported API versions and set instance properties accordingly.
+        # TODO: Verify connection
+        # TODO: Handle multinode clusters
+        # TODO: Detect supported API versions and set instance properties accordingly.
         if not self._token:
             self._set_token()
 
@@ -108,6 +110,7 @@ class CVClient(
     def _set_token(self) -> None:
         """
         Uses username/password for authenticating via REST.
+
         Sets the session token into self._token to be used for gRPC channel.
 
         TODO: Handle multinode clusters
@@ -116,7 +119,8 @@ class CVClient(
             return
 
         if not self._username or not self._password:
-            raise CVClientException("Unable to authenticate. Missing token or username/password.")
+            msg = "Unable to authenticate. Missing token or username/password."
+            raise CVClientException(msg)
 
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
@@ -128,10 +132,14 @@ class CVClient(
             context = None
 
         try:
-            response = post(
-                "https://" + self._servers[0] + "/cvpservice/login/authenticate.do", auth=(self._username, self._password), verify=self._verify_certs, json={}
+            response = post(  # noqa: S113 TODO: Add configurable timeout
+                "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
+                auth=(self._username, self._password),
+                verify=self._verify_certs,
+                json={},
             )
 
             self._token = response.json()["sessionId"]
         except (KeyError, JSONDecodeError) as e:
-            raise CVClientException("Unable to get token from CloudVision server. Please supply service account token instead of username/password.") from e
+            msg = "Unable to get token from CloudVision server. Please supply service account token instead of username/password."
+            raise CVClientException(msg) from e

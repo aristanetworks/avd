@@ -375,6 +375,13 @@ class ConfigletStreamRequest(aristaproto.Message):
      subscriptions if filter(s) are sufficiently specific.
     """
 
+    filter: "Filter" = aristaproto.message_field(2)
+    """
+    For each Configlet in the list, all populated fields are considered ANDed together
+     as a filtering operation. Similarly, the list itself is ORed such that any individual
+     filter that matches a given Configlet is streamed to the user.
+    """
+
     time: "__time__.TimeBounds" = aristaproto.message_field(3)
     """
     TimeRange allows limiting response data to within a specified time window.
@@ -425,6 +432,13 @@ class ConfigletBatchedStreamRequest(aristaproto.Message):
 
      While transparent to users, this field also allows services to optimize internal
      subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter" = aristaproto.message_field(2)
+    """
+    For each Configlet in the list, all populated fields are considered ANDed together
+     as a filtering operation. Similarly, the list itself is ORed such that any individual
+     filter that matches a given Configlet is streamed to the user.
     """
 
     time: "__time__.TimeBounds" = aristaproto.message_field(3)
@@ -991,6 +1005,13 @@ class ConfigletConfigStreamRequest(aristaproto.Message):
      subscriptions if filter(s) are sufficiently specific.
     """
 
+    filter: "Filter" = aristaproto.message_field(2)
+    """
+    For each ConfigletConfig in the list, all populated fields are considered ANDed together
+     as a filtering operation. Similarly, the list itself is ORed such that any individual
+     filter that matches a given ConfigletConfig is streamed to the user.
+    """
+
     time: "__time__.TimeBounds" = aristaproto.message_field(3)
     """
     TimeRange allows limiting response data to within a specified time window.
@@ -1043,6 +1064,13 @@ class ConfigletConfigBatchedStreamRequest(aristaproto.Message):
 
      While transparent to users, this field also allows services to optimize internal
      subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter" = aristaproto.message_field(2)
+    """
+    For each ConfigletConfig in the list, all populated fields are considered ANDed together
+     as a filtering operation. Similarly, the list itself is ORed such that any individual
+     filter that matches a given ConfigletConfig is streamed to the user.
     """
 
     time: "__time__.TimeBounds" = aristaproto.message_field(3)
@@ -1178,6 +1206,13 @@ class ConfigletConfigDeleteAllRequest(aristaproto.Message):
     PartialEqFilter provides a way to server-side filter a DeleteAll.
      This requires all provided fields to be equal to the response.
      A filtered DeleteAll will use GetAll with filter to find things to delete.
+    """
+
+    filter: "Filter" = aristaproto.message_field(2)
+    """
+    For each ConfigletConfig in the list, all populated fields are considered ANDed together
+     as a filtering operation. Similarly, the list itself is ORed such that any individual
+     filter that matches a given ConfigletConfig will be deleted.
     """
 
 

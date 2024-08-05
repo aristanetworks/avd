@@ -6,9 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import get
-from ...interface_descriptions.models import InterfaceDescriptionData
+from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,14 +19,13 @@ if TYPE_CHECKING:
 class LoopbackInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def loopback_interfaces(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for loopback_interfaces
-        """
+        """Return structured config for loopback_interfaces."""
         if not self.shared_utils.underlay_router:
             return None
 
@@ -34,7 +34,9 @@ class LoopbackInterfacesMixin(UtilsMixin):
         loopback0 = {
             "name": "Loopback0",
             "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
-                InterfaceDescriptionData(shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description"))
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
+                ),
             ),
             "shutdown": False,
             "ip_address": f"{self.shared_utils.router_id}/32",
@@ -90,14 +92,14 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         # Underlay Multicast RP Loopbacks
         if self.shared_utils.underlay_multicast_rp_interfaces is not None:
-            for underlay_multicast_rp_interface in self.shared_utils.underlay_multicast_rp_interfaces:
-                loopback_interfaces.append(underlay_multicast_rp_interface)
+            loopback_interfaces.extend(self.shared_utils.underlay_multicast_rp_interfaces)
 
         return loopback_interfaces
 
     @cached_property
-    def _node_sid(self: AvdStructuredConfigUnderlay):
+    def _node_sid(self: AvdStructuredConfigUnderlay) -> str:
         if self.shared_utils.id is None:
-            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID")
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID"
+            raise AristaAvdMissingVariableError(msg)
         node_sid_base = int(get(self.shared_utils.switch_data_combined, "node_sid_base", 0))
         return self.shared_utils.id + node_sid_base

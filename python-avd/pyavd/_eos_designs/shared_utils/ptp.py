@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import default, get, get_item
+from pyavd._utils import default, get, get_item
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -47,8 +47,9 @@ DEFAULT_PTP_PROFILES = [
 
 class PtpMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -72,7 +73,5 @@ class PtpMixin:
 
     @cached_property
     def ptp_profiles(self: SharedUtils) -> list:
-        """
-        Return ptp_profiles
-        """
+        """Return ptp_profiles."""
         return get(self.hostvars, "ptp_profiles", default=DEFAULT_PTP_PROFILES)

@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ...._utils import get
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._utils import get
 
 CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS = ["custom_structured_configuration_prefix", "custom_structured_configuration_list_merge"]
 
@@ -22,9 +22,7 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
 
     @cached_property
     def _custom_structured_configuration_prefix(self) -> list:
-        """
-        Reads custom_structured_configuration_prefix from hostvars and converts to list if necessary
-        """
+        """Reads custom_structured_configuration_prefix from hostvars and converts to list if necessary."""
         custom_structured_configuration_prefix = get(self._hostvars, "custom_structured_configuration_prefix", default=["custom_structured_configuration_"])
         if not isinstance(custom_structured_configuration_prefix, list):
             return [custom_structured_configuration_prefix]
@@ -90,8 +88,8 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
             {
                 "router_bgp": {
                     "peer_groups": struct_cfgs,
-                }
-            }
+                },
+            },
         ]
 
     def _router_bgp_vrfs(self) -> list:
@@ -105,8 +103,8 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
             {
                 "router_bgp": {
                     "vrfs": struct_cfgs,
-                }
-            }
+                },
+            },
         ]
 
     def _router_bgp_vlans(self) -> list:
@@ -120,8 +118,8 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
             {
                 "router_bgp": {
                     "vlans": struct_cfgs,
-                }
-            }
+                },
+            },
         ]
 
     def _custom_structured_configurations(self) -> list[dict]:
@@ -132,7 +130,7 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
             {
                 # Disable black to prevent whitespace before colon PEP8 E203
                 # fmt: off
-                str(key)[len(prefix):]: self._hostvars[key]
+                str(key)[len(prefix) :]: self._hostvars[key]
                 # fmt: on
                 for key in self._hostvars
                 if str(key).startswith(prefix) and key not in CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS
@@ -148,7 +146,6 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
 
         get_structured_config will merge this list into a single dict.
         """
-
         struct_cfgs = self._struct_cfg()
         struct_cfgs.extend(self._struct_cfgs())
         struct_cfgs.extend(self._ethernet_interfaces())
@@ -157,8 +154,6 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
         struct_cfgs.extend(self._router_bgp_peer_groups())
         struct_cfgs.extend(self._router_bgp_vrfs())
         struct_cfgs.extend(self._router_bgp_vlans())
-        # struct_cfgs = [struct_cfg for struct_cfg in struct_cfgs if struct_cfg is not None]
         struct_cfgs.extend(self._custom_structured_configurations())
 
-        # raise Exception(struct_cfgs)
         return struct_cfgs

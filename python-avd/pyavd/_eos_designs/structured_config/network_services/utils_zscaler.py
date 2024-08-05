@@ -8,14 +8,15 @@ from functools import cached_property
 from logging import getLogger
 from typing import TYPE_CHECKING
 
-from ...._cv.client import CVClient
-from ...._cv.workflows.models import CVDevice
-from ...._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
-from ...._errors import AristaAvdError
-from ...._utils import get
+from pyavd._cv.client import CVClient
+from pyavd._cv.workflows.models import CVDevice
+from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
+from pyavd._errors import AristaAvdError
+from pyavd._utils import get
 
 if TYPE_CHECKING:
-    from ...._cv.api.arista.swg.v1 import Location, VpnEndpoint
+    from pyavd._cv.api.arista.swg.v1 import Location, VpnEndpoint
+
     from . import AvdStructuredConfigNetworkServices
 
 LOGGER = getLogger(__name__)
@@ -24,7 +25,8 @@ LOGGER = getLogger(__name__)
 class UtilsZscalerMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -40,7 +42,7 @@ class UtilsZscalerMixin:
 
         return asyncio.run(self._generate_zscaler_endpoints()) or {}
 
-    async def _generate_zscaler_endpoints(self: AvdStructuredConfigNetworkServices):
+    async def _generate_zscaler_endpoints(self: AvdStructuredConfigNetworkServices) -> dict:
         """
         Call CloudVision SWG APIs to generate the zscaler_endpoints model.
 
@@ -64,16 +66,21 @@ class UtilsZscalerMixin:
         async with CVClient(servers=[cv_server], token=cv_token) as cv_client:
             cv_device = CVDevice(self.shared_utils.hostname, self.shared_utils.serial_number, self.shared_utils.system_mac_address)
             cv_inventory_devices: list[CVDevice] = await verify_devices_in_cloudvision_inventory(
-                devices=[cv_device], skip_missing_devices=True, warnings=[], cv_client=cv_client
+                devices=[cv_device],
+                skip_missing_devices=True,
+                warnings=[],
+                cv_client=cv_client,
             )
             if not cv_inventory_devices:
-                raise AristaAvdError(f"{context} but could not find '{self.shared_utils.hostname}' on the server '{cv_server}'.")
+                msg = f"{context} but could not find '{self.shared_utils.hostname}' on the server '{cv_server}'."
+                raise AristaAvdError(msg)
             if len(cv_inventory_devices) > 1:
+                msg = (
+                    f"{context} but found more than one device named '{self.shared_utils.hostname}' on the server '{cv_server}'. "
+                    "Set 'serial_number' for the device in AVD vars, to ensure a unique match."
+                )
                 raise AristaAvdError(
-                    (
-                        f"{context} but found more than one device named '{self.shared_utils.hostname}' on the server '{cv_server}'. "
-                        "Set 'serial_number' for the device in AVD vars, to ensure a unique match."
-                    )
+                    msg,
                 )
             device_id: str = cv_inventory_devices[0].serial_number
             request_time, _ = await cv_client.set_swg_device(device_id=device_id, service="zscaler", location=wan_site_location)
@@ -89,7 +96,8 @@ class UtilsZscalerMixin:
             },
         }
         if not getattr(cv_endpoint_status, "vpn_endpoints", None) or not getattr(cv_endpoint_status.vpn_endpoints, "values", None):
-            raise AristaAvdError(f"{context} but did not get any IPsec Tunnel endpoints back from the Zscaler API.")
+            msg = f"{context} but did not get any IPsec Tunnel endpoints back from the Zscaler API."
+            raise AristaAvdError(msg)
 
         for key in ("primary", "secondary", "tertiary"):
             if key in cv_endpoint_status.vpn_endpoints.values:

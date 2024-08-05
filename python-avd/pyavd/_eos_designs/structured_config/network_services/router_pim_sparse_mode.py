@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get
+from pyavd._utils import append_if_not_duplicate, get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,17 +17,17 @@ if TYPE_CHECKING:
 class RouterPimSparseModeMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_pim_sparse_mode(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        return structured config for router_pim
+        return structured config for router_pim.
 
         Used for to configure RPs on the VRF
         """
-
         if not self.shared_utils.network_services_l3:
             return None
 
@@ -41,7 +42,11 @@ class RouterPimSparseModeMixin(UtilsMixin):
                         },
                     }
                     append_if_not_duplicate(
-                        list_of_dicts=vrfs, primary_key="name", new_dict=vrf_config, context="Router PIM Sparse-Mode for VRFs", context_keys=["name"]
+                        list_of_dicts=vrfs,
+                        primary_key="name",
+                        new_dict=vrf_config,
+                        context="Router PIM Sparse-Mode for VRFs",
+                        context_keys=["name"],
                     )
         if vrfs:
             return {"vrfs": vrfs}

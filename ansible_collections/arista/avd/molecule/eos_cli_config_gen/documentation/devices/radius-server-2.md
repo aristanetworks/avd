@@ -41,11 +41,6 @@ interface Management1
 
 - Attribute 32 is included in access requests using format 'myformat'
 
-#### RADIUS Server Hosts
-
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
-
 #### RADIUS Server Device Configuration
 
 ```eos

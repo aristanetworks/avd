@@ -3,10 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
-from ..api.arista.tag.v2 import (
+from pyavd._cv.api.arista.tag.v2 import (
     CreatorType,
     ElementType,
     Tag,
@@ -26,10 +25,13 @@ from ..api.arista.tag.v2 import (
     TagServiceStub,
     TagStreamRequest,
 )
-from ..api.arista.time import TimeBounds
+from pyavd._cv.api.arista.time import TimeBounds
+
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from . import CVClient
 
 ELEMENT_TYPE_MAP = {
@@ -47,9 +49,7 @@ CREATOR_TYPE_MAP = {
 
 
 class TagMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     tags_api_version: Literal["v2"] = "v2"
     # TODO: Ensure the to document that we only support v2 of this api - hence only the CV versions supporting that.
@@ -93,9 +93,7 @@ class TagMixin:
         client = TagServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                tags.append(response.value)
-
+            tags.extend(response.value async for response in responses)
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '' (main), Element Type '{element_type}', Creator Type '{creator_type}'") or e
 
@@ -123,10 +121,10 @@ class TagMixin:
                     self._remove_item_from_list(tag, tags, self._match_tags)
                 else:
                     self._upsert_item_in_list(tag, tags, self._match_tags)
-            return tags
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}', Creator Type '{creator_type}'") or e
+
+        return tags
 
     async def set_tags(
         self: CVClient,
@@ -158,21 +156,19 @@ class TagMixin:
                         element_type=ELEMENT_TYPE_MAP[element_type],
                         label=label,
                         value=value,
-                    )
-                )
+                    ),
+                ),
             )
 
-        tag_keys = []
         client = TagConfigServiceStub(self._channel)
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            async for response in responses:
-                # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
-                tag_keys.append(response.key)
-            return tag_keys
-
+            # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
+            tag_keys = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
+
+        return tag_keys
 
     async def get_tag_assignments(
         self: CVClient,
@@ -213,9 +209,7 @@ class TagMixin:
         client = TagAssignmentServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                tag_assignments.append(response.value)
-
+            tag_assignments.extend(response.value async for response in responses)
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '' (main), Element Type '{element_type}', Creator Type '{creator_type}'") or e
 
@@ -243,10 +237,10 @@ class TagMixin:
                     self._remove_item_from_list(tag_assignment, tag_assignments, self._match_tag_assignments)
                 else:
                     self._upsert_item_in_list(tag_assignment, tag_assignments, self._match_tag_assignments)
-            return tag_assignments
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}', Creator Type '{creator_type}'") or e
+
+        return tag_assignments
 
     async def set_tag_assignments(
         self: CVClient,
@@ -280,20 +274,18 @@ class TagMixin:
                         value=value,
                         device_id=device_id,
                         interface_id=interface_id,
-                    )
-                )
+                    ),
+                ),
             )
 
-        tag_assignment_keys = []
         client = TagAssignmentConfigServiceStub(self._channel)
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            async for response in responses:
-                tag_assignment_keys.append(response.key)
-            return tag_assignment_keys
-
+            tag_assignment_keys = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
+
+        return tag_assignment_keys
 
     async def delete_tag_assignments(
         self: CVClient,
@@ -329,32 +321,26 @@ class TagMixin:
                         interface_id=interface_id,
                     ),
                     remove=True,
-                )
+                ),
             )
 
-        tag_assignment_keys = []
         client = TagAssignmentConfigServiceStub(self._channel)
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            async for response in responses:
-                tag_assignment_keys.append(response.key)
-            return tag_assignment_keys
-
+            tag_assignment_keys = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
 
+        return tag_assignment_keys
+
     @staticmethod
     def _match_tags(a: Tag, b: Tag) -> bool:
-        """
-        Match up the properties of two tags without looking at the Workspace and Creator Type fields.
-        """
+        """Match up the properties of two tags without looking at the Workspace and Creator Type fields."""
         return all([a.key.element_type == b.key.element_type, a.key.label == b.key.label, a.key.value == b.key.value])
 
     @staticmethod
     def _match_tag_assignments(a: TagAssignment, b: TagAssignment) -> bool:
-        """
-        Match up the properties of two tag assignments without looking at the Workspace and Creator Type fields.
-        """
+        """Match up the properties of two tag assignments without looking at the Workspace and Creator Type fields."""
         return all(
             [
                 a.key.element_type == b.key.element_type,
@@ -362,5 +348,5 @@ class TagMixin:
                 a.key.value == b.key.value,
                 a.key.device_id == b.key.device_id,
                 a.key.interface_id == b.key.interface_id,
-            ]
+            ],
         )
