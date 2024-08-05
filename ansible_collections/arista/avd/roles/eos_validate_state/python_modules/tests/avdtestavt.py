@@ -15,6 +15,7 @@ LOGGER = logging.getLogger(__name__)
 class AvdTestAvtPath(AvdTestBase):
     """
     AvdTestAvtPath class for AVT (Adaptive Virtual Topology) tests.
+
     Validates the status and type of AVT paths for a specified VRF in WAN scenarios.
     It constructs a list of static peer addresses for each device by searching through
     router_path_selection.path_groups.static_peers.
@@ -22,7 +23,7 @@ class AvdTestAvtPath(AvdTestBase):
 
     anta_module = "anta.tests.avt"
 
-    def _get_static_peers(self, path_groups):
+    def _get_static_peers(self, path_groups: list) -> set[str]:
         """Extract static peers from path groups after validation.
 
         Parameters
@@ -30,7 +31,7 @@ class AvdTestAvtPath(AvdTestBase):
         path_groups : list
             A list of path group dictionaries.
 
-        Returns
+        Returns:
         -------
         set
             A set of sorted static peer router IP addresses.
@@ -103,6 +104,7 @@ class AvdTestAvtPath(AvdTestBase):
 class AvdTestAvtRole(AvdTestBase):
     """
     AvdTestAvtRole class for AVT (Adaptive Virtual Topology) role tests.
+
     Validates the Adaptive Virtual Topology (AVT) role of a device.
     """
 
@@ -116,7 +118,6 @@ class AvdTestAvtRole(AvdTestBase):
         Returns:
             dict | None: ANTA test definition or None if the configuration is incomplete.
         """
-
         # Retrieve AVT role from the structured configuration
         avt_role = get(self.structured_config, "router_adaptive_virtual_topology.topology_role")
         if not avt_role:
