@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...j2filters import natural_sort
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts
@@ -14,7 +14,8 @@ if TYPE_CHECKING:
 
 class WanMixin:
     """
-    Mixin Class providing a subset of EosDesignsFacts
+    Mixin Class providing a subset of EosDesignsFacts.
+
     Class should only be used as Mixin to the EosDesignsFacts class
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
@@ -22,11 +23,12 @@ class WanMixin:
     @cached_property
     def wan_path_groups(self: EosDesignsFacts) -> list | None:
         """
-        TODO: Also add the path_groups importing any of our connected path groups.
-                      Need to find out if we need to resolve recursive imports.
+        Return the list of WAN path_groups directly connected to this router.
 
-        Return the list of WAN path_groups directly connected to this router, with a list of dictionaries
-        containing the (interface, ip_address) in the path_group.
+        Each with a list of dictionaries containing the (interface, ip_address) in the path_group.
+
+        TODO: Also add the path_groups importing any of our connected path groups.
+                Need to find out if we need to resolve recursive imports.
         """
         if not self.shared_utils.is_wan_server:
             return None
@@ -36,7 +38,7 @@ class WanMixin:
     @cached_property
     def wan_router_uplink_vrfs(self: EosDesignsFacts) -> list[str] | None:
         """
-        Exposed in avd_switch_facts
+        Exposed in avd_switch_facts.
 
         Return the list of VRF names present on uplink switches.
         These VRFs will be attracted (configured) on WAN "clients" (edge/transit) unless filtered.

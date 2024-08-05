@@ -3,19 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from . import CVClient
 
 
 class UtilsMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     @staticmethod
-    def _remove_item_from_list(itm, lst: list, matcher: Callable) -> None:
+    def _remove_item_from_list(itm: Any, lst: list, matcher: Callable) -> None:
         """
         Remove one item from the given list.
 
@@ -30,7 +30,7 @@ class UtilsMixin:
                 return
 
     @staticmethod
-    def _upsert_item_in_list(itm, lst: list, matcher: Callable) -> None:
+    def _upsert_item_in_list(itm: Any, lst: list, matcher: Callable) -> None:
         """
         Update or append one item from the given list.
 
@@ -43,7 +43,7 @@ class UtilsMixin:
 
         lst.append(itm)
 
-    def _set_value_from_path(self: CVClient, path: list[str], data: list | dict, value) -> None:
+    def _set_value_from_path(self: CVClient, path: list[str], data: list | dict, value: Any) -> None:
         """
         Recursive function to walk through data to set value on path, creating any level needed.
 
@@ -59,7 +59,8 @@ class UtilsMixin:
             if isinstance(value, dict) and isinstance(data, dict):
                 data.update(value)
                 return
-            raise RuntimeError(f"Path '{path}', value type '{type(value)}' cannot be set on data type '{type(data)}'")
+            msg = f"Path '{path}', value type '{type(value)}' cannot be set on data type '{type(data)}'"
+            raise RuntimeError(msg)
         # Convert '0' to 0.
         path = [int(element) if str(element).isnumeric() else element for element in path]
         if len(path) == 1:
@@ -69,7 +70,8 @@ class UtilsMixin:
                 # We ignore the actual integer value and just append the item to the list.
                 data.append(value)
             else:
-                raise RuntimeError(f"Path '{path}' cannot be set on data of type '{type(data)}'")
+                msg = f"Path '{path}' cannot be set on data of type '{type(data)}'"
+                raise RuntimeError(msg)
             return
 
         # Two or more elements in path.
@@ -98,9 +100,8 @@ class UtilsMixin:
                 self._set_value_from_path(path[1:], data[index], value)
 
         else:
-            raise RuntimeError(f"Path '{path}', value type '{type(value)}' cannot be set on data of type '{type(data)}'")
-
-        return None
+            msg = f"Path '{path}', value type '{type(value)}' cannot be set on data of type '{type(data)}'"
+            raise TypeError(msg)
 
     def _get_value_from_path(self: CVClient, path: list[str], data: list | dict, default_value: Any = None) -> Any:
         """
@@ -123,7 +124,8 @@ class UtilsMixin:
         # Convert '0' to 0.
         path = [int(element) if str(element).isnumeric() else element for element in path]
         if isinstance(path[0], int) and not isinstance(data, list):
-            raise TypeError(f"Path element is '{path[0]}' but data is not a list (got '{type(data)}').")
+            msg = f"Path element is '{path[0]}' but data is not a list (got '{type(data)}')."
+            raise TypeError(msg)
 
         try:
             return self._get_value_from_path(path[1:], data[path[0]])

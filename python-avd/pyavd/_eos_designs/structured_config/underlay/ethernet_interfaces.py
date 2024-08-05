@@ -6,10 +6,11 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError
-from ...._utils import append_if_not_duplicate, get
-from ....j2filters import encrypt, natural_sort
-from ...interface_descriptions import InterfaceDescriptionData
+from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
+from pyavd._errors import AristaAvdError
+from pyavd._utils import append_if_not_duplicate, get
+from pyavd.j2filters import encrypt, natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -19,14 +20,13 @@ if TYPE_CHECKING:
 class EthernetInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ethernet_interfaces(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for ethernet_interfaces
-        """
+        """Return structured config for ethernet_interfaces."""
         ethernet_interfaces = []
 
         for link in self._underlay_links:
@@ -38,7 +38,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     link_type=link["type"],
                     peer=link["peer"],
                     peer_interface=link["peer_interface"],
-                )
+                ),
             )
             ethernet_interface = {
                 "name": link["interface"],
@@ -63,7 +63,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "link_tracking_groups": link.get("link_tracking_groups"),
                         "sflow": link.get("sflow"),
                         "flow_tracker": link.get("flow_tracker"),
-                    }
+                    },
                 )
 
                 # PTP
@@ -114,19 +114,20 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
                                     "key": encrypt(
                                         ospf_key["key"],
-                                        passwd_type="ospf_message_digest",  # NOSONAR
+                                        passwd_type="ospf_message_digest",  # NOSONAR # noqa: S106
                                         key=ethernet_interface["name"],
                                         hash_algorithm=ospf_key.get("hash_algorithm", "sha512"),
                                         key_id=ospf_key["id"],
                                     ),
-                                }
+                                },
                             )
 
                         if len(ospf_keys) > 0:
                             ethernet_interface["ospf_authentication"] = "message-digest"
                             ethernet_interface["ospf_message_digest_keys"] = ospf_keys
                         else:
-                            raise AristaAvdError("'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined.")
+                            msg = "'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined."
+                            raise AristaAvdError(msg)
 
                 if self.shared_utils.underlay_isis is True:
                     ethernet_interface.update(
@@ -136,7 +137,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             "isis_metric": self.shared_utils.isis_default_metric,
                             "isis_network_point_to_point": True,
                             "isis_circuit_type": self.shared_utils.isis_default_circuit_type,
-                        }
+                        },
                     )
 
                 if link.get("underlay_multicast") is True:
@@ -162,7 +163,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "id": int(channel_group_id),
                                 "mode": "active",
                             },
-                        }
+                        },
                     )
                     if get(link, "inband_ztp_vlan"):
                         ethernet_interface.update({"mode": "access", "vlans": link["inband_ztp_vlan"]})
@@ -178,7 +179,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             "link_tracking_groups": link.get("link_tracking_groups"),
                             "spanning_tree_portfast": link.get("spanning_tree_portfast"),
                             "flow_tracker": link.get("flow_tracker"),
-                        }
+                        },
                     )
 
             # Remove None values
@@ -202,7 +203,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             peer=link["peer"],
                             peer_interface=subinterface["peer_interface"],
                             vrf=subinterface["vrf"],
-                        )
+                        ),
                     )
                     ethernet_subinterface = {
                         "name": subinterface["interface"],
@@ -210,7 +211,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "peer_interface": subinterface["peer_interface"],
                         "peer_type": link["peer_type"],
                         "vrf": subinterface["vrf"],
-                        # TODO - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
+                        # TODO: - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
                         # subinterface name
                         "description": description,
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
@@ -284,7 +285,9 @@ class EthernetInterfacesMixin(UtilsMixin):
         # WAN HA interfaces for direct connection
         if self.shared_utils.use_uplinks_for_wan_ha is False:
             direct_wan_ha_links_flow_tracker = get(
-                self.shared_utils.switch_data_combined, "wan_ha.flow_tracker", default=self.shared_utils.get_flow_tracker(None, "direct_wan_ha_links")
+                self.shared_utils.switch_data_combined,
+                "wan_ha.flow_tracker",
+                default=self.shared_utils.get_flow_tracker(None, "direct_wan_ha_links"),
             )
             for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
                 ha_interface = {

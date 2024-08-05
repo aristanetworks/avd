@@ -52,7 +52,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].local_interface") | String |  |  |  | Local Source Interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.hardware.shutdown") | Boolean |  | `False` |  |  |
-    | [<samp>flow_trackings</samp>](## "flow_trackings") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>flow_tracking</samp> instead.</span> |
+    | [<samp>flow_trackings</samp>](## "flow_trackings") <span style="color:red">removed</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>flow_tracking</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;-&nbsp;type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- <code>sampled</code> | Flow Tracking Type - only 'sampled' supported for now. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "flow_trackings.[].sample") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trackers</samp>](## "flow_trackings.[].trackers") | List, items: Dictionary |  |  |  |  |
@@ -164,50 +164,5 @@
 
                 # Template interval in milliseconds.
                 template_interval: <int; 5000-3600000>
-        shutdown: <bool; default=False>
-    # This key is deprecated.
-    # Support will be removed in AVD version v5.0.0.
-    # Use <samp>flow_tracking</samp> instead.
-    flow_trackings:
-
-        # Flow Tracking Type - only 'sampled' supported for now.
-      - type: <str; "sampled"; required; unique>
-        sample: <int; 1-4294967295>
-        trackers:
-
-            # Tracker Name.
-          - name: <str; required; unique>
-            record_export:
-
-              # Flow record inactive export timeout in milliseconds.
-              on_inactive_timeout: <int; 3000-900000>
-
-              # Flow record export interval in milliseconds.
-              on_interval: <int; 1000-36000000>
-
-              # Export MPLS forwarding information.
-              mpls: <bool>
-            exporters:
-
-                # Exporter Name.
-              - name: <str; required; unique>
-                collector:
-
-                  # Collector IPv4 address or IPv6 address or fully qualified domain name.
-                  host: <str>
-
-                  # Collector Port Number.
-                  port: <int; 1-65535>
-                format:
-                  ipfix_version: <int>
-
-                # Local Source Interface.
-                local_interface: <str>
-
-                # Template interval in milliseconds.
-                template_interval: <int; 5000-3600000>
-
-            # Maximum number of entries in flow table.
-            table_size: <int; 1-614400>
         shutdown: <bool; default=False>
     ```

@@ -1,16 +1,13 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
-
-from pathlib import Path
-
-__metaclass__ = type
 
 import cProfile
 import json
 import pstats
 from collections import ChainMap
+from pathlib import Path
+from typing import Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
@@ -31,12 +28,12 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
 
@@ -68,7 +65,8 @@ class ActionModule(ActionBase):
                 try:
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
-                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+                    msg = f"Exception during templating of task_var '{var}'"
+                    raise AnsibleActionFail(msg) from e
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)

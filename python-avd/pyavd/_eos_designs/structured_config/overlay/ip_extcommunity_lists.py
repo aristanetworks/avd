@@ -15,14 +15,13 @@ if TYPE_CHECKING:
 class IpExtCommunityListsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ip_extcommunity_lists(self: AvdStructuredConfigOverlay) -> list | None:
-        """
-        Return structured config for ip_extcommunity_lists
-        """
+        """Return structured config for ip_extcommunity_lists."""
         if self.shared_utils.overlay_routing_protocol != "ibgp":
             return None
 
@@ -39,7 +38,7 @@ class IpExtCommunityListsMixin(UtilsMixin):
                             "extcommunities": f"soo {self.shared_utils.evpn_soo}",
                         },
                     ],
-                }
+                },
             ]
 
         return None

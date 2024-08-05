@@ -716,6 +716,14 @@
   },
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyUptime",
     "categories": [
       "system"

@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get, load_python_class, merge
-from ..ip_addressing import AvdIpAddressing
+from pyavd._eos_designs.ip_addressing import AvdIpAddressing
+from pyavd._utils import get, load_python_class, merge
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -17,8 +17,9 @@ DEFAULT_AVD_IP_ADDRESSING_PYTHON_CLASS_NAME = "AvdIpAddressing"
 
 class IpAddressingMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -62,9 +63,7 @@ class IpAddressingMixin:
 
     @cached_property
     def vtep_ip(self: SharedUtils) -> str:
-        """
-        Render ipv4 address for vtep_ip using dynamically loaded python module.
-        """
+        """Render ipv4 address for vtep_ip using dynamically loaded python module."""
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
 
@@ -77,8 +76,9 @@ class IpAddressingMixin:
     @cached_property
     def ip_addressing(self: SharedUtils) -> AvdIpAddressing:
         """
-        Load the python_module defined in `templates.ip_addressing.python_module`
-        Return an instance of the class defined by `templates.ip_addressing.python_class_name` as cached_property
+        Load the python_module defined in `templates.ip_addressing.python_module`.
+
+        Return an instance of the class defined by `templates.ip_addressing.python_class_name` as cached_property.
         """
         module_path = self.ip_addressing_templates.get("python_module")
         if module_path is None:
@@ -97,9 +97,11 @@ class IpAddressingMixin:
     @cached_property
     def ip_addressing_templates(self: SharedUtils) -> dict:
         """
-        Return dict with ip_addressing templates set based on
+        Return dict with ip_addressing templates.
+
+        Set based on
         templates.ip_addressing.* combined with (overridden by)
-        node_type_keys.<node_type_key>.ip_addressing.*
+        node_type_keys.<node_type_key>.ip_addressing.*.
         """
         hostvar_templates = get(self.hostvars, "templates.ip_addressing", default={})
         node_type_templates = get(self.node_type_key_data, "ip_addressing", default={})

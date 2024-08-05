@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class ValidationResult:
     """
-    Object containing result of data validation
+    Object containing result of data validation.
 
     Attributes:
         failed: True if data is not valid according to the schema. Otherwise False.
@@ -23,7 +23,7 @@ class ValidationResult:
     validation_errors: list[AvdValidationError]
     deprecation_warnings: list[AvdDeprecationWarning]
 
-    def __init__(self, failed: bool, validation_errors: list = None, deprecation_warnings: list = None):
+    def __init__(self, failed: bool, validation_errors: list | None = None, deprecation_warnings: list | None = None) -> None:
         self.failed = failed
         self.validation_errors = validation_errors or []
         self.deprecation_warnings = deprecation_warnings or []

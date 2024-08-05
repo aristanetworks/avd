@@ -80,11 +80,17 @@ version = {attr = "pyavd.__version__"}
 [tool.black]
 line-length = 160
 
+force-exclude = '''pyavd/_cv/api/.*'''
+
 [tool.isort]
 profile = "black"
 skip_gitignore = true
 line_length = 160
-known_third_party = ["pyavd"]
+known_first_party = ["pyavd", "schema_tools"]
+
+extend_skip_glob = [
+  "pyavd/_cv/api/**/*"
+]
 
 [tool.coverage.run]
 branch = true
@@ -123,3 +129,8 @@ exclude_also = [
     "^blocks = {}",
     "^debug_info =.*",
 ]
+
+[tool.ruff]
+# Extend the `pyproject.toml` file in the parent directory...
+# Should not be needed, but the ruff vscode extension does not seem to respect the ruff behavior of ignoring files without tool.ruff
+extend = "../pyproject.toml"

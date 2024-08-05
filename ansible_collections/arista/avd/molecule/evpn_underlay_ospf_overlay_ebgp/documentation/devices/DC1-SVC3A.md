@@ -443,11 +443,11 @@ interface Loopback1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3019 |  Tenant_B_OP_Zone  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |
+| Vlan3019 |  Tenant_B_OP_Zone  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

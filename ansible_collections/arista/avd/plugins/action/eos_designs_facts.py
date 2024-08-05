@@ -1,12 +1,11 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 import cProfile
 import pstats
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -26,12 +25,12 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> None:
         if task_vars is None:
             task_vars = {}
 
@@ -54,12 +53,13 @@ class ActionModule(ActionBase):
 
         # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
-            raise AnsibleActionFail(
+            msg = (
                 "Invalid/missing 'fabric_name' variable. "
                 "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
                 f"play_hosts: {ansible_play_hosts_all}"
             )
+            raise AnsibleActionFail(msg)
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
@@ -106,6 +106,7 @@ class ActionModule(ActionBase):
     def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict) -> dict:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
+
         Initialize all instances of EosDesignsFacts and insert various references into the variable space.
         Returns dict with avd_switch_facts_instances.
 
@@ -120,7 +121,7 @@ class ActionModule(ActionBase):
             failure : bool
             msg : str
 
-        Returns
+        Returns:
         -------
         dict
             hostname1 : dict
@@ -183,15 +184,15 @@ class ActionModule(ActionBase):
 
         return avd_switch_facts
 
-    def render_avd_switch_facts(self, avd_switch_facts_instances: dict):
+    def render_avd_switch_facts(self, avd_switch_facts_instances: dict) -> dict:
         """
-        Run the render method on each EosDesignsFacts object
+        Run the render method on each EosDesignsFacts object.
 
         Parameters
         ----------
         avd_switch_facts_instances : dict of EosDesignsFacts
 
-        Returns
+        Returns:
         -------
         dict
             hostname1 : dict
@@ -204,7 +205,8 @@ class ActionModule(ActionBase):
             try:
                 rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
             except AristaAvdMissingVariableError as e:
-                raise AnsibleActionFail(f"{e} is required but was not found for host '{host}'") from e
+                msg = f"{e} is required but was not found for host '{host}'"
+                raise AnsibleActionFail(msg) from e
 
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.

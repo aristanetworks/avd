@@ -1,6 +1,4 @@
 ---
-### Radius Server
-# New data model to replace "radius_servers"
 radius_server:
   attribute_32_include_in_access_req:
     hostname: true

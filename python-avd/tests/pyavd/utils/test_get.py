@@ -9,6 +9,7 @@ import re
 from contextlib import contextmanager
 
 import pytest
+
 from pyavd._errors import AristaAvdError
 from pyavd._utils import get
 
