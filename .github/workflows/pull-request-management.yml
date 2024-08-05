@@ -95,7 +95,6 @@ jobs:
       fail-fast: true
       matrix:
         python_version:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
@@ -344,8 +343,8 @@ jobs:
     name: Run ansible-test sanity validation
     runs-on: ubuntu-latest
     needs: [ file-changes ]
-    #needs: [ molecule_eos_designs, molecule_cloudvision ]
-    #if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
+    # needs: [ molecule_eos_designs, molecule_cloudvision ]
+    # if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     steps:
       - name: 'Set environment variables'
         run: |
@@ -482,7 +481,7 @@ jobs:
       needs.file-changes.outputs.pyavd == 'true'
     strategy:
       matrix:
-        python: ["3.9", "3.10", "3.11", "3.12"]
+        python: ["3.10", "3.11", "3.12"]
     steps:
       - name: 'Set environment variables'
         run: |

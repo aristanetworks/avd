@@ -5,9 +5,10 @@ from __future__ import annotations
 
 import re
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, ClassVar, Generator
+from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
     from io import TextIOWrapper
 
     from .results_manager import ResultsManager
@@ -137,7 +138,7 @@ class MDReportBase(ABC):
         ----------
             text (str): The text to escape markdown characters from.
 
-        Returns
+        Returns:
         -------
             str: The text with escaped markdown characters.
         """

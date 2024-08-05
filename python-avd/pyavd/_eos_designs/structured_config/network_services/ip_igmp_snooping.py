@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, default, get
+from pyavd._utils import append_if_not_duplicate, default, get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class IpIgmpSnoopingMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ip_igmp_snooping(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        Return structured config for ip_igmp_snooping
-        """
-
+        """Return structured config for ip_igmp_snooping."""
         if not self.shared_utils.network_services_l2:
             return None
 
@@ -62,9 +61,9 @@ class IpIgmpSnoopingMixin(UtilsMixin):
 
         return ip_igmp_snooping
 
-    def _ip_igmp_snooping_vlan(self: AvdStructuredConfigNetworkServices, vlan, tenant) -> dict:
+    def _ip_igmp_snooping_vlan(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> dict:
         """
-        ip_igmp_snooping logic for one vlan
+        ip_igmp_snooping logic for one vlan.
 
         Can be used for both svis and l2vlans
         """

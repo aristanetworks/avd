@@ -4,13 +4,10 @@
 # Testing port_channel_interfaces as dict of dict
 # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 port_channel_interfaces:
-  # Testing deprecated esi and rt variables on port-channel interfaces/subinterfaces
   Port-Channel1:
     description: SRV01_bond0
     vlans: 2-3000
     mode: trunk
-    esi: 0000:0000:0404:0404:0303
-    rt: 04:04:03:03:02:02
     lacp_id: 0303.0202.0101
 
   Port-Channel2:
@@ -26,17 +23,7 @@ port_channel_interfaces:
           vlan: 100
       network:
         client: true
-    esi: 0000:0000:0303:0202:0101
-    rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
-
-  # Testing deprecated filter plugins to be remove in AVD 5.0.0
-  Port-Channel30:
-    description: deprecate_filters_testing
-    esi: "{{ '0303:0202:0101' | arista.avd.generate_esi('deaf:beed:') }}"
-    rt: "{{ '0303:0202:0101' | arista.avd.generate_route_target }}"
-    lacp_id: "{{ '0303:0202:0101' | arista.avd.generate_lacp_id }}"
-
 
   Port-Channel51:
     description: ipv6_prefix

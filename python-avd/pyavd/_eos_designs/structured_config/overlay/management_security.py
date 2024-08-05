@@ -15,7 +15,8 @@ if TYPE_CHECKING:
 class ManagementSecurityMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -38,6 +39,6 @@ class ManagementSecurityMixin(UtilsMixin):
                     },
                     "trust_certificate": {"certificates": ["aristaDeviceCertProvisionerDefaultRootCA.crt"]},
                     "tls_versions": "1.2",
-                }
-            ]
+                },
+            ],
         }

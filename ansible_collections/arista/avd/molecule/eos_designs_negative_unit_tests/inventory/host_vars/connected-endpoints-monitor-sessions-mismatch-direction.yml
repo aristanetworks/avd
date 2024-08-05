@@ -40,4 +40,6 @@ servers:
           - name: DMF
             role: destination
 
-expected_error_message: "Found duplicate objects with conflicting data while generating configuration for Monitor session defined under connected_endpoints. {'name': 'Port-Channel44', 'direction': 'both'} conflicts with {'name': 'Port-Channel44', 'direction': 'rx'}."
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Monitor session defined under connected_endpoints.
+  {'name': 'Port-Channel44', 'direction': 'both'} conflicts with {'name': 'Port-Channel44', 'direction': 'rx'}.

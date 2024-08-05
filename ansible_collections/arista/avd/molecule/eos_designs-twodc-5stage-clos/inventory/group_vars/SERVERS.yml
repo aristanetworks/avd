@@ -21,7 +21,6 @@ port_profiles:
       Comment created from raw_eos_cli under profile TENANT_A
       EOF
 
-
 servers:
 
   - name: server-1

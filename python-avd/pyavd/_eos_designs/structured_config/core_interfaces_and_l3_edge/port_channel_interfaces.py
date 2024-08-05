@@ -15,14 +15,13 @@ if TYPE_CHECKING:
 class PortChannelInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def port_channel_interfaces(self: AvdStructuredConfigCoreInterfacesAndL3Edge) -> list | None:
-        """
-        Return structured config for port_channel_interfaces
-        """
+        """Return structured config for port_channel_interfaces."""
         port_channel_interfaces = []
         for p2p_link in self._filtered_p2p_links:
             if p2p_link["data"]["port_channel_id"] is None:

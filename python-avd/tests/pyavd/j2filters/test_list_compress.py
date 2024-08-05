@@ -6,6 +6,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
+
 from pyavd.j2filters import list_compress
 
 LIST_COMPRESS_INVALID_TESTS = [

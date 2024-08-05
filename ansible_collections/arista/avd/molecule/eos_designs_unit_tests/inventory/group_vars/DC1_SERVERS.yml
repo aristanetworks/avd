@@ -23,7 +23,7 @@ port_profiles:
     phone_trunk_mode: untagged
 
   - profile: ALL_WITH_SECURITY
-    parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
+    parent_profile: NON_EXISTING_PROFILE # Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: disabled
@@ -347,7 +347,7 @@ servers:
           unknown_unicast:
             level: 2
             unit: percent
-        port_channel: null   #Setting to null, to override port-channel inherited from profile
+        port_channel: null   # Setting to null, to override port-channel inherited from profile
 
   - name: server10_no_profile_port_channel_lacp_fallback
     rack: RackC

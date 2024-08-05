@@ -244,10 +244,10 @@ routers:
           subinterfaces:
             - number: 101
               short_esi: 0000:0000:0101 # Required for multihomed port-channels with subinterfaces
-              #vlan_id: 1101 # default is subinterface number
+              # vlan_id: 1101 # default is subinterface number
               # Flexible encapsulation parameters
               encapsulation_vlan:
-                #client_dot1q: 2101 # default is subinterface number
+                # client_dot1q: 2101 # default is subinterface number
             - number: 102
               short_esi: 0000:0000:0102 # Required for multihomed port-channels with subinterfaces
               vlan_id: 1102 # default is subinterface number

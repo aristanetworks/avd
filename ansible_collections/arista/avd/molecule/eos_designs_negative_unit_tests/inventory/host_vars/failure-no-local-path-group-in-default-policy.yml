@@ -89,4 +89,6 @@ application_classification:
   application_profiles:
     - name: TEST
 
-expected_error_message: "Unable to generate the default WAN policy as none of the device local path-groups ['INET'] is eligible to be included. Make sure that at least one path-group for the device is not configured with `excluded_from_default_policy: true` under `wan_path_groups`."
+expected_error_message: >-
+  Unable to generate the default WAN policy as none of the device local path-groups ['INET'] is eligible to be included.
+  Make sure that at least one path-group for the device is not configured with `excluded_from_default_policy: true` under `wan_path_groups`.

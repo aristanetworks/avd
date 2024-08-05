@@ -46,14 +46,6 @@ keys:
                     name:
                       type: str
                       description: Interface name.
-                    ip_address:
-                      type: str
-                      description: The public IPv4 address (without mask) of the Route Reflector for this path-group.
-                      deprecation:
-                        warning: true
-                        new_key: public_ip
-                        removed: true
-                        remove_in_version: "4.7.0"
                     public_ip:
                       type: str
                       description: The public IPv4 address (without mask) of the Route Reflector for this path-group.

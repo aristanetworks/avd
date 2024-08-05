@@ -13,9 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestAPIHttpsSSL(AvdTestBase):
-    """
-    AvdTestAPIHttpsSSL class for eAPI HTTPS SSL tests.
-    """
+    """AvdTestAPIHttpsSSL class for eAPI HTTPS SSL tests."""
 
     anta_module = "anta.tests.security"
 
@@ -41,6 +39,7 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
 class AvdTestIPSecurity(AvdTestBase):
     """
     AvdTestIPSecurity class for IP security connection tests.
+
     It validates the state of IPv4 security connections for a specified peer, ensuring they are established.
     It specifically focuses on IPv4 security connections within the default VRF.
     In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
@@ -71,7 +70,9 @@ class AvdTestIPSecurity(AvdTestBase):
 
             for peer_idx, peer in enumerate(path_group["static_peers"]):
                 if self.validate_data(
-                    data=peer, data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]", required_keys="router_ip"
+                    data=peer,
+                    data_path=f"router_path_selection.path_groups.[{group_idx}].static_peers.[{peer_idx}]",
+                    required_keys="router_ip",
                 ):
                     peer_address = peer["router_ip"]
                     vrf = "default"  # TODO: Keeping the vrf name static for now. We may need to change later on.
@@ -81,8 +82,8 @@ class AvdTestIPSecurity(AvdTestBase):
                                 "VerifySpecificIPSecConn": {
                                     "ip_security_connections": [{"peer": peer_address, "vrf": vrf}],
                                     "result_overwrite": {"custom_field": f"IPv4 Peer: {peer_address} VRF: {vrf}"},
-                                }
-                            }
+                                },
+                            },
                         )
                         added_peers.add((peer_address, vrf))
 

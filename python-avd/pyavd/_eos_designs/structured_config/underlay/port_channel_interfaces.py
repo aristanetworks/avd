@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get, short_esi_to_route_target
-from ...interface_descriptions.models import InterfaceDescriptionData
+from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
+from pyavd._utils import get, short_esi_to_route_target
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,14 +18,13 @@ if TYPE_CHECKING:
 class PortChannelInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def port_channel_interfaces(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for port_channel_interfaces
-        """
+        """Return structured config for port_channel_interfaces."""
         port_channel_interfaces = []
         port_channel_list = []
         for link in self._underlay_links:
@@ -47,7 +47,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         peer=link["peer"],
                         peer_channel_group_id=link["peer_channel_group_id"],
                         port_channel_description=link.get("channel_description"),
-                    )
+                    ),
                 ),
                 "type": "switched",
                 "shutdown": False,

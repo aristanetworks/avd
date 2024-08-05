@@ -27,7 +27,6 @@ svi_profiles:
         source_interface: lo100
         source_vrf: MGMT
 
-
 tenants:
   # Tenant_A Specific Information - VRFs / VLANs
   - name: Tenant_A

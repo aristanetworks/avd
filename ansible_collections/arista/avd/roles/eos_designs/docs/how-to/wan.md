@@ -54,7 +54,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
   - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in PREVIEW
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
-    These new tests are added only in the [ANTA integration](../../../eos_validate_state/anta_integration.md) mode.
 
 ### Known limitations
 
