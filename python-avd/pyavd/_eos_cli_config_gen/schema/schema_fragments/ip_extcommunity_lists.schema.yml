@@ -10,8 +10,6 @@ keys:
     type: list
     primary_key: name
     secondary_key: entries
-    convert_types:
-      - dict
     display_name: IP Extended Community Lists
     items:
       type: dict

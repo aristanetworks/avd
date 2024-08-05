@@ -325,8 +325,6 @@ keys:
   access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: IP Extended Access-Lists (legacy model)
     items:
       type: dict
@@ -808,8 +806,6 @@ keys:
   bgp_groups:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -916,8 +912,6 @@ keys:
   community_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: Community Lists (legacy model)
     items:
       type: dict
@@ -1965,8 +1959,6 @@ keys:
   ethernet_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -4116,8 +4108,6 @@ keys:
     type: list
     display_name: Maintenance Interface Groups
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -4142,8 +4132,6 @@ keys:
   interface_profiles:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -4163,8 +4151,6 @@ keys:
   ip_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: IP Extended Access-Lists (improved model)
     items:
       type: dict
@@ -4318,8 +4304,6 @@ keys:
     type: list
     secondary_key: entries
     primary_key: name
-    convert_types:
-    - dict
     display_name: IP Community Lists
     description: 'Communities and regexp entries MUST not be configured in the same
       community-list.
@@ -4447,8 +4431,6 @@ keys:
     type: list
     primary_key: name
     secondary_key: entries
-    convert_types:
-    - dict
     display_name: IP Extended Community Lists
     items:
       type: dict
@@ -4480,8 +4462,6 @@ keys:
     type: list
     primary_key: name
     secondary_key: entries
-    convert_types:
-    - dict
     display_name: IP Extended Community Lists RegExp
     items:
       type: dict
@@ -5303,8 +5283,6 @@ keys:
   ipv6_prefix_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5336,8 +5314,6 @@ keys:
   ipv6_standard_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5896,8 +5872,6 @@ keys:
   loopback_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -6506,8 +6480,6 @@ keys:
   management_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -8145,8 +8117,6 @@ keys:
   peer_filters:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -8617,8 +8587,6 @@ keys:
   port_channel_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -9513,8 +9481,6 @@ keys:
   prefix_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -9835,8 +9801,6 @@ keys:
   qos_profiles:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -10530,8 +10494,6 @@ keys:
   route_maps:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -16807,8 +16769,6 @@ keys:
   standard_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -17489,8 +17449,6 @@ keys:
   tunnel_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -17601,8 +17559,6 @@ keys:
   virtual_source_nat_vrfs:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -17617,8 +17573,6 @@ keys:
   vlan_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -18315,8 +18269,6 @@ keys:
   vlans:
     type: list
     primary_key: id
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -18357,8 +18309,6 @@ keys:
   vmtracer_sessions:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -18382,8 +18332,6 @@ keys:
     description: 'These keys are ignored if the name of the vrf is ''default''.
 
       '
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
