@@ -164,7 +164,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
 
         return vlan_id
 
-    def _exclude_mlag_ibgp_peering_from_redistribute(self: AvdStructuredConfigNetworkServices, vrf, tenant) -> bool:
+    def _exclude_mlag_ibgp_peering_from_redistribute(self: AvdStructuredConfigNetworkServices, vrf:dict, tenant:dict) -> bool:
         """
         Returns True if MLAG IBGP Peering subnet should be redistributed for the given vrf/tenant.
 
@@ -172,9 +172,8 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
 
         Does _not_ include checks if the peering is enabled at all, so that should be checked first.
         """
-
         if get(vrf, "redistribute_connected", True) is True:
-            return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is False
+            return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs")) is False
 
         return True
 

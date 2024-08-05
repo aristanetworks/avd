@@ -316,9 +316,7 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}
 
     def _update_router_bgp_vrf_mlag_neighbor_cfg(self: AvdStructuredConfigNetworkServices, bgp_vrf: dict, vrf: dict, tenant: dict, vlan_id: int) -> None:
-        """
-        In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs
-        """
+        """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs"""
         if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant):
             bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
 
