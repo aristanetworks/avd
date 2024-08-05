@@ -21,8 +21,6 @@ keys:
             type: list
             secondary_key: prefixes
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -38,8 +36,6 @@ keys:
             type: list
             secondary_key: prefixes
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -55,8 +51,6 @@ keys:
             type: list
             primary_key: name
             secondary_key: port_range
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -69,8 +63,6 @@ keys:
       policies:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -80,8 +72,6 @@ keys:
             matches:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -134,8 +124,6 @@ keys:
                   protocols:
                     type: list
                     primary_key: protocol
-                    convert_types:
-                      - dict
                     items:
                       type: dict
                       keys:

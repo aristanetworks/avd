@@ -145,8 +145,6 @@ keys:
         ip_helpers:
           type: list
           description: List of DHCP servers.
-          convert_types:
-            - dict
           primary_key: ip_helper
           items:
             type: dict
@@ -218,8 +216,6 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
-          convert_types:
-            - dict
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -363,8 +359,6 @@ keys:
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
-          convert_types:
-            - dict
           primary_key: id
           items:
             type: dict

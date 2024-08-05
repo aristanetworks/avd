@@ -185,8 +185,6 @@ keys:
       peer_groups:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -451,8 +449,6 @@ keys:
       neighbors:
         type: list
         primary_key: ip_address
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -701,8 +697,6 @@ keys:
       neighbor_interfaces:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -730,8 +724,6 @@ keys:
       aggregate_addresses:
         type: list
         primary_key: prefix
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -754,9 +746,6 @@ keys:
         type: list
         primary_key: source_protocol
         allow_duplicate_primary_key: True
-        convert_types:
-          - dict
-          - list
         items:
           type: dict
           keys:
@@ -798,8 +787,6 @@ keys:
       vlan_aware_bundles:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -896,8 +883,6 @@ keys:
       vlans:
         type: list
         primary_key: id
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -987,8 +972,6 @@ keys:
       vpws:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -1015,8 +998,6 @@ keys:
             pseudowires:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -1110,8 +1091,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1283,8 +1262,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1306,8 +1283,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1326,8 +1301,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1387,8 +1360,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1474,8 +1445,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1493,8 +1462,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1512,8 +1479,6 @@ keys:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1592,8 +1557,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1612,8 +1575,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1647,8 +1608,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1682,8 +1641,6 @@ keys:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: True
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1751,8 +1708,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1769,8 +1724,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1782,8 +1735,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1796,8 +1747,6 @@ keys:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1976,8 +1925,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1988,8 +1935,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2022,8 +1967,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2034,8 +1977,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2081,8 +2022,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2173,8 +2112,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2221,8 +2158,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2271,8 +2206,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2319,8 +2252,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2364,8 +2295,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -2446,8 +2375,6 @@ keys:
                   type: list
                   primary_key: address_family
                   secondary_key: route_targets
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2476,8 +2403,6 @@ keys:
                   type: list
                   primary_key: address_family
                   secondary_key: route_targets
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2511,8 +2436,6 @@ keys:
             networks:
               type: list
               primary_key: prefix
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2565,8 +2488,6 @@ keys:
             neighbors:
               type: list
               primary_key: ip_address
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2744,8 +2665,6 @@ keys:
             neighbor_interfaces:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2771,9 +2690,6 @@ keys:
               type: list
               primary_key: source_protocol
               allow_duplicate_primary_key: true
-              convert_types:
-                - dict
-                - list
               items:
                 type: dict
                 keys:
@@ -2816,8 +2732,6 @@ keys:
             aggregate_addresses:
               type: list
               primary_key: prefix
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2893,8 +2807,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2938,8 +2850,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2952,8 +2862,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3051,8 +2959,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3085,8 +2991,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3099,8 +3003,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3167,8 +3069,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3185,8 +3085,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3199,8 +3097,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3265,8 +3161,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3283,8 +3177,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3297,8 +3189,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3357,8 +3247,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3390,8 +3278,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3406,8 +3292,6 @@ keys:
             address_families:
               type: list
               primary_key: address_family
-              convert_types:
-                - dict
               deprecation:
                 warning: true
                 removed: true

@@ -8,8 +8,6 @@ type: dict
 keys:
   monitor_sessions:
     type: list
-    convert_types:
-    - dict
     items:
       type: dict
       keys:

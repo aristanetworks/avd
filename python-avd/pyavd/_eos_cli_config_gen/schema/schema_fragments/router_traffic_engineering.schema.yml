@@ -34,8 +34,6 @@ keys:
                 colors:
                   type: list
                   primary_key: value
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:

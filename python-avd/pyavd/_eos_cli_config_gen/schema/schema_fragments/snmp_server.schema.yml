@@ -47,8 +47,6 @@ keys:
       communities:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -99,8 +97,6 @@ keys:
       local_interfaces:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:

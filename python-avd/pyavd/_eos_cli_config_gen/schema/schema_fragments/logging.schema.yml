@@ -77,8 +77,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -93,8 +91,6 @@ keys:
             hosts:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -120,8 +116,6 @@ keys:
               match_lists:
                 type: list
                 primary_key: name
-                convert_types:
-                  - dict
                 items:
                   type: dict
                   keys:
@@ -153,8 +147,6 @@ keys:
         type: list
         description: Configure logging severity.
         primary_key: facility
-        convert_types:
-          - dict
         items:
           type: dict
           keys:

@@ -291,8 +291,6 @@ keys:
         ip_helpers:
           type: list
           primary_key: ip_helper
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
@@ -327,8 +325,6 @@ keys:
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
@@ -437,8 +433,6 @@ keys:
         ospf_message_digest_keys:
           type: list
           primary_key: id
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
@@ -1154,8 +1148,6 @@ keys:
         uc_tx_queues:
           type: list
           primary_key: id
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
@@ -1216,8 +1208,6 @@ keys:
         tx_queues:
           type: list
           primary_key: id
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
