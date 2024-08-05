@@ -7,6 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._utils import append_if_not_duplicate, strip_null_from_data
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
