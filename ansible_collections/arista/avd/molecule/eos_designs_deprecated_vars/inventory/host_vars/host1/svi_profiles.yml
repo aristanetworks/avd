@@ -14,7 +14,6 @@ svi_profiles:
     mtu: 1560
     enabled: false
     ip_address_virtual: 10.4.13.254/24
-    ipv6_address_virtual: 2001:db8:413::1/64
     # Testing "ip_helpers" as dict of dict
     # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     ip_helpers:
