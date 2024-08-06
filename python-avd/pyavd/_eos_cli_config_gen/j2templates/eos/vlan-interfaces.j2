@@ -361,7 +361,6 @@ interface {{ vlan_interface.name }}
    {{ isis_auth_cli }} level-2
 {%         endif %}
 {%     endif %}
-{# New improved "vrrp" data model to support multiple IDs #}
 {%     if vlan_interface.vrrp_ids is arista.avd.defined %}
 {%         for vrid in vlan_interface.vrrp_ids | arista.avd.natural_sort('id') if vrid.id is arista.avd.defined %}
 {%             if vrid.priority_level is arista.avd.defined %}
