@@ -7,7 +7,7 @@ from functools import cached_property
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import default, get, strip_null_from_data
+from pyavd._utils import get, strip_null_from_data
 from pyavd.j2filters import convert_dicts, natural_sort
 
 from .ntp import NtpMixin

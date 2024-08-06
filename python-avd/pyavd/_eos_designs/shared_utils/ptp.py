@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._utils import default, get, get_item
+from pyavd._utils import get, get_item
 
 if TYPE_CHECKING:
     from . import SharedUtils
