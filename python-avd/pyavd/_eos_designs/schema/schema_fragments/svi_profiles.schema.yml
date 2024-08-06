@@ -9,8 +9,6 @@ keys:
   svi_profiles:
     type: list
     primary_key: profile
-    convert_types:
-      - dict
     description: |
       Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
       Keys are the same used under SVIs. Keys defined under SVIs take precedence.

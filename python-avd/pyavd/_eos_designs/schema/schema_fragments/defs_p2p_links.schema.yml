@@ -145,8 +145,6 @@ $defs:
               type: list
               primary_key: node
               secondary_key: interfaces
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:

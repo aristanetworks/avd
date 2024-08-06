@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import get
-from pyavd.j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -177,8 +176,7 @@ class NodeTypeKeysMixin:
         """NOTE: This method is called _before_ any schema validation, since we need to resolve node_type_keys dynamically."""
         design_type = get(self.hostvars, "design.type", default="l3ls-evpn")
         default_node_type_keys_for_our_design = get(DEFAULT_NODE_TYPE_KEYS, design_type)
-        node_type_keys = get(self.hostvars, "node_type_keys", default=default_node_type_keys_for_our_design)
-        return convert_dicts(node_type_keys, "key")
+        return get(self.hostvars, "node_type_keys", default=default_node_type_keys_for_our_design)
 
     @cached_property
     def node_type_key_data(self: SharedUtils) -> dict:

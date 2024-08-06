@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._utils import get
-from pyavd.j2filters import convert_dicts, list_compress, range_expand
+from pyavd.j2filters import list_compress, range_expand
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts
@@ -84,7 +84,7 @@ class VlansMixin:
             vlans.add(self.shared_utils.inband_mgmt_vlan)
 
         for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
-            connected_endpoints = convert_dicts(get(self._hostvars, connected_endpoints_key["key"], default=[]), "name")
+            connected_endpoints = get(self._hostvars, connected_endpoints_key["key"], default=[])
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
@@ -256,26 +256,14 @@ class VlansMixin:
 
             for network_services_key in self.shared_utils.network_services_keys:
                 tenants = get(self._hostvars, network_services_key["name"], default=[])
-                # Support legacy data model by converting nested dict to list of dict
-                if isinstance(tenants, dict):
-                    tenants = convert_dicts(tenants, "name")
-
                 for tenant in tenants:
                     if not set(self.shared_utils.filter_tenants).intersection([tenant["name"], "all"]):
                         # Not matching tenant filters. Skipping this tenant.
                         continue
 
                     vrfs = tenant.get("vrfs", [])
-                    # Support legacy data model by converting nested dict to list of dict
-                    if isinstance(vrfs, dict):
-                        vrfs = convert_dicts(vrfs, "name")
-
                     for vrf in vrfs:
                         svis = vrf.get("svis", [])
-                        # Support legacy data model by converting nested dict to list of dict
-                        if isinstance(svis, dict):
-                            svis = convert_dicts(svis, "id")
-
                         for svi in svis:
                             svi_tags = svi.get("tags", ["all"])
                             if "all" in match_tags or set(svi_tags).intersection(match_tags):
@@ -297,10 +285,6 @@ class VlansMixin:
                                 vlans.append(int(svi["id"]))
 
                     l2vlans = tenant.get("l2vlans", [])
-                    # Support legacy data model by converting nested dict to list of dict
-                    if isinstance(l2vlans, dict):
-                        l2vlans = convert_dicts(l2vlans, "id")
-
                     for l2vlan in l2vlans:
                         l2vlan_tags = l2vlan.get("tags", ["all"])
                         if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):

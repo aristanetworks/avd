@@ -5,7 +5,7 @@
 #}
 Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface Enabled
 {% if node_type_keys is arista.avd.defined %}
-{%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{%     set node_types = node_type_keys | map(attribute="type") %}
 {% else %}
 {%     set default_node_types = {
            "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
@@ -18,7 +18,7 @@ Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface 
 {%     set node_hostvars = hostvars[node] %}
 {%     set node_facts = avd_switch_facts[node] %}
 {%     if node_facts.switch.type | arista.avd.default('undefined') in node_types %}
-{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | arista.avd.natural_sort("name") %}
+{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort("name") %}
 {%             set csv_line = [] %}
 {%             do csv_line.append(node_facts.switch.type) %}
 {%             do csv_line.append(node) %}

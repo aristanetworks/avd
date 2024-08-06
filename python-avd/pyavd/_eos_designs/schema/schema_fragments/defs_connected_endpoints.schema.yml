@@ -9,8 +9,6 @@ $defs:
   connected_endpoints:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     description: |
       This should be applied to group_vars or host_vars where endpoints are connecting.
       `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".

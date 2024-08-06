@@ -16,8 +16,6 @@ keys:
       The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
     type: list
     primary_key: key
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
