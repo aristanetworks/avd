@@ -28,8 +28,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -40,8 +38,6 @@ keys:
             destinations:
               type: list
               primary_key: destination
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -64,8 +60,6 @@ keys:
       destinations:
         type: list
         primary_key: destination
-        convert_types:
-          - dict
         items:
           type: dict
           keys:

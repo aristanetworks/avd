@@ -25,8 +25,6 @@ keys:
             # which should be allowed. When wildcard dict support is finally removed,
             # this primary_key should also be removed. TODO: AVD5.0
             primary_key: address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -35,8 +33,6 @@ keys:
                   description: RP Address.
                 groups:
                   type: list
-                  convert_types:
-                    - dict
                   items:
                     type: str
                 access_lists:
@@ -56,8 +52,6 @@ keys:
           anycast_rps:
             type: list
             primary_key: address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -67,8 +61,6 @@ keys:
                 other_anycast_rp_addresses:
                   type: list
                   primary_key: address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:

@@ -13,8 +13,6 @@ keys:
       Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
       customize the system behavior, and implement workarounds to problems discovered in the field.
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:

@@ -11,8 +11,6 @@ keys:
     primary_key: name
     description: |
       These keys are ignored if the name of the vrf is 'default'.
-    convert_types:
-      - dict
     items:
       type: dict
       keys:

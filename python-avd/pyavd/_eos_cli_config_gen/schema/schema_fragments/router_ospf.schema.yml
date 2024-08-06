@@ -13,8 +13,6 @@ keys:
       process_ids:
         type: list
         primary_key: id
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -59,8 +57,6 @@ keys:
             network_prefixes:
               type: list
               primary_key: ipv4_prefix
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -215,8 +211,6 @@ keys:
             areas:
               type: list
               primary_key: id
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:

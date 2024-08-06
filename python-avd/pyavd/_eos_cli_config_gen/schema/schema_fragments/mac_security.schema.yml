@@ -24,8 +24,6 @@ keys:
       profiles:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -42,8 +40,6 @@ keys:
             connection_keys:
               type: list
               primary_key: id
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:

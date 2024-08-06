@@ -10,8 +10,6 @@ keys:
     type: list
     display_name: Maintenance Interface Groups
     primary_key: name
-    convert_types:
-      - dict
     items:
       type: dict
       keys:

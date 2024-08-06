@@ -88,8 +88,6 @@ keys:
                 description: Password string.
               key_ids:
                 type: list
-                convert_types:
-                  - dict
                 primary_key: id
                 items:
                   type: dict
@@ -294,8 +292,6 @@ keys:
             type: str
           prefix_segments:
             type: list
-            convert_types:
-              - dict
             items:
               type: dict
               keys:

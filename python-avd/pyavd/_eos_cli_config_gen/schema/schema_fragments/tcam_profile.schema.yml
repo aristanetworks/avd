@@ -18,8 +18,6 @@ keys:
         type: list
         secondary_key: config
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:

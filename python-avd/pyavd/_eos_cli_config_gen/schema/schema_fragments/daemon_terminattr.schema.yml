@@ -30,8 +30,6 @@ keys:
         description: |
           Multiple CloudVision clusters.
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
