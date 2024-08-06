@@ -17700,58 +17700,9 @@ keys:
           - str
         isis_network_point_to_point:
           type: bool
-        isis_authentication_mode:
-          type: str
-          valid_values:
-          - text
-          - md5
-          - sha
-          - shared-secret
-        isis_authentication_key:
-          type: str
-          description: Type-7 encrypted password.
-        isis_authentication_mode_shared_secret:
+        isis_authentication:
           type: dict
-          description: Required for authentication mode `shared-secret`.
-          keys:
-            both:
-              type: dict
-              description: When set `both` takes precedence over `level_1` and `level_2`.
-              $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/shared_secret
-              keys:
-                rx_disabled:
-                  type: bool
-            level_1:
-              type: dict
-              description: Authentication settings for level-1. 'both' takes precedence
-                over 'level_1' and 'level_2' settings.
-              $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_shared_secret/keys/both
-            level_2:
-              type: dict
-              description: Authentication settings for level-2. 'both' takes precedence
-                over 'level_1' and 'level_2' settings.
-              $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_shared_secret/keys/both
-        isis_authentication_mode_sha:
-          type: dict
-          description: Required for authentication mode `sha`.
-          keys:
-            both:
-              type: dict
-              description: When set `both` takes precedence over `level_1` and `level_2`.
-              $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication/keys/both/keys/sha
-              keys:
-                rx_disabled:
-                  type: bool
-            level_1:
-              type: dict
-              description: Authentication settings for level-1. 'both' takes precedence
-                over 'level_1' and 'level_2' settings.
-              $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_sha/keys/both
-            level_2:
-              type: dict
-              description: Authentication settings for level-2. 'both' takes precedence
-                over 'level_1' and 'level_2' settings.
-              $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/keys/isis_authentication_mode_sha/keys/both
+          $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
         mtu:
           type: int
           convert_types:

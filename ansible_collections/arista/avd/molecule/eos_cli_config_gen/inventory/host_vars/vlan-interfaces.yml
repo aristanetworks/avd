@@ -462,100 +462,150 @@ vlan_interfaces:
       refresh_always: true
 
   - name: Vlan340
-    description: isis authentication text
-    isis_authentication_mode: text
-    isis_authentication_key: "asfddja23452"
+    description: isis authentication both md5 rx
+    isis_authentication:
+      both:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
+      level_2:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
 
   - name: Vlan341
-    description: isis authentication sha1
-    isis_authentication_mode: sha
-    isis_authentication_mode_sha:
+    description: isis authentication both md5
+    isis_authentication:
       both:
-        key_id: 1000
-        rx_disabled: true
-      level_1:
-        key_id: 1010
-      level_2:
-        key_id: 1010
+        key_type: 0
+        key: password
+        mode: md5
 
   - name: Vlan342
-    description: isis authentication sha2
-    isis_authentication_mode: sha
-    isis_authentication_mode_sha:
+    description: isis authentication both sha rx
+    isis_authentication:
       both:
-        key_id: 1001
-        rx_disabled: false
+        key_type: 0
+        key: password
+        mode: sha
+        sha:
+          key_id: 2
+        rx_disabled: true
 
   - name: Vlan343
-    description: isis authentication sha3
-    isis_authentication_mode: sha
-    isis_authentication_mode_sha:
-      level_1:
-        key_id: 1010
-        rx_disabled: true
-      level_2:
-        key_id: 1010
-        rx_disabled: true
+    description: isis authentication both sha
+    isis_authentication:
+      both:
+        key_type: 0
+        key: password
+        mode: sha
+        sha:
+          key_id: 2
 
   - name: Vlan344
-    description: isis authentication sha4
-    isis_authentication_mode: sha
-    isis_authentication_mode_sha:
-      level_1:
-        key_id: 1011
-        rx_disabled: false
-      level_2:
-        key_id: 1011
-        rx_disabled: false
+    description: isis authentication both shared secret rx
+    isis_authentication:
+      both:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-1
+        rx_disabled: true
 
   - name: Vlan345
-    description: isis authentication shared-secret1
-    isis_authentication_mode: shared-secret
-    isis_authentication_mode_shared_secret:
-      level_1:
-        profile: profile1
-        algorithm: sha-1
-        rx_disabled: true
-      level_2:
-        profile: profile1
-        algorithm: md5
-        rx_disabled: true
+    description: isis authentication both shared secret
+    isis_authentication:
+      both:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-1
 
   - name: Vlan346
-    description: isis authentication shared-secret1
-    isis_authentication_mode: shared-secret
-    isis_authentication_mode_shared_secret:
+    description: isis authentication both l1 l2 md5 rx
+    isis_authentication:
       level_1:
-        profile: profile1
-        algorithm: sha-1
-        rx_disabled: false
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
       level_2:
-        profile: profile1
-        algorithm: md5
-        rx_disabled: false
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
 
   - name: Vlan347
-    description: isis authentication shared-secret2
-    isis_authentication_mode: shared-secret
-    isis_authentication_mode_shared_secret:
-      both:
-        profile: profile-both
-        algorithm: md5
-        rx_disabled: true
+    description: isis authentication l1 l2 md5
+    isis_authentication:
       level_1:
-        profile: profile1
-        algorithm: sha-1
-        rx_disabled: true
+        key_type: 0
+        key: password
+        mode: md5
       level_2:
-        profile: profile1
-        algorithm: md5
-        rx_disabled: true
+        key_type: 0
+        key: password
+        mode: md5
 
   - name: Vlan348
-    description: isis authentication shared-secret3
-    isis_authentication_mode: shared-secret
-    isis_authentication_mode_shared_secret:
-      both:
-        profile: profile-both
-        algorithm: sha-256
-        rx_disabled: false
+    description: isis authentication l1 l2 shared secret
+    isis_authentication:
+      level_1:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
+      level_2:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
+
+  - name: Vlan349
+    description: isis authentication l1 l2 shared secret rx
+    isis_authentication:
+      level_1:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
+        rx_disabled: true
+      level_2:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
+        rx_disabled: true
+
+  - name: Vlan350
+    description: isis authentication l1 l2 sha rx
+    isis_authentication:
+      level_1:
+        mode: sha
+        sha:
+          key_id: 5
+        rx_disabled: true
+      level_2:
+        mode: sha
+        sha:
+          key_id: 5
+        rx_disabled: true
+
+  - name: Vlan351
+    description: isis authentication l1 l2 sha
+    isis_authentication:
+      level_1:
+        mode: sha
+        sha:
+          key_id: 5
+      level_2:
+        mode: sha
+        sha:
+          key_id: 5
