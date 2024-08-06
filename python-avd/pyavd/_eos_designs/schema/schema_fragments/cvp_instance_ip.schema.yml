@@ -13,6 +13,7 @@ keys:
       warning: true
       new_key: cvp_instance_ips
       remove_in_version: "5.0.0"
+      removed: true
     type: str
     description: |
       IPv4 address or DNS name for CloudVision.
