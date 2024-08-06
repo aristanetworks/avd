@@ -595,7 +595,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         """
         if not self.shared_utils.ptp_enabled:
             return None
-        default_ptp_domain = default(get(self._hostvars, "ptp_settings.domain"), 127)
+        default_ptp_domain = get(self._hostvars, "ptp_settings.domain", default=127)
         default_ptp_priority1 = get(self.shared_utils.node_type_key_data, "default_ptp_priority1", default=127)
         default_clock_identity = None
 
