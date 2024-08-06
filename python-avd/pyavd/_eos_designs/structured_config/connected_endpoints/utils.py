@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdError
 from pyavd._utils import get, get_item, short_esi_to_route_target
-from pyavd.j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigConnectedEndpoints
@@ -32,7 +31,7 @@ class UtilsMixin:
         """
         filtered_connected_endpoints = []
         for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
-            connected_endpoints = convert_dicts(get(self._hostvars, connected_endpoints_key["key"], default=[]), "name")
+            connected_endpoints = get(self._hostvars, connected_endpoints_key["key"], default=[])
             for connected_endpoint in connected_endpoints:
                 if "adapters" not in connected_endpoint:
                     continue

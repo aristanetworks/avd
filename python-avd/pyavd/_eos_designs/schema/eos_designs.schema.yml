@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_designs
@@ -495,8 +495,6 @@ keys:
       '
     type: list
     primary_key: key
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -1737,6 +1735,35 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
+  ipv4_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: IPv4 prefix-list catalog.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "permit 10.255.0.0/27 eq 32"'
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-settings
@@ -2050,8 +2077,6 @@ keys:
   network_services_keys:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'Network Services can be grouped by using separate keys.
 
       The keys can be customized to provide a better better organization or grouping
@@ -2098,8 +2123,6 @@ keys:
       to copy the defaults and modify them.
 
       '
-    convert_types:
-    - dict
     primary_key: key
     items:
       type: dict
@@ -3096,8 +3119,6 @@ keys:
     type: list
     primary_key: platform
     secondary_key: speeds
-    convert_types:
-    - dict
     description: Set Hardware Speed Groups per Platform.
     items:
       type: dict
@@ -3110,8 +3131,6 @@ keys:
           type: list
           primary_key: speed
           secondary_key: speed_groups
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -3142,8 +3161,6 @@ keys:
   port_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Optional profiles to share common settings for connected_endpoints
       and/or network_ports.
 
@@ -3724,8 +3741,6 @@ keys:
   svi_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 
       Keys are the same used under SVIs. Keys defined under SVIs take precedence.
@@ -5319,8 +5334,6 @@ $defs:
   connected_endpoints:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'This should be applied to group_vars or host_vars where endpoints
       are connecting.
 
@@ -5421,8 +5434,6 @@ $defs:
     keys:
       p2p_links_ip_pools:
         type: list
-        convert_types:
-        - dict
         primary_key: name
         secondary_key: ipv4_pool
         items:
@@ -5444,8 +5455,6 @@ $defs:
               max: 31
       p2p_links_profiles:
         type: list
-        convert_types:
-        - dict
         primary_key: name
         $ref: eos_designs#/$defs/p2p_links
         items:
@@ -5472,8 +5481,6 @@ $defs:
       table: network-services-common-settings
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5581,8 +5588,6 @@ $defs:
             table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'List of BGP peer groups definitions.
 
             This will configure BGP peer groups to be used inside the tenant VRF for
@@ -5818,8 +5823,6 @@ $defs:
             table: network-services-vrfs-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'VRFs will only be configured on a node if any of the underlying
             objects like `svis` or `l3_interfaces` apply to the node.
 
@@ -5931,8 +5934,6 @@ $defs:
               ip_helpers:
                 type: list
                 primary_key: ip_helper
-                convert_types:
-                - dict
                 description: IP helper for DHCP relay.
                 items:
                   type: dict
@@ -6198,8 +6199,6 @@ $defs:
                 type: list
                 primary_key: id
                 allow_duplicate_primary_key: true
-                convert_types:
-                - dict
                 description: 'List of SVIs.
 
                   This will create both the L3 SVI and L2 VLAN based on filters applied
@@ -6262,8 +6261,6 @@ $defs:
                     nodes:
                       type: list
                       primary_key: node
-                      convert_types:
-                      - dict
                       items:
                         type: dict
                         $ref: eos_designs#/$defs/svi_settings
@@ -6583,8 +6580,6 @@ $defs:
                 type: list
                 primary_key: ip_address
                 allow_duplicate_primary_key: true
-                convert_types:
-                - dict
                 description: 'List of BGP peer definitions.
 
                   This will configure BGP neighbors inside the tenant VRF for peering
@@ -6852,8 +6847,6 @@ $defs:
           type: list
           primary_key: id
           allow_duplicate_primary_key: true
-          convert_types:
-          - dict
           description: Define L2 network services organized by vlan id.
           items:
             type: dict
@@ -8403,24 +8396,6 @@ $defs:
             min: 0
             max: 300
             default: 30
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -8823,11 +8798,27 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
+          inband_management_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_subnet
+              remove_in_version: 5.0.0
+            type: str
+          inband_management_vlan:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_vlan
+              remove_in_version: 5.0.0
+            type: int
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
-        convert_types:
-        - dict
         primary_key: group
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -8849,8 +8840,6 @@ $defs:
       nodes:
         description: Define variables per node.
         type: list
-        convert_types:
-        - dict
         primary_key: name
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -9222,8 +9211,6 @@ $defs:
               type: list
               primary_key: node
               secondary_key: interfaces
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9268,8 +9255,6 @@ $defs:
       nodes:
         type: list
         primary_key: node
-        convert_types:
-        - dict
         description: 'Define node specific configuration, such as unique IP addresses.
 
           Any keys set here will be merged onto the SVI config, except `structured_config`
@@ -9389,8 +9374,6 @@ $defs:
       ip_helpers:
         type: list
         primary_key: ip_helper
-        convert_types:
-        - dict
         description: IP helper for DHCP relay.
         items:
           type: dict
