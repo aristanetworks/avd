@@ -10,10 +10,7 @@ keys:
     documentation_options:
       table: ptp_settings
     type: dict
-    # TODO AVD5.0: Update description to not mention ptp key.
-    description: |-
-      Common PTP settings.
-      `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.
+    description: Common PTP settings.
     keys:
       enabled:
         type: bool

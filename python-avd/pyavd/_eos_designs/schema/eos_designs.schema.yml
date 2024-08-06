@@ -3169,27 +3169,12 @@ keys:
   ptp:
     deprecation:
       warning: true
+      removed: true
       new_key: ptp_settings
       remove_in_version: v5.0.0
     documentation_options:
       table: ptp_settings
     type: dict
-    keys:
-      enabled:
-        type: bool
-      profile:
-        type: str
-        valid_values:
-        - aes67
-        - smpte2059-2
-        - aes67-r16-2016
-        default: aes67-r16-2016
-      domain:
-        type: int
-        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
-      auto_clock_identity:
-        type: bool
-        default: true
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -3265,9 +3250,7 @@ keys:
     documentation_options:
       table: ptp_settings
     type: dict
-    description: 'Common PTP settings.
-
-      `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.'
+    description: Common PTP settings.
     keys:
       enabled:
         type: bool
@@ -5200,13 +5183,6 @@ $defs:
 
               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
               devices.'
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -5317,6 +5293,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              removed: true
+              warning: true
+              remove_in_version: 5.0.0
+              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state`
@@ -9334,20 +9318,6 @@ $defs:
           IP addresses on each node.
 
           '
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask.
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-
-          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
-          addresses will be configured.
-
-          '
-        deprecation:
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
         description: 'IPv6 VXLAN Anycast IP addresses.
@@ -9648,6 +9618,18 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
+      ipv6_address_virtual:
+        type: str
+        description: 'IPv6_address/Mask.
+
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
+
+          '
+        deprecation:
+          removed: true
+          warning: true
+          remove_in_version: 5.0.0
+          new_key: ipv6_address_virtuals
   virtual_topology:
     type: dict
     keys:
