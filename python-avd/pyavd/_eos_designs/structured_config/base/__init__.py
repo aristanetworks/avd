@@ -7,7 +7,7 @@ from functools import cached_property
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import default, get, strip_null_from_data
+from pyavd._utils import get, strip_null_from_data
 from pyavd.j2filters import convert_dicts, natural_sort
 
 from .ntp import NtpMixin
@@ -594,13 +594,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             default_priority2 = self.id % 256.
         """
         if not self.shared_utils.ptp_enabled:
-            # Since we have overlapping data model "ptp" between eos_designs and eos_cli_config_gen,
-            # we need to overwrite the input dict if set but not enabled.
-            # TODO: AVD5.0.0 Remove this handling since the `ptp` key is removed from eos_designs.
-            if get(self._hostvars, "ptp") is not None:
-                return {}
             return None
-        default_ptp_domain = default(get(self._hostvars, "ptp_settings.domain"), get(self._hostvars, "ptp.domain"), 127)
+        default_ptp_domain = get(self._hostvars, "ptp_settings.domain", default=127)
         default_ptp_priority1 = get(self.shared_utils.node_type_key_data, "default_ptp_priority1", default=127)
         default_clock_identity = None
 
@@ -612,11 +607,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 raise AristaAvdMissingVariableError(msg)
 
             priority2 = self.shared_utils.id % 256
-        default_auto_clock_identity = default(
-            get(self._hostvars, "ptp_settings.auto_clock_identity"),
-            get(self._hostvars, "ptp.auto_clock_identity"),
-            True,  # noqa: FBT003
-        )
+        default_auto_clock_identity = get(self._hostvars, "ptp_settings.auto_clock_identity", default=True)
         if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=default_auto_clock_identity) is True:
             clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
             default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"

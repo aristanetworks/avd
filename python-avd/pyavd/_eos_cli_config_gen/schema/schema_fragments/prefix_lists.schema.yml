@@ -10,8 +10,6 @@ keys:
   prefix_lists:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
@@ -21,8 +19,6 @@ keys:
         sequence_numbers:
           type: list
           primary_key: sequence
-          convert_types:
-            - dict
           items:
             type: dict
             keys:

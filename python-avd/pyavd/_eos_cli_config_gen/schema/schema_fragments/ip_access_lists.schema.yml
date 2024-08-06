@@ -9,8 +9,6 @@ keys:
   ip_access_lists:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     display_name: IP Extended Access-Lists (improved model)
     items:
       type: dict

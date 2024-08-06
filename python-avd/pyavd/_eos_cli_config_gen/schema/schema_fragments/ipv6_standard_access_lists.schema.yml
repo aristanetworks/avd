@@ -10,8 +10,6 @@ keys:
   ipv6_standard_access_lists:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
@@ -25,8 +23,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-            - dict
           items:
             type: dict
             keys:

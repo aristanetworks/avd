@@ -9,8 +9,6 @@ keys:
   qos_profiles:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
@@ -48,8 +46,6 @@ keys:
         tx_queues:
           type: list
           primary_key: id
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
@@ -179,8 +175,6 @@ keys:
         uc_tx_queues:
           type: list
           primary_key: id
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
@@ -308,8 +302,6 @@ keys:
         mc_tx_queues:
           type: list
           primary_key: id
-          convert_types:
-            - dict
           items:
             type: dict
             keys:

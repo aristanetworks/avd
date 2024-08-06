@@ -53,8 +53,6 @@ keys:
               instances:
                 type: list
                 primary_key: id
-                convert_types:
-                  - dict
                 items:
                   type: dict
                   keys:
@@ -73,8 +71,6 @@ keys:
       mst_instances:
         type: list
         primary_key: id
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -97,8 +93,6 @@ keys:
       rapid_pvst_instances:
         type: list
         primary_key: id
-        convert_types:
-          - dict
         items:
           type: dict
           keys:

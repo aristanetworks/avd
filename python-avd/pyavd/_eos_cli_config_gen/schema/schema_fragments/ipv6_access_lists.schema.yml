@@ -9,8 +9,6 @@ keys:
   ipv6_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: IPv6 Extended Access-Lists
     items:
       type: dict
@@ -25,8 +23,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:

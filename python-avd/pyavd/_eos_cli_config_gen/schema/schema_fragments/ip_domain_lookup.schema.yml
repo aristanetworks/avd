@@ -12,8 +12,6 @@ keys:
       source_interfaces:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
