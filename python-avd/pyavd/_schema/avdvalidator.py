@@ -62,8 +62,9 @@ def _primary_key_validator(validator: object, primary_key: str, instance: list, 
     if not all(element.get(primary_key) is not None for element in instance):
         yield jsonschema.ValidationError(f"Primary key '{primary_key}' is not set on all items as required.")
 
-    # Reusing the unique keys validator
-    yield from _unique_keys_validator(validator, [primary_key], instance, schema)
+    if not schema.get("allow_duplicate_primary_key"):
+        # Reusing the unique keys validator
+        yield from _unique_keys_validator(validator, [primary_key], instance, schema)
 
 
 def _keys_validator(validator: object, keys: dict, instance: dict, schema: dict) -> Generator:

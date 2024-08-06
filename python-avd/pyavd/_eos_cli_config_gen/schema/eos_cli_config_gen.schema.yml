@@ -11449,11 +11449,12 @@ keys:
               description: Route-map name.
       redistribute_routes:
         type: list
+        primary_key: source_protocol
+        allow_duplicate_primary_key: true
         items:
           type: dict
           keys:
             source_protocol:
-              required: true
               type: str
               valid_values:
               - attached-host
@@ -12114,12 +12115,13 @@ keys:
                       type: str
           redistribute_routes:
             type: list
+            primary_key: source_protocol
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
-                  required: true
                   valid_values:
                   - attached-host
                   - bgp
@@ -12200,12 +12202,13 @@ keys:
                   description: Outbound route-map name.
           redistribute_routes:
             type: list
+            primary_key: source_protocol
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
-                  required: true
                 route_map:
                   type: str
                 include_leaked:
@@ -12360,12 +12363,13 @@ keys:
                   description: Outbound prefix-list name.
           redistribute_routes:
             type: list
+            primary_key: source_protocol
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
-                  required: true
                 route_map:
                   type: str
                 include_leaked:
@@ -12460,12 +12464,13 @@ keys:
                   type: str
           redistribute_routes:
             type: list
+            primary_key: source_protocol
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
-                  required: true
                   valid_values:
                   - connected
                   - isis
@@ -13449,12 +13454,13 @@ keys:
                     type: str
             redistribute_routes:
               type: list
+              primary_key: source_protocol
+              allow_duplicate_primary_key: true
               items:
                 type: dict
                 keys:
                   source_protocol:
                     type: str
-                    required: true
                   route_map:
                     type: str
                   include_leaked:
@@ -13616,12 +13622,13 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
-                        required: true
                         valid_values:
                         - attached-host
                         - bgp
@@ -13764,12 +13771,13 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
-                        required: true
                         valid_values:
                         - attached-host
                         - bgp
@@ -13863,12 +13871,13 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
-                        required: true
                         valid_values:
                         - attached-host
                         - connected
@@ -13960,12 +13969,13 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
+                  primary_key: source_protocol
+                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
-                        required: true
                         valid_values:
                         - connected
                         - isis
