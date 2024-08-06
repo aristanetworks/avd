@@ -30,8 +30,6 @@ keys:
               queue_profiles:
                 type: list
                 primary_key: name
-                convert_types:
-                  - dict
                 items:
                   type: dict
                   keys:
@@ -40,8 +38,6 @@ keys:
                     multicast_queues:
                       type: list
                       primary_key: id
-                      convert_types:
-                        - dict
                       items:
                         type: dict
                         keys:
@@ -87,8 +83,6 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
-                      convert_types:
-                        - dict
                       items:
                         type: dict
                         keys:

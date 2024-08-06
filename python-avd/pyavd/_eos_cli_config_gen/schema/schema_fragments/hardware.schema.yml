@@ -18,8 +18,6 @@ keys:
       speed_groups:
         type: list
         primary_key: speed_group
-        convert_types:
-        - dict
         items:
           type: dict
           keys:

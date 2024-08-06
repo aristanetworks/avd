@@ -13,8 +13,6 @@ keys:
         type: list
         description: PBR Policy-Maps.
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -24,8 +22,6 @@ keys:
             classes:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -57,8 +53,6 @@ keys:
         type: list
         description: QOS Policy-Maps.
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -68,8 +62,6 @@ keys:
             classes:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
