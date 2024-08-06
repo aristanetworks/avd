@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -11,8 +11,6 @@ $defs:
       table: network-services-common-settings
     type: list
     primary_key: name
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
@@ -88,8 +86,6 @@ $defs:
             table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
-          convert_types:
-            - dict
           description: |
             List of BGP peer groups definitions.
             This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
@@ -288,8 +284,6 @@ $defs:
             table: network-services-vrfs-settings
           type: list
           primary_key: name
-          convert_types:
-            - dict
           description: |
             VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
 
@@ -370,8 +364,6 @@ $defs:
               ip_helpers:
                 type: list
                 primary_key: ip_helper
-                convert_types:
-                  - dict
                 description: IP helper for DHCP relay.
                 items:
                   type: dict
@@ -586,8 +578,6 @@ $defs:
                 type: list
                 primary_key: id
                 allow_duplicate_primary_key: True
-                convert_types:
-                  - dict
                 description: |
                   List of SVIs.
                   This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
@@ -632,8 +622,6 @@ $defs:
                     nodes:
                       type: list
                       primary_key: node
-                      convert_types:
-                        - dict
                       items:
                         type: dict
                         $ref: "eos_designs#/$defs/svi_settings"
@@ -920,8 +908,6 @@ $defs:
                 type: list
                 primary_key: ip_address
                 allow_duplicate_primary_key: True
-                convert_types:
-                  - dict
                 description: |
                   List of BGP peer definitions.
                   This will configure BGP neighbors inside the tenant VRF for peering with external devices.
@@ -1144,8 +1130,6 @@ $defs:
           type: list
           primary_key: id
           allow_duplicate_primary_key: True
-          convert_types:
-            - dict
           description: Define L2 network services organized by vlan id.
           items:
             type: dict

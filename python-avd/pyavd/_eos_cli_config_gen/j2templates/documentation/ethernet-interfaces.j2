@@ -18,7 +18,6 @@
 {%         if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%             set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%             set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
-                                                                      arista.avd.convert_dicts('name') |
                                                                       selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                       first %}
 {%             if port_channel_interface.type | arista.avd.default('switched') == 'switched' %}
@@ -323,7 +322,6 @@
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%                 set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
-                                                                          arista.avd.convert_dicts('name') |
                                                                           selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                           first %}
 {%                 if port_channel_interface.ip_address is arista.avd.defined %}
@@ -391,7 +389,6 @@
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%                 set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
-                                                                          arista.avd.convert_dicts('name') |
                                                                           selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                           first %}
 {%                 if port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
