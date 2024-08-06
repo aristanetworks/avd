@@ -10,8 +10,6 @@ keys:
     type: list
     primary_key: name
     description: IPv4 prefix-list catalog.
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
@@ -22,8 +20,6 @@ keys:
           type: list
           primary_key: sequence
           required: true
-          convert_types:
-            - dict
           items:
             type: dict
             keys:
