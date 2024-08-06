@@ -136,7 +136,7 @@ class VlanInterfacesMixin(UtilsMixin):
         # Only set Anycast v6 GW if VARPv6 is not set
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
             if (ipv6_address_virtuals := svi.get("ipv6_address_virtuals")) is not None:
-                vlan_interface_config.setdefault("ipv6_address_virtuals", []).extend(ipv6_address_virtuals)
+                vlan_interface_config["ipv6_address_virtuals"] = ipv6_address_virtuals
 
             _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_address_virtuals"])
 
