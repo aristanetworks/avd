@@ -55,7 +55,7 @@ class PtpMixin:
 
     @cached_property
     def ptp_enabled(self: SharedUtils) -> bool:
-        default_ptp_enabled = default(get(self.hostvars, "ptp_settings.enabled"))
+        default_ptp_enabled = get(self.hostvars, "ptp_settings.enabled")
         return get(self.switch_data_combined, "ptp.enabled", default=default_ptp_enabled) is True
 
     @cached_property
