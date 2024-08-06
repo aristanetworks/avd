@@ -431,13 +431,6 @@ $defs:
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
-      # short_esi:
-      #   type: str
-      #   description: |
-      #     Allocates an automatic short_esi to all ports using this profile.
-      #     Please see the notes under "EVPN A/A ESI dual-attached endpoint examples" in this document before setting `short_esi: auto`.
-      #   valid_values:
-      #     - "auto"
       port_channel:
         type: dict
         description: Used for port-channel adapter.
