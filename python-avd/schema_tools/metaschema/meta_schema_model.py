@@ -388,19 +388,11 @@ class AvdSchemaList(AvdSchemaBaseModel):
     Name of a primary key in a list of dictionaries.
     The configured key is implicitly required and must have unique values between the list elements.
     """
-    secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
-    """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
     unique_keys: list[str] | None = None
     """
     Name of a key in a list of dictionaries.
     The configured key must have unique values between the list elements.
     This can also be a variable path using dot-notation like 'parent_key.child_key' in case of nested lists of dictionaries.
-    """
-    allow_duplicate_primary_key: bool | None = None
-    """
-    Set to True to allow duplicate primary_key values for a list of dicts.
-    Useful when primary key is only used for convert_dicts.
-    NOTE! Should only be used in eos_designs inputs since we cannot merge on primary key if there are duplicate entries.
     """
 
     # Type of schema docs generators to use for this schema field.
@@ -449,7 +441,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
                     if self.primary_key and self.primary_key == key:
                         grandchildschema._is_primary_key = True
-                        grandchildschema._is_unique = self.allow_duplicate_primary_key is not True
+                        grandchildschema._is_unique = True
                         # No need to look any further if we found the primary key.
                         break
             else:

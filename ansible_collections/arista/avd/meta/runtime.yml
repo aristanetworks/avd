@@ -2,6 +2,12 @@
 requires_ansible: '>=2.15.0,<2.18.0'
 plugin_routing:
   filter:
+    convert_dicts:
+      tombstone:
+        removal_version: 5.0.0
+        warning_text: |-
+          The internal 'arista.avd.convert_dicts' filter plugin is no longer used by AVD.
+          The plugin is released as open source, so it can be copied and reused according to the license and copyright.
     hash_passphrase:
       redirect: arista.avd.snmp_hash
       tombstone:

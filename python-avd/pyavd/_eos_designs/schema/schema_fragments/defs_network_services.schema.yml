@@ -567,8 +567,6 @@ $defs:
                 documentation_options:
                   table: network-services-vrfs-svis-settings
                 type: list
-                primary_key: id
-                allow_duplicate_primary_key: True
                 description: |
                   List of SVIs.
                   This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
@@ -578,6 +576,7 @@ $defs:
                   keys:
                     id:
                       type: int
+                      required: true
                       convert_types:
                         - str
                       description: SVI interface id and VLAN id.
@@ -897,8 +896,6 @@ $defs:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
                 type: list
-                primary_key: ip_address
-                allow_duplicate_primary_key: True
                 description: |
                   List of BGP peer definitions.
                   This will configure BGP neighbors inside the tenant VRF for peering with external devices.
@@ -910,6 +907,7 @@ $defs:
                   keys:
                     ip_address:
                       type: str
+                      required: true
                       description: IPv4_address or IPv6_address.
                     peer_group:
                       type: str
@@ -1119,14 +1117,13 @@ $defs:
           documentation_options:
             table: network-services-l2vlans-settings
           type: list
-          primary_key: id
-          allow_duplicate_primary_key: True
           description: Define L2 network services organized by vlan id.
           items:
             type: dict
             keys:
               id:
                 type: int
+                required: true
                 convert_types:
                   - str
                 min: 1

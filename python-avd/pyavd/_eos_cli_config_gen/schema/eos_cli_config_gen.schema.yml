@@ -4278,7 +4278,6 @@ keys:
     description: Limit ACL entries defined under the `ip_access_lists`.
   ip_community_lists:
     type: list
-    secondary_key: entries
     primary_key: name
     display_name: IP Community Lists
     description: 'Communities and regexp entries MUST not be configured in the same
@@ -4404,7 +4403,6 @@ keys:
   ip_extcommunity_lists:
     type: list
     primary_key: name
-    secondary_key: entries
     display_name: IP Extended Community Lists
     items:
       type: dict
@@ -4435,7 +4433,6 @@ keys:
   ip_extcommunity_lists_regexp:
     type: list
     primary_key: name
-    secondary_key: entries
     display_name: IP Extended Community Lists RegExp
     items:
       type: dict
@@ -11452,12 +11449,11 @@ keys:
               description: Route-map name.
       redistribute_routes:
         type: list
-        primary_key: source_protocol
-        allow_duplicate_primary_key: true
         items:
           type: dict
           keys:
             source_protocol:
+              required: true
               type: str
               valid_values:
               - attached-host
@@ -12118,13 +12114,12 @@ keys:
                       type: str
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
+                  required: true
                   valid_values:
                   - attached-host
                   - bgp
@@ -12205,13 +12200,12 @@ keys:
                   description: Outbound route-map name.
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
+                  required: true
                 route_map:
                   type: str
                 include_leaked:
@@ -12366,13 +12360,12 @@ keys:
                   description: Outbound prefix-list name.
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
+                  required: true
                 route_map:
                   type: str
                 include_leaked:
@@ -12467,13 +12460,12 @@ keys:
                   type: str
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
+                  required: true
                   valid_values:
                   - connected
                   - isis
@@ -13102,7 +13094,6 @@ keys:
                 import:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
                   items:
                     type: dict
                     keys:
@@ -13136,7 +13127,6 @@ keys:
                 export:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
                   items:
                     type: dict
                     keys:
@@ -13459,13 +13449,12 @@ keys:
                     type: str
             redistribute_routes:
               type: list
-              primary_key: source_protocol
-              allow_duplicate_primary_key: true
               items:
                 type: dict
                 keys:
                   source_protocol:
                     type: str
+                    required: true
                   route_map:
                     type: str
                   include_leaked:
@@ -13627,13 +13616,12 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
+                        required: true
                         valid_values:
                         - attached-host
                         - bgp
@@ -13776,13 +13764,12 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
+                        required: true
                         valid_values:
                         - attached-host
                         - bgp
@@ -13876,13 +13863,12 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
+                        required: true
                         valid_values:
                         - attached-host
                         - connected
@@ -13974,13 +13960,12 @@ keys:
                         type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   items:
                     type: dict
                     keys:
                       source_protocol:
                         type: str
+                        required: true
                         valid_values:
                         - connected
                         - isis
@@ -16887,7 +16872,6 @@ keys:
           '
       profiles:
         type: list
-        secondary_key: config
         primary_key: name
         items:
           type: dict
@@ -16953,7 +16937,6 @@ keys:
         keys:
           ipv4:
             type: list
-            secondary_key: prefixes
             primary_key: name
             items:
               type: dict
@@ -16968,7 +16951,6 @@ keys:
                     description: IPv4 Prefix.
           ipv6:
             type: list
-            secondary_key: prefixes
             primary_key: name
             items:
               type: dict
@@ -16984,7 +16966,6 @@ keys:
           ports:
             type: list
             primary_key: name
-            secondary_key: port_range
             items:
               type: dict
               keys:
