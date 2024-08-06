@@ -13,20 +13,6 @@
         eos_config_dir_name: "configs/default_node_types"
         structured_cvp_dir: "{{ structured_dir }}/cvp/default_node_types/"
 
-- name: Converge - generate DHCP configuration offline for custom node types with 3.x syntax using a dict of dicts
-  hosts: TOOLS
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Generate intended configuration
-      ansible.builtin.import_role:
-        name: arista.avd.dhcp_provisioner
-      vars:
-        fabric_group: DC1_L2LEAFS
-        # Overwriting destination dirs .. based on the not so glorious role hack for eos_config_dir_name
-        eos_config_dir_name: "configs/custom_avd3_node_types"
-        structured_cvp_dir: "{{ structured_dir }}/cvp/custom_avd3_node_types/"
-
 - name: Converge - generate DHCP configuration offline for custom node types with 4.x syntax using a list of dicts
   hosts: TOOLS
   gather_facts: false

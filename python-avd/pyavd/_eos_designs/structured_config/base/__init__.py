@@ -8,7 +8,7 @@ from functools import cached_property
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import get, strip_null_from_data
-from pyavd.j2filters import convert_dicts, natural_sort
+from pyavd.j2filters import natural_sort
 
 from .ntp import NtpMixin
 from .snmp_server import SnmpServerMixin
@@ -214,12 +214,9 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return None
 
         tmp_speed_groups = {}
-        # converting nested dict to list of dict to support avd_v4.0
-        platform_speed_groups = convert_dicts(platform_speed_groups, "platform", "speeds")
         for platform_item in platform_speed_groups:
             if platform_item["platform"] == switch_platform:
-                # converting nested dict to list of dict to support avd_v4.0
-                speeds = convert_dicts(platform_item.get("speeds"), "speed", "speed_groups")
+                speeds = platform_item.get("speeds")
                 for speed in natural_sort(speeds, "speed"):
                     for speed_group in speed["speed_groups"]:
                         tmp_speed_groups[speed_group] = speed["speed"]
@@ -407,7 +404,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         if (local_users := get(self._hostvars, "local_users")) is None:
             return None
 
-        return natural_sort(convert_dicts(local_users, "name"), "name")
+        return natural_sort(local_users, "name")
 
     @cached_property
     def clock(self) -> dict | None:

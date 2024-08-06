@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
-from pyavd.j2filters import convert_dicts, natural_sort, range_expand
+from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
@@ -259,9 +259,7 @@ class MiscMixin:
 
     @cached_property
     def port_profiles(self: SharedUtils) -> list:
-        port_profiles = get(self.hostvars, "port_profiles", default=[])
-        # Support legacy data model by converting nested dict to list of dict
-        return convert_dicts(port_profiles, "profile")
+        return get(self.hostvars, "port_profiles", default=[])
 
     @cached_property
     def uplink_interface_speed(self: SharedUtils) -> str | None:

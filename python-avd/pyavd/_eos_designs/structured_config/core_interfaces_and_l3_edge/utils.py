@@ -12,7 +12,6 @@ from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import default, get, get_item, merge
-from pyavd.j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3Edge
@@ -152,8 +151,6 @@ class UtilsMixin:
         }
 
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
-        # Convert to new data models
-        node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
         if (node_data := get_item(node_child_interfaces, "node", self.shared_utils.hostname)) is not None and (
             member_interfaces := node_data.get("interfaces")
         ):
