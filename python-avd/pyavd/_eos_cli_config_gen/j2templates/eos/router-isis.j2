@@ -219,17 +219,6 @@ router isis {{ router_isis.instance }}
 {%         endif %}
 {%     endif %}
    !
-{%     if router_isis.address_family is arista.avd.defined %}
-{%         for address_family in router_isis.address_family %}
-   address-family {{ address_family }}
-{%             if router_isis.isis_af_defaults is arista.avd.defined %}
-{%                 for af_default in router_isis.isis_af_defaults %}
-      {{ af_default }}
-{%                 endfor %}
-{%             endif %}
-{%         endfor %}
-   !
-{%     endif %}
 {%     if router_isis.address_family_ipv4 is arista.avd.defined %}
    address-family ipv4 unicast
 {%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}

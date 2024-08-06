@@ -125,10 +125,7 @@ class FilteredTenantsMixin:
         # Picking this up from facts so this would fail if accessed when shared_utils is run before facts
         # TODO: see if this can be optimized
         endpoint_trunk_groups = set(self.get_switch_fact("endpoint_trunk_groups", required=False) or [])
-        if self.enable_trunk_groups and vlan.get("trunk_groups") and endpoint_trunk_groups.intersection(vlan["trunk_groups"]):
-            return True
-
-        return False
+        return self.enable_trunk_groups and vlan.get("trunk_groups") and endpoint_trunk_groups.intersection(vlan["trunk_groups"])
 
     @cached_property
     def accepted_vlans(self: SharedUtils) -> list[int]:
@@ -184,10 +181,7 @@ class FilteredTenantsMixin:
         if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
             return True
 
-        if self.is_wan_client and vrf["name"] in (self.get_switch_fact("wan_router_uplink_vrfs", required=False) or []):
-            return True
-
-        return False
+        return self.is_wan_client and vrf["name"] in (self.get_switch_fact("wan_router_uplink_vrfs", required=False) or [])
 
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
