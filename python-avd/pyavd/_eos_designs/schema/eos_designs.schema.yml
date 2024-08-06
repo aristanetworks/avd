@@ -8396,24 +8396,6 @@ $defs:
             min: 0
             max: 300
             default: 30
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -8816,6 +8798,24 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
+          inband_management_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_subnet
+              remove_in_version: 5.0.0
+            type: str
+          inband_management_vlan:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_vlan
+              remove_in_version: 5.0.0
+            type: int
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
