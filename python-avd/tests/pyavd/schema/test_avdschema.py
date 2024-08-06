@@ -6,6 +6,7 @@ import os
 import pytest
 import yaml
 from deepmerge import always_merger
+
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 

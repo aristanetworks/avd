@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get, get_item
-from ....j2filters import natural_sort
+from pyavd._utils import get, get_item
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,17 +18,17 @@ if TYPE_CHECKING:
 class RouterMsdpMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_msdp(self: AvdStructuredConfigUnderlay) -> dict | None:
         """
-        return structured config for router_msdp
+        return structured config for router_msdp.
 
         Used for to configure multicast anycast RPs for the underlay
         """
-
         if self.shared_utils.underlay_multicast_rps is None:
             return None
 

@@ -1,4 +1,6 @@
 [flake8]
+# Flake8 has been replaced with Ruff.
+# This file should be removed later, but kept here to avoid IDE extensions from messing up the code.
 ignore = E402,W503,W504,E741
 
 # Required for compatibility with Black

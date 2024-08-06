@@ -27,28 +27,26 @@ def combine_schemas() -> None:
     for schema_name, fragments_path in SCHEMA_FRAGMENTS_PATHS.items():
         print("Combining fragments", fragments_path)
         if schema_name not in SCHEMA_PATHS:
-            raise KeyError(f"Invalid schema name '{schema_name}'")
+            msg = f"Invalid schema name '{schema_name}'"
+            raise KeyError(msg)
 
         schema = {}
         for fragment_filename in sorted(fragments_path.glob(FRAGMENTS_PATTERN)):
-            # print("Combining fragment", fragment_filename)
             with fragment_filename.open(mode="r", encoding="UTF-8") as fragment_stream:
                 schema = always_merger.merge(schema, yaml_load(fragment_stream, Loader=CSafeLoader))
 
         with SCHEMA_PATHS[schema_name].open(mode="w", encoding="UTF-8") as schema_stream:
             schema_stream.write(indent(LICENSE_HEADER, prefix="# ") + "\n")
             schema_stream.write(
-                (
-                    "# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json\n"
-                    "# Line above is used by RedHat's YAML Schema vscode extension\n"
-                    "# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.\n"
-                )
+                "# yaml-language-server: $schema=../../_schema/avd_meta_schema.json\n"
+                "# Line above is used by RedHat's YAML Schema vscode extension\n"
+                "# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.\n",
             )
             schema_stream.write(yaml_dump(schema, Dumper=CSafeDumper, sort_keys=False))
 
 
-def build_schema_tables(schema_store) -> None:
-    """Build schema tables"""
+def build_schema_tables(schema_store: dict) -> None:
+    """Build schema tables."""
     for schema_name in SCHEMA_PATHS:
         if schema_name not in SCHEMA_FRAGMENTS_PATHS:
             continue
@@ -59,7 +57,7 @@ def build_schema_tables(schema_store) -> None:
         for table_name in table_names:
             print(f"Building table: {table_name} from schema {schema_name}")
             table_file = output_dir.joinpath(f"{table_name}.md")
-            with open(table_file, mode="w", encoding="UTF-8") as file:
+            with Path(table_file).open(mode="w", encoding="UTF-8") as file:
                 file.write(get_md_tabs(schema, table_name))
 
         # Clean up other markdown files not covered by the tables.
@@ -69,8 +67,9 @@ def build_schema_tables(schema_store) -> None:
             file.unlink()
 
 
-def main():
-    """Main entrypoint for the script.
+def main() -> None:
+    """
+    Main entrypoint for the script.
 
     It combines the schema fragments, and rebuild the pickled schemas.
     """

@@ -1,10 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .._errors import AristaAvdMissingVariableError
+from typing import Any
+
+from pyavd._errors import AristaAvdMissingVariableError
 
 
-def get(dictionary, key, default=None, required=False, org_key=None, separator="."):
+def get(dictionary: dict, key: str, default: Any = None, required: bool = False, org_key: str | None = None, separator: str = ".") -> Any:
     """
     Get a value from a dictionary or nested dictionaries.
 
@@ -27,17 +29,16 @@ def get(dictionary, key, default=None, required=False, org_key=None, separator="
         String to use as the separator parameter in the split function. Useful in cases when the key
         can contain variables with "." inside (e.g. hostnames)
 
-    Returns
+    Returns:
     -------
     any
         Value or default value
 
-    Raises
+    Raises:
     ------
     AristaAvdMissingVariableError
         If the key is not found and required == True
     """
-
     if org_key is None:
         org_key = key
     keys = str(key).split(separator)
@@ -53,7 +54,9 @@ def get(dictionary, key, default=None, required=False, org_key=None, separator="
     return value
 
 
-def get_v2(dict_or_object, key_or_attribute, default=None, required=False, org_key=None, separator="."):
+def get_v2(
+    dict_or_object: dict | object, key_or_attribute: str, default: Any = None, required: bool = False, org_key: str | None = None, separator: str = "."
+) -> Any:
     """
     Get a value from a dictionary or object or nested dictionaries and objects.
 
@@ -76,24 +79,20 @@ def get_v2(dict_or_object, key_or_attribute, default=None, required=False, org_k
         String to use as the separator parameter in the split function. Useful in cases when the key
         can contain variables with "." inside (e.g. hostnames)
 
-    Returns
+    Returns:
     -------
     any
         Value or default value
 
-    Raises
+    Raises:
     ------
     AristaAvdMissingVariableError
         If the key is not found and required == True
     """
-
     if org_key is None:
         org_key = key_or_attribute
     keys = str(key_or_attribute).split(separator)
-    if callable(getattr(dict_or_object, "get", None)):
-        value = dict_or_object.get(keys[0])
-    else:
-        value = getattr(dict_or_object, keys[0], None)
+    value = dict_or_object.get(keys[0]) if callable(getattr(dict_or_object, "get", None)) else getattr(dict_or_object, keys[0], None)
 
     if value is None:
         if required is True:

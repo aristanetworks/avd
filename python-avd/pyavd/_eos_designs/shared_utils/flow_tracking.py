@@ -7,7 +7,7 @@ from collections import defaultdict
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from ..._utils import get
+from pyavd._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -15,16 +15,16 @@ if TYPE_CHECKING:
 
 class FlowTrackingMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def flow_tracking_type(self: SharedUtils) -> str:
         default_flow_tracker_type = get(self.node_type_key_data, "default_flow_tracker_type", "sampled")
-        flow_tracker_type = get(self.switch_data_combined, "flow_tracker_type", default=default_flow_tracker_type)
-        return flow_tracker_type
+        return get(self.switch_data_combined, "flow_tracker_type", default=default_flow_tracker_type)
 
     @cached_property
     def default_flow_tracker_name(self: SharedUtils) -> str:
@@ -32,9 +32,7 @@ class FlowTrackingMixin:
 
     @cached_property
     def fabric_flow_tracking(self: SharedUtils) -> defaultdict:
-        """
-        Return fabric level flow tracking settings for all data models
-        """
+        """Return fabric level flow tracking settings for all data models."""
         configured_values = get(self.hostvars, "fabric_flow_tracking", default={})
 
         # By default, flow tracker is `hardware` type named `FLOW-TRACKER`
@@ -42,7 +40,7 @@ class FlowTrackingMixin:
             lambda: {
                 "enabled": None,
                 "name": self.default_flow_tracker_name,
-            }
+            },
         )
 
         # By default, flow tracking is enabled only on DPS interfaces
@@ -73,9 +71,7 @@ class FlowTrackingMixin:
             "dps_interfaces",
         ],
     ) -> dict:
-        """
-        Return flow_tracking settings for a link, falling back to the fabric flow_tracking_settings if not defined.
-        """
+        """Return flow_tracking settings for a link, falling back to the fabric flow_tracking_settings if not defined."""
         link_tracker_enabled, link_tracker_name = None, None
         if link_settings is not None:
             link_tracker_enabled = get(link_settings, "flow_tracking.enabled")

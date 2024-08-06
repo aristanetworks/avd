@@ -4,9 +4,7 @@
 #
 # natural_sort filter
 #
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 from ansible.errors import AnsibleFilterError
 
@@ -21,7 +19,7 @@ except ImportError as e:
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 DOCUMENTATION = r"""
@@ -47,6 +45,16 @@ options:
     description: Key to sort on when sorting a list of dictionaries
     type: string
     version_added: "3.0.0"
+  strict:
+    description: When `sort_key` is set, setting strict to true will trigger an exception if the `sort_key` is missing in any items in the input.
+    type: bool
+    default: true
+    version_added: "5.0.0"
+  ignore_case:
+    description: When true, strings are coerced to lower case before being compared.
+    type: bool
+    default: true
+    version_added: "5.0.0"
 """
 
 EXAMPLES = r"""
@@ -66,8 +74,8 @@ _value:
 """
 
 
-class FilterModule(object):
-    def filters(self):
+class FilterModule:
+    def filters(self) -> dict:
         return {
             "natural_sort": wrap_filter(PLUGIN_NAME)(natural_sort),
         }

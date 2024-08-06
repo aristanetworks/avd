@@ -8,6 +8,7 @@ __metaclass__ = type
 from pathlib import Path
 
 import pytest
+
 from pyavd.j2filters.add_md_toc import _get_anchor_id, add_md_toc
 
 DIR_PATH = Path(__file__).parent / "toc_files"
@@ -26,7 +27,7 @@ class TestAddMdTocFilter:
     @pytest.mark.parametrize("skip_lines", SKIP_LINES_LIST)
     def test_add_md_toc(self, skip_lines):
         """Test add_md_toc success scenarii."""
-        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
+        with Path(MD_INPUT_VALID).open("r", encoding="UTF-8") as input_file:
             resp = add_md_toc(input_file.read(), skip_lines=skip_lines, toc_levels=VALID_TOC_LEVEL, toc_marker=TOC_MARKER)
 
         with open(EXPECTED_TOC, "r", encoding="UTF-8") as input_file:
@@ -36,19 +37,19 @@ class TestAddMdTocFilter:
 
     def test_add_md_toc_invalid_skip_lines(self):
         """Test add_md_toc with invalid skip_lines."""
-        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
+        with Path(MD_INPUT_VALID).open("r", encoding="UTF-8") as input_file:
             with pytest.raises(TypeError, match="add_md_toc 'skip_lines' argument must be an integer."):
                 add_md_toc(input_file.read(), skip_lines="Not an int")
 
     def test_add_md_toc_invalid_toc_level(self):
         """Test add_md_toc with invalid toc level."""
-        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
+        with Path(MD_INPUT_VALID).open("r", encoding="UTF-8") as input_file:
             with pytest.raises(TypeError):
                 add_md_toc(input_file.read(), toc_levels=INVALID_TOC_LEVEL)
 
     def test_add_md_toc_invalid_toc_marker(self):
         """Test add_md_toc with invalid toc_marker."""
-        with open(MD_INPUT_VALID, "r", encoding="UTF-8") as input_file:
+        with Path(MD_INPUT_VALID).open("r", encoding="UTF-8") as input_file:
             with pytest.raises(TypeError, match="add_md_toc 'toc_marker' argument must be a non-empty string."):
                 add_md_toc(input_file.read(), toc_marker=["Not_as_string"])
 
@@ -59,16 +60,16 @@ class TestAddMdTocFilter:
 
     def test_add_md_toc_invalid(self):
         """Test add_md_toc with invalid input file."""
-        with open(MD_INPUT_INVALID, "r", encoding="UTF-8") as md_input_toc_invalid:
+        with Path(MD_INPUT_INVALID).open("r", encoding="UTF-8") as md_input_toc_invalid:
             with pytest.raises(ValueError, match="add_md_toc expects exactly two occurrences of the toc marker"):
                 add_md_toc(md_input_toc_invalid.read())
 
     def test_add_md_toc_btw_specific_markers(self):
         """Test to add the TOC at the end of the file using the specific markers features."""
-        with open(DIR_PATH / "markers_at_bottom.md", "r", encoding="UTF-8") as input_file:
+        with DIR_PATH.joinpath("markers_at_bottom.md").open("r", encoding="UTF-8") as input_file:
             resp = add_md_toc(input_file.read(), skip_lines=0, toc_levels=2, toc_marker=TOC_MARKER)
 
-        with open(DIR_PATH / "expected_output_toc_at_bottom.md", "r", encoding="UTF-8") as expected_output:
+        with DIR_PATH.joinpath("expected_output_toc_at_bottom.md").open("r", encoding="UTF-8") as expected_output:
             assert resp == expected_output.read()
 
     def test__get_anchor_id_with_nonn_empty_anchor_id(self) -> None:

@@ -120,10 +120,10 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
 {%     endif %}
-{%     if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined or port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
+{%     if port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
-{%         if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined %}
-      identifier {{ port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) }}
+{%         if port_channel_interface.evpn_ethernet_segment.identifier is arista.avd.defined %}
+      identifier {{ port_channel_interface.evpn_ethernet_segment.identifier }}
 {%         endif %}
 {%         if port_channel_interface.evpn_ethernet_segment.redundancy is arista.avd.defined %}
       redundancy {{ port_channel_interface.evpn_ethernet_segment.redundancy }}
@@ -157,8 +157,8 @@ interface {{ port_channel_interface.name }}
 {%         if port_channel_interface.evpn_ethernet_segment.mpls.shared_index is arista.avd.defined %}
       mpls shared index {{ port_channel_interface.evpn_ethernet_segment.mpls.shared_index }}
 {%         endif %}
-{%         if port_channel_interface.evpn_ethernet_segment.route_target | arista.avd.default(port_channel_interface.rt) is arista.avd.defined %}
-      route-target import {{ port_channel_interface.evpn_ethernet_segment.route_target | arista.avd.default(port_channel_interface.rt) }}
+{%         if port_channel_interface.evpn_ethernet_segment.route_target is arista.avd.defined %}
+      route-target import {{ port_channel_interface.evpn_ethernet_segment.route_target }}
 {%         endif %}
 {%     endif %}
 {%     if port_channel_interface.snmp_trap_link_change is arista.avd.defined(false) %}
@@ -283,7 +283,7 @@ interface {{ port_channel_interface.name }}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     if port_channel_interface.ipv6_nd_prefixes is arista.avd.defined %}
-{%         for ipv6_nd_prefix in port_channel_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
+{%         for ipv6_nd_prefix in port_channel_interface.ipv6_nd_prefixes %}
 {%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ ipv6_nd_prefix.ipv6_prefix %}
 {%             if ipv6_nd_prefix.valid_lifetime is arista.avd.defined %}
 {%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.valid_lifetime %}
@@ -332,7 +332,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ospf_authentication_key is arista.avd.defined %}
    ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
-{%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}

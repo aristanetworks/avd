@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
@@ -85,12 +83,13 @@ options:
 """
 
 
-import os
+from pathlib import Path
+from typing import Any
 
 from ansible.errors import AnsibleParserError
 from ansible.inventory.group import Group
 from ansible.inventory.host import Host
-from ansible.module_utils._text import to_bytes, to_native, to_text
+from ansible.module_utils._text import to_native
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 
@@ -98,42 +97,36 @@ FOUND: list = []
 
 
 class VarsModule(BaseVarsPlugin):
-    def find_variable_source(self, path, loader):
-        """
-        Return the source files from which to load data,
-        if the path is a directory - lookup vars file inside
-        """
+    def find_variable_source(self, path: str, loader: object) -> list:
+        """Return the source files from which to load data, if the path is a directory - lookup vars file inside."""
         global_vars_paths = self.get_option("paths")
         extensions = self.get_option("_valid_extensions")
 
         found_files = []
         for g_path in global_vars_paths:
-            b_opath = os.path.realpath(to_bytes(os.path.join(path, g_path)))
-            opath = to_text(b_opath)
             try:
-                if not os.path.exists(b_opath):
+                opath = Path(path, g_path)
+                if not opath.exists():
                     # file does not exist, skip it
                     self._display.vvv(f"Path: {opath} does not exist - skipping")
                     continue
                 self._display.vvv(f"Adding Path: {opath} to global variables")
-                if os.path.isdir(b_opath):
+                if opath.is_dir():
                     self._display.debug(f"\tProcessing dir {opath}")
-                    res = loader._get_dir_vars_files(opath, extensions)
-                    self._display.debug(f"Found variable files {str(res)}")
+                    res = loader._get_dir_vars_files(str(opath), extensions)
+                    self._display.debug(f"Found variable files {res!s}")
                     found_files.extend(res)
                 else:
-                    found_files.append(b_opath)
+                    found_files.append(str(opath))
 
             except Exception as e:
                 raise AnsibleParserError(to_native(e)) from e
 
         return found_files
 
-    def get_vars(self, loader, path, entities, cache=True):
-        """
-        Return global variables for the `all` group in the inventory file
-        """
-        global FOUND
+    def get_vars(self, loader: object, path: str, entities: Any, _cache: bool = True) -> dict:
+        """Return global variables for the `all` group in the inventory file."""
+        global FOUND  # noqa: PLW0603 TODO: improve to avoid using global
         if not isinstance(entities, list):
             entities = [entities]
 
@@ -145,14 +138,13 @@ class VarsModule(BaseVarsPlugin):
             if not isinstance(entity, (Host, Group)):
                 # Changed the error message because the TYPE_REGEX of ansible was triggering
                 # unidiomatic-typecheck because of the `or` word before the type  call...
-                raise AnsibleParserError(f"Supplied entity is of type {type(entity)} but must be of type Host or Group instead")
+                msg = f"Supplied entity is of type {type(entity)} but must be of type Host or Group instead"
+                raise AnsibleParserError(msg)
             if entity.name != "all":
                 continue
 
-            print(entity.name, path)
-
-            for path in FOUND:
-                new_data = loader.load_from_file(path, cache=True, unsafe=True)
+            for found_path in FOUND:
+                new_data = loader.load_from_file(found_path, cache=True, unsafe=True)
                 if new_data:
                     variables = combine_vars(variables, new_data)
 
