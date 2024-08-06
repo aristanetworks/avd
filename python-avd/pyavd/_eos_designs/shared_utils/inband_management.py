@@ -48,7 +48,7 @@ class InbandManagementMixin:
 
     @cached_property
     def inband_mgmt_vlan(self: SharedUtils) -> int:
-        return int(default(get(self.switch_data_combined, "inband_mgmt_vlan"), 4092))
+        return int(get(self.switch_data_combined, "inband_mgmt_vlan", default=4092))
 
     @cached_property
     def inband_mgmt_description(self: SharedUtils) -> str:
