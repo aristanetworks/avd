@@ -7,7 +7,6 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._utils import get, merge
-from pyavd.j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -49,16 +48,16 @@ class SwitchDataMixin:
 
         node_type_key = self.node_type_key_data["key"]
         node_type_config = get(self.hostvars, f"{node_type_key}", required=True)
-        nodes = convert_dicts(node_type_config.get("nodes", []), "name")
+        nodes = node_type_config.get("nodes", [])
 
         for node in nodes:
             if hostname == node["name"]:
                 node_config = node
                 break
         if not node_config:
-            node_groups = convert_dicts(node_type_config.get("node_groups", []), "group")
+            node_groups = node_type_config.get("node_groups", [])
             for node_group in node_groups:
-                nodes = convert_dicts(node_group.get("nodes", []), "name")
+                nodes = node_group.get("nodes", [])
                 node_group["nodes"] = nodes
                 for node in nodes:
                     if hostname == node["name"]:
