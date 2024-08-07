@@ -3,10 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import Any
+
 from pyavd._utils.password_utils import METHODS_DIR
 
 
-def encrypt(value, passwd_type=None, key=None, **kwargs) -> str:
+def encrypt(value: Any, passwd_type: str | None = None, key: str | None = None, **kwargs: Any) -> str:
     """
     Umbrella function to execute the correct encrypt method based on the input type.
 
@@ -24,9 +26,11 @@ def encrypt(value, passwd_type=None, key=None, **kwargs) -> str:
         KeyError: If `passwd_type` is not found in `METHODS_DIR`.
     """
     if not passwd_type:
-        raise TypeError("type keyword must be present to use this test")
+        msg = "type keyword must be present to use this test"
+        raise TypeError(msg)
     try:
         encrypt_method = METHODS_DIR[passwd_type][0]
     except KeyError as exc:
-        raise KeyError(f"Type {passwd_type} is not supported for the encrypt filter") from exc
+        msg = f"Type {passwd_type} is not supported for the encrypt filter"
+        raise KeyError(msg) from exc
     return encrypt_method(str(value), key=key, **kwargs)

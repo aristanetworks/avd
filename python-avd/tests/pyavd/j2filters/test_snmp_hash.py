@@ -8,6 +8,7 @@ __metaclass__ = type
 from contextlib import nullcontext as does_not_raise
 
 import pytest
+
 from pyavd.j2filters.snmp_hash import _PRIV_KEY_LENGTH, _get_hash_object, _key_from_passphrase, _localize_passphrase
 
 GET_HASH_OBJECT_TEST_CASES = [

@@ -84,7 +84,7 @@ l3leaf:
 # In DC2 we define all variables via defaults if possible
 l2leaf:
   defaults:
-    inband_management_subnet: 172.21.210.0/24
+    inband_mgmt_subnet: 172.21.210.0/24
     platform: vEOS-LAB
     uplink_interfaces: [ Ethernet1 ]
     spanning_tree_mode: mstp

@@ -25,12 +25,12 @@ def contains(value: list[Any], test_value: Any | list[Any] = None) -> bool:
     test_value : single item or list of items
         Value(s) to test for in value
 
-    Returns
+    Returns:
     -------
     boolean
         True if variable matches criteria, False in other cases.
     """
-    # TODO - this will fail miserably if test_value is not hashable !
+    # TODO: - this will fail miserably if test_value is not hashable !
     if isinstance(value, Undefined) or value is None or not isinstance(value, list):
         # Invalid value - return false
         return False

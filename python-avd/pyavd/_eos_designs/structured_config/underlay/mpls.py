@@ -15,14 +15,13 @@ if TYPE_CHECKING:
 class MplsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def mpls(self: AvdStructuredConfigUnderlay) -> dict | None:
-        """
-        Return structured config for mpls
-        """
+        """Return structured config for mpls."""
         if self.shared_utils.underlay_mpls is not True:
             return None
 

@@ -29,6 +29,8 @@ The filter will return an empty list if the value parsed to `arista.avd.natural_
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>_input</samp> | any | True | None |  | List or dictionary |
 | <samp>sort_key</samp> | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
+| <samp>strict</samp> | bool | optional | True |  | When `sort_key` is set, setting strict to true will trigger an exception if the `sort_key` is missing in any items in the input. |
+| <samp>ignore_case</samp> | bool | optional | True |  | When true, strings are coerced to lower case before being compared. |
 
 ## Examples
 

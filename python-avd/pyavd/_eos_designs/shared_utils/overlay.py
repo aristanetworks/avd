@@ -8,8 +8,8 @@ from ipaddress import ip_address
 from re import fullmatch
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdError, AristaAvdMissingVariableError
-from ..._utils import get
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -17,16 +17,15 @@ if TYPE_CHECKING:
 
 class OverlayMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def vtep_loopback(self: SharedUtils) -> str:
-        """
-        The default is Loopback1 except for WAN devices where the default is Dps1.
-        """
+        """The default is Loopback1 except for WAN devices where the default is Dps1."""
         default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
         return get(self.switch_data_combined, "vtep_loopback", default=default_vtep_loopback)
 
@@ -79,7 +78,7 @@ class OverlayMixin:
         vrf_admin_subfield_offset = self.overlay_rd_type["vrf_admin_subfield_offset"]
         return self.get_rd_admin_subfield_value(vrf_admin_subfield, vrf_admin_subfield_offset)
 
-    def get_rd_admin_subfield_value(self: SharedUtils, admin_subfield, admin_subfield_offset):
+    def get_rd_admin_subfield_value(self: SharedUtils, admin_subfield: str, admin_subfield_offset: int) -> str:
         if admin_subfield == "overlay_loopback_ip":
             return self.router_id
 
@@ -91,19 +90,19 @@ class OverlayMixin:
 
         if admin_subfield == "switch_id":
             if self.id is None:
-                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'")
+                msg = f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'"
+                raise AristaAvdMissingVariableError(msg)
             return self.id + admin_subfield_offset
 
-        if fullmatch(r"[0-9]+", str(admin_subfield)):
+        if fullmatch(r"\d+", str(admin_subfield)):
             return str(int(admin_subfield) + admin_subfield_offset)
 
         try:
             ip_address(admin_subfield)
-            return admin_subfield
         except ValueError:
-            pass
+            return self.router_id
 
-        return self.router_id
+        return admin_subfield
 
     @cached_property
     def evpn_gateway_vxlan_l2(self: SharedUtils) -> bool:
@@ -120,27 +119,26 @@ class OverlayMixin:
     @cached_property
     def overlay_routing_protocol_address_family(self: SharedUtils) -> str:
         overlay_routing_protocol_address_family = get(self.hostvars, "overlay_routing_protocol_address_family", default="ipv4")
-        if overlay_routing_protocol_address_family == "ipv6":
-            if not (self.underlay_ipv6 is True and self.underlay_rfc5549):
-                raise AristaAvdError(
-                    "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
-                )
+        if overlay_routing_protocol_address_family == "ipv6" and not (self.underlay_ipv6 is True and self.underlay_rfc5549):
+            msg = "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
+            raise AristaAvdError(
+                msg,
+            )
         return overlay_routing_protocol_address_family
 
     @cached_property
     def evpn_encapsulation(self: SharedUtils) -> str:
-        """
-        EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation.
-        """
+        """EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation."""
         return get(self.hostvars, "fabric_evpn_encapsulation", default=get(self.node_type_key_data, "default_evpn_encapsulation", default="vxlan"))
 
     @cached_property
     def evpn_soo(self: SharedUtils) -> str:
         """
         Site-Of-Origin used as BGP extended community.
+
         - For regular VTEPs this is <vtep_ip>:1
         - For WAN routers this is <router_id_of_primary_HA_router>:<site_id or 0>
-        - Otherwise this is <router_id>:1
+        - Otherwise this is <router_id>:1.
 
         TODO: Reconsider if suffix should just be :1 for all WAN routers.
         """
@@ -173,9 +171,7 @@ class OverlayMixin:
 
     @cached_property
     def overlay_mpls(self: SharedUtils) -> bool:
-        """
-        Set overlay_mpls to enable MPLS as the primary overlay
-        """
+        """Set overlay_mpls to enable MPLS as the primary overlay."""
         return any([self.overlay_evpn_mpls, self.overlay_vpn_ipv4, self.overlay_vpn_ipv6]) and not self.overlay_evpn_vxlan
 
     @cached_property

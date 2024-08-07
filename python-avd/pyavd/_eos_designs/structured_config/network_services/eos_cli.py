@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
+from pyavd._utils import get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class EosCliMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def eos_cli(self: AvdStructuredConfigNetworkServices) -> str | None:
-        """
-        Return existing eos_cli plus any eos_cli from VRFs
-        """
-
+        """Return existing eos_cli plus any eos_cli from VRFs."""
         if not self.shared_utils.network_services_l3:
             return None
 
@@ -32,10 +31,7 @@ class EosCliMixin(UtilsMixin):
         if (eos_cli := get(self._hostvars, "eos_cli")) is not None:
             eos_clis.append(eos_cli)
 
-        for tenant in self.shared_utils.filtered_tenants:
-            for vrf in tenant["vrfs"]:
-                if (eos_cli := vrf.get("raw_eos_cli")) is not None:
-                    eos_clis.append(eos_cli)
+        eos_clis.extend(vrf["raw_eos_cli"] for tenant in self.shared_utils.filtered_tenants for vrf in tenant["vrfs"] if vrf.get("raw_eos_cli") is not None)
 
         if eos_clis:
             return "\n".join(eos_clis)

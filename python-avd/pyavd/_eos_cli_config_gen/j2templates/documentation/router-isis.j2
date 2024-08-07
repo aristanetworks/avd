@@ -21,9 +21,6 @@
 {%     if router_isis.is_type is arista.avd.defined %}
 | Type | {{ router_isis.is_type }} |
 {%     endif %}
-{%     if router_isis.address_family is arista.avd.defined %}
-| Address Family | {{ router_isis.address_family | join(", ") }} |
-{%     endif %}
 {%     if router_isis.router_id is arista.avd.defined %}
 | Router-ID | {{ router_isis.router_id }} |
 {%     endif %}

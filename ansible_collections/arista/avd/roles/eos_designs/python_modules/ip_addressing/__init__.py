@@ -12,7 +12,7 @@ except ImportError as e:
         AnsibleActionFail(
             "The 'arista.avd.eos_designs' collection requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 

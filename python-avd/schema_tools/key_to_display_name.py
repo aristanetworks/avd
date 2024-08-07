@@ -107,11 +107,10 @@ WORDLIST = {
 
 def key_to_display_name(key: str) -> str:
     if not isinstance(key, str):
-        raise ValueError(f"Invalid argument passed to 'key_to_display_name'. Must be a string. Got '{type(key)}'")
+        msg = f"Invalid argument passed to 'key_to_display_name'. Must be a string. Got '{type(key)}'"
+        raise TypeError(msg)
 
     words = key.split("_")
-    output = []
-    for word in words:
-        output.append(WORDLIST.get(word.lower(), word.title()))
+    output = [WORDLIST.get(word.lower(), word.title()) for word in words]
 
     return " ".join(output)

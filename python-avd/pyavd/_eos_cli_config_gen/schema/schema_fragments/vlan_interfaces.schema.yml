@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -9,8 +9,6 @@ keys:
   vlan_interfaces:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     items:
       type: dict
       keys:
@@ -147,8 +145,6 @@ keys:
         ip_helpers:
           type: list
           description: List of DHCP servers.
-          convert_types:
-            - dict
           primary_key: ip_helper
           items:
             type: dict
@@ -175,15 +171,6 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
-        ipv6_address_virtual:
-          type: str
-          description: |
-            IPv6_address/Mask.
-            If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured.
-          deprecation:
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: "5.0.0"
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -193,15 +180,6 @@ keys:
         ipv6_address_link_local:
           type: str
           description: IPv6_address/Mask.
-        ipv6_virtual_router_address:
-          type: str
-          description: |
-            "ipv6_virtual_router_address" should not be mixed with
-            the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
-          deprecation:
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
         ipv6_virtual_router_addresses:
           type: list
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
@@ -238,8 +216,6 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
-          convert_types:
-            - dict
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -383,8 +359,6 @@ keys:
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
-          convert_types:
-            - dict
           primary_key: id
           items:
             type: dict
@@ -568,37 +542,6 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
-        vrrp:
-          type: dict
-          description: |
-            "vrrp" should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
-          deprecation:
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids
-          keys:
-            virtual_router:
-              type: str
-              description: Virtual Router ID.
-            priority:
-              type: int
-              convert_types:
-                - str
-              description: Instance priority.
-            advertisement_interval:
-              type: int
-              convert_types:
-                - str
-            preempt_delay_minimum:
-              type: int
-              convert_types:
-                - str
-            ipv4:
-              type: str
-              description: Virtual IPv4 address.
-            ipv6:
-              type: str
-              description: Virtual IPv6 address.
         ip_attached_host_route_export:
           type: dict
           keys:
@@ -678,3 +621,26 @@ keys:
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
+        ipv6_address_virtual:
+          type: str
+          description: |
+            IPv6_address/Mask.
+          deprecation:
+            removed: true
+            warning: true
+            new_key: ipv6_address_virtuals
+            remove_in_version: "5.0.0"
+        ipv6_virtual_router_address:
+          type: str
+          deprecation:
+            removed: true
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: ipv6_virtual_router_addresses
+        vrrp:
+          type: dict
+          deprecation:
+            removed: true
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: vrrp_ids

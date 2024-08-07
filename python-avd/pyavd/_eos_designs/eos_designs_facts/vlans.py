@@ -7,8 +7,8 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get
-from ...j2filters import convert_dicts, list_compress, range_expand
+from pyavd._utils import get
+from pyavd.j2filters import list_compress, range_expand
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts
@@ -17,14 +17,15 @@ if TYPE_CHECKING:
 class VlansMixin:
     """
     Mixin Class used to generate some of the EosDesignsFacts.
-    Class should only be used as Mixin to the EosDesignsFacts class
+
+    Class should only be used as Mixin to the EosDesignsFacts class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def vlans(self: EosDesignsFacts) -> str:
         """
-        Exposed in avd_switch_facts
+        Exposed in avd_switch_facts.
 
         Return the compressed list of vlans to be defined on this switch
 
@@ -36,9 +37,7 @@ class VlansMixin:
         return list_compress(self._vlans)
 
     def _parse_adapter_settings(self: EosDesignsFacts, adapter_settings: dict) -> tuple[set, set]:
-        """
-        Parse the given adapter_settings and return relevant vlans and trunk_groups
-        """
+        """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
         vlans = set()
         trunk_groups = set(adapter_settings.get("trunk_groups", []))
         if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
@@ -71,9 +70,9 @@ class VlansMixin:
     @cached_property
     def _local_endpoint_vlans_and_trunk_groups(self: EosDesignsFacts) -> tuple[set, set]:
         """
-        Return list of vlans and list of trunk groups used by connected_endpoints on this switch
+        Return list of vlans and list of trunk groups used by connected_endpoints on this switch.
 
-        Also includes the inband_management_vlan
+        Also includes the inband_mgmt_vlan
         """
         if not (self.shared_utils.any_network_services and self.shared_utils.connected_endpoints):
             return set(), set()
@@ -85,7 +84,7 @@ class VlansMixin:
             vlans.add(self.shared_utils.inband_mgmt_vlan)
 
         for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
-            connected_endpoints = convert_dicts(get(self._hostvars, connected_endpoints_key["key"], default=[]), "name")
+            connected_endpoints = get(self._hostvars, connected_endpoints_key["key"], default=[])
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
@@ -107,8 +106,8 @@ class VlansMixin:
             for switch_regex in network_port_item.get("switches", []):
                 # The match test is built on Python re.match which tests from the beginning of the string #}
                 # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
-                switch_regex = rf"^{switch_regex}$"
-                if not re.match(switch_regex, self.shared_utils.hostname):
+                raw_switch_regex = rf"^{switch_regex}$"
+                if not re.match(raw_switch_regex, self.shared_utils.hostname):
                     # Skip entry if no match
                     continue
 
@@ -128,6 +127,7 @@ class VlansMixin:
     def _downstream_switch_endpoint_vlans_and_trunk_groups(self: EosDesignsFacts) -> tuple[set, set]:
         """
         Return set of vlans and set of trunk groups used by downstream switches.
+
         Traverse any downstream L2 switches so ensure we can provide connectivity to any vlans / trunk groups used by them.
         """
         if not self.shared_utils.any_network_services:
@@ -148,6 +148,7 @@ class VlansMixin:
     def _mlag_peer_endpoint_vlans_and_trunk_groups(self: EosDesignsFacts) -> tuple[set, set]:
         """
         Return set of vlans and set of trunk groups used by connected_endpoints on the MLAG peer.
+
         This could differ from local vlans and trunk groups if a connected endpoint is only connected to one leaf.
         """
         if not self.shared_utils.mlag:
@@ -160,7 +161,9 @@ class VlansMixin:
     @cached_property
     def _endpoint_vlans_and_trunk_groups(self: EosDesignsFacts) -> tuple[set, set]:
         """
-        Return set of vlans and set of trunk groups used by connected_endpoints on this switch,
+        Return set of vlans and set of trunk groups.
+
+        The trunk groups are those used by connected_endpoints on this switch,
         downstream switches but NOT mlag peer (since we would have circular references then).
         """
         local_endpoint_vlans, local_endpoint_trunk_groups = self._local_endpoint_vlans_and_trunk_groups
@@ -171,7 +174,8 @@ class VlansMixin:
     def _endpoint_vlans(self: EosDesignsFacts) -> set[int]:
         """
         Return set of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer.
-        Ex: {1, 20, 21, 22, 23} or set()
+
+        Ex: {1, 20, 21, 22, 23} or set().
         """
         if not self.shared_utils.filter_only_vlans_in_use:
             return set()
@@ -188,7 +192,8 @@ class VlansMixin:
     def endpoint_vlans(self: EosDesignsFacts) -> str | None:
         """
         Return compressed list of vlans in use by endpoints connected to this switch or MLAG peer.
-        Ex: "1,20-30" or ""
+
+        Ex: "1,20-30" or "".
         """
         if self.shared_utils.filter_only_vlans_in_use:
             return list_compress(list(self._endpoint_vlans))
@@ -197,9 +202,7 @@ class VlansMixin:
 
     @cached_property
     def _endpoint_trunk_groups(self: EosDesignsFacts) -> set[str]:
-        """
-        Return set of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer.
-        """
+        """Return set of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer."""
         if not self.shared_utils.filter_only_vlans_in_use:
             return set()
 
@@ -214,6 +217,7 @@ class VlansMixin:
     def local_endpoint_trunk_groups(self: EosDesignsFacts) -> list[str]:
         """
         Return list of trunk_groups in use by endpoints connected to this switch only.
+
         Used for only applying the trunk groups in config that are relevant on this device
         This is a subset of endpoint_trunk_groups which is used for filtering.
         """
@@ -227,6 +231,7 @@ class VlansMixin:
     def endpoint_trunk_groups(self: EosDesignsFacts) -> list[str]:
         """
         Return list of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer.
+
         Used for filtering which vlans we configure on the device. This is a superset of local_endpoint_trunk_groups.
         """
         return list(self._endpoint_trunk_groups)
@@ -235,7 +240,8 @@ class VlansMixin:
     def _vlans(self: EosDesignsFacts) -> list[int]:
         """
         Return list of vlans after filtering network services.
-        The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use
+
+        The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use.
 
         Ex. [1, 2, 3 ,4 ,201, 3021]
         """
@@ -250,26 +256,14 @@ class VlansMixin:
 
             for network_services_key in self.shared_utils.network_services_keys:
                 tenants = get(self._hostvars, network_services_key["name"], default=[])
-                # Support legacy data model by converting nested dict to list of dict
-                if isinstance(tenants, dict):
-                    tenants = convert_dicts(tenants, "name")
-
                 for tenant in tenants:
                     if not set(self.shared_utils.filter_tenants).intersection([tenant["name"], "all"]):
                         # Not matching tenant filters. Skipping this tenant.
                         continue
 
                     vrfs = tenant.get("vrfs", [])
-                    # Support legacy data model by converting nested dict to list of dict
-                    if isinstance(vrfs, dict):
-                        vrfs = convert_dicts(vrfs, "name")
-
                     for vrf in vrfs:
                         svis = vrf.get("svis", [])
-                        # Support legacy data model by converting nested dict to list of dict
-                        if isinstance(svis, dict):
-                            svis = convert_dicts(svis, "id")
-
                         for svi in svis:
                             svi_tags = svi.get("tags", ["all"])
                             if "all" in match_tags or set(svi_tags).intersection(match_tags):
@@ -291,10 +285,6 @@ class VlansMixin:
                                 vlans.append(int(svi["id"]))
 
                     l2vlans = tenant.get("l2vlans", [])
-                    # Support legacy data model by converting nested dict to list of dict
-                    if isinstance(l2vlans, dict):
-                        l2vlans = convert_dicts(l2vlans, "id")
-
                     for l2vlan in l2vlans:
                         l2vlan_tags = l2vlan.get("tags", ["all"])
                         if "all" in match_tags or set(l2vlan_tags).intersection(match_tags):

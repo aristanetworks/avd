@@ -6,10 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_network
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import get, strip_empties_from_dict
-from ....j2filters import natural_sort
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import get, strip_empties_from_dict
+from pyavd.j2filters import natural_sort
 
 
 class AvdStructuredConfigInbandManagement(AvdFacts):
@@ -33,9 +33,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
     @cached_property
     def vlan_interfaces(self) -> list | None:
-        """
-        VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch.
-        """
+        """VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch."""
         if not self._inband_management_parent_vlans and not (self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6):
             return None
 
@@ -44,6 +42,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
         if self._inband_management_parent_vlans:
             return [self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]) for vlan, subnet in self._inband_management_parent_vlans.items()]
+        return None
 
     @cached_property
     def _inband_mgmt_ipv6_parent(self) -> bool:
@@ -72,8 +71,8 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                     "destination_address_prefix": "0.0.0.0/0",
                     "gateway": self.shared_utils.inband_mgmt_gateway,
                     "vrf": self.shared_utils.inband_mgmt_vrf,
-                }
-            )
+                },
+            ),
         ]
 
     @cached_property
@@ -87,8 +86,8 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                     "destination_address_prefix": "::/0",
                     "gateway": self.shared_utils.inband_mgmt_ipv6_gateway,
                     "vrf": self.shared_utils.inband_mgmt_vrf,
-                }
-            )
+                },
+            ),
         ]
 
     @cached_property
@@ -107,7 +106,8 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             return None
 
         if self.shared_utils.virtual_router_mac_address is None:
-            raise AristaAvdMissingVariableError("'virtual_router_mac_address' must be set for inband management parent.")
+            msg = "'virtual_router_mac_address' must be set for inband management parent."
+            raise AristaAvdMissingVariableError(msg)
         return str(self.shared_utils.virtual_router_mac_address).lower()
 
     @cached_property
@@ -154,7 +154,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             {
                 "name": "PL-L2LEAF-INBAND-MGMT",
                 "sequence_numbers": sequence_numbers,
-            }
+            },
         ]
 
     @cached_property
@@ -185,7 +185,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             {
                 "name": "IPv6-PL-L2LEAF-INBAND-MGMT",
                 "sequence_numbers": sequence_numbers,
-            }
+            },
         ]
 
     @cached_property
@@ -256,7 +256,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 "ipv6_enable": None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
                 "ipv6_address": self.shared_utils.inband_mgmt_ipv6_address,
                 "type": "inband_mgmt",
-            }
+            },
         )
 
     def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> dict:

@@ -1325,6 +1325,14 @@
   },
   {
     "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
     "test": "VerifyUptime",
     "categories": [
       "system"

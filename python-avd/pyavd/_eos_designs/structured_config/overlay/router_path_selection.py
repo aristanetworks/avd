@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError
-from ...._utils import get, get_item, strip_empties_from_dict
+from pyavd._errors import AristaAvdError
+from pyavd._utils import get, get_item, strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,15 +18,13 @@ if TYPE_CHECKING:
 class RouterPathSelectionMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_path_selection(self: AvdStructuredConfigOverlay) -> dict | None:
-        """
-        Return structured config for router path-selection (DPS)
-        """
-
+        """Return structured config for router path-selection (DPS)."""
         if not self.shared_utils.is_wan_router:
             return None
 
@@ -41,30 +40,21 @@ class RouterPathSelectionMixin(UtilsMixin):
 
     @cached_property
     def _cp_ipsec_profile_name(self: AvdStructuredConfigOverlay) -> str:
-        """
-        Returns the IPsec profile name to use for Control-Plane
-        """
+        """Returns the IPsec profile name to use for Control-Plane."""
         return get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
 
     @cached_property
     def _dp_ipsec_profile_name(self: AvdStructuredConfigOverlay) -> str:
-        """
-        Returns the IPsec profile name to use for Data-Plane
-        """
-        # TODO need to use CP one if 'wan_ipsec_profiles.data_plane' not present
+        """Returns the IPsec profile name to use for Data-Plane."""
+        # TODO: need to use CP one if 'wan_ipsec_profiles.data_plane' not present
         return get(self._hostvars, "wan_ipsec_profiles.data_plane.profile_name", default="DP-PROFILE")
 
     def _get_path_groups(self: AvdStructuredConfigOverlay) -> list:
-        """
-        Generate the required path-groups locally
-        """
+        """Generate the required path-groups locally."""
         path_groups = []
 
-        if self.shared_utils.is_wan_server:
-            # Configure all path-groups on Pathfinders and AutoVPN RRs
-            path_groups_to_configure = self.shared_utils.wan_path_groups
-        else:
-            path_groups_to_configure = self.shared_utils.wan_local_path_groups
+        # Configure all path-groups on Pathfinders and AutoVPN RRs. Otherwise only configure the local path-groups
+        path_groups_to_configure = self.shared_utils.wan_path_groups if self.shared_utils.is_wan_server else self.shared_utils.wan_local_path_groups
 
         local_path_groups_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
 
@@ -94,10 +84,11 @@ class RouterPathSelectionMixin(UtilsMixin):
                         path_group_data["keepalive"] = {"auto": True}
                     else:
                         if not (interval.isdigit() and 50 <= int(interval) <= 60000):
-                            raise AristaAvdError(
+                            msg = (
                                 f"Invalid value '{interval}' for dps_keepalive.interval - "
                                 f"should be either 'auto', or an integer[50-60000] for wan_path_groups[{pg_name}]"
                             )
+                            raise AristaAvdError(msg)
                         path_group_data["keepalive"] = {
                             "interval": int(interval),
                             "failure_threshold": get(keepalive, "failure_threshold", default=5),
@@ -111,9 +102,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         return path_groups
 
     def _generate_ha_path_group(self: AvdStructuredConfigOverlay) -> dict:
-        """
-        Called only when self.shared_utils.wan_ha is True or on Pathfinders
-        """
+        """Called only when self.shared_utils.wan_ha is True or on Pathfinders."""
         ha_path_group = {
             "name": self.shared_utils.wan_ha_path_group_name,
             "id": self._get_path_group_id(self.shared_utils.wan_ha_path_group_name),
@@ -132,9 +121,9 @@ class RouterPathSelectionMixin(UtilsMixin):
                         "router_ip": self._wan_ha_peer_vtep_ip(),
                         "name": self.shared_utils.wan_ha_peer,
                         "ipv4_addresses": [self.shared_utils.get_ip_from_ip_prefix(ip_address) for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
-                    }
+                    },
                 ],
-            }
+            },
         )
         if self.shared_utils.wan_ha_ipsec:
             ha_path_group["ipsec_profile"] = self._dp_ipsec_profile_name
@@ -142,20 +131,19 @@ class RouterPathSelectionMixin(UtilsMixin):
         return ha_path_group
 
     def _wan_ha_interfaces(self: AvdStructuredConfigOverlay) -> list:
-        """
-        Return list of interfaces for HA
-        """
+        """Return list of interfaces for HA."""
         return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
 
     def _wan_ha_peer_vtep_ip(self: AvdStructuredConfigOverlay) -> str:
-        """ """
         peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer, required=True)
         return get(peer_facts, "vtep_ip", required=True)
 
     def _get_path_group_id(self: AvdStructuredConfigOverlay, path_group_name: str, config_id: int | None = None) -> int:
         """
-        TODO - implement algorithm to auto assign IDs - cf internal documentation
-        TODO - also implement algorithm for cross connects on public path_groups
+        Get path group id.
+
+        TODO: - implement algorithm to auto assign IDs - cf internal documentation
+        TODO: - also implement algorithm for cross connects on public path_groups.
         """
         if path_group_name == self.shared_utils.wan_ha_path_group_name:
             return 65535
@@ -165,7 +153,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
     def _get_local_interfaces_for_path_group(self: AvdStructuredConfigOverlay, path_group_name: str) -> list | None:
         """
-        Generate the router_path_selection.local_interfaces list
+        Generate the router_path_selection.local_interfaces list.
 
         For AUTOVPN clients, configure the stun server profiles as appropriate
         """
@@ -184,9 +172,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         return local_interfaces
 
     def _get_dynamic_peers(self: AvdStructuredConfigOverlay, disable_ipsec: bool) -> dict | None:
-        """
-        TODO support ip_local ?
-        """
+        """TODO: support ip_local ?"""
         if not self.shared_utils.is_wan_client:
             return None
 
@@ -196,26 +182,25 @@ class RouterPathSelectionMixin(UtilsMixin):
         return dynamic_peers
 
     def _get_static_peers_for_path_group(self: AvdStructuredConfigOverlay, path_group_name: str) -> list | None:
-        """
-        Retrieves the static peers to configure for a given path-group based on the connected nodes.
-        """
+        """Retrieves the static peers to configure for a given path-group based on the connected nodes."""
         if not self.shared_utils.is_wan_router:
             return None
 
         static_peers = []
         for wan_route_server_name, wan_route_server in self.shared_utils.filtered_wan_route_servers.items():
             if (path_group := get_item(get(wan_route_server, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
-                ipv4_addresses = []
+                ipv4_addresses = [
+                    self.shared_utils.get_ip_from_ip_prefix(public_ip)
+                    for interface_dict in get(path_group, "interfaces", required=True)
+                    if (public_ip := interface_dict.get("public_ip")) is not None
+                ]
 
-                for interface_dict in get(path_group, "interfaces", required=True):
-                    if (public_ip := interface_dict.get("public_ip")) is not None:
-                        ipv4_addresses.append(self.shared_utils.get_ip_from_ip_prefix(public_ip))
                 static_peers.append(
                     {
                         "router_ip": get(wan_route_server, "vtep_ip", required=True),
                         "name": wan_route_server_name,
                         "ipv4_addresses": ipv4_addresses,
-                    }
+                    },
                 )
 
         return static_peers
