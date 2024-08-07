@@ -1,7 +1,6 @@
 ---
 # Common AVD group variables
 
-
 # Test combination of flow tracking inputs across the FLOW_TRACKING_TESTS nodes.
 # There are total of 8 nodes:
 # spine1, spine2, leaf1, leaf2, leaf3 ( mlag ), leaf4 ( mlag ), l2-leaf1, l2-leaf2
@@ -28,7 +27,6 @@
 # l2-leaf1, l2-leaf2 are used for testing l2 ports uplinks i.e port-channels
 
 # node l3_interfaces are tested in CV_PATHFINDER_TESTS
-
 
 fabric_name: FLOW_TRACKING_TESTS
 

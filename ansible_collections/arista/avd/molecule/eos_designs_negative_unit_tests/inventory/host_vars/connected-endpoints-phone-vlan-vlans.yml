@@ -16,4 +16,6 @@ servers:
         mode: trunk phone
         phone_vlan: 333
 
-expected_error_message: "With 'phone_vlan' and 'mode: trunk phone' the data VLAN is set via 'native_vlan' instead of 'vlans'. Found 'vlans' on connected endpoint 'OLD_SW-1/7'."
+expected_error_message: >-
+  With 'phone_vlan' and 'mode: trunk phone' the data VLAN is set via 'native_vlan'
+  instead of 'vlans'. Found 'vlans' on connected endpoint 'OLD_SW-1/7'.

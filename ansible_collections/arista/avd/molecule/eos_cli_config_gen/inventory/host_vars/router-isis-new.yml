@@ -1,10 +1,7 @@
 ### Routing - ISIS ###
 router_isis:
   instance: EVPN_UNDERLAY
-  net: 49.0001.0001.0001.0001.00
-  router_id: 192.168.255.4
-  is_type: level-2
-  log_adjacency_changes: true
+  log_adjacency_changes: false
   mpls_ldp_sync_default: true
   spf_interval:
     interval: 250
@@ -20,13 +17,13 @@ router_isis:
   timers:
     local_convergence:
       protected_prefixes: true
-      delay: 15000
   advertise:
     passive_only: true
   redistribute_routes:
     - source_protocol: static
       include_leaked: True
       route_map: RM-STATIC-TO-ISIS
+    - source_protocol: connected
     - source_protocol: isis
       route_map: RM-REDIS-ISIS-INSTANCE
     - source_protocol: ospf
@@ -38,6 +35,10 @@ router_isis:
       include_leaked: True
       ospf_route_type: nssa-external
       route_map: RM-OSPF-NSSA_EXT-TO-ISIS
+    - source_protocol: ospf
+    - source_protocol: ospfv3
+      ospf_route_type: external
+    - source_protocol: ospfv3
   address_family_ipv4:
     maximum_paths: 4
     bfd_all_interfaces: true
@@ -51,12 +52,12 @@ router_isis:
       enabled: True
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
-    maximum_paths: 4
-    bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       mode: node-protection
+      level: level-1
       srlg:
         enable: true
+        strict: true
   segment_routing_mpls:
     enabled: true
     prefix_segments:
@@ -65,10 +66,10 @@ router_isis:
       - prefix: 2001:cafe:155::/64
         index: 6211
   set_overload_bit:
+    enabled: true
     on_startup:
       wait_for_bgp:
-        enabled: true
-        timeout: 10
+        enabled: false
   authentication:
     both:
       key_ids:
@@ -77,22 +78,34 @@ router_isis:
           key_type: 0
           key: password
           rfc_5310: false
+        - id: 3
+          algorithm: sha-512
+          key_type: 0
+          key: password1
+          rfc_5310: true
+      rx_disabled: true
     level_1:
       key_type: 0
       key: password
-      mode: md5
-      rx_disabled: true
+      mode: shared-secret
+      shared_secret:
+        profile: test1
+        algorithm: md5
       key_ids:
         - id: 1
           algorithm: sha-1
           key_type: 0
           key: password
-          rfc_5310: true
-        - id: 2
+          rfc_5310: false
+        - id: 4
           algorithm: sha-1
           key_type: 0
           key: password
           rfc_5310: true
+        - id: 3
+          algorithm: sha-1
+          key_type: 0
+          key: password3
     level_2:
       key_type: 0
       key: password
@@ -104,12 +117,16 @@ router_isis:
           algorithm: sha-1
           key_type: 0
           key: password
-          rfc_5310: true
-        - id: 2
+          rfc_5310: false
+        - id: 5
           algorithm: sha-1
           key_type: 0
           key: password
           rfc_5310: true
+        - id: 3
+          algorithm: sha-1
+          key_type: 0
+          key: password2
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:

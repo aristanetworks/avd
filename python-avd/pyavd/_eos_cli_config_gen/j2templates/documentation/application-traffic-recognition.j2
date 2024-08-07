@@ -56,10 +56,10 @@
 
 | Type | Name | Service |
 | ---- | ---- | ------- |
-{%                 for application in application_profile.applications | arista.avd.natural_sort('service') | arista.avd.natural_sort('name') %}
+{%                 for application in application_profile.applications | arista.avd.natural_sort('service', strict=False) | arista.avd.natural_sort('name') %}
 | application | {{ application.name }} | {{ application.service | arista.avd.default("-") }} |
 {%                 endfor %}
-{%                 for category in application_profile.categories | arista.avd.natural_sort('service') | arista.avd.natural_sort('name') %}
+{%                 for category in application_profile.categories | arista.avd.natural_sort('service', strict=False) | arista.avd.natural_sort('name') %}
 | category | {{ category.name }} | {{ category.service | arista.avd.default("-") }} |
 {%                 endfor %}
 {%                 for transport in application_profile.application_transports | arista.avd.natural_sort %}
@@ -76,7 +76,7 @@
 | -------- | -------------------- |
 {%         for category in application_traffic_recognition.categories | arista.avd.natural_sort('name') %}
 {%             set apps = [] %}
-{%             for app_details in category.applications | arista.avd.natural_sort('service') | arista.avd.natural_sort('name') %}
+{%             for app_details in category.applications | arista.avd.natural_sort('service', strict=False) | arista.avd.natural_sort('name') %}
 {%                 if app_details.service is arista.avd.defined %}
 {%                     do apps.append( app_details.name + "(" + app_details.service | arista.avd.default("-") + ")" ) %}
 {%                 else %}

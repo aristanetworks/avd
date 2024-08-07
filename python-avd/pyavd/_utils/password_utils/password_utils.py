@@ -156,7 +156,7 @@ PARITY_BITS = [
 ENC_SIG = b"\x4c\x88\xbb"
 
 
-def des_setparity(key):
+def des_setparity(key: bytes) -> bytes:
     res = b""
     for b in key:
         pos = b & 0x7F
@@ -164,7 +164,7 @@ def des_setparity(key):
     return res
 
 
-def hashkey(pw) -> bytes:
+def hashkey(pw: bytes) -> bytes:
     result = bytearray(SEED)
 
     for idx, b in enumerate(pw):
@@ -186,7 +186,6 @@ def cbc_encrypt(key: bytes, data: bytes) -> bytes:
     Returns:
         bytes: The encrypted data, encoded in base64.
     """
-
     hashed_key = hashkey(key)
     padding = (8 - ((len(data) + 4) % 8)) % 8
     ciphertext = ENC_SIG + bytes([padding * 16 + 0xE]) + data + bytes(padding)
@@ -214,7 +213,6 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     Raises:
         ValueError: If the decrypted data is invalid or the length of the provided data is not a multiple of the block length.
     """
-
     data = base64.b64decode(data)
     hashed_key = hashkey(key)
 
@@ -227,7 +225,8 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     # Checking the decrypted string
     pad = result[3] >> 4
     if result[:3] != ENC_SIG or pad >= 8 or len(result[4:]) < pad:
-        raise ValueError("Invalid Encrypted String")
+        msg = "Invalid Encrypted String"
+        raise ValueError(msg)
     password_len = len(result) - pad
     return result[4:password_len]
 
@@ -235,7 +234,8 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
 def cbc_check_password(key: bytes, data: bytes) -> bool:
     """
     Verify if an encrypted password is decryptable.
-    It does not return the password but only raises an error if the password cannot be decrypted
+
+    It does not return the password but only raises an error if the password cannot be decrypted.
 
     Args:
         key (bytes): The decryption key, which should be the peer group name or neighbor IP with '_passwd' suffix.
@@ -248,6 +248,7 @@ def cbc_check_password(key: bytes, data: bytes) -> bool:
 
     try:
         cbc_decrypt(key, data)
-        return True
     except Exception:
         return False
+
+    return True

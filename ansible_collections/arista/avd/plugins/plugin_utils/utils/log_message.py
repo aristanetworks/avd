@@ -34,7 +34,8 @@ def log_message(
     """
     # Validate logging level
     if log_level.upper() not in LOGGING_LEVELS:
-        raise ValueError("Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL.")
+        msg = "Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL."
+        raise ValueError(msg)
 
     dot_notation = f"{key_path}.{key}" if key_path else f"{key}"
     msg_type = "is missing" if not value else f"!= '{value}'"

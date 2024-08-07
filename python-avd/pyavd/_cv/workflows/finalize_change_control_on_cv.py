@@ -4,11 +4,15 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TYPE_CHECKING
 
-from ..api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
-from ..client import CVClient
-from ..client.exceptions import CVChangeControlFailed
-from .models import CVChangeControl
+from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
+from pyavd._cv.client.exceptions import CVChangeControlFailed
+
+if TYPE_CHECKING:
+    from pyavd._cv.client import CVClient
+
+    from .models import CVChangeControl
 
 LOGGER = getLogger(__name__)
 
@@ -35,10 +39,10 @@ def get_change_control_state(cv_change_control: ChangeControl) -> str:
 async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_client: CVClient) -> None:
     """
     Update and finalize a Change Control on CloudVision from the given result.CVChangeControl object.
+
     Depending on the requested state the Change Control will be left in pending approval, approved, started, completed or canceled.
     In-place update the CVChangeControl object.
     """
-
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
@@ -67,9 +71,11 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     # TODO: Add cancel/delete
 
     # For all other requested states we first need to approve.
-    if not change_control.state == "approved":
+    if change_control.state != "approved":
         await cv_client.approve_change_control(
-            change_control_id=change_control.id, timestamp=cv_change_control.change.time, description="Automatic approval by AVD"
+            change_control_id=change_control.id,
+            timestamp=cv_change_control.change.time,
+            description="Automatic approval by AVD",
         )
         change_control.state = "approved"
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
@@ -90,7 +96,8 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     if cv_change_control.error is not None:
         change_control.state = "failed"
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
-        raise CVChangeControlFailed(f"Change control failed during execution {change_control.id}: {cv_change_control.error}")
+        msg = f"Change control failed during execution {change_control.id}: {cv_change_control.error}"
+        raise CVChangeControlFailed(msg)
 
     change_control.state = "completed"
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)

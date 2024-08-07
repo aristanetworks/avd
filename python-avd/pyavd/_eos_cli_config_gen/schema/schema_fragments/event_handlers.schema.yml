@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -13,31 +13,12 @@ keys:
       Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
       customize the system behavior, and implement workarounds to problems discovered in the field.
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
         name:
           type: str
           description: Event Handler Name.
-        action_type:
-          type: str
-          valid_values: ["bash", "increment", "log"]
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
-        action:
-          type: str
-          description: |
-            Command to execute.
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
         actions:
           type: dict
           description: |-
@@ -168,17 +149,34 @@ keys:
             unit:
               type: str
               description: Name of unit. Trigger condition occurs on maintenance operation of specified unit
-        regex:
-          type: str
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 5.0.0
-            new_key: event_handlers.trigger_on_logging.regex
-          description: |
-            Regular expression to use for searching log messages. Required for on-logging trigger.
         asynchronous:
           type: bool
           default: False
           description: |
             Set the action to be non-blocking.
+        action_type:
+          type: str
+          valid_values: ["bash", "increment", "log"]
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions
+        action:
+          type: str
+          description: |
+            Command to execute.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 5.0.0
+            new_key: event_handlers.actions.bash_command
+        regex:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 5.0.0
+            new_key: event_handlers.trigger_on_logging.regex
+          description: |
+            Regular expression to use for searching log messages. Required for on-logging trigger.

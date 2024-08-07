@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import pytest
+
 from pyavd.j2filters import range_expand
 
 RANGE_TO_EXPAND_INVALID_VALUES = [

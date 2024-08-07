@@ -7,7 +7,7 @@ from asyncio import get_event_loop
 from functools import partial
 from json import JSONDecodeError, loads
 from logging import getLogger
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING
 from urllib.error import HTTPError
 
 from ansible.errors import AnsibleActionFail, AnsibleConnectionFailure
@@ -24,7 +24,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 logger = getLogger(__name__)
@@ -41,6 +41,8 @@ except ImportError:
     AntaDevice = object
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
+
     from ansible.plugins.connection import ConnectionBase
     from anta.models import AntaCommand
 
@@ -79,7 +81,7 @@ class AnsibleEOSDevice(AntaDevice):
         if not self.check_mode and not hasattr(connection, "_sub_plugin"):
             raise AristaAvdError(
                 message="AVD could not determine the Ansible connection plugin used. "
-                "Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host."
+                "Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host.",
             )
         # In check_mode we don't care that we cannot connect to the device
         if self.check_mode or (plugin_name := connection._sub_plugin.get("name")) == ANSIBLE_EOS_PLUGIN_NAME:
@@ -87,7 +89,7 @@ class AnsibleEOSDevice(AntaDevice):
         else:
             raise AristaAvdError(
                 message=f"The provided Ansible connection does not use EOS HttpApi plugin: {plugin_name}. "
-                "Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host."
+                "Please ensure that the 'ansible_network_os' and 'ansible_connection' variables are set to 'eos' and 'httpapi' respectively for this host.",
             )
 
     @property
@@ -104,7 +106,7 @@ class AnsibleEOSDevice(AntaDevice):
         if __DEBUG__:
             yield "_connection", connection_vars
 
-    async def _collect(self, command: AntaCommand, *, collection_id: str | None = None) -> None:
+    async def _collect(self, command: AntaCommand, *, collection_id: str | None = None) -> None:  # noqa: ARG002
         """Collect device command result using Ansible HttpApi connection plugin.
 
         Supports outformat 'json' and 'text' as output structure.
@@ -112,6 +114,9 @@ class AnsibleEOSDevice(AntaDevice):
         Args:
         ----
             command (AntaCommand): The command to collect.
+
+        Keyword Args:
+        -------------
             collection_id (str, optional): This parameter is not used in this implementation. Defaults to None.
 
         If there is an exception while collecting the command, the exception will be propagated

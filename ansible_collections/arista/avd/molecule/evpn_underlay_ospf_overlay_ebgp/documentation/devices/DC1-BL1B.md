@@ -415,10 +415,10 @@ interface Loopback1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4093 |  default  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.11/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan4093 |  default  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.11/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

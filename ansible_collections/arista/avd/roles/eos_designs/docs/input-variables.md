@@ -727,6 +727,12 @@ roles/eos_designs/docs/tables/bgp-settings.md
 roles/eos_designs/docs/tables/ipv4-acls.md
 --8<--
 
+### IPv4 Prefix-List Catalog settings
+
+--8<--
+roles/eos_designs/docs/tables/ipv4-prefix-list-catalog.md
+--8<--
+
 ## OSPF settings
 
 --8<--
