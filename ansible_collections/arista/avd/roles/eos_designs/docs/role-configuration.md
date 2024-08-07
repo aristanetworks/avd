@@ -27,6 +27,12 @@ roles/eos_designs/defaults/main/output_directories.yml
 
 ## Input Variables Validation settings
 
+Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
+performs validation of the converted data.
+
+By default any data validation issues will trigger errors - blocking further processing.
+This behavior can be adjusted by setting the variable described below.
+
 --8<--
 roles/eos_designs/docs/tables/role-input-validation.md
 --8<--

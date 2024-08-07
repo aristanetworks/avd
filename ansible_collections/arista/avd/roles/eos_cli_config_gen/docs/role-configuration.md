@@ -27,6 +27,17 @@ roles/eos_cli_config_gen/defaults/main/output_directories.yml
 
 ## Input Variables Validation settings
 
+Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
+performs validation of the converted data.
+
+By default any data validation issues will trigger errors - blocking further processing.
+This behavior can be adjusted by setting the variable described below.
+
+!!! warning
+    It is **not** recommended to change the `avd_data_validation_mode` to `warning` since all AVD code relies on the validation to ensure valid data.
+
+    If the validation mode is set to warning, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
+
 --8<--
 roles/eos_cli_config_gen/docs/tables/role-input-validation.md
 --8<--
