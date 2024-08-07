@@ -203,8 +203,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_network_point_to_point</samp>](## "ethernet_interfaces.[].isis_network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "ethernet_interfaces.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1-2</code><br>- <code>level-1</code><br>- <code>level-2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "ethernet_interfaces.[].isis_hello_padding") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "ethernet_interfaces.[].isis_authentication_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>text</code><br>- <code>md5</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version v6.0.0. Use <samp>isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "ethernet_interfaces.[].isis_authentication_key") <span style="color:red">deprecated</span> | String |  |  |  | Type-7 encrypted password.<span style="color:red">This key is deprecated. Support will be removed in AVD version v6.0.0. Use <samp>isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "ethernet_interfaces.[].isis_authentication_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>text</code><br>- <code>md5</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "ethernet_interfaces.[].isis_authentication_key") <span style="color:red">deprecated</span> | String |  |  |  | Type-7 encrypted password.<span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication</samp>](## "ethernet_interfaces.[].isis_authentication") | Dictionary |  |  |  | This key should not be mixed with ethernet_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "ethernet_interfaces.[].isis_authentication.both") | Dictionary |  |  |  | Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "ethernet_interfaces.[].isis_authentication.both.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key type. Default key_id is 0. |
@@ -944,13 +944,13 @@
         isis_circuit_type: <str; "level-1-2" | "level-1" | "level-2">
         isis_hello_padding: <bool>
         # This key is deprecated.
-        # Support will be removed in AVD version v6.0.0.
+        # Support will be removed in AVD version v5.0.0.
         # Use <samp>isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode</samp> instead.
         isis_authentication_mode: <str; "text" | "md5">
 
         # Type-7 encrypted password.
         # This key is deprecated.
-        # Support will be removed in AVD version v6.0.0.
+        # Support will be removed in AVD version v5.0.0.
         # Use <samp>isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key</samp> instead.
         isis_authentication_key: <str>
 
