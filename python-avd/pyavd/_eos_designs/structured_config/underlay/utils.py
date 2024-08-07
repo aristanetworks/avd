@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._errors import AristaAvdError
-from pyavd._utils import default, get, get_item, strip_empties_from_dict
+from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item, strip_empties_from_dict
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -310,7 +310,7 @@ class UtilsMixin:
             interface_name = l3_interface["name"]
             interface_ip: str | None = l3_interface.get("dhcp_ip") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
             if interface_ip is not None and "/" in interface_ip:
-                interface_ip = interface_ip.split("/", maxsplit=1)[0]
+                interface_ip = get_ip_from_ip_prefix(interface_ip)
             peer_ip: str | None = get(l3_interface, "peer_ip")
 
             if ipv4_acl_in is not None:
