@@ -462,57 +462,57 @@ interface Vlan339
 !
 interface Vlan340
    description isis authentication both md5 rx
-   authentication mode md5 rx-disabled
+   isis authentication mode md5 rx-disabled
 !
 interface Vlan341
    description isis authentication both md5
-   authentication mode md5
+   isis authentication mode md5
 !
 interface Vlan342
    description isis authentication both sha rx
-   authentication mode sha key-id 2 rx-disabled
+   isis authentication mode sha key-id 2 rx-disabled
 !
 interface Vlan343
    description isis authentication both sha
-   authentication mode sha key-id 2
+   isis authentication mode sha key-id 2
 !
 interface Vlan344
    description isis authentication both shared secret rx
-   authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
 !
 interface Vlan345
    description isis authentication both shared secret
-   authentication mode shared-secret profile profile1 algorithm sha-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-1
 !
 interface Vlan346
    description isis authentication both l1 l2 md5 rx
-   authentication mode md5 rx-disabled level-1
-   authentication mode md5 rx-disabled level-2
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication mode md5 rx-disabled level-2
 !
 interface Vlan347
    description isis authentication l1 l2 md5
-   authentication mode md5 level-1
-   authentication mode md5 level-2
+   isis authentication mode md5 level-1
+   isis authentication mode md5 level-2
 !
 interface Vlan348
    description isis authentication l1 l2 shared secret
-   authentication mode shared-secret profile profile1 algorithm sha-256 level-1
-   authentication mode shared-secret profile profile1 algorithm sha-256 level-2
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
 !
 interface Vlan349
    description isis authentication l1 l2 shared secret rx
-   authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
-   authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
 !
 interface Vlan350
    description isis authentication l1 l2 sha rx
-   authentication mode sha key-id 5 rx-disabled level-1
-   authentication mode sha key-id 5 rx-disabled level-2
+   isis authentication mode sha key-id 5 rx-disabled level-1
+   isis authentication mode sha key-id 5 rx-disabled level-2
 !
 interface Vlan351
    description isis authentication l1 l2 sha
-   authentication mode sha key-id 5 level-1
-   authentication mode sha key-id 5 level-2
+   isis authentication mode sha key-id 5 level-1
+   isis authentication mode sha key-id 5 level-2
 !
 interface Vlan501
    description SVI Description

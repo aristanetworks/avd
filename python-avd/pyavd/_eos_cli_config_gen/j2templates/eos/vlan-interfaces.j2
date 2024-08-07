@@ -312,7 +312,7 @@ interface {{ vlan_interface.name }}
                or (vlan_interface.isis_authentication.both.mode == "shared-secret"
                    and vlan_interface.isis_authentication.both.shared_secret.profile is arista.avd.defined
                    and vlan_interface.isis_authentication.both.shared_secret.algorithm is arista.avd.defined)) %}
-{%         set isis_auth_cli = "authentication mode " ~ vlan_interface.isis_authentication.both.mode %}
+{%         set isis_auth_cli = "isis authentication mode " ~ vlan_interface.isis_authentication.both.mode %}
 {%         if vlan_interface.isis_authentication.both.mode == "sha" %}
 {%             set isis_auth_cli = isis_auth_cli ~ " key-id " ~ vlan_interface.isis_authentication.both.sha.key_id %}
 {%         elif vlan_interface.isis_authentication.both.mode == "shared-secret" %}
@@ -330,7 +330,7 @@ interface {{ vlan_interface.name }}
                or (vlan_interface.isis_authentication.level_1.mode == "shared-secret"
                    and vlan_interface.isis_authentication.level_1.shared_secret.profile is arista.avd.defined
                    and vlan_interface.isis_authentication.level_1.shared_secret.algorithm is arista.avd.defined)) %}
-{%             set isis_auth_cli = "authentication mode " ~ vlan_interface.isis_authentication.level_1.mode %}
+{%             set isis_auth_cli = "isis authentication mode " ~ vlan_interface.isis_authentication.level_1.mode %}
 {%             if vlan_interface.isis_authentication.level_1.mode == "sha" %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ vlan_interface.isis_authentication.level_1.sha.key_id %}
 {%             elif vlan_interface.isis_authentication.level_1.mode == "shared-secret" %}
@@ -348,7 +348,7 @@ interface {{ vlan_interface.name }}
                or (vlan_interface.isis_authentication.level_2.mode == "shared-secret"
                    and vlan_interface.isis_authentication.level_2.shared_secret.profile is arista.avd.defined
                    and vlan_interface.isis_authentication.level_2.shared_secret.algorithm is arista.avd.defined)) %}
-{%             set isis_auth_cli = "authentication mode " ~ vlan_interface.isis_authentication.level_2.mode %}
+{%             set isis_auth_cli = "isis authentication mode " ~ vlan_interface.isis_authentication.level_2.mode %}
 {%             if vlan_interface.isis_authentication.level_2.mode == "sha" %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ vlan_interface.isis_authentication.level_2.sha.key_id %}
 {%             elif vlan_interface.isis_authentication.level_2.mode == "shared-secret" %}
