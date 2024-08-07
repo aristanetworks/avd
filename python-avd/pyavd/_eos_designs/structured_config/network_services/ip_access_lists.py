@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import append_if_not_duplicate, get
+from pyavd._utils import append_if_not_duplicate, get, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
 from .utils import UtilsMixin
@@ -56,7 +56,7 @@ class IpAccesslistsMixin(UtilsMixin):
                         "sequence": 10 + i * 10,
                         "action": "deny",
                         "protocol": "ip",
-                        "source": self.shared_utils.get_ip_from_ip_prefix(interface_ip),
+                        "source": get_ip_from_ip_prefix(interface_ip),
                         "destination": "any",
                     },
                 )

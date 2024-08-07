@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_ip_from_pool, get_item, strip_empties_from_dict
+from pyavd._utils import default, get, get_ip_from_ip_prefix, get_ip_from_pool, get_item, strip_empties_from_dict
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -205,7 +205,7 @@ class WanMixin:
         If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
         if not self.is_wan_server:
-            return default(interface.get("public_ip"), self.get_ip_from_ip_prefix(interface["ip_address"]))
+            return default(interface.get("public_ip"), get_ip_from_ip_prefix(interface["ip_address"]))
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
             if (found_interface := get_item(path_group["interfaces"], "name", interface["name"])) is None:
@@ -226,7 +226,7 @@ class WanMixin:
                 msg,
             )
 
-        return self.get_ip_from_ip_prefix(interface["ip_address"])
+        return get_ip_from_ip_prefix(interface["ip_address"])
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict | None:

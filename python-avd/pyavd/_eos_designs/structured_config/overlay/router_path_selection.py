@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import get, get_item, strip_empties_from_dict
+from pyavd._utils import get, get_ip_from_ip_prefix, get_item, strip_empties_from_dict
 
 from .utils import UtilsMixin
 
@@ -120,7 +120,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                     {
                         "router_ip": self._wan_ha_peer_vtep_ip(),
                         "name": self.shared_utils.wan_ha_peer,
-                        "ipv4_addresses": [self.shared_utils.get_ip_from_ip_prefix(ip_address) for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
+                        "ipv4_addresses": [get_ip_from_ip_prefix(ip_address) for ip_address in self.shared_utils.wan_ha_peer_ip_addresses],
                     },
                 ],
             },
@@ -190,7 +190,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         for wan_route_server_name, wan_route_server in self.shared_utils.filtered_wan_route_servers.items():
             if (path_group := get_item(get(wan_route_server, "wan_path_groups", default=[]), "name", path_group_name)) is not None:
                 ipv4_addresses = [
-                    self.shared_utils.get_ip_from_ip_prefix(public_ip)
+                    get_ip_from_ip_prefix(public_ip)
                     for interface_dict in get(path_group, "interfaces", required=True)
                     if (public_ip := interface_dict.get("public_ip")) is not None
                 ]

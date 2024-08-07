@@ -72,7 +72,3 @@ class UtilsMixin:
         profile_name = adapter_or_network_port_settings.get("profile")
         adapter_profile = self.get_merged_port_profile(profile_name)
         return merge(adapter_profile, adapter_or_network_port_settings, list_merge="replace", destructive_merge=False)
-
-    def get_ip_from_ip_prefix(self: SharedUtils, ip_prefix: str) -> str:
-        """Return the ip part of an ip/mask prefix."""
-        return ip_prefix.split("/", maxsplit=1)[0]

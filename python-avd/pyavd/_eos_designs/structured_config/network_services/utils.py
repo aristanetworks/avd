@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_item
+from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -629,7 +629,7 @@ class UtilsMixin(UtilsZscalerMixin):
                     interface_name = f"Vlan{svi['id']}"
                     interface_ip: str | None = svi.get("ip_address_virtual")
                     if interface_ip is not None and "/" in interface_ip:
-                        interface_ip = self.shared_utils.get_ip_from_ip_prefix(interface_ip)
+                        interface_ip = get_ip_from_ip_prefix(interface_ip)
 
                     if ipv4_acl_in is not None:
                         svi_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
