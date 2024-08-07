@@ -1,0 +1,59 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: varpv6
+      id: 101
+      bgp_as: 101
+      filter:
+        tenants:
+          - TENANT1
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # VARPv6 is configured if ipv6_address and ipv6_virtual_router_addresses is set
+      - name: VRF1
+        vrf_id: 1
+        svis:
+          - id: 100
+            enabled: true
+            name: VARPv6_configured_1
+            ipv6_virtual_router_addresses:
+              - fe80::1
+            nodes:
+              - node: varpv6
+                ipv6_address: 2001:db8::2/64
+          # VARPv6 is not configured if ipv6_address and ipv6_enable missing
+          - id: 200
+            enabled: true
+            name: VARPv6_not_configured_1
+            ipv6_virtual_router_addresses:
+              - fe80::1
+          # VARPv6 is configured if ipv6_enable and ipv6_virtual_router_addresses is set
+          - id: 300
+            enabled: true
+            name: VARPv6_configured_2
+            ipv6_enable: true
+            ipv6_virtual_router_addresses:
+              - fe80::1
+          # VARPv6 is not configured if ipv6_enable is set to false
+          - id: 400
+            enabled: true
+            name: VARPv6_not_configured_2
+            ipv6_enable: false
+            ipv6_virtual_router_addresses:
+              - fe80::1
+          # VARPv6 is not configured if ipv6_enable is set to false, but ipv6 address virtual is configured in this case
+          - id: 500
+            enabled: true
+            name: VARPv6_not_configured_3
+            ipv6_enable: false
+            ipv6_virtual_router_addresses:
+              - fe80::1
+            ipv6_address_virtuals:
+              - 2001:db8::1/64
