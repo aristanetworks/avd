@@ -341,7 +341,7 @@ sFlow is disabled.
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | md5 |
+| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | - |
 
 ##### EVPN Multihoming
 
@@ -543,8 +543,6 @@ interface Ethernet5
    isis metric 99
    no isis hello padding
    isis network point-to-point
-   isis authentication mode md5
-   isis authentication key 7 <removed>
    spanning-tree guard loop
 !
 interface Ethernet6
@@ -1141,6 +1139,72 @@ interface Ethernet69
    description IP NAT service-profile
    switchport
    ip nat service-profile TEST-NAT-PROFILE
+!
+interface Ethernet70
+   description isis authentication both md5
+   switchport
+   isis authentication mode md5
+!
+interface Ethernet71
+   description isis authentication both sha rx
+   switchport
+   isis authentication mode sha key-id 2 rx-disabled
+!
+interface Ethernet72
+   description isis authentication both sha
+   switchport
+   isis authentication mode sha key-id 2
+!
+interface Ethernet73
+   description isis authentication both shared secret rx
+   switchport
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
+!
+interface Ethernet74
+   description isis authentication both shared secret
+   switchport
+   isis authentication mode shared-secret profile profile1 algorithm sha-1
+!
+interface Ethernet75
+   description isis authentication both l1 l2 md5 rx
+   switchport
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication mode md5 rx-disabled level-2
+!
+interface Ethernet76
+   description isis authentication l1 l2 md5
+   switchport
+   isis authentication mode md5 level-1
+   isis authentication mode md5 level-2
+!
+interface Ethernet77
+   description isis authentication l1 l2 shared secret
+   switchport
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
+!
+interface Ethernet78
+   description isis authentication l1 l2 shared secret rx
+   switchport
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
+!
+interface Ethernet79
+   description isis authentication l1 l2 sha rx
+   switchport
+   isis authentication mode sha key-id 5 rx-disabled level-1
+   isis authentication mode sha key-id 5 rx-disabled level-2
+!
+interface Ethernet80
+   description isis authentication l1 l2 sha
+   switchport
+   isis authentication mode sha key-id 5 level-1
+   isis authentication mode sha key-id 5 level-2
+!
+interface Ethernet81
+   description isis authentication both md5 rx
+   switchport
+   isis authentication mode md5 rx-disabled
 ```
 
 ## BFD
