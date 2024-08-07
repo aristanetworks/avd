@@ -4,12 +4,11 @@
 from __future__ import annotations
 
 from functools import cached_property
-from ipaddress import ip_interface
 from re import findall
 from typing import TYPE_CHECKING, Any
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import default, get
+from pyavd._utils import default, get, get_ip_from_ip_prefix
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -137,7 +136,7 @@ class MlagMixin:
         if (mlag_peer_mgmt_ip := self.get_mlag_peer_fact("mgmt_ip", required=False)) is None:
             return None
 
-        return str(ip_interface(mlag_peer_mgmt_ip).ip)
+        return get_ip_from_ip_prefix(mlag_peer_mgmt_ip)
 
     @cached_property
     def mlag_ip(self: SharedUtils) -> str | None:
