@@ -734,7 +734,8 @@ class UtilsMixin(UtilsZscalerMixin):
                             continue
                         interface_name = interface
                         interface_ip: str | None = l3_interface["ip_addresses"][interface_idx]
-                        interface_ip = str(ipaddress.ip_interface(interface_ip).ip)
+                        if interface_ip is not None:
+                            interface_ip = get_ip_from_ip_prefix(interface_ip)
                         if ipv4_acl_in is not None:
                             l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
                                 name=ipv4_acl_in,
