@@ -50,7 +50,6 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
                     "name": vrf,
                     "ip_address": get_ip_from_ip_prefix(loopback_interface["ip_address"]) if "ip_address" in loopback_interface else None,
                     "ipv6_address": get_ip_from_ip_prefix(loopback_interface["ipv6_address"]) if "ipv6_address" in loopback_interface else None,
-
                 },
                 context="virtual_source_nat_vrfs",
                 context_keys=["name"],
