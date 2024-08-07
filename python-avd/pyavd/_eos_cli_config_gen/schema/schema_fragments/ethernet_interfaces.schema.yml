@@ -717,14 +717,14 @@ keys:
           deprecation:
             warning: true
             remove_in_version: v6.0.0
-            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode 
+            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode
           valid_values: ["text", "md5"]
         isis_authentication_key:
           type: str
           deprecation:
             warning: true
             remove_in_version: v6.0.0
-            new_key: isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key 
+            new_key: isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key
           description: Type-7 encrypted password.
         isis_authentication:
           type: dict
