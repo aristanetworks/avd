@@ -74,18 +74,6 @@ interface Management1
 | Vlan337 | v4 dhcp relay all-subnets | default | - | - |
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
-| Vlan340 | isis authentication both md5 rx | default | - | - |
-| Vlan341 | isis authentication both md5 | default | - | - |
-| Vlan342 | isis authentication both sha rx | default | - | - |
-| Vlan343 | isis authentication both sha | default | - | - |
-| Vlan344 | isis authentication both shared secret rx | default | - | - |
-| Vlan345 | isis authentication both shared secret | default | - | - |
-| Vlan346 | isis authentication both l1 l2 md5 rx | default | - | - |
-| Vlan347 | isis authentication l1 l2 md5 | default | - | - |
-| Vlan348 | isis authentication l1 l2 shared secret | default | - | - |
-| Vlan349 | isis authentication l1 l2 shared secret rx | default | - | - |
-| Vlan350 | isis authentication l1 l2 sha rx | default | - | - |
-| Vlan351 | isis authentication l1 l2 sha | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -131,18 +119,6 @@ interface Management1
 | Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |
 | Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |
 | Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan340 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan341 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan342 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan343 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan344 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan345 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan346 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan347 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan348 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan349 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan350 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan351 |  default  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |
 | Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
@@ -270,6 +246,8 @@ interface Vlan42
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
+   isis authentication mode sha key-id 5 level-1
+   isis authentication mode sha key-id 5 level-2
    ip address virtual 10.10.42.1/24
 !
 interface Vlan43
@@ -277,6 +255,12 @@ interface Vlan43
    no shutdown
    ipv6 dhcp relay destination a0::2 vrf TEST local-interface Loopback44 link-address a0::4
    ipv6 address a0::1/64
+   isis authentication key-id 2 algorithm sha-512 key 0 password
+   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
+   isis authentication key-id 1 algorithm sha-1 key 0 password level-1
+   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
+   isis authentication key-id 1 algorithm sha-1 key 0 password level-2
+   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
 !
 interface Vlan44
    description SVI Description
@@ -318,6 +302,8 @@ interface Vlan81
 interface Vlan83
    description SVI Description
    no shutdown
+   isis authentication mode md5
+   isis authentication key 0 password
    ip address virtual 10.10.83.1/24
    ip address virtual 10.11.83.1/24 secondary
    ip address virtual 10.11.84.1/24 secondary
@@ -327,6 +313,8 @@ interface Vlan84
    arp gratuitous accept
    arp monitor mac-address
    ip address 10.10.84.1/24
+   isis authentication mode sha key-id 2 rx-disabled
+   isis authentication key 0 password
    ip virtual-router address 10.10.84.254
    ip virtual-router address 10.11.84.254/24
 !
@@ -334,12 +322,15 @@ interface Vlan85
    description SVI Description
    arp cache dynamic capacity 50000
    ip address 10.10.84.1/24
+   isis authentication mode sha key-id 2
+   isis authentication key 0 password
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
 !
 interface Vlan86
    description SVI Description
    ip address 10.10.83.1/24
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
    ip attached-host route export 10
 !
 interface Vlan87
@@ -348,10 +339,15 @@ interface Vlan87
    ip address 10.10.87.1/24
    ip access-group ACL_IN in
    ip access-group ACL_OUT out
+   isis authentication mode shared-secret profile profile1 algorithm sha-1
 !
 interface Vlan88
    description SVI Description
    shutdown
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication mode md5 rx-disabled level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
    ip address virtual 10.10.87.1/23
 !
 interface Vlan89
@@ -378,11 +374,17 @@ interface Vlan89
 interface Vlan90
    description SVI Description
    ip address 10.10.83.1/24
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
    ip attached-host route export
 !
 interface Vlan91
    description PBR Description
    shutdown
+   isis authentication mode md5 level-1
+   isis authentication mode md5 level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
    service-policy type pbr input MyServicePolicy
 !
 interface Vlan92
@@ -390,6 +392,8 @@ interface Vlan92
    ip proxy-arp
    ip directed-broadcast
    ip address 10.10.92.1/24
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
 !
 interface Vlan110
    description PVLAN Primary with vlan mapping
@@ -460,60 +464,6 @@ interface Vlan339
    ipv6 address 2001:db8:339::1/64
    ipv6 nd other-config-flag
 !
-interface Vlan340
-   description isis authentication both md5 rx
-   isis authentication mode md5 rx-disabled
-!
-interface Vlan341
-   description isis authentication both md5
-   isis authentication mode md5
-!
-interface Vlan342
-   description isis authentication both sha rx
-   isis authentication mode sha key-id 2 rx-disabled
-!
-interface Vlan343
-   description isis authentication both sha
-   isis authentication mode sha key-id 2
-!
-interface Vlan344
-   description isis authentication both shared secret rx
-   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
-!
-interface Vlan345
-   description isis authentication both shared secret
-   isis authentication mode shared-secret profile profile1 algorithm sha-1
-!
-interface Vlan346
-   description isis authentication both l1 l2 md5 rx
-   isis authentication mode md5 rx-disabled level-1
-   isis authentication mode md5 rx-disabled level-2
-!
-interface Vlan347
-   description isis authentication l1 l2 md5
-   isis authentication mode md5 level-1
-   isis authentication mode md5 level-2
-!
-interface Vlan348
-   description isis authentication l1 l2 shared secret
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
-!
-interface Vlan349
-   description isis authentication l1 l2 shared secret rx
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
-!
-interface Vlan350
-   description isis authentication l1 l2 sha rx
-   isis authentication mode sha key-id 5 rx-disabled level-1
-   isis authentication mode sha key-id 5 rx-disabled level-2
-!
-interface Vlan351
-   description isis authentication l1 l2 sha
-   isis authentication mode sha key-id 5 level-1
-   isis authentication mode sha key-id 5 level-2
-!
 interface Vlan501
    description SVI Description
    no shutdown
@@ -571,6 +521,8 @@ interface Vlan2002
    ip verify unicast source reachable-via rx
    isis enable EVPN_UNDERLAY
    isis bfd
+   isis authentication mode md5 rx-disabled
+   isis authentication key 0 password
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094
@@ -584,6 +536,8 @@ interface Vlan4094
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
    pim ipv4 bfd
+   isis authentication mode sha key-id 5 rx-disabled level-1
+   isis authentication mode sha key-id 5 rx-disabled level-2
 ```
 
 ## BFD
