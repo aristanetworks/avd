@@ -2,7 +2,6 @@
 
 type: l3leaf
 
-
 l3leaf:
   defaults:
     platform: vEOS-LAB
@@ -27,6 +26,13 @@ l3leaf:
           id: 2
           mgmt_ip: 192.168.200.102/24
           uplink_switch_interfaces: [Ethernet2]
+  nodes:
+    - name: CUSTOM-PYTHON_MODULES-L3LEAF2
+      id: 3
+      bgp_as: 65103
+      uplink_type: p2p-vrfs
+      uplink_switches: [CUSTOM-PYTHON_MODULES-L3LEAF1A]
+      uplink_switch_interfaces: [Ethernet3]
 
 tenants:
   - name: CUSTOM_PYTHON_MODULES_TENANT

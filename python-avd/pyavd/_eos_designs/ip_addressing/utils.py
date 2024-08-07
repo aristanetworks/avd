@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdError, AristaAvdMissingVariableError
-from ..._utils import get
-from ...j2filters import range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import get
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import AvdIpAddressing
@@ -17,19 +17,22 @@ if TYPE_CHECKING:
 class UtilsMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to an AvdIpAddressing class
+
+    Class should only be used as Mixin to an AvdIpAddressing class.
     """
 
     @cached_property
     def _mlag_primary_id(self: AvdIpAddressing) -> int:
         if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("primary") is None:
-            raise AristaAvdMissingVariableError("'mlag_switch_ids' is required to calculate MLAG IP addresses")
+            msg = "'mlag_switch_ids' is required to calculate MLAG IP addresses"
+            raise AristaAvdMissingVariableError(msg)
         return self.shared_utils.mlag_switch_ids["primary"]
 
     @cached_property
     def _mlag_secondary_id(self: AvdIpAddressing) -> int:
         if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("secondary") is None:
-            raise AristaAvdMissingVariableError("'mlag_switch_ids' is required to calculate MLAG IP addresses")
+            msg = "'mlag_switch_ids' is required to calculate MLAG IP addresses"
+            raise AristaAvdMissingVariableError(msg)
         return self.shared_utils.mlag_switch_ids["secondary"]
 
     @cached_property
@@ -63,13 +66,15 @@ class UtilsMixin:
     @cached_property
     def _uplink_ipv4_pool(self: AvdIpAddressing) -> str:
         if self.shared_utils.uplink_ipv4_pool is None:
-            raise AristaAvdMissingVariableError("'uplink_ipv4_pool' is required to calculate uplink IP addresses")
+            msg = "'uplink_ipv4_pool' is required to calculate uplink IP addresses"
+            raise AristaAvdMissingVariableError(msg)
         return self.shared_utils.uplink_ipv4_pool
 
     @cached_property
     def _id(self: AvdIpAddressing) -> int:
         if self.shared_utils.id is None:
-            raise AristaAvdMissingVariableError("'id' is required to calculate IP addresses")
+            msg = "'id' is required to calculate IP addresses"
+            raise AristaAvdMissingVariableError(msg)
         return self.shared_utils.id
 
     @cached_property
@@ -79,6 +84,10 @@ class UtilsMixin:
     @cached_property
     def _max_parallel_uplinks(self: AvdIpAddressing) -> int:
         return self.shared_utils.max_parallel_uplinks
+
+    @cached_property
+    def _loopback_ipv4_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.loopback_ipv4_address
 
     @cached_property
     def _loopback_ipv4_pool(self: AvdIpAddressing) -> str:
@@ -97,20 +106,24 @@ class UtilsMixin:
         return self.shared_utils.loopback_ipv6_offset
 
     @cached_property
+    def _vtep_loopback_ipv4_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.vtep_loopback_ipv4_address
+
+    @cached_property
     def _vtep_loopback_ipv4_pool(self: AvdIpAddressing) -> str:
         return self.shared_utils.vtep_loopback_ipv4_pool
 
     @cached_property
     def _mlag_odd_id_based_offset(self: AvdIpAddressing) -> int:
         """
-        Return the subnet offset for an MLAG pair based on odd id
+        Return the subnet offset for an MLAG pair based on odd id.
 
         Requires a pair of odd and even IDs
         """
-
         # Verify a mix of odd and even IDs
         if (self._mlag_primary_id % 2) == (self._mlag_secondary_id % 2):
-            raise AristaAvdError("MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID")
+            msg = "MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID"
+            raise AristaAvdError(msg)
 
         odd_id = self._mlag_primary_id
         if odd_id % 2 == 0:
@@ -120,12 +133,11 @@ class UtilsMixin:
 
     def _get_downlink_ipv4_pool_and_offset(self: AvdIpAddressing, uplink_switch_index: int) -> tuple[str, int]:
         """
-        Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index
+        Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index.
 
         Offset is the matching interface's index in the list of downlink_interfaces
         (None, None) is returned if downlink_pools are not used
         """
-
         uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
         uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
         peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
@@ -142,14 +154,17 @@ class UtilsMixin:
                     return (get(downlink_pool_and_interfaces, "ipv4_pool"), interface_index)
 
         # If none of the interfaces match up, throw error
-        raise AristaAvdError(
+        msg = (
             f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface}) "
             "in the downlink_switch does not match any of the downlink_pools"
+        )
+        raise AristaAvdError(
+            msg,
         )
 
     def _get_p2p_ipv4_pool_and_offset(self: AvdIpAddressing, uplink_switch_index: int) -> tuple[str, int]:
         """
-        Returns IP pool and offset as a tuple according to the uplink_switch_index
+        Returns IP pool and offset as a tuple according to the uplink_switch_index.
 
         Uplink pool or downlink pool is returned with its corresponding offset
         A downlink pool's offset is the matching interface's index in the list of downlink_interfaces
@@ -157,7 +172,6 @@ class UtilsMixin:
 
         One and only one of these pools are required to be set, otherwise an error will be thrown
         """
-
         uplink_pool = self.shared_utils.uplink_ipv4_pool
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
@@ -165,15 +179,15 @@ class UtilsMixin:
         downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
 
         if uplink_pool is not None and downlink_pool is not None:
-            raise AristaAvdError(
+            msg = (
                 f"Unable to assign IPs for uplinks. 'uplink_ipv4_pool' ({uplink_pool}) on this switch cannot be combined "
                 f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
             )
+            raise AristaAvdError(msg)
 
         if uplink_pool is None and downlink_pool is None:
-            raise AristaAvdMissingVariableError(
-                "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches"
-            )
+            msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches"
+            raise AristaAvdMissingVariableError(msg)
 
         if uplink_pool is not None:
             return (uplink_pool, uplink_offset)

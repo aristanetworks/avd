@@ -8,10 +8,11 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError, AristaAvdMissingVariableError
-from ...._utils import append_if_not_duplicate, default, get, replace_or_append_item, strip_null_from_data
-from ....j2filters import range_expand
-from ...interface_descriptions import InterfaceDescriptionData
+from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import append_if_not_duplicate, default, get, replace_or_append_item, strip_null_from_data
+from pyavd.j2filters import range_expand
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -21,20 +22,20 @@ if TYPE_CHECKING:
 class EthernetInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ethernet_interfaces(self: AvdStructuredConfigConnectedEndpoints) -> list | None:
         """
-        Return structured config for ethernet_interfaces
+        Return structured config for ethernet_interfaces.
 
         Duplicate checks following these rules:
         - Silently overwrite duplicate network_ports with other network_ports.
         - Silently overwrite duplicate network_ports with connected_endpoints.
         - Do NOT overwrite connected_endpoints with other connected_endpoints. Instead we raise a duplicate error.
         """
-
         ethernet_interfaces = []
 
         # List of ethernet_interfaces used for duplicate checks.
@@ -104,14 +105,12 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "sflow": self._get_adapter_sflow(adapter),
                 "flow_tracker": self._get_adapter_flow_tracking(adapter),
                 "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
-            }
+            },
         )
         return ethernet_interface
 
     def _get_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, node_index: int, connected_endpoint: dict) -> dict:
-        """
-        Return structured_config for one ethernet_interface
-        """
+        """Return structured_config for one ethernet_interface."""
         peer = connected_endpoint["name"]
         endpoint_ports: list = default(
             adapter.get("endpoint_ports"),
@@ -125,9 +124,12 @@ class EthernetInterfacesMixin(UtilsMixin):
         # check lengths of lists
         nodes_length = len(adapter["switches"])
         if len(adapter["switch_ports"]) != nodes_length or ("descriptions" in adapter and len(adapter["descriptions"]) != nodes_length):
-            raise AristaAvdError(
+            msg = (
                 f"Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for {peer}, adapter"
                 f" switch_ports {adapter['switch_ports']}."
+            )
+            raise AristaAvdError(
+                msg,
             )
 
         # if 'descriptions' is set, it is preferred
@@ -150,7 +152,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     peer=peer,
                     peer_interface=peer_interface,
                     description=interface_description,
-                )
+                ),
             ),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
@@ -168,7 +170,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "id": channel_group_id,
                         "mode": port_channel_mode,
                     },
-                }
+                },
             )
             if get(adapter, "port_channel.lacp_fallback.mode") == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
@@ -176,17 +178,23 @@ class EthernetInterfacesMixin(UtilsMixin):
             elif get(adapter, "port_channel.lacp_fallback.mode") == "individual":
                 # if fallback is set to individual a profile has to be defined
                 if (profile_name := get(adapter, "port_channel.lacp_fallback.individual.profile")) is None:
-                    raise AristaAvdMissingVariableError(
+                    msg = (
                         "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
                         f" the connected endpoint with the name '{connected_endpoint['name']}'."
+                    )
+                    raise AristaAvdMissingVariableError(
+                        msg,
                     )
 
                 # Verify that the referred profile exists under port_profiles
                 if not (profile := self.shared_utils.get_merged_port_profile(profile_name)):
-                    raise AristaAvdMissingVariableError(
+                    msg = (
                         "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurrence seen"
                         f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
                         f" name '{connected_endpoint['name']}'."
+                    )
+                    raise AristaAvdMissingVariableError(
+                        msg,
                     )
 
                 ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
@@ -201,7 +209,12 @@ class EthernetInterfacesMixin(UtilsMixin):
         else:
             ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint)
             ethernet_interface["evpn_ethernet_segment"] = self._get_adapter_evpn_ethernet_segment_cfg(
-                adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
+                adapter,
+                short_esi,
+                node_index,
+                connected_endpoint,
+                "auto",
+                "single-active",
             )
 
         # More common ethernet_interface settings

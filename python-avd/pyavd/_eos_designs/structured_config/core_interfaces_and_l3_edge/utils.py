@@ -10,9 +10,8 @@ from ipaddress import ip_network
 from itertools import islice
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import default, get, get_item, merge
-from ....j2filters import convert_dicts
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import default, get, get_item, merge
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3Edge
@@ -21,7 +20,8 @@ if TYPE_CHECKING:
 class UtilsMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -44,10 +44,10 @@ class UtilsMixin:
     def _filtered_p2p_links(self: AvdStructuredConfigCoreInterfacesAndL3Edge) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
+
         For each links any referenced profiles are applied and IP addresses are resolved
         from pools or subnets.
         """
-
         if not (p2p_links := self._p2p_links):
             return []
 
@@ -69,9 +69,7 @@ class UtilsMixin:
         return p2p_links
 
     def _apply_p2p_links_profile(self: AvdStructuredConfigCoreInterfacesAndL3Edge, target_dict: dict) -> dict:
-        """
-        Apply a profile to a p2p_link
-        """
+        """Apply a profile to a p2p_link."""
         if "profile" not in target_dict:
             # Nothing to do
             return target_dict
@@ -101,7 +99,7 @@ class UtilsMixin:
                 return p2p_link
             prefix_size = int(ip_pool.get("prefix_size", 31))
             link_id = int(p2p_link["id"])
-            subnet = list(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), link_id - 1, link_id))[0]
+            subnet = next(iter(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), link_id - 1, link_id)))
 
         # hosts() return an iterator of all hosts in subnet.
         # islice() return a generator with only the first two iterations of hosts.
@@ -112,6 +110,7 @@ class UtilsMixin:
     def _get_p2p_data(self: AvdStructuredConfigCoreInterfacesAndL3Edge, p2p_link: dict) -> dict:
         """
         Parses p2p_link data model and extracts information which is easier to parse.
+
         Returns:
         {
             peer: <peer name>
@@ -132,10 +131,7 @@ class UtilsMixin:
         peer_index = (index + 1) % 2
         peer = p2p_link["nodes"][peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
-        if peer_facts is None:
-            peer_type = "other"
-        else:
-            peer_type = peer_facts.get("type", "other")
+        peer_type = "other" if peer_facts is None else peer_facts.get("type", "other")
 
         # Set ip or fallback to list with None values
         ip = get(p2p_link, "ip", default=[None, None])
@@ -155,8 +151,6 @@ class UtilsMixin:
         }
 
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
-        # Convert to new data models
-        node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
         if (node_data := get_item(node_child_interfaces, "node", self.shared_utils.hostname)) is not None and (
             member_interfaces := node_data.get("interfaces")
         ):
@@ -186,7 +180,7 @@ class UtilsMixin:
                         }
                         for index, interface in enumerate(member_interfaces)
                     ],
-                }
+                },
             )
             return data
 
@@ -198,19 +192,20 @@ class UtilsMixin:
                     "peer_interface": p2p_link["interfaces"][peer_index],
                     "port_channel_id": None,
                     "port_channel_members": [],
-                }
+                },
             )
             return data
 
-        raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set.")
+        msg = f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set."
+        raise AristaAvdMissingVariableError(msg)
 
     def _get_common_interface_cfg(self: AvdStructuredConfigCoreInterfacesAndL3Edge, p2p_link: dict) -> dict:
         """
         Return partial structured_config for one p2p_link.
+
         Covers common config that is applicable to both port-channels and ethernet interfaces.
         This config will only be used on the main interface - so not port-channel members.
         """
-
         index = p2p_link["nodes"].index(self.shared_utils.hostname)
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
@@ -244,7 +239,7 @@ class UtilsMixin:
                     {
                         "ospf_network_point_to_point": True,
                         "ospf_area": self.shared_utils.underlay_ospf_area,
-                    }
+                    },
                 )
 
             if self.shared_utils.underlay_isis:
@@ -258,7 +253,7 @@ class UtilsMixin:
                         "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type),
                         "isis_authentication_mode": p2p_link.get("isis_authentication_mode"),
                         "isis_authentication_key": p2p_link.get("isis_authentication_key"),
-                    }
+                    },
                 )
 
         if p2p_link.get("macsec_profile"):
@@ -280,8 +275,8 @@ class UtilsMixin:
                         "ldp": {
                             "interface": True,
                             "igp_sync": True,
-                        }
-                    }
+                        },
+                    },
                 )
 
         return interface_cfg
@@ -289,10 +284,10 @@ class UtilsMixin:
     def _get_ethernet_cfg(self: AvdStructuredConfigCoreInterfacesAndL3Edge, p2p_link: dict) -> dict:
         """
         Return partial structured_config for one p2p_link.
+
         Covers config that is only applicable to ethernet interfaces.
         This config will only be used on both main interfaces and port-channel members.
         """
-
         ethernet_cfg = {"speed": p2p_link.get("speed")}
 
         if get(p2p_link, "ptp.enabled") is not True:
@@ -313,6 +308,7 @@ class UtilsMixin:
     def _get_port_channel_member_cfg(self: AvdStructuredConfigCoreInterfacesAndL3Edge, p2p_link: dict, member: dict) -> dict:
         """
         Return partial structured_config for one p2p_link.
+
         Covers config for ethernet interfaces that are port-channel members.
 
         TODO: Change description for members to be the physical peer interface instead of port-channel

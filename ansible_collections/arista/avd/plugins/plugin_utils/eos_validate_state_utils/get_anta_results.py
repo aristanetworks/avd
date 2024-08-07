@@ -25,7 +25,7 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 if TYPE_CHECKING:
@@ -58,7 +58,6 @@ def get_anta_results(
     config_manager: ConfigManager,
     logging_level: str,
     skip_tests: list[dict],
-    ansible_tags: dict | None = None,
     save_catalog_name: Path | None = None,
     custom_anta_catalogs: list[Path] | None = None,
     yaml_dumper: Dumper | None = NoAliasDumper,
@@ -74,8 +73,6 @@ def get_anta_results(
       config_manager (ConfigManager): The device ConfigManager object containing data to be used by the tests.
       logging_level (str): The level at which ANTA should be logging.
       skip_tests (list[dict]): A list of dictionary containing the categories and/or tests to skip.
-      ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
-                           `eos_validate_state`. This is ignored if `skip_tests` is set.
       save_catalog_name (str): When set, the generated catalog is saved to a file using this name.
       custom_anta_catalogs (list[Path]): An optional list of custom ANTA catalog files to merge with the generated catalog.
       yaml_dumper (Dumper): Dumper to use to dump the ANTA catalog. Default is NoAliasDumper to avoid anchors.
@@ -92,15 +89,6 @@ def get_anta_results(
 
     # Setup ANTA logging
     setup_logging(level=logging_level)
-
-    if skip_tests:
-        LOGGER.warning("The variable 'skip_tests' has been set. Ansible tags are ignored for filtering tests.")
-    # Backward compatibility with legacy eos_validate_state Ansible tags
-    elif ansible_tags:
-        run_tags = ansible_tags.get("ansible_run_tags", ())
-        skip_tags = ansible_tags.get("ansible_skip_tags", ())
-        # Update the skip_tests variable according to Ansible tags
-        skip_tests = get_skip_tests_from_tags(run_tags, skip_tags)
 
     device_name = anta_device.name
 
@@ -159,7 +147,7 @@ def load_custom_catalogs(catalog_files: list[Path]) -> dict:
             with file.open("r", encoding="UTF-8") as fd:
                 catalog = load(fd, Loader=CSafeLoader)
                 catalog_list.append(catalog)
-        except (OSError, YAMLError) as error:
+        except (OSError, YAMLError) as error:  # noqa: PERF203 TODO: Investigate and improve code to avoid try/except inside loop
             msg = f"Failed to load the custom ANTA catalog from {file}: {error!s}"
             raise AristaAvdError(msg) from error
 
@@ -177,38 +165,6 @@ def dump_to_file(tests: dict, filename: Path, yaml_dumper: Dumper = NoAliasDumpe
     """
     with filename.open("w", encoding="UTF-8") as fd:
         dump(tests, fd, Dumper=yaml_dumper)
-
-
-def get_skip_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]:
-    """Get the list of AVD test categories to skip from the Ansible tags.
-
-    Args:
-    ----
-      run_tags (tuple): Tuple of run_tags used to run the playbook.
-      skip_tags (tuple): Tuple of skip_tags used to run the playbook.
-
-    Returns:
-    -------
-      result (list[dict]): List of dictionary containing the categories to skip.
-    """
-    result = []
-    for cls, cls_info in AVD_TEST_CLASSES.items():
-        class_legacy_tags = set(cls_info.get("legacy_ansible_tags", {}))
-
-        if run_tags and "never" in class_legacy_tags:
-            other_tags = class_legacy_tags - {"never"}
-            if not other_tags.intersection(set(run_tags)):
-                result.append({"category": cls.__name__})
-                continue
-
-        if class_legacy_tags.intersection(set(skip_tags)):
-            result.append({"category": cls.__name__})
-            continue
-
-        if run_tags and run_tags != ("all",) and not class_legacy_tags.intersection(set(run_tags)):
-            result.append({"category": cls.__name__})
-
-    return result
 
 
 def generate_tests(config_manager: ConfigManager, skip_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
@@ -285,5 +241,5 @@ def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: Resul
                 categories=categories,
                 description=description,
                 custom_field=custom_field,
-            )
+            ),
         )

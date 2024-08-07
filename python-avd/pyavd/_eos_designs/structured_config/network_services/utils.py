@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import ipaddress
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Tuple
+from typing import TYPE_CHECKING, Literal
 
-from ...._errors import AristaAvdError, AristaAvdMissingVariableError
-from ...._utils import default, get, get_item
-from ...._utils.password_utils.password import simple_7_encrypt
-from ....j2filters import natural_sort, range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item
+from pyavd._utils.password_utils.password import simple_7_encrypt
+from pyavd.j2filters import natural_sort, range_expand
+
 from .utils_zscaler import UtilsZscalerMixin
 
 if TYPE_CHECKING:
@@ -20,7 +21,8 @@ if TYPE_CHECKING:
 class UtilsMixin(UtilsZscalerMixin):
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -41,9 +43,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
     @cached_property
     def _vrf_default_evpn(self: AvdStructuredConfigNetworkServices) -> bool:
-        """
-        Return boolean telling if VRF "default" is running EVPN or not.
-        """
+        """Return boolean telling if VRF "default" is running EVPN or not."""
         if not (self.shared_utils.network_services_l3 and self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn):
             return False
 
@@ -53,16 +53,15 @@ class UtilsMixin(UtilsZscalerMixin):
 
             if "evpn" in vrf_default.get("address_families", ["evpn"]):
                 if self.shared_utils.underlay_filter_peer_as:
-                    raise AristaAvdError("'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.")
+                    msg = "'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF."
+                    raise AristaAvdError(msg)
                 return True
 
         return False
 
     @cached_property
     def _vrf_default_ipv4_subnets(self: AvdStructuredConfigNetworkServices) -> list[str]:
-        """
-        Return list of ipv4 subnets in VRF "default"
-        """
+        """Return list of ipv4 subnets in VRF "default"."""
         subnets = []
         for tenant in self.shared_utils.filtered_tenants:
             if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
@@ -84,7 +83,7 @@ class UtilsMixin(UtilsZscalerMixin):
         """
         Finds static routes defined under VRF "default" and find out if they should be redistributed in underlay and/or overlay.
 
-        Returns
+        Returns:
         -------
         dict
             static_routes: []
@@ -127,20 +126,21 @@ class UtilsMixin(UtilsZscalerMixin):
             "redistribute_in_overlay": redistribute_in_overlay,
         }
 
-    def _mlag_ibgp_peering_enabled(self: AvdStructuredConfigNetworkServices, vrf, tenant) -> bool:
+    def _mlag_ibgp_peering_enabled(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict) -> bool:
         """
-        Returns True if mlag ibgp_peering is enabled
-        False otherwise
+        Returns True if mlag ibgp_peering is enabled.
+
+        False otherwise.
         """
         if not self.shared_utils.mlag_l3 or not self.shared_utils.network_services_l3:
             return False
 
-        mlag_ibgp_peering: bool = default(vrf.get("enable_mlag_ibgp_peering_vrfs"), tenant.get("enable_mlag_ibgp_peering_vrfs"), True)
+        mlag_ibgp_peering: bool = default(vrf.get("enable_mlag_ibgp_peering_vrfs"), tenant.get("enable_mlag_ibgp_peering_vrfs"), True)  # noqa: FBT003
         return vrf["name"] != "default" and mlag_ibgp_peering
 
-    def _mlag_ibgp_peering_vlan_vrf(self: AvdStructuredConfigNetworkServices, vrf, tenant) -> int | None:
+    def _mlag_ibgp_peering_vlan_vrf(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict) -> int | None:
         """
-        MLAG IBGP Peering VLANs per VRF
+        MLAG IBGP Peering VLANs per VRF.
 
         Performs all relevant checks if MLAG IBGP Peering is enabled
         Returns None if peering is not enabled
@@ -154,28 +154,31 @@ class UtilsMixin(UtilsZscalerMixin):
             base_vlan = self.shared_utils.mlag_ibgp_peering_vrfs_base_vlan
             vrf_id = vrf.get("vrf_id", vrf.get("vrf_vni"))
             if vrf_id is None:
+                msg = f"Unable to assign MLAG VRF Peering VLAN for vrf {vrf['name']}.Set either 'mlag_ibgp_peering_vlan' or 'vrf_id' or 'vrf_vni' on the VRF"
                 raise AristaAvdMissingVariableError(
-                    f"Unable to assign MLAG VRF Peering VLAN for vrf {vrf['name']}.Set either 'mlag_ibgp_peering_vlan' or 'vrf_id' or 'vrf_vni' on the VRF"
+                    msg,
                 )
             vlan_id = base_vlan + int(vrf_id) - 1
 
         return vlan_id
 
-    def _mlag_ibgp_peering_redistribute(self: AvdStructuredConfigNetworkServices, vrf, tenant) -> bool:
+    def _mlag_ibgp_peering_redistribute(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict) -> bool:
         """
         Returns True if MLAG IBGP Peering subnet should be redistributed for the given vrf/tenant.
+
         False otherwise.
 
         Does _not_ include checks if the peering is enabled at all, so that should be checked first.
         """
-        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is True
+        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is True  # noqa: FBT003
 
     @cached_property
     def _configure_bgp_mlag_peer_group(self: AvdStructuredConfigNetworkServices) -> bool:
         """
         Flag set during creating of BGP VRFs if an MLAG peering is needed.
+
         Decides if MLAG BGP peer-group should be configured.
-        Catches cases where underlay is not BGP but we still need MLAG iBGP peering
+        Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         """
         if self.shared_utils.underlay_bgp or (bgp_vrfs := self._router_bgp_vrfs) is None:
             return False
@@ -191,9 +194,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
     @cached_property
     def _filtered_wan_vrfs(self: AvdStructuredConfigNetworkServices) -> list:
-        """
-        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
-        """
+        """Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode."""
         wan_vrfs = []
 
         for vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
@@ -203,7 +204,10 @@ class UtilsMixin(UtilsZscalerMixin):
                     "name": vrf_name,
                     "policy": get(vrf, "policy", default=self._default_wan_policy_name),
                     "wan_vni": get(
-                        vrf, "wan_vni", required=True, org_key=f"Required `wan_vni` is missing for VRF {vrf_name} under `wan_virtual_topologies.vrfs`."
+                        vrf,
+                        "wan_vni",
+                        required=True,
+                        org_key=f"Required `wan_vni` is missing for VRF {vrf_name} under `wan_virtual_topologies.vrfs`.",
                     ),
                 }
 
@@ -217,7 +221,7 @@ class UtilsMixin(UtilsZscalerMixin):
                     "policy": f"{self._default_wan_policy_name}-WITH-CP",
                     "wan_vni": 1,
                     "original_policy": self._default_wan_policy_name,
-                }
+                },
             )
         else:
             vrf_default["original_policy"] = vrf_default["policy"]
@@ -227,9 +231,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
     @cached_property
     def _wan_virtual_topologies_policies(self: AvdStructuredConfigNetworkServices) -> list:
-        """
-        This function parses the input data and append the default-policy if not already present
-        """
+        """This function parses the input data and append the default-policy if not already present."""
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
         # If not overwritten, inject the default policy in case it is required for one of the VRFs
         if get_item(policies, "name", self._default_wan_policy_name) is None:
@@ -284,7 +286,8 @@ class UtilsMixin(UtilsZscalerMixin):
 
     def _update_policy_match_statements(self: AvdStructuredConfigNetworkServices, policy: dict) -> None:
         """
-        Update the policy dict with two keys: `matches` and `default_match`
+        Update the policy dict with two keys: `matches` and `default_match`.
+
         For each match (or default_match), the load_balancing policy is resolved and if it is empty
         the match statement is not included.
         """
@@ -301,7 +304,8 @@ class UtilsMixin(UtilsZscalerMixin):
                     policy["name"],
                 )
             ) is None:
-                raise AristaAvdError("The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy")
+                msg = "The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy"
+                raise AristaAvdError(msg)
             matches.append(
                 {
                     "application_profile": self._wan_control_plane_application_profile_name,
@@ -311,7 +315,7 @@ class UtilsMixin(UtilsZscalerMixin):
                     "dscp": get(control_plane_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
                     "id": 254,
-                }
+                },
             )
 
         for application_virtual_topology in get(policy, "application_virtual_topologies", []):
@@ -354,11 +358,14 @@ class UtilsMixin(UtilsZscalerMixin):
                     "dscp": get(application_virtual_topology, "dscp"),
                     "load_balance_policy": load_balance_policy,
                     "id": profile_id,
-                }
+                },
             )
 
         default_virtual_topology = get(
-            policy, "default_virtual_topology", required=True, org_key=f"wan_virtual_topologies.policies[{policy['profile_prefix']}].default_virtual_toplogy"
+            policy,
+            "default_virtual_topology",
+            required=True,
+            org_key=f"wan_virtual_topologies.policies[{policy['profile_prefix']}].default_virtual_toplogy",
         )
         # Separating default_match as it is used differently
         default_match = None
@@ -379,10 +386,13 @@ class UtilsMixin(UtilsZscalerMixin):
             load_balance_policy_name = self.shared_utils.generate_lb_policy_name(name)
             load_balance_policy = self._generate_wan_load_balance_policy(load_balance_policy_name, default_virtual_topology, context_path)
             if not load_balance_policy:
-                raise AristaAvdError(
+                msg = (
                     f"The `default_virtual_topology` path-groups configuration for `wan_virtual_toplogies.policies[{policy['name']}]` produces "
                     "an empty load-balancing policy. Make sure at least one path-group present on the device is allowed in the "
                     "`default_virtual_topology` path-groups."
+                )
+                raise AristaAvdError(
+                    msg,
                 )
             application_profile = get(default_virtual_topology, "application_profile", default="default")
 
@@ -398,9 +408,12 @@ class UtilsMixin(UtilsZscalerMixin):
 
         if not matches and not default_match:
             # The policy is empty but should be assigned to a VRF
-            raise AristaAvdError(
+            msg = (
                 f"The policy `wan_virtual_toplogies.policies[{policy['name']}]` cannot match any traffic but is assigned to a VRF. "
                 "Make sure at least one path-group present on the device is used in the policy."
+            )
+            raise AristaAvdError(
+                msg,
             )
 
         policy["matches"] = matches
@@ -409,6 +422,7 @@ class UtilsMixin(UtilsZscalerMixin):
     def _generate_wan_load_balance_policy(self: AvdStructuredConfigNetworkServices, name: str, input_dict: dict, context_path: str) -> dict | None:
         """
         Generate and return a router path-selection load-balance policy.
+
         If HA is enabled, inject the HA path-group with priority 1.
 
         Attrs:
@@ -464,7 +478,7 @@ class UtilsMixin(UtilsZscalerMixin):
             # The policy is empty
             return None
 
-        # TODO for now adding LAN_HA only if the path-groups list is not empty
+        # TODO: for now adding LAN_HA only if the path-groups list is not empty
         # then need to add the logic to check HA peer path-group and maybe return a policy with LAN_HA only.
         if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
             # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
@@ -493,23 +507,26 @@ class UtilsMixin(UtilsZscalerMixin):
             failed_conversion = True
 
         if failed_conversion or not 1 <= priority <= 65535:
-            raise AristaAvdError(
+            msg = (
                 f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', "
                 f"'alternate' or an integer[1-65535] for {context_path}."
+            )
+            raise AristaAvdError(
+                msg,
             )
 
         return priority
 
     @cached_property
     def _default_wan_policy_name(self: AvdStructuredConfigNetworkServices) -> str:
-        """
-        TODO make this configurable
-        """
+        """TODO: make this configurable."""
         return "DEFAULT-POLICY"
 
     @cached_property
     def _default_policy_path_group_names(self: AvdStructuredConfigNetworkServices) -> list:
         """
+        Return a list of path group names for the default policy.
+
         Return the list of path-groups to consider when generating a default policy with AVD
         whether for the default policy or the special Control-plane policy.
         """
@@ -518,22 +535,24 @@ class UtilsMixin(UtilsZscalerMixin):
         }
         if not path_group_names.intersection(self.shared_utils.wan_local_path_group_names):
             # No common path-group between this device local path-groups and the available path-group for the default policy
-            raise AristaAvdError(
+            msg = (
                 f"Unable to generate the default WAN policy as none of the device local path-groups {self.shared_utils.wan_local_path_group_names} "
                 "is eligible to be included. Make sure that at least one path-group for the device is not configured with "
                 "`excluded_from_default_policy: true` under `wan_path_groups`."
+            )
+            raise AristaAvdError(
+                msg,
             )
         return natural_sort(path_group_names)
 
     @cached_property
     def _default_wan_policy(self: AvdStructuredConfigNetworkServices) -> dict:
         """
+        Returning policy containing all path groups not excluded from default policy.
+
         If no policy is defined for a VRF under 'wan_virtual_topologies.vrfs', a default policy named DEFAULT-POLICY is used
         where all traffic is matched in the default category and distributed amongst all path-groups.
-
-        Returning policy containing all path groups not excluded from default policy.
         """
-
         return {
             "name": self._default_wan_policy_name,
             "default_virtual_topology": {"path_groups": [{"names": self._default_policy_path_group_names}]},
@@ -541,7 +560,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
     def _default_profile_name(self: AvdStructuredConfigNetworkServices, profile_name: str, application_profile: str) -> str:
         """
-        Helper function to consistently return the default name of a profile
+        Helper function to consistently return the default name of a profile.
 
         Returns {profile_name}-{application_profile}
         """
@@ -564,24 +583,18 @@ class UtilsMixin(UtilsZscalerMixin):
 
     @cached_property
     def _wan_control_plane_profile_name(self: AvdStructuredConfigNetworkServices) -> str:
-        """
-        Control plane profile name
-        """
+        """Control plane profile name."""
         vrf_default_policy_name = get(get_item(self._filtered_wan_vrfs, "name", "default"), "original_policy")
         return get(self._wan_control_plane_virtual_topology, "name", default=f"{vrf_default_policy_name}-CONTROL-PLANE")
 
     @cached_property
     def _wan_control_plane_application_profile_name(self: AvdStructuredConfigNetworkServices) -> str:
-        """
-        Control plane application profile name
-        """
+        """Control plane application profile name."""
         return get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology.application_profile", default="APP-PROFILE-CONTROL-PLANE")
 
     @cached_property
     def _local_path_groups_connected_to_pathfinder(self: AvdStructuredConfigNetworkServices) -> list:
-        """
-        Return list of names of local path_groups connected to pathfinder
-        """
+        """Return list of names of local path_groups connected to pathfinder."""
         return [
             path_group["name"]
             for path_group in self.shared_utils.wan_local_path_groups
@@ -591,11 +604,13 @@ class UtilsMixin(UtilsZscalerMixin):
     @cached_property
     def _svi_acls(self: AvdStructuredConfigNetworkServices) -> dict[str, dict[str, dict]] | None:
         """
-        Returns a dict of
-            <interface_name>: {
-                "ipv4_acl_in": <generated_ipv4_acl>,
-                "ipv4_acl_out": <generated_ipv4_acl>,
-            }
+        Returns a dict of SVI ACLs.
+
+        <interface_name>: {
+            "ipv4_acl_in": <generated_ipv4_acl>,
+            "ipv4_acl_out": <generated_ipv4_acl>,
+        }
+
         Only contains interfaces with ACLs and only the ACLs that are set,
         so use `get(self._svi_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
         """
@@ -614,7 +629,7 @@ class UtilsMixin(UtilsZscalerMixin):
                     interface_name = f"Vlan{svi['id']}"
                     interface_ip: str | None = svi.get("ip_address_virtual")
                     if interface_ip is not None and "/" in interface_ip:
-                        interface_ip = interface_ip.split("/", maxsplit=1)[0]
+                        interface_ip = get_ip_from_ip_prefix(interface_ip)
 
                     if ipv4_acl_in is not None:
                         svi_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
@@ -640,8 +655,9 @@ class UtilsMixin(UtilsZscalerMixin):
         return f"ACL-{self.get_internet_exit_nat_profile_name(internet_exit_policy_type)}"
 
     def get_internet_exit_nat_pool_and_profile(
-        self: AvdStructuredConfigNetworkServices, internet_exit_policy_type: Literal["zscaler", "direct"]
-    ) -> Tuple[dict | None, dict | None]:
+        self: AvdStructuredConfigNetworkServices,
+        internet_exit_policy_type: Literal["zscaler", "direct"],
+    ) -> tuple[dict | None, dict | None]:
         if internet_exit_policy_type == "zscaler":
             pool = {
                 "name": "PORT-ONLY-POOL",
@@ -650,7 +666,7 @@ class UtilsMixin(UtilsZscalerMixin):
                     {
                         "first_port": 1500,
                         "last_port": 65535,
-                    }
+                    },
                 ],
             }
 
@@ -662,8 +678,8 @@ class UtilsMixin(UtilsZscalerMixin):
                             "access_list": self.get_internet_exit_nat_acl_name(internet_exit_policy_type),
                             "pool_name": "PORT-ONLY-POOL",
                             "nat_type": "pool",
-                        }
-                    ]
+                        },
+                    ],
                 },
             }
             return pool, profile
@@ -676,15 +692,63 @@ class UtilsMixin(UtilsZscalerMixin):
                         {
                             "access_list": self.get_internet_exit_nat_acl_name(internet_exit_policy_type),
                             "nat_type": "overload",
-                        }
-                    ]
+                        },
+                    ],
                 },
             }
             return None, profile
+        return None
 
     @cached_property
     def _filtered_internet_exit_policy_types(self: AvdStructuredConfigNetworkServices) -> list:
-        return sorted(set(internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies))
+        return sorted({internet_exit_policy["type"] for internet_exit_policy in self._filtered_internet_exit_policies})
+
+    @cached_property
+    def _l3_interface_acls(self: AvdStructuredConfigNetworkServices) -> dict | None:
+        """
+        Returns a dict of interfaces and ACLs set on the interfaces.
+
+        {
+            <interface_name>: {
+            "ipv4_acl_in": <generated_ipv4_acl>,
+            "ipv4_acl_out": <generated_ipv4_acl>,
+            }
+        }
+        Only contains interfaces with ACLs and only the ACLs that are set,
+        so use `get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in", separator="..")` to get the value.
+        """
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        l3_interface_acls = {}
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                for l3_interface in vrf["l3_interfaces"]:
+                    for interface_idx, interface in enumerate(l3_interface["interfaces"]):
+                        if l3_interface["nodes"][interface_idx] != self.shared_utils.hostname:
+                            continue
+
+                        ipv4_acl_in = get(l3_interface, "ipv4_acl_in")
+                        ipv4_acl_out = get(l3_interface, "ipv4_acl_out")
+                        if ipv4_acl_in is None and ipv4_acl_out is None:
+                            continue
+                        interface_name = interface
+                        interface_ip: str | None = l3_interface["ip_addresses"][interface_idx]
+                        if interface_ip is not None:
+                            interface_ip = get_ip_from_ip_prefix(interface_ip)
+                        if ipv4_acl_in is not None:
+                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
+                                name=ipv4_acl_in,
+                                interface_name=interface_name,
+                                interface_ip=interface_ip,
+                            )
+                        if ipv4_acl_out is not None:
+                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
+                                name=ipv4_acl_out,
+                                interface_name=interface_name,
+                                interface_ip=interface_ip,
+                            )
+        return l3_interface_acls
 
     @cached_property
     def _filtered_internet_exit_policies(self: AvdStructuredConfigNetworkServices) -> list:
@@ -770,12 +834,11 @@ class UtilsMixin(UtilsZscalerMixin):
         if policy_type == "zscaler":
             return self.get_zscaler_internet_exit_connections(internet_exit_policy)
 
-        raise AristaAvdError(f"Unsupported type '{policy_type}' found in cv_pathfinder_internet_exit[name={policy_name}].")
+        msg = f"Unsupported type '{policy_type}' found in cv_pathfinder_internet_exit[name={policy_name}]."
+        raise AristaAvdError(msg)
 
     def get_direct_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
-        """
-        Return a list of connections (dicts) for the given internet_exit_policy of type direct.
-        """
+        """Return a list of connections (dicts) for the given internet_exit_policy of type direct."""
         if get(internet_exit_policy, "type") != "direct":
             return []
 
@@ -788,18 +851,23 @@ class UtilsMixin(UtilsZscalerMixin):
                 continue
 
             if not wan_interface.get("peer_ip"):
-                raise AristaAvdMissingVariableError(
+                msg = (
                     f"{wan_interface['name']} peer_ip needs to be set. When using wan interface "
                     "for direct type internet exit, peer_ip is used for nexthop, and connectivity monitoring."
                 )
+                raise AristaAvdMissingVariableError(
+                    msg,
+                )
 
             # wan interface ip will be used for acl, hence raise error if ip is not available
-            if (ip_address := wan_interface.get("ip_address")) == "dhcp":
-                if not (ip_address := wan_interface.get("dhcp_ip")):
-                    raise AristaAvdMissingVariableError(
-                        f"{wan_interface['name']} 'dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, "
-                        "'dhcp_ip' is used in the NAT ACL."
-                    )
+            if (ip_address := wan_interface.get("ip_address")) == "dhcp" and not (ip_address := wan_interface.get("dhcp_ip")):
+                msg = (
+                    f"{wan_interface['name']} 'dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, "
+                    "'dhcp_ip' is used in the NAT ACL."
+                )
+                raise AristaAvdMissingVariableError(
+                    msg,
+                )
 
             sanitized_interface_name = self.shared_utils.sanitize_interface_name(wan_interface["name"])
             connections.append(
@@ -813,15 +881,13 @@ class UtilsMixin(UtilsZscalerMixin):
                     "source_interface": wan_interface["name"],
                     "description": f"Internet Exit {internet_exit_policy['name']}",
                     "exit_group": f"{internet_exit_policy['name']}",
-                }
+                },
             )
 
         return connections
 
     def get_zscaler_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
-        """
-        Return a list of connections (dicts) for the given internet_exit_policy of type zscaler.
-        """
+        """Return a list of connections (dicts) for the given internet_exit_policy of type zscaler."""
         if get(internet_exit_policy, "type") != "zscaler":
             return []
 
@@ -851,9 +917,12 @@ class UtilsMixin(UtilsZscalerMixin):
 
             tunnel_interface_numbers = get(interface_policy_config, "tunnel_interface_numbers")
             if tunnel_interface_numbers is None:
-                raise AristaAvdMissingVariableError(
+                msg = (
                     f"{wan_interface['name']}.cv_pathfinder_internet_exit.policies[{internet_exit_policy['name']}]."
                     "tunnel_interface_numbers needs to be set, when using wan interface for zscaler type internet exit."
+                )
+                raise AristaAvdMissingVariableError(
+                    msg,
                 )
 
             tunnel_id_range = range_expand(tunnel_interface_numbers)
@@ -886,15 +955,13 @@ class UtilsMixin(UtilsZscalerMixin):
                         "exit_group": f"{policy_name}_{suffix}",
                         "preference": zscaler_endpoint_key,
                         "suffix": suffix,
-                    }
+                    },
                 )
 
         return connections
 
     def _get_ipsec_credentials(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> tuple[str, str]:
-        """
-        Returns ufqdn, shared_key based on various details from the given internet_exit_policy.
-        """
+        """Returns ufqdn, shared_key based on various details from the given internet_exit_policy."""
         policy_name = internet_exit_policy["name"]
         domain_name = get(internet_exit_policy, "zscaler.domain_name", required=True)
         ipsec_key_salt = get(internet_exit_policy, "zscaler.ipsec_key_salt", required=True)
@@ -905,10 +972,11 @@ class UtilsMixin(UtilsZscalerMixin):
     def _generate_ipsec_key(self: AvdStructuredConfigNetworkServices, name: str, salt: str) -> str:
         """
         Build a secret containing various components for this policy and device.
+
         Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
 
         TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
         """
-        secret = "_".join((self.shared_utils.hostname, name, salt))
+        secret = f"{self.shared_utils.hostname}_{name}_{salt}"
         type_7_salt = sum(salt.encode("utf-8")) % 16
         return simple_7_encrypt(secret, type_7_salt)

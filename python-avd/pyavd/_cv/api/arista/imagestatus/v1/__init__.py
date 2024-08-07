@@ -201,6 +201,12 @@ class ErrorCode(aristaproto.Enum):
      with a non-2GB EOS or a non-2GB device is incompatible with a 2GB-EOS.
     """
 
+    EOS_EXTENSION_VERSION_INCOMPATIBLE = 16
+    """
+    ERROR_CODE_EOS_EXTENSION_VERSION_INCOMPATIBLE represents the case where the given extension
+     version doesn't support the given EOS version.
+    """
+
 
 class WarningCode(aristaproto.Enum):
     """WarningCode indicates warnings produced during image validations."""
@@ -302,6 +308,19 @@ class WarningCode(aristaproto.Enum):
     """
     WARNING_CODE_BUGALERTS_DATA_MISSING represents cases where some of the BugAlerts data
      under Aeris analytics dataset is missing.
+    """
+
+
+class InfoCode(aristaproto.Enum):
+    """InfoCode indicates info messages produced during image validations."""
+
+    UNSPECIFIED = 0
+    """INFO_CODE_UNSPECIFIED indicates info code is unspecified."""
+
+    NEWER_VERSION_AVAILABLE = 1
+    """
+    INFO_CODE_NEWER_VERSION_AVAILABLE represents cases where a newer EOS maintainance
+     release is available for download.
     """
 
 
@@ -639,13 +658,19 @@ class Summary(aristaproto.Message):
     errors: "ImageErrors" = aristaproto.message_field(3)
     """
     errors are the image errors encountered while validating the image. These are
-     displayed on the change control review page (for changes made outside the workspace).
+     displayed on the workspace build results page.
     """
 
     warnings: "ImageWarnings" = aristaproto.message_field(4)
     """
     warnings are the image warnings encountered while validating the image. These are
-     displayed on the change control review page (for changes made outside the workspace).
+     displayed on the workspace build results page.
+    """
+
+    infos: "ImageInfos" = aristaproto.message_field(5)
+    """
+    infos are the image infos encountered while validating the image. These are
+     displayed on the workspace build results page.
     """
 
 
@@ -701,6 +726,32 @@ class ImageWarnings(aristaproto.Message):
 
     values: List["ImageWarning"] = aristaproto.message_field(1)
     """values is a list of image warnings."""
+
+
+@dataclass(eq=False, repr=False)
+class ImageInfo(aristaproto.Message):
+    """ImageInfo wraps `InfoCode` enum with a reason string."""
+
+    sku: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
+    """sku represents the name of the sku."""
+
+    info_code: "InfoCode" = aristaproto.enum_field(2)
+    """info_code is the info code."""
+
+    info_msg: Optional[str] = aristaproto.message_field(
+        3, wraps=aristaproto.TYPE_STRING
+    )
+    """info_msg provides a description of the info."""
+
+
+@dataclass(eq=False, repr=False)
+class ImageInfos(aristaproto.Message):
+    """
+    ImageInfos is the list of info messages reported by CVP when handling image validations.
+    """
+
+    values: List["ImageInfo"] = aristaproto.message_field(1)
+    """values is a list of image infos."""
 
 
 @dataclass(eq=False, repr=False)

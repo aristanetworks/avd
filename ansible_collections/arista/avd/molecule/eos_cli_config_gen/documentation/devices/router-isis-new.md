@@ -148,11 +148,11 @@ interface Loopback1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan110 |  TENANT_A_PROJECT01  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan110 |  TENANT_A_PROJECT01  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |
+| Vlan4093 |  default  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.0/31  |  -  |  -  |  -  |  -  |
 
 ##### ISIS
 
@@ -193,12 +193,9 @@ interface Vlan4094
 | Settings | Value |
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
-| Net-ID | 49.0001.0001.0001.0001.00 |
-| Type | level-2 |
-| Router-ID | 192.168.255.4 |
-| Log Adjacency Changes | True |
+| Log Adjacency Changes | False |
 | MPLS LDP Sync Default | True |
-| Local Convergence Delay (ms) | 15000 |
+| Local Convergence Delay (ms) | 10000 |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 | SPF Interval | 250 seconds |
@@ -213,10 +210,14 @@ interface Vlan4094
 
 | Route Type | Route-Map | Include Leaked |
 | ---------- | --------- | -------------- |
+| connected | - | - |
 | isis instance | RM-REDIS-ISIS-INSTANCE | - |
 | ospf internal | - | - |
 | ospf external | RM-OSPF-EXTERNAL-TO-ISIS | - |
 | ospf nssa-external | RM-OSPF-NSSA_EXT-TO-ISIS | True |
+| ospf | - | - |
+| ospfv3 external | - | - |
+| ospfv3 | - | - |
 | static | RM-STATIC-TO-ISIS | True |
 
 #### ISIS Interfaces Summary
@@ -259,39 +260,41 @@ interface Vlan4094
 | Settings | Value |
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
-| Maximum-paths | 4 |
-| BFD All-interfaces | True |
 | TI-LFA Mode | node-protection |
+| TI-LFA Level | level-1 |
 | TI-LFA SRLG Enabled | True |
+| TI-LFA SRLG Strict Mode | True |
 
 #### Router ISIS Device Configuration
 
 ```eos
 !
 router isis EVPN_UNDERLAY
-   net 49.0001.0001.0001.0001.00
-   is-type level-2
+   redistribute connected
    redistribute isis instance route-map RM-REDIS-ISIS-INSTANCE
    redistribute ospf match internal
    redistribute ospf match external route-map RM-OSPF-EXTERNAL-TO-ISIS
    redistribute ospf include leaked match nssa-external route-map RM-OSPF-NSSA_EXT-TO-ISIS
+   redistribute ospfv3 match external
    redistribute static include leaked route-map RM-STATIC-TO-ISIS
-   router-id ipv4 192.168.255.4
-   log-adjacency-changes
+   no log-adjacency-changes
    mpls ldp sync default
-   timers local-convergence-delay 15000 protected-prefixes
-   set-overload-bit on-startup wait-for-bgp timeout 10
+   timers local-convergence-delay protected-prefixes
+   set-overload-bit
    advertise passive-only
    spf-interval 250 seconds 10 milliseconds 20 milliseconds
-   authentication mode md5 level-1
+   authentication mode shared-secret profile test1 algorithm md5 level-1
    authentication mode sha key-id 2 level-2
    graceful-restart
    graceful-restart t2 level-1 10
    graceful-restart t2 level-2 20
    graceful-restart restart-hold-time 10
    authentication key-id 2 algorithm sha-512 key 0 password
-   authentication key-id 1 algorithm sha-1 rfc-5310 key 0 password level-1
-   authentication key-id 1 algorithm sha-1 rfc-5310 key 0 password level-2
+   authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
+   authentication key-id 1 algorithm sha-1 key 0 password level-1
+   authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
+   authentication key-id 1 algorithm sha-1 key 0 password level-2
+   authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
    authentication key 0 password level-1
    authentication key 0 password level-2
    !
@@ -303,10 +306,8 @@ router isis EVPN_UNDERLAY
       fast-reroute ti-lfa srlg strict
    !
    address-family ipv6 unicast
-      maximum-paths 4
-      bfd all-interfaces
-      fast-reroute ti-lfa mode node-protection
-      fast-reroute ti-lfa srlg
+      fast-reroute ti-lfa mode node-protection level-1
+      fast-reroute ti-lfa srlg strict
    !
    segment-routing mpls
       no shutdown

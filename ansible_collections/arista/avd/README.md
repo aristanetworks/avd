@@ -21,7 +21,7 @@ AVD Documentation:
 
 The AVD collection has the following requirements:
 
-- Python 3.9 or above
+- Python 3.10 or above
 - Ansible Core 2.15.0 to 2.17.x
 - [Additional Python Dependencies](#additional-python-dependencies)
 - Modify the `ansible.cfg` file to support additional Jinja2 extensions

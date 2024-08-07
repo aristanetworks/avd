@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .router_bgp import RouterBgpMixin
@@ -31,9 +32,7 @@ class AvdStructuredConfigCoreInterfacesAndL3Edge(
     """
 
     def render(self) -> dict:
-        """
-        Render structured configs for core_interfaces and l3_Edge
-        """
+        """Render structured configs for core_interfaces and l3_Edge."""
         result_list = []
 
         for data_model in DATA_MODELS:

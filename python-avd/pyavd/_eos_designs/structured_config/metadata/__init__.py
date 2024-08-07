@@ -5,15 +5,17 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ...._utils import strip_empties_from_dict
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._utils import strip_empties_from_dict
+
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
 
 
 class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
     """
-    This returns the metadata data structure as per the below example
+    This returns the metadata data structure as per the below example.
+
     {
         "metadata": {
             "platform": "7050X3",
@@ -46,7 +48,7 @@ class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
             },
             "cv_pathfinder": {<see schema for model>}
         }
-    }
+    }.
     """
 
     @cached_property

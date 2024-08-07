@@ -1,16 +1,22 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from collections import ChainMap
+from __future__ import annotations
 
-from ..avdfacts import AvdFacts
-from .models import InterfaceDescriptionData
+from collections import ChainMap
+from typing import TYPE_CHECKING, Any
+
+from pyavd._eos_designs.avdfacts import AvdFacts
+
 from .utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from .models import InterfaceDescriptionData
 
 
 class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
     """
-    Class used to render Interface Descriptions either from custom Jinja2 templates or using default Python Logic
+    Class used to render Interface Descriptions either from custom Jinja2 templates or using default Python Logic.
 
     Since some templates might contain certain legacy variables (switch_*),
     those are mapped from the switch.* model
@@ -27,12 +33,14 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
     - Breaking changes may happen between major releases or in rare cases for bug fixes.
     """
 
-    def _template(self, template_path, **kwargs):
+    def _template(self, template_path: str, **kwargs: Any) -> str:
         template_vars = ChainMap(kwargs, self._hostvars)
         return self.shared_utils.template_var(template_path, template_vars)
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called for each underlay ethernet interface.
+
         Available data:
             - link_type
             - peer
@@ -43,7 +51,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - type
             - vrf
             - wan_carrier
-            - wan_circuit_id
+            - wan_circuit_id.
         """
         desc = self.underlay_ethernet_interfaces(
             link_type=data.link_type,
@@ -81,6 +89,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def underlay_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called for each underlay port-channel interface.
+
         Available data:
             - peer
             - peer_channel_group_id
@@ -88,13 +98,15 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
-            - type
+            - type.
         """
         return self.underlay_port_channel_interfaces(
-            link_peer=data.peer, link_peer_channel_group_id=data.peer_channel_group_id, link_channel_description=data.port_channel_description
+            link_peer=data.peer,
+            link_peer_channel_group_id=data.peer_channel_group_id,
+            link_channel_description=data.port_channel_description,
         )
 
-    def underlay_port_channel_interfaces(self, link_peer: str, link_peer_channel_group_id: int, link_channel_description: str) -> str:
+    def underlay_port_channel_interfaces(self, link_peer: str, link_peer_channel_group_id: int, link_channel_description: str | None) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
         if template_path := self.shared_utils.interface_descriptions_templates.get("underlay_port_channel_interfaces"):
             return self._template(
@@ -115,12 +127,14 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def mlag_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called for each mlag ethernet interface.
+
         Available data:
             - peer_interface
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
-            - type
+            - type.
         """
         return self.mlag_ethernet_interfaces(mlag_interface=data.peer_interface)
 
@@ -133,16 +147,18 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def mlag_port_channel_interface(
         self,
-        data: InterfaceDescriptionData,  # pylint: disable=unused-argument
+        data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
     ) -> str:
         """
+        Called for each mlag port-channel interface.
+
         Available data:
             - mlag_peer
             - peer_channel_group_id
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
-            - type
+            - type.
         """
         return self.mlag_port_channel_interfaces()
 
@@ -155,6 +171,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called for each connected endpoint ethernet interface.
+
         Available data:
             - peer
             - peer_interface
@@ -162,17 +180,19 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
-            - type
+            - type.
         """
         return self.connected_endpoints_ethernet_interfaces(peer=data.peer, peer_interface=data.peer_interface, adapter_description=data.description)
 
-    def connected_endpoints_ethernet_interfaces(self, peer: str = None, peer_interface: str = None, adapter_description: str = None) -> str:
+    def connected_endpoints_ethernet_interfaces(
+        self, peer: str | None = None, peer_interface: str | None = None, adapter_description: str | None = None
+    ) -> str:
         """
         If a jinja template is configured, use it.
+
         If not, use the adapter.description or default to <PEER>_<PEER_INTERFACE>
         TODO: AVD5.0.0 move this to the new function.
         """
-
         if template_path := self.shared_utils.interface_descriptions_templates.get("connected_endpoints_ethernet_interfaces"):
             return self._template(template_path, peer=peer, peer_interface=peer_interface, adapter_description=adapter_description)
 
@@ -184,6 +204,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def connected_endpoints_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called for each connected endpoint port-channel interface.
+
         Available data:
             - peer
             - description
@@ -191,21 +213,27 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
-            - type
+            - type.
         """
         return self.connected_endpoints_port_channel_interfaces(
-            peer=data.peer, adapter_description=data.description, adapter_port_channel_description=data.port_channel_description
+            peer=data.peer,
+            adapter_description=data.description,
+            adapter_port_channel_description=data.port_channel_description,
         )
 
     def connected_endpoints_port_channel_interfaces(
-        self, peer: str = None, adapter_description: str = None, adapter_port_channel_description: str = None
+        self,
+        peer: str | None = None,
+        adapter_description: str | None = None,
+        adapter_port_channel_description: str | None = None,
     ) -> str:
-        """If a jinja template is configured, use it.
+        """
+        If a jinja template is configured, use it.
+
         If not, return the <adapter.description>_<port_channel_description> or
         default to <PEER>_<adapter_port_channel_description>
         TODO: AVD5.0.0 move this to the new function.
         """
-
         if template_path := self.shared_utils.interface_descriptions_templates.get("connected_endpoints_port_channel_interfaces"):
             return self._template(
                 template_path,
@@ -219,16 +247,18 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
     def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """
+        Called for device.
+
         Available data:
             - description
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
-            - type
+            - type.
         """
         return self.overlay_loopback_interface(overlay_loopback_description=data.description)
 
-    def overlay_loopback_interface(self, overlay_loopback_description: str = None) -> str:
+    def overlay_loopback_interface(self, overlay_loopback_description: str | None = None) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
         if template_path := self.shared_utils.interface_descriptions_templates.get("overlay_loopback_interface"):
             return self._template(template_path, overlay_loopback_description=overlay_loopback_description)

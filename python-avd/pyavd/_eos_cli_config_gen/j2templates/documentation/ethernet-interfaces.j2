@@ -18,7 +18,6 @@
 {%         if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%             set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%             set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
-                                                                      arista.avd.convert_dicts('name') |
                                                                       selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                       first %}
 {%             if port_channel_interface.type | arista.avd.default('switched') == 'switched' %}
@@ -323,7 +322,6 @@
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%                 set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
-                                                                          arista.avd.convert_dicts('name') |
                                                                           selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                           first %}
 {%                 if port_channel_interface.ip_address is arista.avd.defined %}
@@ -391,7 +389,6 @@
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%                 set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
-                                                                          arista.avd.convert_dicts('name') |
                                                                           selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                           first %}
 {%                 if port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
@@ -659,6 +656,22 @@
 {%             else %}
 | {{ priority_intf.name }} | {{ priority_intf.priority_flow_control.enabled }} | - | - |
 {%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     set sync_e_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.sync_e.enable is arista.avd.defined(true) %}
+{%             do sync_e_interfaces.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if sync_e_interfaces | length > 0 %}
+
+#### Synchronous Ethernet
+
+| Interface | Priority |
+| --------- | -------- |
+{%         for sync_e_interface in sync_e_interfaces %}
+| {{ sync_e_interface.name }} | {{ sync_e_interface.sync_e.priority | arista.avd.default('127') }} |
 {%         endfor %}
 {%     endif %}
 

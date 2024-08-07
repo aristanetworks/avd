@@ -12,7 +12,6 @@ port_profiles:
     mode: trunk
     vlans: "210-211"
 
-
 servers:
 
   - name: server01_MLAG

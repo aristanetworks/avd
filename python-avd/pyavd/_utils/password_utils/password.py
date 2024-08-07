@@ -1,17 +1,17 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""
-Used by Encrypt / Decrypt filters
-"""
+"""Used by Encrypt / Decrypt filters."""
+
 from __future__ import annotations
 
 import random
+from typing import Any
 
 from .password_utils import cbc_decrypt, cbc_encrypt
 
 
-def _validate_password_and_key(password: str, key: str) -> None:
+def _validate_password_and_key(password: Any, key: str) -> None:
     """
     Validates the password and key values.
 
@@ -24,13 +24,16 @@ def _validate_password_and_key(password: str, key: str) -> None:
         TypeError: If the password is not of type `str`.
     """
     if not key:
-        raise ValueError("Key is required for encryption")
+        msg = "Key is required for encryption"
+        raise ValueError(msg)
 
     if not password:
-        raise ValueError("Password is required for encryption")
+        msg = "Password is required for encryption"
+        raise ValueError(msg)
 
     if not isinstance(password, str):
-        raise TypeError(f"Password MUST be of type 'str' but is of type {type(password)}")
+        msg = f"Password MUST be of type 'str' but is of type {type(password)}"
+        raise TypeError(msg)
 
 
 ##############
@@ -83,13 +86,14 @@ def ospf_simple_decrypt(password: str, key: str) -> str:
     try:
         return cbc_decrypt(key_b, data).decode()
     except Exception as exc:
-        raise ValueError("OSPF password decryption failed - check the input parameters") from exc
+        msg = "OSPF password decryption failed - check the input parameters"
+        raise ValueError(msg) from exc
 
 
 OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS = ["md5", "sha1", "sha256", "sha384", "sha512"]
 
 
-def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str = None, key_id: str = None) -> str:
+def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str | None = None, key_id: str | None = None) -> str:
     """
     Encrypt a password for Message Digest Keys.
 
@@ -110,9 +114,11 @@ def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str = N
     """
     _validate_password_and_key(password, key)
     if hash_algorithm is None or key_id is None:
-        raise ValueError("For OSPF message digest keys, both hash_algorithm and key_id are required")
+        msg = "For OSPF message digest keys, both hash_algorithm and key_id are required"
+        raise ValueError(msg)
     if hash_algorithm not in OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS:
-        raise ValueError(f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}")
+        msg = f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}"
+        raise ValueError(msg)
 
     data = bytes(password, encoding="UTF-8")
     key_b = bytes(f"{key}_{hash_algorithm}Key_{key_id}", encoding="UTF-8")
@@ -120,7 +126,7 @@ def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str = N
     return cbc_encrypt(key_b, data).decode()
 
 
-def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str = None, key_id: str = None) -> str:
+def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str | None = None, key_id: str | None = None) -> str:
     """
     Decrypt a password for Message Digest Keys.
 
@@ -142,9 +148,11 @@ def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str = N
     """
     _validate_password_and_key(password, key)
     if hash_algorithm is None or key_id is None:
-        raise ValueError("For OSPF message digest keys, both hash_algorithm and key_id are required")
+        msg = "For OSPF message digest keys, both hash_algorithm and key_id are required"
+        raise ValueError(msg)
     if hash_algorithm not in OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS:
-        raise ValueError(f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}")
+        msg = f"For OSPF message digest keys, `hash_algorithm` must be in {OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS}"
+        raise ValueError(msg)
 
     data = bytes(password, encoding="UTF-8")
     key_b = bytes(f"{key}_{hash_algorithm}Key_{key_id}", encoding="UTF-8")
@@ -152,13 +160,14 @@ def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str = N
     try:
         return cbc_decrypt(key_b, data).decode()
     except Exception as exc:
-        raise ValueError("OSPF password decryption failed - check the input parameters") from exc
+        msg = "OSPF password decryption failed - check the input parameters"
+        raise ValueError(msg) from exc
 
 
 ##############
 # BGP
 ##############
-def bgp_encrypt(password: str, key) -> str:
+def bgp_encrypt(password: str, key: str) -> str:
     """
     Encrypts a password for BGP (Border Gateway Protocol) authentication.
 
@@ -181,7 +190,7 @@ def bgp_encrypt(password: str, key) -> str:
     return cbc_encrypt(key, data).decode()
 
 
-def bgp_decrypt(password: str, key) -> str:
+def bgp_decrypt(password: str, key: str) -> str:
     """
     Decrypts a password for BGP (Border Gateway Protocol) authentication.
 
@@ -205,7 +214,8 @@ def bgp_decrypt(password: str, key) -> str:
     try:
         return cbc_decrypt(key, data).decode()
     except Exception as exc:
-        raise ValueError("BGP password decryption failed - check the input parameters") from exc
+        msg = "BGP password decryption failed - check the input parameters"
+        raise ValueError(msg) from exc
 
 
 ##############
@@ -224,7 +234,7 @@ _ISIS_MODE_MAP = {
 }
 
 
-def _validate_isis_args(password: str, key: str, mode: str):
+def _validate_isis_args(password: str, key: str, mode: str) -> None:
     """
     Validates the arguments for ISIS (Intermediate System to Intermediate System) encryption/decryption.
 
@@ -241,19 +251,24 @@ def _validate_isis_args(password: str, key: str, mode: str):
         ValueError: If `mode` is empty or missing.
     """
     if not password:
-        raise ValueError("Password is required for encryption/decryption")
+        msg = "Password is required for encryption/decryption"
+        raise ValueError(msg)
 
     if not isinstance(password, str):
-        raise TypeError(f"Password MUST be of type 'str' but is of type {type(password)}")
+        msg = f"Password MUST be of type 'str' but is of type {type(password)}"
+        raise TypeError(msg)
 
     if not isinstance(key, str):
-        raise TypeError(f"Key MUST be of type 'str' but is of type {type(key)}")
+        msg = f"Key MUST be of type 'str' but is of type {type(key)}"
+        raise TypeError(msg)
 
     if not isinstance(mode, str):
-        raise TypeError(f"Mode MUST be a string with one of the following options: {list(_ISIS_MODE_MAP)}. Got '{mode}'.")
+        msg = f"Mode MUST be a string with one of the following options: {list(_ISIS_MODE_MAP)}. Got '{mode}'."
+        raise TypeError(msg)
 
     if not mode:
-        raise ValueError("Mode is required for encryption/decryption")
+        msg = "Mode is required for encryption/decryption"
+        raise ValueError(msg)
 
 
 def _get_isis_key(key: str, mode: str) -> bytes:
@@ -316,7 +331,8 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
     try:
         return cbc_decrypt(_get_isis_key(key, mode), data).decode()
     except Exception as exc:
-        raise ValueError("ISIS password decryption failed - check the input parameters") from exc
+        msg = "ISIS password decryption failed - check the input parameters"
+        raise ValueError(msg) from exc
 
 
 ###############
@@ -353,6 +369,6 @@ def simple_7_encrypt(data: str, salt: int | None = None) -> str:
     """
     if salt is None:
         # Accepting SonarLint issue: Pseudo random is ok since this is simply creating a visible salt
-        salt = random.randint(0, 15)  # NOSONAR
+        salt = random.randint(0, 15)  # NOSONAR # noqa: S311
     cleartext = data.encode("UTF-8")
     return f"{salt:02}" + bytearray(char ^ (SIMPLE_7_SEED[(salt + i) % 53]) for i, char in enumerate(cleartext)).hex().upper()

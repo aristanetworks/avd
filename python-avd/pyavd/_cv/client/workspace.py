@@ -3,12 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 from uuid import uuid4
 
-from ..api.arista.workspace.v1 import (
+from pyavd._cv.api.arista.workspace.v1 import (
     Request,
     RequestParams,
     Response,
@@ -22,9 +21,12 @@ from ..api.arista.workspace.v1 import (
     WorkspaceServiceStub,
     WorkspaceStreamRequest,
 )
+
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from . import CVClient
 
 LOGGER = getLogger(__name__)
@@ -40,9 +42,7 @@ REQUEST_MAP = {
 
 
 class WorkspaceMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     workspace_api_version: Literal["v1"] = "v1"
 
@@ -53,7 +53,7 @@ class WorkspaceMixin:
         timeout: float = 10.0,
     ) -> Workspace:
         """
-        Get Workspace using arista.workspace.v1.WorkspaceService.GetOne API
+        Get Workspace using arista.workspace.v1.WorkspaceService.GetOne API.
 
         Parameters:
             workspace_id: Unique identifier the workspace.
@@ -73,10 +73,10 @@ class WorkspaceMixin:
 
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}'") or e
+
+        return response.value
 
     async def create_workspace(
         self: CVClient,
@@ -86,7 +86,7 @@ class WorkspaceMixin:
         timeout: float = 10.0,
     ) -> WorkspaceConfig:
         """
-        Create Workspace using arista.workspace.v1.WorkspaceConfigService.Set API
+        Create Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
             workspace_id: Unique identifier the workspace.
@@ -102,7 +102,7 @@ class WorkspaceMixin:
                 key=WorkspaceKey(workspace_id=workspace_id),
                 display_name=display_name,
                 description=description,
-            )
+            ),
         )
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
@@ -114,7 +114,7 @@ class WorkspaceMixin:
         timeout: float = 10.0,
     ) -> WorkspaceConfig:
         """
-        Abandon Workspace using arista.workspace.v1.WorkspaceConfigService.Set API
+        Abandon Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
             workspace_id: Unique identifier the workspace.
@@ -130,7 +130,7 @@ class WorkspaceMixin:
                 request_params=RequestParams(
                     request_id=f"req-{uuid4()}",
                 ),
-            )
+            ),
         )
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
@@ -142,7 +142,7 @@ class WorkspaceMixin:
         timeout: float = 10.0,
     ) -> WorkspaceConfig:
         """
-        Request a build of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API
+        Request a build of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
             workspace_id: Unique identifier the workspace.
@@ -158,7 +158,7 @@ class WorkspaceMixin:
                 request_params=RequestParams(
                     request_id=f"req-{uuid4()}",
                 ),
-            )
+            ),
         )
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
@@ -170,7 +170,7 @@ class WorkspaceMixin:
         timeout: float = 10.0,
     ) -> WorkspaceKey:
         """
-        Delete Workspace using arista.workspace.v1.WorkspaceConfigService.Delete API
+        Delete Workspace using arista.workspace.v1.WorkspaceConfigService.Delete API.
 
         Parameters:
             workspace_id: Unique identifier the workspace.
@@ -191,7 +191,7 @@ class WorkspaceMixin:
         timeout: float = 10.0,
     ) -> WorkspaceConfig:
         """
-        Request submission of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API
+        Request submission of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
             workspace_id: Unique identifier the Workspace.
@@ -201,13 +201,12 @@ class WorkspaceMixin:
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
-
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
                 request=Request.SUBMIT_FORCE if force else Request.SUBMIT,
                 request_params=RequestParams(request_id=f"req-{uuid4()}"),
-            )
+            ),
         )
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
@@ -222,6 +221,7 @@ class WorkspaceMixin:
     ) -> tuple[Response, Workspace]:
         """
         Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
+
         Blocks until a response is returned or timed out.
 
         Parameters:
@@ -236,7 +236,7 @@ class WorkspaceMixin:
             partial_eq_filter=[
                 Workspace(
                     key=WorkspaceKey(workspace_id=workspace_id),
-                )
+                ),
             ],
         )
         client = WorkspaceServiceStub(self._channel)
@@ -247,7 +247,9 @@ class WorkspaceMixin:
                     LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
                     return response.value.responses.values[request_id], response.value
                 LOGGER.debug(
-                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s", request_id, response.value.state
+                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s",
+                    request_id,
+                    response.value.state,
                 )
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Request ID '{request_id}") or e

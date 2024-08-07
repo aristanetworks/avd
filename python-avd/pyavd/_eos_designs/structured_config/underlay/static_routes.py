@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
+from pyavd._utils import get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,18 +17,18 @@ if TYPE_CHECKING:
 class StaticRoutesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def static_routes(self: AvdStructuredConfigUnderlay) -> list[dict] | None:
         """
-        Returns structured config for static_routes
+        Returns structured config for static_routes.
 
         Consist of
         - static_routes configured under node type l3 interfaces
         """
-
         static_routes = []
 
         for l3_interface in self.shared_utils.l3_interfaces:

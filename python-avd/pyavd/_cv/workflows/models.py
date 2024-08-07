@@ -115,13 +115,11 @@ class DeployToCvResult:
     warnings: list = field(default_factory=list)
     workspace: CVWorkspace | None = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
-    # deployed_devices: list[CVDevice] = field(default_factory=list)
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
     deployed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     deployed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     deployed_studio_inputs: list[CVStudioInputs] = field(default_factory=list)
     deployed_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
-    # skipped_devices: list[CVDevice] = field(default_factory=list)
     skipped_configs: list[CVEosConfig] = field(default_factory=list)
     skipped_device_tags: list[CVDeviceTag] = field(default_factory=list)
     skipped_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
@@ -156,7 +154,7 @@ class CVEosConfig:
 
 @dataclass
 class CVTimeOuts:
-    """Timeouts in seconds"""
+    """Timeouts in seconds."""
 
     workspace_build_timeout: float = 300.0
     change_control_creation_timeout: float = 300.0

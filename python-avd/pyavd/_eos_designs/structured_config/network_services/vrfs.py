@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate
+from pyavd._utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,7 +17,8 @@ if TYPE_CHECKING:
 class VrfsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
@@ -29,7 +31,6 @@ class VrfsMixin(UtilsMixin):
         This function also detects duplicate vrfs and raise an error in case of duplicates between
         all Tenants deployed on this device.
         """
-
         if not self.shared_utils.network_services_l3:
             return None
 
@@ -72,16 +73,13 @@ class VrfsMixin(UtilsMixin):
 
         return None
 
-    def _has_ipv6(self: AvdStructuredConfigNetworkServices, vrf) -> bool:
+    def _has_ipv6(self: AvdStructuredConfigNetworkServices, vrf: dict) -> bool:
         """
         Return bool if IPv6 is configured in the given VRF.
 
         Expects a VRF definition coming from filtered_tenants, where all keys have been set and filtered
         """
         for svi in vrf["svis"]:
-            if svi.get("ipv6_address_virtual") is not None:
-                return True
-
             if len(svi.get("ipv6_address_virtuals", [])) > 0:
                 return True
 

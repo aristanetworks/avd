@@ -595,6 +595,9 @@ application_classification:
         - name: CUSTOM-APPLICATION-1
         # Builtin application that should not raise
         - name: skype
+      # application transport to also be covered by the profile
+      application_transports:
+        - rtp
     - name: IT
     - name: MPLS-ONLY
     - name: VOICE
@@ -610,6 +613,7 @@ application_classification:
       applications:
         # Testing applications in categories filtering
         - name: CUSTOM-APPLICATION-2
+        - name: CUSTOM-DSCP-APPLICATION
         # Builtin application that should not raise
         - name: microsoft-teams
   applications:
@@ -629,6 +633,12 @@ application_classification:
         protocols: [udp]
         udp_src_port_set_name: UDP-SRC-VOICE
         udp_dest_port_set_name: UDP-DEST-VOICE
+      - name: CUSTOM-DSCP-APPLICATION
+        dscp_ranges:
+          - ef
+          - 12-14
+          - cs6
+          - 42
   field_sets:
     ipv4_prefixes:
       # This should not be rendered in any device

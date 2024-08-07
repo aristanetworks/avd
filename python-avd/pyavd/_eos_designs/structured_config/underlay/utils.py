@@ -6,10 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError
-from ...._utils import default, get, get_item, strip_empties_from_dict
-from ....j2filters import natural_sort, range_expand
-from ...interface_descriptions import InterfaceDescriptionData
+from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
+from pyavd._errors import AristaAvdError
+from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item, strip_empties_from_dict
+from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlay
@@ -18,13 +18,14 @@ if TYPE_CHECKING:
 class UtilsMixin:
     """
     Mixin Class with internal functions.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def _avd_peers(self: AvdStructuredConfigUnderlay) -> list:
         """
-        Returns a list of peers
+        Returns a list of peers.
 
         This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
         and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
@@ -33,9 +34,7 @@ class UtilsMixin:
 
     @cached_property
     def _underlay_filter_peer_as_route_maps_asns(self: AvdStructuredConfigUnderlay) -> list:
-        """
-        Filtered ASNs
-        """
+        """Filtered ASNs."""
         if self.shared_utils.underlay_filter_peer_as is False:
             return []
 
@@ -44,9 +43,7 @@ class UtilsMixin:
 
     @cached_property
     def _underlay_links(self: AvdStructuredConfigUnderlay) -> list:
-        """
-        Returns the list of underlay links for this device
-        """
+        """Returns the list of underlay links for this device."""
         underlay_links = []
         underlay_links.extend(self._uplinks)
         if self.shared_utils.fabric_sflow_uplinks is not None:
@@ -115,9 +112,7 @@ class UtilsMixin:
 
     @cached_property
     def _underlay_vlan_trunk_groups(self: AvdStructuredConfigUnderlay) -> list:
-        """
-        Returns a list of trunk groups to configure on the underlay link
-        """
+        """Returns a list of trunk groups to configure on the underlay link."""
         if self.shared_utils.enable_trunk_groups is not True:
             return []
 
@@ -134,7 +129,7 @@ class UtilsMixin:
                         {
                             "vlan_list": uplink["vlans"],
                             "trunk_groups": peer_trunk_groups,
-                        }
+                        },
                     )
 
         if trunk_groups:
@@ -147,14 +142,9 @@ class UtilsMixin:
         return get(self._hostvars, "switch.uplinks")
 
     def _get_l3_interface_cfg(self: AvdStructuredConfigUnderlay, l3_interface: dict) -> dict | None:
-        """
-        Returns structured_configuration for one L3 interface
-        """
+        """Returns structured_configuration for one L3 interface."""
         interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
-        if "." in interface_name:
-            iface_type = "l3dot1q"
-        else:
-            iface_type = "routed"
+        iface_type = "l3dot1q" if "." in interface_name else "routed"
 
         interface_description = l3_interface.get("description")
         if not interface_description:
@@ -166,10 +156,10 @@ class UtilsMixin:
                     peer_interface=l3_interface.get("peer_interface"),
                     wan_carrier=l3_interface.get("wan_carrier"),
                     wan_circuit_id=l3_interface.get("wan_circuit_id"),
-                )
+                ),
             )
 
-        # TODO catch if ip_address is not valid or not dhcp
+        # TODO: catch if ip_address is not valid or not dhcp
         ip_address = get(
             l3_interface,
             "ip_address",
@@ -201,21 +191,22 @@ class UtilsMixin:
         if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
 
-        if self.shared_utils.is_wan_router and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None and interface["access_group_in"] is None:
-            if not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted"):
-                raise AristaAvdError(
-                    (
-                        "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
-                        f"under 'wan_carriers'. 'ipv4_acl_in' is missing on interface '{interface_name}'."
-                    )
-                )
+        if (
+            self.shared_utils.is_wan_router
+            and (wan_carrier_name := l3_interface.get("wan_carrier")) is not None
+            and interface["access_group_in"] is None
+            and not get(get_item(self.shared_utils.wan_carriers, "name", wan_carrier_name, default={}), "trusted")
+        ):
+            msg = (
+                "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
+                f"under 'wan_carriers'. 'ipv4_acl_in' is missing on interface '{interface_name}'."
+            )
+            raise AristaAvdError(msg)
 
         return strip_empties_from_dict(interface)
 
     def _get_l3_uplink_with_l2_as_subint(self: AvdStructuredConfigUnderlay, link: dict) -> tuple[dict, list[dict]]:
-        """
-        Return a tuple with main uplink interface, list of subinterfaces representing each SVI.
-        """
+        """Return a tuple with main uplink interface, list of subinterfaces representing each SVI."""
         vlans = [int(vlan) for vlan in range_expand(link["vlans"])]
 
         # Main interface
@@ -238,16 +229,18 @@ class UtilsMixin:
         main_interface.pop("description", None)
 
         if (mtu := main_interface.get("mtu", 1500)) != self.shared_utils.p2p_uplinks_mtu:
-            raise AristaAvdError(
+            msg = (
                 f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
                 f"set on SVI for uplink_native_vlan '{link['native_vlan']}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu or change/remove the uplink_native_vlan setting."
             )
+            raise AristaAvdError(msg)
         return main_interface, [interface for interface in interfaces if interface["name"] != link["interface"]]
 
     def _get_l2_as_subint(self: AvdStructuredConfigUnderlay, link: dict, svi: dict, vrf: dict) -> dict:
         """
         Return structured config for one subinterface representing the given SVI.
+
         Only supports static IPs or VRRP.
         """
         svi_id = int(svi["id"])
@@ -272,20 +265,21 @@ class UtilsMixin:
             "flow_tracker": link.get("flow_tracker"),
         }
         if (mtu := subinterface["mtu"]) is not None and subinterface["mtu"] > self.shared_utils.p2p_uplinks_mtu:
-            raise AristaAvdError(
+            msg = (
                 f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' must be larger or equal to MTU '{mtu}' "
                 f"set on the SVI '{svi_id}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu."
             )
+            raise AristaAvdError(msg)
 
         # Only set VRRPv4 if ip_address is set
         if subinterface["ip_address"] is not None:
-            # TODO in separate PR adding VRRP support for SVIs
+            # TODO: in separate PR adding VRRP support for SVIs
             pass
 
         # Only set VRRPv6 if ipv6_address is set
         if subinterface["ipv6_address"] is not None:
-            # TODO in separate PR adding VRRP support for SVIs
+            # TODO: in separate PR adding VRRP support for SVIs
             pass
 
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
@@ -296,11 +290,13 @@ class UtilsMixin:
     @cached_property
     def _l3_interface_acls(self: AvdStructuredConfigUnderlay) -> dict[str, dict[str, dict]]:
         """
-        Returns a dict of
-            <interface_name>: {
-                "ipv4_acl_in": <generated_ipv4_acl>,
-                "ipv4_acl_out": <generated_ipv4_acl>,
-            }
+        Return dict of l3 interface ACLs.
+
+        <interface_name>: {
+            "ipv4_acl_in": <generated_ipv4_acl>,
+            "ipv4_acl_out": <generated_ipv4_acl>,
+        }
+
         Only contains interfaces with ACLs and only the ACLs that are set,
         so use `get(self._l3_interface_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
         """
@@ -314,7 +310,7 @@ class UtilsMixin:
             interface_name = l3_interface["name"]
             interface_ip: str | None = l3_interface.get("dhcp_ip") if (ip_address := l3_interface.get("ip_address")) == "dhcp" else ip_address
             if interface_ip is not None and "/" in interface_ip:
-                interface_ip = interface_ip.split("/", maxsplit=1)[0]
+                interface_ip = get_ip_from_ip_prefix(interface_ip)
             peer_ip: str | None = get(l3_interface, "peer_ip")
 
             if ipv4_acl_in is not None:

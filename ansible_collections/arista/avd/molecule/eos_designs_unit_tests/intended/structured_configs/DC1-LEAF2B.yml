@@ -521,6 +521,16 @@ ethernet_interfaces:
   channel_group:
     id: 141
     mode: active
+- name: Ethernet31
+  peer: DC1.L2LEAF6B
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: DC1.L2LEAF6B_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 30
+    mode: active
 - name: Ethernet49/1
   peer: DC1-SPINE1
   peer_interface: Ethernet5/1
@@ -714,6 +724,16 @@ port_channel_interfaces:
     identifier: 0000:0000:fa91:ce62:ce95
     route_target: fa:91:ce:62:ce:95
   lacp_id: fa91.ce62.ce95
+- name: Port-Channel30
+  description: DC1_L2LEAF6_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
+  evpn_ethernet_segment:
+    identifier: 0000:0000:a8be:743c:0a1a
+    route_target: a8:be:74:3c:0a:1a
+  lacp_id: a8be.743c.0a1a
 - name: Port-Channel10
   description: server01_MLAG_PortChanne1
   type: switched

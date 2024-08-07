@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_designs
@@ -354,7 +354,18 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'Type 7 encrypted password.
+
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+
+              it may also be required to set a password for the `wan_rr_overlay_peers`
+              BGP peer group.
+
+              This is required in the case where one or more pathfinders use the same
+              VTEP IP range as the edge routers.
+
+              If the password is not set, the static BGP peerings between Pathfinders
+              may not come up.'
           bfd:
             type: bool
             default: true
@@ -410,7 +421,18 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'Type 7 encrypted password.
+
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+
+              it may also be required to set a password for the `wan_rr_overlay_peers`
+              BGP peer group.
+
+              This is required in the case where one or more pathfinders use the same
+              VTEP IP range as the edge routers.
+
+              If the password is not set, the static BGP peerings between Pathfinders
+              may not come up.'
           bfd:
             type: bool
             default: true
@@ -445,27 +467,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
-      IPv4_UNDERLAY_PEERS:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.ipv4_underlay_peers
-          removed: true
-          remove_in_version: 4.0.0
-      MLAG_IPv4_UNDERLAY_PEER:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.mlag_ipv4_underlay_peer
-          removed: true
-          remove_in_version: 4.0.0
-      EVPN_OVERLAY_PEERS:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.evpn_overlay_peers
-          removed: true
-          remove_in_version: 4.0.0
   bgp_update_wait_install:
     documentation_options:
       table: bgp-settings
@@ -494,8 +495,6 @@ keys:
       '
     type: list
     primary_key: key
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -851,6 +850,7 @@ keys:
       warning: true
       new_key: cvp_instance_ips
       remove_in_version: 5.0.0
+      removed: true
     type: str
     description: 'IPv4 address or DNS name for CloudVision.
 
@@ -972,12 +972,12 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob`
-      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
-      and `mgmt_interface` as the source interface.\n`inband` means the protocols
-      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
-      as the source interface.\n`none` means the VRF and or interface must be manually
-      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
+      \ - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be
+      configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as
+      the source interface.\n`inband` means the protocols will be configured with
+      the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none`
+      means the VRF and or interface must be manually set for each protocol.\nThis
+      can be overridden under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -1159,11 +1159,13 @@ keys:
       (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
       globally (default).\nFor MLAG devices Route Distinguisher must be unique since
       this feature will create multi-vtep configuration.\nWarning !!! For Trident3
-      based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default
-      platform setting will be configured: \"platform trident forwarding-table partition
-      flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding
-      agents will be restarted when this configuration is applied.\n  You can tune
-      the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform
+      setting will be configured on 7050X3 and 7300X3: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  The
+      Following default platform setting will be configured on 720XP: \"flexible exact-match
+      16000 l2-shared 18000 l3-shared 22000\"\n  All forwarding agents will be restarted
+      when this configuration is applied.\n  You can tune the settings by overriding
+      the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
       values for your environment.\n"
     default: false
@@ -1193,24 +1195,6 @@ keys:
       '
     type: bool
     default: false
-  evpn_rd_type:
-    documentation_options:
-      table: evpn-settings
-    type: dict
-    deprecation:
-      warning: true
-      new_key: overlay_rd_type
-      removed: true
-      remove_in_version: 4.0.0
-  evpn_rt_type:
-    documentation_options:
-      table: evpn-settings
-    type: dict
-    deprecation:
-      warning: true
-      new_key: overlay_rt_type
-      removed: true
-      remove_in_version: 4.0.0
   evpn_short_esi_prefix:
     documentation_options:
       table: evpn-settings
@@ -1342,7 +1326,8 @@ keys:
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       l3_interfaces:
-        description: Enable flow-tracking on all node.l3_interfaces.
+        description: Enable flow-tracking on all node.l3_interfaces and network-services
+          tenants.vrfs.l3_interfaces.
         type: dict
         $ref: eos_designs#/$defs/flow_tracking_link
       dps_interfaces:
@@ -1750,6 +1735,35 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
+  ipv4_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: IPv4 prefix-list catalog.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "permit 10.255.0.0/27 eq 32"'
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-settings
@@ -2063,8 +2077,6 @@ keys:
   network_services_keys:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'Network Services can be grouped by using separate keys.
 
       The keys can be customized to provide a better better organization or grouping
@@ -2111,8 +2123,6 @@ keys:
       to copy the defaults and modify them.
 
       '
-    convert_types:
-    - dict
     primary_key: key
     items:
       type: dict
@@ -2970,8 +2980,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
-      trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
-        l3-shared 131072
+      trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000
+        l3-shared 22000
     - platforms:
       - '750'
       - '755'
@@ -3109,8 +3119,6 @@ keys:
     type: list
     primary_key: platform
     secondary_key: speeds
-    convert_types:
-    - dict
     description: Set Hardware Speed Groups per Platform.
     items:
       type: dict
@@ -3123,8 +3131,6 @@ keys:
           type: list
           primary_key: speed
           secondary_key: speed_groups
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -3155,8 +3161,6 @@ keys:
   port_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Optional profiles to share common settings for connected_endpoints
       and/or network_ports.
 
@@ -3180,28 +3184,17 @@ keys:
 
             '
   ptp:
+    deprecation:
+      warning: true
+      removed: true
+      new_key: ptp_settings
+      remove_in_version: v5.0.0
     documentation_options:
-      table: ptp
+      table: ptp_settings
     type: dict
-    keys:
-      enabled:
-        type: bool
-      profile:
-        type: str
-        valid_values:
-        - aes67
-        - smpte2059-2
-        - aes67-r16-2016
-        default: aes67-r16-2016
-      domain:
-        type: int
-        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
-      auto_clock_identity:
-        type: bool
-        default: true
   ptp_profiles:
     documentation_options:
-      table: ptp
+      table: ptp_settings
     type: list
     items:
       type: dict
@@ -3270,6 +3263,27 @@ keys:
       sync_message:
         interval: 0
       transport: ipv4
+  ptp_settings:
+    documentation_options:
+      table: ptp_settings
+    type: dict
+    description: Common PTP settings.
+    keys:
+      enabled:
+        type: bool
+      profile:
+        type: str
+        valid_values:
+        - aes67
+        - smpte2059-2
+        - aes67-r16-2016
+        default: aes67-r16-2016
+      domain:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
+      auto_clock_identity:
+        type: bool
+        default: true
   queue_monitor_length:
     documentation_options:
       table: system-settings
@@ -3727,8 +3741,6 @@ keys:
   svi_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 
       Keys are the same used under SVIs. Keys defined under SVIs take precedence.
@@ -4026,6 +4038,51 @@ keys:
     - int
     format: ipv4
     default: 0.0.0.0
+  underlay_ospf_authentication:
+    documentation_options:
+      table: ospf-settings
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        required: true
+        default: false
+      message_digest_keys:
+        type: list
+        required: true
+        primary_key: id
+        min_length: 1
+        max_length: 2
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - md5
+              - sha1
+              - sha256
+              - sha384
+              - sha512
+              default: sha512
+            key:
+              type: str
+              required: true
+              max_length: 16
+              min_length: 1
+              convert_types:
+              - int
+              description: 'Key password.
+
+                Only plaintext passwords are supported here as `eos_designs` will
+                encrypt the password for each individual underlay interface.
+
+                To protect the password at rest it is strongly recommended to make
+                use of Ansible Vault or similar.'
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
@@ -4100,16 +4157,6 @@ keys:
 
       '
     type: str
-  vxlan_vlan_aware_bundles:
-    documentation_options:
-      table: evpn-settings
-    deprecation:
-      warning: true
-      new_key: evpn_vlan_aware_bundles
-      removed: true
-      remove_in_version: 4.0.0
-    type: bool
-    default: false
   wan_carriers:
     documentation_options:
       table: wan-path-groups-and-carriers
@@ -4345,15 +4392,6 @@ keys:
                     name:
                       type: str
                       description: Interface name.
-                    ip_address:
-                      type: str
-                      description: The public IPv4 address (without mask) of the Route
-                        Reflector for this path-group.
-                      deprecation:
-                        warning: true
-                        new_key: public_ip
-                        removed: true
-                        remove_in_version: 4.7.0
                     public_ip:
                       type: str
                       description: The public IPv4 address (without mask) of the Route
@@ -5160,21 +5198,6 @@ $defs:
 
               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
               devices.'
-          esi:
-            type: str
-            description: Format xxxx:xxxx:xxxx.
-            deprecation:
-              warning: true
-              removed: true
-              remove_in_version: 4.0.0
-              new_key: short_esi
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -5285,6 +5308,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              removed: true
+              warning: true
+              remove_in_version: 5.0.0
+              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state`
@@ -5303,8 +5334,6 @@ $defs:
   connected_endpoints:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'This should be applied to group_vars or host_vars where endpoints
       are connecting.
 
@@ -5374,16 +5403,6 @@ $defs:
                   over description.
 
                   '
-              server_ports:
-                type: list
-                deprecation:
-                  warning: true
-                  removed: true
-                  new_key: endpoint_ports
-                  remove_in_version: 4.0.0
-                items:
-                  type: str
-                  description: Used for documentation purposes.
   flow_tracking_link:
     type: dict
     keys:
@@ -5415,8 +5434,6 @@ $defs:
     keys:
       p2p_links_ip_pools:
         type: list
-        convert_types:
-        - dict
         primary_key: name
         secondary_key: ipv4_pool
         items:
@@ -5438,8 +5455,6 @@ $defs:
               max: 31
       p2p_links_profiles:
         type: list
-        convert_types:
-        - dict
         primary_key: name
         $ref: eos_designs#/$defs/p2p_links
         items:
@@ -5466,8 +5481,6 @@ $defs:
       table: network-services-common-settings
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5575,8 +5588,6 @@ $defs:
             table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'List of BGP peer groups definitions.
 
             This will configure BGP peer groups to be used inside the tenant VRF for
@@ -5812,8 +5823,6 @@ $defs:
             table: network-services-vrfs-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'VRFs will only be configured on a node if any of the underlying
             objects like `svis` or `l3_interfaces` apply to the node.
 
@@ -5925,8 +5934,6 @@ $defs:
               ip_helpers:
                 type: list
                 primary_key: ip_helper
-                convert_types:
-                - dict
                 description: IP helper for DHCP relay.
                 items:
                   type: dict
@@ -6192,8 +6199,6 @@ $defs:
                 type: list
                 primary_key: id
                 allow_duplicate_primary_key: true
-                convert_types:
-                - dict
                 description: 'List of SVIs.
 
                   This will create both the L3 SVI and L2 VLAN based on filters applied
@@ -6256,8 +6261,6 @@ $defs:
                     nodes:
                       type: list
                       primary_key: node
-                      convert_types:
-                      - dict
                       items:
                         type: dict
                         $ref: eos_designs#/$defs/svi_settings
@@ -6335,6 +6338,14 @@ $defs:
                       type: int
                       convert_types:
                       - str
+                    ipv4_acl_in:
+                      type: str
+                      convert_types:
+                      - int
+                    ipv4_acl_out:
+                      type: str
+                      convert_types:
+                      - int
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -6569,8 +6580,6 @@ $defs:
                 type: list
                 primary_key: ip_address
                 allow_duplicate_primary_key: true
-                convert_types:
-                - dict
                 description: 'List of BGP peer definitions.
 
                   This will configure BGP neighbors inside the tenant VRF for peering
@@ -6838,8 +6847,6 @@ $defs:
           type: list
           primary_key: id
           allow_duplicate_primary_key: true
-          convert_types:
-          - dict
           description: Define L2 network services organized by vlan id.
           items:
             type: dict
@@ -7610,12 +7617,34 @@ $defs:
             description: IPv4 subnet for Loopback0 allocation.
             type: str
             format: ipv4_cidr
+          loopback_ipv4_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'IPv4 address without mask for Loopback0.
+
+              When set, it takes precedence over `loopback_ipv4_pool`.
+
+              Note: AVD does not check for validity of the IPv4 address and does not
+              catch duplicates.'
+            type: str
+            format: ipv4
           vtep_loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description: IPv4 subnet for VTEP-Loopback allocation.
             type: str
             format: ipv4_cidr
+          vtep_loopback_ipv4_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'IPv4 address without mask for VTEP-Loopback.
+
+              When set, it takes precedence over `vtep_loopback_ipv4_pool`.
+
+              Note: AVD does not check for validity of the IPv4 address and does not
+              catch duplicates.'
+            type: str
+            format: ipv4
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -8045,7 +8074,7 @@ $defs:
               `ipv6` requires EOS version 4.31.1F or higher.
 
               Note: `ipv6` is not supported in combination with a common MLAG peer
-              link VLAN (ex. `mlag_l3_peer_vlan` set to 4094).'
+              link VLAN (ex. `mlag_peer_l3_vlan` set to 4094).'
             type: str
             valid_values:
             - ipv4
@@ -8367,24 +8396,6 @@ $defs:
             min: 0
             max: 300
             default: 30
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -8787,11 +8798,27 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
+          inband_management_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_subnet
+              remove_in_version: 5.0.0
+            type: str
+          inband_management_vlan:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_vlan
+              remove_in_version: 5.0.0
+            type: int
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
-        convert_types:
-        - dict
         primary_key: group
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -8813,8 +8840,6 @@ $defs:
       nodes:
         description: Define variables per node.
         type: list
-        convert_types:
-        - dict
         primary_key: name
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -9186,8 +9211,6 @@ $defs:
               type: list
               primary_key: node
               secondary_key: interfaces
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9232,8 +9255,6 @@ $defs:
       nodes:
         type: list
         primary_key: node
-        convert_types:
-        - dict
         description: 'Define node specific configuration, such as unique IP addresses.
 
           Any keys set here will be merged onto the SVI config, except `structured_config`
@@ -9282,20 +9303,6 @@ $defs:
           IP addresses on each node.
 
           '
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask.
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-
-          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
-          addresses will be configured.
-
-          '
-        deprecation:
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
         description: 'IPv6 VXLAN Anycast IP addresses.
@@ -9367,8 +9374,6 @@ $defs:
       ip_helpers:
         type: list
         primary_key: ip_helper
-        convert_types:
-        - dict
         description: IP helper for DHCP relay.
         items:
           type: dict
@@ -9596,6 +9601,18 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
+      ipv6_address_virtual:
+        type: str
+        description: 'IPv6_address/Mask.
+
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
+
+          '
+        deprecation:
+          removed: true
+          warning: true
+          remove_in_version: 5.0.0
+          new_key: ipv6_address_virtuals
   virtual_topology:
     type: dict
     keys:
