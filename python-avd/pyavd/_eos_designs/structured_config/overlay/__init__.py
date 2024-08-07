@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+
 from .cvx import CvxMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
@@ -46,11 +47,12 @@ class AvdStructuredConfigOverlay(
 
     def render(self) -> dict:
         """
-        Wrap class render function with a check if one of the following vars are True:
+        Wrap class render function with a check if one of the following vars are True.
+
         - overlay_cvx
         - overlay_evpn
         - overlay_vpn_ipv4
-        - overlay_vpn_ipv6
+        - overlay_vpn_ipv6.
         """
         if any(
             [
@@ -59,7 +61,7 @@ class AvdStructuredConfigOverlay(
                 self.shared_utils.overlay_vpn_ipv4,
                 self.shared_utils.overlay_vpn_ipv6,
                 self.shared_utils.is_wan_router,
-            ]
+            ],
         ):
             return super().render()
         return {}

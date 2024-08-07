@@ -336,10 +336,10 @@ interface Port-Channel3
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4085 |  default  |  172.21.110.6/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan4085 |  default  |  172.21.110.6/24  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

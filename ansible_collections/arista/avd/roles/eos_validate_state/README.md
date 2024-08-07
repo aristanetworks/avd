@@ -10,10 +10,6 @@ title: Ansible Collection Role eos_validate_state
 
 # eos_validate_state
 
-!!! warning
-    Starting AVD 5.0.0, `eos_validate_state` will use ANTA as backend, which will change the default behavior (same as setting `use_anta: true` in older versions).
-    Please review the changes described on the [ANTA integration page](./anta_integration.md)
-
 ## Overview
 
 **eos_validate_state** is a role leveraged to validate Arista EOS devices' operational states.
@@ -21,9 +17,15 @@ title: Ansible Collection Role eos_validate_state
 **eos_validate_state** role:
 
 - Consumes structured EOS configuration file, the same input as the role [eos_cli_config_gen](../eos_cli_config_gen/README.md). This input is considered the system of record (the desired state).
-- Connects to EOS devices to collect operational states (actual state). This requires access to the configured devices.
+- Connects to EOS devices via eAPI to collect operational states (actual state). **This requires access to the configured devices.**
 - Compares the actual states against the desired state.
 - Generates CSV and Markdown reports of the results.
+- Supports Ansible `check` mode.  When running in `check` mode, `eos_validate_state` produces a report of tests that would be performed without running the tests on your network. Tests will be marked as `NOT RUN` in the final reports. This can be useful to inspect which tests are going to be run,
+
+      ```shell
+      ansible-playbook playbooks/fabric-validate.yaml --check
+      ```
+- This role supports additional level of verbosity in Ansible. In particular, when run with `-v`, logs gives visibility on which [test categories](#test-categories) are being removed from a device catalog by AVD according to the structured configurations.
 
 ## Role Inputs and Outputs
 
@@ -46,106 +48,192 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 **Tasks:**
 
 1. Include device structured configuration.
-2. Collect and assert device state:
+2. Generate per device test catalog (optionally store them), run the tests against each device using the test catalogs. The results are stored as json files.
+3. Create CSV report and Markdown reports.
 
-   - ([hardware](tasks/hardware.yml)) Validate environment (power supplies status).
-   - ([hardware](tasks/hardware.yml)) Validate environment (fan status).
-   - ([hardware](tasks/hardware.yml)) Validate environment (temperature).
-   - ([hardware](tasks/hardware.yml)) Validate transceivers manufacturer.
-   - ([NTP](tasks/ntp.yml)) Validate NTP status.
-   - ([interface_state](tasks/interface_state.yml)) Validate Ethernet interfaces admin and operational status.
-   - ([interface_state](tasks/interface_state.yml)) Validate Port-Channel interfaces admin and operational status.
-   - ([interface_state](tasks/interface_state.yml)) Validate VLAN interfaces admin and operational status.
-   - ([interface_state](tasks/interface_state.yml)) Validate VXLAN interfaces admin and operational status.
-   - ([interface_state](tasks/interface_state.yml)) Validate Loopback interfaces admin and operational status.
-   - ([lldp_topology_fqdn](tasks/lldp_topology_fqdn.yml)) Validate LLDP topology when there is a domain name configured.
-   - ([lldp_topology_no_fqdn](tasks/lldp_topology_no_fqdn.yml)) Validate LLDP topology when there is no domain name configured.
-   - ([MLAG](tasks/mlag.yml)) Validate MLAG status.
-   - ([ip_reachability](tasks/ip_reachability.yml)) Validate IP reachability (on directly connected interfaces).
-   - ([loopback_reachability](tasks/loopback_reachability.yml)) Validate loopback reachability (between devices).
-   - ([bgp_check](tasks/bgp_check.yml)) Validate ArBGP is configured and operating.
-   - ([bgp_check](tasks/bgp_check.yml)) Validate IP BGP and BGP EVPN sessions state.
-   - ([reload_cause](tasks/reload_cause.yml)) Validate last reload cause. (Optional)
-   - ([routing_table](tasks/routing_table.yml)) Validate remote Lo0 addresses and remote Lo1 addresses are in the routing table (based on devices type).
+!!! tip
+    You can provide your own custom ANTA catalogs using any of the available [ANTA tests](https://anta.arista.com/stable/api/tests/) to the AVD `eos_validate_state` role. Please refer to the [Custom ANTA catalog](#custom-anta-catalog) section for more details.
 
-3. Create CSV report.
-4. Read CSV file (leveraged to generate summary report).
-5. Create Markdown Summary report.
+## Test categories
 
-## Default Variables
+- AvdTestHardware
+  - VerifyEnvironmentPower: Validate environment power supplies status.
+  - VerifyEnvironmentCooling: Validate environment fan status.
+  - VerifyTemperature: Validate environment temperature.
+  - VerifyTransceiversManufacturers: Validate transceivers manufacturer.
 
-The following default variables are defined and can be modified as desired:
+- AvdTestNTP
+  - VerifyNTP: Validate NTP status.
+
+- AvdTestInterfacesState
+  - VerifyInterfacesStatus: Validate interfaces status.
+    - Ethernet interfaces
+    - Port-channel interfaces
+    - Vlan interfaces
+    - Loopback interfaces
+    - Vxlan1 interface
+    - DPS interfaces
+
+- AvdTestP2PIPReachability
+  - VerifyReachability: Validate IP reachability for point-to-point l3 ethernet interfaces.
+
+- AvdTestInbandReachability
+  - VerifyReachability: Validate loopback reachability from the inband management VLAN interface.
+
+- AvdTestLoopback0Reachability
+  - VerifyReachability: Validate loopback reachability between devices.
+
+- AvdTestLLDPTopology
+  - VerifyLLDPNeighbors: Validate LLDP topology.
+
+- AvdTestMLAG
+  - VerifyMlagStatus: Validate MLAG status.
+
+- AvdTestRoutingTable
+  - VerifyRoutingTableEntry: Validate remote Loopback0 address and source interface for Vxlan1 interface are in the routing table.
+
+- AvdTestBGP
+  - VerifyBGPSpecificPeers: Validate IP BGP and BGP EVPN sessions state.
+  - VerifyRoutingProtocolModel: Validate ArBGP is configured and operating.
+
+- AvdTestReloadCause
+  - VerifyReloadCause: Validate last reload cause. (Optional)
+
+- AvdTestAPIHttpsSSL
+  - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
+
+- AvdTestIPSecurity
+  - VerifySpecificIPSecConn: Validates the establishment of IP security connections for a peer within the default VRF. In its current state, the test validates only IPsec connections defined as static peers under the `router path-selection` section of the configuration.
+
+- AvdTestStun
+  - VerifyStunClient: Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group.
+
+## Input Variables
+
+The following input variables are available for the role. When a default value
+exists, it is indicated.
 
 ```yaml
-# configure playbook to ignore errors and continue testing.
-eos_validate_state_validation_mode_loose: true
+# Root directory.
+root_dir: <str; | default="{{ inventory_dir }}">
 
-# Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
-root_dir: '{{ inventory_dir }}'
-eos_validate_state_name: 'reports'
-eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+# Output directory.
+output_dir_name: <str; | default="intended">
+output_dir: <str; | default="{{ root_dir }}/{{ output_dir_name }}">
 
-# Reports name
-eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
-eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
+# Output for test catalog YAML files if save_catalog is set to true.
+test_catalogs_dir_name: "<str; | default="test_catalogs">
+test_catalogs_dir: <str; | default="{{ output_dir }}/{{ test_catalogs_dir_name }}">
 
-# Markdown flavor to support non-text rendering
-# Only support default and github
-validate_state_markdown_flavor: "default"
+# Output directory for eos_validate_state reports.
+eos_validate_state_name: <str; | default="reports">
+eos_validate_state_dir: <str; | default="{{ root_dir }}/{{ eos_validate_state_name }}">
 
-# Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
-fabric_name: "all"
+# Output for test results JSON files if save_results is set to true.
+test_results_dir_name: <str; | default="test_results">
+test_results_dir: <str; | default="{{ eos_validate_state_dir }}/{{ test_results_dir_name }}">
 
-# Allow different manufacturers
-accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
+# Reports name.
+eos_validate_state_md_report_path: <str; | default="{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md">
+eos_validate_state_csv_report_path: <str; | default="{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv">
 
-# Allow different states for power supplies
-accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok']) }}"
+# Input directory for structured configuration files.
+structured_dir_name: <str; | default="structured_configs">
+structured_dir: <str; | default="{{ output_dir }}/{{ structured_dir_name }}">
 
-# Allow different states for fans
-accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
+# Structured configuration files format.
+avd_structured_config_file_format: "yml"
 
+# Input directory for custom ANTA catalogs.
+custom_anta_catalogs_dir_name: <str; | default="custom_anta_catalogs">
+custom_anta_catalogs_dir: <str; | default="{{ root_dir }}/{{ custom_anta_catalogs_dir_name }}">
 
-# Generate CSV results file
-validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
+# Allow different manufacturers.
+accepted_xcvr_manufacturers: <list; | default="['Arastra, Inc.', 'Arista Networks']">
 
-# Generate MD results file
-validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+# Allow different states for power supplies.
+accepted_pwr_supply_states: <list; default=['ok']>
 
-# Print only FAILED tests
-only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
+# Allow different states for fans.
+accepted_fan_states: <list; default=['ok']">
+
+# Generate CSV results file.
+validation_report_csv: <bool; default=True>
+
+# Generate MD results file.
+validation_report_md: <bool; default=True>
+
+# Print only FAILED tests.
+only_failed_tests: <bool; default=False>
+
+# Save each device test catalog to 'test_catalogs_dir'.
+save_catalog: <bool; default=False>
+
+# Logging level for the ANTA libraries.
+logging_level: <str; "INFO" | "WARNING" | "ERROR" | "CRITICAL" | "DEBUG"; default="WARNING">
+
+# The variable `skip_tests` can be used for running/skipping test categories.
+# Examples
+# skip_tests:
+#   - category: AvdTestHardware
+#
+# or to skip specific tests (ANTA test names) in a given category for more granularity:
+# skip_tests:
+#  - category: AvdTestHardware
+#    tests:
+#      - VerifyEnvironmentCooling
+#      - VerifyTemperature
+#  - category: AvdTestBGP
+#    tests:
+#      - VerifyBGPSpecificPeers
+skip_tests:
+  - category: <str>
+    # Optional tests
+    tests:
+      - <str>
 ```
 
-The variable `fabric_name` is used to select the inventory group covering all devices in the report. This variable is also required for the role `eos_designs`, but the user can set a name if this role is not used. The default value is `all` pointing to the built-in inventory group `all`. Therefore all devices in the inventory will be selected for the report.
+The default accepted manufacturers are "Arastra, Inc." and "Arista Networks." To change this, use `accepted_xcvr_manufacturers`.
 
-The default accepted manufacturers are "Arastra, Inc." and "Arista Networks." If `validation_role.xcvr_own_manufacturers` is set, it takes precedence and overrides the defined default variables.
-
-By default, all fans and power supplies are expected to be in the `ok` state. However chassis switches may intentionally be missing some fans or power supplies as they are not fully populated. In this case, `validation_role.fan_states` and `validation_role.pwr_supply_states` can be updated to include the `notInserted` state, as per the example below to avoid failures on missing fans/power supplies.
+By default, all fans and power supplies are expected to be in the `ok` state. However chassis switches may intentionally be missing some fans or power supplies as they are not fully populated. In this case, `accepted_fan_states` and `accepted_pwr_supply_states` can be updated to include the `notInserted` state to avoid failures on missing fans/power supplies.
 
 Two user-defined variables control the generation of CSV and MD reports. These are `validation_role.validation_report_csv` and `validation_role.validation_report_md` respectively.
 
-The variable validation_role.only_failed_tests is used to limit the number of tests shown in the reports. When set, all reports will only show failed tests.
+The variable `validation_role.only_failed_tests` is used to limit the number of tests shown in the reports. When set, all reports will only show failed tests.
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#additional-python-libraries-required)
+Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#python-requirements-installation)
+
+## Custom ANTA catalog
+
+You can provide custom ANTA catalogs to the AVD `eos_validate_state` role. By default, AVD will search for catalog YAML files in the `custom_anta_catalogs` directory and incorporate these tests into the existing dynamically created catalog from AVD. The custom catalog files must be named as follows:
+
+- `<hostname>.yml` or `<hostname>.yaml`
+- `<group>.yml` or `<group>.yaml`
+
+When specifying a group, it must be a group from the Ansible inventory. The custom tests will then be added to all devices that are part of this group. You can also use the `all` group to target all the devices in your inventory. The directory where the custom catalogs are stored can be changed with the `custom_anta_catalogs_dir` variable.
+
+!!! warning
+    The `skip_tests` variable will ONLY skip the dynamically generated tests from the AVD validate state role. It will **not** skip tests added from custom catalogs.
+
+!!! info
+    The final catalog will be validated by ANTA before running the tests on your network. Duplicate tests with the same inputs will be automatically removed. Therefore, dynamically generated tests by AVD will never be overwritten. To overwrite them, you should first skip them using the `skip_tests` variable and provide your own tests with inputs via a custom catalog.
 
 ## Example Playbook
 
 ```yaml
 ---
-- name: validate states on EOS devices
+- name: validate states on EOS devices using ANTA
   hosts: DC1
-  connection: httpapi
   gather_facts: false
-  collections:
-    - arista.avd
-
   tasks:
-
     - name: validate states on EOS devices
       ansible.builtin.import_role:
-         name: arista.avd.eos_validate_state
+        name: arista.avd.eos_validate_state
+      vars:
+        # To save catalogs
+        save_catalog: true
 ```
 
 ## Input example
@@ -187,18 +275,15 @@ ansible_become_method: enable
 
 fabric_name: "DC1"
 
-validation_mode_loose: true
-
-validation_role:
-  xcvr_own_manufacturers:
-    - Manufacturer 1
-    - Manufacturer 2
-  pwr_supply_states:
-    - ok
-    - notInserted
-  fan_states:
-    - ok
-    - notInserted
+accepted_xcvr_manufacturers:
+  - Manufacturer 1
+  - Manufacturer 2
+accepted_pwr_supply_states:
+  - ok
+  - notInserted
+accepted_fan_states:
+  - ok
+  - notInserted
 ```
 
 ### inventory/intended/structured_configs/switch1.yml
@@ -206,18 +291,18 @@ validation_role:
 ```yaml
 router_bgp:
   neighbors:
-    10.10.10.1:
+    - ip_address: 10.10.10.1
       remote_as: 65002
-    10.10.10.3:
+    - ip_address: 10.10.10.3
       remote_as: 65003
 
 ethernet_interfaces:
-  Ethernet2:
+  - name: Ethernet2
     peer: switch3
     peer_interface: Ethernet4
     ip_address: 10.10.10.2/31
     type: routed
-  Ethernet5:
+  - name: Ethernet5
     peer: switch2
     peer_interface: Ethernet5
     ip_address: 10.10.10.0/31
@@ -231,13 +316,15 @@ mlag_configuration:
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 
-ntp_server:
+ntp:
   local_interface:
-    vrf: MGMT
     interface: Management1
-  nodes:
-    - 0.fr.pool.ntp.org
-    - 1.fr.pool.ntp.org
+    vrf: MGMT
+  servers:
+    - name: 0.fr.pool.ntp.org
+      vrf: MGMT
+    - name: 1.fr.pool.ntp.org
+      vrf: MGMT
 
 dns_domain: lab.local
 ```
@@ -251,3 +338,7 @@ ansible-playbook playbooks/pb_validate_yml --inventory inventory/inventory.yml
 ## License
 
 Project is published under [Apache 2.0 License](../../LICENSE)
+
+## Known issues
+
+- `[__NSCFConstantString initialize] may have been in progress in another thread when fork() was called.` This issue affects OSX users only and is covered in Ansible documentation: https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node.

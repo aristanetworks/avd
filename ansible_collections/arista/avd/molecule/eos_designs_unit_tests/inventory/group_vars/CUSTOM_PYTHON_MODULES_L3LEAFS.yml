@@ -2,7 +2,6 @@
 
 type: l3leaf
 
-
 l3leaf:
   defaults:
     platform: vEOS-LAB
@@ -34,7 +33,6 @@ l3leaf:
       uplink_type: p2p-vrfs
       uplink_switches: [CUSTOM-PYTHON_MODULES-L3LEAF1A]
       uplink_switch_interfaces: [Ethernet3]
-
 
 tenants:
   - name: CUSTOM_PYTHON_MODULES_TENANT

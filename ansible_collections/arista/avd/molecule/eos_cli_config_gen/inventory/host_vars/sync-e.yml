@@ -3,7 +3,6 @@
 sync_e:
   network_option: 2
 
-
 ### interface
 ethernet_interfaces:
   - name: Ethernet3

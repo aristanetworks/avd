@@ -18,7 +18,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   loop:
     - "{{ post_running_config_backup_dir }}"
     - "{{ pre_running_config_backup_dir }}"

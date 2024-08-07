@@ -3,12 +3,15 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import Any, Generator
+from typing import TYPE_CHECKING, Any
 
-from .._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdMissingVariableError
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 
-def get_all(data, path: str, required: bool = False, org_path=None):
+def get_all(data: Any, path: str, required: bool = False, org_path: str | None = None) -> list:
     """
     Get all values from data matching a data path.
 
@@ -26,17 +29,16 @@ def get_all(data, path: str, required: bool = False, org_path=None):
     org_path : str
         Internal variable used for raising exception with the full path even when called recursively
 
-    Returns
+    Returns:
     -------
     list [ any ]
         List of values matching data path or empty list if no matches are found.
 
-    Raises
+    Raises:
     ------
     AristaAvdMissingVariableError
         If the path is not found and required == True
     """
-
     if org_path is None:
         org_path = path
 
@@ -65,7 +67,7 @@ def get_all(data, path: str, required: bool = False, org_path=None):
     return []
 
 
-def get_all_with_path(data, path: str, _current_path: list[str | int] | None = None) -> Generator[tuple[list[str | int], Any], None, None]:
+def get_all_with_path(data: Any, path: str, _current_path: list[str | int] | None = None) -> Generator[tuple[list[str | int], Any], None, None]:
     """
     Get all values from data matching a data path including the path they were found in.
 
@@ -81,7 +83,7 @@ def get_all_with_path(data, path: str, _current_path: list[str | int] | None = N
     _current_path : list[str|int]
         Internal variable used for tracking the full path even when called recursively
 
-    Returns
+    Returns:
     -------
     Generator yielding Tuples (<path>, <value>) for all values from data matching a data path.
 

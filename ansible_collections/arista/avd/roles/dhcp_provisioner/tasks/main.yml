@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   loop:
     - "{{ structured_dir }}"
     - "{{ eos_config_dir }}"
@@ -20,7 +20,7 @@
   ansible.builtin.template:
     src: ztp_configuration.j2
     dest: "{{ structured_cvp_dir }}/ztp_configuration.yml"
-    mode: 0664
+    mode: "0o664"
   delegate_to: localhost
   run_once: true
 

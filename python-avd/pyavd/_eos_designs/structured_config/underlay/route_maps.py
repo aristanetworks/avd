@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
+from pyavd._utils import get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,13 +17,14 @@ if TYPE_CHECKING:
 class RouteMapsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def route_maps(self: AvdStructuredConfigUnderlay) -> list | None:
         """
-        Return structured config for route_maps
+        Return structured config for route_maps.
 
         Contains two parts.
         - Route map for connected routes redistribution in BGP
@@ -52,7 +54,7 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 30,
                         "type": "permit",
                         "match": ["ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6"],
-                    }
+                    },
                 )
 
             if self.shared_utils.underlay_multicast_rp_interfaces is not None:
@@ -61,7 +63,7 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 40,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-LOOPBACKS-PIM-RP"],
-                    }
+                    },
                 )
 
             if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
@@ -70,7 +72,7 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 50,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-WAN-HA-PREFIXES"],
-                    }
+                    },
                 )
 
             route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
@@ -92,7 +94,7 @@ class RouteMapsMixin(UtilsMixin):
                             "type": "permit",
                         },
                     ],
-                }
+                },
             )
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
@@ -121,7 +123,7 @@ class RouteMapsMixin(UtilsMixin):
                             "description": "Deny other routes from the HA peer",
                             "match": ["as-path ASPATH-WAN"],
                         },
-                    ]
+                    ],
                 )
             route_maps.append({"name": "RM-BGP-UNDERLAY-PEERS-IN", "sequence_numbers": sequence_numbers})
 

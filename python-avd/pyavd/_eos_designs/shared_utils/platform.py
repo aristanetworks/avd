@@ -7,7 +7,7 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING
 
-from ..._utils import default, get
+from pyavd._utils import default, get
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -187,8 +187,9 @@ DEFAULT_PLATFORM_SETTINGS = [
 
 class PlatformMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -214,9 +215,7 @@ class PlatformMixin:
 
     @cached_property
     def default_interfaces(self: SharedUtils) -> dict:
-        """
-        default_interfaces set based on default_interfaces
-        """
+        """default_interfaces set based on default_interfaces."""
         default_interfaces = get(self.hostvars, "default_interfaces", default=[])
 
         device_platform = default(self.platform, "default")

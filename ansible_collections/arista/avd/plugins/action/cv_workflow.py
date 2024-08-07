@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, annotations, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 import json
 import logging
@@ -11,6 +9,7 @@ from asyncio import gather, run
 from dataclasses import asdict
 from pathlib import Path
 from string import Template
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
@@ -43,49 +42,48 @@ except ImportError:
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
-if HAS_PYAVD:
-    ARGUMENT_SPEC = {
-        "configuration_dir": {"type": "str", "required": True},
-        "structured_config_dir": {"type": "str", "required": True},
-        "structured_config_suffix": {"type": "str", "default": "yml"},
-        "device_list": {"type": "list", "elements": "str", "required": True},
-        "strict_tags": {"type": "bool", "required": False, "default": False},
-        "skip_missing_devices": {"type": "bool", "required": False, "default": False},
-        "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
-        "cv_servers": {"type": "list", "elements": "str", "required": True},
-        "cv_token": {"type": "str", "secret": True, "required": True},
-        "cv_verify_certs": {"type": "bool", "default": True},
-        "workspace": {
-            "type": "dict",
-            "options": {
-                "name": {"type": "str", "required": False},
-                "description": {"type": "str", "required": False},
-                "id": {"type": "str", "required": False},
-                "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
-                "force": {"type": "bool", "default": False},
-            },
+ARGUMENT_SPEC = {
+    "configuration_dir": {"type": "str", "required": True},
+    "structured_config_dir": {"type": "str", "required": True},
+    "structured_config_suffix": {"type": "str", "default": "yml"},
+    "device_list": {"type": "list", "elements": "str", "required": True},
+    "strict_tags": {"type": "bool", "required": False, "default": False},
+    "skip_missing_devices": {"type": "bool", "required": False, "default": False},
+    "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
+    "cv_servers": {"type": "list", "elements": "str", "required": True},
+    "cv_token": {"type": "str", "secret": True, "required": True},
+    "cv_verify_certs": {"type": "bool", "default": True},
+    "workspace": {
+        "type": "dict",
+        "options": {
+            "name": {"type": "str", "required": False},
+            "description": {"type": "str", "required": False},
+            "id": {"type": "str", "required": False},
+            "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
+            "force": {"type": "bool", "default": False},
         },
-        "change_control": {
-            "type": "dict",
-            "options": {
-                "name": {"type": "str", "required": False},
-                "description": {"type": "str", "required": False},
-                "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
-            },
+    },
+    "change_control": {
+        "type": "dict",
+        "options": {
+            "name": {"type": "str", "required": False},
+            "description": {"type": "str", "required": False},
+            "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
         },
-        "timeouts": {
-            "type": "dict",
-            "options": {
-                "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout},
-                "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout},
-            },
+    },
+    "timeouts": {
+        "type": "dict",
+        "options": {
+            "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout if HAS_PYAVD else 300},
+            "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300},
         },
-        "return_details": {"type": "bool", "required": False, "default": False},
-    }
+    },
+    "return_details": {"type": "bool", "required": False, "default": False},
+}
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
 
         if task_vars is None:
@@ -95,7 +93,8 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         if not HAS_PYAVD:
-            raise AnsibleActionFail("The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error")
+            msg = "The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
+            raise AnsibleActionFail(msg)
 
         # Setup module logging
         setup_module_logging(result)
@@ -111,10 +110,8 @@ class ActionModule(ActionBase):
         # Running asyncio coroutine to deploy everything.
         return run(self.deploy(validated_args, result))
 
-    async def deploy(self, validated_args: dict, result: dict):
-        """
-        Prepare data, perform deployment and convert result data.
-        """
+    async def deploy(self, validated_args: dict, result: dict) -> dict:
+        """Prepare data, perform deployment and convert result data."""
         LOGGER.info("deploy: %s", {**validated_args, "cv_token": "<removed>"})
         try:
             # Create CloudVision object
@@ -135,7 +132,7 @@ class ActionModule(ActionBase):
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
                 result.update(
-                    cloudvision=dict(asdict(cloudvision), token="<removed>"),
+                    cloudvision=dict(asdict(cloudvision), token="<removed>"),  # noqa: S106
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
@@ -171,7 +168,7 @@ class ActionModule(ActionBase):
                         "warnings": result_object.warnings,
                         "errors": result_object.errors,
                         "failed": result_object.failed,
-                    }
+                    },
                 )
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
@@ -186,9 +183,16 @@ class ActionModule(ActionBase):
         return result
 
     async def build_objects(
-        self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
+        self,
+        device_list: list[str],
+        structured_config_dir: str,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
     ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
+        Build objects.
+
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
@@ -196,7 +200,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
 
         Workflow:
             Per device:
@@ -223,9 +227,16 @@ class ActionModule(ActionBase):
         return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
 
     async def build_object_for_device(
-        self, hostname: str, structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
+        self,
+        hostname: str,
+        structured_config_dir: str,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
     ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
+        Build objects for one device.
+
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
@@ -233,7 +244,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
 
         Workflow:
             Per device:
@@ -245,19 +256,21 @@ class ActionModule(ActionBase):
         TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)
-        with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(mode="r", encoding="UTF-8") as structured_config_stream:
+        with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(  # noqa: ASYNC230
+            mode="r", encoding="UTF-8"
+        ) as structured_config_stream:
             if structured_config_suffix in ["yml", "yaml"]:
                 interesting_keys = ("is_deployed", "serial_number", "metadata")
                 in_interesting_context = False
                 structured_config_lines = []
-                for line in structured_config_stream.readlines():
+                for line in structured_config_stream:
                     if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
                         structured_config_lines.append(line)
                         in_interesting_context = True
                     else:
                         in_interesting_context = False
 
-                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)
+                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
             else:
                 # Load as JSON
                 structured_config = json.load(structured_config_stream)
@@ -277,11 +290,11 @@ class ActionModule(ActionBase):
         eos_config_objects = [CVEosConfig(file=config_file_path, device=device_object, configlet_name=configlet_name)]
 
         # Build device tag objects for this device.
-        # metadata:
-        #   cv_tags:
-        #     device_tags:
-        #     - name: topology_hint_datacenter
-        #       value: DC1
+        # ! metadata:
+        # !   cv_tags:
+        # !     device_tags:
+        # !     - name: topology_hint_datacenter
+        # !       value: DC1
         device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
         device_tag_objects = [
             CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
@@ -290,13 +303,13 @@ class ActionModule(ActionBase):
         ]
 
         # Build interface tag objects for this device.
-        # metadata:
-        #   cv_tags:
-        #     interface_tags:
-        #     - interface: Ethernet3
-        #       tags:
-        #       - name: peer_device_interface
-        #         value: Ethernet3
+        # ! metadata:
+        # !  cv_tags:
+        # !    interface_tags:
+        # !    - interface: Ethernet3
+        # !      tags:
+        # !      - name: peer_device_interface
+        # !        value: Ethernet3
         all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
         interface_tag_objects = [
             CVInterfaceTag(
@@ -322,13 +335,13 @@ class ActionModule(ActionBase):
 
 def setup_module_logging(result: dict) -> None:
     """
-    Add a Handler to copy the logs from the plugin into Ansible output based on their level
+    Add a Handler to copy the logs from the plugin into Ansible output based on their level.
 
     Parameters:
         result: The dictionary used for the ansible module results
     """
     python_to_ansible_handler = PythonToAnsibleHandler(result, display)
     LOGGER.addHandler(python_to_ansible_handler)
-    # TODO mechanism to manipulate the logger globally for pyavd
+    # TODO: mechanism to manipulate the logger globally for pyavd
     # Keep debug to be able to see logs with `-v` and `-vvv`
     LOGGER.setLevel(logging.DEBUG)

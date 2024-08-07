@@ -43,7 +43,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vtep_learned_data_plane</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vtep_learned_data_plane") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "vxlan_interface.vxlan1.eos_cli") | String |  |  |  | Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;Vxlan1</samp>](## "vxlan_interface.Vxlan1") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>vxlan1</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;Vxlan1</samp>](## "vxlan_interface.Vxlan1") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vxlan1</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vxlan_interface.Vxlan1.description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "vxlan_interface.Vxlan1.vxlan") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "vxlan_interface.Vxlan1.vxlan.source_interface") | String |  |  |  | Source Interface Name. |
@@ -146,7 +146,7 @@
         # Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.
         eos_cli: <str>
       # This key is deprecated.
-      # Support will be removed in AVD version 5.0.0.
+      # Support will be removed in AVD version 6.0.0.
       # Use <samp>vxlan1</samp> instead.
       Vxlan1:
         description: <str>
