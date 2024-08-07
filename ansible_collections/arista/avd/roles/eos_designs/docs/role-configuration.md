@@ -33,6 +33,12 @@ performs validation of the converted data.
 By default any data validation issues will trigger errors - blocking further processing.
 This behavior can be adjusted by setting the variable described below.
 
+!!! danger
+    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
+    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
+
+    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
+
 --8<--
 roles/eos_designs/docs/tables/role-input-validation.md
 --8<--

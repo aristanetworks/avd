@@ -45,10 +45,11 @@ performs validation of the converted data.
 By default any data validation issues will trigger errors - blocking further processing.
 This behavior can be adjusted by setting the variables described below.
 
-!!! warning
-    It is **not** recommended to change the `avd_data_validation_mode` to `warning` since all AVD code relies on the validation to ensure valid data.
+!!! danger
+    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
+    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
 
-    If the validation mode is set to warning, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
+    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
 
 ```yaml
 # Validation Mode for AVD input data validation | Optional
