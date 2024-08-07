@@ -153,6 +153,13 @@ port_channel_interfaces:
             - strip: true
               destination: 1.1.1.3
               source: 1.1.1.4
+            - strip: true
+              protocol: "0x0002"
+              feature_header_length: 3
+            - strip: true
+              protocol: "0x0003"
+              feature_header_length: 2
+              re_encapsulation_ethernet_header: true
       tool:
         mpls_pop_all: true
         encapsulation:

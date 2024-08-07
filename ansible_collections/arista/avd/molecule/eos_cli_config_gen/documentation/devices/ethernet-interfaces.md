@@ -371,6 +371,8 @@ interface Ethernet1
    switchport tap encapsulation gre protocol 0x0001 strip
    switchport tap encapsulation gre destination 2.1.1.2 protocol 0x0010 strip
    switchport tap encapsulation gre destination 2.1.1.3 source 2.1.1.4 strip
+   switchport tap encapsulation gre protocol 0x0002 feature header length 3 strip
+   switchport tap encapsulation gre protocol 0x0003 feature header length 2 strip re-encapsulation ethernet
    switchport tool mpls pop all
    switchport tool encapsulation vn-tag strip
    switchport tool encapsulation dot1br strip

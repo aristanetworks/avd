@@ -1557,6 +1557,20 @@ keys:
                             description: |-
                               Protocol type in GRE header.
                               Protocol range: 0x0000-0xFFFF. It should be unique.
+                          feature_header_length:
+                            description: |-
+                              Feature header length in bytes.
+                              This setting does not reflect in the EOS running-config for protocol 0x0000.
+                            type: int
+                            convert_types:
+                              - str
+                            min: 1
+                            max: 16
+                          re_encapsulation_ethernet_header:
+                            type: bool
+                            description: |-
+                              Extra ethernet header to prepend to the terminated packet.
+                              This setting does not reflect in the EOS running-config for protocol 0x0000.
             tool:
               description: |-
                 In tool mode, the interface operates as a tool port.
