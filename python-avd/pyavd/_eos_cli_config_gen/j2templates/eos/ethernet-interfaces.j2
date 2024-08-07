@@ -177,6 +177,7 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ tap_mac_address_cli }}
 {%     endif %}
+{# The position of "mpls_pop_all" does not match the EOS CLI to implement this "elif" with "vxlan_strip" #}
 {%     if ethernet_interface.switchport.tap.mpls_pop_all is arista.avd.defined(true) %}
    switchport tap mpls pop all
 {%     elif ethernet_interface.switchport.tap.encapsulation.vxlan_strip is arista.avd.defined(true) %}
@@ -224,14 +225,14 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.switchport.tool.identity.qinq_dzgre_source is arista.avd.defined %}
    switchport tool identity qinq source dzgre {{ ethernet_interface.switchport.tool.identity.qinq_dzgre_source }}
 {%     endif %}
-{%     if ethernet_interface.switchport.tap.truncation.enabled is arista.avd.defined %}
+{%     if ethernet_interface.switchport.tap.truncation.enabled is arista.avd.defined(true) %}
 {%         set tap_truncation_cli = "switchport tap truncation" %}
 {%         if ethernet_interface.switchport.tap.truncation.size is arista.avd.defined %}
 {%             set tap_truncation_cli = tap_truncation_cli ~ " " ~ ethernet_interface.switchport.tap.truncation.size %}
 {%         endif %}
    {{ tap_truncation_cli }}
 {%     endif %}
-{%     if ethernet_interface.switchport.tool.truncation.enabled is arista.avd.defined %}
+{%     if ethernet_interface.switchport.tool.truncation.enabled is arista.avd.defined(true) %}
 {%         set tool_truncation_cli = "switchport tool truncation" %}
 {%         if ethernet_interface.switchport.tool.truncation.size is arista.avd.defined %}
 {%             set tool_truncation_cli = tool_truncation_cli ~ " " ~ ethernet_interface.switchport.tool.truncation.size %}
