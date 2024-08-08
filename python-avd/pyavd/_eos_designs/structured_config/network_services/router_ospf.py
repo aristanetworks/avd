@@ -63,7 +63,7 @@ class RouterOspfMixin(UtilsMixin):
 
                 process = {
                     "id": process_id,
-                    "vrf": vrf["name"],
+                    "vrf": vrf["name"] if vrf["name"] != "default" else None,
                     "passive_interface_default": True,
                     "router_id": default(get(vrf, "ospf.router_id"), self.shared_utils.router_id),
                     "no_passive_interfaces": ospf_interfaces,
