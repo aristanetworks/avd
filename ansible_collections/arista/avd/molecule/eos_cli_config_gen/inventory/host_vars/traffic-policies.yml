@@ -37,7 +37,7 @@ traffic_policies:
             - protocol: udp
               src_field: SERVICE-DEMO
               flags:
-                - initial
+                - established
           ttl: "10, 20-30"
           actions:
             traffic_class: 5
@@ -105,20 +105,16 @@ traffic_policies:
           type: ipv4
           protocols:
             - protocol: neighbors
-            - protocol: ip
             - protocol: udp
               dst_port: "1,10-20"
             - protocol: tcp
               src_port: "22"
               flags:
-                - initial
+                - established
               icmp_type:
                 - echo
                 - echo-reply
             - protocol: icmp
-              src_field: SERVICE-DEMO
-              flags:
-                - initial
           actions:
             log: false
         - name: BLUE-C1-POLICY-07
@@ -139,7 +135,7 @@ traffic_policies:
             - protocol: udp
               dst_port: "1,10-20"
               flags:
-                - initial
+                - established
             - protocol: tcp
               dst_field: SERVICE-DEMO
     - name: BLUE-C2-POLICY

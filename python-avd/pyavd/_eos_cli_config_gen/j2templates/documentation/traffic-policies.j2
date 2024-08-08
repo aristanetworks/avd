@@ -53,8 +53,8 @@
 ##### {{ policy.name }}
 {%             if policy.matches is arista.avd.defined %}
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
 {%                 for match in policy.matches | arista.avd.natural_sort('name') %}
 {%                     set row = namespace() %}
 {%                     set row.match_set = match.name %}
@@ -66,7 +66,7 @@
 {%                     elif match.source.prefixes is arista.avd.defined %}
 {%                         set row.src_net = match.source.prefixes | join('<br/>') %}
 {%                     else %}
-{%                         set row.src_net = "ANY" %}
+{%                         set row.src_net = "any" %}
 {%                     endif %}
 {#                     -- Destination Prefix #}
 {%                     set row.dst_net = "" %}
@@ -75,40 +75,40 @@
 {%                     elif match.destination.prefixes is arista.avd.defined %}
 {%                         set row.dst_net = match.destination.prefixes | join('<br/>') %}
 {%                     else %}
-{%                         set row.dst_net = "ANY" %}
+{%                         set row.dst_net = "any" %}
 {%                     endif %}
 {#                     -- Protocol #}
 {%                     set row.protocols = "" %}
 {%                     set row.src_port = [] %}
 {%                     set row.dst_port = [] %}
+{%                     set row.src_field = [] %}
+{%                     set row.dst_field = [] %}
 {%                     if match.protocols is arista.avd.defined %}
 {%                         set row.protocols = match.protocols | map(attribute='protocol') | join('<br/>') %}
 {#                         -- Source/Destination Port #}
 {%                         for protocol in match.protocols %}
-{%                             if protocol.src_field is arista.avd.defined %}
-{%                                 do row.src_port.append(protocol.src_field) %}
-{%                             elif protocol.src_port is arista.avd.defined %}
-{%                                 do row.src_port.append(protocol.src_port) %}
-{%                             elif protocol.dst_field is arista.avd.defined %}
-{%                                 do row.dst_port.append(protocol.dst_field) %}
-{%                             elif protocol.dst_port is arista.avd.defined %}
-{%                                 do row.dst_port.append(protocol.dst_port) %}
+{%                             if protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 do row.src_port.append(protocol.src_port | arista.avd.default("all")) %}
+{%                                 do row.src_field.append(protocol.src_field | arista.avd.default("-")) %}
+{%                                 do row.dst_port.append(protocol.dst_port | arista.avd.default("all")) %}
+{%                                 do row.dst_field.append(protocol.dst_field | arista.avd.default("-")) %}
+{%                             else %}
+{%                                 do row.src_port.append(protocol.src_port | arista.avd.default("-")) %}
+{%                                 do row.src_field.append(protocol.src_field | arista.avd.default("-")) %}
+{%                                 do row.dst_port.append(protocol.dst_port | arista.avd.default("-")) %}
+{%                                 do row.dst_field.append(protocol.dst_field | arista.avd.default("-")) %}
 {%                             endif %}
 {%                         endfor %}
-{%                         if row.src_port %}
-{%                             set row.src_port = row.src_port | join('<br/>') %}
-{%                         else %}
-{%                             set row.src_port = "ANY" %}
-{%                         endif %}
-{%                         if row.dst_port %}
-{%                             set row.dst_port = row.dst_port | join('<br/>') %}
-{%                         else %}
-{%                             set row.dst_port = "ANY" %}
-{%                         endif %}
+{%                         set row.src_port = row.src_port | join('<br/>') %}
+{%                         set row.dst_port = row.dst_port | join('<br/>') %}
+{%                         set row.src_field = row.src_field | join('<br/>') %}
+{%                         set row.dst_field = row.dst_field | join('<br/>') %}
 {%                     else %}
-{%                         set row.protocols = "ANY" %}
-{%                         set row.src_port = "ANY" %}
-{%                         set row.dst_port = "ANY" %}
+{%                         set row.protocols = "-" %}
+{%                         set row.src_port = "-" %}
+{%                         set row.src_field = "-" %}
+{%                         set row.dst_port = "-" %}
+{%                         set row.dst_field = "-" %}
 {%                     endif %}
 {#                     -- Action management #}
 {%                     set row.actions = [] %}
@@ -134,7 +134,7 @@
 {%                         do row.actions.append("default action: PASS") %}
 {%                     endif %}
 {# -- Table rendering #}
-| {{ row.match_set }} | {{ row.type }} | {{ row.src_net }} | {{ row.dst_net }} | {{ row.protocols }} | {{ row.src_port }} | {{ row.dst_port }} | {{ row.actions | join('<br/>') }} |
+| {{ row.match_set }} | {{ row.type }} | {{ row.src_net }} | {{ row.dst_net }} | {{ row.protocols }} | {{ row.src_port }} | {{ row.src_field }} | {{ row.dst_port }} | {{ row.dst_field }} | {{ row.actions | join('<br/>') }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

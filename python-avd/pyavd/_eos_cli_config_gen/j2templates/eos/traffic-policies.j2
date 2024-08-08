@@ -84,44 +84,36 @@ traffic-policies
 {#                     -- PROTOCOL MANAGEMENT -- #}
 {%                     if match.protocols is arista.avd.defined %}
 {%                         for protocol in match.protocols %}
-{#                             -- destination port-list -- #}
-{%                             if protocol.dst_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
-{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
-{%                                 if protocol.flags is arista.avd.defined %}
-{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~ protocol.flags | join(' ') %}
-{%                                 endif %}
-{%                                 set protocol_cli = protocol_cli ~ ' destination port ' ~ protocol.dst_port %}
-         {{ protocol_cli }}
-{#                             -- source port-list -- #}
+{%                             set protocol_cli = 'protocol ' ~ protocol.protocol %}
+{%                             if protocol.flags is arista.avd.defined and protocol.protocol | lower == 'tcp' %}
+{%                                 for flag in protocol.flags %}
+         {{ protocol_cli }} flags {{ flag }}
+{%                                 endfor %}
+{%                             endif %}
+{#                             -- source/destination port-list -- #}
+{%                             if protocol.src_port is arista.avd.defined and protocol.dst_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+         {{ protocol_cli }} source port {{ protocol.src_port }} destination port {{ protocol.dst_port }}
 {%                             elif protocol.src_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
-{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
-{%                                 if protocol.flags is arista.avd.defined %}
-{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~ protocol.flags | join(' ') %}
-{%                                 endif %}
-{%                                 set protocol_cli = protocol_cli ~ ' source port ' ~ protocol.src_port %}
-         {{ protocol_cli }}
-{#                             -- destination field-set -- #}
-{%                             elif protocol.dst_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
-{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
-{%                                 if protocol.flags is arista.avd.defined %}
-{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~  protocol.flags | join(' ') %}
-{%                                 endif %}
-{%                                 set protocol_cli = protocol_cli ~ ' destination port field-set ' ~ protocol.dst_field %}
-         {{ protocol_cli }}
-{#                             -- source field-set -- #}
+         {{ protocol_cli }} source port {{ protocol.src_port }}
+{%                             elif protocol.dst_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+         {{ protocol_cli }} destination port {{ protocol.dst_port }}
+{%                             endif %}
+{#                             -- source/destination field-set -- #}
+{%                             if protocol.src_field is arista.avd.defined and protocol.dst_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+         {{ protocol_cli }} source port field-set {{ protocol.src_field }} destination port field-set {{ protocol.dst_field }}
 {%                             elif protocol.src_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
-{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
-{%                                 if protocol.flags is arista.avd.defined %}
-{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~  protocol.flags | join(' ') %}
-{%                                 endif %}
-{%                                 set protocol_cli = protocol_cli ~ ' source port field-set ' ~ protocol.src_field %}
+         {{ protocol_cli }} source port field-set {{ protocol.src_field }}
+{%                             elif protocol.dst_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+         {{ protocol_cli }} destination port field-set {{ protocol.dst_field }}
+{%                             endif %}
+{%                             if protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
+         {{ protocol_cli }} type {{ protocol.icmp_type | join(' ') }} code all
+{%                             endif %}
+{%                             if protocol.protocol | lower == 'neighbors' %}
+         {{ protocol_cli }} bgp
+{%                             endif %}
+{%                             if protocol.protocol is arista.avd.defined and protocol.icmp_type is not arista.avd.defined and protocol.dst_field is not arista.avd.defined and protocol.src_field is not arista.avd.defined and protocol.dst_port is not arista.avd.defined and protocol.src_port is not arista.avd.defined and protocol.flags is not arista.avd.defined and protocol.protocol | lower != 'neighbors' %}
          {{ protocol_cli }}
-{%                             elif protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
-         protocol icmp type {{ protocol.icmp_type | join(' ') }} code all
-{%                             elif protocol.protocol | lower == 'neighbors' %}
-         protocol neighbors bgp
-{%                             elif protocol.protocol | lower != 'ip' %}
-         protocol {{ protocol.protocol }}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
