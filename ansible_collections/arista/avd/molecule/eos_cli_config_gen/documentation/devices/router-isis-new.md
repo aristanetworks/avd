@@ -63,8 +63,8 @@ interface Management1
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |- | - |
-| Ethernet2 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - |- | - |
+| Ethernet1 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | - | 50 | point-to-point | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

@@ -300,11 +300,11 @@ vlan 4094
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |- | - |
-| Ethernet2 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |- | - |
-| Ethernet3 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |- | - |
-| Ethernet4 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - |- | - |
-| Ethernet8 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | True | - |- | - |
+| Ethernet1 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | - | - | - | - |
+| Ethernet8 | - | EVPN_UNDERLAY | True | 50 | point-to-point | level-2 | True | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
