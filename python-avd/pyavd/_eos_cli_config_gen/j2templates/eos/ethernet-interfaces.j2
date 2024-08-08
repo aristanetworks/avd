@@ -972,6 +972,64 @@ interface {{ ethernet_interface.name }}
    {{ isis_auth_cli }} level-2
 {%         endif %}
 {%     endif %}
+{%     if ethernet_interface.isis_authentication is arista.avd.defined %}
+{%         set both_key_ids = [] %}
+{%         if ethernet_interface.isis_authentication.both.key_ids is arista.avd.defined %}
+{%             for auth_key in ethernet_interface.isis_authentication.both.key_ids | arista.avd.natural_sort("id") %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     do both_key_ids.append(auth_key.id) %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }}
+{%                     else %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.isis_authentication.level_1.key_ids is arista.avd.defined %}
+{%             for auth_key in ethernet_interface.isis_authentication.level_1.key_ids %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.id not in both_key_ids
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+{%                     else %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.isis_authentication.level_2.key_ids is arista.avd.defined %}
+{%             for auth_key in ethernet_interface.isis_authentication.level_2.key_ids %}
+{%                 if auth_key.id is arista.avd.defined
+                       and auth_key.id not in both_key_ids
+                       and auth_key.algorithm is arista.avd.defined
+                       and auth_key.key_type is arista.avd.defined
+                       and auth_key.key is arista.avd.defined %}
+{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+{%                     else %}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.isis_authentication.both.key_type is arista.avd.defined and ethernet_interface.isis_authentication.both.key is arista.avd.defined %}
+   isis authentication key {{ ethernet_interface.isis_authentication.both.key_type }} {{ ethernet_interface.isis_authentication.both.key }}
+{%         else %}
+{%             if ethernet_interface.isis_authentication.level_1.key_type is arista.avd.defined and ethernet_interface.isis_authentication.level_1.key is arista.avd.defined %}
+   isis authentication key {{ ethernet_interface.isis_authentication.level_1.key_type }} {{ ethernet_interface.isis_authentication.level_1.key }} level-1
+{%             endif %}
+{%             if ethernet_interface.isis_authentication.level_2.key_type is arista.avd.defined and ethernet_interface.isis_authentication.level_2.key is arista.avd.defined %}
+   isis authentication key {{ ethernet_interface.isis_authentication.level_2.key_type }} {{ ethernet_interface.isis_authentication.level_2.key }} level-2
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.spanning_tree_portfast is arista.avd.defined('edge') %}
    spanning-tree portfast
 {%     elif ethernet_interface.spanning_tree_portfast is arista.avd.defined('network') %}
