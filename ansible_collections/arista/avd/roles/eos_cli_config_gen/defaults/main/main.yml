@@ -1,3 +1,6 @@
 # Roles Defaults - main
 
 avd_structured_config_file_format: "yml"
+
+# Input Variable Validation
+avd_data_validation_mode: "error"
