@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._errors import AristaAvdError
 from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item, strip_empties_from_dict
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
