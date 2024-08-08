@@ -107,7 +107,7 @@ pip install pyavd[ansible]
       show_root_toc_entry: false
       paths: ../../../../python-avd
 
-::: pyavd.api
+::: pyavd.api.interface_descriptions
     options:
       show_root_toc_entry: false
       paths: ../../../../python-avd
