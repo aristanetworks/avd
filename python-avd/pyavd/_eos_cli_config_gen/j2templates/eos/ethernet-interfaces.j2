@@ -938,8 +938,8 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.isis_authentication.level_1.mode == "sha" %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ ethernet_interface.isis_authentication.level_1.sha.key_id %}
 {%             elif ethernet_interface.isis_authentication.level_1.mode == "shared-secret" %}
-{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ ethernet_interface.isis_authentication.level_1.shared_secret.profile %}
-{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ ethernet_interface.isis_authentication.level_1.shared_secret.algorithm %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ ethernet_interface.isis_authentication.level_1.shared_secret.profile ~
+                      " algorithm " ~ ethernet_interface.isis_authentication.level_1.shared_secret.algorithm %}
 {%             endif %}
 {%             if ethernet_interface.isis_authentication.level_1.rx_disabled is arista.avd.defined(true) %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
@@ -956,8 +956,8 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.isis_authentication.level_2.mode == "sha" %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ ethernet_interface.isis_authentication.level_2.sha.key_id %}
 {%             elif ethernet_interface.isis_authentication.level_2.mode == "shared-secret" %}
-{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ ethernet_interface.isis_authentication.level_2.shared_secret.profile %}
-{%                 set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ ethernet_interface.isis_authentication.level_2.shared_secret.algorithm %}
+{%                 set isis_auth_cli = isis_auth_cli ~ " profile " ~ ethernet_interface.isis_authentication.level_2.shared_secret.profile ~
+                      " algorithm " ~ ethernet_interface.isis_authentication.level_2.shared_secret.algorithm %}
 {%             endif %}
 {%             if ethernet_interface.isis_authentication.level_2.rx_disabled is arista.avd.defined(true) %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
