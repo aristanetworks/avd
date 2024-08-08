@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import get
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
 
