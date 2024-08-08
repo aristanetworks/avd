@@ -388,8 +388,6 @@ class AvdSchemaList(AvdSchemaBaseModel):
     Name of a primary key in a list of dictionaries.
     The configured key is implicitly required and must have unique values between the list elements.
     """
-    secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
-    """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
     unique_keys: list[str] | None = None
     """
     Name of a key in a list of dictionaries.

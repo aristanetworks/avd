@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdError
 from pyavd._utils import get, get_item, short_esi_to_route_target
-from pyavd.j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigConnectedEndpoints
@@ -32,7 +31,7 @@ class UtilsMixin:
         """
         filtered_connected_endpoints = []
         for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
-            connected_endpoints = convert_dicts(get(self._hostvars, connected_endpoints_key["key"], default=[]), "name")
+            connected_endpoints = get(self._hostvars, connected_endpoints_key["key"], default=[])
             for connected_endpoint in connected_endpoints:
                 if "adapters" not in connected_endpoint:
                     continue
@@ -102,11 +101,8 @@ class UtilsMixin:
             return None
 
         # short_esi is only set when called from sub-interface port-channels.
-        if short_esi is None:
-            # Setting short_esi under port_channel will be removed in AVD5.0
-            port_channel_short_esi = get(adapter, "port_channel.short_esi")
-            if (short_esi := get(adapter, "ethernet_segment.short_esi", default=port_channel_short_esi)) is None:
-                return None
+        if (short_esi is None) and (short_esi := get(adapter, "ethernet_segment.short_esi")) is None:
+            return None
 
         endpoint_ports: list = adapter.get("endpoint_ports")
         short_esi = str(short_esi)

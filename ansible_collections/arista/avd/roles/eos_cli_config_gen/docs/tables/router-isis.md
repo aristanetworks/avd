@@ -35,7 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "router_isis.authentication.both.key_ids.[].key_type") | String | Required |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "router_isis.authentication.both.key_ids.[].key") | String | Required |  |  | Password string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rfc_5310</samp>](## "router_isis.authentication.both.key_ids.[].rfc_5310") | Boolean |  |  |  | SHA digest computation according to rfc5310. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.both.mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>text</code><br>- <code>shared_secret</code> | Authentication mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.both.mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>text</code><br>- <code>shared-secret</code> | Authentication mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "router_isis.authentication.both.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "router_isis.authentication.both.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "router_isis.authentication.both.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
@@ -51,7 +51,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "router_isis.authentication.level_1.key_ids.[].key_type") | String | Required |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "router_isis.authentication.level_1.key_ids.[].key") | String | Required |  |  | Password string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rfc_5310</samp>](## "router_isis.authentication.level_1.key_ids.[].rfc_5310") | Boolean |  |  |  | SHA digest computation according to rfc5310. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.level_1.mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>text</code><br>- <code>shared_secret</code> | Authentication mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.level_1.mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>text</code><br>- <code>shared-secret</code> | Authentication mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "router_isis.authentication.level_1.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "router_isis.authentication.level_1.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "router_isis.authentication.level_1.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
@@ -67,7 +67,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "router_isis.authentication.level_2.key_ids.[].key_type") | String | Required |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "router_isis.authentication.level_2.key_ids.[].key") | String | Required |  |  | Password string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rfc_5310</samp>](## "router_isis.authentication.level_2.key_ids.[].rfc_5310") | Boolean |  |  |  | SHA digest computation according to rfc5310. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.level_2.mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>text</code><br>- <code>shared_secret</code> | Authentication mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.authentication.level_2.mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>text</code><br>- <code>shared-secret</code> | Authentication mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha</samp>](## "router_isis.authentication.level_2.sha") | Dictionary |  |  |  | Required settings for authentication mode 'sha'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_id</samp>](## "router_isis.authentication.level_2.sha.key_id") | Integer | Required |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "router_isis.authentication.level_2.shared_secret") | Dictionary |  |  |  | Required settings for authentication mode 'shared_secret'. |
@@ -76,10 +76,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_disabled</samp>](## "router_isis.authentication.level_2.rx_disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;advertise</samp>](## "router_isis.advertise") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;passive_only</samp>](## "router_isis.advertise.passive_only") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;address_family</samp>](## "router_isis.address_family") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_isis.address_family.[]") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code><br>- <code>ipv4 unicast</code><br>- <code>ipv6 unicast</code> | Address Family.<span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;isis_af_defaults</samp>](## "router_isis.isis_af_defaults") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_isis.isis_af_defaults.[]") <span style="color:red">deprecated</span> | String |  |  |  | EOS CLI rendered under the address families.<br>Example "maximum-paths 64"<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;redistribute_routes</samp>](## "router_isis.redistribute_routes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_isis.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>bgp</code><br>- <code>connected</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>static</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_isis.redistribute_routes.[].route_map") | String |  |  |  | Route-map name. |
@@ -126,6 +122,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_1_wait_time</samp>](## "router_isis.graceful_restart.t2.level_1_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-1 LSP database sync wait time in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level_2_wait_time</samp>](## "router_isis.graceful_restart.t2.level_2_wait_time") | Integer |  |  | Min: 5<br>Max: 300 | Level-2 LSP database sync wait time in seconds. |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_isis.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the router isis in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;address_family</samp>](## "router_isis.address_family") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;isis_af_defaults</samp>](## "router_isis.isis_af_defaults") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.</span> |
 
 === "YAML"
 
@@ -186,7 +184,7 @@
               rfc_5310: <bool>
 
           # Authentication mode.
-          mode: <str; "md5" | "sha" | "text" | "shared_secret">
+          mode: <str; "md5" | "sha" | "text" | "shared-secret">
 
           # Required settings for authentication mode 'sha'.
           sha:
@@ -222,7 +220,7 @@
               rfc_5310: <bool>
 
           # Authentication mode.
-          mode: <str; "md5" | "sha" | "text" | "shared_secret">
+          mode: <str; "md5" | "sha" | "text" | "shared-secret">
 
           # Required settings for authentication mode 'sha'.
           sha:
@@ -258,7 +256,7 @@
               rfc_5310: <bool>
 
           # Authentication mode.
-          mode: <str; "md5" | "sha" | "text" | "shared_secret">
+          mode: <str; "md5" | "sha" | "text" | "shared-secret">
 
           # Required settings for authentication mode 'sha'.
           sha:
@@ -271,21 +269,6 @@
           rx_disabled: <bool>
       advertise:
         passive_only: <bool>
-      address_family:
-
-          # Address Family.
-          # This key is deprecated.
-          # Support will be removed in AVD version 5.0.0.
-          # Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.
-        - <str; "ipv4" | "ipv6" | "ipv4 unicast" | "ipv6 unicast">
-      isis_af_defaults:
-
-          # EOS CLI rendered under the address families.
-          # Example "maximum-paths 64"
-          # This key is deprecated.
-          # Support will be removed in AVD version 5.0.0.
-          # Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.
-        - <str>
       redistribute_routes:
         - source_protocol: <str; "bgp" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
 
