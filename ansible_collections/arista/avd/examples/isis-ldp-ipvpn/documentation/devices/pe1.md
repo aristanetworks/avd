@@ -193,10 +193,10 @@ vlan internal order ascending range 1006 1199
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
-| Ethernet2 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Level-1 Authentication Mode | Level-2 Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | --------------------------- | --------------------------- |
+| Ethernet1 | - | CORE | - | 50 | point-to-point | level-2 | True | - | - |
+| Ethernet2 | - | CORE | - | 50 | point-to-point | level-2 | True | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -216,8 +216,6 @@ interface Ethernet1
    isis metric 50
    isis hello padding
    isis network point-to-point
-   isis authentication mode md5
-   isis authentication key 7 <removed>
 !
 interface Ethernet2
    description P2P_LINK_TO_p2_Ethernet2
@@ -233,8 +231,6 @@ interface Ethernet2
    isis metric 50
    isis hello padding
    isis network point-to-point
-   isis authentication mode md5
-   isis authentication key 7 <removed>
 !
 interface Ethernet3
    no shutdown
