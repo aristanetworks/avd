@@ -1914,19 +1914,3 @@ keys:
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-        isis_authentication_mode:
-          type: str
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: v5.0.0
-            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode
-          valid_values: ["text", "md5"]
-        isis_authentication_key:
-          type: str
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: v5.0.0
-            new_key: isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key
-          description: Type-7 encrypted password.
