@@ -26,7 +26,7 @@ node_type_keys:
       python_class_name: CustomAvdIpAddressing
 
     interface_descriptions:
-      # Override default interface description with a custom python module using the new api with InterfaceDescriptionData object.
+      # Override default interface description with a custom python module
       python_module: custom_interface_descriptions_with_data
       python_class_name: CustomAvdInterfaceDescriptions
 

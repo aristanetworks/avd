@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""AVD eos_designs base module to generate interface descriptions.
+"""
+AVD eos_designs base module to generate interface descriptions.
 Can be subclassed to customize interface descriptions on a per need basis.
 """
 
