@@ -152,7 +152,7 @@
                         vlan_translation.dot1q_tunnel.to is arista.avd.defined %}
 {%                         set dot1q_tunnel = "True" %}
 {%                     endif %}
-| {{ port_channel_interface.name }} | out | {{ vlan_translation.from }} | {{ to_vlan_id | arista.avd.default('-') }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ dot1q_tunnel | arista.avd.default(vlan_translation.dot1q_tunnel, '-') }} |
+| {{ port_channel_interface.name }} | out | {{ vlan_translation.from }} | {{ to_vlan_id }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ dot1q_tunnel | arista.avd.default(vlan_translation.dot1q_tunnel, '-') }} |
 {%                 endfor %}
 {%             elif port_channel_interface.vlan_translations is arista.avd.defined %}
 {%                 for vlan_translation in port_channel_interface.vlan_translations | arista.avd.natural_sort %}

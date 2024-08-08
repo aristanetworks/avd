@@ -33,6 +33,7 @@ ethernet_interfaces:
       ipv4_segment_size: 70
       ipv6_segment_size: 75
       direction: egress
+    # test for switchport settings
     switchport:
       port_security:
         enabled: true
@@ -161,6 +162,7 @@ ethernet_interfaces:
           no_drop: true
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
+    # test for switchport settings
     switchport:
       mode: trunk
       trunk:
@@ -212,6 +214,7 @@ ethernet_interfaces:
     tcp_mss_ceiling:
       ipv6_segment_size: 65
     mode: trunk
+    # test for switchport settings
     switchport:
       trunk:
         native_vlan: 5
@@ -261,6 +264,7 @@ ethernet_interfaces:
         boundaries:
           - boundary: ff00::/16
           - boundary: ff01::/16
+    # test for switchport port-security violation
     switchport:
       port_security:
         violation:
@@ -300,6 +304,7 @@ ethernet_interfaces:
     isis_authentication_mode: md5
     isis_authentication_key: "asfddja23452"
     spanning_tree_guard: loop
+    # test for switchport access vlan
     switchport:
       access_vlan: 220
 
@@ -315,6 +320,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
+    # test for switchport trunk mode
     switchport:
       trunk:
         allowed_vlan: 110-111,210-211
@@ -406,6 +412,7 @@ ethernet_interfaces:
   - name: Ethernet11
     description: interface_in_mode_access_accepting_tagged_LACP
     type: switched
+    # test for switchport access mode
     switchport:
       mode: access
       access_vlan: 200
@@ -417,6 +424,7 @@ ethernet_interfaces:
   - name: Ethernet12
     description: interface_with_dot1q_tunnel
     type: switched
+    # test for switchport dot1q-tunnel mode
     switchport:
       mode: dot1q-tunnel
       access_vlan: 300
@@ -430,6 +438,7 @@ ethernet_interfaces:
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
+    # test for switchport trunk-phone mode
     switchport:
       trunk:
         native_vlan: 100
@@ -446,6 +455,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
+    # test for switchport trunk mode settings
     switchport:
       mode: trunk
       trunk:
@@ -453,13 +463,14 @@ ethernet_interfaces:
 
   - name: Ethernet15
     description: PVLAN Promiscuous Access - only one secondary
+    # test for switchport pvlan mapping
     switchport:
       mode: access
       access_vlan: 110
       pvlan_mapping: 111
 
   - name: Ethernet16
-    description: PVLAN Promiscuous Trunk - vlan translation out
+    description: PVLAN Promiscuous Trunk
     switchport:
       mode: trunk
       trunk:

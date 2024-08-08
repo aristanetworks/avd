@@ -99,7 +99,7 @@ sFlow is disabled.
 | Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
-| Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
+| Ethernet16 |  PVLAN Promiscuous Trunk | trunk | 110-112 | - | - | - |
 | Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
 | Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
 | Ethernet21 |  200MBit/s shape | - | - | - | - | - |
@@ -646,7 +646,7 @@ interface Ethernet15
    switchport pvlan mapping 111
 !
 interface Ethernet16
-   description PVLAN Promiscuous Trunk - vlan translation out
+   description PVLAN Promiscuous Trunk
    switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
