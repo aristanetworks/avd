@@ -181,11 +181,11 @@ vlan internal order ascending range 1006 1199
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Level-1 Authentication Mode | Level-2 Authentication Mode |
-| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | --------------------------- | --------------------------- |
-| Ethernet2 | - | CORE | - | 50 | point-to-point | level-2 | True | - | - |
-| Ethernet3 | - | CORE | - | 50 | point-to-point | level-2 | True | - | - |
-| Ethernet4 | - | CORE | - | 50 | point-to-point | level-2 | True | - | - |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
+| Ethernet2 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |- | - |
+| Ethernet3 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |- | - |
+| Ethernet4 | - | CORE | - | 50 | point-to-point | level-2 | True | md5 |- | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -205,6 +205,8 @@ interface Ethernet2
    isis metric 50
    isis hello padding
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 <removed>
 !
 interface Ethernet3
    description P2P_LINK_TO_p2_Ethernet3
@@ -220,6 +222,8 @@ interface Ethernet3
    isis metric 50
    isis hello padding
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 <removed>
 !
 interface Ethernet4
    description P2P_LINK_TO_rr1_Ethernet4
@@ -235,6 +239,8 @@ interface Ethernet4
    isis metric 50
    isis hello padding
    isis network point-to-point
+   isis authentication mode md5
+   isis authentication key 7 <removed>
 ```
 
 ### Loopback Interfaces
