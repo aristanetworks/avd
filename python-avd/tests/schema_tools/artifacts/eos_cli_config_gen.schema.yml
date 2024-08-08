@@ -1,6 +1,7 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../pyavd/_schema/avd_meta_schema.json
 $id: eos_cli_config_gen
 type: dict
 allow_other_keys: true
@@ -319,8 +320,6 @@ keys:
   access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: IP Extended Access-Lists (legacy model)
     items:
       type: dict
@@ -334,8 +333,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -515,8 +512,6 @@ keys:
   bgp_groups:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -562,8 +557,6 @@ keys:
       pbr:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -579,8 +572,6 @@ keys:
       qos:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -617,8 +608,6 @@ keys:
   community_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: Community Lists (legacy model)
     items:
       type: dict
@@ -719,8 +708,6 @@ keys:
 
           '
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -982,8 +969,6 @@ keys:
   daemons:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: Custom Daemons
     description: This will add a daemon to the eos configuration that is most useful
       when trying to run OpenConfig clients like ocprometheus.
@@ -1170,8 +1155,6 @@ keys:
   ethernet_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -1461,8 +1444,6 @@ keys:
         ip_helpers:
           type: list
           primary_key: ip_helper
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -1493,8 +1474,6 @@ keys:
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -1610,8 +1589,6 @@ keys:
         ospf_message_digest_keys:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -2276,8 +2253,6 @@ keys:
         uc_tx_queues:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -2344,8 +2319,6 @@ keys:
         tx_queues:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -2425,8 +2398,6 @@ keys:
 
       '
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -2614,8 +2585,6 @@ keys:
       speed_groups:
         type: list
         primary_key: speed_group
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -2755,8 +2724,6 @@ keys:
     type: list
     display_name: Maintenance Interface Groups
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -2781,8 +2748,6 @@ keys:
   interface_profiles:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -2800,8 +2765,6 @@ keys:
   ip_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: IP Extended Access-Lists (improved model)
     items:
       type: dict
@@ -2962,10 +2925,7 @@ keys:
     description: Limit ACL entries defined under the `ip_access_lists`.
   ip_community_lists:
     type: list
-    secondary_key: entries
     primary_key: name
-    convert_types:
-    - dict
     display_name: IP Community Lists
     description: 'Communities and regexp entries MUST not be configured in the same
       community-list
@@ -3029,8 +2989,6 @@ keys:
       source_interfaces:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -3046,9 +3004,6 @@ keys:
   ip_extcommunity_lists:
     type: list
     primary_key: name
-    secondary_key: entries
-    convert_types:
-    - dict
     display_name: IP Extended Community Lists
     items:
       type: dict
@@ -3077,9 +3032,6 @@ keys:
   ip_extcommunity_lists_regexp:
     type: list
     primary_key: name
-    secondary_key: entries
-    convert_types:
-    - dict
     display_name: IP Extended Community Lists RegExp
     items:
       type: dict
@@ -3197,8 +3149,6 @@ keys:
       vlans:
         type: list
         primary_key: id
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -3637,8 +3587,6 @@ keys:
   ipv6_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     display_name: IPv6 Extended Access-Lists
     items:
       type: dict
@@ -3652,8 +3600,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -3689,8 +3635,6 @@ keys:
   ipv6_prefix_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -3701,8 +3645,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -3720,8 +3662,6 @@ keys:
   ipv6_standard_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -3734,8 +3674,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -3859,8 +3797,6 @@ keys:
   link_tracking_groups:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -3894,8 +3830,6 @@ keys:
       tlvs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -3928,8 +3862,6 @@ keys:
   local_users:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -4135,8 +4067,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4151,8 +4081,6 @@ keys:
             hosts:
               type: list
               primary_key: name
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -4180,8 +4108,6 @@ keys:
               match_lists:
                 type: list
                 primary_key: name
-                convert_types:
-                - dict
                 items:
                   type: dict
                   keys:
@@ -4213,8 +4139,6 @@ keys:
   loopback_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -4286,8 +4210,6 @@ keys:
   mac_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -4355,8 +4277,6 @@ keys:
       profiles:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4373,8 +4293,6 @@ keys:
             connection_keys:
               type: list
               primary_key: id
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -4448,8 +4366,6 @@ keys:
       interface_profiles:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4485,8 +4401,6 @@ keys:
       bgp_profiles:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4502,8 +4416,6 @@ keys:
       unit_profiles:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4525,8 +4437,6 @@ keys:
       units:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4682,8 +4592,6 @@ keys:
           new_key: transport.grpc
           remove_in_version: 5.0.0
         primary_key: name
-        convert_types:
-        - dict
         description: 'These should not be mixed with the new keys above.
 
           '
@@ -4724,8 +4632,6 @@ keys:
       enable_vrfs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -4813,8 +4719,6 @@ keys:
   management_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5086,8 +4990,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -5138,8 +5040,6 @@ keys:
       string:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -5150,8 +5050,6 @@ keys:
               type: list
               required: true
               primary_key: sequence
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -5327,8 +5225,6 @@ keys:
                     type: str
   monitor_sessions:
     type: list
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5517,8 +5413,6 @@ keys:
       authentication_keys:
         type: list
         primary_key: id
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -5554,8 +5448,6 @@ keys:
       patches:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -5566,8 +5458,6 @@ keys:
             connectors:
               type: list
               primary_key: id
-              convert_types:
-              - dict
               min_length: 2
               max_length: 2
               description: Must have exactly two connectors to a patch of which at
@@ -5604,8 +5494,6 @@ keys:
   peer_filters:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5616,8 +5504,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -5656,8 +5542,6 @@ keys:
               queue_profiles:
                 type: list
                 primary_key: name
-                convert_types:
-                - dict
                 items:
                   type: dict
                   keys:
@@ -5666,8 +5550,6 @@ keys:
                     multicast_queues:
                       type: list
                       primary_key: id
-                      convert_types:
-                      - dict
                       items:
                         type: dict
                         keys:
@@ -5727,8 +5609,6 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
-                      convert_types:
-                      - dict
                       items:
                         type: dict
                         keys:
@@ -5858,8 +5738,6 @@ keys:
         type: list
         description: PBR Policy-Maps
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -5869,8 +5747,6 @@ keys:
             classes:
               type: list
               primary_key: name
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -5904,8 +5780,6 @@ keys:
         type: list
         description: QOS Policy-Maps
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -5915,8 +5789,6 @@ keys:
             classes:
               type: list
               primary_key: name
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -5945,8 +5817,6 @@ keys:
   port_channel_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -6559,8 +6429,6 @@ keys:
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -6635,8 +6503,6 @@ keys:
         ospf_message_digest_keys:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -6695,8 +6561,6 @@ keys:
   prefix_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -6706,8 +6570,6 @@ keys:
         sequence_numbers:
           type: list
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -6995,8 +6857,6 @@ keys:
   qos_profiles:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -7039,8 +6899,6 @@ keys:
         tx_queues:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -7131,8 +6989,6 @@ keys:
         uc_tx_queues:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -7221,8 +7077,6 @@ keys:
         mc_tx_queues:
           type: list
           primary_key: id
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -7567,8 +7421,6 @@ keys:
   route_maps:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -7579,8 +7431,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -7872,8 +7722,6 @@ keys:
       peer_groups:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8056,8 +7904,6 @@ keys:
       neighbors:
         type: list
         primary_key: ip_address
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8205,8 +8051,6 @@ keys:
       neighbor_interfaces:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8228,8 +8072,6 @@ keys:
       aggregate_addresses:
         type: list
         primary_key: prefix
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8251,9 +8093,6 @@ keys:
       redistribute_routes:
         type: list
         primary_key: source_protocol
-        convert_types:
-        - dict
-        - list
         items:
           type: dict
           keys:
@@ -8266,8 +8105,6 @@ keys:
       vlan_aware_bundles:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8365,8 +8202,6 @@ keys:
       vlans:
         type: list
         primary_key: id
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8457,8 +8292,6 @@ keys:
       vpws:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -8485,8 +8318,6 @@ keys:
             pseudowires:
               type: list
               primary_key: name
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -8529,8 +8360,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8597,8 +8426,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8620,8 +8447,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8634,8 +8459,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8685,8 +8508,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8719,8 +8540,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8738,8 +8557,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8756,8 +8573,6 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8807,8 +8622,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8821,8 +8634,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8846,8 +8657,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8870,8 +8679,6 @@ keys:
           redistribute_routes:
             type: list
             primary_key: source_protocol
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8910,8 +8717,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8928,8 +8733,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -8941,8 +8744,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9095,8 +8896,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9107,8 +8906,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9141,8 +8938,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9153,8 +8948,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9171,8 +8964,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9197,8 +8988,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9225,8 +9014,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9251,8 +9038,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -9274,8 +9059,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -9305,9 +9088,6 @@ keys:
                 import:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9322,9 +9102,6 @@ keys:
                 export:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9346,8 +9123,6 @@ keys:
             networks:
               type: list
               primary_key: prefix
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9413,8 +9188,6 @@ keys:
             neighbors:
               type: list
               primary_key: ip_address
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9557,8 +9330,6 @@ keys:
             neighbor_interfaces:
               type: list
               primary_key: name
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9582,9 +9353,6 @@ keys:
             redistribute_routes:
               type: list
               primary_key: source_protocol
-              convert_types:
-              - dict
-              - list
               items:
                 type: dict
                 keys:
@@ -9597,8 +9365,6 @@ keys:
             aggregate_addresses:
               type: list
               primary_key: prefix
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9671,8 +9437,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9700,8 +9464,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9766,8 +9528,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9784,8 +9544,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9823,8 +9581,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9841,8 +9597,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9880,8 +9634,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9898,8 +9650,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9932,8 +9682,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9965,8 +9713,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -9977,8 +9723,6 @@ keys:
             address_families:
               type: list
               primary_key: address_family
-              convert_types:
-              - dict
               deprecation:
                 warning: true
                 new_key: address_family_*
@@ -10013,8 +9757,6 @@ keys:
                   neighbors:
                     type: list
                     primary_key: ip_address
-                    convert_types:
-                    - dict
                     items:
                       type: dict
                       keys:
@@ -10031,8 +9773,6 @@ keys:
                   peer_groups:
                     type: list
                     primary_key: name
-                    convert_types:
-                    - dict
                     items:
                       type: dict
                       keys:
@@ -10049,8 +9789,6 @@ keys:
                   networks:
                     type: list
                     primary_key: prefix
-                    convert_types:
-                    - dict
                     items:
                       type: dict
                       keys:
@@ -10100,8 +9838,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -10318,8 +10054,6 @@ keys:
             type: str
           prefix_segments:
             type: list
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -10655,8 +10389,6 @@ keys:
       process_ids:
         type: list
         primary_key: id
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -10701,8 +10433,6 @@ keys:
             network_prefixes:
               type: list
               primary_key: ipv4_prefix
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -10863,8 +10593,6 @@ keys:
             areas:
               type: list
               primary_key: id
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -10974,8 +10702,6 @@ keys:
           rp_addresses:
             type: list
             primary_key: address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -10984,8 +10710,6 @@ keys:
                   description: RP Address
                 groups:
                   type: list
-                  convert_types:
-                  - dict
                   items:
                     type: str
                 access_lists:
@@ -11005,8 +10729,6 @@ keys:
           anycast_rps:
             type: list
             primary_key: address
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -11016,8 +10738,6 @@ keys:
                 other_anycast_rp_addresses:
                   type: list
                   primary_key: address
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -11098,8 +10818,6 @@ keys:
                 colors:
                   type: list
                   primary_key: value
-                  convert_types:
-                  - dict
                   items:
                     type: dict
                     keys:
@@ -11192,8 +10910,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -11204,8 +10920,6 @@ keys:
             destinations:
               type: list
               primary_key: destination
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -11231,8 +10945,6 @@ keys:
       destinations:
         type: list
         primary_key: destination
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -11357,8 +11069,6 @@ keys:
       communities:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -11411,8 +11121,6 @@ keys:
       local_interfaces:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -11658,8 +11366,6 @@ keys:
               instances:
                 type: list
                 primary_key: id
-                convert_types:
-                - dict
                 items:
                   type: dict
                   keys:
@@ -11680,8 +11386,6 @@ keys:
       mst_instances:
         type: list
         primary_key: id
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -11706,8 +11410,6 @@ keys:
       rapid_pvst_instances:
         type: list
         primary_key: id
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -11727,8 +11429,6 @@ keys:
   standard_access_lists:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -11741,8 +11441,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -11871,8 +11569,6 @@ keys:
           ipv4_access_groups:
             type: list
             primary_key: acl_name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -11885,8 +11581,6 @@ keys:
           ipv6_access_groups:
             type: list
             primary_key: acl_name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -12020,10 +11714,7 @@ keys:
           '
       profiles:
         type: list
-        secondary_key: config
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -12086,10 +11777,7 @@ keys:
         keys:
           ipv4:
             type: list
-            secondary_key: prefixes
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -12103,10 +11791,7 @@ keys:
                     description: IPv4 Prefix
           ipv6:
             type: list
-            secondary_key: prefixes
             primary_key: name
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -12121,9 +11806,6 @@ keys:
           ports:
             type: list
             primary_key: name
-            secondary_key: port_range
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -12136,8 +11818,6 @@ keys:
       policies:
         type: list
         primary_key: name
-        convert_types:
-        - dict
         items:
           type: dict
           keys:
@@ -12147,8 +11827,6 @@ keys:
             matches:
               type: list
               primary_key: name
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -12204,8 +11882,6 @@ keys:
                   protocols:
                     type: list
                     primary_key: protocol
-                    convert_types:
-                    - dict
                     items:
                       type: dict
                       keys:
@@ -12300,8 +11976,6 @@ keys:
   tunnel_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -12387,8 +12061,6 @@ keys:
   virtual_source_nat_vrfs:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -12403,8 +12075,6 @@ keys:
   vlan_interfaces:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -12473,8 +12143,6 @@ keys:
         ip_helpers:
           type: list
           description: List of DHCP servers
-          convert_types:
-          - dict
           primary_key: ip_helper
           items:
             type: dict
@@ -12543,8 +12211,6 @@ keys:
           type: bool
         ipv6_nd_prefixes:
           type: list
-          convert_types:
-          - dict
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -12686,8 +12352,6 @@ keys:
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication
-          convert_types:
-          - dict
           primary_key: id
           items:
             type: dict
@@ -12959,8 +12623,6 @@ keys:
   vlans:
     type: list
     primary_key: id
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -13001,8 +12663,6 @@ keys:
   vmtracer_sessions:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -13026,8 +12686,6 @@ keys:
     description: 'These keys are ignored if the name of the vrf is ''default''
 
       '
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -13121,8 +12779,6 @@ keys:
               vlans:
                 type: list
                 primary_key: id
-                convert_types:
-                - dict
                 items:
                   type: dict
                   keys:
@@ -13146,8 +12802,6 @@ keys:
               vrfs:
                 type: list
                 primary_key: name
-                convert_types:
-                - dict
                 items:
                   type: dict
                   keys:
