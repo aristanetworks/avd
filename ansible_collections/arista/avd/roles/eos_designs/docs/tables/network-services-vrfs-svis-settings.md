@@ -118,7 +118,7 @@
             svis:
 
                 # SVI interface id and VLAN id.
-              - id: <int; 1-4096; required; unique>
+              - id: <int; 1-4096; required>
 
                 # VLAN name.
                 name: <str; required>

@@ -9,7 +9,6 @@ keys:
   ip_extcommunity_lists:
     type: list
     primary_key: name
-    secondary_key: entries
     display_name: IP Extended Community Lists
     items:
       type: dict

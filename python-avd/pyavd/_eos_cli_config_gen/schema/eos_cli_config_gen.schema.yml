@@ -4278,7 +4278,6 @@ keys:
     description: Limit ACL entries defined under the `ip_access_lists`.
   ip_community_lists:
     type: list
-    secondary_key: entries
     primary_key: name
     display_name: IP Community Lists
     description: 'Communities and regexp entries MUST not be configured in the same
@@ -4404,7 +4403,6 @@ keys:
   ip_extcommunity_lists:
     type: list
     primary_key: name
-    secondary_key: entries
     display_name: IP Extended Community Lists
     items:
       type: dict
@@ -4435,7 +4433,6 @@ keys:
   ip_extcommunity_lists_regexp:
     type: list
     primary_key: name
-    secondary_key: entries
     display_name: IP Extended Community Lists RegExp
     items:
       type: dict
@@ -13102,7 +13099,6 @@ keys:
                 import:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
                   items:
                     type: dict
                     keys:
@@ -13136,7 +13132,6 @@ keys:
                 export:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
                   items:
                     type: dict
                     keys:
@@ -16887,7 +16882,6 @@ keys:
           '
       profiles:
         type: list
-        secondary_key: config
         primary_key: name
         items:
           type: dict
@@ -16953,7 +16947,6 @@ keys:
         keys:
           ipv4:
             type: list
-            secondary_key: prefixes
             primary_key: name
             items:
               type: dict
@@ -16968,7 +16961,6 @@ keys:
                     description: IPv4 Prefix.
           ipv6:
             type: list
-            secondary_key: prefixes
             primary_key: name
             items:
               type: dict
@@ -16984,7 +16976,6 @@ keys:
           ports:
             type: list
             primary_key: name
-            secondary_key: port_range
             items:
               type: dict
               keys:

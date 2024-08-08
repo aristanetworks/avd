@@ -2374,7 +2374,6 @@ keys:
                 import:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
                   items:
                     type: dict
                     keys:
@@ -2402,7 +2401,6 @@ keys:
                 export:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
                   items:
                     type: dict
                     keys:

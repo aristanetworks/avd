@@ -80,8 +80,6 @@ class TagMixin:
         Returns:
             List of Tag objects.
         """
-        tags = []
-
         request = TagStreamRequest(
             partial_eq_filter=Tag(
                 # Notice the "" for workspace, since we are fetching mainline.
@@ -93,7 +91,7 @@ class TagMixin:
         client = TagServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            tags.extend(response.value async for response in responses)
+            tags = [response.value async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '' (main), Element Type '{element_type}', Creator Type '{creator_type}'") or e
 
@@ -196,8 +194,6 @@ class TagMixin:
         Returns:
             Workspace object matching the workspace_id
         """
-        tag_assignments = []
-
         request = TagAssignmentStreamRequest(
             partial_eq_filter=TagAssignment(
                 # Notice the "" for workspace, since we are fetching mainline.
@@ -209,7 +205,7 @@ class TagMixin:
         client = TagAssignmentServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            tag_assignments.extend(response.value async for response in responses)
+            tag_assignments = [response.value async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '' (main), Element Type '{element_type}', Creator Type '{creator_type}'") or e
 

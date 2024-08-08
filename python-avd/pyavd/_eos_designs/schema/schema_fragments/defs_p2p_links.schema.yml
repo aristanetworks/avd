@@ -144,7 +144,6 @@ $defs:
             nodes_child_interfaces:
               type: list
               primary_key: node
-              secondary_key: interfaces
               items:
                 type: dict
                 keys:
