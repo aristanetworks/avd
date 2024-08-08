@@ -14337,7 +14337,7 @@ keys:
                 - '7'
                 - 8a
                 description: Configure authentication key type. EOS default `key_type`
-                  is 0.
+                  is 7.
               key:
                 type: str
                 description: Password string. `key_type` is required for this setting.
