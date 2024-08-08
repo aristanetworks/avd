@@ -1,10 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""
-AVD eos_designs base module to generate interface descriptions.
-Can be subclassed to customize interface descriptions on a per need basis.
-"""
+"""AVD eos_designs base module to generate interface descriptions."""
 
 from __future__ import annotations
 
@@ -13,7 +10,6 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 
-from ..avdfacts import AvdFacts
 from .models import InterfaceDescriptionData
 
 if TYPE_CHECKING:
@@ -71,9 +67,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                 },
             )
 
-        # TODO should we keep this upper - or use it consistently everywhere
-        if data.peer:
-            link_peer = str(data.peer).upper()
+        # TODO: should we keep this upper - or use it consistently everywhere
+        link_peer = str(data.peer or "").upper()
 
         if data.link_type == "underlay_p2p":
             desc = f"P2P_LINK_TO_{link_peer}_{data.peer_interface}"
@@ -245,7 +240,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
     ) -> str:
         """
-        Build Router ID loopback interface description.
+        Build VTEP loopback interface description.
 
         Available data:
             - mpls_overlay_role
