@@ -57,6 +57,7 @@ vlan_interfaces:
       - 10.11.83.1/24
       - 10.11.84.1/24
     # Test isis auth both md5
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       both:
         key_type: 0
@@ -71,6 +72,7 @@ vlan_interfaces:
       - 10.11.84.254/24
     arp_gratuitous_accept: true
     arp_monitor_mac_address: true
+    isis_enable: "EVPN_UNDERLAY"
     # Test isis auth both sha rx
     isis_authentication:
       both:
@@ -91,6 +93,7 @@ vlan_interfaces:
       min_rx: 500
       multiplier: 5
     # Test isis auth both sha
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       both:
         key_type: 0
@@ -106,6 +109,7 @@ vlan_interfaces:
       enabled: true
       distance: 10
     # Test isis auth both shared secret rx
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       both:
         mode: shared-secret
@@ -121,6 +125,7 @@ vlan_interfaces:
     access_group_in: ACL_IN
     access_group_out: ACL_OUT
     # Test isis auth both shared secret
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       both:
         mode: shared-secret
@@ -133,6 +138,7 @@ vlan_interfaces:
     shutdown: true
     ip_address_virtual: 10.10.87.1/23
     # Test isis auth both l1l2 md5 rx
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
         key_type: 0
@@ -152,6 +158,7 @@ vlan_interfaces:
       pbr:
         input: MyServicePolicy
     # Test isis auth l1l2 md5
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
         key_type: 0
@@ -168,6 +175,7 @@ vlan_interfaces:
     ip_attached_host_route_export:
       enabled: true
     # Test isis auth l1l2 shared secret
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
         mode: shared-secret
@@ -186,6 +194,7 @@ vlan_interfaces:
     ip_proxy_arp: true
     ip_directed_broadcast: true
     # Test isis auth l1l2 shared secret rx
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
         mode: shared-secret
@@ -217,6 +226,7 @@ vlan_interfaces:
           count: 3.5
           interval: 10
     # Test isis auth l1l2 sha rx
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
         mode: sha
@@ -277,6 +287,7 @@ vlan_interfaces:
       - ip_helper: 10.10.64.150
         source_interface: Loopback0
     # Test isis auth l1l2 sha
+    isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
         mode: sha

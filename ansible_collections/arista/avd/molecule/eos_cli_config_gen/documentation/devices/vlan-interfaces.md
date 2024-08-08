@@ -185,9 +185,20 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
-| --------- | ------------- | -------- | ----------- | ---- |
-| Vlan2002 | EVPN_UNDERLAY | True | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | --------------------------- | --------------------------- |
+| Vlan42 | EVPN_UNDERLAY | - | - | - | sha | sha |
+| Vlan83 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
+| Vlan84 | EVPN_UNDERLAY | - | - | - | sha | sha |
+| Vlan85 | EVPN_UNDERLAY | - | - | - | sha | sha |
+| Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
+| Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
+| Vlan88 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
+| Vlan90 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
+| Vlan91 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
+| Vlan92 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
+| Vlan2002 | EVPN_UNDERLAY | True | - | - | md5 | md5 |
+| Vlan4094 | EVPN_UNDERLAY | - | - | - | sha | sha |
 
 ##### Multicast Routing
 
@@ -246,6 +257,7 @@ interface Vlan42
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
+   isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 level-1
    isis authentication mode sha key-id 5 level-2
    ip address virtual 10.10.42.1/24
@@ -302,6 +314,7 @@ interface Vlan81
 interface Vlan83
    description SVI Description
    no shutdown
+   isis enable EVPN_UNDERLAY
    isis authentication mode md5
    isis authentication key 0 password
    ip address virtual 10.10.83.1/24
@@ -313,6 +326,7 @@ interface Vlan84
    arp gratuitous accept
    arp monitor mac-address
    ip address 10.10.84.1/24
+   isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2 rx-disabled
    isis authentication key 0 password
    ip virtual-router address 10.10.84.254
@@ -322,6 +336,7 @@ interface Vlan85
    description SVI Description
    arp cache dynamic capacity 50000
    ip address 10.10.84.1/24
+   isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2
    isis authentication key 0 password
    bfd interval 500 min-rx 500 multiplier 5
@@ -330,6 +345,7 @@ interface Vlan85
 interface Vlan86
    description SVI Description
    ip address 10.10.83.1/24
+   isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
    ip attached-host route export 10
 !
@@ -339,11 +355,13 @@ interface Vlan87
    ip address 10.10.87.1/24
    ip access-group ACL_IN in
    ip access-group ACL_OUT out
+   isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile1 algorithm sha-1
 !
 interface Vlan88
    description SVI Description
    shutdown
+   isis enable EVPN_UNDERLAY
    isis authentication mode md5 rx-disabled level-1
    isis authentication mode md5 rx-disabled level-2
    isis authentication key 0 password level-1
@@ -374,6 +392,7 @@ interface Vlan89
 interface Vlan90
    description SVI Description
    ip address 10.10.83.1/24
+   isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
    isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
    ip attached-host route export
@@ -381,6 +400,7 @@ interface Vlan90
 interface Vlan91
    description PBR Description
    shutdown
+   isis enable EVPN_UNDERLAY
    isis authentication mode md5 level-1
    isis authentication mode md5 level-2
    isis authentication key 0 password level-1
@@ -392,6 +412,7 @@ interface Vlan92
    ip proxy-arp
    ip directed-broadcast
    ip address 10.10.92.1/24
+   isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
 !
@@ -536,6 +557,7 @@ interface Vlan4094
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
    pim ipv4 bfd
+   isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 rx-disabled level-1
    isis authentication mode sha key-id 5 rx-disabled level-2
 ```
