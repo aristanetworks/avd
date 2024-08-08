@@ -3996,6 +3996,26 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
             in the final EOS configuration.
+        isis_authentication_mode:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v5.0.0
+            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode
+              or isis_authentication.level_2.mode
+          valid_values:
+          - text
+          - md5
+        isis_authentication_key:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v5.0.0
+            new_key: isis_authentication.both.key or isis_authentication.level_1.key
+              or isis_authentication.level_2.key
+          description: Type-7 encrypted password.
   event_handlers:
     type: list
     description: 'Gives the ability to monitor and react to Syslog messages.
@@ -9594,14 +9614,6 @@ keys:
           - level-2
         isis_hello_padding:
           type: bool
-        isis_authentication_mode:
-          type: str
-          valid_values:
-          - text
-          - md5
-        isis_authentication_key:
-          type: str
-          description: Type-7 encrypted password.
         traffic_policy:
           type: dict
           keys:

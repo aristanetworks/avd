@@ -910,13 +910,6 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.isis_network_point_to_point is arista.avd.defined(true) %}
    isis network point-to-point
 {%     endif %}
-{%     if ethernet_interface.isis_authentication_mode is arista.avd.defined and
-          ethernet_interface.isis_authentication_mode in ["text", "md5"] %}
-   isis authentication mode {{ ethernet_interface.isis_authentication_mode }}
-{%     endif %}
-{%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
-{%     endif %}
 {%     if ethernet_interface.isis_authentication.both.mode is arista.avd.defined
           and (ethernet_interface.isis_authentication.both.mode in ["md5", "text"]
                or (ethernet_interface.isis_authentication.both.mode == "sha" and ethernet_interface.isis_authentication.both.sha.key_id is arista.avd.defined)

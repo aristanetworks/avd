@@ -339,9 +339,21 @@ sFlow is disabled.
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | - |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Level-1 Authentication Mode | Level-2 Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | --------------------------- | --------------------------- |
+| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | - | - |
+| Ethernet8 | - | - | - | - | - | - | - | md5 | md5 |
+| Ethernet8.101 | - | - | - | - | - | - | - | md5 | md5 |
+| Ethernet9 | - | - | - | - | - | - | - | sha | sha |
+| Ethernet10 | - | - | - | - | - | - | - | sha | sha |
+| Ethernet11 | - | - | - | - | - | - | - | shared-secret | shared-secret |
+| Ethernet12 | - | - | - | - | - | - | - | shared-secret | shared-secret |
+| Ethernet13 | - | - | - | - | - | - | - | md5 | md5 |
+| Ethernet14 | - | - | - | - | - | - | - | md5 | md5 |
+| Ethernet15 | - | - | - | - | - | - | - | shared-secret | shared-secret |
+| Ethernet16 | - | - | - | - | - | - | - | shared-secret | shared-secret |
+| Ethernet17 | - | - | - | - | - | - | - | sha | sha |
+| Ethernet18 | - | - | - | - | - | - | - | sha | sha |
 
 ##### EVPN Multihoming
 
