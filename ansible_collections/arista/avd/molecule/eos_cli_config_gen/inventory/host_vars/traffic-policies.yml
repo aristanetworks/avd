@@ -107,6 +107,7 @@ traffic_policies:
             - protocol: neighbors
             - protocol: udp
               dst_port: "1,10-20"
+              src_port: "22"
             - protocol: tcp
               src_port: "22"
               flags:
@@ -137,7 +138,8 @@ traffic_policies:
               flags:
                 - established
             - protocol: tcp
-              dst_field: SERVICE-DEMO
+              dst_field: SERVICE-DEMO-DST
+              src_field: SERVICE-DEMO-SRC
     - name: BLUE-C2-POLICY
       default_actions:
         ipv4:

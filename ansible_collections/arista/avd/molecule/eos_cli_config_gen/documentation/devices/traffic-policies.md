@@ -106,9 +106,9 @@ interface Port-Channel2
 | BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
 | BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | all<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | tcp | all | - | all | - | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>all<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>all<br/>- | -<br/>-<br/>-<br/>- | action: PASS |
+| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>all<br/>- | -<br/>-<br/>-<br/>- | action: PASS |
 | BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | default action: PASS |
-| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | all<br/>all | -<br/>- | 1,10-20<br/>all | -<br/>SERVICE-DEMO | default action: PASS |
+| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | all<br/>all | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>all | -<br/>SERVICE-DEMO-DST | default action: PASS |
 
 ##### BLUE-C2-POLICY
 
@@ -209,7 +209,7 @@ traffic-policies
       !
       match BLUE-C1-POLICY-06 ipv4
          protocol neighbors bgp
-         protocol udp destination port 1,10-20
+         protocol udp source port 22 destination port 1,10-20
          protocol tcp flags established
          protocol tcp source port 22
          protocol icmp
@@ -223,7 +223,7 @@ traffic-policies
          destination prefix 10.0.0.0/8 192.168.0.0/16
          destination prefix field-set DEMO-01
          protocol udp destination port 1,10-20
-         protocol tcp destination port field-set SERVICE-DEMO
+         protocol tcp source port field-set SERVICE-DEMO-SRC destination port field-set SERVICE-DEMO-DST
          !
       !
       match ipv4-all-default ipv4
