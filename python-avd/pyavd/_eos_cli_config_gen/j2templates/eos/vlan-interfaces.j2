@@ -316,8 +316,7 @@ interface {{ vlan_interface.name }}
 {%         if vlan_interface.isis_authentication.both.mode == "sha" %}
 {%             set isis_auth_cli = isis_auth_cli ~ " key-id " ~ vlan_interface.isis_authentication.both.sha.key_id %}
 {%         elif vlan_interface.isis_authentication.both.mode == "shared-secret" %}
-{%             set isis_auth_cli = isis_auth_cli ~ " profile " ~ vlan_interface.isis_authentication.both.shared_secret.profile %}
-{%             set isis_auth_cli = isis_auth_cli ~ " algorithm " ~ vlan_interface.isis_authentication.both.shared_secret.algorithm %}
+{%             set isis_auth_cli = isis_auth_cli ~ " profile " ~ vlan_interface.isis_authentication.both.shared_secret.profile ~ " algorithm " ~ vlan_interface.isis_authentication.both.shared_secret.algorithm %}
 {%         endif %}
 {%         if vlan_interface.isis_authentication.both.rx_disabled is arista.avd.defined(true) %}
 {%             set isis_auth_cli = isis_auth_cli ~ " rx-disabled" %}
