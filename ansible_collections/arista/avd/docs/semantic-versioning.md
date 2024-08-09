@@ -37,7 +37,6 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Plugins | Inputs Follow SemVer | Outputs Follow SemVer | Notes |
 | ------- | :------------------: | :-------------------: | ----- |
 | Filter: `add_md_toc` | ✅ | ✅ | |
-| Filter: `convert_dicts` | ✅ | ✅ | |
 | Filter: `decrypt` | ✅ | ✅ | |
 | Filter: `default` | ✅ | ✅ | |
 | Filter: `encrypt` | ✅ | ✅ | |
