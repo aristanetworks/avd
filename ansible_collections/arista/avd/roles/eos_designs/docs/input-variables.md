@@ -31,21 +31,20 @@ The input variables are documented below in tables and YAML.
 
 ## Design type
 
-By setting the `design.type` variable, the default node-types described in [Node Type Variables](#node-type-variables) will be used.
+!!! note
+    The `design.type` variable is no longer required. It has been deprecated and will be removed in AVD 6.0.0.
+    The default [Node Type Variables](#node-type-variables) can be used with all designs.
 
 --8<--
 roles/eos_designs/docs/tables/design.md
 --8<--
-
-!!! note
-    The node types for AutoVPN and CV Pathfinders are part of the `l3ls-evpn` design.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
 - The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
 - 3 stage Clos fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
 
-See the following examples using the `l3ls-evpn` design:
+See the following examples:
 
 - [AVD example for a single data center using L3LS](../../../examples/single-dc-l3ls/README.md).
 - [AVD example for a dual data center using L3LS](../../../examples/dual-dc-l3ls/README.md).
@@ -62,14 +61,14 @@ See the following examples using the `l3ls-evpn` design:
 - The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
 - The Clos fabric can be represented as L3 spines, spines, and leafs.
 
-See the following examples using the `l2ls` design:
+See the following examples:
 
 - [Example for L2LS Fabric](../../../examples/l2ls-fabric/README.md).
 - [Example for Campus Fabric](../../../examples/campus-fabric/README.md).
 
 ### MPLS
 
-The **eos_designs** role with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the `core_interfaces` settings.
+The **eos_designs** role supports any arbitrary physical mesh topology by combining and interconnecting different node types with the `core_interfaces` settings.
 
 The following underlay routing protocols are supported:
 
@@ -92,7 +91,7 @@ The MPLS design supports most fabric topology variables already supported by l3l
 - EVPN overlay settings are set with `mpls_overlay_role` and `mpls_route_reflectors` instead of `evpn_role` and `evpn_route_servers`.
 - No Inband Management support.
 
-See the following example using the `mpls` design:
+See the following example:
 
 - [AVD example for a MPLS-VPN based WAN Network](../../../examples/isis-ldp-ipvpn/README.md).
 
@@ -133,40 +132,24 @@ roles/eos_designs/docs/tables/fabric-ip-addressing.md
 
 ## Node Type Variables
 
-The following tables provide information on the default node types that have been pre-defined in `eos_designs` for each design type.
+The following tables provide information on the default node types that are pre-defined in `eos_designs`.
 
 To customize or create new node types, please refer to [node type customization](#node-type-customization) section.
 
-### L3LS EVPN
-
-| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Default WAN Role | Default Underlay Routing Protocol | Default Overlay Routing Protocol |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | ---------------- | --------------------------------- | -------------------------------- |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘                | eBGP                              | eBGP                             |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘                | eBGP                              | eBGP                             |
-| overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘                | eBGP                              | eBGP                             |
-| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server           | none                              | iBGP                             |
-| wan_router         | ✅              | p2p          | client            | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client           | none                              | iBGP                             |
-
-- `wan_router`: Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder depending on the `wan_mode` value.
-- `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
-
-### L2LS
-
-| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| l3spine            | ✅              | p2p          | none              | ✅                  | ✅                  | ✘    | ✅           | ✅                  |
-| spine              | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
-| leaf               | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                  |
-
-### MPLS
-
-| Node Type Key      | Underlay Router | Uplink Type  | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| ------------------ | --------------- | ------------ | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| p                  | ✅              | p2p          | none                 | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| rr                 | ✅              | p2p          | server               | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| pe                 | ✅              | p2p          | client               | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
+| Node Type Key      | Underlay Router | Uplink Type  | EVPN Role | MPLS Role   | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | WAN Role | Underlay Routing Protocol | Overlay Routing Protocol | Notes |
+| ------------------ | --------------- | ------------ | ----------| ------------| ------------------- | ------------------- | ---- | ------------ | ------------------- | -------- | ------------------------- | ------------------------ | |
+| spine              | ✅              | p2p          | server    | ✘           | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | eBGP                      | eBGP                     | |
+| l3leaf             | ✅              | p2p          | client    | ✘           | ✅                  | ✅                  | ✅   | ✅           | ✅                  | ✘        | eBGP                      | eBGP                     | |
+| l2leaf             | ✘               | port-channel | N/A       | ✘           | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘        | ✘                         | ✘                        | |
+| l3spine            | ✅              | p2p          | none      | ✘           | ✅                  | ✅                  | ✘    | ✅           | ✅                  | ✘        | none                      | none                     | |
+| l2spine            | ✘               | port-channel | none      | ✘           | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘        | ✘                         | ✘                        | |
+| super_spine        | ✅              | p2p          | none      | ✘           | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | eBGP                      | eBGP                     | |
+| overlay_controller | ✅              | p2p          | server    | ✘           | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | eBGP                      | eBGP                     | |
+| wan_rr             | ✅              | p2p          | server    | ✘           | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server   | none                      | iBGP                     | AutoVPN RR or Pathfinder depending on the e` value. |
+| wan_router         | ✅              | p2p          | client    | ✘           | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client   | none                      | iBGP                     | Edge routers for AutoVPN or Edge and Transit routers for CV Pathfindeing on the `wan_mode` value. |
+| p                  | ✅              | p2p          | none      | none, LSR   | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | iBGP                      | ISIS-SR                  | |
+| rr                 | ✅              | p2p          | server    | server, LSR | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | iBGP                      | ISIR                     | EVPN with MPLS encapsulation |
+| pe                 | ✅              | p2p          | client    | client, LSR | ✅                  | ✅                  | ✅   | ✘            | ✅                  | ✘        | iBGP                      | ISIS-SR                  | EVPN with MPLS encapsulation, L1 Network Services (PW) |
 
 ## Node type customization
 
@@ -184,17 +167,19 @@ AVD provides the capability to customize your node types, supporting a variety o
         type: spine
         default_evpn_role: server
         default_ptp_priority1: 20
+        cv_tags_topology_type: spine
 
       - key: l3leaf
         type: l3leaf
         connected_endpoints: true
         default_evpn_role: client
-        default_ptp_priority1: 30
         mlag_support: true
         network_services:
           l2: true
           l3: true
         vtep: true
+        default_ptp_priority1: 30
+        cv_tags_topology_type: leaf
 
       - key: l2leaf
         type: l2leaf
@@ -204,13 +189,35 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
         underlay_router: false
         uplink_type: port-channel
+        cv_tags_topology_type: leaf
+
+      - key: l3spine
+        type: l3spine
+        connected_endpoints: true
+        mlag_support: true
+        network_services:
+          l2: true
+          l3: true
+        default_overlay_routing_protocol: none
+        default_underlay_routing_protocol: none
+
+      - key: l2spine
+        type: spine
+        connected_endpoints: true
+        mlag_support: true
+        network_services:
+          l2: true
+        underlay_router: false
+        uplink_type: port-channel
 
       - key: super_spine
         type: super-spine
+        cv_tags_topology_type: core
 
       - key: overlay_controller
         type: overlay-controller
         default_evpn_role: server
+        cv_tags_topology_type: spine
 
       - key: wan_router
         type: wan_router
@@ -218,9 +225,10 @@ AVD provides the capability to customize your node types, supporting a variety o
         default_wan_role: client
         default_underlay_routing_protocol: none
         default_overlay_routing_protocol: ibgp
+        default_flow_tracker_type: hardware
+        vtep: true
         network_services:
           l3: true
-        vtep: true
 
       - key: wan_rr
         type: wan_rr
@@ -228,9 +236,44 @@ AVD provides the capability to customize your node types, supporting a variety o
         default_wan_role: server
         default_underlay_routing_protocol: none
         default_overlay_routing_protocol: ibgp
+        default_flow_tracker_type: hardware
+        vtep: true
         network_services:
           l3: true
-        vtep: true
+
+      - key: p
+        type: p
+        mpls_lsr: true
+        default_mpls_overlay_role: none
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+
+      - key: pe
+        type: pe
+        mpls_lsr: true
+        connected_endpoints: true
+        default_mpls_overlay_role: client
+        default_evpn_role: client
+        network_services:
+          l1: true
+          l2: true
+          l3: true
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+        default_overlay_address_families:
+        - vpn-ipv4
+        default_evpn_encapsulation: mpls
+
+      - key: rr
+        type: rr
+        mpls_lsr: true
+        default_mpls_overlay_role: server
+        default_evpn_role: server
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+        default_overlay_address_families:
+          - vpn-ipv4
+        default_evpn_encapsulation: mpls
     ```
 
 ??? example "Default value for design `l2ls`"
@@ -241,12 +284,12 @@ AVD provides the capability to customize your node types, supporting a variety o
       - key: l3spine
         type: l3spine
         connected_endpoints: true
-        default_overlay_routing_protocol: none
-        default_underlay_routing_protocol: none
         mlag_support: true
         network_services:
           l2: true
           l3: true
+        default_overlay_routing_protocol: none
+        default_underlay_routing_protocol: none
 
       - key: spine
         type: spine
@@ -274,37 +317,37 @@ AVD provides the capability to customize your node types, supporting a variety o
 
       - key: p
         type: p
+        mpls_lsr: true
         default_mpls_overlay_role: none
         default_overlay_routing_protocol: ibgp
         default_underlay_routing_protocol: isis-sr
-        mpls_lsr: true
 
       - key: pe
         type: pe
-        connected_endpoints: true
-        default_evpn_encapsulation: mpls
-        default_evpn_role: client
-        default_mpls_overlay_role: client
-        default_overlay_address_families:
-          - vpn-ipv4
-        default_overlay_routing_protocol: ibgp
-        default_underlay_routing_protocol: isis-sr
         mpls_lsr: true
+        connected_endpoints: true
+        default_mpls_overlay_role: client
+        default_evpn_role: client
         network_services:
           l1: true
           l2: true
           l3: true
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+        default_overlay_address_families:
+          - vpn-ipv4
+        default_evpn_encapsulation: mpls
 
       - key: rr
         type: rr
-        default_evpn_encapsulation: mpls
-        default_evpn_role: server
+        mpls_lsr: true
         default_mpls_overlay_role: server
-        default_overlay_address_families:
-          - vpn-ipv4
+        default_evpn_role: server
         default_overlay_routing_protocol: ibgp
         default_underlay_routing_protocol: isis-sr
-        mpls_lsr: true
+        default_overlay_address_families:
+          - vpn-ipv4
+        default_evpn_encapsulation: mpls
     ```
 
 --8<--
