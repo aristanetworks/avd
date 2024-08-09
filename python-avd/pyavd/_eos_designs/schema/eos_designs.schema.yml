@@ -2108,8 +2108,24 @@ keys:
 
 
       This may introduce breaking changes to your configuration.'
+  custom_node_type_keys:
+    $ref: eos_designs#/keys/node_type_keys
+    type: list
+    documentation_options:
+      table: node-type-keys
+    description: 'Define Custom Node Type Keys, to specify the properties of each
+      node type in the fabric.
+
+      This allows for complete customization of the fabric layout and functionality.
+
+      `custom_node_type_keys` should be defined in top level group_var for the fabric.
+
+      These values will be merged with the defaults; keys named the same as a default
+      node_type_key will override the default.'
   node_type_keys:
     type: list
+    documentation_options:
+      table: node-type-keys
     description: 'Define Node Type Keys, to specify the properties of each node type
       in the fabric.
 
@@ -2118,9 +2134,7 @@ keys:
       `node_type_keys` should be defined in top level group_var for the fabric.
 
       The default values will be overridden if defining this key, so it is recommended
-      to copy the defaults and modify them.
-
-      '
+      to copy the defaults and modify them.'
     primary_key: key
     items:
       type: dict
@@ -2828,6 +2842,12 @@ keys:
       table: fabric-settings
     description: QOS Profile assigned on all infrastructure links.
     type: str
+  custom_platform_settings:
+    $ref: eos_designs#/keys/platform_settings
+    display_name: Custom Platform Settings
+    documentation_options:
+      table: platform-settings
+    type: list
   platform_settings:
     documentation_options:
       table: platform-settings

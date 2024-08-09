@@ -25,6 +25,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "custom_platform_settings.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu_jitter</samp>](## "custom_platform_settings.[].security_entropy_sources.cpu_jitter") | Boolean |  |  |  | Use the Jitter RNG algorithm of a CPU based source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_exclusive</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware_exclusive") | Boolean |  |  |  | Only use entropy from the hardware source. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
@@ -99,6 +105,24 @@
           # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
           bgp_update_wait_for_convergence: <bool; default=True>
         management_interface: <str; default="Management1">
+
+        # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
+        security_entropy_sources:
+
+          # Use a hardware based source.
+          hardware: <bool>
+
+          # Use the HAVEGE algorithm.
+          haveged: <bool>
+
+          # Use the Jitter RNG algorithm of a CPU based source.
+          cpu_jitter: <bool>
+
+          # Only use entropy from the hardware source.
+          hardware_exclusive: <bool>
+
+        # Custom structured config for eos_cli_config_gen.
+        structured_config: <dict>
 
         # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
@@ -199,8 +223,8 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
-          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
-            131072
+          trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared
+            22000
         - feature_support:
             poe: true
             queue_monitor_length_notify: false
@@ -219,6 +243,14 @@
           - 720DP
           - 722XP
           - 710P
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            per_interface_mtu: false
+            queue_monitor_length_notify: false
+          platforms:
+          - 7010TX
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -304,6 +336,26 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          management_interface: Management1/1
+          platforms:
+          - AWE-5310
+          - AWE-5510
+          - AWE-7250R
+          - AWE-7230R
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            poe: true
+            queue_monitor_length_notify: false
+          management_interface: Management1
+          platforms:
+          - AWE-7220R
         ```
 
     2. Default Value
