@@ -177,7 +177,8 @@ class NodeTypeKeysMixin:
         design_type = get(self.hostvars, "design.type", default="l3ls-evpn")
         default_node_type_keys_for_our_design = get(DEFAULT_NODE_TYPE_KEYS, design_type)
 
-        node_type_keys = get(self.hostvars, "node_type_keys", default=default_node_type_keys_for_our_design)
+        # Using list() to force a copy of node_type_keys so we don't modify the default when we apply custom_node_type_keys
+        node_type_keys = list(get(self.hostvars, "node_type_keys", default=default_node_type_keys_for_our_design))
         custom_node_type_keys = get(self.hostvars, "custom_node_type_keys", default=[])
 
         for node_type_key in custom_node_type_keys:
