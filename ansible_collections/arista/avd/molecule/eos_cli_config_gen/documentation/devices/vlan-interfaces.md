@@ -271,6 +271,7 @@ interface Vlan43
    isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
    isis authentication key-id 1 algorithm sha-1 key 0 password level-1
    isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
+   isis authentication key-id 5 algorithm sha-1 key 0 password3 level-1
    isis authentication key-id 1 algorithm sha-1 key 0 password level-2
    isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
 !

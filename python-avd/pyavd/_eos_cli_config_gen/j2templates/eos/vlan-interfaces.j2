@@ -376,36 +376,32 @@ interface {{ vlan_interface.name }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
-{%         if vlan_interface.isis_authentication.level_1.key_ids is arista.avd.defined %}
-{%             for auth_key in vlan_interface.isis_authentication.level_1.key_ids %}
-{%                 if auth_key.id is arista.avd.defined
-                       and auth_key.id not in both_key_ids
-                       and auth_key.algorithm is arista.avd.defined
-                       and auth_key.key_type is arista.avd.defined
-                       and auth_key.key is arista.avd.defined %}
-{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+{%         for auth_key in vlan_interface.isis_authentication.level_1.key_ids | arista.avd.natural_sort("id") %}
+{%             if auth_key.id is arista.avd.defined
+                  and auth_key.id not in both_key_ids
+                  and auth_key.algorithm is arista.avd.defined
+                  and auth_key.key_type is arista.avd.defined
+                  and auth_key.key is arista.avd.defined %}
+{%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-1
-{%                     else %}
+{%                 else %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-1
-{%                     endif %}
 {%                 endif %}
-{%             endfor %}
-{%         endif %}
-{%         if vlan_interface.isis_authentication.level_2.key_ids is arista.avd.defined %}
-{%             for auth_key in vlan_interface.isis_authentication.level_2.key_ids %}
-{%                 if auth_key.id is arista.avd.defined
-                       and auth_key.id not in both_key_ids
-                       and auth_key.algorithm is arista.avd.defined
-                       and auth_key.key_type is arista.avd.defined
-                       and auth_key.key is arista.avd.defined %}
-{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
+{%             endif %}
+{%         endfor %}
+{%         for auth_key in vlan_interface.isis_authentication.level_2.key_ids | arista.avd.natural_sort("id") %}
+{%             if auth_key.id is arista.avd.defined
+                  and auth_key.id not in both_key_ids
+                  and auth_key.algorithm is arista.avd.defined
+                  and auth_key.key_type is arista.avd.defined
+                  and auth_key.key is arista.avd.defined %}
+{%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-2
-{%                     else %}
+{%                 else %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-2
-{%                     endif %}
 {%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 {%         if vlan_interface.isis_authentication.both.key_type is arista.avd.defined and vlan_interface.isis_authentication.both.key is arista.avd.defined %}
    isis authentication key {{ vlan_interface.isis_authentication.both.key_type }} {{ vlan_interface.isis_authentication.both.key }}
 {%         else %}
