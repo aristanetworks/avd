@@ -11,7 +11,6 @@ keys:
       table: platform-settings
     type: list
     primary_key: platform
-    secondary_key: speeds
     description: Set Hardware Speed Groups per Platform.
     items:
       type: dict
@@ -23,7 +22,6 @@ keys:
         speeds:
           type: list
           primary_key: speed
-          secondary_key: speed_groups
           items:
             type: dict
             keys:

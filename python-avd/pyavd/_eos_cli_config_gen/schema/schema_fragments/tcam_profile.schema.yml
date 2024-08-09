@@ -16,7 +16,6 @@ keys:
           TCAM profile name to activate.
       profiles:
         type: list
-        secondary_key: config
         primary_key: name
         items:
           type: dict

@@ -19,7 +19,6 @@ keys:
         keys:
           ipv4:
             type: list
-            secondary_key: prefixes
             primary_key: name
             items:
               type: dict
@@ -34,7 +33,6 @@ keys:
                     description: IPv4 Prefix.
           ipv6:
             type: list
-            secondary_key: prefixes
             primary_key: name
             items:
               type: dict
@@ -50,7 +48,6 @@ keys:
           ports:
             type: list
             primary_key: name
-            secondary_key: port_range
             items:
               type: dict
               keys:

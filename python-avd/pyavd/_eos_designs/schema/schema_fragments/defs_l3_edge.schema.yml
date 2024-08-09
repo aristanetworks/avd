@@ -12,7 +12,6 @@ $defs:
       p2p_links_ip_pools:
         type: list
         primary_key: name
-        secondary_key: ipv4_pool
         items:
           type: dict
           keys:

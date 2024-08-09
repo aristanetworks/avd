@@ -45,18 +45,6 @@ class AvdValidationError(AristaAvdError):
         super().__init__(self.message)
 
 
-class AvdConversionWarning(AristaAvdError):  # noqa: N818
-    def __init__(
-        self, message: str = "Data was converted to conform to schema", key: list | None = None, oldtype: str = "unknown", newtype: str = "unknown"
-    ) -> None:
-        if key is not None:
-            self.path = self._json_path_to_string(key)
-            self.message = f"'Data Type Converted: {self.path} from '{oldtype}' to '{newtype}'"
-        else:
-            self.message = message
-        super().__init__(self.message)
-
-
 class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
     def __init__(
         self,
