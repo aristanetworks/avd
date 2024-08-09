@@ -33,6 +33,16 @@ ip_security:
         value: 8
         # default unit is hours
       pfs_dh_group: 17
+    - name: SA-4
+      esp:
+        integrity: md5
+        encryption: 3des
+    - name: SA-5
+      esp:
+        integrity: sha512
+    - name: SA-6
+      esp:
+        integrity: sha384
   profiles:
     - name: Profile-1
       ike_policy: IKE-1
