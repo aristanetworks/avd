@@ -8,7 +8,7 @@ type: dict
 keys:
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
-    default: []
+    default: null
     type: list
     documentation_options:
       table: node-type-keys

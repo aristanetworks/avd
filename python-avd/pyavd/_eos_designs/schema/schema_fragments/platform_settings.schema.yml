@@ -8,7 +8,7 @@ type: dict
 keys:
   custom_platform_settings:
     $ref: eos_designs#/keys/platform_settings
-    default: []
+    default: null
     documentation_options:
       table: platform-settings
     description:

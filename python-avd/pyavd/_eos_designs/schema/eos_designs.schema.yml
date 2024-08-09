@@ -2110,7 +2110,7 @@ keys:
       This may introduce breaking changes to your configuration.'
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
-    default: []
+    default: null
     type: list
     documentation_options:
       table: node-type-keys
@@ -2855,7 +2855,7 @@ keys:
     type: str
   custom_platform_settings:
     $ref: eos_designs#/keys/platform_settings
-    default: []
+    default: null
     documentation_options:
       table: platform-settings
     description: Custom Platform settings to override the default `platform_settings`.

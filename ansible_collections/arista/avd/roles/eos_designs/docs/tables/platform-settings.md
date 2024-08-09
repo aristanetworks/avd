@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. |
+    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  |  |  | Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "custom_platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "custom_platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -68,7 +68,7 @@
 
     ```yaml
     # Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
-    custom_platform_settings: # (1)!
+    custom_platform_settings:
       - platforms:
           - <str>
 
@@ -129,7 +129,7 @@
         raw_eos_cli: <str>
 
     # Platform settings. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
-    platform_settings: # (2)!
+    platform_settings: # (1)!
       - platforms:
           - <str>
 
@@ -199,169 +199,6 @@
     ```
 
     1. Default Value
-
-        ```yaml
-        custom_platform_settings:
-        - feature_support:
-            queue_monitor_length_notify: false
-          platforms:
-          - default
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - feature_support:
-            queue_monitor_length_notify: false
-          platforms:
-          - 7050X3
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
-            131072
-        - feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-          platforms:
-          - 720XP
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared
-            22000
-        - feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-          management_interface: Management0
-          platforms:
-          - '750'
-          - '755'
-          - '758'
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-          platforms:
-          - 720DP
-          - 722XP
-          - 710P
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - feature_support:
-            per_interface_mtu: false
-            queue_monitor_length_notify: false
-          platforms:
-          - 7010TX
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - lag_hardware_only: true
-          platforms:
-          - 7280R
-          - 7280R2
-          - 7020R
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-        - platforms:
-          - 7280R3
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-        - lag_hardware_only: true
-          management_interface: Management0
-          platforms:
-          - 7500R
-          - 7500R2
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-        - management_interface: Management0
-          platforms:
-          - 7500R3
-          - 7800R3
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-        - feature_support:
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: false
-            interface_storm_control: true
-            queue_monitor_length_notify: false
-          management_interface: Management1/1
-          platforms:
-          - 7358X4
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - management_interface: Management0
-          platforms:
-          - 7368X4
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - management_interface: Management0
-          platforms:
-          - 7300X3
-          reload_delay:
-            mlag: 1200
-            non_mlag: 1320
-          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
-            131072
-        - feature_support:
-            bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-          platforms:
-          - VEOS
-          - VEOS-LAB
-          - vEOS
-          - vEOS-lab
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - feature_support:
-            bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-          management_interface: Management0
-          platforms:
-          - CEOS
-          - cEOS
-          - ceos
-          - cEOSLab
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - feature_support:
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-          management_interface: Management1/1
-          platforms:
-          - AWE-5310
-          - AWE-5510
-          - AWE-7250R
-          - AWE-7230R
-        - feature_support:
-            bgp_update_wait_for_convergence: true
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            poe: true
-            queue_monitor_length_notify: false
-          management_interface: Management1
-          platforms:
-          - AWE-7220R
-        ```
-
-    2. Default Value
 
         ```yaml
         platform_settings:

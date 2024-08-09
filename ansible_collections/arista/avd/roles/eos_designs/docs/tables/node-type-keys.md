@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_node_type_keys</samp>](## "custom_node_type_keys") | List, items: Dictionary |  | `[]` |  | Define Custom Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`custom_node_type_keys` should be defined in top level group_var for the fabric.<br>These values will be combined with the defaults; custom node type keys named the same as a<br>default node_type_key will replace the default. |
+    | [<samp>custom_node_type_keys</samp>](## "custom_node_type_keys") | List, items: Dictionary |  |  |  | Define Custom Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`custom_node_type_keys` should be defined in top level group_var for the fabric.<br>These values will be combined with the defaults; custom node type keys named the same as a<br>default node_type_key will replace the default. |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "custom_node_type_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "custom_node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints</samp>](## "custom_node_type_keys.[].connected_endpoints") | Boolean |  | `False` |  | Are endpoints connected to this node type. |
@@ -114,7 +114,7 @@
     # `custom_node_type_keys` should be defined in top level group_var for the fabric.
     # These values will be combined with the defaults; custom node type keys named the same as a
     # default node_type_key will replace the default.
-    custom_node_type_keys: # default=[]
+    custom_node_type_keys:
       - key: <str; required; unique>
 
         # Type value matching this node_type_key.
