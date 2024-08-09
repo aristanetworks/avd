@@ -429,7 +429,7 @@ $defs:
                     description: |
                       IPv6_address/Mask.
                       Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on it's unique ID.
-                      Loopback is not created unless loopback_ipv6_range or loopback_ip_pools are set.
+                      Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ip_pools:
                     type: list
                     description: |
