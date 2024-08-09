@@ -8,6 +8,7 @@ type: dict
 keys:
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
+    default: []
     type: list
     documentation_options:
       table: node-type-keys
@@ -15,7 +16,8 @@ keys:
       Define Custom Node Type Keys, to specify the properties of each node type in the fabric.
       This allows for complete customization of the fabric layout and functionality.
       `custom_node_type_keys` should be defined in top level group_var for the fabric.
-      These values will be merged with the defaults; keys named the same as a default node_type_key will override the default.
+      These values will be combined with the defaults; custom node type keys named the same as a
+      default node_type_key will replace the default.
   node_type_keys:
     type: list
     documentation_options:
@@ -24,7 +26,12 @@ keys:
       Define Node Type Keys, to specify the properties of each node type in the fabric.
       This allows for complete customization of the fabric layout and functionality.
       `node_type_keys` should be defined in top level group_var for the fabric.
-      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+
+      The default values will be overridden if this key is defined.
+      If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
+      If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries,
+      custom entries will replace the equivalent default entry.
+
     primary_key: key
     items:
       type: dict

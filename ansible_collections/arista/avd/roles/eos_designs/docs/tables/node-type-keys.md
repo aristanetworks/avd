@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_node_type_keys</samp>](## "custom_node_type_keys") | List, items: Dictionary |  |  |  | Define Custom Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`custom_node_type_keys` should be defined in top level group_var for the fabric.<br>These values will be merged with the defaults; keys named the same as a default node_type_key will override the default. |
+    | [<samp>custom_node_type_keys</samp>](## "custom_node_type_keys") | List, items: Dictionary |  | `[]` |  | Define Custom Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`custom_node_type_keys` should be defined in top level group_var for the fabric.<br>These values will be combined with the defaults; custom node type keys named the same as a<br>default node_type_key will replace the default. |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "custom_node_type_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "custom_node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints</samp>](## "custom_node_type_keys.[].connected_endpoints") | Boolean |  | `False` |  | Are endpoints connected to this node type. |
@@ -56,7 +56,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "custom_node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "custom_node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "custom_node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
-    | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  | Define Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`node_type_keys` should be defined in top level group_var for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them. |
+    | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  | Define Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`node_type_keys` should be defined in top level group_var for the fabric.<br><br>The default values will be overridden if this key is defined.<br>If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.<br>If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries,<br>custom entries will replace the equivalent default entry. |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "node_type_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints</samp>](## "node_type_keys.[].connected_endpoints") | Boolean |  | `False` |  | Are endpoints connected to this node type. |
@@ -112,8 +112,9 @@
     # Define Custom Node Type Keys, to specify the properties of each node type in the fabric.
     # This allows for complete customization of the fabric layout and functionality.
     # `custom_node_type_keys` should be defined in top level group_var for the fabric.
-    # These values will be merged with the defaults; keys named the same as a default node_type_key will override the default.
-    custom_node_type_keys:
+    # These values will be combined with the defaults; custom node type keys named the same as a
+    # default node_type_key will replace the default.
+    custom_node_type_keys: # default=[]
       - key: <str; required; unique>
 
         # Type value matching this node_type_key.
@@ -282,7 +283,11 @@
     # Define Node Type Keys, to specify the properties of each node type in the fabric.
     # This allows for complete customization of the fabric layout and functionality.
     # `node_type_keys` should be defined in top level group_var for the fabric.
-    # The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+    #
+    # The default values will be overridden if this key is defined.
+    # If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
+    # If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries,
+    # custom entries will replace the equivalent default entry.
     node_type_keys:
       - key: <str; required; unique>
 
