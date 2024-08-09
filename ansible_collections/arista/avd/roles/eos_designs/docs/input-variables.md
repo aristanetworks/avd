@@ -175,7 +175,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 !!! note
     The default values will be overridden if this key is defined.
     If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
-    If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries, custom entries will replace the equivalent default entry.
+    If you need to add custom `node_type_keys`, create them under `custom_node_type_keys`; if named identically to default `node_type_keys` entries, custom entries will replace the equivalent default entry.
 
 ??? example "Default value for design `l3ls-evpn`"
 
