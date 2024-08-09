@@ -9,7 +9,7 @@ keys:
   vxlan_interface:
     type: dict
     keys:
-      Vxlan1:
+      vxlan1:
         type: dict
         keys:
           description:
@@ -129,3 +129,10 @@ keys:
             type: str
             description: |
               Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.
+      Vxlan1:
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vxlan1
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/vxlan_interface/keys/vxlan1"
