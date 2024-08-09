@@ -173,7 +173,9 @@ To customize or create new node types, please refer to [node type customization]
 AVD provides the capability to customize your node types, supporting a variety of designs.
 
 !!! note
-    The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+    The default values will be overridden if this key is defined.
+    If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
+    If you need to add custom `node_type_keys`, create them under `custom_node_type_keys`; if named identically to default `node_type_keys` entries, custom entries will replace the equivalent default entry.
 
 ??? example "Default value for design `l3ls-evpn`"
 
@@ -1350,7 +1352,9 @@ Management interface is modified for specific platforms like modular platforms w
     The reload delay values should be reviewed and tuned to the specific environment.
 
 !!! note
-    The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+    The default values will be overridden if `platform_settings` is defined.
+    If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
+    If you need to add custom platforms, create them under `custom_platform_settings`; if named identically to default `platform_settings` entries, custom entries will replace the equivalent default entry.
 
 --8<--
 roles/eos_designs/docs/tables/platform-settings.md
