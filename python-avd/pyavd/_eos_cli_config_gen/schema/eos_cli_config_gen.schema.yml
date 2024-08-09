@@ -1556,9 +1556,9 @@ keys:
             max: 300
             convert_types:
             - str
-      mac_based_auth_radius:
+      radius_av_pair_username_format:
         type: dict
-        description: Dot1x mac based RADIUS auth.
+        description: RADIUS AV-pair username settings.
         keys:
           delimiter:
             type: str
@@ -1569,7 +1569,7 @@ keys:
             - hyphen
             - none
             - period
-          mac_string_letter_case:
+          mac_string_case:
             type: str
             description: MAC address string in lowercase/uppercase.
             required: true
