@@ -186,7 +186,7 @@ class ActionModule(ActionBase):
             content: The content to write
             filename: Target filename
 
-        Returns
+        Returns:
         -------
             bool: Indicate if the content of filename has changed.
         """
