@@ -43,7 +43,7 @@ The module is used in `arista.avd.eos_designs` to set facts for devices, which a
 
 ```yaml
   template_output: <true | false | default -> false>
-  validation_mode: <"error" | "warning" default -> "error">
+  validation_mode: <"error" | "warning" | default -> "error">
   cprofile_file: <Filename for storing cprofile data used to debug performance issues>
 ```
 
