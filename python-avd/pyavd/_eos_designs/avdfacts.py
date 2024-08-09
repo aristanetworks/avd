@@ -11,6 +11,9 @@ if TYPE_CHECKING:
 
 
 class AvdFacts:
+    _hostvars: dict
+    shared_utils: SharedUtils
+
     def __init__(self, hostvars: dict, shared_utils: SharedUtils) -> None:
         self._hostvars = hostvars
         self.shared_utils = shared_utils
