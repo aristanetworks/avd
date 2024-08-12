@@ -137,7 +137,6 @@ repos:
             ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
             python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
-            python-avd/pyavd/.*/schema/.*jsonschema\.json| # Exclude JSON schemas file
             python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
             python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
