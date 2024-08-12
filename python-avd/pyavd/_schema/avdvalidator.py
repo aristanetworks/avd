@@ -182,14 +182,14 @@ class AvdValidator:
             return
 
         if len(instance) > schema_max_length:
-            yield AvdValidationError(f"The value is longer than the allowed maximum of {schema_max_length}.", path=path)
+            yield AvdValidationError(f"The value is longer ({len(instance)}) than the allowed maximum of {schema_max_length}.", path=path)
 
     def min_length_validator(self, schema_min_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
         if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "list")):
             return
 
         if len(instance) < schema_min_length:
-            yield AvdValidationError(f"The value is shorter than the allowed minimum of {schema_min_length}.", path=path)
+            yield AvdValidationError(f"The value is shorter ({len(instance)}) than the allowed minimum of {schema_min_length}.", path=path)
 
     def valid_values_validator(self, valid_values: list, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
         """This function validates if the instance conforms to the "valid_values"."""
