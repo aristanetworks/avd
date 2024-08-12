@@ -4959,7 +4959,9 @@ keys:
                   - disabled
                   - sha1
                   - sha256
-                  - 'null'
+                  - sha384
+                  - sha512
+                  - md5
                 encryption:
                   type: str
                   valid_values:
@@ -4969,7 +4971,7 @@ keys:
                   - aes128gcm64
                   - aes256
                   - aes256gcm128
-                  - 'null'
+                  - 3des
             pfs_dh_group:
               type: int
               convert_types:
@@ -18056,7 +18058,7 @@ keys:
   vxlan_interface:
     type: dict
     keys:
-      Vxlan1:
+      vxlan1:
         type: dict
         keys:
           description:
@@ -18186,6 +18188,13 @@ keys:
               interface in the final EOS configuration.
 
               '
+      Vxlan1:
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vxlan1
+        type: dict
+        $ref: eos_cli_config_gen#/keys/vxlan_interface/keys/vxlan1
 $defs:
   application_traffic_recognition_application:
     type: dict
