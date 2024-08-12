@@ -625,8 +625,8 @@
 {%                     set isis_circuit_type = ethernet_interface.isis_circuit_type | arista.avd.default("-") %}
 {%                     set isis_hello_padding = ethernet_interface.isis_hello_padding | arista.avd.default("-") %}
 {%                     set isis_authentication_mode = ethernet_interface.isis_authentication_mode | arista.avd.default("-") %}
-{%                     set isis_level1_authentication_mode = ethernet_interface.isis_authentication.level_1.mode | arista.avd.default(ethernet_interface.isis_authentication.both.mode, "-") %}
-{%                     set isis_level2_authentication_mode = ethernet_interface.isis_authentication.level_2.mode | arista.avd.default(ethernet_interface.isis_authentication.both.mode, "-") %}
+{%                     set isis_level1_authentication_mode = ethernet_interface.isis_authentication.both.mode | arista.avd.default(ethernet_interface.isis_authentication.level_1.mode, "-") %}
+{%                     set isis_level2_authentication_mode = ethernet_interface.isis_authentication.both.mode | arista.avd.default(ethernet_interface.isis_authentication.level_2.mode, "-") %}
 {%                     if ethernet_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
 {%                     elif ethernet_interface.isis_passive is arista.avd.defined(true) %}

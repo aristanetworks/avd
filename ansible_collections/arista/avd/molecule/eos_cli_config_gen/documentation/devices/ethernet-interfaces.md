@@ -354,6 +354,7 @@ sFlow is disabled.
 | Ethernet16 | - | - | - | - | - | - | - | - | shared-secret | shared-secret |
 | Ethernet17 | - | - | - | - | - | - | - | - | sha | sha |
 | Ethernet18 | - | - | - | - | - | - | - | - | sha | sha |
+| Ethernet20 | - | - | - | - | - | - | - | - | shared-secret | md5 |
 
 ##### EVPN Multihoming
 
@@ -732,6 +733,9 @@ interface Ethernet20
    no switchport
    no lldp transmit
    no lldp receive
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
+   isis authentication mode md5 level-2
+   isis authentication key 0 password level-2
 !
 interface Ethernet21
    description 200MBit/s shape

@@ -502,7 +502,7 @@ ethernet_interfaces:
       phone:
         trunk: untagged
         vlan: 70
-    # Test isis auth both l1l2 md5 rx
+    # Test isis auth l1l2 md5 rx
     isis_authentication:
       level_1:
         key_type: 0
@@ -693,6 +693,16 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: false
+    isis_authentication:
+      level_1:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
+      level_2:
+        key_type: 0
+        key: password
+        mode: md5   
 
   - name: Ethernet21
     switchport:
