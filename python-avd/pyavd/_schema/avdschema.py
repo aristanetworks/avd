@@ -55,13 +55,13 @@ class AvdSchema:
         schema_id : str, optional
             ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
         """
-        if schema_id:
+        if not schema and schema_id:
             if schema_id not in self.store:
                 msg = f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}"
                 raise AristaAvdError(msg)
 
             schema = self.store[schema_id]
-        else:
+        elif not schema:
             schema = DEFAULT_SCHEMA
 
         self._schema = schema
