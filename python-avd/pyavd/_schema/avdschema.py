@@ -5,9 +5,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-import jsonschema
-from deepmerge import always_merger
-
 from pyavd._errors import AristaAvdError, AvdSchemaError
 
 from .avddataconverter import AvdDataConverter
@@ -42,13 +39,7 @@ class AvdSchema:
 
     def __init__(self, schema: dict | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
         self.store = create_store(load_from_yaml=load_store_from_yaml)
-        self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
         self.load_schema(schema, schema_id)
-
-    def validate_schema(self, schema: dict) -> Generator:
-        validation_errors = self._schema_validator.iter_errors(schema)
-        for validation_error in validation_errors:
-            yield AvdSchemaError(error=validation_error)
 
     def load_schema(self, schema: dict | None = None, schema_id: str | None = None) -> None:
         """
@@ -64,12 +55,7 @@ class AvdSchema:
         schema_id : str, optional
             ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
         """
-        if schema:
-            # Validate the schema
-            for validation_error in self.validate_schema(schema):
-                # TODO: Find a way to wrap multiple schema errors in a single raise
-                raise validation_error
-        elif schema_id:
+        if schema_id:
             if schema_id not in self.store:
                 msg = f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}"
                 raise AristaAvdError(msg)
@@ -85,13 +71,6 @@ class AvdSchema:
         except Exception as e:
             msg = "An error occurred during creation of the validator"
             raise AristaAvdError(msg) from e
-
-    def extend_schema(self, schema: dict) -> None:
-        for validation_error in self.validate_schema(schema):
-            raise validation_error
-        always_merger.merge(self._schema, schema)
-        for validation_error in self.validate_schema(self._schema):
-            raise validation_error
 
     def validate(self, data: Any) -> Generator:
         yield from self._validator.validate(data)

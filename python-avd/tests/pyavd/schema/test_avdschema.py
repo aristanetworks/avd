@@ -165,20 +165,6 @@ class TestAvdSchema:
         with pytest.raises(AvdValidationError):
             AvdSchema().load_schema(INVALID_SCHEMA)
 
-    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
-    def test_avd_schema_extend_valid_schema(self, test_schema: dict) -> None:
-        expected_schema = {}
-        expected_schema = always_merger.merge(expected_schema, DEFAULT_SCHEMA)
-        expected_schema = always_merger.merge(expected_schema, test_schema)
-
-        avdschema = AvdSchema()
-        avdschema.extend_schema(test_schema)
-        assert avdschema._schema == expected_schema
-
-    def test_avd_schema_extend_invalid_schema(self) -> None:
-        with pytest.raises(AvdValidationError):
-            AvdSchema().extend_schema(INVALID_SCHEMA)
-
     @pytest.mark.parametrize("test_path", TEST_DATA_PATHS)
     def test_avd_schema_subschema_with_loaded_schema(self, test_path: list) -> None:
         avdschema = AvdSchema(combined_schema)
