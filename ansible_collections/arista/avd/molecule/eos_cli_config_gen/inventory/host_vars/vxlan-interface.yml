@@ -1,7 +1,7 @@
 ### VxLAN interface ###
 
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-LEAF2A_VTEP
     vxlan:
       source_interface: Loopback0

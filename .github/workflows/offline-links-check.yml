@@ -20,10 +20,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: 'Start docker-compose stack'
+      - name: 'Start docker compose stack'
         run: |
-          docker-compose -f development/docker-compose.yml up -d webdoc_avd
-          docker-compose -f development/docker-compose.yml ps
+          docker compose -f development/docker-compose.yml up -d webdoc_avd
+          docker compose -f development/docker-compose.yml ps
       - name: 'Test connectivity to mkdoc server'
         run: |
           bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
@@ -46,4 +46,4 @@ jobs:
             --timeout 30
       - name: 'Stop docker-compose stack'
         run: |
-          docker-compose -f development/docker-compose.yml down
+          docker compose -f development/docker-compose.yml down

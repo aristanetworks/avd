@@ -21,8 +21,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "ip_security.sa_policies.[].sa_lifetime.value") | Integer |  |  |  | Lifetime value for this SA.<br>Valid range depends on the unit.<br><1-24>       Lifetime in hours ( default )<br><1-4000000>  Packet limit in thousands<br><1-6000>     Byte limit in GB ( 1024 MB )<br><1-6144000>  Byte limit in MB ( 1024 KB ) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "ip_security.sa_policies.[].sa_lifetime.unit") | String |  | `hours` | Valid Values:<br>- <code>gigabytes</code><br>- <code>hours</code><br>- <code>megabytes</code><br>- <code>thousand-packets</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esp</samp>](## "ip_security.sa_policies.[].esp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;integrity</samp>](## "ip_security.sa_policies.[].esp.integrity") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>null</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>aes128</code><br>- <code>aes128gcm128</code><br>- <code>aes128gcm64</code><br>- <code>aes256</code><br>- <code>aes256gcm128</code><br>- <code>null</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;integrity</samp>](## "ip_security.sa_policies.[].esp.integrity") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code><br>- <code>md5</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- <code>disabled</code><br>- <code>aes128</code><br>- <code>aes128gcm128</code><br>- <code>aes128gcm64</code><br>- <code>aes256</code><br>- <code>aes256gcm128</code><br>- <code>3des</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfs_dh_group</samp>](## "ip_security.sa_policies.[].pfs_dh_group") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>5</code><br>- <code>14</code><br>- <code>15</code><br>- <code>16</code><br>- <code>17</code><br>- <code>20</code><br>- <code>21</code><br>- <code>24</code> |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "ip_security.profiles") | List, items: Dictionary |  |  |  | IPSec profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_security.profiles.[].name") | String | Required, Unique |  |  | Name of the IPsec profile. |
@@ -85,8 +85,8 @@
             value: <int>
             unit: <str; "gigabytes" | "hours" | "megabytes" | "thousand-packets"; default="hours">
           esp:
-            integrity: <str; "disabled" | "sha1" | "sha256" | "null">
-            encryption: <str; "disabled" | "aes128" | "aes128gcm128" | "aes128gcm64" | "aes256" | "aes256gcm128" | "null">
+            integrity: <str; "disabled" | "sha1" | "sha256" | "sha384" | "sha512" | "md5">
+            encryption: <str; "disabled" | "aes128" | "aes128gcm128" | "aes128gcm64" | "aes256" | "aes256gcm128" | "3des">
           pfs_dh_group: <int; 1 | 2 | 5 | 14 | 15 | 16 | 17 | 20 | 21 | 24>
 
       # IPSec profiles.

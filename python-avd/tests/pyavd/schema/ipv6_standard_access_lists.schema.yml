@@ -4,8 +4,6 @@ keys:
   ipv6_standard_access_lists:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     display_name: IPv6 Standard Access-Lists
     items:
       type: dict
@@ -19,8 +17,6 @@ keys:
           required: true
           type: list
           primary_key: sequence
-          convert_types:
-            - dict
           items:
             type: dict
             keys:

@@ -1,20 +1,37 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
+  custom_node_type_keys:
+    $ref: eos_designs#/keys/node_type_keys
+    default: null
+    type: list
+    documentation_options:
+      table: node-type-keys
+    description: |-
+      Define Custom Node Type Keys, to specify the properties of each node type in the fabric.
+      This allows for complete customization of the fabric layout and functionality.
+      `custom_node_type_keys` should be defined in top level group_var for the fabric.
+      These values will be combined with the defaults; custom node type keys named the same as a
+      default node_type_key will replace the default.
   node_type_keys:
     type: list
-    description: |
+    documentation_options:
+      table: node-type-keys
+    description: |-
       Define Node Type Keys, to specify the properties of each node type in the fabric.
       This allows for complete customization of the fabric layout and functionality.
       `node_type_keys` should be defined in top level group_var for the fabric.
-      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
-    convert_types:
-      - dict
+
+      The default values will be overridden if this key is defined.
+      If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
+      If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries,
+      custom entries will replace the equivalent default entry.
+
     primary_key: key
     items:
       type: dict

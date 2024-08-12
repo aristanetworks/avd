@@ -40,7 +40,7 @@
         l2vlans:
 
             # VLAN ID.
-          - id: <int; 1-4094; required; unique>
+          - id: <int; 1-4094; required>
 
             # By default the VNI will be derived from mac_vrf_vni_base.
             # The vni_override, allows to override this value and statically define it.
