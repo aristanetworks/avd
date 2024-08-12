@@ -59,6 +59,9 @@ interface Management1
 | SA-1 | - | aes128 | - | 14 |
 | SA-2 | - | aes128 | 42 gigabytes | 14 |
 | SA-3 | disabled | disabled | 8 hours | 17 |
+| SA-4 | md5 | 3des | - | - |
+| SA-5 | sha512 | - | - | - |
+| SA-6 | sha384 | - | - | - |
 
 ### IPSec profiles
 
@@ -108,6 +111,16 @@ ip security
       esp encryption null
       sa lifetime 8 hours
       pfs dh-group 17
+   !
+   sa policy SA-4
+      esp integrity md5
+      esp encryption 3des
+   !
+   sa policy SA-5
+      esp integrity sha512
+   !
+   sa policy SA-6
+      esp integrity sha384
    !
    profile Profile-1
       ike-policy IKE-1

@@ -2,7 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .add_md_toc import add_md_toc
-from .convert_dicts import convert_dicts
 from .decrypt import decrypt
 from .default import default
 from .encrypt import encrypt
@@ -16,7 +15,6 @@ from .status_render import status_render
 
 __all__ = [
     "add_md_toc",
-    "convert_dicts",
     "decrypt",
     "default",
     "encrypt",

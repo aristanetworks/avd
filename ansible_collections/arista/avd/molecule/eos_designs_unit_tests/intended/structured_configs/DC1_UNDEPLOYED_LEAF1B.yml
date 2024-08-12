@@ -379,15 +379,15 @@ ip_routing: true
 hardware:
   speed_groups:
   - speed_group: '1'
-    serdes: 10G
+    serdes: 25G
   - speed_group: '2'
     serdes: 25G
   - speed_group: '3'
-    serdes: 25G
-  - speed_group: '4'
     serdes: 10G
-  - speed_group: 5/1
+  - speed_group: '4'
     serdes: 25G
+  - speed_group: 5/1
+    serdes: 10G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -465,7 +465,7 @@ vrfs:
   tenant: Tenant_C
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management42
   description: oob_management
   shutdown: false
   vrf: MGMT
@@ -485,7 +485,7 @@ management_api_http:
   default_services: false
 ntp:
   local_interface:
-    name: Management1
+    name: Management42
     vrf: MGMT
   servers:
   - name: 192.168.200.5
@@ -1066,4 +1066,4 @@ virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.22
 metadata:
-  platform: 7280R
+  platform: my_custom_platform
