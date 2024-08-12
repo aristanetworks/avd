@@ -843,3 +843,17 @@ l2leaf,LEAF3E,Ethernet95,network_port,IDF3 Standard Port,,True
 l2leaf,LEAF3E,Ethernet96,network_port,IDF3 Standard Port,,True
 l2leaf,LEAF3E,Ethernet97/1,l2leaf,LEAF3A,Ethernet98/1,True
 l2leaf,LEAF3E,Ethernet97/2,l2leaf,LEAF3B,Ethernet98/1,True
+l3spine,SPINE1,Ethernet1,l2leaf,LEAF1A,Ethernet51,True
+l3spine,SPINE1,Ethernet49/1,l2leaf,LEAF2A,Ethernet1/1,True
+l3spine,SPINE1,Ethernet50/1,l2leaf,LEAF3A,Ethernet97/1,True
+l3spine,SPINE1,Ethernet51/1,l2leaf,LEAF3B,Ethernet97/1,True
+l3spine,SPINE1,Ethernet52/1,other,WAN,Ethernet1/1,True
+l3spine,SPINE1,Ethernet55/1,mlag_peer,SPINE2,Ethernet55/1,True
+l3spine,SPINE1,Ethernet56/1,mlag_peer,SPINE2,Ethernet56/1,True
+l3spine,SPINE2,Ethernet1,l2leaf,LEAF1B,Ethernet51,True
+l3spine,SPINE2,Ethernet49/1,l2leaf,LEAF2A,Ethernet1/3,True
+l3spine,SPINE2,Ethernet50/1,l2leaf,LEAF3A,Ethernet97/2,True
+l3spine,SPINE2,Ethernet51/1,l2leaf,LEAF3B,Ethernet97/2,True
+l3spine,SPINE2,Ethernet52/1,other,WAN,Ethernet1/1,True
+l3spine,SPINE2,Ethernet55/1,mlag_peer,SPINE1,Ethernet55/1,True
+l3spine,SPINE2,Ethernet56/1,mlag_peer,SPINE1,Ethernet56/1,True

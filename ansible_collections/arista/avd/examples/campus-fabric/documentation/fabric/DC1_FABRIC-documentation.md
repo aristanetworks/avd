@@ -25,6 +25,8 @@
 | DC1_FABRIC | l2leaf | LEAF3C | 172.16.100.108/24 | cEOSLab | Provisioned | - |
 | DC1_FABRIC | l2leaf | LEAF3D | 172.16.100.109/24 | cEOSLab | Provisioned | - |
 | DC1_FABRIC | l2leaf | LEAF3E | 172.16.100.110/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | l3spine | SPINE1 | 172.16.100.101/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | l3spine | SPINE2 | 172.16.100.102/24 | cEOSLab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -45,16 +47,26 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l2leaf | LEAF1A | Ethernet51 | l3spine | SPINE1 | Ethernet1 |
 | l2leaf | LEAF1A | Ethernet53 | mlag_peer | LEAF1B | Ethernet53 |
 | l2leaf | LEAF1A | Ethernet54 | mlag_peer | LEAF1B | Ethernet54 |
+| l2leaf | LEAF1B | Ethernet51 | l3spine | SPINE2 | Ethernet1 |
+| l2leaf | LEAF2A | Ethernet1/1 | l3spine | SPINE1 | Ethernet49/1 |
+| l2leaf | LEAF2A | Ethernet1/3 | l3spine | SPINE2 | Ethernet49/1 |
+| l2leaf | LEAF3A | Ethernet97/1 | l3spine | SPINE1 | Ethernet50/1 |
+| l2leaf | LEAF3A | Ethernet97/2 | l3spine | SPINE2 | Ethernet50/1 |
 | l2leaf | LEAF3A | Ethernet97/3 | l2leaf | LEAF3C | Ethernet97/1 |
 | l2leaf | LEAF3A | Ethernet97/4 | l2leaf | LEAF3D | Ethernet97/1 |
 | l2leaf | LEAF3A | Ethernet98/1 | l2leaf | LEAF3E | Ethernet97/1 |
 | l2leaf | LEAF3A | Ethernet98/3 | mlag_peer | LEAF3B | Ethernet98/3 |
 | l2leaf | LEAF3A | Ethernet98/4 | mlag_peer | LEAF3B | Ethernet98/4 |
+| l2leaf | LEAF3B | Ethernet97/1 | l3spine | SPINE1 | Ethernet51/1 |
+| l2leaf | LEAF3B | Ethernet97/2 | l3spine | SPINE2 | Ethernet51/1 |
 | l2leaf | LEAF3B | Ethernet97/3 | l2leaf | LEAF3C | Ethernet97/2 |
 | l2leaf | LEAF3B | Ethernet97/4 | l2leaf | LEAF3D | Ethernet97/2 |
 | l2leaf | LEAF3B | Ethernet98/1 | l2leaf | LEAF3E | Ethernet97/2 |
+| l3spine | SPINE1 | Ethernet55/1 | mlag_peer | SPINE2 | Ethernet55/1 |
+| l3spine | SPINE1 | Ethernet56/1 | mlag_peer | SPINE2 | Ethernet56/1 |
 
 ## Fabric IP Allocation
 
@@ -72,11 +84,14 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
+| 172.16.1.0/24 | 256 | 2 | 0.79 % |
 
 ### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
+| DC1_FABRIC | SPINE1 | 172.16.1.1/32 |
+| DC1_FABRIC | SPINE2 | 172.16.1.2/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

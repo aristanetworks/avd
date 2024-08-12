@@ -26,6 +26,8 @@
 | DC1_FABRIC | l2leaf | LEAF2 | 172.16.100.106/24 | cEOS-LAB | Provisioned | - |
 | DC1_FABRIC | l2leaf | LEAF3 | 172.16.100.107/24 | cEOS-LAB | Provisioned | - |
 | DC1_FABRIC | l2leaf | LEAF4 | 172.16.100.108/24 | cEOS-LAB | Provisioned | - |
+| DC1_FABRIC | l2spine | SPINE1 | 172.16.100.101/24 | cEOS-LAB | Provisioned | - |
+| DC1_FABRIC | l2spine | SPINE2 | 172.16.100.102/24 | cEOS-LAB | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -38,10 +40,20 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l2leaf | LEAF1 | Ethernet1 | l2spine | SPINE1 | Ethernet1 |
+| l2leaf | LEAF1 | Ethernet2 | l2spine | SPINE2 | Ethernet1 |
 | l2leaf | LEAF1 | Ethernet47 | mlag_peer | LEAF2 | Ethernet47 |
 | l2leaf | LEAF1 | Ethernet48 | mlag_peer | LEAF2 | Ethernet48 |
+| l2leaf | LEAF2 | Ethernet1 | l2spine | SPINE1 | Ethernet2 |
+| l2leaf | LEAF2 | Ethernet2 | l2spine | SPINE2 | Ethernet2 |
+| l2leaf | LEAF3 | Ethernet1 | l2spine | SPINE1 | Ethernet3 |
+| l2leaf | LEAF3 | Ethernet2 | l2spine | SPINE2 | Ethernet3 |
 | l2leaf | LEAF3 | Ethernet47 | mlag_peer | LEAF4 | Ethernet47 |
 | l2leaf | LEAF3 | Ethernet48 | mlag_peer | LEAF4 | Ethernet48 |
+| l2leaf | LEAF4 | Ethernet1 | l2spine | SPINE1 | Ethernet4 |
+| l2leaf | LEAF4 | Ethernet2 | l2spine | SPINE2 | Ethernet4 |
+| l2spine | SPINE1 | Ethernet47 | mlag_peer | SPINE2 | Ethernet47 |
+| l2spine | SPINE1 | Ethernet48 | mlag_peer | SPINE2 | Ethernet48 |
 
 ## Fabric IP Allocation
 
