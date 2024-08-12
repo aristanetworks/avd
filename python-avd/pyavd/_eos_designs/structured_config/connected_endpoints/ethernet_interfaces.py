@@ -8,9 +8,9 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 from pyavd._utils import append_if_not_duplicate, default, get, replace_or_append_item, strip_null_from_data
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
 from .utils import UtilsMixin

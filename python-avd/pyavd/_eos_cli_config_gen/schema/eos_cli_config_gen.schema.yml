@@ -4924,7 +4924,9 @@ keys:
                   - disabled
                   - sha1
                   - sha256
-                  - 'null'
+                  - sha384
+                  - sha512
+                  - md5
                 encryption:
                   type: str
                   valid_values:
@@ -4934,7 +4936,7 @@ keys:
                   - aes128gcm64
                   - aes256
                   - aes256gcm128
-                  - 'null'
+                  - 3des
             pfs_dh_group:
               type: int
               convert_types:

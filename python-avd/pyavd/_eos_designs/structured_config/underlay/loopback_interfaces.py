@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import get
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
 
@@ -72,7 +72,9 @@ class LoopbackInterfacesMixin(UtilsMixin):
         ):
             vtep_loopback = {
                 "name": self.shared_utils.vtep_loopback,
-                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(),
+                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
+                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
+                ),
                 "shutdown": False,
                 "ip_address": f"{self.shared_utils.vtep_ip}/32",
             }

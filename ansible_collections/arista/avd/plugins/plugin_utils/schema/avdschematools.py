@@ -170,7 +170,7 @@ class AvdSchemaTools:
             counter += 1
             message = f"[{self.hostname}]: {exception}"
             if mode == "warning":
-                self.ansible_display.warning(message, wrap_text=False)
+                self.ansible_display.warning(message)
             else:
                 # when mode == "error"
                 self.ansible_display.error(message, wrap_text=False)
