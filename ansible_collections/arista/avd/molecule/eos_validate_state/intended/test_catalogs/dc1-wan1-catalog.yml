@@ -56,7 +56,7 @@ anta.tests.avt:
       next_hop: 10.255.1.2
       vrf: default
     result_overwrite:
-      custom_field: 'AVT profile: DEFAULT-POLICY-CONTROL-PLANE, vrf: default, Destination
+      custom_field: 'AVT profile: DEFAULT-POLICY-CONTROL-PLANE, VRF: default, Destination
         IPv4 Address: 10.255.1.2, Nexthop VTEP: 10.255.1.2'
 - VerifyAVTSpecificPath:
     avt_paths:
@@ -65,7 +65,7 @@ anta.tests.avt:
       next_hop: 10.255.255.10
       vrf: default
     result_overwrite:
-      custom_field: 'AVT profile: DEFAULT-POLICY-CONTROL-PLANE, vrf: default, Destination
+      custom_field: 'AVT profile: DEFAULT-POLICY-CONTROL-PLANE, VRF: default, Destination
         IPv4 Address: 10.255.255.10, Nexthop VTEP: 10.255.255.10'
 - VerifyAVTSpecificPath:
     avt_paths:
@@ -74,7 +74,7 @@ anta.tests.avt:
       next_hop: 10.255.255.20
       vrf: default
     result_overwrite:
-      custom_field: 'AVT profile: DEFAULT-POLICY-CONTROL-PLANE, vrf: default, Destination
+      custom_field: 'AVT profile: DEFAULT-POLICY-CONTROL-PLANE, VRF: default, Destination
         IPv4 Address: 10.255.255.20, Nexthop VTEP: 10.255.255.20'
 - VerifyAVTSpecificPath:
     avt_paths:
@@ -83,7 +83,7 @@ anta.tests.avt:
       next_hop: 10.255.1.2
       vrf: default
     result_overwrite:
-      custom_field: 'AVT profile: DEFAULT-POLICY-DEFAULT, vrf: default, Destination
+      custom_field: 'AVT profile: DEFAULT-POLICY-DEFAULT, VRF: default, Destination
         IPv4 Address: 10.255.1.2, Nexthop VTEP: 10.255.1.2'
 - VerifyAVTSpecificPath:
     avt_paths:
@@ -92,7 +92,7 @@ anta.tests.avt:
       next_hop: 10.255.255.10
       vrf: default
     result_overwrite:
-      custom_field: 'AVT profile: DEFAULT-POLICY-DEFAULT, vrf: default, Destination
+      custom_field: 'AVT profile: DEFAULT-POLICY-DEFAULT, VRF: default, Destination
         IPv4 Address: 10.255.255.10, Nexthop VTEP: 10.255.255.10'
 - VerifyAVTSpecificPath:
     avt_paths:
@@ -101,7 +101,7 @@ anta.tests.avt:
       next_hop: 10.255.255.20
       vrf: default
     result_overwrite:
-      custom_field: 'AVT profile: DEFAULT-POLICY-DEFAULT, vrf: default, Destination
+      custom_field: 'AVT profile: DEFAULT-POLICY-DEFAULT, VRF: default, Destination
         IPv4 Address: 10.255.255.20, Nexthop VTEP: 10.255.255.20'
 - VerifyAVTRole:
     role: edge

@@ -70,7 +70,7 @@
       "avt"
     ],
     "description": "Verifies the status and type of an AVT path for a specified VRF.",
-    "custom_field": "AVT profile: DEFAULT-POLICY-CONTROL-PLANE, vrf: default, Destination IPv4 Address: 10.255.1.2, Nexthop VTEP: 10.255.1.2"
+    "custom_field": "AVT profile: DEFAULT-POLICY-CONTROL-PLANE, VRF: default, Destination IPv4 Address: 10.255.1.2, Nexthop VTEP: 10.255.1.2"
   },
   {
     "name": "dc1-wan1",
@@ -79,7 +79,7 @@
       "avt"
     ],
     "description": "Verifies the status and type of an AVT path for a specified VRF.",
-    "custom_field": "AVT profile: DEFAULT-POLICY-CONTROL-PLANE, vrf: default, Destination IPv4 Address: 10.255.255.10, Nexthop VTEP: 10.255.255.10"
+    "custom_field": "AVT profile: DEFAULT-POLICY-CONTROL-PLANE, VRF: default, Destination IPv4 Address: 10.255.255.10, Nexthop VTEP: 10.255.255.10"
   },
   {
     "name": "dc1-wan1",
@@ -88,7 +88,7 @@
       "avt"
     ],
     "description": "Verifies the status and type of an AVT path for a specified VRF.",
-    "custom_field": "AVT profile: DEFAULT-POLICY-CONTROL-PLANE, vrf: default, Destination IPv4 Address: 10.255.255.20, Nexthop VTEP: 10.255.255.20"
+    "custom_field": "AVT profile: DEFAULT-POLICY-CONTROL-PLANE, VRF: default, Destination IPv4 Address: 10.255.255.20, Nexthop VTEP: 10.255.255.20"
   },
   {
     "name": "dc1-wan1",
@@ -97,7 +97,7 @@
       "avt"
     ],
     "description": "Verifies the status and type of an AVT path for a specified VRF.",
-    "custom_field": "AVT profile: DEFAULT-POLICY-DEFAULT, vrf: default, Destination IPv4 Address: 10.255.1.2, Nexthop VTEP: 10.255.1.2"
+    "custom_field": "AVT profile: DEFAULT-POLICY-DEFAULT, VRF: default, Destination IPv4 Address: 10.255.1.2, Nexthop VTEP: 10.255.1.2"
   },
   {
     "name": "dc1-wan1",
@@ -106,7 +106,7 @@
       "avt"
     ],
     "description": "Verifies the status and type of an AVT path for a specified VRF.",
-    "custom_field": "AVT profile: DEFAULT-POLICY-DEFAULT, vrf: default, Destination IPv4 Address: 10.255.255.10, Nexthop VTEP: 10.255.255.10"
+    "custom_field": "AVT profile: DEFAULT-POLICY-DEFAULT, VRF: default, Destination IPv4 Address: 10.255.255.10, Nexthop VTEP: 10.255.255.10"
   },
   {
     "name": "dc1-wan1",
@@ -115,7 +115,7 @@
       "avt"
     ],
     "description": "Verifies the status and type of an AVT path for a specified VRF.",
-    "custom_field": "AVT profile: DEFAULT-POLICY-DEFAULT, vrf: default, Destination IPv4 Address: 10.255.255.20, Nexthop VTEP: 10.255.255.20"
+    "custom_field": "AVT profile: DEFAULT-POLICY-DEFAULT, VRF: default, Destination IPv4 Address: 10.255.255.20, Nexthop VTEP: 10.255.255.20"
   },
   {
     "name": "dc1-wan1",

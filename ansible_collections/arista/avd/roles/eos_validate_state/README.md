@@ -108,6 +108,10 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 - AvdTestStun
   - VerifyStunClient: Validates the presence of a STUN client translation for a given source IPv4 address and port for WAN scenarios. The list of expected translations for each device is built by searching local interfaces in each path-group.
 
+- AvdTestAvtRole
+  - VerifyAVTRole: Validate the Adaptive Virtual Topology (AVT) role of a device.
+  - VerifyAVTSpecificPath: Validate that the status is active and the type is direct for an Adaptive Virtual Topology (AVT) path in a specified VRF for the static peers.
+
 ## Input Variables
 
 The following input variables are available for the role. When a default value

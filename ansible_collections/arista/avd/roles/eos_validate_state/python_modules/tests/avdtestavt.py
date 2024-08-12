@@ -23,7 +23,7 @@ class AvdTestAvtPath(AvdTestBase):
 
     anta_module = "anta.tests.avt"
 
-    def _get_static_peers(self, path_groups: list) -> set[str]:
+    def _get_static_peers(self, path_groups: list) -> list:
         """Extract static peers from path groups after validation.
 
         Parameters
@@ -33,8 +33,8 @@ class AvdTestAvtPath(AvdTestBase):
 
         Returns:
         -------
-        set
-            A set of sorted static peer router IP addresses.
+        list
+            A list of sorted static peer router IP addresses.
         """
         static_peers = set()
 
@@ -69,7 +69,7 @@ class AvdTestAvtPath(AvdTestBase):
             LOGGER.info("AVT profiles are not configured for any VRF. %s is skipped.", self.__class__.__name__)
             return None
 
-        # Build a set of static peers
+        # Build a list of static peers
         static_peers = self._get_static_peers(path_groups)
         if not static_peers:
             LOGGER.info("No static peers are configured under router path selection. %s is skipped.", self.__class__.__name__)
@@ -88,7 +88,7 @@ class AvdTestAvtPath(AvdTestBase):
                         }
                     ],
                     "result_overwrite": {
-                        "custom_field": f"AVT profile: {avt_profile['name']}, vrf: {vrf['name']}, "
+                        "custom_field": f"AVT profile: {avt_profile['name']}, VRF: {vrf['name']}, "
                         f"Destination IPv4 Address: {dst_address}, Nexthop VTEP: {dst_address}"
                     },
                 }
