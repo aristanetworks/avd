@@ -166,7 +166,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
 
     def _exclude_mlag_ibgp_peering_from_redistribute(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict) -> bool:
         """
-        Returns True if MLAG IBGP Peering subnet should be redistributed for the given vrf/tenant.
+        Returns True if MLAG IBGP Peering subnet should be _excluded_ from redistribution for the given vrf/tenant.
 
         False otherwise.
 
