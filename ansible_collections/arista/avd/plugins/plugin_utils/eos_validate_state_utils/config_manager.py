@@ -89,7 +89,7 @@ class ConfigManager:
         """Get the dps_mapping list."""
         return self._get_loopback_mappings["dps_mapping"]
 
-    def _get_ip_address(self, host: str, interfaces: list, vtep_interface: str) -> tuple[str, str]:
+    def _get_ip_address(self, host: str, interfaces: list, vtep_interface: str) -> tuple[str, str] | None:
         """Retrieve the IP address for a given VTEP interface on a host.
 
         Parameters
@@ -103,7 +103,7 @@ class ConfigManager:
 
         Returns:
         -------
-        tuple
+        tuple | None
             A tuple containing the hostname and IP address if found, else None.
         """
         if (loopback_interface := get_item(interfaces, "name", vtep_interface)) is None:
