@@ -1,9 +1,9 @@
 ---
 
-type: spine
+type: custom_spine
 
 # Spine Switches
-spine:
+custom_spine:
   defaults:
     platform: vEOS-LAB
     bgp_as: 65001
