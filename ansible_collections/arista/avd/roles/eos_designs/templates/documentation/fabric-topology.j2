@@ -8,7 +8,7 @@ Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface 
 {%     set node_types = node_type_keys | map(attribute="type") %}
 {% else %}
 {%     set default_node_types = {
-           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "l3spine", "l2spine", "super-spine", "overlay-controller", "wan_router", "wan_rr", "p", "pe", "rr"],
            "mpls": ["p", "pe", "rr"],
            "l2ls": ["l3spine", "spine", "leaf"]
        } %}
