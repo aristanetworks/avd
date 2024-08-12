@@ -234,6 +234,7 @@ router_bgp:
         - '100000:40'
     router_id: 192.168.255.10
     redistribute_routes:
+    - source_protocol: connected
     - source_protocol: static
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone

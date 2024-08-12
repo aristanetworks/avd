@@ -175,7 +175,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
         if get(vrf, "redistribute_connected", True) is True:
             return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs")) is False
 
-        return True
+        return False
 
     @cached_property
     def _configure_bgp_mlag_peer_group(self: AvdStructuredConfigNetworkServices) -> bool:
