@@ -7,12 +7,88 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import get, replace_or_append_item
+from pyavd._utils import get, get_item, replace_or_append_item
 
 if TYPE_CHECKING:
     from . import SharedUtils
 
-# NOTE: There is a static list of default node_type_keys in the fabric documentation templates
+MPLS_DEFAULT_NODE_TYPE_KEYS = [
+    {
+        "key": "p",
+        "type": "p",
+        "mpls_lsr": True,
+        "default_mpls_overlay_role": "none",
+        "default_overlay_routing_protocol": "ibgp",
+        "default_underlay_routing_protocol": "isis-sr",
+    },
+    {
+        "key": "pe",
+        "type": "pe",
+        "mpls_lsr": True,
+        "connected_endpoints": True,
+        "default_mpls_overlay_role": "client",
+        "default_evpn_role": "client",
+        "network_services": {
+            "l1": True,
+            "l2": True,
+            "l3": True,
+        },
+        "default_overlay_routing_protocol": "ibgp",
+        "default_underlay_routing_protocol": "isis-sr",
+        "default_overlay_address_families": ["vpn-ipv4"],
+        "default_evpn_encapsulation": "mpls",
+    },
+    {
+        "key": "rr",
+        "type": "rr",
+        "mpls_lsr": True,
+        "default_mpls_overlay_role": "server",
+        "default_evpn_role": "server",
+        "default_overlay_routing_protocol": "ibgp",
+        "default_underlay_routing_protocol": "isis-sr",
+        "default_overlay_address_families": ["vpn-ipv4"],
+        "default_evpn_encapsulation": "mpls",
+    },
+]
+L2LS_DEFAULT_NODE_TYPE_KEYS = [
+    {
+        "key": "l3spine",
+        "type": "l3spine",
+        "connected_endpoints": True,
+        "mlag_support": True,
+        "network_services": {
+            "l2": True,
+            "l3": True,
+        },
+        "default_overlay_routing_protocol": "none",
+        "default_underlay_routing_protocol": "none",
+    },
+    {
+        "key": "spine",
+        "type": "spine",
+        "connected_endpoints": True,
+        "mlag_support": True,
+        "network_services": {
+            "l2": True,
+        },
+        "underlay_router": False,
+        "uplink_type": "port-channel",
+    },
+    {
+        "key": "leaf",
+        "type": "leaf",
+        "connected_endpoints": True,
+        "mlag_support": True,
+        "network_services": {
+            "l2": True,
+        },
+        "underlay_router": False,
+        "uplink_type": "port-channel",
+    },
+]
+
+# NOTE: There is a static list of default node_type_keys in the fabric documentation templates which must be updated as well
+
 DEFAULT_NODE_TYPE_KEYS = {
     "l3ls-evpn": [
         {
@@ -47,6 +123,19 @@ DEFAULT_NODE_TYPE_KEYS = {
             "underlay_router": False,
             "uplink_type": "port-channel",
             "cv_tags_topology_type": "leaf",
+        },
+        # Avoiding duplicate code
+        get_item(L2LS_DEFAULT_NODE_TYPE_KEYS, "key", "l3spine", required=True),
+        {
+            "key": "l2spine",
+            "type": "l2spine",
+            "connected_endpoints": True,
+            "mlag_support": True,
+            "network_services": {
+                "l2": True,
+            },
+            "underlay_router": False,
+            "uplink_type": "port-channel",
         },
         {
             "key": "super_spine",
@@ -85,140 +174,11 @@ DEFAULT_NODE_TYPE_KEYS = {
                 "l3": True,
             },
         },
-        {
-            "key": "p",
-            "type": "p",
-            "mpls_lsr": True,
-            "default_mpls_overlay_role": "none",
-            "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "isis-sr",
-        },
-        {
-            "key": "pe",
-            "type": "pe",
-            "mpls_lsr": True,
-            "connected_endpoints": True,
-            "default_mpls_overlay_role": "client",
-            "default_evpn_role": "client",
-            "network_services": {
-                "l1": True,
-                "l2": True,
-                "l3": True,
-            },
-            "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "isis-sr",
-            "default_overlay_address_families": ["vpn-ipv4"],
-            "default_evpn_encapsulation": "mpls",
-        },
-        {
-            "key": "rr",
-            "type": "rr",
-            "mpls_lsr": True,
-            "default_mpls_overlay_role": "server",
-            "default_evpn_role": "server",
-            "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "isis-sr",
-            "default_overlay_address_families": ["vpn-ipv4"],
-            "default_evpn_encapsulation": "mpls",
-        },
-        {
-            "key": "l3spine",
-            "type": "l3spine",
-            "connected_endpoints": True,
-            "mlag_support": True,
-            "network_services": {
-                "l2": True,
-                "l3": True,
-            },
-            "default_overlay_routing_protocol": "none",
-            "default_underlay_routing_protocol": "none",
-        },
-        {
-            "key": "l2spine",
-            "type": "spine",
-            "connected_endpoints": True,
-            "mlag_support": True,
-            "network_services": {
-                "l2": True,
-            },
-            "underlay_router": False,
-            "uplink_type": "port-channel",
-        },
+        # Avoiding duplicate code
+        *MPLS_DEFAULT_NODE_TYPE_KEYS,
     ],
-    "mpls": [
-        {
-            "key": "p",
-            "type": "p",
-            "mpls_lsr": True,
-            "default_mpls_overlay_role": "none",
-            "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "isis-sr",
-        },
-        {
-            "key": "pe",
-            "type": "pe",
-            "mpls_lsr": True,
-            "connected_endpoints": True,
-            "default_mpls_overlay_role": "client",
-            "default_evpn_role": "client",
-            "network_services": {
-                "l1": True,
-                "l2": True,
-                "l3": True,
-            },
-            "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "isis-sr",
-            "default_overlay_address_families": ["vpn-ipv4"],
-            "default_evpn_encapsulation": "mpls",
-        },
-        {
-            "key": "rr",
-            "type": "rr",
-            "mpls_lsr": True,
-            "default_mpls_overlay_role": "server",
-            "default_evpn_role": "server",
-            "default_overlay_routing_protocol": "ibgp",
-            "default_underlay_routing_protocol": "isis-sr",
-            "default_overlay_address_families": ["vpn-ipv4"],
-            "default_evpn_encapsulation": "mpls",
-        },
-    ],
-    "l2ls": [
-        {
-            "key": "l3spine",
-            "type": "l3spine",
-            "connected_endpoints": True,
-            "mlag_support": True,
-            "network_services": {
-                "l2": True,
-                "l3": True,
-            },
-            "default_overlay_routing_protocol": "none",
-            "default_underlay_routing_protocol": "none",
-        },
-        {
-            "key": "spine",
-            "type": "spine",
-            "connected_endpoints": True,
-            "mlag_support": True,
-            "network_services": {
-                "l2": True,
-            },
-            "underlay_router": False,
-            "uplink_type": "port-channel",
-        },
-        {
-            "key": "leaf",
-            "type": "leaf",
-            "connected_endpoints": True,
-            "mlag_support": True,
-            "network_services": {
-                "l2": True,
-            },
-            "underlay_router": False,
-            "uplink_type": "port-channel",
-        },
-    ],
+    "mpls": MPLS_DEFAULT_NODE_TYPE_KEYS,
+    "l2ls": L2LS_DEFAULT_NODE_TYPE_KEYS,
 }
 
 

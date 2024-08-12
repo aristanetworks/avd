@@ -164,7 +164,7 @@ ethernet_interfaces:
 - name: Ethernet97/3
   peer: LEAF3C
   peer_interface: Ethernet97/1
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3C_Ethernet97/1
   shutdown: false
   type: port-channel-member
@@ -174,7 +174,7 @@ ethernet_interfaces:
 - name: Ethernet97/4
   peer: LEAF3D
   peer_interface: Ethernet97/1
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3D_Ethernet97/1
   shutdown: false
   type: port-channel-member
@@ -184,7 +184,7 @@ ethernet_interfaces:
 - name: Ethernet98/1
   peer: LEAF3E
   peer_interface: Ethernet97/1
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3E_Ethernet97/1
   shutdown: false
   type: port-channel-member

@@ -56,7 +56,7 @@ ethernet_interfaces:
 - name: Ethernet97/1
   peer: LEAF3A
   peer_interface: Ethernet97/4
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3A_Ethernet97/4
   shutdown: false
   type: port-channel-member
@@ -66,7 +66,7 @@ ethernet_interfaces:
 - name: Ethernet97/2
   peer: LEAF3B
   peer_interface: Ethernet97/4
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3B_Ethernet97/4
   shutdown: false
   type: port-channel-member
