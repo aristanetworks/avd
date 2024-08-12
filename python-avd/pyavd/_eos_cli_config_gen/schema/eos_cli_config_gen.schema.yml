@@ -12211,6 +12211,13 @@ keys:
               keys:
                 source_protocol:
                   type: str
+                  valid_values:
+                  - attached-host
+                  - connected
+                  - isis
+                  - ospf
+                  - ospfv3
+                  - static
                 route_map:
                   type: str
                 include_leaked:
@@ -12372,6 +12379,16 @@ keys:
               keys:
                 source_protocol:
                   type: str
+                  valid_values:
+                  - attached-host
+                  - bgp
+                  - connected
+                  - dhcp
+                  - dynamic
+                  - isis
+                  - ospfv3
+                  - static
+                  - user
                 route_map:
                   type: str
                 include_leaked:
@@ -13463,6 +13480,17 @@ keys:
                 keys:
                   source_protocol:
                     type: str
+                    valid_values:
+                    - attached-host
+                    - bgp
+                    - connected
+                    - dynamic
+                    - isis
+                    - ospf
+                    - ospfv3
+                    - rip
+                    - static
+                    - user
                   route_map:
                     type: str
                   include_leaked:
