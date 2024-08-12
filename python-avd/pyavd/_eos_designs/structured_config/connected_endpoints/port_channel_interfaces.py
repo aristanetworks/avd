@@ -8,8 +8,8 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._utils import append_if_not_duplicate, get, short_esi_to_route_target, strip_null_from_data
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
 from .utils import UtilsMixin
