@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 import jsonschema
 from deepmerge import always_merger
 
-from pyavd._errors import AristaAvdError, AvdSchemaError, AvdValidationError
+from pyavd._errors import AristaAvdError, AvdSchemaError
 
 from .avddataconverter import AvdDataConverter
 from .avdvalidator import AvdValidator
@@ -48,7 +48,7 @@ class AvdSchema:
     def validate_schema(self, schema: dict) -> Generator:
         validation_errors = self._schema_validator.iter_errors(schema)
         for validation_error in validation_errors:
-            yield self._error_handler(validation_error)
+            yield AvdSchemaError(error=validation_error)
 
     def load_schema(self, schema: dict | None = None, schema_id: str | None = None) -> None:
         """
@@ -80,8 +80,8 @@ class AvdSchema:
 
         self._schema = schema
         try:
-            self._validator = AvdValidator(schema, self.store)
-            self._dataconverter = AvdDataConverter(self)
+            self._validator = AvdValidator(schema)
+            self._dataconverter = AvdDataConverter(schema)
         except Exception as e:
             msg = "An error occurred during creation of the validator"
             raise AristaAvdError(msg) from e
@@ -94,31 +94,10 @@ class AvdSchema:
             raise validation_error
 
     def validate(self, data: Any) -> Generator:
-        validation_errors = self._validator.iter_errors(data)
-
-        try:
-            for validation_error in validation_errors:
-                yield self._error_handler(validation_error)
-        except Exception as error:  # pylint: disable=broad-exception-caught
-            yield self._error_handler(error)
+        yield from self._validator.validate(data)
 
     def convert(self, data: Any) -> Generator:
-        conversion_errors = self._dataconverter.convert_data(data, self._schema)
-
-        try:
-            for conversion_error in conversion_errors:
-                yield self._error_handler(conversion_error)
-        except Exception as error:  # pylint: disable=broad-exception-caught
-            yield self._error_handler(error)
-
-    def _error_handler(self, error: Exception) -> Exception:
-        if isinstance(error, AristaAvdError):
-            return error
-        if isinstance(error, jsonschema.ValidationError):
-            return AvdValidationError(error=error)
-        if isinstance(error, jsonschema.SchemaError):
-            return AvdSchemaError(error=error)
-        return error
+        yield from self._dataconverter.convert_data(data)
 
     def subschema(self, datapath: list) -> dict:
         """

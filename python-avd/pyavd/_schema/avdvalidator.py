@@ -3,191 +3,251 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 from collections.abc import Generator
-from typing import Any, NoReturn
+from re import fullmatch, match
+from typing import Any, Literal, NoReturn
 
-import jsonschema
-import jsonschema._types
-import jsonschema.validators
-
-# Special handling of jsonschema <4.18 vs. >=4.18
-try:
-    import jsonschema._validators as jsonschema_validators
-except ImportError:
-    import jsonschema._keywords as jsonschema_validators
-
+from pyavd._errors import AvdValidationError
 from pyavd._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
 
 
-def _unique_keys_validator(validator: object, unique_keys: list[str], instance: list, _schema: dict) -> Generator:
-    if not validator.is_type(unique_keys, "list"):
-        return
-
-    if not validator.is_type(instance, "list") or not instance:
-        return
-
-    if not all(validator.is_type(element, "dict") for element in instance):
-        return
-
-    for unique_key in unique_keys:
-        if not (paths_and_values := tuple(get_all_with_path(instance, unique_key))):
-            # No values matching the unique key, check the next unique_key
-            continue
-
-        # Separate all paths and values
-        paths, values = zip(*paths_and_values, strict=False)
-
-        key = unique_key.split(".")[-1]
-        is_nested_key = unique_key != key
-
-        # Find any duplicate values and emit errors for each index.
-        for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(values):
-            for duplicate_index in duplicate_indices:
-                yield jsonschema.ValidationError(
-                    f"The value '{duplicate_value}' is not unique between all {'nested ' if is_nested_key else ''}list items as required.",
-                    path=[*paths[duplicate_index], key],
-                    schema_path=["items"],
-                )
-
-
-def _primary_key_validator(validator: object, primary_key: str, instance: list, schema: dict) -> Generator:
-    if not validator.is_type(primary_key, "str"):
-        return
-
-    if not validator.is_type(instance, "list") or not instance:
-        return
-
-    if not all(validator.is_type(element, "dict") for element in instance):
-        return
-
-    if not all(element.get(primary_key) is not None for element in instance):
-        yield jsonschema.ValidationError(f"Primary key '{primary_key}' is not set on all items as required.")
-
-    if not schema.get("allow_duplicate_primary_key"):
-        # Reusing the unique keys validator
-        yield from _unique_keys_validator(validator, [primary_key], instance, schema)
-
-
-def _keys_validator(validator: object, keys: dict, instance: dict, schema: dict) -> Generator:
-    """
-    This function validates each key with the relevant subschema.
-
-    It also includes various child key validations,
-    which can only be implemented with access to the parent "keys" instance.
-    - Expand dynamic_keys
-    - Validate "allow_other_keys" (default is false)
-    - Validate "required" under child keys
-    - Expand "dynamic_valid_values" under child keys (don't perform validation).
-    """
-    if not validator.is_type(instance, "object"):
-        return
-
-    # Compile schema_dynamic_keys and add to "dynamic_keys"
-    schema_dynamic_keys = schema.get("dynamic_keys", {})
-    dynamic_keys = {}
-    for dynamic_key, childschema in schema_dynamic_keys.items():
-        resolved_keys = get_all(instance, dynamic_key)
-        for resolved_key in resolved_keys:
-            dynamic_keys.setdefault(resolved_key, childschema)
-
-    all_keys = ChainMap(keys, dynamic_keys)
-
-    # Validation of "allow_other_keys"
-    if not schema.get("allow_other_keys", False):
-        # Check that instance only contains the schema keys
-        invalid_keys = ", ".join([key for key in instance if key not in all_keys and key[0] != "_"])
-        if invalid_keys:
-            yield jsonschema.ValidationError(f"Unexpected key(s) '{invalid_keys}' found in dict.")
-
-    # Run over child keys and check for required and update child schema with dynamic valid values before
-    # descending into validation of child schema.
-    for key, childschema in all_keys.items():
-        if instance.get(key) is None:
-            # Validation of "required" on child keys
-            if childschema.get("required"):
-                yield jsonschema.ValidationError(f"Required key '{key}' is not set in dict.")
-
-            # Skip further validation since there is nothing to validate.
-            continue
-
-        # Expand "dynamic_valid_values" in child schema and add to "valid_values"
-        if "dynamic_valid_values" in childschema:
-            childschema.setdefault("valid_values", []).extend(get_all(instance, childschema["dynamic_valid_values"]))
-
-        # Perform regular validation of the child schema.
-        yield from validator.descend(
-            instance[key],
-            childschema,
-            path=key,
-            schema_path=key,
-        )
-
-
-def _dynamic_keys_validator(validator: object, _dynamic_keys: dict, instance: dict, schema: dict) -> Generator:
-    """This function triggers the regular "keys" validator in case only dynamic_keys is set."""
-    if "keys" not in schema:
-        yield from _keys_validator(validator, {}, instance, schema)
-
-
-def _ref_validator(_validator: object, _ref: str, _instance: dict, _schema: dict) -> NoReturn:
-    msg = "$ref must be resolved before using AvdValidator"
-    raise NotImplementedError(msg)
-
-
-def _valid_values_validator(_validator: object, valid_values: list, instance: Any, _schema: dict) -> Generator:
-    """This function validates if the instance conforms to the "valid_values"."""
-    if instance not in valid_values:
-        yield jsonschema.ValidationError(f"'{instance}' is not one of {valid_values}")
-
-
-def _is_dict(_validator: object, instance: Any) -> bool:
-    return isinstance(instance, (dict, ChainMap))
-
-
 class AvdValidator:
-    def __new__(cls, schema: dict, store: dict) -> object:
-        """
-        AvdSchemaValidator is used to validate AVD Data.
+    def __init__(self, schema: dict) -> None:
+        self.schema = schema
+        self.validators = {
+            "type": self.type_validator,
+            "max": self.max_validator,
+            "min": self.min_validator,
+            "max_length": self.max_length_validator,
+            "min_length": self.min_length_validator,
+            "format": self.format_validator,
+            "pattern": self.pattern_validator,
+            "valid_values": self.valid_values_validator,
+            "keys": self.keys_validator,
+            "dynamic_keys": self.dynamic_keys_validator,
+            "items": self.items_validator,
+            "primary_key": self.primary_key_validator,
+            "unique_keys": self.unique_keys_validator,
+            "$ref": self.ref_validator,
+        }
 
-        It uses a combination of our own validators and builtin jsonschema validators
-        mapped to our own keywords.
-        We have extra type checkers not covered by the AVD_META_SCHEMA (array, boolean etc)
-        since the same TypeChecker is used by the validators themselves.
+    def validate(self, instance: Any, schema: dict | None = None, path: list[str | int] | None = None) -> Generator:
+        if schema is None:
+            schema = self.schema
+        if path is None:
+            path = []
+
+        for schema_key, schema_value in schema.items():
+            if (validator := self.validators.get(schema_key)) is None or schema_value is None:
+                continue
+            yield from validator(schema_value, instance, schema, path)
+
+    def type_validator(self, schema_type: str, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(instance, schema_type):
+            yield AvdValidationError(
+                f"Invalid type '{type(instance)}'. Expected a '{schema_type}'.",
+                path=path,
+            )
+
+    def unique_keys_validator(self, unique_keys: list[str], instance: list, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(unique_keys, "list"):
+            return
+
+        if not self.is_type(instance, "list") or not instance:
+            return
+
+        if not all(self.is_type(element, "dict") for element in instance):
+            return
+
+        for unique_key in unique_keys:
+            if not (paths_and_values := tuple(get_all_with_path(instance, unique_key))):
+                # No values matching the unique key, check the next unique_key
+                continue
+
+            # Separate all paths and values
+            paths, values = zip(*paths_and_values, strict=False)
+
+            key = unique_key.split(".")[-1]
+            is_nested_key = unique_key != key
+
+            # Find any duplicate values and emit errors for each index.
+            for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(values):
+                for duplicate_index in duplicate_indices:
+                    yield AvdValidationError(
+                        f"The value '{duplicate_value}' is not unique between all {'nested ' if is_nested_key else ''}list items as required.",
+                        path=[*path, *paths[duplicate_index], key],
+                    )
+
+    def primary_key_validator(self, primary_key: str, instance: list, schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(primary_key, "str"):
+            return
+
+        if not self.is_type(instance, "list") or not instance:
+            return
+
+        if not all(self.is_type(element, "dict") for element in instance):
+            return
+
+        if not all(element.get(primary_key) is not None for element in instance):
+            yield AvdValidationError(f"Primary key '{primary_key}' is not set on all items as required.", path=path)
+
+        if not schema.get("allow_duplicate_primary_key"):
+            # Reusing the unique keys validator
+            yield from self.unique_keys_validator([primary_key], instance, schema, path)
+
+    def keys_validator(self, keys: dict, instance: dict, schema: dict, path: list[str | int]) -> Generator:
         """
-        validator_cls = jsonschema.validators.create(
-            meta_schema=store["avd_meta_schema"],
-            validators={
-                "$ref": _ref_validator,
-                "type": jsonschema_validators.type,
-                "max": jsonschema_validators.maximum,
-                "min": jsonschema_validators.minimum,
-                "valid_values": _valid_values_validator,
-                "format": jsonschema_validators.format,
-                "max_length": jsonschema_validators.maxLength,
-                "min_length": jsonschema_validators.minLength,
-                "pattern": jsonschema_validators.pattern,
-                "items": jsonschema_validators.items,
-                "primary_key": _primary_key_validator,
-                "unique_keys": _unique_keys_validator,
-                "keys": _keys_validator,
-                "dynamic_keys": _dynamic_keys_validator,
-            },
-            type_checker=jsonschema.TypeChecker(
-                {
-                    "any": jsonschema._types.is_any,
-                    "array": jsonschema._types.is_array,
-                    "boolean": jsonschema._types.is_bool,
-                    "integer": jsonschema._types.is_integer,
-                    "object": jsonschema._types.is_object,
-                    "null": jsonschema._types.is_null,
-                    "None": jsonschema._types.is_null,
-                    "number": jsonschema._types.is_number,
-                    "string": jsonschema._types.is_string,
-                    "dict": _is_dict,
-                    "str": jsonschema._types.is_string,
-                    "bool": jsonschema._types.is_bool,
-                    "list": jsonschema._types.is_array,
-                    "int": jsonschema._types.is_integer,
-                },
-            ),
-        )
-        return validator_cls(schema)
+        This function validates each key with the relevant subschema.
+
+        It also includes various child key validations,
+        which can only be implemented with access to the parent "keys" instance.
+        - Expand dynamic_keys
+        - Validate "allow_other_keys" (default is false)
+        - Validate "required" under child keys
+        - Expand "dynamic_valid_values" under child keys (don't perform validation).
+        """
+        if not self.is_type(instance, "dict"):
+            return
+
+        # Compile schema_dynamic_keys and add to "dynamic_keys"
+        schema_dynamic_keys = schema.get("dynamic_keys", {})
+        dynamic_keys = {}
+        for dynamic_key, childschema in schema_dynamic_keys.items():
+            resolved_keys = get_all(instance, dynamic_key)
+            for resolved_key in resolved_keys:
+                dynamic_keys.setdefault(resolved_key, childschema)
+
+        all_keys = ChainMap(keys, dynamic_keys)
+
+        # Validation of "allow_other_keys"
+        if not schema.get("allow_other_keys", False):
+            # Check that instance only contains the schema keys
+            invalid_keys = ", ".join([key for key in instance if key not in all_keys and key[0] != "_"])
+            if invalid_keys:
+                yield AvdValidationError(f"Unexpected key(s) '{invalid_keys}' found in dict.", path=path)
+
+        # Run over child keys and check for required and update child schema with dynamic valid values before
+        # descending into validation of child schema.
+        for key, childschema in all_keys.items():
+            if instance.get(key) is None:
+                # Validation of "required" on child keys
+                if childschema.get("required"):
+                    yield AvdValidationError(f"Required key '{key}' is not set in dict.", path=path)
+
+                # Skip further validation since there is nothing to validate.
+                continue
+
+            # Expand "dynamic_valid_values" in child schema and add to "valid_values"
+            if "dynamic_valid_values" in childschema:
+                childschema.setdefault("valid_values", []).extend(get_all(instance, childschema["dynamic_valid_values"]))
+
+            # Perform regular validation of the child schema.
+            yield from self.validate(
+                instance[key],
+                childschema,
+                path=[*path, key],
+            )
+
+    def dynamic_keys_validator(self, _dynamic_keys: dict, instance: dict, schema: dict, path: list[str | int]) -> Generator:
+        """This function triggers the regular "keys" validator in case only dynamic_keys is set."""
+        if "keys" not in schema:
+            yield from self.keys_validator({}, instance, schema, path=path)
+
+    def items_validator(self, items: dict, instance: list, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(instance, "list"):
+            return
+
+        for index, item in enumerate(instance):
+            yield from self.validate(item, items, path=[*path, index])
+
+    def ref_validator(self, _ref: str, _instance: dict, _schema: dict, _path: list[str | int]) -> NoReturn:
+        msg = "$ref must be resolved before using AvdValidator"
+        raise NotImplementedError(msg)
+
+    def max_validator(self, schema_max: int, instance: int, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(instance, "int"):
+            return
+
+        if instance > schema_max:
+            yield AvdValidationError(f"'{instance}' is higher than the allowed maximum of {schema_max}.", path=path)
+
+    def min_validator(self, schema_min: int, instance: int, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(instance, "int"):
+            return
+
+        if instance < schema_min:
+            yield AvdValidationError(f"'{instance}' is lower than the allowed minimum of {schema_min}.", path=path)
+
+    def max_length_validator(self, schema_max_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
+        if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "list")):
+            return
+
+        if len(instance) > schema_max_length:
+            yield AvdValidationError(f"The value is longer than the allowed maximum of {schema_max_length}.", path=path)
+
+    def min_length_validator(self, schema_min_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
+        if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "list")):
+            return
+
+        if len(instance) < schema_min_length:
+            yield AvdValidationError(f"The value is shorter than the allowed minimum of {schema_min_length}.", path=path)
+
+    def valid_values_validator(self, valid_values: list, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
+        """This function validates if the instance conforms to the "valid_values"."""
+        if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "int", "bool")):
+            return
+
+        if instance not in valid_values:
+            yield AvdValidationError(f"'{instance}' is not one of {valid_values}", path=path)
+
+    def format_validator(self, schema_format: str, instance: str, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(instance, "str"):
+            return
+
+        match schema_format:
+            case "ipv4":
+                # TODO: Figure out how to do this efficiently since ipaddress is slow
+                return
+            case "ipv4_cidr":
+                # TODO: Figure out how to do this efficiently since ipaddress is slow
+                return
+            case "ipv6":
+                # TODO: Figure out how to do this efficiently since ipaddress is slow
+                return
+            case "ipv6_cidr":
+                # TODO: Figure out how to do this efficiently since ipaddress is slow
+                return
+            case "ip":
+                # TODO: Figure out how to do this efficiently since ipaddress is slow
+                return
+            case "cidr":
+                # TODO: Figure out how to do this efficiently since ipaddress is slow
+                return
+            case "mac":
+                # Matching for format 01:23:45:67:89:AB
+                if fullmatch(r"([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|([0-9a-fA-F]{4}.){2}[0-9a-fA-F]{4}", instance) is None:
+                    yield AvdValidationError(
+                        f"The value '{instance}' is not a valid MAC address (Expecting bytes separated by colons like 01:23:45:67:89:AB).", path=path
+                    )
+
+    def pattern_validator(self, pattern: str, instance: str, _schema: dict, path: list[str | int]) -> Generator:
+        if not self.is_type(instance, "str"):
+            return
+
+        if match(pattern, instance) is None:
+            yield AvdValidationError(f"The value '{instance}' is not matching the pattern '{pattern}'.", path=path)
+
+    def is_type(self, instance: Any, type_str: Literal["dict", "int", "str", "bool"]) -> bool:
+        match type_str:
+            case "int":
+                return isinstance(instance, int)
+            case "str":
+                return isinstance(instance, str)
+            case "bool":
+                return isinstance(instance, bool)
+            case "dict":
+                return isinstance(instance, (dict, ChainMap))
+            case "list":
+                return isinstance(instance, list)
+
+        msg = f"Unable to check type '{type_str}'"
+        raise NotImplementedError(msg)

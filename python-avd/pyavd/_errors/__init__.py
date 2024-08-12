@@ -9,7 +9,7 @@ class AristaAvdError(Exception):
         self.message = message
         super().__init__(self.message)
 
-    def _json_path_to_string(self, json_path: list) -> str:
+    def _json_path_to_string(self, json_path: list[str | int]) -> str:
         path = ""
         for index, elem in enumerate(json_path):
             if isinstance(elem, int):
@@ -36,13 +36,11 @@ class AvdSchemaError(AristaAvdError):
 
 
 class AvdValidationError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", error: Exception | None = None) -> None:
-        if isinstance(error, (jsonschema.ValidationError)):
-            self.path = self._json_path_to_string(error.absolute_path)
-            self.message = f"'Validation Error: {self.path}': {error.message}"
-        else:
-            self.message = message
-        super().__init__(self.message)
+    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+        if path is not None:
+            self.path = self._json_path_to_string(path)
+            message = f"'Validation Error: {self.path}': {message}"
+        super().__init__(message)
 
 
 class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
