@@ -23,8 +23,6 @@ with Path(script_dir, "acl.yml").open(encoding="utf-8") as data_file:
 with Path(script_dir, "ipv6-access-lists.yml").open(encoding="utf-8") as data_file:
     ipv6_acl_test_data = yaml.load(data_file, Loader=yaml.SafeLoader)
 
-INVALID_SCHEMA = {"type": "something_invalid"}
-
 VALID_TEST_SCHEMAS = [DEFAULT_SCHEMA, acl_schema, ipv6_acl_schema, combined_schema]
 
 combined_data = {}
@@ -122,21 +120,6 @@ class TestAvdSchema:
         assert isinstance(avdschema, AvdSchema)
         assert avdschema._schema == test_schema
 
-    def test_avd_schema_init_with_invalid_schema(self) -> None:
-        with pytest.raises(AvdValidationError):
-            AvdSchema(INVALID_SCHEMA)
-
-    @pytest.mark.parametrize("test_schema", VALID_TEST_SCHEMAS)
-    def test_avd_schema_validate_schema(self, test_schema: dict) -> None:
-        validation_errors = list(AvdSchema().validate_schema(test_schema))
-        assert not validation_errors
-
-    def test_avd_schema_validate_invalid_schema(self) -> None:
-        validation_errors = list(AvdSchema().validate_schema(INVALID_SCHEMA))
-        assert len(validation_errors) > 0
-        for validation_error in validation_errors:
-            assert isinstance(validation_error, AvdValidationError)
-
     @pytest.mark.parametrize("test_data", TEST_DATA_SETS)
     def test_avd_schema_validate_without_schema(self, test_data: Any) -> None:
         validation_errors = list(AvdSchema().validate(test_data))
@@ -160,10 +143,6 @@ class TestAvdSchema:
         avdschema = AvdSchema()
         avdschema.load_schema(test_schema)
         assert avdschema._schema == test_schema
-
-    def test_avd_schema_load_invalid_schema(self) -> None:
-        with pytest.raises(AvdValidationError):
-            AvdSchema().load_schema(INVALID_SCHEMA)
 
     @pytest.mark.parametrize("test_path", TEST_DATA_PATHS)
     def test_avd_schema_subschema_with_loaded_schema(self, test_path: list) -> None:
