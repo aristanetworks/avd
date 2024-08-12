@@ -199,7 +199,8 @@ class PlatformMixin:
 
     @cached_property
     def platform_settings(self: SharedUtils) -> dict:
-        platform_settings = get(self.hostvars, "platform_settings", default=DEFAULT_PLATFORM_SETTINGS)
+        custom_platform_settings = get(self.hostvars, "custom_platform_settings", default=[])
+        platform_settings = custom_platform_settings + get(self.hostvars, "platform_settings", default=DEFAULT_PLATFORM_SETTINGS)
 
         # First look for a matching platform setting specifying our platform
         for platform_setting in platform_settings:
