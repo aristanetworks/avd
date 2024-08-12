@@ -23,9 +23,10 @@ title: Ansible Collection Role eos_validate_state
 - Generates CSV and Markdown reports of the results.
 - Supports Ansible `check` mode.  When running in `check` mode, `eos_validate_state` produces a report of tests that would be performed without running the tests on your network. Tests will be marked as `NOT RUN` in the final reports. This can be useful to inspect which tests are going to be run.
 
-      ```shell
-      ansible-playbook playbooks/fabric-validate.yaml --check
-      ```
+  ```shell
+  ansible-playbook playbooks/fabric-validate.yaml --check
+  ```
+
 - This role supports additional level of verbosity in Ansible. In particular, when run with `-v`, logs gives visibility on which [test categories](#test-categories) are being removed from a device catalog by AVD according to the structured configurations.
 
 ## Role Inputs and Outputs
