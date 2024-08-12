@@ -187,7 +187,7 @@ interface Management1
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
 | --------- | ------------- | -------- | ----------- | ---- | --------------------------- | --------------------------- |
-| Vlan42 | EVPN_UNDERLAY | - | - | - | sha | sha |
+| Vlan42 | EVPN_UNDERLAY | - | - | - | sha | - |
 | Vlan83 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
 | Vlan84 | EVPN_UNDERLAY | - | - | - | sha | sha |
 | Vlan85 | EVPN_UNDERLAY | - | - | - | sha | sha |
@@ -259,7 +259,6 @@ interface Vlan42
    ip helper-address 10.10.96.151 source-interface Loopback0
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 level-1
-   isis authentication mode sha key-id 5 level-2
    ip address virtual 10.10.42.1/24
 !
 interface Vlan43

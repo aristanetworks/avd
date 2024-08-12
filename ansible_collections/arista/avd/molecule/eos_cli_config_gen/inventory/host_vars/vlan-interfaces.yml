@@ -36,7 +36,7 @@ vlan_interfaces:
       level_2:
         key_type: 0
         key: password
-        mode: md5
+        mode: text
         rx_disabled: true
 
   - name: Vlan81
@@ -290,10 +290,6 @@ vlan_interfaces:
     isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
-        mode: sha
-        sha:
-          key_id: 5
-      level_2:
         mode: sha
         sha:
           key_id: 5
