@@ -217,7 +217,7 @@ class AvdSchemaTools:
                 self.ansible_display.v(message)
             else:
                 # when mode == "warning"
-                self.ansible_display.warning(message, wrap_text=False)
+                self.ansible_display.warning(message, formatted=False)
         return counter
 
     def validate_schema(self) -> int:
