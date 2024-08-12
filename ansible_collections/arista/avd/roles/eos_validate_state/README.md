@@ -17,8 +17,9 @@ title: Ansible Collection Role eos_validate_state
 **eos_validate_state** role:
 
 - Consumes structured EOS configuration file, the same input as the role [eos_cli_config_gen](../eos_cli_config_gen/README.md). This input is considered the system of record (the desired state).
-- Connects to EOS devices via eAPI to collect operational states (actual state). **This requires access to the configured devices.**
-- Compares the actual states against the desired state.
+- Leverages [Arista Network Test Automation (ANTA)](https://anta.arista.com/stable/) framework to:
+  - Connect to EOS devices via eAPI to collect operational states (actual state). **This requires access to the configured devices.**
+  - Compare the actual states against the desired state.
 - Generates CSV and Markdown reports of the results.
 - Supports Ansible `check` mode.  When running in `check` mode, `eos_validate_state` produces a report of tests that would be performed without running the tests on your network. Tests will be marked as `NOT RUN` in the final reports. This can be useful to inspect which tests are going to be run.
 
