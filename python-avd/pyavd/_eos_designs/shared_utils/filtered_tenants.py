@@ -176,7 +176,7 @@ class FilteredTenantsMixin:
         - The VRF is part of a tenant set under 'always_include_vrfs_in_tenants'
         - 'always_include_vrfs_in_tenants' is set to ['all']
         - This is a WAN router and the VRF present on the uplink switch.
-          Note that if the attracted VRF does not have a wan_vni configured, the code for interface Vxlan1 will raise an error.
+          Note that if the attracted VRF does not have a wan_vni configured, the code for interface vxlan1 will raise an error.
         """
         if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
             return True

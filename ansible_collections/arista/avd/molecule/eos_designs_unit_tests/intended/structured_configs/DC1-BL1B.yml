@@ -632,7 +632,7 @@ router_ospf:
       connected:
         route_map: RM_TEST
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-BL1B_VTEP
     vxlan:
       udp_port: 4789

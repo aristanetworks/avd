@@ -192,7 +192,7 @@ prefix_lists:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_VTEP
     vxlan:
       udp_port: 4789
