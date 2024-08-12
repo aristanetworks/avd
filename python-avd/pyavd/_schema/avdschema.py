@@ -152,6 +152,6 @@ class AvdSchema:
 
             # Falling through here in case the schema is not covering the requested datapath
             msg = f"The datapath '{datapath}' could not be found in the schema"
-            raise AvdSchemaError(msg)
+            raise AvdSchemaError(msg, path=datapath)
 
         return recursive_function(datapath, schema)

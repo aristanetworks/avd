@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import jsonschema
 
 
 class AristaAvdError(Exception):
@@ -27,12 +26,11 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 
 class AvdSchemaError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", error: jsonschema.ValidationError | None = None) -> None:
-        if isinstance(error, jsonschema.SchemaError):
-            self.message = f"'Schema Error: {self._json_path_to_string(error.absolute_path)}': {error.message}"
-        else:
-            self.message = message
-        super().__init__(self.message)
+    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+        if path is not None:
+            self.path = self._json_path_to_string(path)
+            message = f"'Validation Error: {self.path}': {message}"
+        super().__init__(message)
 
 
 class AvdValidationError(AristaAvdError):
