@@ -143,7 +143,7 @@ class AvdSchemaTools:
                 continue
 
             if isinstance(exception, AvdDeprecationWarning):
-                # Instead we display using Ansible's deprecation notices.
+                # Deprecation warnings are displayed using Ansible's deprecation notices.
                 message = f"[{self.hostname}]: {exception}"
                 if exception.removed:
                     # Thank you! ansible-core>=2.16 broke support for removed=True and
