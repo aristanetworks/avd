@@ -93,8 +93,6 @@ keys:
             Acting role in overlay control plane.
         default_overlay_address_families:
           type: list
-          convert_types:
-            - "str"
           items:
             type: str
             convert_to_lower_case: true

@@ -37,8 +37,7 @@ ARGUMENT_SPEC = {
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
     "read_structured_config_from_file": {"type": "bool", "default": True},
-    "conversion_mode": {"type": "str", "default": "debug"},
-    "validation_mode": {"type": "str", "default": "warning"},
+    "validation_mode": {"type": "str", "default": "error"},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
@@ -88,7 +87,6 @@ class ActionModule(ActionBase):
             # result dict will be in-place updated.
             self.validate_task_vars(
                 hostname=task_vars["inventory_hostname"],
-                conversion_mode=validated_args["conversion_mode"],
                 validation_mode=validated_args["validation_mode"],
                 task_vars=task_vars,
                 result=result,
@@ -99,7 +97,7 @@ class ActionModule(ActionBase):
             return result
 
         if result.get("failed"):
-            # Something failed in schema validation or conversion.
+            # Something failed in schema validation.
             return result
 
         has_custom_templates = bool(task_vars.get("custom_templates"))
@@ -199,13 +197,12 @@ class ActionModule(ActionBase):
 
         return task_vars
 
-    def validate_task_vars(self, hostname: str, conversion_mode: str, validation_mode: str, task_vars: dict, result: dict) -> None:
+    def validate_task_vars(self, hostname: str, validation_mode: str, task_vars: dict, result: dict) -> None:
         # Load schema tools for input schema
         input_schema_tools = AvdSchemaTools(
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_cli_config_gen",
-            conversion_mode=conversion_mode,
             validation_mode=validation_mode,
             plugin_name="arista.avd.eos_cli_config_gen",
         )

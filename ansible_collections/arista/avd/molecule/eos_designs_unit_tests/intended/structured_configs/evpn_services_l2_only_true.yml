@@ -383,7 +383,7 @@ ip_igmp_snooping:
   - id: 120
     enabled: false
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: evpn_services_l2_only_true_VTEP
     vxlan:
       udp_port: 4789

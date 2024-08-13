@@ -17,7 +17,7 @@ ethernet_interfaces:
 - name: Ethernet16
   peer: SL-LEAF1A
   peer_interface: Ethernet28
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF1A_Ethernet28
   shutdown: false
   type: port-channel-member

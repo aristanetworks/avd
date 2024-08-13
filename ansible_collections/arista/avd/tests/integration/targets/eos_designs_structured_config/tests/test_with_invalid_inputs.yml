@@ -8,7 +8,7 @@
 
 - vars:
     error_msg: >-
-      1 errors found during schema validation of input vars. Run with -v to see details
+      1 errors found during schema validation of input vars.
   assert:
     that:
       - result.failed == True

@@ -1,4 +1,4 @@
 ---
 ### group_vars/DC1_SPINES.yml
 
-type: spine     # Must be either spine|l3spine
+type: l2spine     # Must be either l2spine|l3spine
