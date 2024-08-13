@@ -4,8 +4,6 @@ keys:
   access_lists:
     type: list
     primary_key: name
-    convert_types:
-      - dict
     display_name: IP Extended Access-Lists
     description: |
       AVD currently supports 2 different data models for extended ACLs:
@@ -29,8 +27,6 @@ keys:
           type: list
           required: true
           primary_key: sequence
-          convert_types:
-            - dict
           items:
             type: dict
             keys:

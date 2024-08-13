@@ -1268,7 +1268,7 @@
           # Route-map name.
           match_map: <str>
       redistribute_routes:
-        - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required; unique>
+        - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
           route_map: <str>
 
           # RCF function name with parenthesis.
@@ -1594,7 +1594,7 @@
               always: <bool>
               route_map: <str>
         redistribute_routes:
-          - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required; unique>
+          - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
             route_map: <str>
 
             # Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.
@@ -1631,7 +1631,7 @@
             # Outbound route-map name.
             route_map_out: <str>
         redistribute_routes:
-          - source_protocol: <str; required; unique>
+          - source_protocol: <str; required>
             route_map: <str>
 
             # Only applicable if `source_protocol` is `isis`.
@@ -1728,7 +1728,7 @@
             # Outbound prefix-list name.
             prefix_list_out: <str>
         redistribute_routes:
-          - source_protocol: <str; required; unique>
+          - source_protocol: <str; required>
             route_map: <str>
             include_leaked: <bool>
 
@@ -1768,7 +1768,7 @@
           - prefix: <str; required; unique>
             route_map: <str>
         redistribute_routes:
-          - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required; unique>
+          - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
 
             # Only applicable if `source_protocol` is `isis`.
             include_leaked: <bool>
@@ -2231,7 +2231,7 @@
               peer_filter: <str>
               description: <str>
           redistribute_routes:
-            - source_protocol: <str; required; unique>
+            - source_protocol: <str; required>
               route_map: <str>
               include_leaked: <bool>
 
@@ -2308,7 +2308,7 @@
               - prefix: <str; required; unique>
                 route_map: <str>
             redistribute_routes:
-              - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required; unique>
+              - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
                 route_map: <str>
                 include_leaked: <bool>
 
@@ -2372,7 +2372,7 @@
               - prefix: <str; required; unique>
                 route_map: <str>
             redistribute_routes:
-              - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dhcp" | "dynamic" | "isis" | "ospfv3" | "static" | "user"; required; unique>
+              - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dhcp" | "dynamic" | "isis" | "ospfv3" | "static" | "user"; required>
                 route_map: <str>
                 include_leaked: <bool>
 
@@ -2407,7 +2407,7 @@
               - prefix: <str; required; unique>
                 route_map: <str>
             redistribute_routes:
-              - source_protocol: <str; "attached-host" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required; unique>
+              - source_protocol: <str; "attached-host" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
                 route_map: <str>
 
                 # Only applicable if `source_protocol` is `isis`.
@@ -2444,7 +2444,7 @@
               - prefix: <str; required; unique>
                 route_map: <str>
             redistribute_routes:
-              - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required; unique>
+              - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
                 route_map: <str>
 
                 # Only applicable if `source_protocol` is `isis`.

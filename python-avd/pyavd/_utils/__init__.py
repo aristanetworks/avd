@@ -8,6 +8,7 @@ from .default import default
 from .get import get, get_v2
 from .get_all import get_all, get_all_with_path
 from .get_indices_of_duplicate_items import get_indices_of_duplicate_items
+from .get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from .get_ip_from_pool import get_ip_from_pool
 from .get_item import get_item
 from .groupby import groupby
@@ -28,6 +29,7 @@ __all__ = [
     "get_all",
     "get_all_with_path",
     "get_indices_of_duplicate_items",
+    "get_ip_from_ip_prefix",
     "get_ip_from_pool",
     "get_item",
     "get",

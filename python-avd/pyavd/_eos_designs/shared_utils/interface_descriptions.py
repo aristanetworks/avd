@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions import AvdInterfaceDescriptions
 from pyavd._utils import get, load_python_class, merge
+from pyavd.api.interface_descriptions import AvdInterfaceDescriptions
 
 if TYPE_CHECKING:
     from . import SharedUtils

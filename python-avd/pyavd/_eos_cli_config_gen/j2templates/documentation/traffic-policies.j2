@@ -16,7 +16,7 @@
 | -------------- | ------ |
 {%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
 {%                 if field_set_ipv4.prefixes is arista.avd.defined %}
-{%                     set value = field_set_ipv4.prefixes | join('<br/>') %}
+{%                     set value = field_set_ipv4.prefixes | arista.avd.natural_sort | join('<br/>') %}
 {%                 endif %}
 | {{ field_set_ipv4.name }} | {{ value | arista.avd.default("-") }} |
 {%             endfor %}
@@ -29,7 +29,7 @@
 | -------------- | ------ |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
 {%                 if field_set_ipv6.prefixes is arista.avd.defined %}
-{%                     set value = field_set_ipv6.prefixes | join('<br/>') %}
+{%                     set value = field_set_ipv6.prefixes | arista.avd.natural_sort | join('<br/>') %}
 {%                 endif %}
 | {{ field_set_ipv6.name }} | {{ value | arista.avd.default("-") }} |
 {%             endfor %}
@@ -93,10 +93,10 @@
 {%                                 do row.dst_port.append(protocol.dst_port | arista.avd.default("all")) %}
 {%                                 do row.dst_field.append(protocol.dst_field | arista.avd.default("-")) %}
 {%                             else %}
-{%                                 do row.src_port.append(protocol.src_port | arista.avd.default("-")) %}
-{%                                 do row.src_field.append(protocol.src_field | arista.avd.default("-")) %}
-{%                                 do row.dst_port.append(protocol.dst_port | arista.avd.default("-")) %}
-{%                                 do row.dst_field.append(protocol.dst_field | arista.avd.default("-")) %}
+{%                                 do row.src_port.append("-") %}
+{%                                 do row.src_field.append("-") %}
+{%                                 do row.dst_port.append("-") %}
+{%                                 do row.dst_field.append("-") %}
 {%                             endif %}
 {%                         endfor %}
 {%                         set row.src_port = row.src_port | join('<br/>') %}

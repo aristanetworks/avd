@@ -168,10 +168,8 @@ class YamlLineGenBase:
 
     def get_required(self) -> str | None:
         """Returns "required", "required; unique" or None depending on self.schema.required and self.is_primary_key."""
-        if self.schema._is_primary_key:
-            return "required; unique"
-        if self.schema.required:
-            return "required"
+        if self.schema._is_primary_key or self.schema.required:
+            return "required; unique" if self.schema._is_unique else "required"
         return None
 
     @property

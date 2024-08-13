@@ -10,8 +10,6 @@ keys:
     documentation_options:
       table: custom-structured-configuration
     type: list
-    convert_types:
-      - str
     items:
       type: str
     description: |

@@ -263,7 +263,7 @@
             svis:
 
                 # SVI interface id and VLAN id.
-              - id: <int; 1-4096; required; unique>
+              - id: <int; 1-4096; required>
 
                 # Define node specific configuration, such as unique IP addresses.
                 # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
@@ -332,7 +332,7 @@
         l2vlans:
 
             # VLAN ID.
-          - id: <int; 1-4094; required; unique>
+          - id: <int; 1-4094; required>
 
             # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
             # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.

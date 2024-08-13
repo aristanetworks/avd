@@ -1034,8 +1034,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: list
-            convert_types:
-              - "str"
             items:
               type: str
               valid_values:
@@ -1048,8 +1046,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: list
-            convert_types:
-              - "str"
             description: List of inventory hostname acting as MPLS route-reflectors.
             items:
               type: str

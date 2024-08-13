@@ -6,10 +6,29 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  platform_settings:
+  custom_platform_settings:
+    $ref: eos_designs#/keys/platform_settings
+    default: null
     documentation_options:
       table: platform-settings
+    description:
+      Custom Platform settings to override the default `platform_settings`.
+      This list will be prepended to the list of `platform_settings`.
+      The first entry containing `platforms` matching the `platform` node setting will be chosen.
+      If no matches are found, the first entry containing a platform `default` will be chosen.
     type: list
+  platform_settings:
+    type: list
+    documentation_options:
+      table: platform-settings
+    description:
+      Platform settings.
+      The first entry containing `platforms` matching the `platform` node setting will be chosen.
+      If no matches are found, the first entry containing a platform `default` will be chosen.
+      The default values will be overridden if `platform_settings` is defined.
+      If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
+      If you need to add custom platforms, create them under `custom_platform_settings`.
+      Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     items:
       type: dict
       keys:
