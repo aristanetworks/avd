@@ -44,7 +44,7 @@ class AvdValidator:
     def type_validator(self, schema_type: str, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
         if not self.is_type(instance, schema_type):
             yield AvdValidationError(
-                f"Invalid type '{type(instance)}'. Expected a '{schema_type}'.",
+                f"Invalid type '{type(instance).__name__}'. Expected a '{schema_type}'.",
                 path=path,
             )
 
