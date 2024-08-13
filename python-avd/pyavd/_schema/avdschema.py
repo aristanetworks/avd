@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, NoReturn
+from typing import TYPE_CHECKING, Any
 
 import jsonschema
 from deepmerge import always_merger
@@ -86,7 +86,7 @@ class AvdSchema:
             msg = "An error occurred during creation of the validator"
             raise AristaAvdError(msg) from e
 
-    def extend_schema(self, schema: dict) -> NoReturn:
+    def extend_schema(self, schema: dict) -> None:
         for validation_error in self.validate_schema(schema):
             raise validation_error
         always_merger.merge(self._schema, schema)

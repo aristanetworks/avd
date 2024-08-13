@@ -12,9 +12,9 @@ EOS_CLI_CONFIG_GEN_SCHEMA_PATH = ARTIFACTS_PATH.joinpath("eos_cli_config_gen.sch
 
 # The schemas are read of test artifacts which are frozen copies of the regular schemas.
 # We keep a frozen copy of the schemas here, so the expected outputs don't change as the schemas evolve.
-with open(EOS_CLI_CONFIG_GEN_SCHEMA_PATH, encoding="UTF-8") as file:
+with Path(EOS_CLI_CONFIG_GEN_SCHEMA_PATH).open(encoding="UTF-8") as file:
     test_eos_cli_config_gen_schema = safe_load(file)
-with open(EOS_DESIGNS_SCHEMA_PATH, encoding="UTF-8") as file:
+with Path(EOS_DESIGNS_SCHEMA_PATH).open(encoding="UTF-8") as file:
     test_eos_designs_schema = safe_load(file)
 
 
@@ -31,11 +31,12 @@ def output_path() -> Path:
 @pytest.fixture(scope="module")
 def schema_store() -> dict[str, dict]:
     """
-    Return dict with schemas
+    Return dict with schemas.
+
     {
         "eos_cli_config_gen": dict
         "eos_designs": dict
-    }
+    }.
     """
     return {
         "eos_cli_config_gen": test_eos_cli_config_gen_schema,
@@ -46,11 +47,12 @@ def schema_store() -> dict[str, dict]:
 @pytest.fixture(scope="module")
 def schema_paths() -> dict[str, dict]:
     """
-    Return dict with schema paths
+    Return dict with schema paths.
+
     {
         "eos_cli_config_gen": Path
         "eos_designs": Path
-    }
+    }.
     """
     return {
         "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_SCHEMA_PATH,

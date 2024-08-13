@@ -19,7 +19,6 @@ known_first_party = ["pyavd", "schema_tools"]
 line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
-  "python-avd/tests/**/*",
   "ansible_collections/arista/avd/tests/**/*",
 ]
 target-version = "py310"
@@ -78,6 +77,11 @@ convention = "google"
 "python-avd/pyavd/_cv/client/*.py" = [
   "B904",  # Within an `except` clause, raise exceptions with `raise - TODO: Improve code
 ]
+"python-avd/tests/**/*" = [
+  "S101",  # Accept 'assert' in pytest.
+  "INP001",  # implicit namespace package. Add an `__init__.py` - Tests are not in packages
+]
+
 
 [tool.ruff.lint.pylint]
 max-args = 12
