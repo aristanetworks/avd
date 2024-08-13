@@ -116,7 +116,7 @@ sFlow is disabled.
 | Ethernet3 | 3 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
 | Ethernet4 | 3 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
 | Ethernet8 | 8 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
-| Ethernet10/10 | 110 | *ISIS_TEST | True | *99 | *point-to-point | *level-2 | *True | *text |
+| Ethernet10/10 | 110 | *ISIS_TEST | True | *99 | *point-to-point | *level-2 | *True | *- |
 | Ethernet16 | 16 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
@@ -386,7 +386,7 @@ interface Ethernet50
 | Port-Channel50 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
 | Port-Channel51 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
 | Port-Channel100 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
-| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | text | - | - |
+| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -725,8 +725,6 @@ interface Port-Channel110
    isis metric 99
    isis network point-to-point
    isis hello padding
-   isis authentication mode text
-   isis authentication key 7 <removed>
 !
 interface Port-Channel111
    description Flexencap Port-Channel
