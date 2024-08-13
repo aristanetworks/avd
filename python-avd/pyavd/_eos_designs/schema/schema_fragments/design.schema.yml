@@ -9,6 +9,11 @@ keys:
   design:
     documentation_options:
       table: design
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#deprecation_of_design.type
     type: dict
     keys:
       type:

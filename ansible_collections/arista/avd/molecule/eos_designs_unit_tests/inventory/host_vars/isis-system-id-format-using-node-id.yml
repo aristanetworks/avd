@@ -1,5 +1,3 @@
-design:
-  type: mpls
 underlay_routing_protocol: isis-sr
 overlay_routing_protocol: ibgp
 
