@@ -1160,7 +1160,7 @@ vlan_interfaces:
       local_interface: Loopback51
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: EVPN-MULTICAST-L3LEAF2A_VTEP
     vxlan:
       udp_port: 4789

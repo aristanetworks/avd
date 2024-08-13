@@ -772,7 +772,7 @@ vlan_interfaces:
   ip_address_virtual: 10.3.11.1/24
   vrf: Tenant_C_OP_Zone
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-LEAF2A_VTEP
     vxlan:
       udp_port: 4789

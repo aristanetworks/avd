@@ -192,7 +192,7 @@ vlan_interfaces:
   ip_address_virtual: 10.0.4.1/24
   vrf: TEST1
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF2_VTEP
     vxlan:
       udp_port: 4789
