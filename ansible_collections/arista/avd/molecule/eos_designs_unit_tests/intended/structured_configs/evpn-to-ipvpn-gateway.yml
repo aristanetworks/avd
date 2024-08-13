@@ -151,7 +151,7 @@ vlan_interfaces:
   ip_address_virtual: 10.10.10.10/24
   vrf: testvrf
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: evpn-to-ipvpn-gateway_VTEP
     vxlan:
       udp_port: 4789

@@ -498,7 +498,7 @@ dps_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: dc1-wan1_VTEP
     vxlan:
       udp_port: 4789
