@@ -238,7 +238,7 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 192.168.102.1
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: inband-mgmt-parent_VTEP
     vxlan:
       udp_port: 4789

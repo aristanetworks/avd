@@ -552,7 +552,7 @@ router_ospf:
     redistribute:
       bgp: {}
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
       udp_port: 4789

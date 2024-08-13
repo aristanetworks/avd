@@ -81,7 +81,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: host1_VTEP
     vxlan:
       udp_port: 4789
