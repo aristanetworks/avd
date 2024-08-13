@@ -316,7 +316,7 @@ vlan_interfaces:
   ip_address_virtual: 10.66.66.66/24
   vrf: ATTRACTED-VRF-FROM-UPLINK
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: site-ha-enabled-leaf2A_VTEP
     vxlan:
       udp_port: 4789

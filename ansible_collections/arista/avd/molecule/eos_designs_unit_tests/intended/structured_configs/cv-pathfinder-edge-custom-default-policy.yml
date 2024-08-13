@@ -369,7 +369,7 @@ dps_interfaces:
   flow_tracker:
     hardware: custom_flow_track_name
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: cv-pathfinder-edge-custom-default-policy_VTEP
     vxlan:
       udp_port: 4789

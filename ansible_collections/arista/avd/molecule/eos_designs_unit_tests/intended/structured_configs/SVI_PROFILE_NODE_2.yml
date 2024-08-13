@@ -338,7 +338,7 @@ router_ospf:
     redistribute:
       bgp: {}
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: SVI_PROFILE_NODE_2_VTEP
     vxlan:
       udp_port: 4789

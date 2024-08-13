@@ -446,7 +446,7 @@ vlan_interfaces:
   ip_address_virtual: 10.101.100.1/24
   vrf: vrf_with_loopbacks_from_pod_pools
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-POD2-LEAF1A_VTEP
     vxlan:
       udp_port: 4789
