@@ -43,7 +43,6 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         self.template_output = self._task.args.get("template_output", False)
-        self._conversion_mode = self._task.args.get("conversion_mode")
         self._validation_mode = self._task.args.get("validation_mode")
 
         groups = task_vars.get("groups", {})
@@ -135,13 +134,11 @@ class ActionModule(ActionBase):
             hostname="",
             ansible_display=display,
             schema_id="eos_designs",
-            conversion_mode=self._conversion_mode,
             validation_mode=self._validation_mode,
             plugin_name="arista.avd.eos_designs",
         )
 
         avd_switch_facts = {}
-        data_conversions = 0
         data_validation_errors = 0
         for host in fabric_hosts:
             # Fetch all templated Ansible vars for this host
@@ -160,11 +157,10 @@ class ActionModule(ActionBase):
             avdschematools.hostname = host
             host_result = avdschematools.convert_and_validate_data(host_hostvars, return_counters=True)
 
-            data_conversions += host_result["conversions"]
             data_validation_errors += host_result["validation_errors"]
 
             if host_result.get("failed"):
-                # Quickly continue if data conversion/validation failed
+                # Quickly continue if data validation failed
                 result["failed"] = True
                 continue
 
@@ -180,7 +176,7 @@ class ActionModule(ActionBase):
             host_hostvars["switch"] = avd_switch_facts[host]["switch"]
 
         # Build result message
-        result["msg"] = avdschematools.build_result_message(conversions=data_conversions, validation_errors=data_validation_errors)
+        result["msg"] = avdschematools.build_result_message(validation_errors=data_validation_errors)
 
         return avd_switch_facts
 
