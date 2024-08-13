@@ -408,7 +408,7 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     vrf: TEST
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
       udp_port: 4789

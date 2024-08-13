@@ -110,7 +110,7 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1_VTEP
     vxlan:
       udp_port: 4789

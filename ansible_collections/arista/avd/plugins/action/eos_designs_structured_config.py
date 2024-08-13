@@ -49,7 +49,6 @@ class ActionModule(ActionBase):
         filename = str(self._task.args.get("dest", ""))
         file_mode = str(self._task.args.get("mode", "0o664"))
         template_output = self._task.args.get("template_output", False)
-        conversion_mode = self._task.args.get("conversion_mode")
         validation_mode = self._task.args.get("validation_mode")
 
         hostname = task_vars["inventory_hostname"]
@@ -76,7 +75,6 @@ class ActionModule(ActionBase):
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_designs",
-            conversion_mode=conversion_mode,
             validation_mode=validation_mode,
             plugin_name="arista.avd.eos_designs",
         )
@@ -86,7 +84,6 @@ class ActionModule(ActionBase):
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_cli_config_gen",
-            conversion_mode=conversion_mode,
             validation_mode=validation_mode,
             plugin_name="arista.avd.eos_cli_config_gen",
         )
@@ -104,7 +101,7 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=str(error)) from error
 
         if result.get("failed"):
-            # Something failed in schema validation or conversion.
+            # Something failed in schema validation.
             return result
 
         # We use ChainMap to avoid copying large amounts of data around, mapping in

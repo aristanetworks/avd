@@ -194,7 +194,7 @@ vlan_interfaces:
   - 2001:db8::1/64
   vrf: VRF1
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: varpv6_VTEP
     vxlan:
       udp_port: 4789

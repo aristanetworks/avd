@@ -8,7 +8,7 @@ from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 LOGGER = logging.getLogger(__name__)
 
@@ -131,7 +131,11 @@ class AvdTestLoopback0Reachability(AvdTestBase):
             return None
 
         # TODO: For now, we exclude WAN VTEPs from testing
-        if "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"):
+        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+        if "Dps" in default(
+            get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface"),
+            get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"),
+        ):
             LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
