@@ -87,57 +87,14 @@ sFlow is disabled.
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 |  Molecule L2 | access | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
 | Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
-| Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
-| Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
-| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
-| Ethernet21 |  200MBit/s shape | access | - | - | - | - |
-| Ethernet22 |  10% shape | access | - | - | - | - |
-| Ethernet23 |  Error-correction encoding | access | - | - | - | - |
-| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
-| Ethernet25 |  Molecule MAC | access | - | - | - | - |
-| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
-| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
-| Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - |
-| Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
-| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
-| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
-| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
-| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
-| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
-| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - |
-| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - |
-| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - |
-| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - |
-| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - |
-| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - |
-| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - |
-| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - |
-| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
-| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
-| Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | access | - | - | - | - |
-| Ethernet50 |  SFlow Interface Testing - SFlow ingress enabled | access | - | - | - | - |
-| Ethernet51 |  SFlow Interface Testing - SFlow egress enabled | access | - | - | - | - |
-| Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
-| Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
-| Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
-| Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
-| Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
-| Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
-| Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 | Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet67 |  Custom_Transceiver_Frequency | access | - | - | - | - |
-| Ethernet68 |  Custom_Transceiver_Frequency | access | - | - | - | - |
-| Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -392,7 +349,6 @@ interface Ethernet2
    description SRV-POD02_Eth1
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
@@ -577,13 +533,11 @@ interface Ethernet14
    logging event link-status
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
    switchport access vlan 110
    switchport mode access
-   switchport
    switchport pvlan mapping 111
 !
 interface Ethernet16
@@ -591,13 +545,11 @@ interface Ethernet16
    switchport vlan translation out 111-112 110
    switchport trunk allowed vlan 110-112
    switchport mode trunk
-   switchport
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
    switchport trunk allowed vlan 110-112
    switchport mode trunk
-   switchport
    switchport trunk private-vlan secondary
 !
 interface Ethernet18
@@ -611,7 +563,6 @@ interface Ethernet19
    description Switched port with no LLDP rx/tx
    switchport access vlan 110
    switchport mode access
-   switchport
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
@@ -624,29 +575,24 @@ interface Ethernet20
 !
 interface Ethernet21
    description 200MBit/s shape
-   switchport
    no qos trust
    shape rate 200000 kbps
 !
 interface Ethernet22
    description 10% shape
-   switchport
    shape rate 10 percent
 !
 interface Ethernet23
    description Error-correction encoding
    error-correction encoding fire-code
    error-correction encoding reed-solomon
-   switchport
 !
 interface Ethernet24
    description Disable error-correction encoding
    no error-correction encoding
-   switchport
 !
 interface Ethernet25
    description Molecule MAC
-   switchport
    mac access-group MAC_ACL_IN in
    mac access-group MAC_ACL_OUT out
 !
@@ -685,7 +631,6 @@ interface Ethernet26.500
 !
 interface Ethernet27
    description EVPN-Vxlan single-active redundancy
-   switchport
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
@@ -696,7 +641,6 @@ interface Ethernet27
 !
 interface Ethernet28
    description EVPN-MPLS multihoming
-   switchport
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
       mpls tunnel flood filter time 100
@@ -705,81 +649,66 @@ interface Ethernet28
 !
 interface Ethernet29
    description DOT1X Testing - auto phone true
-   switchport
    dot1x port-control auto
    dot1x port-control force-authorized phone
 !
 interface Ethernet30
    description DOT1X Testing - force-authorized phone false
-   switchport
    dot1x port-control force-authorized
    no dot1x port-control force-authorized phone
 !
 interface Ethernet31
    description DOT1X Testing - force-unauthorized - no phone
-   switchport
    dot1x port-control force-unauthorized
 !
 interface Ethernet32
    description DOT1X Testing - auto reauthentication
-   switchport
    dot1x reauthentication
    dot1x port-control auto
 !
 interface Ethernet33
    description DOT1X Testing - pae mode authenticator
-   switchport
    dot1x pae authenticator
 !
 interface Ethernet34
    description DOT1X Testing - authentication_failure allow
-   switchport
    dot1x authentication failure action traffic allow vlan 800
 !
 interface Ethernet35
    description DOT1X Testing - authentication_failure drop
-   switchport
    dot1x authentication failure action traffic drop
 !
 interface Ethernet36
    description DOT1X Testing - host-mode single-host
-   switchport
    dot1x host-mode single-host
 !
 interface Ethernet37
    description DOT1X Testing - host-mode multi-host
-   switchport
    dot1x host-mode multi-host
 !
 interface Ethernet38
    description DOT1X Testing - host-mode multi-host authenticated
-   switchport
    dot1x host-mode multi-host authenticated
 !
 interface Ethernet39
    description DOT1X Testing - mac_based_authentication host-mode common true
-   switchport
    dot1x mac based authentication host-mode common
 !
 interface Ethernet40
    description DOT1X Testing - mac_based_authentication always
-   switchport
    dot1x mac based authentication always
 !
 interface Ethernet41
    description DOT1X Testing - mac_based_authentication always and host-mode common
-   switchport
    dot1x mac based authentication host-mode common
    dot1x mac based authentication always
 !
 interface Ethernet42
    description DOT1X Testing - mac_based_authentication
-   switchport
    dot1x mac based authentication
 !
 interface Ethernet43
    description DOT1X Testing - timeout values
-   switchport
    dot1x timeout quiet-period 10
    dot1x timeout reauth-timeout-ignore always
    dot1x timeout tx-period 6
@@ -788,13 +717,11 @@ interface Ethernet43
 !
 interface Ethernet44
    description DOT1X Testing - reauthorization_request_limit
-   switchport
    dot1x reauthorization request limit 3
    dot1x eapol disabled
 !
 interface Ethernet45
    description DOT1X Testing - all features
-   switchport
    dot1x pae authenticator
    dot1x authentication failure action traffic allow vlan 800
    dot1x reauthentication
@@ -815,7 +742,6 @@ interface Ethernet46
    description native-vlan-tag-precedence
    switchport trunk native vlan tag
    switchport mode trunk
-   switchport
 !
 interface Ethernet47
    description IP Helper
@@ -833,29 +759,24 @@ interface Ethernet48
 !
 interface Ethernet50
    description SFlow Interface Testing - SFlow ingress enabled
-   switchport
    sflow enable
 !
 interface Ethernet51
    description SFlow Interface Testing - SFlow egress enabled
-   switchport
    sflow egress enable
 !
 interface Ethernet52
    description SFlow Interface Testing - SFlow ingress and egress unmodified enabled
-   switchport
    sflow enable
    sflow egress unmodified enable
 !
 interface Ethernet53
    description SFlow Interface Testing - SFlow ingress and egress disabled
-   switchport
    no sflow enable
    no sflow egress enable
 !
 interface Ethernet54
    description SFlow Interface Testing - SFlow ingress and egress unmodified disabled
-   switchport
    no sflow enable
    no sflow egress unmodified enable
 !
@@ -869,7 +790,6 @@ interface Ethernet55
 !
 interface Ethernet56
    description Interface with poe commands and limit in class
-   switchport
    poe priority low
    poe reboot action power-off
    poe link down action power-off 10
@@ -879,7 +799,6 @@ interface Ethernet56
 !
 interface Ethernet57
    description Interface with poe commands and limit in watts
-   switchport
    poe priority critical
    poe reboot action maintain
    poe link down action maintain
@@ -889,12 +808,10 @@ interface Ethernet57
 !
 interface Ethernet58
    description Interface with poe disabled and no other poe keys
-   switchport
    poe disabled
 !
 interface Ethernet60
    description IP NAT Testing
-   switchport
    ip nat source static 3.0.0.1 4.0.0.1
    ip nat source static 3.0.0.2 22 4.0.0.2
    ip nat source static 3.0.0.3 22 4.0.0.3 23
@@ -1003,19 +920,16 @@ interface Ethernet66
 interface Ethernet67
    description Custom_Transceiver_Frequency
    no shutdown
-   switchport
    transceiver frequency 190050.000
 !
 interface Ethernet68
    description Custom_Transceiver_Frequency
    no shutdown
-   switchport
    transceiver media override 100gbase-ar4
    transceiver frequency 190080.000 ghz
 !
 interface Ethernet69
    description IP NAT service-profile
-   switchport
    ip nat service-profile TEST-NAT-PROFILE
 ```
 

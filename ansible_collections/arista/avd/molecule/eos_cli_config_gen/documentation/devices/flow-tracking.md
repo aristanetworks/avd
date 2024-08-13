@@ -168,9 +168,6 @@ interface Dps1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet40 |  - | access | - | - | - | - |
-| Ethernet41 |  - | access | - | - | - | - |
-| Ethernet42 |  - | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -179,17 +176,14 @@ interface Dps1
 ```eos
 !
 interface Ethernet40
-   switchport
    flow tracker hardware T2
    flow tracker sampled T2
 !
 interface Ethernet41
-   switchport
    flow tracker hardware T3
    flow tracker sampled T3
 !
 interface Ethernet42
-   switchport
    flow tracker sampled T3
 ```
 
@@ -201,14 +195,12 @@ interface Ethernet42
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel42 | - | switched | access | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel42
-   switchport
    flow tracker hardware T3
    flow tracker sampled T3
 ```

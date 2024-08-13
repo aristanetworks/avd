@@ -122,7 +122,6 @@ l2-protocol
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  L2PF test | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -132,7 +131,6 @@ l2-protocol
 !
 interface Ethernet1
    description L2PF test
-   switchport
    l2-protocol forwarding profile TEST1
 ```
 
@@ -144,7 +142,6 @@ interface Ethernet1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2PF test | switched | access | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -152,6 +149,5 @@ interface Ethernet1
 !
 interface Port-Channel1
    description L2PF test
-   switchport
    l2-protocol forwarding profile TEST2
 ```
