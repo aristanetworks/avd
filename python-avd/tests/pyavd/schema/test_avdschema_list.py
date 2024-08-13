@@ -49,19 +49,24 @@ TESTS = [
     # (test_value, expected_errors: tuple, expected_error_messages: tuple)
     ([{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}], None, None),  # Valid value. No errors.
     ([{"pri": "1", "foo": 123}, {"pri": 2, "foo": "234"}], None, None),  # Valid value after conversion. No errors.
-    ([{"pri": 1, "foo": "123"}, {"pri": "1", "foo": 123}], (AvdValidationError,), ("'Validation Error: test_value[0].pri': The value '1' is not unique between all list items as required.", "'Validation Error: test_value[1].pri': The value '1' is not unique between all list items as required.", "'Validation Error: test_value[0].foo': The value '123' is not unique between all list items as required.", "'Validation Error: test_value[1].foo': The value '123' is not unique between all list items as required.")),  # Collision on both primary_key and unique_keys
     (
-        None,
+        [{"pri": 1, "foo": "123"}, {"pri": "1", "foo": 123}],
         (AvdValidationError,),
-        ("'Validation Error: ': Required key 'test_value' is not set in dict.",),
-    ),  # Required is set, so None is not ignored.
+        (
+            "'Validation Error: test_value[0].pri': The value '1' is not unique between all list items as required.",
+            "'Validation Error: test_value[1].pri': The value '1' is not unique between all list items as required.",
+            "'Validation Error: test_value[0].foo': The value '123' is not unique between all list items as required.",
+            "'Validation Error: test_value[1].foo': The value '123' is not unique between all list items as required."
+        )
+    ),  # Collision on both primary_key and unique_keys
+    (None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",)),  # Required is set, so None is not ignored.
     ([], (AvdValidationError,), ("'Validation Error: test_value': The value is shorter (0) than the allowed minimum of 1.",)),  # Valid but below min length.
-    ([{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}, {"pri": 3, "foo": "foo3"}, {"pri": 4, "foo": "foo4"}], (AvdValidationError,), ("'Validation Error: test_value': The value is longer (4) than the allowed maximum of 3.",)),  # Valid but amove max length.
     (
-        "a",
+        [{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}, {"pri": 3, "foo": "foo3"}, {"pri": 4, "foo": "foo4"}],
         (AvdValidationError,),
-        ("'Validation Error: test_value': Invalid type 'str'. Expected a 'list'.",)
-    ),  # Invalid type.
+        ("'Validation Error: test_value': The value is longer (4) than the allowed maximum of 3.",)
+    ),  # Valid but amove max length.
+    ("a", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'list'.",)),  # Invalid type.
 ]
 
 
