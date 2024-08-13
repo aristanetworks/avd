@@ -2,6 +2,7 @@
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
   - name: Port-Channel5
+    type: switched
     description: DC1_L2LEAF1_Po1
     link_tracking_groups:
       - name: EVPN_MH_ES1
@@ -53,6 +54,7 @@ port_channel_interfaces:
         - name: ACL2
       version: 2
   - name: Port-Channel15
+    type: switched
     description: DC1_L2LEAF3_Po1
     link_tracking_groups:
       - name: EVPN_MH_ES2
@@ -66,6 +68,7 @@ port_channel_interfaces:
     spanning_tree_guard: loop
 
   - name: Port-Channel16
+    type: switched
     description: DC1_L2LEAF4_Po1
     snmp_trap_link_change: true
     mlag: 16
@@ -94,6 +97,7 @@ port_channel_interfaces:
         prefer_vlan: 20
 
   - name: Port-Channel3
+    type: switched
     description: MLAG_PEER_DC1-LEAF1B_Po3
     snmp_trap_link_change: false
     shape:
@@ -107,6 +111,7 @@ port_channel_interfaces:
           - MLAG
 
   - name: Port-Channel10
+    type: switched
     description: SRV01_bond0
     switchport:
       mode: trunk
@@ -119,6 +124,7 @@ port_channel_interfaces:
       rate: 50 percent
 
   - name: Port-Channel50
+    type: switched
     description: SRV-POD03_PortChanne1
     switchport:
       mode: trunk
@@ -130,6 +136,7 @@ port_channel_interfaces:
     lacp_id: 0303.0202.0101
 
   - name: Port-Channel51
+    type: switched
     description: ipv6_prefix
     switchport:
       mode: trunk
@@ -296,6 +303,7 @@ port_channel_interfaces:
         vlan: 70
 
   - name: Port-Channel13
+    type: switched
     description: EVPN-Vxlan single-active redundancy
     evpn_ethernet_segment:
       redundancy: single-active
@@ -309,6 +317,7 @@ port_channel_interfaces:
       route_target: "00:00:01:02:03:04"
 
   - name: Port-Channel14
+    type: switched
     description: EVPN-MPLS multihoming
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
@@ -340,6 +349,7 @@ port_channel_interfaces:
           interval: 15
 
   - name: Port-Channel101
+    type: switched
     description: PVLAN Promiscuous Access - only one secondary
     switchport:
       mode: access
@@ -349,6 +359,7 @@ port_channel_interfaces:
       trust: disabled
 
   - name: Port-Channel102
+    type: switched
     description: PVLAN Promiscuous Trunk - vlan translation out
     switchport:
       mode: trunk
@@ -356,6 +367,7 @@ port_channel_interfaces:
         allowed_vlan: 110-112
 
   - name: Port-Channel103
+    type: switched
     description: PVLAN Secondary Trunk
     switchport:
       mode: trunk
@@ -364,6 +376,7 @@ port_channel_interfaces:
         private_vlan_secondary: true
 
   - name: Port-Channel104
+    type: switched
     description: LACP fallback individual
     switchport:
       mode: trunk
@@ -373,26 +386,31 @@ port_channel_interfaces:
     lacp_fallback_mode: individual
 
   - name: Port-Channel105
+    type: switched
     description: bpdu disabled
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
 
   - name: Port-Channel106
+    type: switched
     description: bpdu enabled
     spanning_tree_bpduguard: enabled
     spanning_tree_bpdufilter: enabled
 
   - name: Port-Channel107
+    type: switched
     description: bpdu true
     spanning_tree_bpduguard: true
     spanning_tree_bpdufilter: true
 
   - name: Port-Channel108
+    type: switched
     description: bpdu false
     spanning_tree_bpduguard: false # No config should be rendered for this case
     spanning_tree_bpdufilter: false # No config should be rendered for this case
 
   - name: Port-Channel109
+    type: switched
     description: Molecule ACLs
     switchport:
       mode: access
@@ -486,6 +504,7 @@ port_channel_interfaces:
     lacp_id: 0303.0202.0101
 
   - name: Port-Channel112
+    type: switched
     description: LACP fallback individual
     switchport:
       mode: trunk
@@ -514,6 +533,7 @@ port_channel_interfaces:
         interface: false
 
   - name: Port-Channel115
+    type: switched
     description: native-vlan-tag-precedence
     switchport:
       trunk:
@@ -566,6 +586,7 @@ port_channel_interfaces:
       mode: trunk
 
   - name: Port-Channel130
+    type: switched
     description: IP NAT Testing
     ip_nat:
       destination:
@@ -738,6 +759,7 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet11/2
+    type: switched
     description: LAG Member LACP fallback LLDP ZTP VLAN
     channel_group:
       id: 112

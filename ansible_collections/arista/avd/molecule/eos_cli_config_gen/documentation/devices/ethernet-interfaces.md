@@ -87,21 +87,7 @@ sFlow is disabled.
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1 | dot1q-tunnel | 110-111,200,210-211 | tag | ['g1', 'g2'] | - |
-| Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2 | trunk | - | 5 | - | - |
-| Ethernet4 |  Molecule IPv6 | - | - | - | - | - |
-| Ethernet5 |  Molecule Routing | - | 220 | - | - | - |
-| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 |  Molecule L2 | - | - | - | - | - |
-| Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
-| Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
-| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
-| Ethernet16 |  PVLAN Promiscuous Trunk | trunk | 110-112 | - | - | - |
-| Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
-| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
 | Ethernet21 |  200MBit/s shape | - | - | - | - | - |
 | Ethernet22 |  10% shape | - | - | - | - | - |
 | Ethernet23 |  Error-correction encoding | - | - | - | - | - |
@@ -126,7 +112,6 @@ sFlow is disabled.
 | Ethernet43 |  DOT1X Testing - timeout values | - | - | - | - | - |
 | Ethernet44 |  DOT1X Testing - reauthorization_request_limit | - | - | - | - | - |
 | Ethernet45 |  DOT1X Testing - all features | - | - | - | - | - |
-| Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | - | - | - | - | - |
 | Ethernet50 |  SFlow Interface Testing - SFlow ingress enabled | - | - | - | - | - |
 | Ethernet51 |  SFlow Interface Testing - SFlow egress enabled | - | - | - | - | - |
@@ -137,8 +122,6 @@ sFlow is disabled.
 | Ethernet57 |  Interface with poe commands and limit in watts | - | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | - | - | - | - | - |
 | Ethernet60 |  IP NAT Testing | - | - | - | - | - |
-| Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet67 |  Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet68 |  Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 |  IP NAT service-profile | - | - | - | - | - |
@@ -236,8 +219,8 @@ sFlow is disabled.
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | switched | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | switched | - | 172.31.128.1/31 | default | 1500 | - | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | - | 172.31.128.1/31 | default | 1500 | - | - | - |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
@@ -309,8 +292,8 @@ sFlow is disabled.
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | switched | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | switched | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
 | Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
 | Ethernet65 | Multiple VRIDs | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
@@ -379,7 +362,6 @@ interface Ethernet1
    l2 mtu 8000
    l2 mru 8000
    bgp session tracker ST1
-   switchport
    switchport access vlan 200
    switchport trunk native vlan tag
    switchport phone vlan 110
@@ -440,7 +422,6 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
-   switchport
    switchport vlan translation in required
    switchport dot1q vlan tag disallowed
    switchport trunk allowed vlan 110-111,210-211
@@ -464,7 +445,6 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    switchport mode trunk
-   switchport
    switchport trunk native vlan 5
    switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
@@ -490,7 +470,6 @@ interface Ethernet4
    description Molecule IPv6
    shutdown
    mtu 9100
-   switchport
    snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
@@ -513,7 +492,6 @@ interface Ethernet5
    description Molecule Routing
    no shutdown
    mtu 9100
-   switchport
    switchport access vlan 220
    ip ospf cost 99
    ip ospf network point-to-point
@@ -544,7 +522,6 @@ interface Ethernet6
    logging event congestion-drops
    logging event spanning-tree
    logging event storm-control discards
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    spanning-tree bpduguard enable
@@ -608,14 +585,12 @@ interface Ethernet10
 !
 interface Ethernet11
    description interface_in_mode_access_accepting_tagged_LACP
-   switchport
    switchport access vlan 200
    switchport mode access
    l2-protocol encapsulation dot1q vlan 200
 !
 interface Ethernet12
    description interface_with_dot1q_tunnel
-   switchport
    switchport access vlan 300
    switchport mode dot1q-tunnel
 !
@@ -625,7 +600,6 @@ interface Ethernet13
    no logging event congestion-drops
    no logging event spanning-tree
    no logging event storm-control discards
-   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
@@ -634,26 +608,22 @@ interface Ethernet13
 interface Ethernet14
    description SRV-POD02_Eth1
    logging event link-status
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
-   switchport
    switchport access vlan 110
    switchport mode access
    switchport pvlan mapping 111
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk
-   switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
-   switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport trunk private-vlan secondary
@@ -667,7 +637,6 @@ interface Ethernet18
 !
 interface Ethernet19
    description Switched port with no LLDP rx/tx
-   switchport
    switchport access vlan 110
    switchport mode access
    no lldp transmit
@@ -871,7 +840,6 @@ interface Ethernet45
 !
 interface Ethernet46
    description native-vlan-tag-precedence
-   switchport
    switchport trunk native vlan tag
    switchport mode trunk
 !
@@ -991,7 +959,6 @@ interface Ethernet61
    no logging event congestion-drops
    no logging event spanning-tree
    no logging event storm-control discards
-   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
@@ -1003,7 +970,6 @@ interface Ethernet62
    no logging event congestion-drops
    no logging event spanning-tree
    no logging event storm-control discards
-   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone

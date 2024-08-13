@@ -10,7 +10,6 @@ ethernet_interfaces:
     mtu: 1500
     l2_mtu: 8000
     l2_mru: 8000
-    type: switched
     ip_address: 172.31.255.1/31
     link_tracking_groups:
       - name: EVPN_MH_ES1
@@ -188,7 +187,6 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
     mtu: 1500
-    type: switched
     ip_address: 172.31.128.1/31
     snmp_trap_link_change: false
     link_tracking_groups:
@@ -236,7 +234,6 @@ ethernet_interfaces:
         interface: Ethernet4
 
   - name: Ethernet4
-    type: switched
     description: Molecule IPv6
     shutdown: true
     mtu: 9100
@@ -274,7 +271,6 @@ ethernet_interfaces:
     description: Molecule Routing
     shutdown: false
     mtu: 9100
-    type: switched
     ospf_network_point_to_point: true
     ospf_area: 100
     ospf_cost: 99
@@ -309,7 +305,6 @@ ethernet_interfaces:
       access_vlan: 220
 
   - name: Ethernet6
-    type: switched
     logging:
       event:
         link_status: true
@@ -376,6 +371,7 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: false
+
   - name: Ethernet8.101
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     type: l3dot1q
@@ -411,7 +407,6 @@ ethernet_interfaces:
 
   - name: Ethernet11
     description: interface_in_mode_access_accepting_tagged_LACP
-    type: switched
     # test for switchport access mode
     switchport:
       mode: access
@@ -423,7 +418,6 @@ ethernet_interfaces:
 
   - name: Ethernet12
     description: interface_with_dot1q_tunnel
-    type: switched
     # test for switchport dot1q-tunnel mode
     switchport:
       mode: dot1q-tunnel
@@ -437,7 +431,6 @@ ethernet_interfaces:
         spanning_tree: false
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
-    type: switched
     # test for switchport trunk-phone mode
     switchport:
       trunk:
@@ -511,6 +504,7 @@ ethernet_interfaces:
       receive: false
 
   - name: Ethernet21
+    type: switched
     description: 200MBit/s shape
     qos:
       trust: disabled
@@ -518,34 +512,40 @@ ethernet_interfaces:
       rate: "200000 kbps"
 
   - name: Ethernet22
+    type: switched
     description: 10% shape
     shape:
       rate: "10 percent"
 
   - name: Ethernet23
+    type: switched
     description: Error-correction encoding
     error_correction_encoding:
       fire_code: true
       reed_solomon: true
 
   - name: Ethernet24
+    type: switched
     description: Disable error-correction encoding
     error_correction_encoding:
       enabled: false
 
   - name: Ethernet25
+    type: switched
     description: Molecule MAC
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
 
   - name: Ethernet26
     type: routed
+
   - name: Ethernet26.1
     type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
       client:
         unmatched: true
+
   - name: Ethernet26.100
     type: l2dot1q
     description: TENANT_A pseudowire 1 interface
@@ -555,6 +555,7 @@ ethernet_interfaces:
           vlan: 100
       network:
         client: true
+
   - name: Ethernet26.200
     type: l2dot1q
     description: TENANT_A pseudowire 2 interface
@@ -562,6 +563,7 @@ ethernet_interfaces:
       client:
         dot1q:
           vlan: 200
+
   - name: Ethernet26.300
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
@@ -572,6 +574,7 @@ ethernet_interfaces:
       network:
         dot1q:
           vlan: 400
+
   - name: Ethernet26.400
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
@@ -584,6 +587,7 @@ ethernet_interfaces:
         dot1q:
           outer: 401
           inner: 21
+
   - name: Ethernet26.500
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
@@ -596,6 +600,7 @@ ethernet_interfaces:
         client: true
 
   - name: Ethernet27
+    type: switched
     description: EVPN-Vxlan single-active redundancy
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0304"
@@ -609,6 +614,7 @@ ethernet_interfaces:
         candidate_reachability_required: true
 
   - name: Ethernet28
+    type: switched
     description: EVPN-MPLS multihoming
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
@@ -618,35 +624,41 @@ ethernet_interfaces:
         tunnel_flood_filter_time: 100
 
   - name: Ethernet29
+    type: switched
     description: DOT1X Testing - auto phone true
     dot1x:
       port_control: auto
       port_control_force_authorized_phone: true
 
   - name: Ethernet30
+    type: switched
     description: DOT1X Testing - force-authorized phone false
     dot1x:
       port_control: force-authorized
       port_control_force_authorized_phone: false
 
   - name: Ethernet31
+    type: switched
     description: DOT1X Testing - force-unauthorized - no phone
     dot1x:
       port_control: force-unauthorized
 
   - name: Ethernet32
+    type: switched
     description: DOT1X Testing - auto reauthentication
     dot1x:
       port_control: auto
       reauthentication: true
 
   - name: Ethernet33
+    type: switched
     description: DOT1X Testing - pae mode authenticator
     dot1x:
       pae:
         mode: authenticator
 
   - name: Ethernet34
+    type: switched
     description: DOT1X Testing - authentication_failure allow
     dot1x:
       authentication_failure:
@@ -654,24 +666,28 @@ ethernet_interfaces:
         allow_vlan: 800
 
   - name: Ethernet35
+    type: switched
     description: DOT1X Testing - authentication_failure drop
     dot1x:
       authentication_failure:
         action: drop
 
   - name: Ethernet36
+    type: switched
     description: DOT1X Testing - host-mode single-host
     dot1x:
       host_mode:
         mode: single-host
 
   - name: Ethernet37
+    type: switched
     description: DOT1X Testing - host-mode multi-host
     dot1x:
       host_mode:
         mode: multi-host
 
   - name: Ethernet38
+    type: switched
     description: DOT1X Testing - host-mode multi-host authenticated
     dot1x:
       host_mode:
@@ -679,6 +695,7 @@ ethernet_interfaces:
         multi_host_authenticated: true
 
   - name: Ethernet39
+    type: switched
     description: DOT1X Testing - mac_based_authentication host-mode common true
     dot1x:
       mac_based_authentication:
@@ -686,6 +703,7 @@ ethernet_interfaces:
         host_mode_common: true
 
   - name: Ethernet40
+    type: switched
     description: DOT1X Testing - mac_based_authentication always
     dot1x:
       mac_based_authentication:
@@ -693,6 +711,7 @@ ethernet_interfaces:
         always: true
 
   - name: Ethernet41
+    type: switched
     description: DOT1X Testing - mac_based_authentication always and host-mode common
     dot1x:
       mac_based_authentication:
@@ -701,12 +720,14 @@ ethernet_interfaces:
         host_mode_common: true
 
   - name: Ethernet42
+    type: switched
     description: DOT1X Testing - mac_based_authentication
     dot1x:
       mac_based_authentication:
         enabled: true
 
   - name: Ethernet43
+    type: switched
     description: DOT1X Testing - timeout values
     dot1x:
       timeout:
@@ -717,6 +738,7 @@ ethernet_interfaces:
         tx_period: 6
 
   - name: Ethernet44
+    type: switched
     description: DOT1X Testing - reauthorization_request_limit
     dot1x:
       reauthorization_request_limit: 3
@@ -724,6 +746,7 @@ ethernet_interfaces:
         disabled: true
 
   - name: Ethernet45
+    type: switched
     description: DOT1X Testing - all features
     dot1x:
       port_control: auto
@@ -782,17 +805,20 @@ ethernet_interfaces:
     load_interval: 5
 
   - name: Ethernet50
+    type: switched
     description: SFlow Interface Testing - SFlow ingress enabled
     sflow:
       enable: true
 
   - name: Ethernet51
+    type: switched
     description: SFlow Interface Testing - SFlow egress enabled
     sflow:
       egress:
         enable: true
 
   - name: Ethernet52
+    type: switched
     description: SFlow Interface Testing - SFlow ingress and egress unmodified enabled
     sflow:
       enable: true
@@ -800,6 +826,7 @@ ethernet_interfaces:
         unmodified_enable: true
 
   - name: Ethernet53
+    type: switched
     description: SFlow Interface Testing - SFlow ingress and egress disabled
     sflow:
       enable: false
@@ -807,6 +834,7 @@ ethernet_interfaces:
         enable: false
 
   - name: Ethernet54
+    type: switched
     description: SFlow Interface Testing - SFlow ingress and egress unmodified disabled
     sflow:
       enable: false
@@ -827,6 +855,7 @@ ethernet_interfaces:
         local_interface: Loopback55
 
   - name: Ethernet56
+    type: switched
     description: Interface with poe commands and limit in class
     poe:
       priority: low
@@ -843,6 +872,7 @@ ethernet_interfaces:
       negotiation_lldp: false
 
   - name: Ethernet57
+    type: switched
     description: Interface with poe commands and limit in watts
     poe:
       disabled: false
@@ -860,11 +890,13 @@ ethernet_interfaces:
       negotiation_lldp: true
 
   - name: Ethernet58
+    type: switched
     description: Interface with poe disabled and no other poe keys
     poe:
       disabled: true
 
   - name: Ethernet60
+    type: switched
     description: IP NAT Testing
     ip_nat:
       destination:
@@ -1010,7 +1042,6 @@ ethernet_interfaces:
         spanning_tree: false
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
-    type: switched
     switchport:
       trunk:
         native_vlan: 100
@@ -1027,7 +1058,6 @@ ethernet_interfaces:
         spanning_tree: false
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
-    type: switched
     switchport:
       trunk:
         native_vlan: 100
@@ -1050,6 +1080,7 @@ ethernet_interfaces:
     dhcp_server_ipv6: true
 
   - name: Ethernet69
+    type: switched
     description: IP NAT service-profile
     ip_nat:
       service_profile: TEST-NAT-PROFILE
@@ -1128,11 +1159,14 @@ ethernet_interfaces:
           version: 3
 # Transceiver Frequency
   - name: Ethernet67
+    type: switched
     description: Custom_Transceiver_Frequency
     shutdown: false
     transceiver:
       frequency: 190050
+
   - name: Ethernet68
+    type: switched
     description: Custom_Transceiver_Frequency
     shutdown: false
     transceiver:

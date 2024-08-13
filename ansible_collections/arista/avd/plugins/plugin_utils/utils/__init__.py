@@ -15,9 +15,9 @@ from .yaml_loader import YamlLoader
 
 # TODO: AVD5.0.0 Some utils are exposed in custom modules code, so we will need to keep it here until 5.0
 try:
-    from pyavd._utils import get, template, template_var
+    from pyavd._utils import default, get, template, template_var
 except ImportError as e:
-    get = template = template_var = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
+    default = get = template = template_var = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
 
 __all__ = [
     "compile_searchpath",
@@ -31,6 +31,7 @@ __all__ = [
     "cprofile",
     "YamlDumper",
     "YamlLoader",
+    "default",
     "get",
     "template",
     "template_var",
