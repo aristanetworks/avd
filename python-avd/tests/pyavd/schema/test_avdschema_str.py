@@ -1,22 +1,16 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import re
-import sys
-import warnings
-from importlib import import_module
 from pathlib import Path
 from sys import path
-from typing import Generator
-from unittest import mock
 
 import pytest
 
 # Override global path to load schema from source instead of any installed version.
 path.insert(0, str(Path(__file__).parents[3]))
 
-from pyavd._schema.avdschema import AvdSchema
 from pyavd._errors import AvdValidationError
+from pyavd._schema.avdschema import AvdSchema
 
 # TODO:
 # - Test dynamic valid values.
@@ -49,7 +43,14 @@ TESTS = [
     ("foo", None, None),  # Valid value. No errors.
     ("FoO", None, None),  # Lowered to "foo" which is valid.
     (True, None, None),  # True is converted and lowered to "true" which is valid.
-    (False, (AvdValidationError,), ("'Validation Error: test_value': 'false' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']", "'Validation Error: test_value': The value is longer (5) than the allowed maximum of 4.")),  # False is converted and lowered to "false" which is not valid.
+    (
+        False,
+        (AvdValidationError,),
+        (
+            "'Validation Error: test_value': 'false' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']",
+            "'Validation Error: test_value': The value is longer (5) than the allowed maximum of 4.",
+        ),
+    ),  # False is converted and lowered to "false" which is not valid.
     (42, None, None),  # Converted to "42". No errors.
     (1.000, None, None),  # Converted to "1.0". No errors.
     (
@@ -57,26 +58,25 @@ TESTS = [
         (AvdValidationError,),
         ("'Validation Error: ': Required key 'test_value' is not set in dict.",),
     ),  # Required is set, so None is not ignored.
-    ([], (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'str'.", )),  # Invalid type.
-    (
-        "a",
-        (AvdValidationError,),
-        ("'Validation Error: test_value': The value is shorter (1) than the allowed minimum of 2.",)
-    ),  # Valid but below min length.
+    ([], (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'str'.",)),  # Invalid type.
+    ("a", (AvdValidationError,), ("'Validation Error: test_value': The value is shorter (1) than the allowed minimum of 2.",)),  # Valid but below min length.
     (
         "baaar",
         (AvdValidationError,),
-        ("'Validation Error: test_value': The value is longer (5) than the allowed maximum of 4.",)
+        ("'Validation Error: test_value': The value is longer (5) than the allowed maximum of 4.",),
     ),  # Valid but below min length.
     (
         22,
         (AvdValidationError,),
-        ("'Validation Error: test_value': '22' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']", "'Validation Error: test_value': The value '22' is not matching the pattern '[abf14t].*'."),
+        (
+            "'Validation Error: test_value': '22' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']",
+            "'Validation Error: test_value': The value '22' is not matching the pattern '[abf14t].*'.",
+        ),
     ),  # Converted to "22" which is not valid.
     (
         "zoo",
         (AvdValidationError,),
-        ("'Validation Error: test_value': The value 'zoo' is not matching the pattern '[abf14t].*'.",)
+        ("'Validation Error: test_value': The value 'zoo' is not matching the pattern '[abf14t].*'.",),
     ),  # Valid value but does not match pattern.
 ]
 
@@ -88,7 +88,7 @@ def avd_schema() -> AvdSchema:
 
 @pytest.mark.parametrize(("test_value", "expected_errors", "expected_error_messages"), TESTS)
 def test_generated_schema(test_value, expected_errors: tuple | None, expected_error_messages: tuple | None, avd_schema: AvdSchema):
-    instance ={"test_value": test_value}
+    instance = {"test_value": test_value}
     list(avd_schema.convert(instance))
     validation_errors = list(avd_schema.validate(instance))
     if expected_errors:
