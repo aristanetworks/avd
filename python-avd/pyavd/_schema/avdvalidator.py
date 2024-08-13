@@ -14,7 +14,7 @@ class AvdValidator:
     def __init__(self, schema: dict) -> None:
         self.schema = schema
         self.validators = {
-            "type": self.type_validator,
+            # Note type_validator is not included here since we first check that before spending energy on the rest
             "max": self.max_validator,
             "min": self.min_validator,
             "max_length": self.max_length_validator,
@@ -36,6 +36,12 @@ class AvdValidator:
         if path is None:
             path = []
 
+        type_errors = list(self.type_validator(schema["type"], instance, schema, path))
+        if type_errors:
+            yield from (type_error for type_error in type_errors)
+            # Skip further validation since the type is wrong.
+            return
+
         for schema_key, schema_value in schema.items():
             if (validator := self.validators.get(schema_key)) is None or schema_value is None:
                 continue
@@ -49,10 +55,7 @@ class AvdValidator:
             )
 
     def unique_keys_validator(self, unique_keys: list[str], instance: list, _schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(unique_keys, "list"):
-            return
-
-        if not self.is_type(instance, "list") or not instance:
+        if not instance:
             return
 
         if not all(self.is_type(element, "dict") for element in instance):
@@ -78,10 +81,7 @@ class AvdValidator:
                     )
 
     def primary_key_validator(self, primary_key: str, instance: list, schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(primary_key, "str"):
-            return
-
-        if not self.is_type(instance, "list") or not instance:
+        if not instance:
             return
 
         if not all(self.is_type(element, "dict") for element in instance):
@@ -105,9 +105,6 @@ class AvdValidator:
         - Validate "required" under child keys
         - Expand "dynamic_valid_values" under child keys (don't perform validation).
         """
-        if not self.is_type(instance, "dict"):
-            return
-
         # Compile schema_dynamic_keys and add to "dynamic_keys"
         schema_dynamic_keys = schema.get("dynamic_keys", {})
         dynamic_keys = {}
@@ -153,9 +150,6 @@ class AvdValidator:
             yield from self.keys_validator({}, instance, schema, path=path)
 
     def items_validator(self, items: dict, instance: list, _schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(instance, "list"):
-            return
-
         for index, item in enumerate(instance):
             yield from self.validate(item, items, path=[*path, index])
 
@@ -164,45 +158,27 @@ class AvdValidator:
         raise NotImplementedError(msg)
 
     def max_validator(self, schema_max: int, instance: int, _schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(instance, "int"):
-            return
-
         if instance > schema_max:
             yield AvdValidationError(f"'{instance}' is higher than the allowed maximum of {schema_max}.", path=path)
 
     def min_validator(self, schema_min: int, instance: int, _schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(instance, "int"):
-            return
-
         if instance < schema_min:
             yield AvdValidationError(f"'{instance}' is lower than the allowed minimum of {schema_min}.", path=path)
 
     def max_length_validator(self, schema_max_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
-        if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "list")):
-            return
-
         if len(instance) > schema_max_length:
             yield AvdValidationError(f"The value is longer ({len(instance)}) than the allowed maximum of {schema_max_length}.", path=path)
 
     def min_length_validator(self, schema_min_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
-        if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "list")):
-            return
-
         if len(instance) < schema_min_length:
             yield AvdValidationError(f"The value is shorter ({len(instance)}) than the allowed minimum of {schema_min_length}.", path=path)
 
     def valid_values_validator(self, valid_values: list, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
         """This function validates if the instance conforms to the "valid_values"."""
-        if not any(self.is_type(instance, allowed_type) for allowed_type in ("str", "int", "bool")):
-            return
-
         if instance not in valid_values:
             yield AvdValidationError(f"'{instance}' is not one of {valid_values}", path=path)
 
     def format_validator(self, schema_format: str, instance: str, _schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(instance, "str"):
-            return
-
         match schema_format:
             case "ipv4":
                 # TODO: Figure out how to do this efficiently since ipaddress is slow
@@ -230,9 +206,6 @@ class AvdValidator:
                     )
 
     def pattern_validator(self, pattern: str, instance: str, _schema: dict, path: list[str | int]) -> Generator:
-        if not self.is_type(instance, "str"):
-            return
-
         if match(pattern, instance) is None:
             yield AvdValidationError(f"The value '{instance}' is not matching the pattern '{pattern}'.", path=path)
 

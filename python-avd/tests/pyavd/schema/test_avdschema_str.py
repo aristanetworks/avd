@@ -57,7 +57,7 @@ TESTS = [
         (AvdValidationError,),
         ("'Validation Error: ': Required key 'test_value' is not set in dict.",),
     ),  # Required is set, so None is not ignored.
-    ([], (AvdValidationError,), ("'Validation Error: test_value': The value is shorter (0) than the allowed minimum of 2.", "'Validation Error: test_value': Invalid type 'list'. Expected a 'str'.", )),  # Invalid type.
+    ([], (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'str'.", )),  # Invalid type.
     (
         "a",
         (AvdValidationError,),
