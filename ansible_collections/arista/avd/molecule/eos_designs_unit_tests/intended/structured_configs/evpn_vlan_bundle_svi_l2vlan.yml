@@ -177,7 +177,7 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: evpn_vlan_bundle_svi_l2vlan_VTEP
     vxlan:
       udp_port: 4789
