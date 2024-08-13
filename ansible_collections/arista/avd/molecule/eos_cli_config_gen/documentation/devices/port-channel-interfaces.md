@@ -113,7 +113,11 @@ sFlow is disabled.
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet3 | 3 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
+| Ethernet4 | 3 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
+| Ethernet8 | 8 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
 | Ethernet10/10 | 110 | *ISIS_TEST | True | *99 | *point-to-point | *level-2 | *True | *text |
+| Ethernet16 | 16 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -371,9 +375,18 @@ interface Ethernet50
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | text |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
+| Port-Channel3 | EVPN_UNDERLAY | - | - | - | - | - | - | sha | sha |
+| Port-Channel8 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
+| Port-Channel10 | EVPN_UNDERLAY | - | - | - | - | - | - | sha | sha |
+| Port-Channel12 | EVPN_UNDERLAY | - | - | - | - | - | - | sha | - |
+| Port-Channel16 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
+| Port-Channel20 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
+| Port-Channel50 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
+| Port-Channel51 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
+| Port-Channel100 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
+| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | text | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -388,6 +401,9 @@ interface Port-Channel3
    switchport
    no snmp trap link-change
    shape rate 200000 kbps
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 2 rx-disabled
+   isis authentication key 0 password
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
@@ -423,6 +439,11 @@ interface Port-Channel5
 interface Port-Channel8
    description to Dev02 Port-channel 8
    no switchport
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5 level-1
+   isis authentication mode md5 level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
    switchport port-security violation protect
 !
 interface Port-Channel8.101
@@ -448,6 +469,9 @@ interface Port-Channel10
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
    shape rate 50 percent
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 2
+   isis authentication key 0 password
 !
 interface Port-Channel12
    description interface_in_mode_access_with_voice
@@ -455,6 +479,8 @@ interface Port-Channel12
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 5 level-1
    switchport
 !
 interface Port-Channel13
@@ -467,6 +493,13 @@ interface Port-Channel13
       designated-forwarder election hold-time 10
       designated-forwarder election candidate reachability required
       route-target import 00:00:01:02:03:04
+   isis authentication key-id 2 algorithm sha-512 key 0 password
+   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
+   isis authentication key-id 1 algorithm sha-1 key 0 password level-1
+   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
+   isis authentication key-id 5 algorithm sha-1 key 0 password3 level-1
+   isis authentication key-id 1 algorithm sha-1 key 0 password level-2
+   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
 !
 interface Port-Channel14
    description EVPN-MPLS multihoming
@@ -485,6 +518,8 @@ interface Port-Channel15
    mlag 15
    spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
+   isis authentication mode md5 rx-disabled
+   isis authentication key 0 password
 !
 interface Port-Channel16
    description DC1_L2LEAF4_Po1
@@ -499,6 +534,9 @@ interface Port-Channel16
    switchport port-security violation protect log
    switchport port-security mac-address maximum 100
    spanning-tree guard none
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5
+   isis authentication key 0 password
    switchport backup-link Port-Channel100.102 prefer vlan 20
 !
 interface Port-Channel17
@@ -513,6 +551,9 @@ interface Port-Channel20
    switchport mode access
    switchport
    l2-protocol encapsulation dot1q vlan 200
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
@@ -523,6 +564,8 @@ interface Port-Channel50
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
 !
 interface Port-Channel51
    description ipv6_prefix
@@ -536,6 +579,8 @@ interface Port-Channel51
    switchport port-security vlan 3 mac-address maximum 3
    switchport port-security vlan default mac-address maximum 2
    ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile1 algorithm sha-1
 !
 interface Port-Channel99
    description MCAST
@@ -563,6 +608,11 @@ interface Port-Channel100
    switchport trunk group g1
    switchport trunk group g2
    no switchport
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication mode md5 rx-disabled level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
    switchport source-interface tx multicast
    switchport vlan translation 12 20
    switchport vlan translation 23 inner 74 42
