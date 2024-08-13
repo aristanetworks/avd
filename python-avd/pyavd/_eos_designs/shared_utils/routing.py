@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdError, AristaAvdMissingVariableError
-from ..._utils import get
-from ...j2filters import range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import get
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -16,22 +16,21 @@ if TYPE_CHECKING:
 
 class RoutingMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def underlay_routing_protocol(self: SharedUtils) -> str:
         default_underlay_routing_protocol = get(self.node_type_key_data, "default_underlay_routing_protocol", default="ebgp")
-        underlay_routing_protocol = str(get(self.hostvars, "underlay_routing_protocol", default=default_underlay_routing_protocol)).lower()
-        return underlay_routing_protocol
+        return str(get(self.hostvars, "underlay_routing_protocol", default=default_underlay_routing_protocol)).lower()
 
     @cached_property
     def overlay_routing_protocol(self: SharedUtils) -> str:
         default_overlay_routing_protocol = get(self.node_type_key_data, "default_overlay_routing_protocol", default="ebgp")
-        overlay_routing_protocol = str(get(self.hostvars, "overlay_routing_protocol", default=default_overlay_routing_protocol)).lower()
-        return overlay_routing_protocol
+        return str(get(self.hostvars, "overlay_routing_protocol", default=default_overlay_routing_protocol)).lower()
 
     @cached_property
     def overlay_address_families(self: SharedUtils) -> list:
@@ -42,9 +41,7 @@ class RoutingMixin:
 
     @cached_property
     def bgp(self: SharedUtils) -> bool:
-        """
-        Boolean telling if BGP Routing should be configured.
-        """
+        """Boolean telling if BGP Routing should be configured."""
         return (
             self.underlay_router
             and self.uplink_type in ["p2p", "p2p-vrfs", "lan"]
@@ -59,31 +56,23 @@ class RoutingMixin:
 
     @cached_property
     def router_id(self: SharedUtils) -> str | None:
-        """
-        Render IP address for router_id
-        """
+        """Render IP address for router_id."""
         if self.underlay_router:
             return self.ip_addressing.router_id()
         return None
 
     @cached_property
     def ipv6_router_id(self: SharedUtils) -> str | None:
-        """
-        Render IPv6 address for router_id
-        """
+        """Render IPv6 address for router_id."""
         if self.underlay_router and self.underlay_ipv6:
             return self.ip_addressing.ipv6_router_id()
         return None
 
     @cached_property
     def isis_instance_name(self: SharedUtils) -> str | None:
-        if self.underlay_router:
-            if self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
-                if self.mpls_lsr:
-                    default_isis_instance_name = "CORE"
-                else:
-                    default_isis_instance_name = "EVPN_UNDERLAY"
-                return get(self.hostvars, "underlay_isis_instance_name", default=default_isis_instance_name)
+        if self.underlay_router and self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
+            default_isis_instance_name = "CORE" if self.mpls_lsr else "EVPN_UNDERLAY"
+            return get(self.hostvars, "underlay_isis_instance_name", default=default_isis_instance_name)
         return None
 
     @cached_property
@@ -112,10 +101,13 @@ class RoutingMixin:
                     return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
 
                 if self.id is None:
-                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'")
+                    msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
+                    raise AristaAvdMissingVariableError(msg)
                 return bgp_as_range_expanded[self.id - 1]
             except IndexError as exc:
-                raise AristaAvdError(f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device") from exc
+                msg = f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
+                raise AristaAvdError(msg) from exc
+        return None
 
     @cached_property
     def always_configure_ip_routing(self: SharedUtils) -> bool:

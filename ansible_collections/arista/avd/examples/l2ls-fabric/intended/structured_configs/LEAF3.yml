@@ -113,7 +113,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: SPINE1
   peer_interface: Ethernet3
-  peer_type: spine
+  peer_type: l2spine
   description: SPINE1_Ethernet3
   shutdown: false
   type: port-channel-member
@@ -123,7 +123,7 @@ ethernet_interfaces:
 - name: Ethernet2
   peer: SPINE2
   peer_interface: Ethernet3
-  peer_type: spine
+  peer_type: l2spine
   description: SPINE2_Ethernet3
   shutdown: false
   type: port-channel-member

@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import append_if_not_duplicate, default, get
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import append_if_not_duplicate, default, get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -17,18 +18,18 @@ if TYPE_CHECKING:
 class RouterOspfMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_ospf(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        return structured config for router_ospf
+        return structured config for router_ospf.
 
         If we have static_routes in default VRF and not EPVN, and underlay is OSPF
         Then add redistribute static to the underlay OSPF process.
         """
-
         if not self.shared_utils.network_services_l3:
             return None
 
@@ -57,11 +58,12 @@ class RouterOspfMixin(UtilsMixin):
 
                 process_id = default(get(vrf, "ospf.process_id"), vrf.get("vrf_id"))
                 if not process_id:
-                    raise AristaAvdMissingVariableError(f"'ospf.process_id' or 'vrf_id' under vrf '{vrf['name']}")
+                    msg = f"'ospf.process_id' or 'vrf_id' under vrf '{vrf['name']}"
+                    raise AristaAvdMissingVariableError(msg)
 
                 process = {
                     "id": process_id,
-                    "vrf": vrf["name"],
+                    "vrf": vrf["name"] if vrf["name"] != "default" else None,
                     "passive_interface_default": True,
                     "router_id": default(get(vrf, "ospf.router_id"), self.shared_utils.router_id),
                     "no_passive_interfaces": ospf_interfaces,
@@ -87,7 +89,11 @@ class RouterOspfMixin(UtilsMixin):
                 process = {key: value for key, value in process.items() if value is not None}
 
                 append_if_not_duplicate(
-                    list_of_dicts=ospf_processes, primary_key="id", new_dict=process, context="OSPF Processes defined under network services", context_keys="id"
+                    list_of_dicts=ospf_processes,
+                    primary_key="id",
+                    new_dict=process,
+                    context="OSPF Processes defined under network services",
+                    context_keys="id",
                 )
 
         # If we have static_routes in default VRF and not EPVN, and underlay is OSPF

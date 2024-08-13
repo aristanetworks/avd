@@ -1,13 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 import cProfile
 import pstats
 from collections import ChainMap
+from typing import Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
@@ -28,12 +27,12 @@ except ImportError as e:
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
 
@@ -48,7 +47,6 @@ class ActionModule(ActionBase):
         eos_designs_custom_templates = self._task.args.get("eos_designs_custom_templates", [])
         self.dest = self._task.args.get("dest", False)
         template_output = self._task.args.get("template_output", False)
-        conversion_mode = self._task.args.get("conversion_mode")
         validation_mode = self._task.args.get("validation_mode")
 
         hostname = task_vars["inventory_hostname"]
@@ -64,7 +62,8 @@ class ActionModule(ActionBase):
                 try:
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
-                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+                    msg = f"Exception during templating of task_var '{var}'"
+                    raise AnsibleActionFail(msg) from e
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
@@ -74,7 +73,6 @@ class ActionModule(ActionBase):
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_designs",
-            conversion_mode=conversion_mode,
             validation_mode=validation_mode,
             plugin_name="arista.avd.eos_designs",
         )
@@ -84,7 +82,6 @@ class ActionModule(ActionBase):
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_cli_config_gen",
-            conversion_mode=conversion_mode,
             validation_mode=validation_mode,
             plugin_name="arista.avd.eos_cli_config_gen",
         )
@@ -102,7 +99,7 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=str(error)) from error
 
         if result.get("failed"):
-            # Something failed in schema validation or conversion.
+            # Something failed in schema validation.
             return result
 
         # We use ChainMap to avoid copying large amounts of data around, mapping in
@@ -171,10 +168,11 @@ class ActionModule(ActionBase):
 
         return result
 
-    def write_file(self, content, task_vars):
+    def write_file(self, content: str, task_vars: dict) -> dict:
         """
         This function implements the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
-        Reuse task data
+
+        Reuse task data.
         """
         new_task = self._task.copy()
         new_task.args = {

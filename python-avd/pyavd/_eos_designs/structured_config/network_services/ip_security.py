@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get, strip_null_from_data
+from pyavd._utils import get, strip_null_from_data
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class IpSecurityMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ip_security(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        ip_security set based on cv_pathfinder_internet_exit_policies
-        """
-
+        """ip_security set based on cv_pathfinder_internet_exit_policies."""
         if not self._filtered_internet_exit_policies:
             return None
 
@@ -48,7 +47,7 @@ class IpSecurityMixin(UtilsMixin):
                     "ike_lifetime": 24,
                     "encryption": "aes256",
                     "dh_group": 24,
-                }
+                },
             )
             ip_security["sa_policies"].append(
                 {
@@ -59,7 +58,7 @@ class IpSecurityMixin(UtilsMixin):
                         "integrity": "sha256",
                         "encryption": "aes256" if encrypt_traffic else "disabled",
                     },
-                }
+                },
             )
             ip_security["profiles"].append(
                 {
@@ -73,7 +72,7 @@ class IpSecurityMixin(UtilsMixin):
                         "action": "clear",
                     },
                     "connection": "start",
-                }
+                },
             )
 
         return strip_null_from_data(ip_security) or None

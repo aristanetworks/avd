@@ -3,10 +3,15 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+GH_CODE = {
+    "PASS": ":white_check_mark:",  # Github MD code for Emoji checked box
+    "FAIL": ":x:",  # GH MD code for Emoji Fail
+}
 
-def status_render(state_string, rendering):
+
+def status_render(state_string: str, rendering: str) -> str:
     """
-    status_render Convert Text to EMOJI code
+    status_render Convert Text to EMOJI code.
 
     Parameters
     ----------
@@ -15,18 +20,11 @@ def status_render(state_string, rendering):
     rendering : string
         Markdown Flavor to use for Emoji rendering.
 
-    Returns
+    Returns:
     -------
     str
         Value to render in markdown
     """
-    # STATIC EMOJI CODE
-    GH_CODE = {}
-    # Github MD code for Emoji checked box
-    GH_CODE["PASS"] = ":white_check_mark:"
-    # GH MD code for Emoji Fail
-    GH_CODE["FAIL"] = ":x:"
-
     if rendering == "github":
         return GH_CODE[state_string.upper()]
     return state_string

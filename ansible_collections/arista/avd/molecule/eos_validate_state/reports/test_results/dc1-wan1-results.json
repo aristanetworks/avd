@@ -761,6 +761,14 @@
   },
   {
     "name": "dc1-wan1",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
+  },
+  {
+    "name": "dc1-wan1",
     "test": "VerifyUptime",
     "categories": [
       "system"

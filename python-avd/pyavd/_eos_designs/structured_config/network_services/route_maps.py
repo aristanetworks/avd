@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, strip_empties_from_list
+from pyavd._utils import append_if_not_duplicate, strip_empties_from_list
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,13 +17,14 @@ if TYPE_CHECKING:
 class RouteMapsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def route_maps(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for route_maps
+        Return structured config for route_maps.
 
         Contains two parts.
         - Route-maps for tenant bgp peers set_ipv4_next_hop parameter
@@ -45,10 +47,7 @@ class RouteMapsMixin(UtilsMixin):
                         continue
 
                     route_map_name = f"RM-{vrf['name']}-{bgp_peer['ip_address']}-SET-NEXT-HOP-OUT"
-                    if ipv4_next_hop is not None:
-                        set_action = f"ip next-hop {ipv4_next_hop}"
-                    else:
-                        set_action = f"ipv6 next-hop {ipv6_next_hop}"
+                    set_action = f"ip next-hop {ipv4_next_hop}" if ipv4_next_hop is not None else f"ipv6 next-hop {ipv6_next_hop}"
 
                     route_map = {
                         "name": route_map_name,
@@ -85,7 +84,7 @@ class RouteMapsMixin(UtilsMixin):
     @cached_property
     def _route_maps_vrf_default(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Route-maps for EVPN services in VRF "default"
+        Route-maps for EVPN services in VRF "default".
 
         Called from main route_maps function
 
@@ -103,15 +102,16 @@ class RouteMapsMixin(UtilsMixin):
                 self._bgp_underlay_peers_route_map(),
                 self._redistribute_connected_to_bgp_route_map(),
                 self._redistribute_static_to_bgp_route_map(),
-            ]
+            ],
         )
 
         return route_maps or None
 
     def _bgp_mlag_peer_group_route_map(self: AvdStructuredConfigNetworkServices) -> dict:
         """
-        Return dict with one route-map
-        Origin Incomplete for MLAG iBGP learned routes
+        Return dict with one route-map.
+
+        Origin Incomplete for MLAG iBGP learned routes.
 
         TODO: Partially duplicated from mlag. Should be moved to a common class
         """
@@ -123,14 +123,15 @@ class RouteMapsMixin(UtilsMixin):
                     "type": "permit",
                     "set": ["origin incomplete"],
                     "description": "Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
-                }
+                },
             ],
         }
 
     def _connected_to_bgp_vrfs_route_map(self: AvdStructuredConfigNetworkServices) -> dict:
         """
-        Return dict with one route-map
-        Filter MLAG peer subnets for redistribute connected for overlay VRFs
+        Return dict with one route-map.
+
+        Filter MLAG peer subnets for redistribute connected for overlay VRFs.
         """
         return {
             "name": "RM-CONN-2-BGP-VRFS",
@@ -149,9 +150,10 @@ class RouteMapsMixin(UtilsMixin):
 
     def _evpn_export_vrf_default_route_map(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Match the following prefixes to be exported in EVPN for VRF default:
+        Match the following prefixes to be exported in EVPN for VRF default.
+
         * SVI subnets in VRF default
-        * Static routes subnets in VRF default
+        * Static routes subnets in VRF default.
 
         * for WAN routers, all the routes matching the SOO (which includes the two above)
         """
@@ -162,17 +164,17 @@ class RouteMapsMixin(UtilsMixin):
                     "sequence": 10,
                     "type": "permit",
                     "match": ["extcommunity ECL-EVPN-SOO"],
-                }
+                },
             )
         else:
-            # TODO refactor existing behavior to SoO?
+            # TODO: refactor existing behavior to SoO?
             if self._vrf_default_ipv4_subnets:
                 sequence_numbers.append(
                     {
                         "sequence": 10,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                    }
+                    },
                 )
 
             if self._vrf_default_ipv4_static_routes["static_routes"]:
@@ -181,7 +183,7 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 20,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                    }
+                    },
                 )
 
         if not sequence_numbers:
@@ -207,7 +209,7 @@ class RouteMapsMixin(UtilsMixin):
                     "sequence": 10,
                     "type": "deny",
                     "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                }
+                },
             )
 
         if self._vrf_default_ipv4_static_routes["static_routes"]:
@@ -216,7 +218,7 @@ class RouteMapsMixin(UtilsMixin):
                     "sequence": 15,
                     "type": "deny",
                     "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                }
+                },
             )
 
         if not sequence_numbers:
@@ -233,7 +235,7 @@ class RouteMapsMixin(UtilsMixin):
 
     def _redistribute_connected_to_bgp_route_map(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Append network services relevant entries to the route-map used to redistribute connected subnets in BGP
+        Append network services relevant entries to the route-map used to redistribute connected subnets in BGP.
 
         sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
         """
@@ -260,9 +262,7 @@ class RouteMapsMixin(UtilsMixin):
         return {"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers}
 
     def _redistribute_static_to_bgp_route_map(self: AvdStructuredConfigNetworkServices) -> dict | None:
-        """
-        Append network services relevant entries to the route-map used to redistribute static routes to BGP
-        """
+        """Append network services relevant entries to the route-map used to redistribute static routes to BGP."""
         if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
             return None
 
@@ -274,6 +274,6 @@ class RouteMapsMixin(UtilsMixin):
                     "type": "permit",
                     "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
                     "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
-                }
+                },
             ],
         }

@@ -67,7 +67,7 @@ ethernet_interfaces:
 - name: Ethernet41
   peer: SL-LEAF0B
   peer_interface: Ethernet41
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF0B_Ethernet41
   shutdown: false
   type: port-channel-member
@@ -77,7 +77,7 @@ ethernet_interfaces:
 - name: Ethernet42
   peer: SL-LEAF0B
   peer_interface: Ethernet42
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF0B_Ethernet42
   shutdown: false
   type: port-channel-member

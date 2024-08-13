@@ -101,7 +101,7 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.10.1
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: evpn-vtep-with-default-vrf-not-evpn_VTEP
     vxlan:
       udp_port: 4789

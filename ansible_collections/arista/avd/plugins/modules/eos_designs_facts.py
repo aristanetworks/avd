@@ -30,36 +30,17 @@ options:
         This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
-  conversion_mode:
-    description:
-      - Run data conversion in either "error", "warning", "info", "debug", "quiet" or "disabled" mode.
-      - Conversion will perform type conversion of input variables as defined in the schema.
-      - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
-      - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
-      - conversion_mode:disabled means that conversion will not run.
-      - conversion_mode:error will produce error messages and fail the task.
-      - conversion_mode:warning will produce warning messages.
-      - conversion_mode:info will produce regular log messages.
-      - conversion_mode:debug will produce hidden messages viewable with -v.
-      - conversion_mode:quiet will not produce any messages.
-    required: false
-    default: "debug"
-    type: str
-    choices: [ "error", "warning", "info", "debug", "quiet", "disabled" ]
   validation_mode:
     description:
-      - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
+      - Run validation in either "error" or "warning" mode.
       - Validation will validate the input variables according to the schema.
       - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
-      - validation_mode:disabled means that validation will not run.
       - validation_mode:error will produce error messages and fail the task.
       - validation_mode:warning will produce warning messages.
-      - validation_mode:info will produce regular log messages.
-      - validation_mode:debug will produce hidden messages viewable with -v.
     required: false
-    default: "warning"
+    default: "error"
     type: str
-    choices: [ "error", "warning", "info", "debug", "disabled" ]
+    choices: [ "error", "warning" ]
   cprofile_file:
     description:
       - Filename for storing cprofile data used to debug performance issues.

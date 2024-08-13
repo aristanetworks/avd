@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import pytest
+
 from pyavd._utils.password_utils import (
     bgp_decrypt,
     bgp_encrypt,

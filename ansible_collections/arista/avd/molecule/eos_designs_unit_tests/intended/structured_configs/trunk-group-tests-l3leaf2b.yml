@@ -261,7 +261,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: trunk-group-tests-l3leaf2b_VTEP
     vxlan:
       udp_port: 4789

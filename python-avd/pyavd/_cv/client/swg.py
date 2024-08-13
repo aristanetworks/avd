@@ -7,7 +7,7 @@ from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 
-from ..api.arista.swg.v1 import (
+from pyavd._cv.api.arista.swg.v1 import (
     EndpointConfig,
     EndpointConfigServiceStub,
     EndpointConfigSetRequest,
@@ -17,6 +17,7 @@ from ..api.arista.swg.v1 import (
     ServiceName,
     SwgKey,
 )
+
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -32,9 +33,7 @@ ELEMENT_TYPE_MAP = {
 
 
 class SwgMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     swg_api_version: Literal["v1"] = "v1"
 
@@ -46,7 +45,7 @@ class SwgMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> tuple[datetime, EndpointConfig]:
         """
-        Set SWG Endpoints using arista.swg.v1.EndpointStatusService.Set API
+        Set SWG Endpoints using arista.swg.v1.EndpointStatusService.Set API.
 
         Parameters:
             device_id: Unique identifier of the Device - typically serial number.
@@ -62,17 +61,17 @@ class SwgMixin:
             value=EndpointConfig(
                 key=SwgKey(device_id=device_id, service_name=ELEMENT_TYPE_MAP[service]),
                 address=location,
-            )
+            ),
         )
         client = EndpointConfigServiceStub(self._channel)
 
         try:
             LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.time, response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"set_swg_device: Device ID '{device_id}', service '{service}', location '{location}'") or e
+
+        return response.time, response.value
 
     async def wait_for_swg_endpoint_status(
         self: CVClient,
@@ -82,7 +81,7 @@ class SwgMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> EndpointStatus:
         """
-        Subscribe and wait for one SWG Endpoint using arista.swg.v1.EndpointStatusService.Subscribe API
+        Subscribe and wait for one SWG Endpoint using arista.swg.v1.EndpointStatusService.Subscribe API.
 
         Parameters:
             device_id: Unique identifier of the Device - typically serial number.

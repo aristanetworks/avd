@@ -1,10 +1,14 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from typing import TypeVar
+
 from jinja2.runtime import Undefined
 
+T = TypeVar("T")
 
-def default(*values):
+
+def default(*values: list[T]) -> T | None:
     """
     default will test value if defined and is not none.
 
