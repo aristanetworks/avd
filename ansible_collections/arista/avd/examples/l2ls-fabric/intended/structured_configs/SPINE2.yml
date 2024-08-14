@@ -130,7 +130,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: LEAF1
   peer_interface: Ethernet2
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF1_Ethernet2
   shutdown: false
   type: port-channel-member
@@ -140,7 +140,7 @@ ethernet_interfaces:
 - name: Ethernet2
   peer: LEAF2
   peer_interface: Ethernet2
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF2_Ethernet2
   shutdown: false
   type: port-channel-member
@@ -150,7 +150,7 @@ ethernet_interfaces:
 - name: Ethernet3
   peer: LEAF3
   peer_interface: Ethernet2
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3_Ethernet2
   shutdown: false
   type: port-channel-member
@@ -160,7 +160,7 @@ ethernet_interfaces:
 - name: Ethernet4
   peer: LEAF4
   peer_interface: Ethernet2
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF4_Ethernet2
   shutdown: false
   type: port-channel-member

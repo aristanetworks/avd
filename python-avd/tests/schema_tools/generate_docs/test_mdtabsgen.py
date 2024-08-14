@@ -16,9 +16,10 @@ from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 
 @pytest.mark.parametrize("table_name", ["network-services-multicast-settings"])
-def test_get_md_tabs(table_name: str, schema_store, artifacts_path, output_path):
+def test_get_md_tabs(table_name: str, schema_store: dict, artifacts_path: Path, output_path: Path) -> None:
     """
     Loads the schema with the resolved $refs and generated md_tabs.
+
     Write the resulting md_tabs to a file.
     Compare the output with the expected file.
     """
@@ -27,14 +28,14 @@ def test_get_md_tabs(table_name: str, schema_store, artifacts_path, output_path)
     output_file = output_path.joinpath(f"{table_name}.md")
     expected_file = artifacts_path.joinpath(f"expected-{table_name}.md")
 
-    def mocked_create_store():
+    def mocked_create_store() -> dict:
         return schema_store
 
     with patch("schema_tools.metaschema.resolvemodel.create_store", new=mocked_create_store):
         schema = AristaAvdSchema(resolve_schema=True, **raw_schema)
         md_tabs = get_md_tabs(schema, table_name)
 
-    with open(output_file, mode="w", encoding="UTF-8") as file:
+    with Path(output_file).open(mode="w", encoding="UTF-8") as file:
         file.write(md_tabs)
-    with open(expected_file, mode="r", encoding="UTF-8") as file:
+    with Path(expected_file).open(encoding="UTF-8") as file:
         assert md_tabs == file.read()

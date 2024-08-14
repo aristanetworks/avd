@@ -23,7 +23,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: L2ONLY-SPINE1
   peer_interface: Ethernet2
-  peer_type: spine
+  peer_type: l2spine
   description: L2ONLY-SPINE1_Ethernet2
   shutdown: false
   type: port-channel-member
@@ -33,7 +33,7 @@ ethernet_interfaces:
 - name: Ethernet2
   peer: L2ONLY-SPINE2
   peer_interface: Ethernet2
-  peer_type: spine
+  peer_type: l2spine
   description: L2ONLY-SPINE2_Ethernet2
   shutdown: false
   type: port-channel-member

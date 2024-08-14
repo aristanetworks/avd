@@ -33,7 +33,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: ISIS-LEAF1
   peer_interface: Ethernet1
-  peer_type: leaf
+  peer_type: l2leaf
   description: ISIS-LEAF1_Ethernet1
   shutdown: false
   type: port-channel-member
