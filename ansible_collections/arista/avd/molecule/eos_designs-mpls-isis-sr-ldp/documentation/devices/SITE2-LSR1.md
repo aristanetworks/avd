@@ -126,19 +126,19 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | 100.64.48.14/31 | default | 9178 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | 100.64.48.9/31 | default | 9178 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | 100.64.48.12/31 | default | 9178 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | - | 100.64.48.14/31 | default | 9178 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | - | 100.64.48.9/31 | default | 9178 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | - | 100.64.48.12/31 | default | 9178 | False | - | - |
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 

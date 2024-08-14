@@ -231,15 +231,15 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | False | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | False | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | False | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42 | routed | - | 172.31.255.50/31 | default | 1500 | False | - | - |
-| Ethernet5 | CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42 | routed | - | 172.31.255.66/31 | default | 1500 | False | - | - |
-| Ethernet6 | CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42 | routed | - | 172.31.255.82/31 | default | 1500 | False | - | - |
-| Ethernet7 | CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46 | routed | - | 172.31.255.98/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | - | 172.31.255.2/31 | default | 1500 | False | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | - | 172.31.255.18/31 | default | 1500 | False | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | - | 172.31.255.34/31 | default | 1500 | False | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42 | - | 172.31.255.50/31 | default | 1500 | False | - | - |
+| Ethernet5 | CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42 | - | 172.31.255.66/31 | default | 1500 | False | - | - |
+| Ethernet6 | CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42 | - | 172.31.255.82/31 | default | 1500 | False | - | - |
+| Ethernet7 | CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46 | - | 172.31.255.98/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
