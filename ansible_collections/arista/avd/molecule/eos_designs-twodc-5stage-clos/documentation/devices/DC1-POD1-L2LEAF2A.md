@@ -84,6 +84,8 @@ username admin privilege 15 role network-admin secret sha512 <removed>
 
 ### Enable Password
 
+Enable password has been disabled
+
 ## Monitoring
 
 ### SNMP

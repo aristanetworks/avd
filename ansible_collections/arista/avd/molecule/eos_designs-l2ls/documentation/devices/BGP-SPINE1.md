@@ -70,6 +70,8 @@ management api http-commands
 
 ### Enable Password
 
+Enable password has been disabled
+
 ## MLAG
 
 ### MLAG Summary

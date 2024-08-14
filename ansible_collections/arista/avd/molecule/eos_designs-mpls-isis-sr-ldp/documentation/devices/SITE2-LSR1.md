@@ -89,6 +89,8 @@ management api http-commands
 
 ### Enable Password
 
+Enable password has been disabled
+
 ## Spanning Tree
 
 ### Spanning Tree Summary

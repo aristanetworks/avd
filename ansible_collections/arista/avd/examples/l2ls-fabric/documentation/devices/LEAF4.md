@@ -157,6 +157,8 @@ username arista privilege 15 role network-admin nopassword
 
 ### Enable Password
 
+Enable password has been disabled
+
 ### AAA Authentication
 
 #### AAA Authentication Summary
