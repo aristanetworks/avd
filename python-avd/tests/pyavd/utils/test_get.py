@@ -1,11 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 import re
+from collections.abc import Generator
 from contextlib import contextmanager
 
 import pytest
@@ -15,7 +14,7 @@ from pyavd._utils import get
 
 
 @contextmanager
-def does_not_raise():
+def does_not_raise() -> Generator:
     yield
 
 
@@ -94,8 +93,8 @@ GET_DATA = [
 
 
 class TestUtils:
-    @pytest.mark.parametrize("DATA", GET_DATA)
-    def test_get(self, DATA):
-        with DATA["expected_exception"]:
-            res = get(DATA["dictionary"], DATA["key"], DATA["default"], DATA["required"], DATA["org_key"], DATA["separator"])
-            assert res == DATA["expected_result"]
+    @pytest.mark.parametrize("data", GET_DATA)
+    def test_get(self, data: dict) -> None:
+        with data["expected_exception"]:
+            res = get(data["dictionary"], data["key"], data["default"], data["required"], data["org_key"], data["separator"])
+            assert res == data["expected_result"]

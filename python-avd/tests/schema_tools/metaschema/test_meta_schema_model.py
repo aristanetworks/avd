@@ -4,6 +4,7 @@
 import json
 from pathlib import Path
 from sys import path
+from typing import Any
 
 import yaml
 
@@ -18,15 +19,16 @@ raw_schema = create_store()["eos_designs"]
 
 
 class NoAliasDumper(yaml.Dumper):
-    """Dump YAML without generating aliases and anchors for reused ids"""
+    """Dump YAML without generating aliases and anchors for reused ids."""
 
-    def ignore_aliases(self, _):
+    def ignore_aliases(self, _: Any) -> bool:
         return True
 
 
-def test_pydantic_dump_matches_original_yaml():
+def test_pydantic_dump_matches_original_yaml() -> None:
     """
     Loads the schema _without_ resolving the $ref and then dumps the schema again as json.
+
     Then compares the input schema with the dumped schema.
     """
     pydantic_schema = AristaAvdSchema(resolve_schema=False, **raw_schema)

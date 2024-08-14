@@ -4,11 +4,8 @@
 from pyavd import get_device_config, validate_structured_config
 
 
-def test_get_device_config(hostname: str, all_inputs: dict, structured_configs: dict, configs: dict):
-    """
-    Test get_device_config
-    """
-
+def test_get_device_config(hostname: str, all_inputs: dict, structured_configs: dict, configs: dict) -> None:
+    """Test get_device_config."""
     # Loading inputs first and then updating structured config on top.
     # This is how Ansible behaves, so we need this to generate the same configs.
     # The underlying cause is eos_cli_config_gen inputs being set in eos_designs molecule vars,

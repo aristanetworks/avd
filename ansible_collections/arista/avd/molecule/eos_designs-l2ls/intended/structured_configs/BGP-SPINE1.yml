@@ -168,7 +168,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: BGP-LEAF1
   peer_interface: Ethernet1
-  peer_type: leaf
+  peer_type: l2leaf
   description: BGP-LEAF1_Ethernet1
   shutdown: false
   type: port-channel-member
@@ -178,7 +178,7 @@ ethernet_interfaces:
 - name: Ethernet2
   peer: BGP-LEAF2
   peer_interface: Ethernet1
-  peer_type: leaf
+  peer_type: l2leaf
   description: BGP-LEAF2_Ethernet1
   shutdown: false
   type: port-channel-member

@@ -23,4 +23,5 @@ ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:
 - name: Ethernet12
+  type: switched
   description: Interface Created from platform_settings.structured_config
