@@ -357,7 +357,7 @@ vlan 311
 | Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth6 | *- | *- | *- | *- | 12 |
 | Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth8 | *- | *- | *- | *- | 12 |
 | Ethernet20 | CUSTOM_FIREWALL01_E0 | *trunk | *110-111,210-211 | *- | *- | 20 |
-| Ethernet21 |  CUSTOM_ROUTER01_Eth0 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_ROUTER01_Eth0 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

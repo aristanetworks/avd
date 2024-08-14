@@ -10,7 +10,6 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
-    type: switched
     switchport:
       mode: trunk
       trunk:

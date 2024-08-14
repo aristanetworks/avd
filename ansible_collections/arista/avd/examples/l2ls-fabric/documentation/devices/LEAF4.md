@@ -287,7 +287,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | SPINE1_Ethernet4 | *trunk | *10,30 | *- | *- | 1 |
 | Ethernet2 | SPINE2_Ethernet4 | *trunk | *10,30 | *- | *- | 1 |
-| Ethernet3 |  Host2_Eth1 | access | 30 | - | - | - |
+| Ethernet3 | Host2_Eth1 | access | 30 | - | - | - |
 | Ethernet47 | MLAG_PEER_LEAF3_Ethernet47 | *trunk | *- | *- | *['MLAG'] | 47 |
 | Ethernet48 | MLAG_PEER_LEAF3_Ethernet48 | *trunk | *- | *- | *['MLAG'] | 47 |
 

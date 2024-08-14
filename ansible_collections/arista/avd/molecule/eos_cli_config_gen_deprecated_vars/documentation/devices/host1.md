@@ -16,10 +16,6 @@
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  - | access | 100 | - | - | - |
-| Ethernet2 |  - | trunk | 110 | 10 | ['group1', 'group2'] | - |
-| Ethernet3 |  - | trunk phone | - | tag | - | - |
-| Ethernet4 |  - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -51,7 +47,6 @@
 interface Ethernet1
    switchport access vlan 100
    switchport mode access
-   switchport
 !
 interface Ethernet2
    switchport trunk native vlan 10
@@ -59,20 +54,17 @@ interface Ethernet2
    switchport mode trunk
    switchport trunk group group1
    switchport trunk group group2
-   switchport
 !
 interface Ethernet3
    switchport trunk native vlan tag
    switchport phone vlan 20
    switchport phone trunk tagged
    switchport mode trunk phone
-   switchport
 !
 interface Ethernet4
    switchport vlan translation in 23 50
    switchport vlan translation out 25 49
    switchport vlan translation 34 60
-   switchport
    switchport trunk private-vlan secondary
    switchport pvlan mapping 2,3,4
 ```
@@ -85,10 +77,6 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel2 | - | switched | access | 100 | - | - | - | - | - | - |
-| Port-Channel3 | - | switched | trunk | 110 | 10 | ['group1', 'group2'] | - | - | - | - |
-| Port-Channel4 | - | switched | trunk phone | - | tag | - | - | - | - | - |
-| Port-Channel5 | - | switched | - | - | - | - | - | - | - | - |
 
 ##### Private VLAN
 
@@ -109,11 +97,9 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel2
-   switchport
    switchport access vlan 100
 !
 interface Port-Channel3
-   switchport
    switchport trunk allowed vlan 110
    switchport trunk native vlan 10
    switchport mode trunk
@@ -121,14 +107,12 @@ interface Port-Channel3
    switchport trunk group group2
 !
 interface Port-Channel4
-   switchport
    switchport trunk native vlan tag
    switchport phone vlan 20
    switchport phone trunk tagged
    switchport mode trunk phone
 !
 interface Port-Channel5
-   switchport
    switchport trunk private-vlan secondary
    switchport pvlan mapping 2,3,4
    switchport vlan translation in 23 50

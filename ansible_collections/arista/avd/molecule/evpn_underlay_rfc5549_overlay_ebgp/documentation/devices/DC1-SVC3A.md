@@ -413,12 +413,12 @@ vlan 4094
 | Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
-| Ethernet11 |  server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet12 |  server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet13 |  server06_override_profile_Eth1 | access | 210 | - | - | - |
+| Ethernet11 | server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | server06_override_profile_Eth1 | access | 210 | - | - | - |
 | Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 14 |
 | Ethernet15 | server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 |  server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
+| Ethernet16 | server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

@@ -86,7 +86,7 @@ ptp monitor threshold missing-message sync 204 sequence-ids
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
@@ -103,7 +103,6 @@ ptp monitor threshold missing-message sync 204 sequence-ids
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
-   switchport
    switchport trunk allowed vlan 2,14
    switchport mode trunk
    ptp enable
@@ -141,7 +140,7 @@ interface Ethernet6
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | - | trunk | 110,201 | - | - | - | - | 5 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -149,7 +148,6 @@ interface Ethernet6
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
-   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 5

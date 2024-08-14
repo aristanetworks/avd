@@ -101,9 +101,9 @@ address locking
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  Address Locking Interface Testing 1 | - | - | - | - | - |
-| Ethernet2 |  Address Locking Interface Testing 2 | - | - | - | - | - |
-| Ethernet3 |  Address Locking Interface Testing 3 | - | - | - | - | - |
+| Ethernet1 | Address Locking Interface Testing 1 | - | - | - | - | - |
+| Ethernet2 | Address Locking Interface Testing 2 | - | - | - | - | - |
+| Ethernet3 | Address Locking Interface Testing 3 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 

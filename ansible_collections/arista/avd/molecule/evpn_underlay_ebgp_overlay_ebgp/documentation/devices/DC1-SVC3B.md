@@ -430,17 +430,17 @@ vlan 4092
 | Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth2 | *trunk | *110-111,210-211 | *- | *- | 10 |
-| Ethernet11 |  CUSTOM_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet12 |  CUSTOM_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet13 |  CUSTOM_server06_override_profile_Eth2 | access | 210 | - | - | - |
+| Ethernet11 | CUSTOM_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | CUSTOM_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | CUSTOM_server06_override_profile_Eth2 | access | 210 | - | - | - |
 | Ethernet14 | CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
 | Ethernet15 | CUSTOM_server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 |  CUSTOM_server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
+| Ethernet16 | CUSTOM_server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
 | Ethernet17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 17 |
 | Ethernet18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 18 |
 | Ethernet19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 19 |
-| Ethernet20 |  CUSTOM_server13_disabled_interfaces_Eth2 | access | 110 | - | - | - |
-| Ethernet21 |  CUSTOM_server14_explicitly_enabled_interfaces_Eth2 | access | 110 | - | - | - |
+| Ethernet20 | CUSTOM_server13_disabled_interfaces_Eth2 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_server14_explicitly_enabled_interfaces_Eth2 | access | 110 | - | - | - |
 | Ethernet22 | CUSTOM_server15_port_channel_disabled_interfaces_Eth2 | *access | *110 | *- | *- | 22 |
 
 *Inherited from Port-Channel Interface

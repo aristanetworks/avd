@@ -122,7 +122,7 @@ l2-protocol
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  L2PF test | - | - | - | - | - |
+| Ethernet1 | L2PF test | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 

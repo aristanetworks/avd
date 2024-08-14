@@ -248,7 +248,7 @@ vlan 3402
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1-LEAF2A_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
 | Ethernet2 | DC1-LEAF2B_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
-| Ethernet5 |  dc1-leaf2-server1_iLO | access | 11 | - | - | - |
+| Ethernet5 | dc1-leaf2-server1_iLO | access | 11 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

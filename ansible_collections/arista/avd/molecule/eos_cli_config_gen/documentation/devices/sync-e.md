@@ -58,7 +58,7 @@ sync-e
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -82,7 +82,6 @@ sync-e
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
-   switchport
    switchport trunk allowed vlan 2,14
    switchport mode trunk
    sync-e
