@@ -17,4 +17,4 @@ keys:
       warning: true
       removed: true
       remove_in_version: 5.0.0
-      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#
+      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#new-improve-logic-for-bgp-configuration-of-network-services-vrfs
