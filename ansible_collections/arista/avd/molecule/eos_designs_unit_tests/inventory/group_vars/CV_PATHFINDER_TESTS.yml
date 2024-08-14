@@ -478,6 +478,9 @@ tenants:
       - name: NOT-WAN-VRF
         vrf_id: 13
         address_families: []
+        bgp:
+          # Test that we can forcefully configure BGP for this VRF even if not needed by anything.
+          enabled: true
   - name: TenantC
     mac_vrf_vni_base: 1000
     vrfs:

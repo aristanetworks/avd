@@ -175,13 +175,12 @@ class FilteredTenantsMixin:
         There can be various causes for this:
         - The VRF is part of a tenant set under 'always_include_vrfs_in_tenants'
         - 'always_include_vrfs_in_tenants' is set to ['all']
-        - This is a WAN router and the VRF present on the uplink switch.
-          Note that if the attracted VRF does not have a wan_vni configured, the code for interface vxlan1 will raise an error.
+        - This device is using 'p2p-vrfs' as uplink type and the VRF present on the uplink switch.
         """
         if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
             return True
 
-        return self.is_wan_client and vrf["name"] in (self.get_switch_fact("wan_router_uplink_vrfs", required=False) or [])
+        return vrf["name"] in (self.get_switch_fact("uplink_switch_vrfs", required=False) or [])
 
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """

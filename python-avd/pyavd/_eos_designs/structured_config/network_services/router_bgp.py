@@ -132,14 +132,7 @@ class RouterBgpMixin(UtilsMixin):
 
     @cached_property
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServices) -> list | None:
-        """
-        Return structured config for router_bgp.vrfs.
-
-        TODO: Optimize this to allow bgp VRF config without overlays (vtep or mpls)
-        """
-        if not self.shared_utils.overlay_vtep and not self.shared_utils.overlay_ler and not self.shared_utils.new_network_services_bgp_vrf_config:
-            return None
-
+        """Return structured config for router_bgp.vrfs."""
         if not self.shared_utils.network_services_l3:
             return None
 
@@ -147,7 +140,30 @@ class RouterBgpMixin(UtilsMixin):
 
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
+                # If bgp.enabled is set to True, we will always configure the VRF.
+                # If bgp.enabled is set to False, we will never configure the VRF.
+                # Otherwise we will autodetect:
+                #  - if the VRF is part of an overlay we will configure BGP for it.
+                #  - if any BGP peers are configured we will configure BGP for it.
+                #  - if uplink type is p2p_vrfs and the vrf is included in uplink VRFs.
+
+                if (bgp_enabled := get(vrf, "bgp.enabled")) is False:
+                    continue
+
+                vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]
                 vrf_name = vrf["name"]
+                if not any(
+                    [
+                        bgp_enabled,
+                        vrf_address_families,
+                        vrf["bgp_peers"],
+                        (
+                            self.shared_utils.uplink_type == "p2p-vrfs"
+                            and vrf_name in (self.shared_utils.get_switch_fact("uplink_switch_vrfs", required=False) or [])
+                        ),
+                    ]
+                ):
+                    continue
 
                 bgp_vrf = {
                     "name": vrf_name,
@@ -157,14 +173,9 @@ class RouterBgpMixin(UtilsMixin):
                     "struct_cfg": get(vrf, "bgp.structured_config"),
                 }
 
-                if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
+                if vrf_address_families:
                     # For EVPN configs get evpn keys and continue after the elif block below.
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
-                elif self.shared_utils.new_network_services_bgp_vrf_config is False:
-                    # To be non-breaking we only support wide BGP configs when the knob
-                    # `new_network_services_bgp_vrf_config` is set to True. The default is False.
-                    # TODO: AVD 5.0 make True the default behavior.
-                    continue
 
                 if vrf_name != "default":
                     bgp_vrf |= {
