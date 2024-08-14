@@ -11,10 +11,9 @@ keys:
     default: true
     description: |-
       This key was used to generate BGP configuration for network services even when `evpn` is not in the address families for the node as well as the VRF.
-      (`evpn` is the default address family for `l3leaf` but not for `l3spine`).
-      This is now the default behavior so this key can be removed.
+      This is now part of the default behavior so this key has been removed.
     deprecation:
       warning: true
       removed: true
       remove_in_version: 5.0.0
-      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#new-improve-logic-for-bgp-configuration-of-network-services-vrfs
+      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#new-improved-logic-for-bgp-configuration-of-network-services-vrfs
