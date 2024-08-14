@@ -139,8 +139,8 @@
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode | 
-| --------- | ------------- | -------- | ----------- | ---- | ------------------------ | 
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%             if vlan_interface.isis_authentication.both.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = vlan_interface.isis_authentication.both.mode %}
