@@ -50,7 +50,6 @@ interface Management1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_EAPI-LEAF1B_Ethernet3 | *access | *- | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -282,10 +281,16 @@ interface Vlan4094
 | Type | level-2 |
 | Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
-| MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
-| SR MPLS Enabled | True |
+| SR MPLS Enabled | False |
+| SPF Interval | 250 seconds |
+
+#### ISIS Route Redistribution
+
+| Route Type | Route-Map | Include Leaked |
+| ---------- | --------- | -------------- |
+| bgp | RM-BGP | - |
 
 #### ISIS Interfaces Summary
 
@@ -304,12 +309,34 @@ interface Vlan4094
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
 
+#### Prefix Segments
+
+| Prefix Segment | Index |
+| -------------- | ----- |
+| 155.2.1.19/32 | 2121 |
+
 #### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
-| Maximum-paths | 2 |
+| TI-LFA Mode | node-protection |
+| TI-LFA Level | level-2 |
+| TI-LFA SRLG Enabled | True |
+
+#### Tunnel Source
+
+| Source Protocol | RCF |
+| --------------- | --- |
+| BGP Labeled-Unicast | - |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| BFD All-interfaces | True |
+| TI-LFA SRLG Enabled | True |
 
 #### Router ISIS Device Configuration
 
@@ -318,19 +345,29 @@ interface Vlan4094
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
+   redistribute bgp route-map RM-BGP
    router-id ipv4 192.168.255.3
    log-adjacency-changes
-   mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
+   set-overload-bit on-startup wait-for-bgp
    advertise passive-only
-   authentication mode sha key-id 4
+   spf-interval 250
+   authentication mode sha key-id 5 rx-disabled level-1
+   authentication mode shared-secret profile test2 algorithm md5 rx-disabled level-2
    authentication key 0 password
    !
    address-family ipv4 unicast
-      maximum-paths 2
+      tunnel source-protocol bgp ipv4 labeled-unicast
+      fast-reroute ti-lfa mode node-protection level-2
+      fast-reroute ti-lfa srlg
+   !
+   address-family ipv6 unicast
+      bfd all-interfaces
+      fast-reroute ti-lfa srlg
    !
    segment-routing mpls
-      no shutdown
+      shutdown
+      prefix-segment 155.2.1.19/32 index 2121
    address-family ipv6 unicast
      multi-topology
    traffic-engineering

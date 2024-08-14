@@ -201,7 +201,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: CUSTOM-PYTHON_MODULES-SPINE1
   peer_interface: Ethernet2
-  peer_type: spine
+  peer_type: custom_spine
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
@@ -253,7 +253,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: CUSTOM-PYTHON_MODULES-L3LEAF1B_VTEP
     vxlan:
       udp_port: 4789

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._utils import append_if_not_duplicate
+from pyavd._utils import append_if_not_duplicate, get_ip_from_ip_prefix
 
 from .utils import UtilsMixin
 
@@ -48,7 +48,7 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
                 primary_key="name",
                 new_dict={
                     "name": vrf,
-                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
+                    "ip_address": get_ip_from_ip_prefix(loopback_interface["ip_address"]),
                 },
                 context="virtual_source_nat_vrfs",
                 context_keys=["name"],

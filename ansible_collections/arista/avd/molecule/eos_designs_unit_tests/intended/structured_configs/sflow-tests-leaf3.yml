@@ -373,7 +373,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:11:22:33:44:55
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: sflow-tests-leaf3_VTEP
     vxlan:
       udp_port: 4789

@@ -377,7 +377,7 @@ vrfs:
   tenant: Tenant_C
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management99
   description: oob_management
   shutdown: false
   vrf: MGMT
@@ -660,7 +660,7 @@ router_ospf:
       connected:
         route_map: RM_TEST
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-BL1A_VTEP
     vxlan:
       udp_port: 4789
@@ -699,4 +699,4 @@ sflow:
     destinations:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
-    source_interface: Management1
+    source_interface: Management99

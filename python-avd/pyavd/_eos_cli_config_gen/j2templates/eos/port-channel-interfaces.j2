@@ -61,7 +61,7 @@ interface {{ port_channel_interface.name }}
    encapsulation vlan
       {{ encapsulation_cli }}
 {%         endif %}
-{%     elif port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
+{%     elif port_channel_interface.type is arista.avd.defined("switched") %}
    switchport
 {%     endif %}
 {%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode in ["access", "dot1q-tunnel"] %}
@@ -388,7 +388,7 @@ interface {{ port_channel_interface.name }}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     if port_channel_interface.ipv6_nd_prefixes is arista.avd.defined %}
-{%         for ipv6_nd_prefix in port_channel_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
+{%         for ipv6_nd_prefix in port_channel_interface.ipv6_nd_prefixes %}
 {%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ ipv6_nd_prefix.ipv6_prefix %}
 {%             if ipv6_nd_prefix.valid_lifetime is arista.avd.defined %}
 {%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.valid_lifetime %}
@@ -437,7 +437,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ospf_authentication_key is arista.avd.defined %}
    ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
-{%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}

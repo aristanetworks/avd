@@ -141,7 +141,7 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DUP-LEAF2_VTEP
     vxlan:
       udp_port: 4789

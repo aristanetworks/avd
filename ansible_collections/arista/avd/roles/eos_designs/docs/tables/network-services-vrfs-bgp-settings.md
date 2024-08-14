@@ -438,7 +438,7 @@
             bgp_peers:
 
                 # IPv4_address or IPv6_address.
-              - ip_address: <str; required; unique>
+              - ip_address: <str; required>
 
                 # Peer group name.
                 peer_group: <str>

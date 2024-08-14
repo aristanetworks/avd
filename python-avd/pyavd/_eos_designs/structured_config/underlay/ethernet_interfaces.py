@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._errors import AristaAvdError
 from pyavd._utils import append_if_not_duplicate, get
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import encrypt, natural_sort
 
 from .utils import UtilsMixin
@@ -236,7 +236,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
             # Adding subinterfaces for each SVI after the main interface.
             if link["type"] == "underlay_l2" and self.shared_utils.network_services_l2_as_subint:
-                for ethernet_subinterface in ethernet_subinterfaces:
+                for ethernet_subinterface in ethernet_subinterfaces:  # pylint: disable=used-before-assignment # False positive since condition is the same as above.
                     append_if_not_duplicate(
                         list_of_dicts=ethernet_interfaces,
                         primary_key="name",

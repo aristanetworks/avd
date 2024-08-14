@@ -72,7 +72,6 @@ class Templar:
         # pylint: disable=import-outside-toplevel
         from .j2filters import (
             add_md_toc,
-            convert_dicts,
             decrypt,
             default,
             encrypt,
@@ -92,7 +91,6 @@ class Templar:
         self.environment.filters.update(
             {
                 "arista.avd.add_md_toc": add_md_toc,
-                "arista.avd.convert_dicts": convert_dicts,
                 "arista.avd.decrypt": decrypt,
                 "arista.avd.default": default,
                 "arista.avd.encrypt": encrypt,

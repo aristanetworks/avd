@@ -373,7 +373,7 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.254/24
   vrf: Tenant_A_WEB_Zone
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
       udp_port: 4789

@@ -169,10 +169,8 @@ class TableRowGenBase:
 
     def render_required(self) -> str | None:
         """Render markdown for "required" field."""
-        if self.schema._is_primary_key:
+        if self.schema._is_primary_key or self.schema.required:
             return "Required, Unique" if self.schema._is_unique else "Required"
-        if self.schema.required:
-            return "Required"
         return None
 
     def render_default(self) -> str | None:
