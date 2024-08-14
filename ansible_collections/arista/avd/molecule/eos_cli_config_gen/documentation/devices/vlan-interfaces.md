@@ -185,8 +185,8 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode | 
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ | 
 | Vlan42 | EVPN_UNDERLAY | - | - | - | Level-1: sha |
 | Vlan83 | EVPN_UNDERLAY | - | - | - | md5 |
 | Vlan84 | EVPN_UNDERLAY | - | - | - | sha |
