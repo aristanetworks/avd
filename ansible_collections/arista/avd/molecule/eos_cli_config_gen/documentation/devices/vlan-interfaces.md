@@ -185,20 +185,20 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | --------------------------- | --------------------------- |
-| Vlan42 | EVPN_UNDERLAY | - | - | - | sha | - |
-| Vlan83 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
-| Vlan84 | EVPN_UNDERLAY | - | - | - | sha | sha |
-| Vlan85 | EVPN_UNDERLAY | - | - | - | sha | sha |
-| Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
-| Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
-| Vlan88 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
-| Vlan90 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
-| Vlan91 | EVPN_UNDERLAY | - | - | - | md5 | md5 |
-| Vlan92 | EVPN_UNDERLAY | - | - | - | shared-secret | shared-secret |
-| Vlan2002 | EVPN_UNDERLAY | True | - | - | md5 | md5 |
-| Vlan4094 | EVPN_UNDERLAY | - | - | - | sha | sha |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode | 
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ | 
+| Vlan42 | EVPN_UNDERLAY | - | - | - | Level-1: sha |
+| Vlan83 | EVPN_UNDERLAY | - | - | - | md5 |
+| Vlan84 | EVPN_UNDERLAY | - | - | - | sha |
+| Vlan85 | EVPN_UNDERLAY | - | - | - | sha |
+| Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret |
+| Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret |
+| Vlan88 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Vlan90 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Vlan92 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan2002 | EVPN_UNDERLAY | True | - | - | md5 |
+| Vlan4094 | EVPN_UNDERLAY | - | - | - | Level-1: sha<br>Level-2: sha |
 
 ##### Multicast Routing
 

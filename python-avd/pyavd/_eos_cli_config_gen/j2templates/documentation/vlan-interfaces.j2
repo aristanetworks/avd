@@ -139,11 +139,20 @@
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | --------------------------- | --------------------------- |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode | 
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ | 
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%             set isis_level2_authentication_mode = vlan_interface.isis_authentication.both.mode | arista.avd.default(vlan_interface.isis_authentication.level_2.mode, "-") %}
-{%             set isis_level1_authentication_mode = vlan_interface.isis_authentication.both.mode | arista.avd.default(vlan_interface.isis_authentication.level_1.mode, "-") %}
+{%             if vlan_interface.isis_authentication.both.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = vlan_interface.isis_authentication.both.mode %}
+{%             elif vlan_interface.isis_authentication.level_1.mode is arista.avd.defined and vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = "Level-1: " ~ vlan_interface.isis_authentication.level_1.mode ~ "<br>" ~ "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
+{%             elif vlan_interface.isis_authentication.level_1.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = "Level-1: " ~ vlan_interface.isis_authentication.level_1.mode %}
+{%             elif vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
+{%             else %}
+{%                 set isis_authentication_mode = "-" %}
+{%             endif %}
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
 {%                 if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
@@ -153,7 +162,7 @@
 {%                 else %}
 {%                     set mode = "-" %}
 {%                 endif %}
-| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_level1_authentication_mode }} | {{ isis_level2_authentication_mode }} |
+| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
