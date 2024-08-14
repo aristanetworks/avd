@@ -27,6 +27,7 @@ monitor_connectivity:
       ip: 10.10.10.3
       local_interfaces: HOST_SET
       address_only: false
+    - name: server4
   vrfs:
     - name: red
       description: vrf_connectivity_monitor
@@ -44,7 +45,7 @@ monitor_connectivity:
           url: https://server2.local.com
     - name: blue
       local_interfaces: VRF_GLOBAL_SET
-      address_only: false
+      address_only: true
       interface_sets:
         - name: VRF_GLOBAL_SET
           interfaces: Vlan21-24, Vlan29-32
@@ -53,5 +54,16 @@ monitor_connectivity:
           description: server4_connectivity_monitor
           ip: 10.10.20.1
           address_only: false
-          local_interfaces: VRF_HOST_SET
+          local_interfaces: VRF_GLOBAL_SET
           url: https://server2.local.com
+        - name: server5
+          description: server5_connectivity_monitor
+          ip: 10.10.20.11
+          address_only: true
+          local_interfaces: VRF_GLOBAL_SET
+          url: https://server5.local.com
+        - name: server6
+    - name: yellow
+      address_only: true
+      interface_sets:
+        - name: VRF_GLOBAL_SET

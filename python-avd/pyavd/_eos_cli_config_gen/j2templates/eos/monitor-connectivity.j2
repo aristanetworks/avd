@@ -22,8 +22,7 @@ monitor connectivity
 {%     endfor %}
 {%     if monitor_connectivity.local_interfaces is arista.avd.defined %}
 {%         set local_interfaces_cli = "local-interfaces " ~ monitor_connectivity.local_interfaces %}
-{# In AVD 4.x address_only default is true - TODO reevaluate for AVD 5.0.0 #}
-{%         if monitor_connectivity.address_only | arista.avd.default(true) %}
+{%         if monitor_connectivity.address_only is arista.avd.defined(true) %}
 {%             set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
 {%         endif %}
    {{ local_interfaces_cli }} default
@@ -38,8 +37,7 @@ monitor connectivity
 {%             endif %}
 {%             if host.local_interfaces is arista.avd.defined %}
 {%                 set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
-{# In AVD 4.x address_only default is true - TODO reevaluate for AVD 5.0.0 #}
-{%                 if host.address_only | arista.avd.default(true) %}
+{%                 if host.address_only is arista.avd.defined(true) %}
 {%                     set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
 {%                 endif %}
       {{ local_interfaces_cli }}
@@ -62,8 +60,7 @@ monitor connectivity
 {%             endfor %}
 {%             if vrf.local_interfaces is arista.avd.defined %}
 {%                 set local_interfaces_cli = "local-interfaces " ~ vrf.local_interfaces %}
-{# In AVD 4.x address_only default is true - TODO reevaluate for AVD 5.0.0 #}
-{%                 if vrf.address_only | arista.avd.default(true) %}
+{%                 if vrf.address_only is arista.avd.defined(true) %}
 {%                     set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
 {%                 endif %}
       {{ local_interfaces_cli }} default
@@ -82,8 +79,7 @@ monitor connectivity
 {%                     endif %}
 {%                     if host.local_interfaces is arista.avd.defined %}
 {%                         set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
-{# In AVD 4.x address_only default is true - TODO reevaluate for AVD 5.0.0 #}
-{%                         if host.address_only | arista.avd.default(true) %}
+{%                         if host.address_only is arista.avd.defined(true) %}
 {%                             set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
 {%                         endif %}
          {{ local_interfaces_cli }}
