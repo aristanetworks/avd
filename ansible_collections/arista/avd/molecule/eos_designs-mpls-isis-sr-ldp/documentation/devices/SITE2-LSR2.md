@@ -127,25 +127,25 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | routed | - | 100.64.48.11/31 | default | 9178 | False | - | - |
-| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Ethernet11 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
-| Ethernet14 | P2P_LINK_TO_SITE2-LER1_Ethernet13 | *routed | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
-| Ethernet15 | P2P_LINK_TO_SITE2-LER1_Ethernet14 | *routed | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | - | 100.64.48.11/31 | default | 9178 | False | - | - |
+| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Ethernet11 | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
+| Ethernet14 | P2P_LINK_TO_SITE2-LER1_Ethernet13 | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
+| Ethernet15 | P2P_LINK_TO_SITE2-LER1_Ethernet14 | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Ethernet11 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet14 | P2P_LINK_TO_SITE2-LER1_Ethernet13 | *routed | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet15 | P2P_LINK_TO_SITE2-LER1_Ethernet14 | *routed | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Ethernet11 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet14 | P2P_LINK_TO_SITE2-LER1_Ethernet13 | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet15 | P2P_LINK_TO_SITE2-LER1_Ethernet14 | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -217,15 +217,15 @@ interface Ethernet15
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | routed | - | 100.64.49.1/30 | default | 9178 | False | - | - |
-| Port-Channel110 | P2P_LINK_TO_SITE2-LER1_Port-Channel220 | routed | - | 100.64.49.5/30 | default | 9178 | False | - | - |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | - | 100.64.49.1/30 | default | 9178 | False | - | - |
+| Port-Channel110 | P2P_LINK_TO_SITE2-LER1_Port-Channel220 | - | 100.64.49.5/30 | default | 9178 | False | - | - |
 
 ##### ISIS
 
