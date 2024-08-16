@@ -15566,6 +15566,7 @@ keys:
               keys:
                 address:
                   type: str
+                  required: true
                   description: RP Address.
                 groups:
                   type: list
