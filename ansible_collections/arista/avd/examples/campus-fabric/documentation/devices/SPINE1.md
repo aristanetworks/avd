@@ -322,9 +322,9 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet52/1 | P2P_LINK_TO_WAN_Ethernet1/1 | routed | - | 10.0.0.3/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet52/1 | P2P_LINK_TO_WAN_Ethernet1/1 | - | 10.0.0.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -376,12 +376,12 @@ interface Ethernet56/1
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | IDF1_Po51 | switched | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
-| Port-Channel491 | LEAF2A_Po11 | switched | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
-| Port-Channel501 | IDF3_AGG_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
-| Port-Channel551 | MLAG_PEER_SPINE2_Po551 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | IDF1_Po51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
+| Port-Channel491 | LEAF2A_Po11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
+| Port-Channel501 | IDF3_AGG_Po971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
+| Port-Channel551 | MLAG_PEER_SPINE2_Po551 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

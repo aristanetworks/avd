@@ -179,24 +179,24 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet5.100 | TENANT_B_SITE_3 | l3dot1q | - | 100 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet5.100 | TENANT_B_SITE_3 | - | 100 |
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR2_Ethernet1 | routed | - | 100.64.48.2/31 | default | 9214 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER1_Ethernet2 | routed | - | 100.64.48.5/31 | default | 9178 | False | - | - |
-| Ethernet5.100 | TENANT_B_SITE_3 | l3dot1q | - | 192.168.48.0/31 | TENANT_B_WAN | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_SITE1-LSR2_Ethernet1 | - | 100.64.48.2/31 | default | 9214 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-LER1_Ethernet2 | - | 100.64.48.5/31 | default | 9178 | False | - | - |
+| Ethernet5.100 | TENANT_B_SITE_3 | - | 192.168.48.0/31 | TENANT_B_WAN | - | False | - | - |
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR2_Ethernet1 | routed | - | - | default | 9214 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER1_Ethernet2 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -282,21 +282,21 @@ interface Ethernet8
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel3.1000 | - | l2dot1q | - | False | 1000 | - | - | True | - | - | - |
-| Port-Channel3.1001 | - | l2dot1q | - | False | 1001 | - | - | True | - | - | - |
-| Port-Channel3.1002 | - | l2dot1q | - | False | 1002 | - | - | True | - | - | - |
-| Port-Channel3.1003 | - | l2dot1q | - | False | 1003 | - | - | True | - | - | - |
-| Port-Channel3.1004 | - | l2dot1q | - | False | 1004 | - | - | True | - | - | - |
-| Port-Channel8.111 | - | l2dot1q | 111 | False | 111 | - | - | True | - | - | - |
-| Port-Channel8.222 | - | l2dot1q | 222 | False | 222 | - | - | True | - | - | - |
-| Port-Channel8.333 | - | l2dot1q | 434 | False | 333 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel3.1000 | - | - | False | 1000 | - | - | True | - | - | - |
+| Port-Channel3.1001 | - | - | False | 1001 | - | - | True | - | - | - |
+| Port-Channel3.1002 | - | - | False | 1002 | - | - | True | - | - | - |
+| Port-Channel3.1003 | - | - | False | 1003 | - | - | True | - | - | - |
+| Port-Channel3.1004 | - | - | False | 1004 | - | - | True | - | - | - |
+| Port-Channel8.111 | - | 111 | False | 111 | - | - | True | - | - | - |
+| Port-Channel8.222 | - | 222 | False | 222 | - | - | True | - | - | - |
+| Port-Channel8.333 | - | 434 | False | 333 | - | - | True | - | - | - |
 
 ##### EVPN Multihoming
 

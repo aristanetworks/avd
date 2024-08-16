@@ -177,19 +177,19 @@ vlan internal order ascending range 1006 1199
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet3.10 | C1_L3_SERVICE | l3dot1q | - | 10 |
-| Ethernet3.20 | C2_L3_SERVICE | l3dot1q | - | 20 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet3.10 | C1_L3_SERVICE | - | 10 |
+| Ethernet3.20 | C2_L3_SERVICE | - | 20 |
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_p1_Ethernet1 | routed | - | 10.255.3.0/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_p2_Ethernet2 | routed | - | 10.255.3.2/31 | default | 1500 | False | - | - |
-| Ethernet3.10 | C1_L3_SERVICE | l3dot1q | - | 10.0.1.1/29 | C1_VRF1 | - | False | - | - |
-| Ethernet3.20 | C2_L3_SERVICE | l3dot1q | - | 10.1.1.1/29 | C2_VRF1 | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_p1_Ethernet1 | - | 10.255.3.0/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_p2_Ethernet2 | - | 10.255.3.2/31 | default | 1500 | False | - | - |
+| Ethernet3.10 | C1_L3_SERVICE | - | 10.0.1.1/29 | C1_VRF1 | - | False | - | - |
+| Ethernet3.20 | C2_L3_SERVICE | - | 10.1.1.1/29 | C2_VRF1 | - | False | - | - |
 
 ##### ISIS
 

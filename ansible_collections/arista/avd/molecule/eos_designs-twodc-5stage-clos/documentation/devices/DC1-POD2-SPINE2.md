@@ -171,12 +171,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet4 | routed | - | 172.16.12.3/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet4 | routed | - | 172.16.12.67/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2 | routed | - | 172.17.120.2/31 | default | - | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5 | routed | - | 200.200.200.101/24 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet4 | - | 172.16.12.3/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet4 | - | 172.16.12.67/31 | default | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2 | - | 172.17.120.2/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5 | - | 200.200.200.101/24 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

@@ -1374,10 +1374,10 @@ interface Ethernet54
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel51 | SPINES_Po1 | switched | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
-| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel51 | SPINES_Po1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
+| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

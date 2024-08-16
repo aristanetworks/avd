@@ -171,10 +171,10 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3 | routed | - | 172.17.20.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6 | routed | - | 172.17.20.3/31 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3 | - | 172.17.20.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6 | - | 172.17.20.3/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
