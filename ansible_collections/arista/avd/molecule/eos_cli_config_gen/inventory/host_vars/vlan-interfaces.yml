@@ -137,7 +137,7 @@ vlan_interfaces:
     description: SVI Description
     shutdown: true
     ip_address_virtual: 10.10.87.1/23
-    # Test isis auth both l1l2 md5 rx
+    # Test isis auth both l1l2 md5 text rx
     isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
@@ -148,7 +148,7 @@ vlan_interfaces:
       level_2:
         key_type: 0
         key: password
-        mode: md5
+        mode: text
         rx_disabled: true
 
   - name: Vlan91
@@ -157,7 +157,7 @@ vlan_interfaces:
     service_policy:
       pbr:
         input: MyServicePolicy
-    # Test isis auth l1l2 md5
+    # Test isis auth l1l2 md5 text
     isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
       level_1:
@@ -167,7 +167,7 @@ vlan_interfaces:
       level_2:
         key_type: 0
         key: password
-        mode: md5
+        mode: text
 
   - name: Vlan90
     description: SVI Description
@@ -180,8 +180,8 @@ vlan_interfaces:
       level_1:
         mode: shared-secret
         shared_secret:
-          profile: profile1
-          algorithm: sha-256
+          profile: profile2
+          algorithm: sha-1
       level_2:
         mode: shared-secret
         shared_secret:
@@ -199,8 +199,8 @@ vlan_interfaces:
       level_1:
         mode: shared-secret
         shared_secret:
-          profile: profile1
-          algorithm: sha-256
+          profile: profile2
+          algorithm: sha-1
         rx_disabled: true
       level_2:
         mode: shared-secret
@@ -236,7 +236,7 @@ vlan_interfaces:
       level_2:
         mode: sha
         sha:
-          key_id: 5
+          key_id: 10
         rx_disabled: true
 
 # Helpers on SVI
@@ -363,17 +363,7 @@ vlan_interfaces:
         source_address: a0::6
         link_address: a0::7
       - address: a0::8
-    isis_authentication:
-      level_1:
-        key_type: 0
-        key: password
-        mode: md5
-        rx_disabled: true
-      level_2:
-        key_type: 0
-        key: password
-        mode: text
-        rx_disabled: true
+
   - name: Vlan50
     description: IP NAT Testing
     ip_nat:

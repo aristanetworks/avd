@@ -193,9 +193,9 @@ interface Management1
 | Vlan85 | EVPN_UNDERLAY | - | - | - | sha |
 | Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret |
 | Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret |
-| Vlan88 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Vlan88 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
 | Vlan90 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
-| Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
 | Vlan92 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
 | Vlan2002 | EVPN_UNDERLAY | True | - | - | md5 |
 | Vlan4094 | EVPN_UNDERLAY | - | - | - | Level-1: sha<br>Level-2: sha |
@@ -280,10 +280,6 @@ interface Vlan44
    ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
    ipv6 dhcp relay destination a0::8
    ipv6 address a0::4/64
-   isis authentication mode md5 rx-disabled level-1
-   isis authentication mode text rx-disabled level-2
-   isis authentication key 0 password level-1
-   isis authentication key 0 password level-2
 !
 interface Vlan50
    description IP NAT Testing
@@ -369,7 +365,7 @@ interface Vlan88
    shutdown
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 rx-disabled level-1
-   isis authentication mode md5 rx-disabled level-2
+   isis authentication mode text rx-disabled level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password level-2
    ip address virtual 10.10.87.1/23
@@ -399,7 +395,7 @@ interface Vlan90
    description SVI Description
    ip address 10.10.83.1/24
    isis enable EVPN_UNDERLAY
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 level-1
    isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
    ip attached-host route export
 !
@@ -408,7 +404,7 @@ interface Vlan91
    shutdown
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 level-1
-   isis authentication mode md5 level-2
+   isis authentication mode text level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password level-2
    service-policy type pbr input MyServicePolicy
@@ -419,7 +415,7 @@ interface Vlan92
    ip directed-broadcast
    ip address 10.10.92.1/24
    isis enable EVPN_UNDERLAY
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-1
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
 !
 interface Vlan110
@@ -565,7 +561,7 @@ interface Vlan4094
    pim ipv4 bfd
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 rx-disabled level-1
-   isis authentication mode sha key-id 5 rx-disabled level-2
+   isis authentication mode sha key-id 10 rx-disabled level-2
 ```
 
 ## BFD
