@@ -12,12 +12,11 @@
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.type is arista.avd.defined("switched") %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
-{%             set type = port_channel_interface.type %}
 {%             set mode = port_channel_interface.mode | arista.avd.default("access") %}
 {%             set vlans = port_channel_interface.vlans | arista.avd.default("-") %}
 {%             if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}
@@ -39,7 +38,7 @@
 {%             set lacp_fallback_mode = port_channel_interface.lacp_fallback_mode | arista.avd.default("-") %}
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
 {%             set esi = port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
 {%         endif %}
 {%     endfor %}
 {# Encapsulation #}
@@ -58,25 +57,23 @@
 
 ##### Encapsulation Dot1q
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
 {%         for port_channel_interface in encapsulation_dot1q_interfaces | arista.avd.natural_sort('name') %}
 {%             set description = port_channel_interface.description | arista.avd.default('-') %}
-{%             set type = port_channel_interface.type %}
 {%             set vlan_id = port_channel_interface.vlan_id | arista.avd.default('-') %}
 {%             set encapsulation_dot1q_vlan = port_channel_interface.encapsulation_dot1q_vlan | arista.avd.default('-') %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} |
 {%         endfor %}
 {%     endif %}
 {%     if flexencap_interfaces | length > 0 %}
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
 {%         for port_channel_interface in flexencap_interfaces | arista.avd.natural_sort('name') %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
-{%             set type = port_channel_interface.type %}
 {%             set vlan_id = port_channel_interface.vlan_id | arista.avd.default('-') %}
 {%             set client_unmatched = port_channel_interface.encapsulation_vlan.client.unmatched | arista.avd.default(false) %}
 {%             set client_dot1q_vlan = port_channel_interface.encapsulation_vlan.client.dot1q.vlan | arista.avd.default("-") %}
@@ -86,7 +83,7 @@
 {%             set network_dot1q_vlan = port_channel_interface.encapsulation_vlan.network.dot1q.vlan | arista.avd.default("-") %}
 {%             set network_dot1q_outer = port_channel_interface.encapsulation_vlan.network.dot1q.outer | arista.avd.default("-") %}
 {%             set network_dot1q_inner = port_channel_interface.encapsulation_vlan.network.dot1q.inner | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ client_unmatched }} | {{ client_dot1q_vlan }} | {{ client_dot1q_outer }} | {{ client_dot1q_inner }} | {{ network_client }} | {{ network_dot1q_vlan }} | {{ network_dot1q_outer }} | {{ network_dot1q_inner }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ vlan_id }} | {{ client_unmatched }} | {{ client_dot1q_vlan }} | {{ client_dot1q_outer }} | {{ client_dot1q_inner }} | {{ network_client }} | {{ network_dot1q_vlan }} | {{ network_dot1q_outer }} | {{ network_dot1q_inner }} |
 {%         endfor %}
 {%     endif %}
 {# PVLAN #}
@@ -231,12 +228,11 @@
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%             if port_channel_interface.type is defined and port_channel_interface.type in ['routed', 'l3dot1q'] and port_channel_interface.ip_address is arista.avd.defined %}
 {%                 set description = port_channel_interface.description | arista.avd.default("-") %}
-{%                 set type = "routed" %}
 {%                 set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
 {%                 set ip_address = port_channel_interface.ip_address | arista.avd.default("-") %}
 {%                 set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
@@ -244,7 +240,7 @@
 {%                 set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
 {%                 set acl_in = port_channel_interface.access_group_in | arista.avd.default("-") %}
 {%                 set acl_out = port_channel_interface.access_group_out | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ acl_in }} | {{ acl_out }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ acl_in }} | {{ acl_out }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -263,12 +259,11 @@
 
 ##### IPv6
 
-| Interface | Description | Type | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%             if port_channel_interface.type is defined and port_channel_interface.type in ['routed', 'l3dot1q'] and port_channel_interface.ipv6_address is arista.avd.defined %}
 {%                 set description = port_channel_interface.description | arista.avd.default("-") %}
-{%                 set type = "routed" %}
 {%                 set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
 {%                 set ipv6_address = port_channel_interface.ipv6_address | arista.avd.default("-") %}
 {%                 set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
@@ -282,7 +277,7 @@
 {%                 endif %}
 {%                 set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                 set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

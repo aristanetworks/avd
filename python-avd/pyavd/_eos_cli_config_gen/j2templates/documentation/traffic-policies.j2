@@ -41,7 +41,7 @@
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_port in traffic_policies.field_sets.ports %}
-| {{ field_set_port.name }} | {{ field_set_port.port_range }}|
+| {{ field_set_port.name }} | {{ field_set_port.port_range | arista.avd.default("-") }}|
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -62,18 +62,18 @@
 {#                     -- Source Prefix #}
 {%                     set row.src_net = "" %}
 {%                     if match.source.prefix_lists is arista.avd.defined %}
-{%                         set row.src_net = match.source.prefix_lists | join('<br/>') %}
+{%                         set row.src_net = match.source.prefix_lists | arista.avd.natural_sort | join('<br/>') %}
 {%                     elif match.source.prefixes is arista.avd.defined %}
-{%                         set row.src_net = match.source.prefixes | join('<br/>') %}
+{%                         set row.src_net = match.source.prefixes | arista.avd.natural_sort | join('<br/>') %}
 {%                     else %}
 {%                         set row.src_net = "any" %}
 {%                     endif %}
 {#                     -- Destination Prefix #}
 {%                     set row.dst_net = "" %}
 {%                     if match.destination.prefix_lists is arista.avd.defined %}
-{%                         set row.dst_net = match.destination.prefix_lists | join('<br/>') %}
+{%                         set row.dst_net = match.destination.prefix_lists | arista.avd.natural_sort | join('<br/>') %}
 {%                     elif match.destination.prefixes is arista.avd.defined %}
-{%                         set row.dst_net = match.destination.prefixes | join('<br/>') %}
+{%                         set row.dst_net = match.destination.prefixes | arista.avd.natural_sort | join('<br/>') %}
 {%                     else %}
 {%                         set row.dst_net = "any" %}
 {%                     endif %}

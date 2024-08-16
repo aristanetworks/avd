@@ -12,7 +12,9 @@ traffic-policies
 {%     if traffic_policies.field_sets.ports is arista.avd.defined %}
 {%         for field_set_port in traffic_policies.field_sets.ports %}
    field-set l4-port {{ field_set_port.name }}
+{%             if field_set_port.port_range is arista.avd.defined %}
       {{ field_set_port.port_range }}
+{%             endif %}
    !
 {%         endfor %}
 {%     endif %}
@@ -82,7 +84,7 @@ traffic-policies
 {%                         set flags = {'bgp': False, 'neighbors': False, 'all': False} %}
 {%                         for protocol in match.protocols %}
 {%                             if protocol.protocol is arista.avd.defined and protocol.protocol not in ['neighbors', 'bgp'] and not flags.bgp and not flags.neighbors %}
-{%                                 set _ = flags.update({'tcp': True}) %}
+{%                                 do flags.update({'all': True}) %}
 {%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
 {%                                 if protocol.flags is arista.avd.defined and protocol.protocol | lower == 'tcp' %}
 {%                                     for flag in protocol.flags %}
@@ -113,10 +115,10 @@ traffic-policies
 {%                                 endif %}
 {%                             elif protocol.protocol is arista.avd.defined and protocol.protocol | lower == 'neighbors' and not flags.bgp and not flags.all %}
          protocol neighbors bgp
-{%                                 set _ = flags.update({'neighbors': True}) %}
+{%                                 do flags.update({'neighbors': True}) %}
 {%                             elif protocol.protocol is arista.avd.defined and protocol.protocol | lower == 'bgp' and not flags.neighbors and not flags.all %}
          protocol bgp
-{%                                 set _ = flags.update({'bgp': True}) %}
+{%                                 do flags.update({'bgp': True}) %}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
