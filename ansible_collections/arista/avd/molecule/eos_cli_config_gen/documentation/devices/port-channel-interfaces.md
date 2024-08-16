@@ -102,9 +102,9 @@ sFlow is disabled.
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet17 | LAG Member | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 
 *Inherited from Port-Channel Interface
 
@@ -214,53 +214,53 @@ interface Ethernet50
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
-| Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
-| Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
-| Port-Channel13 | EVPN-Vxlan single-active redundancy | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
-| Port-Channel14 | EVPN-MPLS multihoming | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
-| Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
-| Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
-| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
-| Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
-| Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
-| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
-| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
-| Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
-| Port-Channel104 | LACP fallback individual | switched | trunk | 112 | - | - | 300 | individual | - | - |
-| Port-Channel105 | bpdu disabled | switched | access | - | - | - | - | - | - | - |
-| Port-Channel106 | bpdu enabled | switched | access | - | - | - | - | - | - | - |
-| Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
-| Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
-| Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
-| Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
-| Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
-| Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
-| Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
-| Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
-| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | 115 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel13 | EVPN-Vxlan single-active redundancy | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
+| Port-Channel14 | EVPN-MPLS multihoming | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
+| Port-Channel15 | DC1_L2LEAF3_Po1 | trunk | 110,201 | - | - | - | - | 15 | - |
+| Port-Channel16 | DC1_L2LEAF4_Po1 | trunk | 110,201 | - | - | - | - | 16 | - |
+| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | access | 200 | - | - | - | - | - | - |
+| Port-Channel50 | SRV-POD03_PortChanne1 | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel51 | ipv6_prefix | trunk | 1-500 | - | - | - | - | - | - |
+| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - | - | - | - |
+| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel103 | PVLAN Secondary Trunk | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel104 | LACP fallback individual | trunk | 112 | - | - | 300 | individual | - | - |
+| Port-Channel105 | bpdu disabled | access | - | - | - | - | - | - | - |
+| Port-Channel106 | bpdu enabled | access | - | - | - | - | - | - | - |
+| Port-Channel107 | bpdu true | access | - | - | - | - | - | - | - |
+| Port-Channel108 | bpdu false | access | - | - | - | - | - | - | - |
+| Port-Channel109 | Molecule ACLs | access | 110 | - | - | - | - | - | - |
+| Port-Channel112 | LACP fallback individual | trunk | 112 | - | - | 5 | individual | - | - |
+| Port-Channel115 | native-vlan-tag-precedence | trunk | - | tag | - | - | - | - | - |
+| Port-Channel121 | access_port_with_no_vlans | access | - | - | - | - | - | - | - |
+| Port-Channel122 | trunk_port_with_no_vlans | trunk | - | - | - | - | - | - | - |
+| Port-Channel130 | IP NAT Testing | access | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | dot1q-tunnel | 115 | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | l3dot1q | - | 101 |
-| Port-Channel100.101 | IFL for TENANT01 | l3dot1q | - | 101 |
-| Port-Channel100.102 | IFL for TENANT02 | l3dot1q | - | 102 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 101 |
+| Port-Channel100.101 | IFL for TENANT01 | - | 101 |
+| Port-Channel100.102 | IFL for TENANT02 | - | 102 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel111.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
-| Port-Channel111.100 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
-| Port-Channel111.200 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
-| Port-Channel111.300 | TENANT_A pseudowire 4 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
-| Port-Channel111.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Port-Channel111.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | False | 100 | - | - | True | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | False | 200 | - | - | False | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | False | 300 | - | - | False | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | 1000 | False | 100 | - | - | True | - | - | - |
 
 ##### Private VLAN
 
@@ -308,16 +308,16 @@ interface Ethernet50
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
-| Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
-| Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
-| Port-Channel99 | MCAST | routed | - | 192.0.2.10/31 | default | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | routed | - | 10.1.1.3/31 | default | 1500 | - | - | - |
-| Port-Channel100.102 | IFL for TENANT02 | routed | - | 10.1.2.3/31 | C2 | 1500 | - | - | - |
-| Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
-| Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 10.1.2.3/31 | default | - | - | - | - |
+| Port-Channel9 | - | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel17 | PBR Description | - | 192.0.2.3/31 | default | - | - | - | - |
+| Port-Channel99 | MCAST | - | 192.0.2.10/31 | default | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | 10.1.1.3/31 | default | 1500 | - | - | - |
+| Port-Channel100.102 | IFL for TENANT02 | - | 10.1.2.3/31 | C2 | 1500 | - | - | - |
+| Port-Channel113 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
+| Port-Channel114 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
