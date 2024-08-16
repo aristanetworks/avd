@@ -143,7 +143,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: none
-  mlag: 6
 ethernet_interfaces:
 - name: Ethernet3
   peer: UNDERLAY-MULTICAST-L3LEAF1B
