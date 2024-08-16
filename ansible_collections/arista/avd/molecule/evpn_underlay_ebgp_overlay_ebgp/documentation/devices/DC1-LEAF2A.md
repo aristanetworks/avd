@@ -363,12 +363,12 @@ vlan 311
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet2 | routed | - | 172.31.255.17/31 | default | 1500 | False | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.255.19/31 | default | 1500 | False | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet2 | routed | - | 172.31.255.21/31 | default | 1500 | False | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet2 | routed | - | 172.31.255.23/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet2 | - | 172.31.255.17/31 | default | 1500 | False | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.255.19/31 | default | 1500 | False | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet2 | - | 172.31.255.21/31 | default | 1500 | False | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet2 | - | 172.31.255.23/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -460,14 +460,14 @@ interface Ethernet21
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
-| Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
-| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | - | - |
-| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
-| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | - | - | - | - | - | - | - | - |
-| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
+| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | - | - |
+| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | - | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | - | - | - | - | - | - | - | - |
+| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ##### EVPN Multihoming
 

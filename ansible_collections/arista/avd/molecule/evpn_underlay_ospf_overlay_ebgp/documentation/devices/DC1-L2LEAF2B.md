@@ -303,10 +303,10 @@ interface Ethernet4
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 210 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | DC1_SVC3_Po7 | trunk | 210 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

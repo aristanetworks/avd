@@ -332,10 +332,10 @@ interface Ethernet48
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | SPINES_Po1 | switched | trunk | 10,20 | - | - | - | - | 1 | - |
-| Port-Channel47 | MLAG_PEER_LEAF1_Po47 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | SPINES_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
+| Port-Channel47 | MLAG_PEER_LEAF1_Po47 | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

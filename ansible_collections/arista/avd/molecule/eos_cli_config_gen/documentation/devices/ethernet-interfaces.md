@@ -146,20 +146,20 @@ sFlow is disabled.
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 101 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
-| Ethernet26.100 | TENANT_A pseudowire 1 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
-| Ethernet26.200 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
-| Ethernet26.300 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
-| Ethernet26.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Ethernet26.500 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 500 | 50 | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | - | False | 100 | - | - | True | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | False | 200 | - | - | False | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | False | 300 | - | - | False | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | False | - | 500 | 50 | True | - | - | - |
 
 ##### Private VLAN
 
@@ -233,19 +233,19 @@ sFlow is disabled.
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | - | 172.31.128.1/31 | default | 1500 | - | - | - |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
-| Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
-| Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
-| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
-| Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
-| Ethernet63 | DHCP client interface | routed | - | dhcp | default | - | - | - | - |
-| Ethernet64 | DHCP server interface | routed | - | 192.168.42.42/24 | default | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | routed | - | 192.0.2.2/25 | default | - | False | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | routed | - | 192.0.2.2/25 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
+| Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
+| Ethernet10 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
+| Ethernet18 | PBR Description | - | 192.0.2.1/31 | default | 1500 | - | - | - |
+| Ethernet47 | IP Helper | - | 172.31.255.1/31 | default | - | - | - | - |
+| Ethernet63 | DHCP client interface | - | dhcp | default | - | - | - | - |
+| Ethernet64 | DHCP server interface | - | 192.168.42.42/24 | default | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 192.0.2.2/25 | default | - | False | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 192.0.2.2/25 | default | - | False | - | - |
 
 ##### IP NAT: Source Static
 
@@ -306,14 +306,14 @@ sFlow is disabled.
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | - | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
 
 ##### VRRP Details
 
