@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
@@ -104,6 +105,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### SNMP
@@ -164,10 +169,10 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5 | routed | - | 172.17.20.9/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7 | routed | - | 172.17.20.11/31 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5 | - | 172.17.20.9/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7 | - | 172.17.20.11/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
