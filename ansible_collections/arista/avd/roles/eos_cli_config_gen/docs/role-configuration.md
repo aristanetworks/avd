@@ -79,9 +79,9 @@ roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-documentation.md
 
 ### Generate default config
 
-The `generate_default_config` setting controls generation of some default EOS configuration.
+The `generate_default_config` setting controls the generation of some default EOS configurations.
 
-This is historic behavior which will be removed in AVD 6.0.0.
+This is historic behavior which has been disabled by default in AVD 5.0.0 and will be removed in AVD 6.0.0.
 Instead it is recommended to build structured config according to the intended output configurations.
 
 The following commands will be generated when `generate_default_config` is set to `true`:
