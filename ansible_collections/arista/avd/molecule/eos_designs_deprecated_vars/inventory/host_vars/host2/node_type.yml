@@ -1,4 +1,6 @@
 type: pe
+
+# Testing the deprecated design.type. To be removed in AVD6.0.0.
 design:
   type: mpls
 

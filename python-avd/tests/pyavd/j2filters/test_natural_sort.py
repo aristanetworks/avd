@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 
 from contextlib import nullcontext as does_not_raise
+from typing import Any
 
 import pytest
 
@@ -11,7 +12,7 @@ from pyavd.j2filters.natural_sort import convert, natural_sort
 
 class TestNaturalSortFilter:
     @pytest.mark.parametrize(
-        ("item_to_convert, converted_item, ignore_case"),
+        ("item_to_convert", "converted_item", "ignore_case"),
         [
             ("100", 100, True),
             ("200", 200, True),
@@ -19,12 +20,12 @@ class TestNaturalSortFilter:
             ("ABC", "ABC", False),
         ],
     )
-    def test_convert(self, item_to_convert, converted_item, ignore_case):
+    def test_convert(self, item_to_convert: str, converted_item: int | str, ignore_case: bool) -> None:
         resp = convert(item_to_convert, ignore_case)
         assert resp == converted_item
 
     @pytest.mark.parametrize(
-        ("item_to_natural_sort, sort_key, strict, ignore_case, sorted_list, expected_raise"),
+        ("item_to_natural_sort", "sort_key", "strict", "ignore_case", "sorted_list", "expected_raise"),
         [
             pytest.param(None, None, False, True, [], does_not_raise(), id="None"),
             pytest.param([], None, False, True, [], does_not_raise(), id="empty-list"),
@@ -135,7 +136,9 @@ class TestNaturalSortFilter:
             ),
         ],
     )
-    def test_natural_sort(self, item_to_natural_sort, sort_key, strict, ignore_case, sorted_list, expected_raise):
+    def test_natural_sort(
+        self, item_to_natural_sort: Any, sort_key: str | None, strict: bool | None, ignore_case: bool | None, sorted_list: list | None, expected_raise: object
+    ) -> None:
         with expected_raise:
             resp = natural_sort(item_to_natural_sort, sort_key, strict=strict, ignore_case=ignore_case)
             assert resp == sorted_list

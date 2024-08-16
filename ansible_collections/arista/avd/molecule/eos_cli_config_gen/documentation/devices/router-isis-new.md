@@ -49,16 +49,15 @@ interface Management1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_EAPI-LEAF1B_Ethernet3 | *access | *- | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | - | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | - | 172.31.255.3/31 | default | 1500 | - | - | - |
 
 ##### ISIS
 

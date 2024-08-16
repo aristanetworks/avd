@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
@@ -151,6 +152,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -303,10 +308,10 @@ interface Ethernet4
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 210 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | DC1_SVC3_Po7 | trunk | 210 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

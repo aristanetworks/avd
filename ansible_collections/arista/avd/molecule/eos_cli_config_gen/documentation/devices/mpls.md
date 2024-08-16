@@ -54,9 +54,9 @@ interface Management1
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | - | - | 192.168.100.1/31 | default | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

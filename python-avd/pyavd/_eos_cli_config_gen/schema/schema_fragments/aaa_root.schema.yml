@@ -9,6 +9,10 @@ keys:
   aaa_root:
     type: dict
     keys:
+      disabled:
+        type: bool
+        description: |-
+          Set to `true` to configure `no aaa root` which is the EOS default.
       secret:
         type: dict
         keys:

@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -105,6 +106,10 @@ username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Spanning Tree
 
 ### Spanning Tree Summary
@@ -148,12 +153,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | routed | - | 10.255.255.0/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF1B_Ethernet1 | routed | - | 10.255.255.4/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | routed | - | 10.255.255.8/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | routed | - | 10.255.255.12/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | - | 10.255.255.0/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF1B_Ethernet1 | - | 10.255.255.4/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | - | 10.255.255.8/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | - | 10.255.255.12/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
