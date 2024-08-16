@@ -26,7 +26,7 @@
                 port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) or
                 port_channel_interface.switchport.trunk.native_vlan is arista.avd.defined or
                 port_channel_interface.switchport.trunk.groups is arista.avd.defined) and
-                port_channel_interface.type is not arista.avd.defined %}
+                (port_channel_interface.type is not arista.avd.defined or (port_channel_interface.type is arista.avd.defined and port_channel_interface.type not in ["switched", "routed"])) %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                 set mode = port_channel_interface.switchport.mode | arista.avd.default('-') %}
 {%                 set vlans = [] %}
@@ -68,7 +68,7 @@
                 ethernet_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) or
                 ethernet_interface.switchport.trunk.native_vlan is arista.avd.defined or
                 ethernet_interface.switchport.trunk.groups is arista.avd.defined) and
-                ethernet_interface.type is not arista.avd.defined %}
+                (ethernet_interface.type is not arista.avd.defined or (ethernet_interface.type is arista.avd.defined and ethernet_interface.type not in ["switched", "routed"])) %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                 set mode = ethernet_interface.switchport.mode | arista.avd.default('-') %}
 {%                 set vlans = [] %}
@@ -98,7 +98,6 @@
 {%                 else %}
 {%                     set native_vlan = ethernet_interface.native_vlan | arista.avd.default('-') %}
 {%                 endif %}
-{%                 set channel_group = ethernet_interface.channel_group.id %}
 {%                 set trunk_groups = ethernet_interface.trunk_groups | arista.avd.default('-') %}
 | {{ ethernet_interface.name }} | {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ trunk_groups }} | - |
 {%             endif %}

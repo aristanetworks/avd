@@ -2068,8 +2068,7 @@ keys:
           description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
             interface should be defined as routed.
 
-            Interface will not be listed in device documentation, unless "type" is
-            set.
+            The `type = switched/routed` should not be combined with `switchport`.
 
             '
         snmp_trap_link_change:
@@ -3487,6 +3486,8 @@ keys:
             role.
         switchport:
           type: dict
+          description: This should not be combined with `ethernet_interfaces[].type
+            = switched/routed`.
           keys:
             enabled:
               type: bool

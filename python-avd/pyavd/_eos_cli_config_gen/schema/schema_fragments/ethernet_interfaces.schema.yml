@@ -140,7 +140,7 @@ keys:
           valid_values: ["routed", "switched", "l3dot1q", "l2dot1q", "port-channel-member"]
           description: |
             l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
-            Interface will not be listed in device documentation, unless "type" is set.
+            The `type = switched/routed` should not be combined with `switchport`.
         snmp_trap_link_change:
           type: bool
         address_locking:
@@ -1429,6 +1429,7 @@ keys:
           description: Set to false to disable interface validation by the `eos_validate_state` role.
         switchport:
           type: dict
+          description: This should not be combined with `ethernet_interfaces[].type = switched/routed`.
           keys:
             enabled:
               type: bool

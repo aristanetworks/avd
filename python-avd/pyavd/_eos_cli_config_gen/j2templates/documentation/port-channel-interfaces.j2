@@ -21,7 +21,7 @@
             port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) or
             port_channel_interface.switchport.trunk.native_vlan is arista.avd.defined or
             port_channel_interface.switchport.trunk.groups is arista.avd.defined) and
-            port_channel_interface.type is not arista.avd.defined %}
+            (port_channel_interface.type is not arista.avd.defined or (port_channel_interface.type is arista.avd.defined and port_channel_interface.type not in ["switched", "routed"])) %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set mode = port_channel_interface.switchport.mode | arista.avd.default('-') %}
 {%             set vlans = [] %}
