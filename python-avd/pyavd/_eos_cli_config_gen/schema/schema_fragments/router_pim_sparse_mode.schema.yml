@@ -20,11 +20,6 @@ keys:
             description: IPv4 Prefix associated with SSM.
           rp_addresses:
             type: list
-            # This primary_key is inserted to support conversion from wildcard dicts,
-            # but it also stops the user from defining the same RP address multiple times,
-            # which should be allowed. When wildcard dict support is finally removed,
-            # this primary_key should also be removed. TODO: AVD5.0
-            primary_key: address
             items:
               type: dict
               keys:

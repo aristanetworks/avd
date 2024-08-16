@@ -15561,7 +15561,6 @@ keys:
             description: IPv4 Prefix associated with SSM.
           rp_addresses:
             type: list
-            primary_key: address
             items:
               type: dict
               keys:
