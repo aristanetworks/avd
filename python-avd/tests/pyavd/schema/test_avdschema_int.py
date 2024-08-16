@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from pathlib import Path
 from sys import path
+from typing import Any
 
 import pytest
 
@@ -12,9 +13,8 @@ path.insert(0, str(Path(__file__).parents[3]))
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import AvdSchema
 
-# TODO:
-# - Test Dynamic valid values.
-# - Test default value with required False.
+# TODO: Test Dynamic valid values.
+#       Test default value with required False.
 
 TEST_SCHEMA = {
     "type": "dict",
@@ -63,7 +63,7 @@ def avd_schema() -> AvdSchema:
 
 
 @pytest.mark.parametrize(("test_value", "expected_errors", "expected_error_messages"), TESTS)
-def test_generated_schema(test_value, expected_errors: tuple | None, expected_error_messages: tuple | None, avd_schema: AvdSchema):
+def test_generated_schema(test_value: Any, expected_errors: tuple | None, expected_error_messages: tuple | None, avd_schema: AvdSchema) -> None:
     instance = {"test_value": test_value}
     list(avd_schema.convert(instance))
     validation_errors = list(avd_schema.validate(instance))
