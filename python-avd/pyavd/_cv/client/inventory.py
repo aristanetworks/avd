@@ -6,8 +6,10 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
-from ..api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest
-from ..api.arista.time import TimeBounds
+from pyavd._cv.api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest
+from pyavd._cv.api.arista.time import TimeBounds
+
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -25,7 +27,7 @@ class InventoryMixin:
         self: CVClient,
         devices: list[tuple[str, str, str]] | None = None,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Device]:
         """
         Get Devices using arista.inventory.v1.DeviceService.GetAll API.
