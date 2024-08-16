@@ -363,7 +363,17 @@ vlan_interfaces:
         source_address: a0::6
         link_address: a0::7
       - address: a0::8
-
+    isis_authentication:
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
+      level_2:
+        key_type: 0
+        key: password
+        mode: text
+        rx_disabled: true
   - name: Vlan50
     description: IP NAT Testing
     ip_nat:
@@ -382,6 +392,12 @@ vlan_interfaces:
         static:
           - original_ip: 3.0.0.1
             translated_ip: 4.0.0.1
+    isis_authentication:
+      level_2:
+        key_type: 0
+        key: password
+        mode: text
+        rx_disabled: true
 
 # IPv6 SVI configuration
 
