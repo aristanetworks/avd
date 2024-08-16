@@ -712,6 +712,13 @@ ethernet_interfaces:
       trust: disabled
     shape:
       rate: "200000 kbps"
+    # Test isis auth only level-1
+    isis_authentication:
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
 
   - name: Ethernet22
     switchport:
@@ -719,6 +726,14 @@ ethernet_interfaces:
     description: 10% shape
     shape:
       rate: "10 percent"
+    # Test isis auth only level2
+    isis_authentication:
+      level_2:
+        key_type: 0
+        key: password
+        mode: sha
+        sha:
+          key_id: 100
 
   - name: Ethernet23
     switchport:

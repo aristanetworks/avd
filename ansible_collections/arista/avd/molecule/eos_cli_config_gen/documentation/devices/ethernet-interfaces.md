@@ -339,22 +339,24 @@ sFlow is disabled.
 
 ##### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
-| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
-| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | - | - | - |
-| Ethernet8 | - | - | - | - | - | - | - | - | md5 | md5 |
-| Ethernet8.101 | - | - | - | - | - | - | - | - | md5 | md5 |
-| Ethernet9 | - | - | - | - | - | - | - | - | sha | sha |
-| Ethernet10 | - | - | - | - | - | - | - | - | sha | sha |
-| Ethernet11 | - | - | - | - | - | - | - | - | shared-secret | shared-secret |
-| Ethernet12 | - | - | - | - | - | - | - | - | shared-secret | shared-secret |
-| Ethernet13 | - | - | - | - | - | - | - | - | md5 | md5 |
-| Ethernet14 | - | - | - | - | - | - | - | - | md5 | md5 |
-| Ethernet15 | - | - | - | - | - | - | - | - | shared-secret | shared-secret |
-| Ethernet16 | - | - | - | - | - | - | - | - | shared-secret | shared-secret |
-| Ethernet17 | - | - | - | - | - | - | - | - | sha | sha |
-| Ethernet18 | - | - | - | - | - | - | - | - | sha | sha |
-| Ethernet20 | - | - | - | - | - | - | - | - | shared-secret | md5 |
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | - |
+| Ethernet8 | - | - | - | - | - | - | - | md5 |
+| Ethernet8.101 | - | - | - | - | - | - | - | md5 |
+| Ethernet9 | - | - | - | - | - | - | - | sha |
+| Ethernet10 | - | - | - | - | - | - | - | sha |
+| Ethernet11 | - | - | - | - | - | - | - | shared-secret |
+| Ethernet12 | - | - | - | - | - | - | - | shared-secret |
+| Ethernet13 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Ethernet14 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Ethernet15 | - | - | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Ethernet16 | - | - | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Ethernet17 | - | - | - | - | - | - | - | Level-1: sha<br>Level-2: sha |
+| Ethernet18 | - | - | - | - | - | - | - | Level-1: sha<br>Level-2: sha |
+| Ethernet20 | - | - | - | - | - | - | - | Level-1: shared-secret<br>Level-2: md5 |
+| Ethernet21 | - | - | - | - | - | - | - | Level-1: md5 |
+| Ethernet22 | - | - | - | - | - | - | - | Level-2: sha |
 
 ##### EVPN Multihoming
 
@@ -742,11 +744,15 @@ interface Ethernet21
    switchport
    no qos trust
    shape rate 200000 kbps
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication key 0 password level-1
 !
 interface Ethernet22
    description 10% shape
    switchport
    shape rate 10 percent
+   isis authentication mode sha key-id 100 level-2
+   isis authentication key 0 password level-2
 !
 interface Ethernet23
    description Error-correction encoding
