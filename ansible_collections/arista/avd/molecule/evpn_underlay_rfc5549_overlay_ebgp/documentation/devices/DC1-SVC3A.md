@@ -424,12 +424,12 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet4 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet4 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet4 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet4 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet4 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet4 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet4 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet4 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -557,13 +557,13 @@ interface Ethernet16
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
-| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
-| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel10 | server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
 
 ##### EVPN Multihoming
 

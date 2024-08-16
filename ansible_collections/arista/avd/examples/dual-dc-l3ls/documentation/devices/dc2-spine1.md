@@ -148,12 +148,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-LEAF1A_Ethernet1 | routed | - | 10.255.255.104/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-LEAF1B_Ethernet1 | routed | - | 10.255.255.108/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC2-LEAF2A_Ethernet1 | routed | - | 10.255.255.112/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-LEAF2B_Ethernet1 | routed | - | 10.255.255.116/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC2-LEAF1A_Ethernet1 | - | 10.255.255.104/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-LEAF1B_Ethernet1 | - | 10.255.255.108/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC2-LEAF2A_Ethernet1 | - | 10.255.255.112/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC2-LEAF2B_Ethernet1 | - | 10.255.255.116/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
