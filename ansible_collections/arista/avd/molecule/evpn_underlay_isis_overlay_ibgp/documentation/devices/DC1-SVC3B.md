@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
@@ -162,6 +163,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -280,12 +285,12 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | 172.31.255.33/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | 172.31.255.35/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | 172.31.255.37/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | 172.31.255.39/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | - | 172.31.255.33/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | - | 172.31.255.35/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | - | 172.31.255.37/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | - | 172.31.255.39/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -375,10 +380,10 @@ interface Ethernet8
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | none | - | - | - | - | 7 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | none | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
