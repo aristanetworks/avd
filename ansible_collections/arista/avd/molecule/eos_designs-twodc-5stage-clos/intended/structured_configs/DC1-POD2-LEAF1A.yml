@@ -223,6 +223,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -446,7 +452,7 @@ vlan_interfaces:
   ip_address_virtual: 10.101.100.1/24
   vrf: vrf_with_loopbacks_from_pod_pools
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-POD2-LEAF1A_VTEP
     vxlan:
       udp_port: 4789

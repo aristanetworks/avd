@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -119,6 +120,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## MLAG
 
@@ -258,11 +263,11 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet4 | routed | - | 10.255.255.117/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet4 | routed | - | 10.255.255.119/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_dc1-leaf2b_Ethernet6 | routed | - | 172.16.100.3/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet4 | - | 10.255.255.117/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet4 | - | 10.255.255.119/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_dc1-leaf2b_Ethernet6 | - | 172.16.100.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -316,11 +321,11 @@ interface Ethernet8
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc2-leaf2a_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | dc2-leaf2-server1_PortChannel dc2-leaf2-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
-| Port-Channel8 | DC2-LEAF2C_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_dc2-leaf2a_Po3 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | dc2-leaf2-server1_PortChannel dc2-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
+| Port-Channel8 | DC2-LEAF2C_Po1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
 - [MLAG](#mlag)
@@ -107,6 +108,10 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -274,13 +279,13 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.9/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.11/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | routed | - | 172.17.110.13/31 | default | - | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | routed | - | 172.17.110.15/31 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.13/31 | default | - | False | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.15/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -391,14 +396,14 @@ interface Ethernet19
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
-| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
-| Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
-| Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
-| Port-Channel19 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 19 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | RACK2_MLAG_Po1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
+| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel16 | server-1_PortChannel | access | 110 | - | - | - | - | 16 | - |
+| Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
+| Port-Channel18 | server-1_PortChannel | access | 110 | - | - | - | - | 18 | - |
+| Port-Channel19 | server-1_PortChannel | access | 110 | - | - | - | - | 19 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

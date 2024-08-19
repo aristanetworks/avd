@@ -23,8 +23,6 @@ pe:
       id: 42
 
 type: pe
-design:
-  type: mpls
 
 tenants:
   - name: TENANT_B

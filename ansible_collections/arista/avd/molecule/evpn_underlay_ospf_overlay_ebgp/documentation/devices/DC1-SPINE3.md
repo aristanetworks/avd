@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
@@ -147,6 +148,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -209,15 +214,15 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | routed | - | 172.31.255.4/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | routed | - | 172.31.255.12/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | routed | - | 172.31.255.20/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet3 | routed | - | 172.31.255.28/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet3 | routed | - | 172.31.255.36/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet3 | routed | - | 172.31.255.44/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | routed | - | 172.31.255.52/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | - | 172.31.255.4/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | - | 172.31.255.12/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | - | 172.31.255.20/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet3 | - | 172.31.255.28/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet3 | - | 172.31.255.36/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet3 | - | 172.31.255.44/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | - | 172.31.255.52/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

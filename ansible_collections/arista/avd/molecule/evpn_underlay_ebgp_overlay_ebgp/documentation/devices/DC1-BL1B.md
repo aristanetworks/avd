@@ -8,6 +8,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -141,6 +142,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -265,25 +270,25 @@ vlan 350
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet10.100 | subinterface test | l3dot1q | - | 100 |
-| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 141 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet10.100 | subinterface test | - | 100 |
+| Ethernet10.200 | subinterface test with vlan override | - | 141 |
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet7 | test | routed | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | False | - | - |
-| Ethernet8 | test | routed | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet9 | test | routed | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.100 | subinterface test | l3dot1q | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet45 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | False | - | - |
-| Ethernet46 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | False | - | - |
-| Ethernet47 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | False | - | - |
-| Ethernet48 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | False | - | - |
-| Ethernet4000 | My second test | routed | - | 10.1.2.3/12 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet7 | test | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | False | - | - |
+| Ethernet8 | test | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet9 | test | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.100 | subinterface test | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.200 | subinterface test with vlan override | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet45 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7 | - | 172.31.255.97/31 | default | 1500 | False | - | - |
+| Ethernet46 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7 | - | 172.31.255.99/31 | default | 1500 | False | - | - |
+| Ethernet47 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7 | - | 172.31.255.101/31 | default | 1500 | False | - | - |
+| Ethernet48 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7 | - | 172.31.255.103/31 | default | 1500 | False | - | - |
+| Ethernet4000 | My second test | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
