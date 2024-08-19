@@ -278,6 +278,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 queue_monitor_length:
   enabled: true
   notifying: true
@@ -517,7 +523,7 @@ vlan_interfaces:
   ip_address_virtual: 10.3.50.1/24
   vrf: Tenant_C_WAN_Zone
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-BL1B_VTEP
     vxlan:
       udp_port: 4789

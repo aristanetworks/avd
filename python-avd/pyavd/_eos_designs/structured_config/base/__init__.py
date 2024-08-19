@@ -293,14 +293,28 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         return get(self._hostvars, "internal_vlan_order", default=default_internal_vlan_order)
 
     @cached_property
-    def transceiver_qsfp_default_mode_4x10(self) -> bool | None:
-        """
-        transceiver_qsfp_default_mode_4x10 is on by default in eos_cli_config_gen.
+    def aaa_root(self) -> dict:
+        """aaa_root.disable is always set to match EOS default config and historic configs."""
+        return {"disabled": True}
 
-        Set to false for WAN routers.
+    @cached_property
+    def config_end(self) -> bool:
+        """config_end is always set to match EOS default config and historic configs."""
+        return True
+
+    @cached_property
+    def enable_password(self) -> dict:
+        """enable_password.disable is always set to match EOS default config and historic configs."""
+        return {"disabled": True}
+
+    @cached_property
+    def transceiver_qsfp_default_mode_4x10(self) -> bool:
+        """
+        transceiver_qsfp_default_mode_4x10 is on for all devices except WAN routers.
+
         TODO: Add platform_setting to control this.
         """
-        return False if self.shared_utils.wan_role else None
+        return not self.shared_utils.is_wan_router
 
     @cached_property
     def event_monitor(self) -> dict | None:

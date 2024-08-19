@@ -3,12 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, NoReturn
+from typing import TYPE_CHECKING, Any
 
-import jsonschema
-from deepmerge import always_merger
-
-from pyavd._errors import AristaAvdError, AvdSchemaError, AvdValidationError
+from pyavd._errors import AristaAvdError, AvdSchemaError
 
 from .avddataconverter import AvdDataConverter
 from .avdvalidator import AvdValidator
@@ -42,13 +39,7 @@ class AvdSchema:
 
     def __init__(self, schema: dict | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
         self.store = create_store(load_from_yaml=load_store_from_yaml)
-        self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
         self.load_schema(schema, schema_id)
-
-    def validate_schema(self, schema: dict) -> Generator:
-        validation_errors = self._schema_validator.iter_errors(schema)
-        for validation_error in validation_errors:
-            yield self._error_handler(validation_error)
 
     def load_schema(self, schema: dict | None = None, schema_id: str | None = None) -> None:
         """
@@ -64,61 +55,28 @@ class AvdSchema:
         schema_id : str, optional
             ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
         """
-        if schema:
-            # Validate the schema
-            for validation_error in self.validate_schema(schema):
-                # TODO: Find a way to wrap multiple schema errors in a single raise
-                raise validation_error
-        elif schema_id:
+        if not schema and schema_id:
             if schema_id not in self.store:
                 msg = f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}"
                 raise AristaAvdError(msg)
 
             schema = self.store[schema_id]
-        else:
+        elif not schema:
             schema = DEFAULT_SCHEMA
 
         self._schema = schema
         try:
-            self._validator = AvdValidator(schema, self.store)
-            self._dataconverter = AvdDataConverter(self)
+            self._validator = AvdValidator(schema)
+            self._dataconverter = AvdDataConverter(schema)
         except Exception as e:
             msg = "An error occurred during creation of the validator"
             raise AristaAvdError(msg) from e
 
-    def extend_schema(self, schema: dict) -> NoReturn:
-        for validation_error in self.validate_schema(schema):
-            raise validation_error
-        always_merger.merge(self._schema, schema)
-        for validation_error in self.validate_schema(self._schema):
-            raise validation_error
-
     def validate(self, data: Any) -> Generator:
-        validation_errors = self._validator.iter_errors(data)
-
-        try:
-            for validation_error in validation_errors:
-                yield self._error_handler(validation_error)
-        except Exception as error:  # pylint: disable=broad-exception-caught
-            yield self._error_handler(error)
+        yield from self._validator.validate(data)
 
     def convert(self, data: Any) -> Generator:
-        conversion_errors = self._dataconverter.convert_data(data, self._schema)
-
-        try:
-            for conversion_error in conversion_errors:
-                yield self._error_handler(conversion_error)
-        except Exception as error:  # pylint: disable=broad-exception-caught
-            yield self._error_handler(error)
-
-    def _error_handler(self, error: Exception) -> Exception:
-        if isinstance(error, AristaAvdError):
-            return error
-        if isinstance(error, jsonschema.ValidationError):
-            return AvdValidationError(error=error)
-        if isinstance(error, jsonschema.SchemaError):
-            return AvdSchemaError(error=error)
-        return error
+        yield from self._dataconverter.convert_data(data)
 
     def subschema(self, datapath: list) -> dict:
         """
@@ -194,6 +152,6 @@ class AvdSchema:
 
             # Falling through here in case the schema is not covering the requested datapath
             msg = f"The datapath '{datapath}' could not be found in the schema"
-            raise AvdSchemaError(msg)
+            raise AvdSchemaError(msg, path=datapath)
 
         return recursive_function(datapath, schema)

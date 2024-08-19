@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -52,6 +54,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Internal VLAN Allocation Policy
 
@@ -140,9 +148,9 @@ interface Ethernet11
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | BGP_SPINES_Po2 | switched | trunk | 100,4092 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | BGP_SPINES_Po2 | trunk | 100,4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

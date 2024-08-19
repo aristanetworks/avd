@@ -6,6 +6,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -72,7 +78,7 @@ ethernet_interfaces:
 - name: Ethernet27
   peer: SL-LEAF1A
   peer_interface: Ethernet27
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF1A_Ethernet27
   shutdown: false
   type: port-channel-member
@@ -82,7 +88,7 @@ ethernet_interfaces:
 - name: Ethernet28
   peer: SL-LEAF1B
   peer_interface: Ethernet27
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF1B_Ethernet27
   shutdown: false
   type: port-channel-member
@@ -92,7 +98,7 @@ ethernet_interfaces:
 - name: Ethernet41
   peer: SL-LEAF2A
   peer_interface: Ethernet41
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF2A_Ethernet41
   shutdown: false
   type: port-channel-member
@@ -102,7 +108,7 @@ ethernet_interfaces:
 - name: Ethernet42
   peer: SL-LEAF2A
   peer_interface: Ethernet42
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF2A_Ethernet42
   shutdown: false
   type: port-channel-member
@@ -112,7 +118,7 @@ ethernet_interfaces:
 - name: Ethernet43
   peer: SL-LEAF2B
   peer_interface: Ethernet41
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF2B_Ethernet41
   shutdown: false
   type: port-channel-member
@@ -122,7 +128,7 @@ ethernet_interfaces:
 - name: Ethernet44
   peer: SL-LEAF2B
   peer_interface: Ethernet42
-  peer_type: leaf
+  peer_type: l2leaf
   description: SL-LEAF2B_Ethernet42
   shutdown: false
   type: port-channel-member

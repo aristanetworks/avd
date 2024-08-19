@@ -594,6 +594,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -1192,7 +1198,7 @@ vlan_interfaces:
       local_interface: Loopback51
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: EVPN-MULTICAST-L3LEAF3B_VTEP
     vxlan:
       udp_port: 4789

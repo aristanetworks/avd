@@ -116,7 +116,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             vxlan["vrfs"] = vrfs
 
         return {
-            "Vxlan1": {
+            "vxlan1": {
                 "description": f"{self.shared_utils.hostname}_VTEP",
                 "vxlan": vxlan,
             },

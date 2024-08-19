@@ -27,6 +27,18 @@ roles/eos_cli_config_gen/defaults/main/output_directories.yml
 
 ## Input Variables Validation settings
 
+Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
+performs validation of the converted data.
+
+By default any data validation issues will trigger errors - blocking further processing.
+This behavior can be adjusted by setting the variable described below.
+
+!!! danger
+    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
+    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
+
+    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
+
 --8<--
 roles/eos_cli_config_gen/docs/tables/role-input-validation.md
 --8<--
@@ -67,15 +79,17 @@ roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-documentation.md
 
 ### Generate default config
 
-The `generate_default_config` knob allows to omit default EOS configuration.
-This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+The `generate_default_config` setting controls the generation of some default EOS configurations.
 
-The following commands will be omitted when `generate_default_config` is set to `false`:
+This is historic behavior which has been disabled by default in AVD 5.0.0 and will be removed in AVD 6.0.0.
+Instead it is recommended to build structured config according to the intended output configurations.
+
+The following commands will be generated when `generate_default_config` is set to `true`:
 
 - RANCID Content Type
 - Hostname
-- Default configuration for `aaa`
-- Default configuration for `enable password`
+- Default configuration `no aaa root`
+- Default configuration `no enable password`
 - Transceiver qsfp default mode
 - End of configuration delimiter
 
