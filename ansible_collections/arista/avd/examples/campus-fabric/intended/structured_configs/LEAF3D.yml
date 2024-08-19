@@ -12,6 +12,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 8.8.4.4
   vrf: MGMT
@@ -56,7 +62,7 @@ ethernet_interfaces:
 - name: Ethernet97/1
   peer: LEAF3A
   peer_interface: Ethernet97/4
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3A_Ethernet97/4
   shutdown: false
   type: port-channel-member
@@ -66,7 +72,7 @@ ethernet_interfaces:
 - name: Ethernet97/2
   peer: LEAF3B
   peer_interface: Ethernet97/4
-  peer_type: leaf
+  peer_type: l2leaf
   description: LEAF3B_Ethernet97/4
   shutdown: false
   type: port-channel-member

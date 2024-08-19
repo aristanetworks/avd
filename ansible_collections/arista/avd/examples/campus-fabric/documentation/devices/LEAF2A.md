@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
@@ -151,6 +152,10 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authorization
 
@@ -6753,9 +6758,9 @@ interface Ethernet7/48
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel11 | SPINES_Po491 | switched | trunk | 10,210,220,230 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel11 | SPINES_Po491 | trunk | 10,210,220,230 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

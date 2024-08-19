@@ -6,6 +6,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
@@ -86,6 +87,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### SNMP
@@ -163,11 +168,11 @@ vlan 4085
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3 | routed | - | 172.17.110.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3 | routed | - | 172.17.110.3/31 | default | - | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-RS1_Ethernet3 | routed | - | 172.17.10.4/31 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3 | - | 172.17.110.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3 | - | 172.17.110.3/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-RS1_Ethernet3 | - | 172.17.10.4/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -210,9 +215,9 @@ interface Ethernet4
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | DC1-POD1-L2LEAF1A_Po1 | switched | trunk | 4085 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | DC1-POD1-L2LEAF1A_Po1 | trunk | 4085 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
