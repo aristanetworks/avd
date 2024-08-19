@@ -78,9 +78,9 @@ class RouterIsisMixin(UtilsMixin):
     def _isis_net(self: AvdStructuredConfigUnderlay) -> str | None:
         if get(self._hostvars, "isis_system_id_format") == "node_id":
             isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
-            if isis_system_id_prefix is None:
-                # TODO: Raise for this situation if underlay is ISIS.
-                return None
+            if self.shared_utils.underlay_isis is True and isis_system_id_prefix is None:
+                msg = f"'isis_system_id_prefix' is not set on '{self.shared_utils.hostname}' and it is required to set ISIS NET address using node ID."
+                raise AristaAvdMissingVariableError(msg)
 
             if self.shared_utils.id is None:
                 msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
