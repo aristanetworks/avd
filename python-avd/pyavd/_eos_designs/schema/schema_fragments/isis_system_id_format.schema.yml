@@ -4,7 +4,6 @@
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
-# TODO: AVD5.0 flip default to underlay_loopback
 type: dict
 keys:
   isis_system_id_format:
@@ -20,4 +19,4 @@ keys:
     valid_values:
       - node_id
       - underlay_loopback
-    default: "node_id"
+    default: underlay_loopback

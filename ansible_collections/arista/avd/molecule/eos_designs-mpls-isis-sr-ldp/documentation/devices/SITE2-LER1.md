@@ -618,7 +618,7 @@ router ospf 99 vrf TENANT_B_WAN
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0007.00 |
+| Net-ID | 49.0001.1000.7000.0007.00 |
 | Type | level-1-2 |
 | Router-ID | 100.70.0.7 |
 | Log Adjacency Changes | True |
@@ -661,7 +661,7 @@ router ospf 99 vrf TENANT_B_WAN
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0007.00
+   net 49.0001.1000.7000.0007.00
    is-type level-1-2
    router-id ipv4 100.70.0.7
    log-adjacency-changes

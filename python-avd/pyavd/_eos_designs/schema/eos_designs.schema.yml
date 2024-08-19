@@ -1839,7 +1839,7 @@ keys:
     valid_values:
     - node_id
     - underlay_loopback
-    default: node_id
+    default: underlay_loopback
   isis_ti_lfa:
     documentation_options:
       table: isis-settings
