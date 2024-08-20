@@ -4,6 +4,7 @@
 type: l3leaf
 
 underlay_multicast: true
+mlag_on_orphan_port_channel_downlink: true
 
 l3leaf:
   defaults:
