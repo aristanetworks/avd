@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - aaa server groups #}
-{% for aaa_server_group in aaa_server_groups | arista.avd.natural_sort('type') | arista.avd.natural_sort('name') %}
+{% for aaa_server_group in aaa_server_groups | arista.avd.natural_sort('name') | arista.avd.natural_sort('type') %}
 {%     if aaa_server_group.type is arista.avd.defined and aaa_server_group.name is arista.avd.defined %}
 !
 aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
