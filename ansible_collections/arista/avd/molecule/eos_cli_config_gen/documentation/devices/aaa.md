@@ -116,10 +116,18 @@ radius-server host 10.10.10.158 key 7 <removed>
 | TACACS1 | tacacs+ | default | 10.10.10.249 |
 | TACACS2 | tacacs+ | mgt | 192.168.10.157 |
 | TACACS2 | tacacs+ | default | 10.10.10.248 |
+| RADIUS2 | radius | mgt | 192.168.10.157 |
+| RADIUS1 | radius | default | 192.168.10.157 |
 
 #### AAA Server Groups Device Configuration
 
 ```eos
+!
+aaa group server radius RADIUS1
+   server 192.168.10.157
+!
+aaa group server radius RADIUS2
+   server 192.168.10.157 vrf mgt
 !
 aaa group server tacacs+ TACACS1
    server 10.10.10.157 vrf mgt
