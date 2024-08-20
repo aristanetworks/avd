@@ -15561,12 +15561,13 @@ keys:
             description: IPv4 Prefix associated with SSM.
           rp_addresses:
             type: list
+            primary_key: address
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 address:
                   type: str
-                  required: true
                   description: RP Address.
                 groups:
                   type: list
