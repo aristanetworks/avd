@@ -14418,7 +14418,7 @@ keys:
                     - sha-512
               rx_disabled:
                 type: bool
-                description: Disable authentication on receive side.
+                description: Disable authentication check on the receive side.
           level_1:
             type: dict
             description: Authentication settings for level-1. 'both' takes precedence
