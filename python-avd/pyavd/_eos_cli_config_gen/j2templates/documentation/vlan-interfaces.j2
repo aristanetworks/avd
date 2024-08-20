@@ -150,8 +150,6 @@
 {%                 set isis_authentication_mode = "Level-1: " ~ vlan_interface.isis_authentication.level_1.mode %}
 {%             elif vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
-{%             else %}
-{%                 set isis_authentication_mode = "-" %}
 {%             endif %}
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
