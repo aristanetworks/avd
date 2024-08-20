@@ -290,6 +290,9 @@ keys:
   aaa_root:
     type: dict
     keys:
+      disabled:
+        type: bool
+        description: Set to `true` to configure `no aaa root` which is the EOS default.
       secret:
         type: dict
         keys:
@@ -891,6 +894,10 @@ keys:
     description: 'Add a comment to provide information about the configuration.
 
       This comment will be rendered at the top of the generated configuration.'
+  config_end:
+    type: bool
+    description: Render `end` at the end of the configuration.
+    default: false
   custom_templates:
     type: list
     display_name: Extensibility with Custom Templates
@@ -1822,6 +1829,10 @@ keys:
   enable_password:
     type: dict
     keys:
+      disabled:
+        type: bool
+        description: Set to `true` to configure `no enable password` which is the
+          EOS default.
       hash_algorithm:
         type: str
         valid_values:

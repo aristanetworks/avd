@@ -79,15 +79,17 @@ roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-documentation.md
 
 ### Generate default config
 
-The `generate_default_config` knob allows to omit default EOS configuration.
-This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+The `generate_default_config` setting controls the generation of some default EOS configurations.
 
-The following commands will be omitted when `generate_default_config` is set to `false`:
+This is historic behavior which has been disabled by default in AVD 5.0.0 and will be removed in AVD 6.0.0.
+Instead it is recommended to build structured config according to the intended output configurations.
+
+The following commands will be generated when `generate_default_config` is set to `true`:
 
 - RANCID Content Type
 - Hostname
-- Default configuration for `aaa`
-- Default configuration for `enable password`
+- Default configuration `no aaa root`
+- Default configuration `no enable password`
 - Transceiver qsfp default mode
 - End of configuration delimiter
 

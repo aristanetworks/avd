@@ -1,6 +1,6 @@
 cvp_configlets:
-  AVD_DC1-BL1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-BL1A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-BL1A\nip name-server vrf
@@ -111,8 +111,8 @@ cvp_configlets:
     192.168.255.10\n      update wait-install\n      neighbor 10.255.251.11 peer group
     MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nmanagement api http-commands\n
     \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-BL1B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-BL1B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-BL1B\nip name-server vrf
@@ -223,8 +223,8 @@ cvp_configlets:
     192.168.255.11\n      update wait-install\n      neighbor 10.255.251.10 peer group
     MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nmanagement api http-commands\n
     \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-L2LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-L2LEAF1A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -245,8 +245,8 @@ cvp_configlets:
     address 192.168.200.112/24\nno ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0
     192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-L2LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-L2LEAF2A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -281,8 +281,8 @@ cvp_configlets:
     mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-L2LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-L2LEAF2B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -317,8 +317,8 @@ cvp_configlets:
     mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-LEAF1A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -399,8 +399,8 @@ cvp_configlets:
     export evpn 11:11\n      router-id 192.168.255.5\n      redistribute connected\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-LEAF2A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -572,8 +572,8 @@ cvp_configlets:
     \     neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
     connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-LEAF2B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -745,8 +745,8 @@ cvp_configlets:
     \     neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
     connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-SPINE1: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE1: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE1\nip name-server vrf
@@ -815,8 +815,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SPINE2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE2: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE2\nip name-server vrf
@@ -885,8 +885,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SPINE3: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE3: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE3\nip name-server vrf
@@ -955,8 +955,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SPINE4: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE4: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE4\nip name-server vrf
@@ -1025,8 +1025,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SVC3A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SVC3A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -1237,8 +1237,8 @@ cvp_configlets:
     \     neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
     connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-SVC3B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SVC3B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname

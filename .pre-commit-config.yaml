@@ -75,7 +75,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.5.7
+    rev: v0.6.1
     hooks:
       # Run the linter.
       - id: ruff
@@ -137,7 +137,6 @@ repos:
             ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
             python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
-            python-avd/pyavd/.*/schema/.*jsonschema\.json| # Exclude JSON schemas file
             python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
             python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
@@ -211,7 +210,7 @@ repos:
         language: python
         files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0', 'jsonschema>=4.10.3']
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.41.0

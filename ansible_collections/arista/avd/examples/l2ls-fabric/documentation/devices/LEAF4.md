@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [MLAG](#mlag)
@@ -153,6 +154,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin nopassword
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authentication
 
