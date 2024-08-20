@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 $id: eos_designs
@@ -16,37 +16,11 @@ keys:
     documentation_options:
       table: role-input-validation
     type: str
-    valid_values:
-    - disabled
-    - error
-    - warning
-    - info
-    - debug
-    - quiet
-    default: debug
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 5.0.0
     description: 'Conversion Mode for AVD input data conversion.
-
-      Input data conversion will perform type conversion of input variables as defined
-      in the schema.
-
-      The type conversion is intended to help the user to identify minor issues with
-      the input data, while still allowing the data to be validated.
-
-      During conversion, messages will generated with information about the host(s)
-      and key(s) which required conversion.
-
-      "disabled" means that conversion will not run - avoid this since conversion
-      is also handling data deprecation and upgrade.
-
-      "error" will produce error messages and fail the task.
-
-      "warning" will produce warning messages.
-
-      "info" will produce regular log messages.
-
-      "debug" will produce hidden debug messages viewable with -v.
-
-      "quiet" will not produce any messages.
 
       '
   avd_data_validation_mode:
@@ -54,12 +28,9 @@ keys:
       table: role-input-validation
     type: str
     valid_values:
-    - disabled
     - error
     - warning
-    - info
-    - debug
-    default: warning
+    default: error
     description: 'Validation Mode for AVD input data validation.
 
       Input data validation will validate the input variables according to the schema.
@@ -67,15 +38,9 @@ keys:
       During validation, messages will generated with information about the host(s)
       and key(s) which failed validation.
 
-      "disabled" means that validation will not run.
-
       "error" will produce error messages and fail the task.
 
       "warning" will produce warning messages.
-
-      "info" will produce regular log messages.
-
-      "debug" will produce hidden debug messages viewable with -v.
 
       '
   bfd_multihop:
@@ -495,8 +460,6 @@ keys:
       '
     type: list
     primary_key: key
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -578,8 +541,6 @@ keys:
     documentation_options:
       table: custom-structured-configuration
     type: list
-    convert_types:
-    - str
     items:
       type: str
     description: "Custom EOS Structured Configuration keys can be set on any group
@@ -852,6 +813,7 @@ keys:
       warning: true
       new_key: cvp_instance_ips
       remove_in_version: 5.0.0
+      removed: true
     type: str
     description: 'IPv4 address or DNS name for CloudVision.
 
@@ -1007,6 +969,11 @@ keys:
   design:
     documentation_options:
       table: design
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#deprecation_of_design.type
     type: dict
     keys:
       type:
@@ -1736,6 +1703,35 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
+  ipv4_prefix_list_catalog:
+    type: list
+    primary_key: name
+    description: IPv4 prefix-list catalog.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Prefix-list Name.
+        sequence_numbers:
+          type: list
+          primary_key: sequence
+          required: true
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "permit 10.255.0.0/27 eq 32"'
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-settings
@@ -2004,14 +2000,12 @@ keys:
     type: bool
     documentation_options:
       table: fabric-settings
-    description: 'If `true` (default) an MLAG ID will always be configured on a Port-Channel
+    description: 'If `true` an MLAG ID will always be configured on a Port-Channel
       downlink even if the downlink is only on one node in the MLAG pair.
 
-      If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed
-      to two MLAG switches.
-
-      Note the default value will change to `false` in AVD version 5.0'
-    default: true
+      If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
+      dual-homed to two MLAG switches.'
+    default: false
   name_servers:
     documentation_options:
       table: management-settings
@@ -2049,8 +2043,6 @@ keys:
   network_services_keys:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'Network Services can be grouped by using separate keys.
 
       The keys can be customized to provide a better better organization or grouping
@@ -2084,8 +2076,27 @@ keys:
 
 
       This may introduce breaking changes to your configuration.'
+  custom_node_type_keys:
+    $ref: eos_designs#/keys/node_type_keys
+    default: null
+    type: list
+    documentation_options:
+      table: node-type-keys
+    description: 'Define Custom Node Type Keys, to specify the properties of each
+      node type in the fabric.
+
+      This allows for complete customization of the fabric layout and functionality.
+
+      `custom_node_type_keys` should be defined in top level group_var for the fabric.
+
+      These values will be combined with the defaults; custom node type keys named
+      the same as a
+
+      default node_type_key will replace the default.'
   node_type_keys:
     type: list
+    documentation_options:
+      table: node-type-keys
     description: 'Define Node Type Keys, to specify the properties of each node type
       in the fabric.
 
@@ -2093,12 +2104,16 @@ keys:
 
       `node_type_keys` should be defined in top level group_var for the fabric.
 
-      The default values will be overridden if defining this key, so it is recommended
-      to copy the defaults and modify them.
 
-      '
-    convert_types:
-    - dict
+      The default values will be overridden if this key is defined.
+
+      If you need to change all the existing `node_type_keys`, it is recommended to
+      copy the defaults and modify them.
+
+      If you need to add custom `node_type_keys`, create them under `custom_node_type_keys`
+      - if named identically to default `node_type_keys` entries,
+
+      custom entries will replace the equivalent default entry.'
     primary_key: key
     items:
       type: dict
@@ -2166,8 +2181,6 @@ keys:
             '
         default_overlay_address_families:
           type: list
-          convert_types:
-          - str
           items:
             type: str
             convert_to_lower_case: true
@@ -2806,10 +2819,29 @@ keys:
       table: fabric-settings
     description: QOS Profile assigned on all infrastructure links.
     type: str
-  platform_settings:
+  custom_platform_settings:
+    $ref: eos_designs#/keys/platform_settings
+    default: null
     documentation_options:
       table: platform-settings
+    description: Custom Platform settings to override the default `platform_settings`.
+      This list will be prepended to the list of `platform_settings`. The first entry
+      containing `platforms` matching the `platform` node setting will be chosen.
+      If no matches are found, the first entry containing a platform `default` will
+      be chosen.
     type: list
+  platform_settings:
+    type: list
+    documentation_options:
+      table: platform-settings
+    description: Platform settings. The first entry containing `platforms` matching
+      the `platform` node setting will be chosen. If no matches are found, the first
+      entry containing a platform `default` will be chosen. The default values will
+      be overridden if `platform_settings` is defined. If you need to replace all
+      the default platforms, it is recommended to copy the defaults and modify them.
+      If you need to add custom platforms, create them under `custom_platform_settings`.
+      Entries under `custom_platform_settings` will be matched before the equivalent
+      entries from `platform_settings`.
     items:
       type: dict
       keys:
@@ -3094,9 +3126,6 @@ keys:
       table: platform-settings
     type: list
     primary_key: platform
-    secondary_key: speeds
-    convert_types:
-    - dict
     description: Set Hardware Speed Groups per Platform.
     items:
       type: dict
@@ -3108,9 +3137,6 @@ keys:
         speeds:
           type: list
           primary_key: speed
-          secondary_key: speed_groups
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -3141,8 +3167,6 @@ keys:
   port_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Optional profiles to share common settings for connected_endpoints
       and/or network_ports.
 
@@ -3168,27 +3192,12 @@ keys:
   ptp:
     deprecation:
       warning: true
+      removed: true
       new_key: ptp_settings
       remove_in_version: v5.0.0
     documentation_options:
       table: ptp_settings
     type: dict
-    keys:
-      enabled:
-        type: bool
-      profile:
-        type: str
-        valid_values:
-        - aes67
-        - smpte2059-2
-        - aes67-r16-2016
-        default: aes67-r16-2016
-      domain:
-        type: int
-        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
-      auto_clock_identity:
-        type: bool
-        default: true
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -3264,9 +3273,7 @@ keys:
     documentation_options:
       table: ptp_settings
     type: dict
-    description: 'Common PTP settings.
-
-      `ptp_settings` replaces the old `ptp` key. `ptp_settings` takes precedence.'
+    description: Common PTP settings.
     keys:
       enabled:
         type: bool
@@ -3740,8 +3747,6 @@ keys:
   svi_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 
       Keys are the same used under SVIs. Keys defined under SVIs take precedence.
@@ -5212,13 +5217,6 @@ $defs:
 
               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
               devices.'
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -5329,6 +5327,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              removed: true
+              warning: true
+              remove_in_version: 5.0.0
+              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state`
@@ -5347,8 +5353,6 @@ $defs:
   connected_endpoints:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'This should be applied to group_vars or host_vars where endpoints
       are connecting.
 
@@ -5449,10 +5453,7 @@ $defs:
     keys:
       p2p_links_ip_pools:
         type: list
-        convert_types:
-        - dict
         primary_key: name
-        secondary_key: ipv4_pool
         items:
           type: dict
           keys:
@@ -5472,8 +5473,6 @@ $defs:
               max: 31
       p2p_links_profiles:
         type: list
-        convert_types:
-        - dict
         primary_key: name
         $ref: eos_designs#/$defs/p2p_links
         items:
@@ -5500,8 +5499,6 @@ $defs:
       table: network-services-common-settings
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -5609,8 +5606,6 @@ $defs:
             table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'List of BGP peer groups definitions.
 
             This will configure BGP peer groups to be used inside the tenant VRF for
@@ -5846,8 +5841,6 @@ $defs:
             table: network-services-vrfs-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'VRFs will only be configured on a node if any of the underlying
             objects like `svis` or `l3_interfaces` apply to the node.
 
@@ -5959,8 +5952,6 @@ $defs:
               ip_helpers:
                 type: list
                 primary_key: ip_helper
-                convert_types:
-                - dict
                 description: IP helper for DHCP relay.
                 items:
                   type: dict
@@ -6226,8 +6217,6 @@ $defs:
                 type: list
                 primary_key: id
                 allow_duplicate_primary_key: true
-                convert_types:
-                - dict
                 description: 'List of SVIs.
 
                   This will create both the L3 SVI and L2 VLAN based on filters applied
@@ -6290,8 +6279,6 @@ $defs:
                     nodes:
                       type: list
                       primary_key: node
-                      convert_types:
-                      - dict
                       items:
                         type: dict
                         $ref: eos_designs#/$defs/svi_settings
@@ -6611,8 +6598,6 @@ $defs:
                 type: list
                 primary_key: ip_address
                 allow_duplicate_primary_key: true
-                convert_types:
-                - dict
                 description: 'List of BGP peer definitions.
 
                   This will configure BGP neighbors inside the tenant VRF for peering
@@ -6880,8 +6865,6 @@ $defs:
           type: list
           primary_key: id
           allow_duplicate_primary_key: true
-          convert_types:
-          - dict
           description: Define L2 network services organized by vlan id.
           items:
             type: dict
@@ -8431,24 +8414,6 @@ $defs:
             min: 0
             max: 300
             default: 30
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -8466,8 +8431,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: list
-            convert_types:
-            - str
             items:
               type: str
               valid_values:
@@ -8481,8 +8444,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: list
-            convert_types:
-            - str
             description: List of inventory hostname acting as MPLS route-reflectors.
             items:
               type: str
@@ -8851,11 +8812,27 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
+          inband_management_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_subnet
+              remove_in_version: 5.0.0
+            type: str
+          inband_management_vlan:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            deprecation:
+              removed: true
+              warning: true
+              new_key: inband_mgmt_vlan
+              remove_in_version: 5.0.0
+            type: int
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
-        convert_types:
-        - dict
         primary_key: group
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -8877,8 +8854,6 @@ $defs:
       nodes:
         description: Define variables per node.
         type: list
-        convert_types:
-        - dict
         primary_key: name
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -9249,9 +9224,6 @@ $defs:
             nodes_child_interfaces:
               type: list
               primary_key: node
-              secondary_key: interfaces
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -9296,8 +9268,6 @@ $defs:
       nodes:
         type: list
         primary_key: node
-        convert_types:
-        - dict
         description: 'Define node specific configuration, such as unique IP addresses.
 
           Any keys set here will be merged onto the SVI config, except `structured_config`
@@ -9346,20 +9316,6 @@ $defs:
           IP addresses on each node.
 
           '
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask.
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-
-          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
-          addresses will be configured.
-
-          '
-        deprecation:
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
         description: 'IPv6 VXLAN Anycast IP addresses.
@@ -9431,8 +9387,6 @@ $defs:
       ip_helpers:
         type: list
         primary_key: ip_helper
-        convert_types:
-        - dict
         description: IP helper for DHCP relay.
         items:
           type: dict
@@ -9660,6 +9614,18 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
+      ipv6_address_virtual:
+        type: str
+        description: 'IPv6_address/Mask.
+
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
+
+          '
+        deprecation:
+          removed: true
+          warning: true
+          remove_in_version: 5.0.0
+          new_key: ipv6_address_virtuals
   virtual_topology:
     type: dict
     keys:

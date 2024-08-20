@@ -4,10 +4,10 @@
  that can be found in the LICENSE file.
 #}
 {% if node_type_keys is arista.avd.defined %}
-{%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{%     set node_types = node_type_keys | map(attribute="type") %}
 {% else %}
 {%     set default_node_types = {
-           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller", "wan_router", "wan_rr"],
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "l3spine", "l2spine", "super-spine", "overlay-controller", "wan_router", "wan_rr", "p", "pe", "rr"],
            "mpls": ["p", "pe", "rr"],
            "l2ls": ["l3spine", "spine", "leaf"]
        } %}
@@ -44,14 +44,14 @@
 {%         set fabric_switch.provisioned = 'Not Available' if node_hostvars.is_deployed is arista.avd.defined(false) else 'Provisioned' %}
 {%         set fabric_switch.serial_number = node_facts.switch.serial_number | arista.avd.default("-") %}
 {%         if node_hostvars.loopback_interfaces is arista.avd.defined %}
-{%             set loopback0 = (node_hostvars.loopback_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", "Loopback0"))[0] | arista.avd.default %}
+{%             set loopback0 = (node_hostvars.loopback_interfaces | selectattr("name", "arista.avd.defined", "Loopback0"))[0] | arista.avd.default %}
 {%             if loopback0.ip_address is arista.avd.defined %}
 {%                 set fabric_switch.loopback0_ip_address = loopback0.ip_address %}
 {%                 do assigned_ip_addresses.append(fabric_switch.loopback0_ip_address) %}
 {%             endif %}
 {%         endif %}
 {%         if node_hostvars.loopback_interfaces is arista.avd.defined %}
-{%             set loopback1 = (node_hostvars.loopback_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", "Loopback1"))[0] | arista.avd.default %}
+{%             set loopback1 = (node_hostvars.loopback_interfaces | selectattr("name", "arista.avd.defined", "Loopback1"))[0] | arista.avd.default %}
 {%             if loopback1.ip_address is arista.avd.defined %}
 {%                 set fabric_switch.loopback1_ip_address = loopback1.ip_address %}
 {%                 do assigned_ip_addresses.append(fabric_switch.loopback1_ip_address) %}
@@ -63,7 +63,7 @@
 {%         endif %}
 {%         do fabric_switches.append(fabric_switch) %}
 {# Populate topology_links #}
-{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | arista.avd.natural_sort("name") %}
+{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort("name") %}
 {%             if ethernet_interface.peer_type | arista.avd.default('undefined') in node_types + ['mlag_peer'] %}
 {%                 do interfaces_done.append(node ~ "," ~ ethernet_interface.name) %}
 {%                 set peer = ethernet_interface.peer %}
@@ -83,7 +83,7 @@
 {%                     set topology_link.peer_ip_address = none %}
 {%                     set peer_hostvars = hostvars[peer] | arista.avd.default %}
 {%                     if peer_hostvars.ethernet_interfaces is arista.avd.defined %}
-{%                         set peer_ethernet_interface = (peer_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", peer_interface))[0] | arista.avd.default %}
+{%                         set peer_ethernet_interface = (peer_hostvars.ethernet_interfaces | selectattr("name", "arista.avd.defined", peer_interface))[0] | arista.avd.default %}
 {%                         if peer_ethernet_interface.ip_address is arista.avd.defined %}
 {%                             set topology_link.peer_ip_address = peer_ethernet_interface.ip_address %}
 {%                             do assigned_ip_addresses.append(topology_link.peer_ip_address) %}

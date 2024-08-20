@@ -4,11 +4,8 @@
 from pyavd import get_device_doc
 
 
-def test_get_device_doc(hostname: str, all_inputs: dict, device_docs: dict):
-    """
-    Test get_device_config
-    """
-
+def test_get_device_doc(hostname: str, all_inputs: dict, device_docs: dict) -> None:
+    """Test get_device_config."""
     structured_config: dict = all_inputs[hostname]
     if not structured_config.get("generate_device_documentation", True):
         return

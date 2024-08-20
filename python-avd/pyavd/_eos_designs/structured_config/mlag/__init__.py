@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._utils import default, get, strip_empties_from_dict
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
 
 

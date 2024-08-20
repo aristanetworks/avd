@@ -95,6 +95,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -192,7 +198,7 @@ vlan_interfaces:
   ip_address_virtual: 10.0.4.1/24
   vrf: TEST1
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF7_VTEP
     vxlan:
       udp_port: 4789

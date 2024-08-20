@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -82,14 +82,12 @@ keys:
                   - '0'
                   - '7'
                   - '8a'
-                description: Configure authentication key type. Default key_id is 0.
+                description: Configure authentication key type.
               key:
                 type: str
-                description: Password string.
+                description: Password string. `key_type` is required for this setting.
               key_ids:
                 type: list
-                convert_types:
-                  - dict
                 primary_key: id
                 items:
                   type: dict
@@ -135,7 +133,7 @@ keys:
                   - md5
                   - sha
                   - text
-                  - shared_secret
+                  - shared-secret
               sha:
                 type: dict
                 description: Required settings for authentication mode 'sha'.
@@ -166,6 +164,7 @@ keys:
                       - sha-512
               rx_disabled:
                 type: bool
+                description: Disable authentication check on the receive side.
           level_1:
             type: dict
             description: Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.
@@ -294,8 +293,6 @@ keys:
             type: str
           prefix_segments:
             type: list
-            convert_types:
-              - dict
             items:
               type: dict
               keys:

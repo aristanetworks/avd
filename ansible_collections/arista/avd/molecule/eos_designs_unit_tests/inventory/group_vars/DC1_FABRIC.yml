@@ -262,6 +262,7 @@ l3leaf:
           mgmt_ip: 192.168.200.120/24
           uplink_switch_interfaces: [ Ethernet27, Ethernet27, Ethernet27, Ethernet27 ]
     - group: DC1_UNDEPLOYED_LEAF1
+      platform: my_custom_platform
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -405,6 +406,12 @@ platform_speed_groups:
         speed_groups: [ 3, 2, 5/1 ]    # Unsorted order, but we should sort output correctly.
       - speed: 10G
         speed_groups: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2
+  - platform: my_custom_platform
+    speeds:
+      - speed: 10G
+        speed_groups: [ 3, 2, 5/1 ]
+      - speed: 25G
+        speed_groups: [ 1, 2, 4 ]
 
 # Set Aboot password with sha512 hash
 boot:

@@ -6,10 +6,10 @@
 Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
 {% set interfaces_done = [] %}
 {% if node_type_keys is arista.avd.defined %}
-{%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{%     set node_types = node_type_keys | map(attribute="type") %}
 {% else %}
 {%     set default_node_types = {
-           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "l3spine", "l2spine", "super-spine", "overlay-controller", "wan_router", "wan_rr", "p", "pe", "rr"],
            "mpls": ["p", "pe", "rr"],
            "l2ls": ["l3spine", "spine", "leaf"]
        } %}
@@ -19,7 +19,7 @@ Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer
 {%     set node_hostvars = hostvars[node] %}
 {%     set node_facts = avd_switch_facts[node] %}
 {%     if node_facts.switch.type | arista.avd.default('undefined') in node_types %}
-{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | arista.avd.natural_sort("name") %}
+{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort("name") %}
 {%             if ethernet_interface.type is arista.avd.defined('routed') %}
 {%                 if ethernet_interface.peer_type | arista.avd.default('undefined') in node_types %}
 {%                     do interfaces_done.append(node ~ "," ~ ethernet_interface.name) %}
@@ -37,7 +37,7 @@ Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer
 {%                         set peer_ip_address = "" %}
 {%                         set peer_hostvars = hostvars[peer] | arista.avd.default %}
 {%                         if peer_hostvars.ethernet_interfaces is arista.avd.defined %}
-{%                             set peer_ethernet_interface = (peer_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", peer_interface))[0] | arista.avd.default %}
+{%                             set peer_ethernet_interface = (peer_hostvars.ethernet_interfaces | selectattr("name", "arista.avd.defined", peer_interface))[0] | arista.avd.default %}
 {%                             set peer_ip_address = peer_ethernet_interface.ip_address | arista.avd.default("") %}
 {%                         endif %}
 {%                         do csv_line.append(peer_ip_address) %}

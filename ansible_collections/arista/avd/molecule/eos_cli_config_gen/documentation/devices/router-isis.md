@@ -50,19 +50,18 @@ interface Management1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_EAPI-LEAF1B_Ethernet3 | *access | *- | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | - | - | - |
-| Ethernet4 | - | *routed | 4 | *10.9.2.3/31 | **default | **- | **- | **- | **- |
-| Ethernet5 | - | *routed | 5 | *10.9.2.5/31 | **default | **- | **- | **- | **- |
-| Ethernet6 | - | *routed | 6 | *10.9.2.7/31 | **default | **- | **- | **- | **- |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | - | 172.31.255.3/31 | default | 1500 | - | - | - |
+| Ethernet4 | - | 4 | *10.9.2.3/31 | **default | **- | **- | **- | **- |
+| Ethernet5 | - | 5 | *10.9.2.5/31 | **default | **- | **- | **- | **- |
+| Ethernet6 | - | 6 | *10.9.2.7/31 | **default | **- | **- | **- | **- |
 
 *Inherited from Port-Channel Interface
 
@@ -121,16 +120,16 @@ interface Ethernet6
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel4 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
-| Port-Channel5 | - | routed | - | 10.9.2.5/31 | default | - | - | - | - |
-| Port-Channel6 | - | routed | - | 10.9.2.7/31 | default | - | - | - | - |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel4 | - | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel5 | - | - | 10.9.2.5/31 | default | - | - | - | - |
+| Port-Channel6 | - | - | 10.9.2.7/31 | default | - | - | - | - |
 
 ##### ISIS
 
@@ -241,9 +240,9 @@ interface Loopback2
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
-| --------- | ------------- | -------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -282,10 +281,16 @@ interface Vlan4094
 | Type | level-2 |
 | Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
-| MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
-| SR MPLS Enabled | True |
+| SR MPLS Enabled | False |
+| SPF Interval | 250 seconds |
+
+#### ISIS Route Redistribution
+
+| Route Type | Route-Map | Include Leaked |
+| ---------- | --------- | -------------- |
+| bgp | RM-BGP | - |
 
 #### ISIS Interfaces Summary
 
@@ -304,12 +309,34 @@ interface Vlan4094
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
 
+#### Prefix Segments
+
+| Prefix Segment | Index |
+| -------------- | ----- |
+| 155.2.1.19/32 | 2121 |
+
 #### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
-| Maximum-paths | 2 |
+| TI-LFA Mode | node-protection |
+| TI-LFA Level | level-2 |
+| TI-LFA SRLG Enabled | True |
+
+#### Tunnel Source
+
+| Source Protocol | RCF |
+| --------------- | --- |
+| BGP Labeled-Unicast | - |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| BFD All-interfaces | True |
+| TI-LFA SRLG Enabled | True |
 
 #### Router ISIS Device Configuration
 
@@ -318,19 +345,29 @@ interface Vlan4094
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
+   redistribute bgp route-map RM-BGP
    router-id ipv4 192.168.255.3
    log-adjacency-changes
-   mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
+   set-overload-bit on-startup wait-for-bgp
    advertise passive-only
-   authentication mode sha key-id 4
+   spf-interval 250
+   authentication mode sha key-id 5 rx-disabled level-1
+   authentication mode shared-secret profile test2 algorithm md5 rx-disabled level-2
    authentication key 0 password
    !
    address-family ipv4 unicast
-      maximum-paths 2
+      tunnel source-protocol bgp ipv4 labeled-unicast
+      fast-reroute ti-lfa mode node-protection level-2
+      fast-reroute ti-lfa srlg
+   !
+   address-family ipv6 unicast
+      bfd all-interfaces
+      fast-reroute ti-lfa srlg
    !
    segment-routing mpls
-      no shutdown
+      shutdown
+      prefix-segment 155.2.1.19/32 index 2121
    address-family ipv6 unicast
      multi-topology
    traffic-engineering

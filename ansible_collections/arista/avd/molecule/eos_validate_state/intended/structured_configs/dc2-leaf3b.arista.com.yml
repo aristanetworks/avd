@@ -167,6 +167,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -416,7 +422,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: dc2-leaf3b.arista.com_VTEP
     vxlan:
       udp_port: 4789

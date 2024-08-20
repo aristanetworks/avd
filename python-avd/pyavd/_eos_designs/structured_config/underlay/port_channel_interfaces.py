@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.interface_descriptions.models import InterfaceDescriptionData
 from pyavd._utils import get, short_esi_to_route_target
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
 
@@ -66,7 +66,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["vlans"] = vlans
 
             # Configure MLAG on MLAG switches if either 'mlag_on_orphan_port_channel_downlink' or 'link.mlag' is True
-            if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=True), link.get("mlag", True)]):
+            if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=False), link.get("mlag", True)]):
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:

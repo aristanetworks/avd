@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 from pyavd._utils import default, get, get_item, merge, unique
-from pyavd.j2filters import convert_dicts, natural_sort, range_expand
+from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -36,7 +36,7 @@ class FilteredTenantsMixin:
         filtered_tenants = []
         filter_tenants = self.filter_tenants
         for network_services_key in self.network_services_keys:
-            tenants = convert_dicts(get(self.hostvars, network_services_key["name"]), "name")
+            tenants = get(self.hostvars, network_services_key["name"])
             filtered_tenants.extend(
                 {**tenant, "l2vlans": self.filtered_l2vlans(tenant), "vrfs": self.filtered_vrfs(tenant)}
                 for tenant in tenants
@@ -91,7 +91,7 @@ class FilteredTenantsMixin:
         if "l2vlans" not in tenant:
             return []
 
-        l2vlans: list[dict] = natural_sort(convert_dicts(tenant["l2vlans"], "id"), "id")
+        l2vlans: list[dict] = natural_sort(tenant["l2vlans"], "id")
 
         if tenant_evpn_vlan_bundle := get(tenant, "evpn_vlan_bundle"):
             for l2vlan in l2vlans:
@@ -176,7 +176,7 @@ class FilteredTenantsMixin:
         - The VRF is part of a tenant set under 'always_include_vrfs_in_tenants'
         - 'always_include_vrfs_in_tenants' is set to ['all']
         - This is a WAN router and the VRF present on the uplink switch.
-          Note that if the attracted VRF does not have a wan_vni configured, the code for interface Vxlan1 will raise an error.
+          Note that if the attracted VRF does not have a wan_vni configured, the code for interface vxlan1 will raise an error.
         """
         if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
             return True
@@ -192,7 +192,7 @@ class FilteredTenantsMixin:
         """
         filtered_vrfs = []
 
-        vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
+        vrfs: list[dict] = natural_sort(tenant.get("vrfs", []), "name")
         for original_vrf in vrfs:
             if not self.is_accepted_vrf(original_vrf):
                 continue
@@ -200,7 +200,7 @@ class FilteredTenantsMixin:
             # Copying original_vrf and setting "tenant" for use by child objects like SVIs
             vrf = {**original_vrf, "tenant": tenant["name"]}
 
-            bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
+            bgp_peers = natural_sort(vrf.get("bgp_peers"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [route for route in get(vrf, "static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])]
             vrf["ipv6_static_routes"] = [
@@ -276,11 +276,11 @@ class FilteredTenantsMixin:
 
         The key "nodes" is filtered to only contain one item with the relevant dict from "nodes" or {}
         """
-        svi_profiles = convert_dicts(get(self.hostvars, "svi_profiles", default=[]), "profile")
+        svi_profiles = get(self.hostvars, "svi_profiles", default=[])
         return [
             {
                 **svi_profile,
-                "nodes": [get_item(convert_dicts(svi_profile.get("nodes", []), "node"), "node", self.hostname, default={})],
+                "nodes": [get_item(svi_profile.get("nodes", []), "node", self.hostname, default={})],
             }
             for svi_profile in svi_profiles
         ]
@@ -304,7 +304,7 @@ class FilteredTenantsMixin:
 
         filtered_svi = {
             **svi,
-            "nodes": [get_item(convert_dicts(svi.get("nodes", []), "node"), "node", self.hostname, default={})],
+            "nodes": [get_item(svi.get("nodes", []), "node", self.hostname, default={})],
         }
 
         if (svi_profile_name := filtered_svi.get("profile")) is not None:
@@ -358,7 +358,7 @@ class FilteredTenantsMixin:
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return []
 
-        svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")
+        svis: list[dict] = natural_sort(vrf.get("svis", []), "id")
         svis = [svi for svi in svis if self.is_accepted_vlan(svi)]
 
         # Handle svi_profile inheritance
@@ -424,7 +424,7 @@ class FilteredTenantsMixin:
 
         The given svi_config is updated in-place.
         """
-        svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
+        svi_ip_helpers: list[dict] = default(svi.get("ip_helpers"), vrf.get("ip_helpers"), [])
         if svi_ip_helpers:
             svi_config["ip_helpers"] = [
                 {"ip_helper": svi_ip_helper["ip_helper"], "source_interface": svi_ip_helper.get("source_interface"), "vrf": svi_ip_helper.get("source_vrf")}

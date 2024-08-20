@@ -7,7 +7,6 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._utils import get
-from pyavd.j2filters import convert_dicts
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -46,5 +45,5 @@ class ConnectedEndpointsKeysMixin:
         """
         connected_endpoints_keys = []
         # Support legacy data model by converting nested dict to list of dict
-        connected_endpoints_keys = convert_dicts(get(self.hostvars, "connected_endpoints_keys", default=DEFAULT_CONNECTED_ENDPOINTS_KEYS), "key")
+        connected_endpoints_keys = get(self.hostvars, "connected_endpoints_keys", default=DEFAULT_CONNECTED_ENDPOINTS_KEYS)
         return [entry for entry in connected_endpoints_keys if entry.get("key") is not None and self.hostvars.get(entry["key"]) is not None]

@@ -7,8 +7,8 @@ from functools import cached_property
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import default, get, strip_null_from_data
-from pyavd.j2filters import convert_dicts, natural_sort
+from pyavd._utils import get, strip_null_from_data
+from pyavd.j2filters import natural_sort
 
 from .ntp import NtpMixin
 from .snmp_server import SnmpServerMixin
@@ -214,12 +214,9 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return None
 
         tmp_speed_groups = {}
-        # converting nested dict to list of dict to support avd_v4.0
-        platform_speed_groups = convert_dicts(platform_speed_groups, "platform", "speeds")
         for platform_item in platform_speed_groups:
             if platform_item["platform"] == switch_platform:
-                # converting nested dict to list of dict to support avd_v4.0
-                speeds = convert_dicts(platform_item.get("speeds"), "speed", "speed_groups")
+                speeds = platform_item.get("speeds")
                 for speed in natural_sort(speeds, "speed"):
                     for speed_group in speed["speed_groups"]:
                         tmp_speed_groups[speed_group] = speed["speed"]
@@ -234,20 +231,16 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     @cached_property
     def daemon_terminattr(self) -> dict | None:
         """
-        daemon_terminattr set based on cvp_instance_ip and cvp_instance_ips variables.
+        daemon_terminattr set based on cvp_instance_ips.
 
         Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
 
-            if 'arista.io' in cvp_instance_ip:
+            if 'arista.io' in cvp_instance_ips:
                  <updating as cvaas_ip>
             else:
                  <updating as cvp_on_prem ip>
         """
-        # cvp_instance_ip will be removed in AVD5.0
-        cvp_instance_ip = get(self._hostvars, "cvp_instance_ip")
         cvp_instance_ip_list = get(self._hostvars, "cvp_instance_ips", [])
-        if cvp_instance_ip is not None:
-            cvp_instance_ip_list.append(cvp_instance_ip)
         if not cvp_instance_ip_list:
             return None
 
@@ -300,14 +293,28 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         return get(self._hostvars, "internal_vlan_order", default=default_internal_vlan_order)
 
     @cached_property
-    def transceiver_qsfp_default_mode_4x10(self) -> bool | None:
-        """
-        transceiver_qsfp_default_mode_4x10 is on by default in eos_cli_config_gen.
+    def aaa_root(self) -> dict:
+        """aaa_root.disable is always set to match EOS default config and historic configs."""
+        return {"disabled": True}
 
-        Set to false for WAN routers.
+    @cached_property
+    def config_end(self) -> bool:
+        """config_end is always set to match EOS default config and historic configs."""
+        return True
+
+    @cached_property
+    def enable_password(self) -> dict:
+        """enable_password.disable is always set to match EOS default config and historic configs."""
+        return {"disabled": True}
+
+    @cached_property
+    def transceiver_qsfp_default_mode_4x10(self) -> bool:
+        """
+        transceiver_qsfp_default_mode_4x10 is on for all devices except WAN routers.
+
         TODO: Add platform_setting to control this.
         """
-        return False if self.shared_utils.wan_role else None
+        return not self.shared_utils.is_wan_router
 
     @cached_property
     def event_monitor(self) -> dict | None:
@@ -411,7 +418,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         if (local_users := get(self._hostvars, "local_users")) is None:
             return None
 
-        return natural_sort(convert_dicts(local_users, "name"), "name")
+        return natural_sort(local_users, "name")
 
     @cached_property
     def clock(self) -> dict | None:
@@ -598,13 +605,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             default_priority2 = self.id % 256.
         """
         if not self.shared_utils.ptp_enabled:
-            # Since we have overlapping data model "ptp" between eos_designs and eos_cli_config_gen,
-            # we need to overwrite the input dict if set but not enabled.
-            # TODO: AVD5.0.0 Remove this handling since the `ptp` key is removed from eos_designs.
-            if get(self._hostvars, "ptp") is not None:
-                return {}
             return None
-        default_ptp_domain = default(get(self._hostvars, "ptp_settings.domain"), get(self._hostvars, "ptp.domain"), 127)
+        default_ptp_domain = get(self._hostvars, "ptp_settings.domain", default=127)
         default_ptp_priority1 = get(self.shared_utils.node_type_key_data, "default_ptp_priority1", default=127)
         default_clock_identity = None
 
@@ -616,11 +618,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 raise AristaAvdMissingVariableError(msg)
 
             priority2 = self.shared_utils.id % 256
-        default_auto_clock_identity = default(
-            get(self._hostvars, "ptp_settings.auto_clock_identity"),
-            get(self._hostvars, "ptp.auto_clock_identity"),
-            True,  # noqa: FBT003
-        )
+        default_auto_clock_identity = get(self._hostvars, "ptp_settings.auto_clock_identity", default=True)
         if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=default_auto_clock_identity) is True:
             clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
             default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"

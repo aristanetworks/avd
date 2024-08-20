@@ -4,11 +4,8 @@
 from pyavd import get_device_config, validate_structured_config
 
 
-def test_get_device_config(hostname: str, all_inputs: dict, configs: dict):
-    """
-    Test get_device_config
-    """
-
+def test_get_device_config(hostname: str, all_inputs: dict, configs: dict) -> None:
+    """Test get_device_config."""
     structured_config: dict = all_inputs[hostname]
     expected_config: str = configs[hostname]
 
@@ -18,6 +15,5 @@ def test_get_device_config(hostname: str, all_inputs: dict, configs: dict):
     device_config = get_device_config(structured_config)
 
     assert isinstance(device_config, str)
-    # assert f"hostname {hostname}\n" in eos_config
 
     assert device_config == expected_config

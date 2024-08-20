@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import jsonschema
 
 
 class AristaAvdError(Exception):
@@ -9,7 +8,7 @@ class AristaAvdError(Exception):
         self.message = message
         super().__init__(self.message)
 
-    def _json_path_to_string(self, json_path: list) -> str:
+    def _json_path_to_string(self, json_path: list[str | int]) -> str:
         path = ""
         for index, elem in enumerate(json_path):
             if isinstance(elem, int):
@@ -27,34 +26,19 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 
 class AvdSchemaError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", error: jsonschema.ValidationError | None = None) -> None:
-        if isinstance(error, jsonschema.SchemaError):
-            self.message = f"'Schema Error: {self._json_path_to_string(error.absolute_path)}': {error.message}"
-        else:
-            self.message = message
-        super().__init__(self.message)
+    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+        if path is not None:
+            self.path = self._json_path_to_string(path)
+            message = f"'Validation Error: {self.path}': {message}"
+        super().__init__(message)
 
 
 class AvdValidationError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", error: Exception | None = None) -> None:
-        if isinstance(error, (jsonschema.ValidationError)):
-            self.path = self._json_path_to_string(error.absolute_path)
-            self.message = f"'Validation Error: {self.path}': {error.message}"
-        else:
-            self.message = message
-        super().__init__(self.message)
-
-
-class AvdConversionWarning(AristaAvdError):  # noqa: N818
-    def __init__(
-        self, message: str = "Data was converted to conform to schema", key: list | None = None, oldtype: str = "unknown", newtype: str = "unknown"
-    ) -> None:
-        if key is not None:
-            self.path = self._json_path_to_string(key)
-            self.message = f"'Data Type Converted: {self.path} from '{oldtype}' to '{newtype}'"
-        else:
-            self.message = message
-        super().__init__(self.message)
+    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+        if path is not None:
+            self.path = self._json_path_to_string(path)
+            message = f"'Validation Error: {self.path}': {message}"
+        super().__init__(message)
 
 
 class AvdDeprecationWarning(AristaAvdError):  # noqa: N818

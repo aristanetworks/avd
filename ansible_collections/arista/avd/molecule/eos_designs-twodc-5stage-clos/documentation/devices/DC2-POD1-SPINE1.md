@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
@@ -106,6 +107,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### SNMP
@@ -166,13 +171,13 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.21.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1 | routed | - | 172.16.21.65/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1 | routed | - | 172.17.210.0/31 | default | - | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1 | routed | - | 172.17.210.4/31 | default | - | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 11.1.1.19/31 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1 | - | 172.16.21.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1 | - | 172.16.21.65/31 | default | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1 | - | 172.17.210.0/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1 | - | 172.17.210.4/31 | default | - | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | - | 11.1.1.19/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

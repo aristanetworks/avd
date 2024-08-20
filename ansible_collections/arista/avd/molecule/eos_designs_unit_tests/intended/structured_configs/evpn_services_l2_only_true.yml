@@ -160,6 +160,14 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 450-452
+  - name: default
+    rd: 192.168.255.109:123
+    route_targets:
+      both:
+      - 123:123
+    redistribute_routes:
+    - learned
+    vlan: '1234'
   - name: Tenant_D_OP_Zone
     rd: 192.168.255.109:40
     route_targets:
@@ -189,6 +197,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -354,6 +368,9 @@ vlans:
 - id: 452
   name: Tenant_D_v6_WAN_Zone_3
   tenant: Tenant_D
+- id: 1234
+  name: VRF_DEFAULT_SVI_WITH_OSPF
+  tenant: Tenant_D
 - id: 410
   name: Tenant_D_v6_OP_Zone_1
   tenant: Tenant_D
@@ -372,7 +389,7 @@ ip_igmp_snooping:
   - id: 120
     enabled: false
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: evpn_services_l2_only_true_VTEP
     vxlan:
       udp_port: 4789
@@ -434,6 +451,8 @@ vxlan_interface:
         vni: 40451
       - id: 452
         vni: 40452
+      - id: 1234
+        vni: 41234
       - id: 410
         vni: 40410
       - id: 411
