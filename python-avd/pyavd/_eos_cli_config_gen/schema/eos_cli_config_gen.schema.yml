@@ -11461,6 +11461,17 @@ keys:
                 The `ospf_route_type` is valid for source_protocols ''ospf'' and ''ospfv3''.
 
                 '
+            isis_level:
+              type: str
+              valid_values:
+              - level-1
+              - level-2
+              - level-1-2
+              description: 'Redistribute IS-IS route level.
+
+                The `isis_level` is valid for source_protocols ''isis''.
+
+                '
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -12131,6 +12142,17 @@ keys:
                     ''ospfv3''.
 
                     '
+                isis_level:
+                  type: str
+                  valid_values:
+                  - level-1
+                  - level-2
+                  - level-1-2
+                  description: 'Redistribute IS-IS route level.
+
+                    The `isis_level` is valid for source_protocols ''isis''.
+
+                    '
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -12180,9 +12202,6 @@ keys:
                   - attached-host
                   - connected
                   - isis
-                  - isis level-1
-                  - isis level-2
-                  - isis level-1-2
                   - ospf
                   - ospfv3
                   - static
@@ -12213,6 +12232,17 @@ keys:
 
                     The `ospf_route_type` is valid for source_protocols ''ospf'' and
                     ''ospfv3''.
+
+                    '
+                isis_level:
+                  type: str
+                  valid_values:
+                  - level-1
+                  - level-2
+                  - level-1-2
+                  description: 'Redistribute IS-IS route level.
+
+                    The `isis_level` is valid for source_protocols ''isis''.
 
                     '
       address_family_ipv4_sr_te:
@@ -12354,9 +12384,6 @@ keys:
                   - dhcp
                   - dynamic
                   - isis
-                  - isis level-1
-                  - isis level-2
-                  - isis level-1-2
                   - ospfv3
                   - static
                   - user
@@ -12386,6 +12413,17 @@ keys:
                   description: 'Routes learned by the OSPF protocol.
 
                     The `ospf_route_type` is valid for source_protocols ''ospfv3''.
+
+                    '
+                isis_level:
+                  type: str
+                  valid_values:
+                  - level-1
+                  - level-2
+                  - level-1-2
+                  description: 'Redistribute IS-IS route level.
+
+                    The `isis_level` is valid for source_protocols ''isis''.
 
                     '
       address_family_ipv6_multicast:
@@ -12494,6 +12532,17 @@ keys:
 
                     The `ospf_route_type` is valid for source_protocols ''ospf'' and
                     ''ospfv3''.
+
+                    '
+                isis_level:
+                  type: str
+                  valid_values:
+                  - level-1
+                  - level-2
+                  - level-1-2
+                  description: 'Redistribute IS-IS route level.
+
+                    The `isis_level` is valid for source_protocols ''isis''.
 
                     '
       address_family_ipv6_sr_te:
@@ -13457,9 +13506,6 @@ keys:
                     - connected
                     - dynamic
                     - isis
-                    - isis level-1
-                    - isis level-2
-                    - isis level-1-2
                     - ospf
                     - ospfv3
                     - rip
@@ -13492,6 +13538,17 @@ keys:
 
                       The `ospf_route_type` is valid for source_protocols ''ospf''
                       and ''ospfv3''.
+
+                      '
+                  isis_level:
+                    type: str
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                    description: 'Redistribute IS-IS route level.
+
+                      The `isis_level` is valid for source_protocols ''isis''.
 
                       '
             aggregate_addresses:
@@ -13673,6 +13730,17 @@ keys:
                           and ''ospfv3''.
 
                           '
+                      isis_level:
+                        type: str
+                        valid_values:
+                        - level-1
+                        - level-2
+                        - level-1-2
+                        description: 'Redistribute IS-IS route level.
+
+                          The `isis_level` is valid for source_protocols ''isis''.
+
+                          '
             address_family_ipv6:
               type: dict
               keys:
@@ -13820,6 +13888,17 @@ keys:
                           The `ospf_route_type` is valid for source_protocols ''ospfv3''.
 
                           '
+                      isis_level:
+                        type: str
+                        valid_values:
+                        - level-1
+                        - level-2
+                        - level-1-2
+                        description: 'Redistribute IS-IS route level.
+
+                          The `isis_level` is valid for source_protocols ''isis''.
+
+                          '
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -13918,6 +13997,17 @@ keys:
                           and ''ospfv3''.
 
                           '
+                      isis_level:
+                        type: str
+                        valid_values:
+                        - level-1
+                        - level-2
+                        - level-1-2
+                        description: 'Redistribute IS-IS route level.
+
+                          The `isis_level` is valid for source_protocols ''isis''.
+
+                          '
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -14013,6 +14103,17 @@ keys:
 
                           The `ospf_route_type` is valid for source_protocols ''ospf''
                           and ''ospfv3''.
+
+                          '
+                      isis_level:
+                        type: str
+                        valid_values:
+                        - level-1
+                        - level-2
+                        - level-1-2
+                        description: 'Redistribute IS-IS route level.
+
+                          The `isis_level` is valid for source_protocols ''isis''.
 
                           '
             address_family_flow_spec_ipv4:

@@ -14,14 +14,16 @@ router_bgp:
       - name: FOOBAR
         activate: false
     redistribute_routes:
-      - source_protocol: isis level-1-2
+      - source_protocol: isis
+        isis_level: level-1-2
         rcf: Address_Family_IPV6_ISIS()
   address_family_ipv4_multicast:
     peer_groups:
       - name: FOOBAR
         activate: true
     redistribute_routes:
-      - source_protocol: isis level-1
+      - source_protocol: isis
+        isis_level: level-1
         include_leaked: true
   address_family_ipv6_multicast:
     peer_groups:
@@ -178,7 +180,8 @@ router_bgp:
           - ip_address: aa::1
             activate: true
       redistribute_routes:
-        - source_protocol: isis level-1-2
+        - source_protocol: isis
+          isis_level: level-1-2
           rcf: VRF_RCF_ISIS()
 
     - name: VRF02
@@ -193,7 +196,8 @@ router_bgp:
             send:
               limit: 3
       redistribute_routes:
-        - source_protocol: isis level-1
+        - source_protocol: isis
+          isis_level: level-1
           rcf: VRF_RCF_ISIS()
 
     - name: VRF03
@@ -205,5 +209,6 @@ router_bgp:
       redistribute_routes:
         - source_protocol: dynamic
           rcf: VRF_RCF_DYNAMIC()
-        - source_protocol: isis level-2
+        - source_protocol: isis
+          isis_level: level-2
           rcf: VRF_RCF_ISIS()

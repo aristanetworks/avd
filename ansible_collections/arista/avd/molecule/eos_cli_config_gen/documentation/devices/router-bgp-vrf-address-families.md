@@ -51,9 +51,9 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| VRF01 | - | isis level-1-2 |
-| VRF02 | - | isis level-1 |
-| VRF03 | - | dynamic<br>isis level-2 |
+| VRF01 | - | isis |
+| VRF02 | - | isis |
+| VRF03 | - | dynamic<br>isis |
 
 #### Router BGP Device Configuration
 
