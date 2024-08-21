@@ -631,6 +631,8 @@ keys:
             new_key: port_channel_interfaces[].isis_authentication.both.key or port_channel_interfaces[].isis_authentication.level_1.key or port_channel_interfaces[].isis_authentication.level_2.key
         isis_authentication:
           type: dict
+          description: This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key.
+          # TODO: AVD 6.0 Update the description
           $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication"
         traffic_policy:
           type: dict
