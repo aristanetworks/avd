@@ -282,7 +282,7 @@ interface Ethernet50
 | Port-Channel100 | both | 43 | 30 | - | - | - | True |
 | Port-Channel100 | in | 23 | 45 | - | - | - | True |
 | Port-Channel100 | in | 34 | 23 | - | - | - | - |
-| Port-Channel100 | in | 37 | 49 | - | - | - | - |
+| Port-Channel100 | in | 37 | 49 | - | 56 | - | - |
 | Port-Channel100 | out | 10 | 45 | - | 34 | - | - |
 | Port-Channel100 | out | 34 | 50 | - | - | - | - |
 | Port-Channel100 | out | 45 | True | - | - | - | True |

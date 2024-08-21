@@ -180,7 +180,7 @@ sFlow is disabled.
 | Ethernet1 | both | 43 | 30 | - | - | - | True |
 | Ethernet1 | in | 10 | 24 | - | - | - | - |
 | Ethernet1 | in | 23 | 45 | - | - | - | True |
-| Ethernet1 | in | 37 | 49 | - | - | - | - |
+| Ethernet1 | in | 37 | 49 | 56 | - | - | - |
 | Ethernet1 | out | 10 | 45 | - | 34 | - | - |
 | Ethernet1 | out | 34 | 50 | - | - | - | - |
 | Ethernet1 | out | 45 | True | - | - | - | True |

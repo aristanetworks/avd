@@ -153,10 +153,10 @@
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%             if port_channel_interface.switchport.vlan_translations is arista.avd.defined %}
 {%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
-| {{ port_channel_interface.name }} | both | {{ vlan_translation.from }} | {{ vlan_translation.to | arista.avd.default('-') }} | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | - | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
+| {{ port_channel_interface.name }} | both | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | - | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
 {%                 endfor %}
 {%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_in | arista.avd.natural_sort('from') %}
-| {{ port_channel_interface.name }} | in | {{ vlan_translation.from }} | {{ vlan_translation.to | arista.avd.default('-') }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
+| {{ port_channel_interface.name }} | in | {{ vlan_translation.from }} | {{ vlan_translation.to }} | - | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
 {%                 endfor %}
 {%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort('from') %}
 {%                     set to_vlan_id = vlan_translation.dot1q_tunnel.all | arista.avd.default( vlan_translation.dot1q_tunnel.to, vlan_translation.to, "-") %}
