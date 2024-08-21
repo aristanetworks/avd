@@ -3521,7 +3521,7 @@ keys:
               description: 'Set VLAN when interface is in access mode.
 
                 Warning: This should not be combined with `ethernet_interfaces[].mode
-                = access/dot1q-tunnel`.'
+                = access/dot1q-tunnel` and `ethernet_interface[].vlans`.'
             trunk:
               type: dict
               keys:
@@ -9759,7 +9759,7 @@ keys:
                   description: 'VLAN ID or range(s) of VLAN IDs (1-4094).
 
                     Warning: This should not be combined with `port_channel_interfaces.mode
-                    = trunk` and `ethernet_interface[].vlans`.'
+                    = trunk` and `port_channel_interfaces[].vlans`.'
                 native_vlan:
                   type: int
                   convert_types:

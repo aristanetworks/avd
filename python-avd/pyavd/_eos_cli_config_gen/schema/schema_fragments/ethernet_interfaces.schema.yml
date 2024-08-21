@@ -1433,11 +1433,13 @@ keys:
           keys:
             enabled:
               type: bool
+              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].type` is removed in AVD6.0
               description: |-
                 Warning: This should not be combined with `ethernet_interfaces[].type = routed`.
             mode:
               type: str
               valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone"]
+              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` is removed in AVD6.0
               description: |-
                 Warning: This should not be combined with `ethernet_interfaces[].mode`.
             access_vlan:
@@ -1446,9 +1448,10 @@ keys:
                 - "str"
               min: 1
               max: 4094
+              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` and `ethernet_interface[].vlans` are removed in AVD6.0
               description: |-
                 Set VLAN when interface is in access mode.
-                Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel`.
+                Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel` and `ethernet_interface[].vlans`.
             trunk:
               type: dict
               keys:
@@ -1456,6 +1459,7 @@ keys:
                   type: str
                   convert_types:
                     - int
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` and `ethernet_interface[].vlans` are removed in AVD6.0
                   description: |-
                     VLAN ID or range(s) of VLAN IDs.
                     Warning: This should not be combined with `ethernet_interfaces[].mode = trunk` and `ethernet_interface[].vlans`.
@@ -1463,6 +1467,7 @@ keys:
                   type: int
                   convert_types:
                     - str
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].native_vlan` is removed in AVD6.0
                   description: |-
                     Set native VLAN when interface is in trunking mode.
                     Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.
@@ -1470,15 +1475,18 @@ keys:
                   max: 4094
                 native_vlan_tag:
                   type: bool
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].native_vlan_tag` is removed in AVD6.0
                   description: |-
                     If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
                     Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.
                 private_vlan_secondary:
                   type: bool
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_ineterfaces[].trunk_private_vlan_secondary` is removed in AVD6.0
                   description: |-
                     Enable secondary VLAN mapping for a private vlan.
                     Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.
                 groups:
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_ineterfaces[].trunk_groups` is removed in AVD6.0
                   description: |
                     Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
                   type: list
@@ -1489,6 +1497,7 @@ keys:
                     description: Trunk group name.
             phone:
               type: dict
+              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].phone` is removed in AVD6.0
               description: |-
                 Warning: This should not be combined with `ethernet_interfaces[].phone`.
               keys:
@@ -1498,10 +1507,12 @@ keys:
                   max: 4094
                   convert_types:
                     - str
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].phone.vlan` is removed in AVD6.0
                   description: |-
                     Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.
                 trunk:
                   type: str
+                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].phone.trunk` is removed in AVD6.0
                   description: |-
                     Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.
                   valid_values: ["tagged", "tagged phone", "untagged", "untagged phone"]
@@ -1509,6 +1520,7 @@ keys:
               type: str
               convert_types:
                 - int
+              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].pvlan_mapping` is removed in AVD6.0
               description: |-
                 Secondary VLAN IDs of the private VLAN mapping.
                 Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.
@@ -1537,6 +1549,7 @@ keys:
                 - tx
                 - tx multicast
             vlan_translations:
+              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].vlan_translations` is removed in AVD6.0
               description: |-
                 VLAN Translation mappings.
                 Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.
