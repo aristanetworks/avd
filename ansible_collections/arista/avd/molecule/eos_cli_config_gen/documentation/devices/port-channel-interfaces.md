@@ -439,12 +439,12 @@ interface Port-Channel5
 interface Port-Channel8
    description to Dev02 Port-channel 8
    no switchport
+   switchport port-security violation protect
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 level-1
    isis authentication mode md5 level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password1 level-2
-   switchport port-security violation protect
 !
 interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
@@ -479,9 +479,9 @@ interface Port-Channel12
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+   switchport
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 level-1
-   switchport
 !
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
@@ -534,10 +534,10 @@ interface Port-Channel16
    switchport port-security violation protect log
    switchport port-security mac-address maximum 100
    spanning-tree guard none
+   switchport backup-link Port-Channel100.102 prefer vlan 20
    isis enable EVPN_UNDERLAY
    isis authentication mode md5
    isis authentication key 0 password
-   switchport backup-link Port-Channel100.102 prefer vlan 20
 !
 interface Port-Channel17
    description PBR Description
@@ -608,11 +608,6 @@ interface Port-Channel100
    switchport trunk group g1
    switchport trunk group g2
    no switchport
-   isis enable EVPN_UNDERLAY
-   isis authentication mode md5 rx-disabled level-1
-   isis authentication mode text rx-disabled level-2
-   isis authentication key 0 password level-1
-   isis authentication key 0 password level-2
    switchport source-interface tx multicast
    switchport vlan translation 12 20
    switchport vlan translation 23 inner 74 42
@@ -634,6 +629,11 @@ interface Port-Channel100
    switchport backup mac-move-burst-interval 30
    switchport backup initial-mac-move-delay 10
    switchport backup dest-macaddr 01:00:00:00:00:00
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication mode text rx-disabled level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
 !
 interface Port-Channel100.101
    description IFL for TENANT01

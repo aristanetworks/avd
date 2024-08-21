@@ -9599,6 +9599,8 @@ keys:
               or port_channel_interfaces[].isis_authentication.level_2.key
         isis_authentication:
           type: dict
+          description: This key should not be mixed with port_channel_interfaces[].isis_authentication_mode
+            or ethernet_interfaces[].isis_authentication_key.
           $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
         traffic_policy:
           type: dict

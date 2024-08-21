@@ -121,7 +121,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "port_channel_interfaces.[].isis_hello_padding") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "port_channel_interfaces.[].isis_authentication_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>text</code><br>- <code>md5</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version v6.0.0. Use <samp>port_channel_interfaces[].isis_authentication.both.mode or port_channel_interfaces[].isis_authentication.level_1.mode or port_channel_interfaces[].isis_authentication.level_2.mode</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "port_channel_interfaces.[].isis_authentication_key") <span style="color:red">deprecated</span> | String |  |  |  | Type-7 encrypted password.<span style="color:red">This key is deprecated. Support will be removed in AVD version v6.0.0. Use <samp>port_channel_interfaces[].isis_authentication.both.key or port_channel_interfaces[].isis_authentication.level_1.key or port_channel_interfaces[].isis_authentication.level_2.key</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication</samp>](## "port_channel_interfaces.[].isis_authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication</samp>](## "port_channel_interfaces.[].isis_authentication") | Dictionary |  |  |  | This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both</samp>](## "port_channel_interfaces.[].isis_authentication.both") | Dictionary |  |  |  | Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "port_channel_interfaces.[].isis_authentication.both.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Configure authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "port_channel_interfaces.[].isis_authentication.both.key") | String |  |  |  | Password string. `key_type` is required for this setting. |
@@ -664,6 +664,8 @@
         # Support will be removed in AVD version v6.0.0.
         # Use <samp>port_channel_interfaces[].isis_authentication.both.key or port_channel_interfaces[].isis_authentication.level_1.key or port_channel_interfaces[].isis_authentication.level_2.key</samp> instead.
         isis_authentication_key: <str>
+
+        # This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key.
         isis_authentication:
 
           # Authentication settings for level-1 and level-2. 'both' takes precedence over 'level_1' and 'level_2' settings.
