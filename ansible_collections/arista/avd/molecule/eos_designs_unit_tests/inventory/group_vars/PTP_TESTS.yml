@@ -35,7 +35,7 @@ l3_edge:
         enabled: true
       include_in_underlay_protocol: false
 
-ptp:
+ptp_settings:
   enabled: true
   # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
   # domain: < 0-255 | default -> 127 >

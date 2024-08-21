@@ -6,8 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ..._utils import get, merge
-from ...j2filters import convert_dicts
+from pyavd._utils import get, merge
 
 if TYPE_CHECKING:
     from . import SharedUtils
@@ -15,15 +14,16 @@ if TYPE_CHECKING:
 
 class SwitchDataMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
     def switch_data(self: SharedUtils) -> dict:
         """
-        internal _switch_data containing inherited vars from fabric_topology data model
+        internal _switch_data containing inherited vars from fabric_topology data model.
 
         Vars are inherited like:
         <node_type_key>.defaults ->
@@ -31,7 +31,7 @@ class SwitchDataMixin:
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
 
-        Returns
+        Returns:
         -------
         dict
             node_group : dict
@@ -48,16 +48,16 @@ class SwitchDataMixin:
 
         node_type_key = self.node_type_key_data["key"]
         node_type_config = get(self.hostvars, f"{node_type_key}", required=True)
-        nodes = convert_dicts(node_type_config.get("nodes", []), "name")
+        nodes = node_type_config.get("nodes", [])
 
         for node in nodes:
             if hostname == node["name"]:
                 node_config = node
                 break
         if not node_config:
-            node_groups = convert_dicts(node_type_config.get("node_groups", []), "group")
+            node_groups = node_type_config.get("node_groups", [])
             for node_group in node_groups:
-                nodes = convert_dicts(node_group.get("nodes", []), "name")
+                nodes = node_group.get("nodes", [])
                 node_group["nodes"] = nodes
                 for node in nodes:
                     if hostname == node["name"]:
@@ -78,15 +78,10 @@ class SwitchDataMixin:
 
     @property
     def switch_data_combined(self: SharedUtils) -> dict:
-        """
-        switch_data_combined containing self._switch_data['combined'] for easier reference.
-        """
+        """switch_data_combined containing self._switch_data['combined'] for easier reference."""
         return self.switch_data["combined"]
 
     @cached_property
     def switch_data_node_group_nodes(self: SharedUtils) -> list:
-        """
-        switch_data_node_group_nodes pointing to
-        self.switch_data['node_group']['nodes'] for easier reference.
-        """
+        """switch_data_node_group_nodes pointing to self.switch_data['node_group']['nodes'] for easier reference."""
         return get(self.switch_data, "node_group.nodes", default=[])

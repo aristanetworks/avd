@@ -110,6 +110,9 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
+          # Test setting loopback0 and the VTEP loopback manually
+          loopback_ipv4_address: 192.168.42.42
+          vtep_loopback_ipv4_address: 192.168.43.43
     - group: DC1_LEAF2
       bgp_as: 65102
       rack: "rackD"
@@ -259,6 +262,7 @@ l3leaf:
           mgmt_ip: 192.168.200.120/24
           uplink_switch_interfaces: [ Ethernet27, Ethernet27, Ethernet27, Ethernet27 ]
     - group: DC1_UNDEPLOYED_LEAF1
+      platform: my_custom_platform
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -368,6 +372,20 @@ l2leaf:
         - name: DC1.L2LEAF5B
           id: 15
           mgmt_ip: 192.168.200.121/24
+    # Example for issue 4124
+    - group: DC1_L2LEAF6
+      short_esi: auto # Test Auto ESI to MLAG pair
+      nodes:
+        - name: DC1.L2LEAF6A
+          id: 16
+          mgmt_ip: 192.168.200.122/24
+          uplink_switches: [ DC1-LEAF2A ]
+          uplink_switch_interfaces: [ Ethernet30 ]
+        - name: DC1.L2LEAF6B
+          id: 17
+          mgmt_ip: 192.168.200.123/24
+          uplink_switches: [ DC1-LEAF2B ]
+          uplink_switch_interfaces: [ Ethernet31 ]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
@@ -388,6 +406,12 @@ platform_speed_groups:
         speed_groups: [ 3, 2, 5/1 ]    # Unsorted order, but we should sort output correctly.
       - speed: 10G
         speed_groups: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2
+  - platform: my_custom_platform
+    speeds:
+      - speed: 10G
+        speed_groups: [ 3, 2, 5/1 ]
+      - speed: 25G
+        speed_groups: [ 1, 2, 4 ]
 
 # Set Aboot password with sha512 hash
 boot:

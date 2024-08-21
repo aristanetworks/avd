@@ -1,0 +1,50 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_ospf_authentication:
+    documentation_options:
+      table: ospf-settings
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        required: true
+        default: false
+      message_digest_keys:
+        type: list
+        required: true
+        primary_key: id
+        min_length: 1
+        max_length: 2
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+            hash_algorithm:
+              type: str
+              valid_values:
+              - md5
+              - sha1
+              - sha256
+              - sha384
+              - sha512
+              default: sha512
+            key:
+              type: str
+              required: true
+              max_length: 16
+              min_length: 1
+              convert_types:
+              - int
+              description: |-
+                Key password.
+                Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.
+                To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.

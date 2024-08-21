@@ -13,8 +13,14 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
-    ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local"
-    secondary_ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz= cvpadmin@hostmachine.local"
+    ssh_key: >-
+      ssh-rsa
+      AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
+    secondary_ssh_key: >-
+      ssh-rsa
+      AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
+      cvpadmin@hostmachine.local
 
 # Cloud Vision server
 cvp_instance_ips:
@@ -82,7 +88,7 @@ default_interfaces:
     downlink_interfaces: [ Ethernet1-30/1 ]
 
   - types: [ l3leaf ]
-    platforms: [ 7280R, 7280R2 ]
+    platforms: [ 7280R, 7280R2, my_custom_platform ]
     uplink_interfaces: [ Ethernet49-56/1 ]
     mlag_interfaces: [ Ethernet57-58/1 ]
     downlink_interfaces: [ Ethernet1-30/1 ]
@@ -98,3 +104,27 @@ default_interfaces:
     uplink_interfaces: [ Ethernet1/27-30/1 ]
     mlag_interfaces: [ Ethernet1/31-32/1 ]
     downlink_interfaces: [ Ethernet1/1-26/1 ]
+
+# Custom platform with Management42 as the management interface
+custom_platform_settings:
+  - platforms: [ my_custom_platform ]
+    management_interface: Management42
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
+      bgp_update_wait_for_convergence: true
+      bgp_update_wait_install: true
+
+  # Test overwriting an existing platform
+  - platforms: [ 7280R ]
+    management_interface: Management99
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020

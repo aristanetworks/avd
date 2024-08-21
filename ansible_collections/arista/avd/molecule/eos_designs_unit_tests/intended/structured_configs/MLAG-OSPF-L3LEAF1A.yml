@@ -60,6 +60,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -170,6 +176,14 @@ ethernet_interfaces:
   ip_address: 10.10.101.7/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: qO39Oo+xVTO7l/La1StOQcW1t7hpfAAH
+  - id: 2
+    hash_algorithm: sha512
+    key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094
@@ -206,7 +220,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: MLAG-OSPF-L3LEAF1A_VTEP
     vxlan:
       udp_port: 4789

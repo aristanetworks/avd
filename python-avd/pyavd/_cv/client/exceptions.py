@@ -32,37 +32,37 @@ def get_cv_client_exception(exception: Exception, cv_client_details: str | None 
     return None
 
 
-class CVClientException(Exception):
-    """Base exception"""
+class CVClientException(Exception):  # noqa: N818
+    """Base exception."""
 
 
 class CVTimeoutError(CVClientException):
-    """API call timed out"""
+    """API call timed out."""
 
 
 class CVResourceNotFound(CVClientException):
-    """CloudVision Resource not found"""
+    """CloudVision Resource not found."""
 
 
 class CVResourceInvalidState(CVClientException):
-    """Invalid state for CloudVision Resource"""
+    """Invalid state for CloudVision Resource."""
 
 
 class CVWorkspaceBuildTimeout(CVClientException):
-    """Build of CloudVision Workspace timed out"""
+    """Build of CloudVision Workspace timed out."""
 
 
 class CVWorkspaceBuildFailed(CVClientException):
-    """Build of CloudVision Workspace failed"""
+    """Build of CloudVision Workspace failed."""
 
 
 class CVWorkspaceSubmitFailed(CVClientException):
-    """Build of CloudVision Workspace failed"""
+    """Build of CloudVision Workspace failed."""
 
 
 class CVWorkspaceStateTimeout(CVClientException):
-    """Timed out waiting for Workspace to get to the expected state"""
+    """Timed out waiting for Workspace to get to the expected state."""
 
 
 class CVChangeControlFailed(CVClientException):
-    """CloudVision ChangeControl failed during execution"""
+    """CloudVision ChangeControl failed during execution."""

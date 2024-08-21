@@ -2,9 +2,6 @@
 # Shared attributes
 root_dir: '{{ playbook_dir }}'
 
-design:
-  type: "mpls"
-
 fabric_name: MPLS_CORE
 
 underlay_ipv6: true
@@ -37,7 +34,6 @@ bgp_peer_groups:
     password: "SHsTgDgjVUU5a9blyxSt3Q=="
   rr_overlay_peers:
     password: "04FdfTXWrEfpDTUc3mlSjg=="
-
 
 # RD/RT Format
 overlay_rd_type:

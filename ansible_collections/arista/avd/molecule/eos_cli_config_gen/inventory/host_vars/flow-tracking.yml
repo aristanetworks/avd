@@ -96,19 +96,23 @@ flow_tracking:
       format_ipfix_standard_timestamps_counters: true
 ethernet_interfaces:
   - name: Ethernet40
+    type: switched
     flow_tracker:
       sampled: T2
       hardware: T2
   - name: Ethernet41
+    type: switched
     flow_tracker:
       sampled: T3
       hardware: T3
   - name: Ethernet42
+    type: switched
     flow_tracker:
       sampled: T3
 
 port_channel_interfaces:
   - name: Port-Channel42
+    type: switched
     flow_tracker:
       sampled: T3
       hardware: T3

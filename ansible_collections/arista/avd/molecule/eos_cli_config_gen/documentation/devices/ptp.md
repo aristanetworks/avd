@@ -39,6 +39,8 @@ interface Management1
 
 ### PTP
 
+PTP Profile: g8275.1
+
 #### PTP Summary
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
@@ -53,6 +55,7 @@ ptp clock-identity 11:11:11:11:11:11
 ptp source ip 1.1.2.3
 ptp priority1 101
 ptp priority2 102
+ptp profile g8275.1
 ptp ttl 12
 ptp domain 17
 ptp message-type general dscp 36 default
@@ -90,9 +93,9 @@ ptp monitor threshold missing-message sync 204 sequence-ids
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.15/31 | default | 1500 | - | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | - | 172.31.255.15/31 | default | 1500 | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -126,6 +129,7 @@ interface Ethernet6
    ptp transport ipv4
    ptp announce timeout 9
    ptp delay-req interval -7
+   ptp profile g8275.1 destination mac-address non-forwardable
    ptp role dynamic
 ```
 
@@ -135,9 +139,9 @@ interface Ethernet6
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -151,6 +155,7 @@ interface Port-Channel5
    mlag 5
    ptp enable
    ptp mpass
+   ptp profile g8275.1 destination mac-address forwardable
    ptp delay-mechanism e2e
    ptp sync-message interval 1
    ptp role dynamic

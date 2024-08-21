@@ -7,9 +7,10 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdError
-from ...._utils import append_if_not_duplicate, get
-from ....j2filters import natural_sort
+from pyavd._errors import AristaAvdError
+from pyavd._utils import append_if_not_duplicate, get
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -19,21 +20,20 @@ if TYPE_CHECKING:
 class EthernetInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def ethernet_interfaces(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for ethernet_interfaces
+        Return structured config for ethernet_interfaces.
 
         Only used with L3 or L1 network services
         """
-
         if not (self.shared_utils.network_services_l3 or self.shared_utils.network_services_l1 or self.shared_utils.l3_interfaces):
             return None
 
-        # Using temp variables to keep the order of interfaces from Jinja
         ethernet_interfaces = []
         subif_parent_interface_names = set()
 
@@ -49,10 +49,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                             or len(l3_interface["ip_addresses"]) != nodes_length
                             or ("descriptions" in l3_interface and "description" not in l3_interface and len(l3_interface["descriptions"]) != nodes_length)
                         ):
-                            raise AristaAvdError(
+                            msg = (
                                 "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for l3_interfaces for"
                                 f" {vrf['name']} in {tenant['name']}"
                             )
+                            raise AristaAvdError(msg)
 
                         for node_index, node_name in enumerate(l3_interface["nodes"]):
                             if node_name != self.shared_utils.hostname:
@@ -75,6 +76,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "struct_cfg": l3_interface.get("structured_config"),
                                 "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
+
+                            if self._l3_interface_acls is not None:
+                                interface.update(
+                                    {
+                                        "access_group_in": get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in..name", separator=".."),
+                                        "access_group_out": get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_out..name", separator=".."),
+                                    },
+                                )
 
                             if "." in interface_name:
                                 # This is a subinterface so we need to ensure that the parent is created
@@ -116,7 +125,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                                 "id": ospf_key["id"],
                                                 "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
                                                 "key": ospf_key["key"],
-                                            }
+                                            },
                                         )
 
                                     if ospf_keys:
@@ -125,15 +134,21 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                             if get(l3_interface, "pim.enabled"):
                                 if not vrf.get("_evpn_l3_multicast_enabled"):
-                                    raise AristaAvdError(
+                                    msg = (
                                         f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires evpn_l3_multicast:"
                                         f" enabled: true under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
                                     )
+                                    raise AristaAvdError(
+                                        msg,
+                                    )
 
                                 if not vrf.get("_pim_rp_addresses"):
-                                    raise AristaAvdError(
+                                    msg = (
                                         f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires at least one RP"
                                         f" defined in pim_rp_addresses under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
+                                    )
+                                    raise AristaAvdError(
+                                        msg,
                                     )
 
                                 interface["pim"] = {"ipv4": {"sparse_mode": True}}
@@ -245,27 +260,27 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         subif_parent_interface_names = subif_parent_interface_names.difference(eth_int["name"] for eth_int in ethernet_interfaces)
         if subif_parent_interface_names:
-            for interface_name in natural_sort(subif_parent_interface_names):
-                ethernet_interfaces.append(
-                    {
-                        "name": interface_name,
-                        "type": "routed",
-                        "peer_type": "l3_interface",
-                        "shutdown": False,
-                    }
-                )
+            ethernet_interfaces.extend(
+                {
+                    "name": interface_name,
+                    "type": "routed",
+                    "peer_type": "l3_interface",
+                    "shutdown": False,
+                }
+                for interface_name in natural_sort(subif_parent_interface_names)
+            )
 
-        for internet_exit_policy in self._filtered_internet_exit_policies:
-            for connection in internet_exit_policy.get("connections", []):
-                if connection["type"] == "ethernet":
-                    ethernet_interfaces.append(
-                        {
-                            "name": connection["source_interface"],
-                            "ip_nat": {
-                                "service_profile": self.get_internet_exit_nat_profile_name(internet_exit_policy["type"]),
-                            },
-                        }
-                    )
+        ethernet_interfaces.extend(
+            {
+                "name": connection["source_interface"],
+                "ip_nat": {
+                    "service_profile": self.get_internet_exit_nat_profile_name(internet_exit_policy["type"]),
+                },
+            }
+            for internet_exit_policy in self._filtered_internet_exit_policies
+            for connection in internet_exit_policy.get("connections", [])
+            if connection["type"] == "ethernet"
+        )
 
         if ethernet_interfaces:
             return ethernet_interfaces

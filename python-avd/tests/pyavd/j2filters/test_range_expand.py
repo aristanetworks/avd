@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
+
 from pyavd.j2filters import range_expand
 
 RANGE_TO_EXPAND_INVALID_VALUES = [
@@ -79,12 +82,12 @@ EXPECTED_RESULT_VALID_VALUES = [
 
 
 class TestRangeExpandFilter:
-    @pytest.mark.parametrize("input_value, expected_raise, expected_raise_message", RANGE_TO_EXPAND_INVALID_VALUES)
-    def test_range_expand_invalid(self, input_value, expected_raise, expected_raise_message):
+    @pytest.mark.parametrize(("input_value", "expected_raise", "expected_raise_message"), RANGE_TO_EXPAND_INVALID_VALUES)
+    def test_range_expand_invalid(self, input_value: Any, expected_raise: Exception, expected_raise_message: str) -> None:
         with pytest.raises(expected_raise, match=expected_raise_message):
             range_expand(input_value)
 
-    @pytest.mark.parametrize("RANGE_TO_EXPAND_VALID", RANGE_TO_EXPAND_VALID_VALUES)
-    def test_range_expand_valid(self, RANGE_TO_EXPAND_VALID):
-        resp = range_expand(RANGE_TO_EXPAND_VALID)
+    @pytest.mark.parametrize("range_to_expand_valid", RANGE_TO_EXPAND_VALID_VALUES)
+    def test_range_expand_valid(self, range_to_expand_valid: list | str) -> None:
+        resp = range_expand(range_to_expand_valid)
         assert resp in EXPECTED_RESULT_VALID_VALUES

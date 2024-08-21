@@ -75,6 +75,11 @@ plugins:
   inventory: {}
   lookup: {}
   module:
+    _emit_warning:
+      description: Internal module - DO NOT USE - Emit a warning in a task.
+      name: _emit_warning
+      namespace: ''
+      version_added: 4.9.0
     batch_template:
       description: Render Jinja2 template on multiple items and write result to individual
         files.
@@ -91,6 +96,11 @@ plugins:
       name: cv_workflow
       namespace: ''
       version_added: 4.7.0
+    eos_cli_config_gen:
+      description: Generate AVD EOS device configurations and documentations
+      name: eos_cli_config_gen
+      namespace: ''
+      version_added: 4.9.0
     eos_designs_facts:
       description: Set eos_designs facts
       name: eos_designs_facts
@@ -155,4 +165,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 4.8.0
+version: 4.10.0

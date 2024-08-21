@@ -3,9 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from abc import ABC
 from textwrap import indent
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING
 
 import yaml
 from pydantic import BaseModel
@@ -13,7 +12,9 @@ from pydantic import BaseModel
 from .utils import render_schema_field
 
 if TYPE_CHECKING:
-    from ..metaschema.meta_schema_model import AvdSchemaField
+    from collections.abc import Generator
+
+    from schema_tools.metaschema.meta_schema_model import AvdSchemaField
 
 LEGACY_OUTPUT = False
 
@@ -21,6 +22,7 @@ LEGACY_OUTPUT = False
 class YamlLine(BaseModel):
     """
     Dataclass for one YAML line (and any associated descriptions).
+
     Content of line is yaml formatted so it should be rendered in a code block.
     The field may need an mkdocs code block annotation link to show large default values.
     If so the content of the annotation is stored in the 'annotation' attribute.
@@ -35,12 +37,12 @@ class YamlLine(BaseModel):
     line: str
     annotation: str | None = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.line
 
     def render_annotation(self, annotation_number: int) -> str:
         """
-        Returns markdown for annotation foot note, providing the contents of mkdocs code block annotation popup
+        Returns markdown for annotation foot note, providing the contents of mkdocs code block annotation popup.
 
         Like below (including the leading blank line):
 
@@ -58,17 +60,18 @@ class YamlLine(BaseModel):
 
     def render_annotation_link(self, annotation_number: int) -> str:
         """
-        Returns codeblock comment used for mkdocs codeblock annotations
+        Returns codeblock comment used for mkdocs codeblock annotations.
 
         Like: " # (123)!"
         """
         return "" if self.annotation is None else f" # ({annotation_number})!"
 
 
-class YamlLineGenBase(ABC):
+class YamlLineGenBase:
     """
     Base class to be used with schema pydantic models.
-    Provides the method "generate_yaml_lines" to build documentation tables
+
+    Provides the method "generate_yaml_lines" to build documentation tables.
     """
 
     def generate_yaml_lines(
@@ -96,10 +99,8 @@ class YamlLineGenBase(ABC):
 
             yield from self.render_children()
 
-    def get_indentation(self, honor_first_list_key: bool = True) -> str:
-        """
-        Indentation is two spaces for dicts and 4 spaces for lists (so the hyphen will be indented 2)
-        """
+    def get_indentation(self, *, honor_first_list_key: bool = True) -> str:
+        """Indentation is two spaces for dicts and 4 spaces for lists (so the hyphen will be indented 2)."""
         indentation_count = len(self.schema._path) * 2 - 2
         if not self.schema._key:
             # this is a flat list item so path is one shorter than for dict. So we add 2 to the indentation
@@ -116,10 +117,7 @@ class YamlLineGenBase(ABC):
         return self.schema.deprecation and self.schema.deprecation.removed
 
     def render_field(self) -> Generator[YamlLine]:
-        """
-        Renders YamlLines for this field including description.
-        """
-
+        """Renders YamlLines for this field including description."""
         # Build semicolon separated list of field properties.
         value_fields = [
             self.schema.type,
@@ -128,10 +126,7 @@ class YamlLineGenBase(ABC):
             self.get_required(),
         ]
         # TODO: Remove legacy output
-        if LEGACY_OUTPUT:
-            value = self.schema.type
-        else:
-            value = "; ".join(field for field in value_fields if field)
+        value = self.schema.type if LEGACY_OUTPUT else "; ".join(field for field in value_fields if field)
 
         key = f"{self.schema._key}: " if self.schema._key else ""
 
@@ -141,9 +136,7 @@ class YamlLineGenBase(ABC):
         )
 
     def render_description(self) -> Generator[YamlLine]:
-        """
-        Yields YamlLine with description for this field.
-        """
+        """Yields YamlLine with description for this field."""
         if self.schema.description:
             indentation = self.get_indentation(honor_first_list_key=False)
             description = indent(self.schema.description.strip(), f"{indentation}# ")
@@ -152,9 +145,7 @@ class YamlLineGenBase(ABC):
             yield YamlLine(line=f"\n{description}")
 
     def render_deprecation_description(self) -> Generator[YamlLine]:
-        """
-        Yields YamlLine with deprecation description for this field.
-        """
+        """Yields YamlLine with deprecation description for this field."""
         if self.schema.deprecation is None:
             return
 
@@ -176,18 +167,16 @@ class YamlLineGenBase(ABC):
         yield YamlLine(line=description)
 
     def get_required(self) -> str | None:
-        """
-        Returns "required", "required; unique" or None depending on self.schema.required and self.is_primary_key
-        """
-        if self.schema._is_primary_key:
-            return "required; unique"
-        if self.schema.required:
-            return "required"
+        """Returns "required", "required; unique" or None depending on self.schema.required and self.is_primary_key."""
+        if self.schema._is_primary_key or self.schema.required:
+            return "required; unique" if self.schema._is_unique else "required"
+        return None
 
     @property
     def needs_annotation_for_default_value(self) -> bool:
         """
         Determines if this field should use a mkdocs codeblock annotation / popup to display the default value.
+
         Is true for list or dict with length above 1. Otherwise false.
         """
         return (
@@ -199,6 +188,7 @@ class YamlLineGenBase(ABC):
     def get_default(self) -> str | None:
         """
         Returns default value or None.
+
         For list or dict with len > 1 it will return none.
         See get_default_popup.
         """
@@ -207,15 +197,15 @@ class YamlLineGenBase(ABC):
                 # Add quotes to string default value.
                 return f'default="{self.schema.default}"'
             return f"default={self.schema.default}"
+        return None
 
     def get_annotation(self) -> str | None:
         if self.needs_annotation_for_default_value:
             return yaml.dump({self.schema._key: self.schema.default}, indent=2)
+        return None
 
     def render_restrictions(self) -> str | None:
-        """
-        Returns restrictions as inline semicolon separated strings.
-        """
+        """Returns restrictions as inline semicolon separated strings."""
         return "; ".join(self.get_restrictions()) or None
 
     def get_restrictions(self) -> list:
@@ -256,6 +246,7 @@ class YamlLineGenInt(YamlLineGenBase):
     def get_restrictions(self) -> list:
         """
         Returns a list of restrictions.
+
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -276,6 +267,7 @@ class YamlLineGenStr(YamlLineGenBase):
     def get_restrictions(self) -> list:
         """
         Returns a list of restrictions.
+
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -294,10 +286,7 @@ class YamlLineGenStr(YamlLineGenBase):
 
 class YamlLineGenList(YamlLineGenBase):
     def render_field(self) -> Generator[YamlLine]:
-        """
-        Renders YamlLine for this field.
-        """
-
+        """Renders YamlLine for this field."""
         # Build semicolon separated list of field properties.
         properties_fields = [
             self.render_restrictions(),
@@ -324,6 +313,7 @@ class YamlLineGenList(YamlLineGenBase):
     def get_restrictions(self) -> list:
         """
         Returns a list of restrictions.
+
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -340,7 +330,7 @@ class YamlLineGenList(YamlLineGenBase):
         return restrictions
 
     def render_children(self) -> Generator[YamlLine]:
-        """yields TableRow from each child class"""
+        """Yields TableRow from each child class."""
         if not self.schema.items:
             return
 
@@ -357,10 +347,7 @@ class YamlLineGenList(YamlLineGenBase):
 
 class YamlLineGenDict(YamlLineGenBase):
     def render_field(self) -> Generator[YamlLine]:
-        """
-        Renders YamlLine for this field.
-        """
-
+        """Renders YamlLine for this field."""
         # Build semicolon separated list of field properties.
         properties_fields = [
             self.render_restrictions(),
@@ -387,11 +374,9 @@ class YamlLineGenDict(YamlLineGenBase):
         )
 
     def render_children(self) -> Generator[YamlLine]:
-        """yields TableRow from each child class"""
-
+        """Yields TableRow from each child class."""
         if self.schema.documentation_options and self.schema.documentation_options.hide_keys:
             # Skip generating table fields for children, if "hide_keys" is set.
-            # print(f"Skipping path {self.path} since hide_keys is set")
             return
 
         if self.schema.dynamic_keys:

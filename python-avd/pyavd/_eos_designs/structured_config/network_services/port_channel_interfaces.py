@@ -7,8 +7,9 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get
-from ....j2filters import generate_esi, generate_lacp_id, generate_route_target, natural_sort
+from pyavd._utils import append_if_not_duplicate, get, short_esi_to_route_target
+from pyavd.j2filters import natural_sort
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,17 +19,17 @@ if TYPE_CHECKING:
 class PortChannelInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def port_channel_interfaces(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        Return structured config for port_channel_interfaces
+        Return structured config for port_channel_interfaces.
 
         Only used with L1 network services
         """
-
         if not self.shared_utils.network_services_l1:
             return None
 
@@ -62,18 +63,17 @@ class PortChannelInterfacesMixin(UtilsMixin):
                             "peer_type": "system",
                             "shutdown": False,
                         }
-                        if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
-                            if len(short_esi.split(":")) == 3:
-                                parent_interface.update(
-                                    {
-                                        "evpn_ethernet_segment": {
-                                            "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
-                                            "route_target": generate_route_target(short_esi),
-                                        }
-                                    }
-                                )
-                                if port_channel_mode == "active":
-                                    parent_interface["lacp_id"] = generate_lacp_id(short_esi)
+                        if (short_esi := get(endpoint, "port_channel.short_esi")) is not None and len(short_esi.split(":")) == 3:
+                            parent_interface.update(
+                                {
+                                    "evpn_ethernet_segment": {
+                                        "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
+                                        "route_target": short_esi_to_route_target(short_esi),
+                                    },
+                                },
+                            )
+                            if port_channel_mode == "active":
+                                parent_interface["lacp_id"] = short_esi.replace(":", ".")
 
                         subif_parent_interfaces.append(parent_interface)
 
@@ -118,18 +118,17 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                 "receive": False,
                             }
 
-                        if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
-                            if len(short_esi.split(":")) == 3:
-                                interface.update(
-                                    {
-                                        "evpn_ethernet_segment": {
-                                            "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
-                                            "route_target": generate_route_target(short_esi),
-                                        }
-                                    }
-                                )
-                                if port_channel_mode == "active":
-                                    interface["lacp_id"] = generate_lacp_id(short_esi)
+                        if (short_esi := get(endpoint, "port_channel.short_esi")) is not None and len(short_esi.split(":")) == 3:
+                            interface.update(
+                                {
+                                    "evpn_ethernet_segment": {
+                                        "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
+                                        "route_target": short_esi_to_route_target(short_esi),
+                                    },
+                                },
+                            )
+                            if port_channel_mode == "active":
+                                interface["lacp_id"] = short_esi.replace(":", ".")
 
                         append_if_not_duplicate(
                             list_of_dicts=port_channel_interfaces,

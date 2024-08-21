@@ -20,13 +20,15 @@ def _get_hash_object(auth_type: str) -> object:
     try:
         return hashlib.new(auth)
     except ValueError:
-        raise ValueError(f"{auth_type} is not a valid Auth algorithm for SNMPv3") from ValueError
+        msg = f"{auth_type} is not a valid Auth algorithm for SNMPv3"
+        raise ValueError(msg) from ValueError
 
 
 def _key_from_passphrase(passphrase: str, auth_type: str) -> str:
     """
-    RFC 2574 section A.2 algorithm
-    https://www.rfc-editor.org/rfc/rfc2574.html#appendix-A2
+    RFC 2574 section A.2 algorithm.
+
+    https://www.rfc-editor.org/rfc/rfc2574.html#appendix-A2.
 
     :param passphrase: the passphrase to use to generate the key
     :param auth_type: a string in [md5|sha|sha224|sha256|sha384|sha512]
@@ -45,7 +47,7 @@ def _key_from_passphrase(passphrase: str, auth_type: str) -> str:
     password_length = len(b_passphrase)
     while count < 1048576:
         cp = bytearray()
-        for _ in range(0, 64):
+        for _ in range(64):
             cp.append(b_passphrase[password_index % password_length])
             password_index += 1
         hash_object.update(cp)
@@ -53,10 +55,11 @@ def _key_from_passphrase(passphrase: str, auth_type: str) -> str:
     return hash_object.hexdigest()
 
 
-def _localize_passphrase(passphrase: str, auth_type: str, engine_id: str, priv_type: str = None) -> str:
+def _localize_passphrase(passphrase: str, auth_type: str, engine_id: str, priv_type: str | None = None) -> str:
     """
-    Key localization as described in RFC 2574, section 2.6
-    https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6
+    Key localization as described in RFC 2574, section 2.6.
+
+    https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6.
 
     :param passphrase: the passphrase to localize, if priv_type is None
                        it is the auth passphrase else it is the priv
@@ -74,13 +77,13 @@ def _localize_passphrase(passphrase: str, auth_type: str, engine_id: str, priv_t
     :raises: AristaAvdError, when the auth_type or priv_type is not valid
              or if the engined_id is not a proper hexadecimal string
     """
-
     key = bytes.fromhex(_key_from_passphrase(passphrase, auth_type))
     hash_object = _get_hash_object(auth_type)
     try:
         hash_object.update(key + bytes.fromhex(engine_id) + key)
     except ValueError as error:
-        raise ValueError(f"engine ID {engine_id} is not an hexadecimal string") from error
+        msg = f"engine ID {engine_id} is not an hexadecimal string"
+        raise ValueError(msg) from error
     localized_key = hash_object.hexdigest()
     if priv_type is not None:
         try:
@@ -91,7 +94,8 @@ def _localize_passphrase(passphrase: str, auth_type: str, engine_id: str, priv_t
             # Truncate ithe key if required
             localized_key = localized_key[: _PRIV_KEY_LENGTH[priv_type] // 4]
         except KeyError as error:
-            raise ValueError(f"{priv_type} is not a valid Priv algorithm for SNMPv3") from error
+            msg = f"{priv_type} is not a valid Priv algorithm for SNMPv3"
+            raise ValueError(msg) from error
     return localized_key
 
 

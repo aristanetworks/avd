@@ -364,6 +364,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -427,7 +433,7 @@ vrfs:
   ip_routing: true
   ipv6_routing: true
 management_interfaces:
-- name: Management1
+- name: Management99
   description: oob_management
   shutdown: false
   vrf: MGMT
@@ -447,7 +453,7 @@ management_api_http:
   default_services: false
 ntp:
   local_interface:
-    name: Management1
+    name: Management99
     vrf: MGMT
   servers:
   - name: 192.168.200.5
@@ -520,6 +526,16 @@ ethernet_interfaces:
   type: port-channel-member
   channel_group:
     id: 141
+    mode: active
+- name: Ethernet30
+  peer: DC1.L2LEAF6A
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: DC1.L2LEAF6A_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 30
     mode: active
 - name: Ethernet49/1
   peer: DC1-SPINE1
@@ -770,6 +786,16 @@ port_channel_interfaces:
     identifier: 0000:0000:fa91:ce62:ce95
     route_target: fa:91:ce:62:ce:95
   lacp_id: fa91.ce62.ce95
+- name: Port-Channel30
+  description: DC1_L2LEAF6_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
+  evpn_ethernet_segment:
+    identifier: 0000:0000:a8be:743c:0a1a
+    route_target: a8:be:74:3c:0a:1a
+  lacp_id: a8be.743c.0a1a
 - name: Port-Channel10
   description: server01_MLAG_PortChanne1
   type: switched
@@ -1178,7 +1204,7 @@ router_ospf:
     redistribute:
       bgp: {}
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-LEAF2A_VTEP
     vxlan:
       udp_port: 4789

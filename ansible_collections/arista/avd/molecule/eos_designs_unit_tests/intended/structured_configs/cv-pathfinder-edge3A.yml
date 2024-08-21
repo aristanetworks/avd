@@ -128,6 +128,11 @@ router_bgp:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -456,6 +461,8 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+    application_transports:
+    - rtp
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
@@ -466,6 +473,7 @@ application_traffic_recognition:
   - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-2
+    - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
   applications:
     ipv4_applications:
@@ -479,6 +487,12 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
+    - name: CUSTOM-DSCP-APPLICATION
+      dscp_ranges:
+      - ef
+      - 12-14
+      - cs6
+      - '42'
     - name: APP-CONTROL-PLANE
       dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
@@ -508,7 +522,7 @@ dps_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: cv-pathfinder-edge3A_VTEP
     vxlan:
       udp_port: 4789

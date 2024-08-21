@@ -540,6 +540,23 @@ router_bgp:
       - 10150:10150
     redistribute_routes:
     - learned
+  - id: 251
+    tenant: Tenant_F
+    rd: 192.168.255.6:10251
+    route_targets:
+      both:
+      - 10251:10251
+    redistribute_routes:
+    - learned
+  - id: 252
+    tenant: Tenant_F
+    rd: 192.168.255.6:10252
+    route_targets:
+      both:
+      - 10252:10252
+    redistribute_routes:
+    - learned
+    - igmp
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -577,6 +594,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -864,6 +887,12 @@ vlans:
 - id: 150
   name: L3_MULTICAST_ENABLED_150
   tenant: Tenant_E
+- id: 251
+  name: MULTICAST_DISABLED_251
+  tenant: Tenant_F
+- id: 252
+  name: MULTICAST_ENABLED_252
+  tenant: Tenant_F
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -871,27 +900,33 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.6
+    fast_leave: true
   - id: 111
     querier:
       enabled: true
       address: 192.168.255.6
+    fast_leave: true
   - id: 210
     querier:
       enabled: true
       address: 192.168.255.6
+    fast_leave: true
   - id: 257
     querier:
       enabled: true
       address: 192.168.255.6
+    fast_leave: true
   - id: 4092
     querier:
       enabled: true
       address: 192.168.255.6
+    fast_leave: true
   - id: 1
     querier:
       enabled: true
       address: 1.1.1.1
       version: 3
+    fast_leave: true
   - id: 2
     querier:
       enabled: true
@@ -912,6 +947,15 @@ ip_igmp_snooping:
       enabled: true
       address: 2.2.2.2
       version: 1
+  - id: 230
+    querier:
+      enabled: true
+      address: 192.168.255.6
+  - id: 252
+    querier:
+      enabled: true
+      address: 192.168.255.6
+    fast_leave: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan310
@@ -1154,7 +1198,7 @@ vlan_interfaces:
       local_interface: Loopback51
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: EVPN-MULTICAST-L3LEAF3A_VTEP
     vxlan:
       udp_port: 4789
@@ -1234,6 +1278,11 @@ vxlan_interface:
         vni: 10250
       - id: 150
         vni: 10150
+      - id: 251
+        vni: 10251
+      - id: 252
+        vni: 10252
+        multicast_group: 232.0.0.251
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13

@@ -5,21 +5,23 @@ from __future__ import annotations
 
 from copy import deepcopy
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from ..._errors import AristaAvdError, AristaAvdMissingVariableError
-from ..._utils import default, get, get_item
-from ...j2filters import convert_dicts, natural_sort, range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import default, get
+from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
-    from ..eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+
     from . import SharedUtils
 
 
 class MiscMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
@@ -30,9 +32,7 @@ class MiscMixin:
 
     @cached_property
     def hostname(self: SharedUtils) -> str:
-        """
-        hostname set based on inventory_hostname variable
-        """
+        """Hostname set based on inventory_hostname variable."""
         return get(self.hostvars, "inventory_hostname", required=True)
 
     @cached_property
@@ -61,9 +61,7 @@ class MiscMixin:
 
     @cached_property
     def filter_tags(self: SharedUtils) -> list:
-        """
-        Return filter.tags + group if defined
-        """
+        """Return filter.tags + group if defined."""
         filter_tags = get(self.switch_data_combined, "filter.tags", default=["all"])
         if self.group is not None:
             filter_tags.append(self.group)
@@ -97,9 +95,11 @@ class MiscMixin:
     @cached_property
     def system_mac_address(self: SharedUtils) -> str | None:
         """
+        system_mac_address.
+
         system_mac_address is inherited from
         Fabric Topology data model system_mac_address ->
-            Host variable var system_mac_address ->
+            Host variable var system_mac_address ->.
         """
         return default(get(self.switch_data_combined, "system_mac_address"), get(self.hostvars, "system_mac_address"))
 
@@ -119,7 +119,7 @@ class MiscMixin:
                 get(self.cv_topology_config, "uplink_interfaces"),
                 get(self.default_interfaces, "uplink_interfaces"),
                 [],
-            )
+            ),
         )
 
     @cached_property
@@ -135,7 +135,8 @@ class MiscMixin:
             return []
 
         if self.id is None:
-            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
+            msg = f"'id' is not set on '{self.hostname}'"
+            raise AristaAvdMissingVariableError(msg)
 
         uplink_switch_interfaces = []
         uplink_switch_counter = {}
@@ -153,9 +154,12 @@ class MiscMixin:
             if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             else:
-                raise AristaAvdError(
+                msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
                     f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                )
+                raise AristaAvdError(
+                    msg,
                 )
 
         return uplink_switch_interfaces
@@ -167,24 +171,22 @@ class MiscMixin:
     @cached_property
     def serial_number(self: SharedUtils) -> str | None:
         """
+        serial_number.
+
         serial_number is inherited from
         Fabric Topology data model serial_number ->
-            Host variable var serial_number
+            Host variable var serial_number.
         """
         return default(get(self.switch_data_combined, "serial_number"), get(self.hostvars, "serial_number"))
 
     @cached_property
     def max_parallel_uplinks(self: SharedUtils) -> int:
-        """
-        Exposed in avd_switch_facts
-        """
+        """Exposed in avd_switch_facts."""
         return get(self.switch_data_combined, "max_parallel_uplinks", default=1)
 
     @cached_property
     def max_uplink_switches(self: SharedUtils) -> int:
-        """
-        max_uplink_switches will default to the length of uplink_switches
-        """
+        """max_uplink_switches will default to the length of uplink_switches."""
         return get(self.switch_data_combined, "max_uplink_switches", default=len(self.uplink_switches))
 
     @cached_property
@@ -208,12 +210,12 @@ class MiscMixin:
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
-        DEFAULT_BFD_MULTIHOP = {
+        default_bfd_multihop = {
             "interval": 300,
             "min_rx": 300,
             "multiplier": 3,
         }
-        return get(self.hostvars, "bfd_multihop", default=DEFAULT_BFD_MULTIHOP)
+        return get(self.hostvars, "bfd_multihop", default=default_bfd_multihop)
 
     @cached_property
     def evpn_ebgp_multihop(self: SharedUtils) -> int:
@@ -246,20 +248,18 @@ class MiscMixin:
     @cached_property
     def network_services_keys(self: SharedUtils) -> list[dict]:
         """
-        Return sorted network_services_keys filtered for invalid entries and unused keys
+        Return sorted network_services_keys filtered for invalid entries and unused keys.
 
         NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
-        DEFAULT_NETWORK_SERVICES_KEYS = [{"name": "tenants"}]
-        network_services_keys = get(self.hostvars, "network_services_keys", default=DEFAULT_NETWORK_SERVICES_KEYS)
+        default_network_services_keys = [{"name": "tenants"}]
+        network_services_keys = get(self.hostvars, "network_services_keys", default=default_network_services_keys)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
 
     @cached_property
     def port_profiles(self: SharedUtils) -> list:
-        port_profiles = get(self.hostvars, "port_profiles", default=[])
-        # Support legacy data model by converting nested dict to list of dict
-        return convert_dicts(port_profiles, "profile")
+        return get(self.hostvars, "port_profiles", default=[])
 
     @cached_property
     def uplink_interface_speed(self: SharedUtils) -> str | None:
@@ -305,6 +305,7 @@ class MiscMixin:
     def fabric_ip_addressing_mlag_algorithm(self: SharedUtils) -> str:
         """
         This method fetches the MLAG algorithm value from host variables.
+
         It defaults to 'first_id' if the variable is not defined.
         """
         return get(self.hostvars, "fabric_ip_addressing.mlag.algorithm", default="first_id")
@@ -342,9 +343,10 @@ class MiscMixin:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
         return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)
 
-    def get_switch_fact(self: SharedUtils, key, required=True):
+    def get_switch_fact(self: SharedUtils, key: str, required: bool = True) -> Any:
         """
         Return facts from EosDesignsFacts.
+
         We need to go via avd_switch_facts since PyAVD does not expose "switch.*" in get_avdfacts.
         """
         return get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch..{key}", required=required, org_key=f"switch.{key}", separator="..")
@@ -356,8 +358,7 @@ class MiscMixin:
     @cached_property
     def new_network_services_bgp_vrf_config(self: SharedUtils) -> bool:
         """
-        Return whether or not to use the new behavior when generating
-        BGP VRF configuration
+        Return whether or not to use the new behavior when generating BGP VRF configuration.
 
         TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
         """
@@ -365,15 +366,16 @@ class MiscMixin:
         return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
 
     @cached_property
-    def ipv4_acls(self: SharedUtils) -> list:
-        return get(self.hostvars, "ipv4_acls", default=[])
+    def ipv4_acls(self: SharedUtils) -> dict:
+        return {acl["name"]: acl for acl in get(self.hostvars, "ipv4_acls", default=[])}
 
-    def get_ipv4_acl(self: SharedUtils, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None):
+    def get_ipv4_acl(self: SharedUtils, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None) -> dict:
         """
         Get one IPv4 ACL from "ipv4_acls" where fields have been substituted.
+
         If any substitution is done, the ACL name will get "_<interface_name>" appended.
         """
-        org_ipv4_acl = get_item(self.ipv4_acls, "name", name, required=True, var_name=f"ipv4_acls[name={name}]")
+        org_ipv4_acl = get(self.ipv4_acls, name, required=True, org_key=f"ipv4_acls[name={name}]")
         # deepcopy to avoid inplace updates below from modifying the original.
         ipv4_acl = deepcopy(org_ipv4_acl)
         ip_replacements = {
@@ -398,9 +400,10 @@ class MiscMixin:
     def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str], field_context: str, interface_name: str) -> str:
         """
         Checks one field if the value can be substituted.
+
         The given "replacements" dict will be parsed as:
           key: substitution field to look for
-          value: replacement value to set
+          value: replacement value to set.
 
         If a replacement is done, but the value is None, an error will be raised.
         """
@@ -409,12 +412,19 @@ class MiscMixin:
                 continue
 
             if value is None:
-                raise AristaAvdError(
+                msg = (
                     f"Unable to perform substitution of the value '{key}' defined under '{field_context}', "
                     f"since no substitution value was found for interface '{interface_name}'. "
                     "Make sure to set the appropriate fields on the interface."
+                )
+                raise AristaAvdError(
+                    msg,
                 )
 
             return value
 
         return field_value
+
+    @cached_property
+    def ipv4_prefix_list_catalog(self: SharedUtils) -> list:
+        return get(self.hostvars, "ipv4_prefix_list_catalog", default=[])

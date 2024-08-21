@@ -170,7 +170,7 @@ router_bgp:
     peer: DC1-CL1B
     description: DC1-CL1B
     remote_as: '65109'
-  - ip_address: 192.168.255.9
+  - ip_address: 192.168.42.42
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-LEAF1A
     description: DC1-LEAF1A
@@ -257,6 +257,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT

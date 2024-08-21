@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -170,6 +170,8 @@ keys:
                             type: str
                             convert_types:
                               - float
+                          hop_count:
+                            type: str
                       description:
                         type: str
                       id:
@@ -185,6 +187,10 @@ keys:
                               type: str
                             preference:
                               type: str
+                      application_profiles:
+                        type: list
+                        items:
+                          type: str
           internet_exit_policies:
             type: list
             items:
@@ -242,3 +248,71 @@ keys:
                       preference:
                         type: str
                         required: true
+          applications:
+            type: dict
+            keys:
+              profiles:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                    builtin_applications:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          name:
+                            type: str
+                          services:
+                            type: list
+                            items:
+                              type: str
+                    user_defined_applications:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          name:
+                            type: str
+                    categories:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          category:
+                            type: str
+                          services:
+                            type: list
+                            items:
+                              type: str
+                    transport_protocols:
+                      type: list
+                      items:
+                        type: str
+              categories:
+                type: dict
+                keys:
+                  builtin_applications:
+                    type: list
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                        category:
+                          type: str
+                        services:
+                          type: list
+                          items:
+                            type: str
+                  user_defined_applications:
+                    type: list
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                        category:
+                          type: str

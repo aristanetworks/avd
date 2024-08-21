@@ -54,7 +54,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
   - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in PREVIEW
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
-    These new tests are added only in the [ANTA integration](../../../eos_validate_state/anta_integration.md) mode.
 
 ### Known limitations
 
@@ -123,6 +122,13 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 Additionally, following keys must be set for the WAN route servers for the connectivity to work:
 
 - `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes`: To set the ranges of IP address from which to expect BGP peerings for the WAN. Include the VTEP ranges for all routers connecting to this patfinder.
+
+!!! warning
+
+    When configuring a password on the `wan_overlay_peers` BGP peer group,
+    it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+    This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+    If the password is not set, the static BGP peerings between Pathfinders may not come up.
 
 #### WAN mode
 
@@ -309,7 +315,27 @@ wan_carriers:
 ### Flow tracking
 
 For scalabilty reasons, flow-tracking is enabled only on `Dps1` interface by default.
-It can be added on WAN and LAN interfaces using `custom_structured_configuration`.
+It can be added on WAN and LAN interfaces using the appropriate combination of `fabric_flow_tracking` and `flow_tracking_settings`, the `flow_tracking` key in various places in the schema or `custom_structured_configuration`.
+
+Example to enable flow tracking on a WAN interface:
+
+```yaml
+wan_router:
+  node_groups:
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      nodes:
+        - name: cv-pathfinder-edge
+          id: 1
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              ip_address: dhcp
+              flow_tracking:
+                enabled: true
+```
 
 ### WAN interfaces
 
@@ -576,16 +602,12 @@ interface Ethernet3
 An internet-exit policy of type `zscaler` leverages the following AVD data model to generate the target configuration.
 
 AVD supports up to three tunnels (primary, secondary, tertiary).
-
-The target is for this data to be retrieved from Cloudvision through a lookup plugin for each device to determine what are the best tunnel(s) to use for a given location.
+AVD `eos_designs` will fetch Zscaler integration information from Cloudvision.
 
 ```yaml
-# Variables used by the lookup plugin to connect to Cloudvision
-cv_server: <cloudvision_ip>
-cv_token: <cloudvision_token>
-
-# Lookup plugin usage
-zscaler_endpoints: "{{ lookup('arista.avd.cv_zscaler_endpoints') }}"
+# Variables used by eos_designs to connect to Cloudvision
+cv_server:  <hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS>
+cv_token: <service account token as defined on CloudVision. This value should be using Ansible Vault>
 ```
 
 For each `zscaler` type Internet-policies, AVD uses the `cv_pathinfder_internet_exit_policies[name=<POLICY-NAME>].zscaler` dictionary and the `zscaler_endpoints` in combination with the `l3_interfaces.cv_pathfinder_internet_exit.policies[name=<POLICY-NAME>].tunnel_interface_numbers` to generate the internet-exit configuration.

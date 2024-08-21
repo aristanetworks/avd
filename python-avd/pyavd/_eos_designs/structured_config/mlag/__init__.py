@@ -5,27 +5,25 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ...._utils import default, get, strip_empties_from_dict
-from ....j2filters import list_compress
-from ...avdfacts import AvdFacts
-from ...interface_descriptions import InterfaceDescriptionData
+from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._utils import default, get, strip_empties_from_dict
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
+from pyavd.j2filters import list_compress
 
 
 class AvdStructuredConfigMlag(AvdFacts):
-    def render(self):
-        """
-        Wrap class render function with a check for mlag is True
-        """
+    def render(self) -> dict:
+        """Wrap class render function with a check for mlag is True."""
         if self.shared_utils.mlag is True:
             return super().render()
         return {}
 
     @cached_property
-    def _trunk_groups_mlag_name(self):
+    def _trunk_groups_mlag_name(self) -> str:
         return get(self.shared_utils.trunk_groups, "mlag.name", required=True)
 
     @cached_property
-    def _trunk_groups_mlag_l3_name(self):
+    def _trunk_groups_mlag_l3_name(self) -> str:
         return get(self.shared_utils.trunk_groups, "mlag_l3.name", required=True)
 
     @cached_property
@@ -46,7 +44,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                     "tenant": "system",
                     "name": "LEAF_PEER_L3",
                     "trunk_groups": [self._trunk_groups_mlag_l3_name],
-                }
+                },
             )
 
         vlans.append(
@@ -55,19 +53,18 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "tenant": "system",
                 "name": "MLAG_PEER",
                 "trunk_groups": [self._trunk_groups_mlag_name],
-            }
+            },
         )
         return vlans
 
     @cached_property
     def vlan_interfaces(self) -> list | None:
         """
-        Return list with VLAN Interfaces used for MLAG
+        Return list with VLAN Interfaces used for MLAG.
 
         May return both the main MLAG VLAN as well as a dedicated L3 VLAN
         Can also combine L3 configuration on the main MLAG VLAN
         """
-
         # Create Main MLAG VLAN Interface
         main_vlan_interface_name = f"Vlan{self.shared_utils.mlag_peer_vlan}"
         main_vlan_interface = {
@@ -95,7 +92,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "ospf_network_point_to_point": True,
                     "ospf_area": self.shared_utils.underlay_ospf_area,
-                }
+                },
             )
 
         elif self.shared_utils.underlay_routing_protocol == "isis":
@@ -105,7 +102,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                     "isis_bfd": get(self._hostvars, "underlay_isis_bfd"),
                     "isis_metric": 50,
                     "isis_network_point_to_point": True,
-                }
+                },
             )
 
         if self.shared_utils.underlay_multicast:
@@ -142,16 +139,13 @@ class AvdStructuredConfigMlag(AvdFacts):
         ]
 
     @cached_property
-    def port_channel_interfaces(self):
-        """
-        Return dict with one Port Channel Interface used for MLAG Peer Link
-        """
-
+    def port_channel_interfaces(self) -> list:
+        """Return dict with one Port Channel Interface used for MLAG Peer Link."""
         port_channel_interface_name = f"Port-Channel{self.shared_utils.mlag_port_channel_id}"
         port_channel_interface = {
             "name": port_channel_interface_name,
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
-                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name)
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name),
             ),
             "type": "switched",
             "shutdown": False,
@@ -189,11 +183,8 @@ class AvdStructuredConfigMlag(AvdFacts):
         return [strip_empties_from_dict(port_channel_interface)]
 
     @cached_property
-    def ethernet_interfaces(self):
-        """
-        Return dict with Ethernet Interfaces used for MLAG Peer Link
-        """
-
+    def ethernet_interfaces(self) -> list:
+        """Return dict with Ethernet Interfaces used for MLAG Peer Link."""
         if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
             return None
 
@@ -205,7 +196,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
                 "description": self.shared_utils.interface_descriptions.mlag_ethernet_interface(
-                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=mlag_interface, peer_interface=mlag_interface)
+                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=mlag_interface, peer_interface=mlag_interface),
                 ),
                 "type": "port-channel-member",
                 "shutdown": False,
@@ -222,10 +213,8 @@ class AvdStructuredConfigMlag(AvdFacts):
         return ethernet_interfaces
 
     @cached_property
-    def mlag_configuration(self):
-        """
-        Return Structured Config for MLAG Configuration
-        """
+    def mlag_configuration(self) -> dict:
+        """Return Structured Config for MLAG Configuration."""
         mlag_configuration = {
             "domain_id": get(self.shared_utils.switch_data_combined, "mlag_domain_id", default=self.shared_utils.group),
             "local_interface": f"Vlan{self.shared_utils.mlag_peer_vlan}",
@@ -246,20 +235,20 @@ class AvdStructuredConfigMlag(AvdFacts):
                         "vrf": self.shared_utils.mgmt_interface_vrf,
                     },
                     "dual_primary_detection_delay": 5,
-                }
+                },
             )
 
         return strip_empties_from_dict(mlag_configuration)
 
     @cached_property
-    def route_maps(self):
+    def route_maps(self) -> list[dict] | None:
         """
-        Return dict with one route-map
-        Origin Incomplete for MLAG iBGP learned routes
+        Return list of route-maps.
+
+        Origin Incomplete for MLAG iBGP learned routes.
 
         TODO: Partially duplicated in network_services. Should be moved to a common class
         """
-
         if not (self.shared_utils.mlag_l3 is True and self.shared_utils.mlag_ibgp_origin_incomplete is True and self.shared_utils.underlay_bgp):
             return None
 
@@ -272,20 +261,19 @@ class AvdStructuredConfigMlag(AvdFacts):
                         "type": "permit",
                         "set": ["origin incomplete"],
                         "description": "Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
-                    }
+                    },
                 ],
-            }
+            },
         ]
 
     @cached_property
-    def router_bgp(self):
+    def router_bgp(self) -> dict | None:
         """
-        Return structured config for router bgp
+        Return structured config for router bgp.
 
         Peer group and underlay MLAG iBGP peering is created only for BGP underlay.
         For other underlay protocols the MLAG peer-group may be created as part of the network services logic.
         """
-
         if not (self.shared_utils.mlag_l3 is True and self.shared_utils.underlay_bgp):
             return None
 
@@ -304,7 +292,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                     "peer": self.shared_utils.mlag_peer,
                     "remote_as": self.shared_utils.bgp_as,
                     "description": self.shared_utils.mlag_peer,
-                }
+                },
             ]
 
         else:
@@ -315,15 +303,14 @@ class AvdStructuredConfigMlag(AvdFacts):
                     "peer_group": peer_group_name,
                     "peer": self.shared_utils.mlag_peer,
                     "description": self.shared_utils.mlag_peer,
-                }
+                },
             ]
 
         return strip_empties_from_dict(router_bgp)
 
     def _router_bgp_mlag_peer_group(self) -> dict:
         """
-        Return a partial router_bgp structured_config covering the MLAG peer_group
-        and associated address_family activations
+        Return a partial router_bgp structured_config covering the MLAG peer_group and associated address_family activations.
 
         TODO: Duplicated in network_services. Should be moved to a common class
         """
@@ -352,8 +339,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                     {
                         "name": peer_group_name,
                         "activate": True,
-                    }
-                ]
+                    },
+                ],
             }
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}

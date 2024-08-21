@@ -424,6 +424,7 @@ anta.tests.stun:
       source_port: 4500
 anta.tests.system:
 - VerifyNTP: null
+- VerifyReloadCause: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

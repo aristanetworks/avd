@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from functools import cached_property
 from ipaddress import ip_interface
-from typing import Mapping
 
 from ansible.errors import AnsibleActionFail
 
@@ -16,13 +16,13 @@ PLUGIN_NAME = "arista.avd.eos_validate_state"
 
 try:
     from pyavd._errors import AristaAvdError
-    from pyavd._utils import get, get_item
+    from pyavd._utils import default, get, get_item
 except ImportError as e:
     AristaAvdError = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 LOGGER = logging.getLogger(__name__)
@@ -88,7 +88,7 @@ class ConfigManager:
     def _get_loopback_mappings(self) -> dict:
         """Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
 
-        Returns
+        Returns:
         -------
             dict: A dictionary containing:
             - "loopback0_mapping": A list of tuples where each tuple contains a hostname and its Loopback0 IP address.
@@ -107,7 +107,10 @@ class ConfigManager:
                     results["loopback0_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
 
             # If the host is a VTEP, add the VTEP IP to the mapping
-            vtep_interface = get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface")
+            # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+            vtep_interface = default(
+                get(host_struct_cfg, "vxlan_interface.vxlan1.vxlan.source_interface"), get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface")
+            )
 
             # NOTE: For now we exclude WAN VTEPs from the vtep_mapping
             if vtep_interface is not None and "Dps" not in vtep_interface:

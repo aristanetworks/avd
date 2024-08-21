@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import pytest
+
 from pyavd._utils.password_utils import (
     bgp_decrypt,
     bgp_encrypt,
@@ -58,36 +59,28 @@ BGP_MOLECULE_PASSWORDS_TEST = [
 OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS = ["md5", "sha1", "sha256", "sha384", "sha512"]
 
 
-@pytest.mark.parametrize("key, password, expected", BGP_INPUT_DICT_ENCRYPT_EXPECTED)
-def test_bgp_encrypt(key, password, expected):
-    """
-    Test bgp_encrypt
-    """
+@pytest.mark.parametrize(("key", "password", "expected"), BGP_INPUT_DICT_ENCRYPT_EXPECTED)
+def test_bgp_encrypt(key: str, password: str, expected: str) -> None:
+    """Test bgp_encrypt."""
     assert bgp_encrypt(password, key=key) == expected
 
 
-@pytest.mark.parametrize("key, password,, expected", BGP_VALID_INPUT_DICT_DECRYPT_EXPECTED)
-def test_bgp_decrypt_success(key, password, expected):
-    """
-    Test bgp_decrypt successful cases
-    """
+@pytest.mark.parametrize(("key", "password", "expected"), BGP_VALID_INPUT_DICT_DECRYPT_EXPECTED)
+def test_bgp_decrypt_success(key: str, password: str, expected: str) -> None:
+    """Test bgp_decrypt successful cases."""
     assert bgp_decrypt(password, key=key) == expected
 
 
-@pytest.mark.parametrize("key, password", BGP_INVALID_INPUT_DICT_DECRYPT)
-def test_bgp_decrypt_failure(key, password):
-    """
-    Test bgp_decrypt failure cases
-    """
-    with pytest.raises(ValueError):
+@pytest.mark.parametrize(("key", "password"), BGP_INVALID_INPUT_DICT_DECRYPT)
+def test_bgp_decrypt_failure(key: str, password: str) -> None:
+    """Test bgp_decrypt failure cases."""
+    with pytest.raises(ValueError):  # noqa: PT011
         bgp_decrypt(password, key=key)
 
 
-@pytest.mark.parametrize("key, password, expected", BGP_MOLECULE_PASSWORDS_TEST)
-def test_molecule_bgp_encrypt(key, password, expected):
-    """
-    Test bgp_encrypt
-    """
+@pytest.mark.parametrize(("key", "password", "expected"), BGP_MOLECULE_PASSWORDS_TEST)
+def test_molecule_bgp_encrypt(key: str, password: str, expected: str) -> None:
+    """Test bgp_encrypt."""
     assert bgp_encrypt(password, key=key) == expected
 
 
@@ -122,57 +115,43 @@ OSPF_INVALID_INPUT_MD_DICT_DECRYPT = [
 # The following list uses all the molecule OSPF passwords available
 # and the expected encryption
 # The password is always arista123
-# TODO
-# OSPF_MOLECULE_PASSWORDS_TEST = []
+# TODO: OSPF_MOLECULE_PASSWORDS_TEST = []
 
 
-@pytest.mark.parametrize("key, password, expected", OSPF_INPUT_SIMPLE_DICT_ENCRYPT_EXPECTED)
-def test_ospf_simple_encrypt(key, password, expected):
-    """
-    Test ospf_simple_encrypt
-    """
+@pytest.mark.parametrize(("key", "password", "expected"), OSPF_INPUT_SIMPLE_DICT_ENCRYPT_EXPECTED)
+def test_ospf_simple_encrypt(key: str, password: str, expected: str) -> None:
+    """Test ospf_simple_encrypt."""
     assert ospf_simple_encrypt(password, key=key) == expected
 
 
-@pytest.mark.parametrize("key, password, expected", OSPF_VALID_INPUT_SIMPLE_DICT_DECRYPT_EXPECTED)
-def test_ospf_simple_decrypt_success(key, password, expected):
-    """
-    Test ospf_simple_decrypt successful cases
-    """
+@pytest.mark.parametrize(("key", "password", "expected"), OSPF_VALID_INPUT_SIMPLE_DICT_DECRYPT_EXPECTED)
+def test_ospf_simple_decrypt_success(key: str, password: str, expected: str) -> None:
+    """Test ospf_simple_decrypt successful cases."""
     assert ospf_simple_decrypt(password, key=key) == expected
 
 
-@pytest.mark.parametrize("key, password", OSPF_INVALID_INPUT_SIMPLE_DICT_DECRYPT)
-def test_ospf_simple_decrypt_failure(key, password):
-    """
-    Test ospf_simple_decrypt failure cases
-    """
-    with pytest.raises(ValueError):
+@pytest.mark.parametrize(("key", "password"), OSPF_INVALID_INPUT_SIMPLE_DICT_DECRYPT)
+def test_ospf_simple_decrypt_failure(key: str, password: str) -> None:
+    """Test ospf_simple_decrypt failure cases."""
+    with pytest.raises(ValueError):  # noqa: PT011
         ospf_simple_decrypt(password, key=key)
 
 
-@pytest.mark.parametrize("key, password, hash_algorithm, key_id, expected", OSPF_INPUT_MD_DICT_ENCRYPT_EXPECTED)
-def test_ospf_message_digest_encrypt(key, password, expected, hash_algorithm, key_id):
-    """
-    Test ospf_message_digest_encrypt
-    """
+@pytest.mark.parametrize(("key", "password", "hash_algorithm", "key_id", "expected"), OSPF_INPUT_MD_DICT_ENCRYPT_EXPECTED)
+def test_ospf_message_digest_encrypt(key: str, password: str, expected: str, hash_algorithm: str, key_id: str) -> None:
+    """Test ospf_message_digest_encrypt."""
     assert ospf_message_digest_encrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id) == expected
 
 
-@pytest.mark.parametrize("key, password, hash_algorithm, key_id, expected", OSPF_VALID_INPUT_MD_DICT_DECRYPT_EXPECTED)
-def test_ospf_message_digest_decrypt_success(key, password, hash_algorithm, key_id, expected):
-    """
-    Test ospf_message_digest_decrypt successful cases
-    """
+@pytest.mark.parametrize(("key", "password", "hash_algorithm", "key_id", "expected"), OSPF_VALID_INPUT_MD_DICT_DECRYPT_EXPECTED)
+def test_ospf_message_digest_decrypt_success(key: str, password: str, hash_algorithm: str, key_id: str, expected: str) -> None:
+    """Test ospf_message_digest_decrypt successful cases."""
     assert ospf_message_digest_decrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id) == expected
 
 
-@pytest.mark.parametrize("key, password, hash_algorithm, key_id", OSPF_INVALID_INPUT_MD_DICT_DECRYPT)
-def test_ospf_message_digest_decrypt_failure(key, password, hash_algorithm, key_id):
-    """
-    Test ospf_message_digest_decrypt failure cases
-    """
-
+@pytest.mark.parametrize(("key", "password", "hash_algorithm", "key_id"), OSPF_INVALID_INPUT_MD_DICT_DECRYPT)
+def test_ospf_message_digest_decrypt_failure(key: str, password: str, hash_algorithm: str, key_id: str) -> None:
+    """Test ospf_message_digest_decrypt failure cases."""
     if hash_algorithm is None or key_id is None:
         with pytest.raises(ValueError, match="For OSPF message digest keys, both hash_algorithm and key_id are required"):
             ospf_message_digest_encrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id)
@@ -212,26 +191,20 @@ ISIS_INVALID_INPUT_DECRYPT = [
 ]
 
 
-@pytest.mark.parametrize("key, mode, password, encrypted_password", ISIS_INPUT_EXPECTED)
-def test_isis_encrypt(key, mode, password, encrypted_password):
-    """
-    Test isis_encrypt
-    """
+@pytest.mark.parametrize(("key", "mode", "password", "encrypted_password"), ISIS_INPUT_EXPECTED)
+def test_isis_encrypt(key: str, mode: str, password: str, encrypted_password: str) -> None:
+    """Test isis_encrypt."""
     assert isis_encrypt(password, key=key, mode=mode) == encrypted_password
 
 
-@pytest.mark.parametrize("key, mode, password, encrypted_password", ISIS_INPUT_EXPECTED)
-def test_isis_decrypt_success(key, mode, password, encrypted_password):
-    """
-    Test isis_decrypt successful cases
-    """
+@pytest.mark.parametrize(("key", "mode", "password", "encrypted_password"), ISIS_INPUT_EXPECTED)
+def test_isis_decrypt_success(key: str, mode: str, password: str, encrypted_password: str) -> None:
+    """Test isis_decrypt successful cases."""
     assert isis_decrypt(encrypted_password, key=key, mode=mode) == password
 
 
-@pytest.mark.parametrize("key, mode, password", ISIS_INVALID_INPUT_DECRYPT)
-def test_isis_decrypt_failure(key, mode, password):
-    """
-    Test isis_decrypt failure cases
-    """
-    with pytest.raises(ValueError):
+@pytest.mark.parametrize(("key", "mode", "password"), ISIS_INVALID_INPUT_DECRYPT)
+def test_isis_decrypt_failure(key: str, mode: str, password: str) -> None:
+    """Test isis_decrypt failure cases."""
+    with pytest.raises(ValueError):  # noqa: PT011
         isis_decrypt(password, key=key, mode=mode)

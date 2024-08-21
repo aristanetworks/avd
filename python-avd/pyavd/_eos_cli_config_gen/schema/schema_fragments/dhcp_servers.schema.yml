@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -19,6 +19,54 @@ keys:
           description: VRF in which to configure the DHCP server, use `default` to indicate default VRF.
           convert_types:
           - int
+        lease_time_ipv4:
+          type: dict
+          keys:
+            days:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 2000
+              required: true
+            hours:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 23
+              required: true
+            minutes:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 59
+              required: true
+        lease_time_ipv6:
+          type: dict
+          keys:
+            days:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 2000
+              required: true
+            hours:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 23
+              required: true
+            minutes:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 59
+              required: true
         dns_domain_name_ipv4:
           type: str
         dns_domain_name_ipv6:
@@ -102,6 +150,7 @@ keys:
             type: dict
             keys:
               subnet:
+                description: IPv4/IPv6 subnet.
                 type: str
                 required: true
               name:
@@ -149,3 +198,28 @@ keys:
                     max: 59
                     convert_types:
                     - str
+              reservations:
+                description: DHCP client reservations.
+                type: list
+                primary_key: mac_address
+                items:
+                  type: dict
+                  keys:
+                    mac_address:
+                      type: str
+                      description: Ethernet address in format - HHHH.HHHH.HHHH
+                    hostname:
+                      type: str
+                    ipv4_address:
+                      type: str
+                      description: |-
+                        Valid IPv4 address from the given subnet.
+                        This should only be used within an IPv4 subnet.
+                    ipv6_address:
+                      type: str
+                      description: |-
+                        Valid IPv6 address from the given subnet.
+                        This should only be used within an IPv6 subnet.
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.

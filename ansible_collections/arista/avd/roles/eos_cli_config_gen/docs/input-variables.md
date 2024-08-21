@@ -80,12 +80,6 @@ roles/eos_cli_config_gen/docs/tables/ip-tacacs-source-interfaces.md
 roles/eos_cli_config_gen/docs/tables/local-users.md
 --8<--
 
-### Radius server
-
---8<--
-roles/eos_cli_config_gen/docs/tables/radius-server.md
---8<--
-
 ### Radius servers
 
 --8<--
@@ -529,12 +523,6 @@ roles/eos_cli_config_gen/docs/tables/management-ssh.md
 roles/eos_cli_config_gen/docs/tables/management-tech-support.md
 --8<--
 
-### Name server
-
---8<--
-roles/eos_cli_config_gen/docs/tables/name-server.md
---8<--
-
 ### NTP
 
 --8<--
@@ -565,6 +553,12 @@ roles/eos_cli_config_gen/docs/tables/virtual-source-nat-vrfs.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/config-comment.md
+--8<--
+
+### Config end
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/config-end.md
 --8<--
 
 ### CVX

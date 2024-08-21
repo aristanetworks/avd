@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-def template(template_file, template_vars, templar):
+def template(template_file: str, template_vars: dict, templar: object) -> str:
     """
     Run Ansible Templar with template file.
 
@@ -22,13 +22,14 @@ def template(template_file, template_vars, templar):
     searchpath : list of str
         List of Paths
 
-    Returns
+    Returns:
     -------
     str
         The rendered template
     """
     if templar is None:
-        raise NotImplementedError("Jinja Templating is not implemented in pyavd")
+        msg = "Jinja Templating is not implemented in pyavd"
+        raise NotImplementedError(msg)
 
     # We only get here when running from Ansible, so it is safe to import from ansible.
     # pylint: disable=import-outside-toplevel
@@ -43,6 +44,4 @@ def template(template_file, template_vars, templar):
     j2template = to_text(j2template)
 
     with templar.set_temporary_context(available_variables=template_vars):
-        result = templar.template(j2template, convert_data=False, escape_backslashes=False)
-
-    return result
+        return templar.template(j2template, convert_data=False, escape_backslashes=False)

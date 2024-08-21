@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -98,6 +100,12 @@ management api http-commands
       no shutdown
 ```
 
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
+
 ## Spanning Tree
 
 ### Spanning Tree Summary
@@ -173,37 +181,37 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | l3dot1q | - | 10 |
-| Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 100 |
-| Ethernet6.101 | TENANT_B_SITE_5 | l3dot1q | - | 101 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | - | 10 |
+| Ethernet6.100 | TENANT_B_SITE_3_OSPF | - | 100 |
+| Ethernet6.101 | TENANT_B_SITE_5 | - | 101 |
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | 100.64.48.15/31 | default | 9178 | False | - | - |
-| Ethernet6 | TENANT_B_SITE_5_WAN_TEST | routed | - | 123.10.10.2/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | l3dot1q | - | 123.1.1.2/31 | TENANT_B_INTRA | - | False | - | - |
-| Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet6.101 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
-| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | *routed | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
-| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | *routed | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | - | 100.64.48.15/31 | default | 9178 | False | - | - |
+| Ethernet6 | TENANT_B_SITE_5_WAN_TEST | - | 123.10.10.2/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | - | 123.1.1.2/31 | TENANT_B_INTRA | - | False | - | - |
+| Ethernet6.100 | TENANT_B_SITE_3_OSPF | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet6.101 | TENANT_B_SITE_5 | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | *routed | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | *routed | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -328,25 +336,25 @@ interface Ethernet14
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel4.1000 | - | l2dot1q | - | False | 1000 | - | - | True | - | - | - |
-| Port-Channel4.1001 | - | l2dot1q | - | False | 1001 | - | - | True | - | - | - |
-| Port-Channel4.1002 | - | l2dot1q | - | False | 1002 | - | - | True | - | - | - |
-| Port-Channel4.1003 | - | l2dot1q | - | False | 1003 | - | - | True | - | - | - |
-| Port-Channel4.1004 | - | l2dot1q | - | False | 1004 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel4.1000 | - | - | False | 1000 | - | - | True | - | - | - |
+| Port-Channel4.1001 | - | - | False | 1001 | - | - | True | - | - | - |
+| Port-Channel4.1002 | - | - | False | 1002 | - | - | True | - | - | - |
+| Port-Channel4.1003 | - | - | False | 1003 | - | - | True | - | - | - |
+| Port-Channel4.1004 | - | - | False | 1004 | - | - | True | - | - | - |
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | routed | - | 100.64.49.2/30 | default | 9178 | False | - | - |
-| Port-Channel220 | P2P_LINK_TO_SITE2-LSR2_Port-Channel110 | routed | - | 100.64.49.6/30 | default | 9178 | False | - | - |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | - | 100.64.49.2/30 | default | 9178 | False | - | - |
+| Port-Channel220 | P2P_LINK_TO_SITE2-LSR2_Port-Channel110 | - | 100.64.49.6/30 | default | 9178 | False | - | - |
 
 ##### ISIS
 
@@ -477,9 +485,9 @@ interface Loopback0
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

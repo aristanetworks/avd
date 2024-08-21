@@ -29,7 +29,7 @@ def validate_structured_config(structured_config: dict) -> ValidationResult:
 
     # pylint: enable=import-outside-toplevel
     # Initialize a global instance of eos_cli_config_gen_schema_tools
-    global eos_cli_config_gen_schema_tools
+    global eos_cli_config_gen_schema_tools  # noqa: PLW0603 TODO: improve code to avoid globals
     if eos_cli_config_gen_schema_tools is None:
         eos_cli_config_gen_schema_tools = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
 

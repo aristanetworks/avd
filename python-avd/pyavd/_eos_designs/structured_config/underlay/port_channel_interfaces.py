@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import get
-from ....j2filters import generate_esi, generate_lacp_id, generate_route_target
-from ...interface_descriptions.models import InterfaceDescriptionData
+from pyavd._utils import get, short_esi_to_route_target
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -18,14 +18,13 @@ if TYPE_CHECKING:
 class PortChannelInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def port_channel_interfaces(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for port_channel_interfaces
-        """
+        """Return structured config for port_channel_interfaces."""
         port_channel_interfaces = []
         port_channel_list = []
         for link in self._underlay_links:
@@ -48,7 +47,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         peer=link["peer"],
                         peer_channel_group_id=link["peer_channel_group_id"],
                         port_channel_description=link.get("channel_description"),
-                    )
+                    ),
                 ),
                 "type": "switched",
                 "shutdown": False,
@@ -67,15 +66,15 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["vlans"] = vlans
 
             # Configure MLAG on MLAG switches if either 'mlag_on_orphan_port_channel_downlink' or 'link.mlag' is True
-            if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=True), link.get("mlag", True)]):
+            if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=False), link.get("mlag", True)]):
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
-                    "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
-                    "route_target": generate_route_target(short_esi),
+                    "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
+                    "route_target": short_esi_to_route_target(short_esi),
                 }
-                port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
+                port_channel_interface["lacp_id"] = short_esi.replace(":", ".")
 
             # PTP
             if get(link, "ptp.enable") is True:

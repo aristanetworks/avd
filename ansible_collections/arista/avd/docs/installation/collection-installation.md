@@ -8,7 +8,7 @@
 
 ## Installation workflow
 
-- Install [Python](https://www.python.org/downloads/) **3.9** or later
+- Install [Python](https://www.python.org/downloads/) **3.10** or later
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection including Python requirements.
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
 

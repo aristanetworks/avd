@@ -32,4 +32,6 @@ tenants:
       - id: 1   # calculated vni would be 10001 (duplicate)
         name: vlan
 
-expected_error_message: "Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for L2VLANs. {'id': 1, 'name': None, 'vni': 10001} conflicts with {'id': 111, 'name': None, 'vni': 10001}."
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for L2VLANs.
+  {'id': 1, 'name': None, 'vni': 10001} conflicts with {'id': 111, 'name': None, 'vni': 10001}.

@@ -321,6 +321,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -369,7 +375,7 @@ vrfs:
   tenant: Tenant_C
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management99
   description: oob_management
   shutdown: false
   vrf: MGMT
@@ -464,6 +470,27 @@ ethernet_interfaces:
   description: DC1-BL1B descriptions preferred over single description
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
+- name: Ethernet12
+  peer_type: l3_interface
+  ip_address: 10.10.50.10/24
+  mtu: 9000
+  shutdown: false
+  description: test l3 interfaces acls
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
+  type: routed
+  vrf: Tenant_A_L3_VRF_Zone
+- name: Ethernet13.10
+  peer_type: l3_interface
+  ip_address: 10.10.50.20/24
+  mtu: 9000
+  shutdown: false
+  description: test l3 interfaces acls
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 10
+  vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet7
   peer_type: l3_interface
   ip_address: 10.10.20.20/24
@@ -472,6 +499,10 @@ ethernet_interfaces:
   description: test
   type: routed
   vrf: Tenant_A_WAN_Zone
+- name: Ethernet13
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 - name: Ethernet4000
   description: My second test
   ip_address: 10.1.2.3/12
@@ -531,6 +562,35 @@ vlans:
 - id: 350
   name: Tenant_C_WAN_Zone_1
   tenant: Tenant_C
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.50.10
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.50.20
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.10.50.10
+    destination: any
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.10.50.20
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
@@ -578,7 +638,7 @@ router_ospf:
       connected:
         route_map: RM_TEST
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-BL1B_VTEP
     vxlan:
       udp_port: 4789
@@ -609,4 +669,4 @@ sflow:
     destinations:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
-    source_interface: Management1
+    source_interface: Management99

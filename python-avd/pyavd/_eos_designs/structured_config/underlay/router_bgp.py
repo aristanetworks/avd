@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get, strip_empties_from_dict
+from pyavd._utils import append_if_not_duplicate, get, strip_empties_from_dict
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +17,13 @@ if TYPE_CHECKING:
 class RouterBgpMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_bgp(self: AvdStructuredConfigUnderlay) -> dict | None:
-        """
-        Return the structured config for router_bgp
-        """
-
+        """Return the structured config for router_bgp."""
         if not self.shared_utils.underlay_bgp:
             if self.shared_utils.is_wan_router:
                 # Configure redistribute connected with or without route-map in case it the underlay is not BGP.
@@ -57,14 +56,14 @@ class RouterBgpMixin(UtilsMixin):
         router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
         # Address Families
-        # TODO - see if it makes sense to extract logic in method
+        # TODO: - see if it makes sense to extract logic in method
         address_family_ipv4_peer_group = {"activate": True}
 
         if self.shared_utils.underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6": {"enabled": True, "originate": True}}
 
         router_bgp["address_family_ipv4"] = {
-            "peer_groups": [{"name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"], **address_family_ipv4_peer_group}]
+            "peer_groups": [{"name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"], **address_family_ipv4_peer_group}],
         }
 
         if self.shared_utils.underlay_ipv6 is True:
@@ -89,7 +88,7 @@ class RouterBgpMixin(UtilsMixin):
                         "remote_as": link["peer_bgp_as"],
                         "peer": link["peer"],
                         "description": "_".join([link["peer"], link["peer_interface"]]),
-                    }
+                    },
                 )
 
                 if "subinterfaces" in link:
@@ -107,9 +106,9 @@ class RouterBgpMixin(UtilsMixin):
                                 "name": subinterface["interface"],
                                 "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                                 "remote_as": link["peer_bgp_as"],
-                                # TODO - implement some centralized way to generate these descriptions
+                                # TODO: - implement some centralized way to generate these descriptions
                                 "description": f"{'_'.join([link['peer'], subinterface['peer_interface']])}_vrf_{subinterface['vrf']}",
-                            }
+                            },
                         )
 
             if neighbor_interfaces:
@@ -174,6 +173,17 @@ class RouterBgpMixin(UtilsMixin):
             if neighbors:
                 router_bgp["neighbors"] = neighbors
 
+        for neighbor_info in self.shared_utils.l3_interfaces_bgp_neighbors:
+            neighbor = {
+                "ip_address": get(neighbor_info, "ip_address"),
+                "remote_as": get(neighbor_info, "remote_as"),
+                "description": get(neighbor_info, "description"),
+                "route_map_in": get(neighbor_info, "route_map_in"),
+                "route_map_out": get(neighbor_info, "route_map_out"),
+            }
+
+            router_bgp.setdefault("neighbors", []).append(strip_empties_from_dict(neighbor))
+
         if vrfs_dict:
             router_bgp["vrfs"] = list(vrfs_dict.values())
 
@@ -182,9 +192,7 @@ class RouterBgpMixin(UtilsMixin):
 
     @cached_property
     def _router_bgp_redistribute_routes(self: AvdStructuredConfigUnderlay) -> list:
-        """
-        Return structured config for router_bgp.redistribute_routes
-        """
+        """Return structured config for router_bgp.redistribute_routes."""
         if self.shared_utils.overlay_routing_protocol == "none" or not self.shared_utils.underlay_filter_redistribute_connected:
             return [{"source_protocol": "connected"}]
 

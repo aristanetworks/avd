@@ -5,10 +5,14 @@ from __future__ import annotations
 
 from asyncio import gather
 from logging import getLogger
+from typing import TYPE_CHECKING
 
-from ..._utils import batch
-from ..client import CVClient
-from .models import CVEosConfig, DeployToCvResult
+from pyavd._utils import batch
+
+if TYPE_CHECKING:
+    from pyavd._cv.client import CVClient
+
+    from .models import CVEosConfig, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
@@ -21,7 +25,7 @@ PARALLEL_COROUTINES = 20
 
 async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvResult, cv_client: CVClient) -> None:
     """
-    Deploy given configs using "Static Configlet Studio"
+    Deploy given configs using "Static Configlet Studio".
 
     - Create/verify a single configuration container named "AVD Configurations".
     - Upload Configlets and assign to devices.
@@ -29,17 +33,16 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
     TODO: See if this can be optimized to check if the configlets are already in place and correct. A hash would have been nice.
     TODO: Split long configs into multiple configlets for 990KB chunks. Need to figure out how to batch it.
     """
-
     LOGGER.info("deploy_configs_to_cv: %s", len(configs))
 
     if not configs:
         return
 
-    # Build Todo with CVEosConfig objects that exist on CloudVision. Add the rest to skipped.
+    # Build TODO: with CVEosConfig objects that exist on CloudVision. Add the rest to skipped.
     result.skipped_configs.extend(config for config in configs if not config.device._exists_on_cv)
     LOGGER.info("deploy_configs_to_cv: %s skipped configs because the devices are missing from CloudVision.", len(result.skipped_configs))
     todo_configs = [config for config in configs if config.device._exists_on_cv]
-    LOGGER.info("deploy_configs_to_cv: %s todo configs.", len(todo_configs))
+    LOGGER.info("deploy_configs_to_cv: %s TODO: configs.", len(todo_configs))
 
     # No need to continue if we have nothing to do.
     if not todo_configs:
@@ -55,7 +58,8 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
 
 async def deploy_configlets_to_cv(configs: list[CVEosConfig], workspace_id: str, cv_client: CVClient) -> None:
     """
-    Bluntly setting configs like nothing was there. Only create missing containers
+    Bluntly setting configs like nothing was there. Only create missing containers.
+
     TODO: Fetch config checksums for existing configs and only upload what is needed.
     """
     configlet_coroutines = []
@@ -68,7 +72,7 @@ async def deploy_configlets_to_cv(configs: list[CVEosConfig], workspace_id: str,
                 file=config.file,
                 display_name=config.configlet_name or f"{CONFIGLET_NAME_PREFIX}{config.device.hostname}",
                 description=f"Configuration created and uploaded by AVD for {config.device.hostname}",
-            )
+            ),
         )
 
     LOGGER.info("deploy_configs_to_cv: Deploying %s configlets in batches of %s.", len(configlet_coroutines), PARALLEL_COROUTINES)
@@ -80,7 +84,8 @@ async def deploy_configlets_to_cv(configs: list[CVEosConfig], workspace_id: str,
 async def get_existing_device_container_ids_from_root_container(workspace_id: str, cv_client: CVClient) -> list[str]:
     """
     Get or create root level container for AVD configurations. Using the hardcoded id from CONFIGLET_CONTAINER_ID.
-    Then return the list of existing device container ids. (Always empty if we just created the root container)
+
+    Then return the list of existing device container ids. (Always empty if we just created the root container).
     """
     root_cv_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id, container_ids=[CONFIGLET_CONTAINER_ID])
     LOGGER.info("get_or_create_configlet_root_container: Got AVD root container? %s", bool(root_cv_containers))
@@ -98,12 +103,16 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
     )
     # Add the root level container to the list of root level containers using the studio inputs API (!?!)
     root_containers: list = await cv_client.get_studio_inputs_with_path(
-        studio_id=STATIC_CONFIGLET_STUDIO_ID, workspace_id=workspace_id, input_path=["configletAssignmentRoots"], default_value=[]
+        studio_id=STATIC_CONFIGLET_STUDIO_ID,
+        workspace_id=workspace_id,
+        input_path=["configletAssignmentRoots"],
+        default_value=[],
     )
     LOGGER.info("deploy_configs_to_cv: Found %s root containers.", len(root_containers))
     if CONFIGLET_CONTAINER_ID not in root_containers:
-        LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Fixing...")
-        root_containers.append(CONFIGLET_CONTAINER_ID)
+        LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Inserting AVD container at the top.")
+        # Inserting our container first, to allow reconcile and other static config containers to override the AVD config.
+        root_containers.insert(0, CONFIGLET_CONTAINER_ID)
         await cv_client.set_studio_inputs(
             studio_id=STATIC_CONFIGLET_STUDIO_ID,
             workspace_id=workspace_id,
@@ -116,6 +125,7 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
 async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspace_id: str, cv_client: CVClient) -> None:
     """
     Identify existing containers and ensure they have the correct configuration.
+
     Then update/create as needed.
 
     TODO: Refactor to set_some on supported CV versions
@@ -159,7 +169,7 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
                     description=description,
                     query=query,
                     configlet_ids=configlet_ids,
-                )
+                ),
             )
 
     LOGGER.info("deploy_configs_to_cv: Deploying %s configlet assignments / containers in batches of %s.", len(container_coroutines), PARALLEL_COROUTINES)

@@ -7,7 +7,9 @@
             "type": "object",
             "oneOf": [
                 {
-                    "required": [ "type" ],
+                    "required": [
+                        "type"
+                    ],
                     "properties": {
                         "type": {
                             "type": "string",
@@ -44,18 +46,34 @@
                                 "type": "number"
                             }
                         },
-                        "display_name": { "$ref": "#/$defs/display_name" },
-                        "description": { "$ref": "#/$defs/description" },
-                        "required": { "$ref": "#/$defs/required" },
-                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
-                        "deprecation": { "$ref": "#/$defs/deprecation" },
-                        "$ref": { "$ref": "#/$defs/$ref" },
-                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                        "display_name": {
+                            "$ref": "#/$defs/display_name"
+                        },
+                        "description": {
+                            "$ref": "#/$defs/description"
+                        },
+                        "required": {
+                            "$ref": "#/$defs/required"
+                        },
+                        "dynamic_valid_values": {
+                            "$ref": "#/$defs/dynamic_valid_values"
+                        },
+                        "deprecation": {
+                            "$ref": "#/$defs/deprecation"
+                        },
+                        "$ref": {
+                            "$ref": "#/$defs/$ref"
+                        },
+                        "documentation_options": {
+                            "$ref": "#/$defs/documentation_options"
+                        }
                     },
                     "additionalProperties": false
                 },
                 {
-                    "required": [ "type" ],
+                    "required": [
+                        "type"
+                    ],
                     "properties": {
                         "type": {
                             "type": "string",
@@ -85,18 +103,34 @@
                                 "type": "boolean"
                             }
                         },
-                        "display_name": { "$ref": "#/$defs/display_name" },
-                        "description": { "$ref": "#/$defs/description" },
-                        "required": { "$ref": "#/$defs/required" },
-                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
-                        "deprecation": { "$ref": "#/$defs/deprecation" },
-                        "$ref": { "$ref": "#/$defs/$ref" },
-                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                        "display_name": {
+                            "$ref": "#/$defs/display_name"
+                        },
+                        "description": {
+                            "$ref": "#/$defs/description"
+                        },
+                        "required": {
+                            "$ref": "#/$defs/required"
+                        },
+                        "dynamic_valid_values": {
+                            "$ref": "#/$defs/dynamic_valid_values"
+                        },
+                        "deprecation": {
+                            "$ref": "#/$defs/deprecation"
+                        },
+                        "$ref": {
+                            "$ref": "#/$defs/$ref"
+                        },
+                        "documentation_options": {
+                            "$ref": "#/$defs/documentation_options"
+                        }
                     },
                     "additionalProperties": false
                 },
                 {
-                    "required": [ "type" ],
+                    "required": [
+                        "type"
+                    ],
                     "properties": {
                         "type": {
                             "type": "string",
@@ -104,7 +138,7 @@
                                 "str"
                             ]
                         },
-                        "convert_to_lower_case" : {
+                        "convert_to_lower_case": {
                             "description": "Convert string value to lower case before performing validation",
                             "type": "boolean",
                             "default": false
@@ -147,7 +181,6 @@
                             "type": "string",
                             "format": "regex",
                             "description": " A regular expression which will be matched on the variable value.\nThe regular expression should be valid according to the ECMA 262 dialect\nRemember to use double escapes"
-
                         },
                         "valid_values": {
                             "type": "array",
@@ -156,18 +189,34 @@
                                 "type": "string"
                             }
                         },
-                        "display_name": { "$ref": "#/$defs/display_name" },
-                        "description": { "$ref": "#/$defs/description" },
-                        "required": { "$ref": "#/$defs/required" },
-                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
-                        "deprecation": { "$ref": "#/$defs/deprecation" },
-                        "$ref": { "$ref": "#/$defs/$ref" },
-                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                        "display_name": {
+                            "$ref": "#/$defs/display_name"
+                        },
+                        "description": {
+                            "$ref": "#/$defs/description"
+                        },
+                        "required": {
+                            "$ref": "#/$defs/required"
+                        },
+                        "dynamic_valid_values": {
+                            "$ref": "#/$defs/dynamic_valid_values"
+                        },
+                        "deprecation": {
+                            "$ref": "#/$defs/deprecation"
+                        },
+                        "$ref": {
+                            "$ref": "#/$defs/$ref"
+                        },
+                        "documentation_options": {
+                            "$ref": "#/$defs/documentation_options"
+                        }
                     },
                     "additionalProperties": false
                 },
                 {
-                    "required": [ "type" ],
+                    "required": [
+                        "type"
+                    ],
                     "properties": {
                         "type": {
                             "type": "string",
@@ -175,21 +224,17 @@
                                 "list"
                             ]
                         },
-                        "convert_types": {
-                            "type": "array",
-                            "description": "List of types to auto-convert from.\nFor 'list of dicts' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema\nFor other list item types conversion from dict will use the keys as list items.",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "dict",
-                                    "list",
-                                    "str"
-                                ]
-                            }
-                        },
                         "default": {
-                            "description": "Default value",
-                            "type": "array"
+                            "oneOf": [
+                                {
+                                    "description": "Default value",
+                                    "type": "array"
+                                },
+                                {
+                                    "description": "Default value",
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "items": {
                             "description": "Schema for list items",
@@ -208,12 +253,6 @@
                             "pattern": "^[a-z][a-z0-9_]*$",
                             "description": "Name of a primary key in a list of dictionaries.\nThe configured key is implicitly required and must have unique values between the list elements"
                         },
-                        "secondary_key": {
-                            "type": "string",
-                            "$comment": "The regex here matches valid key names",
-                            "pattern": "^[a-z][a-z0-9_]*$",
-                            "description": "Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."
-                        },
                         "unique_keys": {
                             "type": "array",
                             "description": "List of keys or dot-notation path keys that must be unique in addition to primary_key.",
@@ -226,19 +265,33 @@
                         },
                         "allow_duplicate_primary_key": {
                             "type": "boolean",
-                            "description": "Set to True to allow duplicate primary_key values for a list of dicts. Useful when primary key is only used for convert_dicts. NOTE! Should only be used in eos_designs inputs since we cannot merge on primary key if there are duplicate entries."
+                            "description": "Set to True to allow duplicate primary_key values for a list of dicts. Useful when primary key is only used for triggering documentation. NOTE! Should only be used in eos_designs inputs since we cannot merge on primary key if there are duplicate entries."
                         },
-                        "display_name": { "$ref": "#/$defs/display_name" },
-                        "description": { "$ref": "#/$defs/description" },
-                        "required": { "$ref": "#/$defs/required" },
-                        "deprecation": { "$ref": "#/$defs/deprecation" },
-                        "$ref": { "$ref": "#/$defs/$ref" },
-                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                        "display_name": {
+                            "$ref": "#/$defs/display_name"
+                        },
+                        "description": {
+                            "$ref": "#/$defs/description"
+                        },
+                        "required": {
+                            "$ref": "#/$defs/required"
+                        },
+                        "deprecation": {
+                            "$ref": "#/$defs/deprecation"
+                        },
+                        "$ref": {
+                            "$ref": "#/$defs/$ref"
+                        },
+                        "documentation_options": {
+                            "$ref": "#/$defs/documentation_options"
+                        }
                     },
                     "additionalProperties": false
                 },
                 {
-                    "required": [ "type" ],
+                    "required": [
+                        "type"
+                    ],
                     "properties": {
                         "type": {
                             "type": "string",
@@ -275,15 +328,33 @@
                             "default": false,
                             "description": "Allow keys in the dictionary which are not defined in the schema."
                         },
-                        "display_name": { "$ref": "#/$defs/display_name" },
-                        "description": { "$ref": "#/$defs/description" },
-                        "required": { "$ref": "#/$defs/required" },
-                        "deprecation": { "$ref": "#/$defs/deprecation" },
-                        "$ref": { "$ref": "#/$defs/$ref" },
-                        "documentation_options": { "$ref": "#/$defs/documentation_options_dict" },
-                        "$schema": { "type": "string" },
-                        "$id": { "type": "string" },
-                        "$defs": { "$ref": "#/$defs/$defs" }
+                        "display_name": {
+                            "$ref": "#/$defs/display_name"
+                        },
+                        "description": {
+                            "$ref": "#/$defs/description"
+                        },
+                        "required": {
+                            "$ref": "#/$defs/required"
+                        },
+                        "deprecation": {
+                            "$ref": "#/$defs/deprecation"
+                        },
+                        "$ref": {
+                            "$ref": "#/$defs/$ref"
+                        },
+                        "documentation_options": {
+                            "$ref": "#/$defs/documentation_options_dict"
+                        },
+                        "$schema": {
+                            "type": "string"
+                        },
+                        "$id": {
+                            "type": "string"
+                        },
+                        "$defs": {
+                            "$ref": "#/$defs/$defs"
+                        }
                     },
                     "additionalProperties": false
                 }
@@ -328,7 +399,9 @@
             "type": "object",
             "description": "Special options used for generating documentation",
             "properties": {
-                "table": { "$ref": "#/$defs/documentation_options/properties/table" },
+                "table": {
+                    "$ref": "#/$defs/documentation_options/properties/table"
+                },
                 "hide_keys": {
                     "type": "boolean",
                     "description": "Prevent keys of the dict from being displayed in the generated documentation.\nThis is used for structured_config where we wish to avoid displaying the full eos_cli_config_gen schema everywhere."
@@ -349,7 +422,9 @@
         "deprecation": {
             "type": "object",
             "description": "Deprecation settings",
-            "required": ["warning"],
+            "required": [
+                "warning"
+            ],
             "properties": {
                 "warning": {
                     "type": "boolean",

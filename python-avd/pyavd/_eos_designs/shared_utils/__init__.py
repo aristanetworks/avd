@@ -52,8 +52,7 @@ class SharedUtils(
     FlowTrackingMixin,
 ):
     """
-    Class with commonly used methods / cached_properties to be shared between all the python modules
-    loaded in eos_designs.
+    Class with commonly used methods / cached_properties to be shared between all the python modules loaded in eos_designs.
 
     This class is instantiated in 'EosDesignsFacts' class and set as 'shared_utils' property.
     This class is also instantiated in 'eos_designs_structured_config' and the instance is given as argument to
@@ -66,6 +65,6 @@ class SharedUtils(
     The class cannot be overridden.
     """
 
-    def __init__(self, hostvars: dict, templar) -> None:
+    def __init__(self, hostvars: dict, templar: object) -> None:
         self.hostvars = hostvars
         self.templar = templar

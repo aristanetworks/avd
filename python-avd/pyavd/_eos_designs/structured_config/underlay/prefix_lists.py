@@ -7,6 +7,8 @@ import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from pyavd._utils import get, get_item
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,14 +18,13 @@ if TYPE_CHECKING:
 class PrefixListsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def prefix_lists(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for prefix_lists
-        """
+        """Return structured config for prefix_lists."""
         if self.shared_utils.underlay_bgp is not True and not self.shared_utils.is_wan_router:
             return None
 
@@ -69,13 +70,26 @@ class PrefixListsMixin(UtilsMixin):
             if sequence_numbers:
                 prefix_lists.append({"name": "PL-WAN-HA-PEER-PREFIXES", "sequence_numbers": sequence_numbers})
 
+        prefix_lists_in_use = set()
+        for neighbor in self.shared_utils.l3_interfaces_bgp_neighbors:
+            if (prefix_list_in := get(neighbor, "ipv4_prefix_list_in")) and prefix_list_in not in prefix_lists_in_use:
+                pfx_list = self._get_prefix_list(prefix_list_in)
+                prefix_lists.append(pfx_list)
+                prefix_lists_in_use.add(prefix_list_in)
+
+            if (prefix_list_out := get(neighbor, "ipv4_prefix_list_out")) and prefix_list_out not in prefix_lists_in_use:
+                pfx_list = self._get_prefix_list(prefix_list_out)
+                prefix_lists.append(pfx_list)
+                prefix_lists_in_use.add(prefix_list_out)
+
         return prefix_lists
+
+    def _get_prefix_list(self, name: str) -> dict:
+        return get_item(self.shared_utils.ipv4_prefix_list_catalog, "name", name, required=True, var_name=f"ipv4_prefix_list_catalog[name={name}]")
 
     @cached_property
     def ipv6_prefix_lists(self: AvdStructuredConfigUnderlay) -> list | None:
-        """
-        Return structured config for IPv6 prefix_lists
-        """
+        """Return structured config for IPv6 prefix_lists."""
         if self.shared_utils.underlay_bgp is not True:
             return None
 
@@ -90,5 +104,5 @@ class PrefixListsMixin(UtilsMixin):
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
         return [
-            {"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 128"}]}
+            {"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 128"}]},
         ]

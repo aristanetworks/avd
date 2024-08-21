@@ -8,15 +8,13 @@ from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestP2PIPReachability(AvdTestBase):
-    """
-    AvdTestP2PIPReachability class for P2P IP reachability tests.
-    """
+    """AvdTestP2PIPReachability class for P2P IP reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -57,17 +55,15 @@ class AvdTestP2PIPReachability(AvdTestBase):
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestInbandReachability(AvdTestBase):
-    """
-    AvdTestInbandReachability class for inband management reachability tests.
-    """
+    """AvdTestInbandReachability class for inband management reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -106,17 +102,15 @@ class AvdTestInbandReachability(AvdTestBase):
                         "VerifyReachability": {
                             "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
                             "result_overwrite": {"custom_field": custom_field},
-                        }
-                    }
+                        },
+                    },
                 )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestLoopback0Reachability(AvdTestBase):
-    """
-    AvdTestLoopback0Reachability class for Loopback0 reachability tests.
-    """
+    """AvdTestLoopback0Reachability class for Loopback0 reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -137,7 +131,11 @@ class AvdTestLoopback0Reachability(AvdTestBase):
             return None
 
         # TODO: For now, we exclude WAN VTEPs from testing
-        if "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"):
+        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+        if "Dps" in default(
+            get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface"),
+            get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"),
+        ):
             LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
@@ -156,17 +154,15 @@ class AvdTestLoopback0Reachability(AvdTestBase):
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestLLDPTopology(AvdTestBase):
-    """
-    AvdTestLLDPTopology class for the LLDP topology tests.
-    """
+    """AvdTestLLDPTopology class for the LLDP topology tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -212,11 +208,11 @@ class AvdTestLLDPTopology(AvdTestBase):
                                 "port": str(interface["name"]),
                                 "neighbor_device": str(peer),
                                 "neighbor_port": str(interface["peer_interface"]),
-                            }
+                            },
                         ],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None

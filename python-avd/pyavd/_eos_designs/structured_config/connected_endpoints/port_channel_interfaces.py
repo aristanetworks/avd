@@ -8,9 +8,10 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, get, strip_null_from_data
-from ....j2filters import generate_esi, generate_lacp_id, generate_route_target, range_expand
-from ...interface_descriptions import InterfaceDescriptionData
+from pyavd._utils import append_if_not_duplicate, get, short_esi_to_route_target, strip_null_from_data
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
+from pyavd.j2filters import range_expand
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -20,13 +21,14 @@ if TYPE_CHECKING:
 class PortChannelInterfacesMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def port_channel_interfaces(self: AvdStructuredConfigConnectedEndpoints) -> list | None:
         """
-        Return structured config for port_channel_interfaces
+        Return structured config for port_channel_interfaces.
 
         Duplicate checks following these rules:
         - Silently ignore duplicate port-channels if they contain _exactly_ the same configuration
@@ -60,7 +62,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface['number']}"
                     port_channel_subinterface_config = self._get_port_channel_subinterface_cfg(
-                        subinterface, adapter, port_channel_subinterface_name, channel_group_id
+                        subinterface,
+                        adapter,
+                        port_channel_subinterface_name,
+                        channel_group_id,
                     )
                     append_if_not_duplicate(
                         list_of_dicts=port_channel_interfaces,
@@ -110,12 +115,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
         return None
 
     def _get_port_channel_interface_cfg(
-        self: AvdStructuredConfigConnectedEndpoints, adapter: dict, port_channel_interface_name: str, channel_group_id: int, connected_endpoint: dict
+        self: AvdStructuredConfigConnectedEndpoints,
+        adapter: dict,
+        port_channel_interface_name: str,
+        channel_group_id: int,
+        connected_endpoint: dict,
     ) -> dict:
-        """
-        Return structured_config for one port_channel_interface
-        """
-
+        """Return structured_config for one port_channel_interface."""
         peer = connected_endpoint["name"]
         adapter_description = get(adapter, "description")
         adapter_port_channel_description = get(adapter, "port_channel.description")
@@ -133,7 +139,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     peer=peer,
                     description=adapter_description,
                     port_channel_description=adapter_port_channel_description,
-                )
+                ),
             ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
@@ -164,14 +170,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                     "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
                     "storm_control": self._get_adapter_storm_control(adapter),
-                }
+                },
             )
 
         # EVPN A/A
         if (short_esi := self._get_short_esi(adapter, channel_group_id)) is not None:
             port_channel_interface["evpn_ethernet_segment"] = self._get_adapter_evpn_ethernet_segment_cfg(adapter, short_esi, node_index, connected_endpoint)
             if port_channel_mode == "active":
-                port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
+                port_channel_interface["lacp_id"] = short_esi.replace(":", ".")
 
         # Set MLAG ID on port-channel if connection is multi-homed and this switch is running MLAG
         elif self.shared_utils.mlag and len(set(adapter["switches"])) > 1:
@@ -185,17 +191,19 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 {
                     "lacp_fallback_mode": lacp_fallback_mode,
                     "lacp_fallback_timeout": get(adapter, "port_channel.lacp_fallback.timeout", default=90),
-                }
+                },
             )
 
         return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
 
     def _get_port_channel_subinterface_cfg(
-        self: AvdStructuredConfigConnectedEndpoints, subinterface: dict, adapter: dict, port_channel_subinterface_name: str, channel_group_id: int
+        self: AvdStructuredConfigConnectedEndpoints,
+        subinterface: dict,
+        adapter: dict,
+        port_channel_subinterface_name: str,
+        channel_group_id: int,
     ) -> dict:
-        """
-        Return structured_config for one port_channel_interface (subinterface)
-        """
+        """Return structured_config for one port_channel_interface (subinterface)."""
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_subinterface_name,
@@ -205,7 +213,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "client": {
                     "dot1q": {
                         "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
-                    }
+                    },
                 },
                 "network": {
                     "client": True,
@@ -218,8 +226,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
             short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.get("short_esi"), hash_extra_value=str(subinterface["number"]))
         ) is not None:
             port_channel_interface["evpn_ethernet_segment"] = {
-                "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
-                "route_target": generate_route_target(short_esi),
+                "identifier": f"{self.shared_utils.evpn_short_esi_prefix}{short_esi}",
+                "route_target": short_esi_to_route_target(short_esi),
             }
 
         return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))

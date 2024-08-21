@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -153,6 +154,10 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authorization
 
@@ -317,9 +322,9 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet52/1 | P2P_LINK_TO_WAN_Ethernet1/1 | routed | - | 10.0.0.5/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet52/1 | P2P_LINK_TO_WAN_Ethernet1/1 | - | 10.0.0.5/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -371,12 +376,12 @@ interface Ethernet56/1
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | IDF1_Po51 | switched | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
-| Port-Channel491 | LEAF2A_Po11 | switched | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
-| Port-Channel501 | IDF3_AGG_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
-| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | IDF1_Po51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
+| Port-Channel491 | LEAF2A_Po11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
+| Port-Channel501 | IDF3_AGG_Po971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
+| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -463,20 +468,20 @@ interface Loopback0
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.3/24  |  -  |  10.10.10.1  |  -  |  -  |  -  |
-| Vlan110 |  default  |  10.1.10.3/23  |  -  |  10.1.10.1  |  -  |  -  |  -  |
-| Vlan120 |  default  |  10.1.20.3/23  |  -  |  10.1.20.1  |  -  |  -  |  -  |
-| Vlan130 |  default  |  10.1.30.3/23  |  -  |  10.1.30.1  |  -  |  -  |  -  |
-| Vlan210 |  default  |  10.2.10.3/23  |  -  |  10.2.10.1  |  -  |  -  |  -  |
-| Vlan220 |  default  |  10.2.20.3/23  |  -  |  10.2.20.1  |  -  |  -  |  -  |
-| Vlan230 |  default  |  10.2.30.3/23  |  -  |  10.2.30.1  |  -  |  -  |  -  |
-| Vlan310 |  default  |  10.3.10.3/23  |  -  |  10.3.10.1  |  -  |  -  |  -  |
-| Vlan320 |  default  |  10.3.20.3/23  |  -  |  10.3.20.1  |  -  |  -  |  -  |
-| Vlan330 |  default  |  10.3.30.3/23  |  -  |  10.3.30.1  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.1.1.1/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.1/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan10 |  default  |  10.10.10.3/24  |  -  |  10.10.10.1  |  -  |  -  |
+| Vlan110 |  default  |  10.1.10.3/23  |  -  |  10.1.10.1  |  -  |  -  |
+| Vlan120 |  default  |  10.1.20.3/23  |  -  |  10.1.20.1  |  -  |  -  |
+| Vlan130 |  default  |  10.1.30.3/23  |  -  |  10.1.30.1  |  -  |  -  |
+| Vlan210 |  default  |  10.2.10.3/23  |  -  |  10.2.10.1  |  -  |  -  |
+| Vlan220 |  default  |  10.2.20.3/23  |  -  |  10.2.20.1  |  -  |  -  |
+| Vlan230 |  default  |  10.2.30.3/23  |  -  |  10.2.30.1  |  -  |  -  |
+| Vlan310 |  default  |  10.3.10.3/23  |  -  |  10.3.10.1  |  -  |  -  |
+| Vlan320 |  default  |  10.3.20.3/23  |  -  |  10.3.20.1  |  -  |  -  |
+| Vlan330 |  default  |  10.3.30.3/23  |  -  |  10.3.30.1  |  -  |  -  |
+| Vlan4093 |  default  |  10.1.1.1/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  192.168.0.1/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

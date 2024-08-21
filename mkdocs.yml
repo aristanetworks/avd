@@ -25,7 +25,7 @@ theme:
     - navigation.instant
     - navigation.top
     - search.highlight
-    #- toc.integrate
+    # - toc.integrate
     - toc.follow
   highlightjs: true
   icon:
@@ -134,6 +134,7 @@ nav:
   - Home: index.md
   - Getting Started:
       - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
+      - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
   - Examples:
       - Single DC L3LS: examples/single-dc-l3ls/README.md
       - Dual DC L3LS: examples/dual-dc-l3ls/README.md
@@ -164,9 +165,7 @@ nav:
           - Overview: roles/eos_config_deploy_cvp/README.md
           - Integrating AVD with CVaaS: roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
-      - eos_validate_state:
-          - Overview: roles/eos_validate_state/README.md
-          - ANTA Integration: roles/eos_validate_state/anta_integration.md
+      - eos_validate_state: roles/eos_validate_state/README.md
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
@@ -181,8 +180,8 @@ nav:
   - External Resources:
       - Ansible Collection User Guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
-  - Release Notes: docs/release-notes/4.x.x.md
-  - Porting Guide: docs/porting-guides/4.x.x.md
+  - Release Notes: docs/release-notes/5.x.x.md
+  - Porting Guide: docs/porting-guides/5.x.x.md
   - PyAVD: docs/pyavd.md
   - Versioning: docs/semantic-versioning.md
   - AVD Dev Containers:

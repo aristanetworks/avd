@@ -5,6 +5,8 @@ mpls:
     router_id: 192.168.1.1
     shutdown: false
     transport_address_interface: Loopback0
+  icmp:
+    fragmentation_needed_tunneling: true
 
 ethernet_interfaces:
   - name: Ethernet1

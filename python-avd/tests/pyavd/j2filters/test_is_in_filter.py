@@ -1,9 +1,9 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
 import pytest
+
 from pyavd.j2filters import is_in_filter
 
 HOSTNAME_VALID = "test1.aristanetworks.com"
@@ -22,7 +22,7 @@ IS_IN_FILTER_TEST_CASES = [
 
 
 class TestIsInFilter:
-    @pytest.mark.parametrize("hostname, hostname_filter, res_is_in_filter", IS_IN_FILTER_TEST_CASES)
-    def test_is_in_filter(self, hostname, hostname_filter, res_is_in_filter):
+    @pytest.mark.parametrize(("hostname", "hostname_filter", "res_is_in_filter"), IS_IN_FILTER_TEST_CASES)
+    def test_is_in_filter(self, hostname: str, hostname_filter: list | str, res_is_in_filter: bool) -> None:
         res = is_in_filter(hostname=hostname, hostname_filter=hostname_filter)
         assert res == res_is_in_filter
