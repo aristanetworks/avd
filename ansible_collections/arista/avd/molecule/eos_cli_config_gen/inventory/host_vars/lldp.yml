@@ -22,6 +22,7 @@ ethernet_interfaces:
   - name: Ethernet2
     description: Switched port with no LLDP rx/tx
     switchport:
+      enabled: true
       mode: access
       access_vlan: 110
     lldp:
@@ -31,6 +32,7 @@ ethernet_interfaces:
   - name: Ethernet3
     description: No special LLDP settings
     switchport:
+      enabled: true
       mode: access
       access_vlan: 110
 

@@ -143,7 +143,9 @@ interface {{ port_channel_interface.name }}
 {%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%     endfor %}
-{%     if port_channel_interface.switchport.enabled is arista.avd.defined(false) %}
+{%     if port_channel_interface.switchport.enabled is arista.avd.defined(true) %}
+   switchport
+{%     elif port_channel_interface.switchport.enabled is arista.avd.defined(false) %}
    no switchport
 {%     endif %}
 {%     if port_channel_interface.switchport.source_interface is arista.avd.defined %}

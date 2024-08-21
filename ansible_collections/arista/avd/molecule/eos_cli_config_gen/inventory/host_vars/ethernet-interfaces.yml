@@ -34,6 +34,7 @@ ethernet_interfaces:
       direction: egress
     # test for switchport settings
     switchport:
+      enabled: false
       port_security:
         enabled: true
         mac_address_maximum:
@@ -167,7 +168,7 @@ ethernet_interfaces:
       trunk:
         allowed_vlan: 110-111,210-211
         private_vlan_secondary: false
-      enabled: false
+      enabled: true
       dot1q:
         vlan_tag: disallowed
       port_security:
@@ -214,6 +215,7 @@ ethernet_interfaces:
     mode: trunk
     # test for switchport settings
     switchport:
+      enabled: false
       trunk:
         native_vlan: 5
       port_security:
@@ -263,6 +265,7 @@ ethernet_interfaces:
           - boundary: ff01::/16
     # test for switchport port-security violation
     switchport:
+      enabled: false
       port_security:
         violation:
           mode: protect
@@ -302,6 +305,7 @@ ethernet_interfaces:
     spanning_tree_guard: loop
     # test for switchport access vlan
     switchport:
+      enabled: false
       access_vlan: 220
 
   - name: Ethernet6
@@ -317,6 +321,7 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     # test for switchport trunk mode
     switchport:
+      enabled: true
       trunk:
         allowed_vlan: 110-111,210-211
       mode: trunk
@@ -409,6 +414,7 @@ ethernet_interfaces:
     description: interface_in_mode_access_accepting_tagged_LACP
     # test for switchport access mode
     switchport:
+      enabled: true
       mode: access
       access_vlan: 200
     l2_protocol:
@@ -420,6 +426,7 @@ ethernet_interfaces:
     description: interface_with_dot1q_tunnel
     # test for switchport dot1q-tunnel mode
     switchport:
+      enabled: true
       mode: dot1q-tunnel
       access_vlan: 300
 
@@ -433,6 +440,7 @@ ethernet_interfaces:
     description: interface_in_mode_access_with_voice
     # test for switchport trunk-phone mode
     switchport:
+      enabled: true
       trunk:
         native_vlan: 100
       mode: "trunk phone"
@@ -450,6 +458,7 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     # test for switchport trunk mode settings
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110-111,210-211
@@ -458,20 +467,27 @@ ethernet_interfaces:
     description: PVLAN Promiscuous Access - only one secondary
     # test for switchport pvlan mapping
     switchport:
+      enabled: true
       mode: access
       access_vlan: 110
       pvlan_mapping: 111
 
   - name: Ethernet16
-    description: PVLAN Promiscuous Trunk
+    description: PVLAN Promiscuous Trunk - vlan translation out
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110-112
+      vlan_translations:
+        direction_out:
+          - from: 111-112
+            to: 110
 
   - name: Ethernet17
     description: PVLAN Secondary Trunk
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110-112
@@ -489,6 +505,7 @@ ethernet_interfaces:
   - name: Ethernet19
     description: Switched port with no LLDP rx/tx
     switchport:
+      enabled: true
       mode: access
       access_vlan: 110
     lldp:
@@ -780,6 +797,7 @@ ethernet_interfaces:
   - name: Ethernet46
     description: native-vlan-tag-precedence
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         native_vlan_tag: true
@@ -1043,6 +1061,7 @@ ethernet_interfaces:
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
     switchport:
+      enabled: true
       trunk:
         native_vlan: 100
       mode: "trunk phone"
@@ -1059,6 +1078,7 @@ ethernet_interfaces:
         storm_control_discards: false
     description: interface_in_mode_access_with_voice
     switchport:
+      enabled: true
       trunk:
         native_vlan: 100
       mode: "trunk phone"

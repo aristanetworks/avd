@@ -7,6 +7,7 @@ port_channel_interfaces:
       - name: EVPN_MH_ES1
         direction: downstream
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110,201
@@ -58,6 +59,7 @@ port_channel_interfaces:
       - name: EVPN_MH_ES2
         direction: upstream
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110,201
@@ -78,7 +80,7 @@ port_channel_interfaces:
         violation:
           mode: protect
           protect_log: true
-      enabled: false
+      enabled: true
       trunk:
         native_vlan: 10
         allowed_vlan: 110,201
@@ -99,6 +101,7 @@ port_channel_interfaces:
     shape:
       rate: 200000 kbps
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: "2-4094"
@@ -109,6 +112,7 @@ port_channel_interfaces:
   - name: Port-Channel10
     description: SRV01_bond0
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 2-3000
@@ -121,6 +125,7 @@ port_channel_interfaces:
   - name: Port-Channel50
     description: SRV-POD03_PortChanne1
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 1-4000
@@ -132,6 +137,7 @@ port_channel_interfaces:
   - name: Port-Channel51
     description: ipv6_prefix
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 1-500
@@ -156,6 +162,7 @@ port_channel_interfaces:
       event:
         link_status: true
     switchport:
+      enabled: false
       port_security:
         enabled: true
         mac_address_maximum:
@@ -249,6 +256,7 @@ port_channel_interfaces:
   - name: Port-Channel8
     description: to Dev02 Port-channel 8
     switchport:
+      enabled: false
       port_security:
         violation:
           mode: protect
@@ -276,6 +284,7 @@ port_channel_interfaces:
   - name: Port-Channel20
     description: Po_in_mode_access_accepting_tagged_LACP_frames
     switchport:
+      enabled: true
       mode: access
       access_vlan: 200
     l2_protocol:
@@ -284,6 +293,7 @@ port_channel_interfaces:
   - name: Port-Channel12
     description: interface_in_mode_access_with_voice
     switchport:
+      enabled: true
       mode: "trunk phone"
       trunk:
         native_vlan: 100
@@ -293,6 +303,8 @@ port_channel_interfaces:
 
   - name: Port-Channel13
     description: EVPN-Vxlan single-active redundancy
+    switchport:
+      enabled: true
     evpn_ethernet_segment:
       redundancy: single-active
       identifier: "0000:0000:0000:0102:0304"
@@ -339,6 +351,7 @@ port_channel_interfaces:
   - name: Port-Channel101
     description: PVLAN Promiscuous Access - only one secondary
     switchport:
+      enabled: true
       mode: access
       access_vlan: 110
       pvlan_mapping: 111
@@ -348,13 +361,19 @@ port_channel_interfaces:
   - name: Port-Channel102
     description: PVLAN Promiscuous Trunk - vlan translation out
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110-112
+      vlan_translations:
+        direction_out:
+          - from: 111-112
+            to: 110
 
   - name: Port-Channel103
     description: PVLAN Secondary Trunk
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 110-112
@@ -363,6 +382,7 @@ port_channel_interfaces:
   - name: Port-Channel104
     description: LACP fallback individual
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 112
@@ -396,6 +416,7 @@ port_channel_interfaces:
   - name: Port-Channel109
     description: Molecule ACLs
     switchport:
+      enabled: true
       mode: access
       access_vlan: 110
     access_group_in: IPV4_ACL_IN
@@ -489,6 +510,7 @@ port_channel_interfaces:
   - name: Port-Channel112
     description: LACP fallback individual
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 112
@@ -517,6 +539,7 @@ port_channel_interfaces:
   - name: Port-Channel115
     description: native-vlan-tag-precedence
     switchport:
+      enabled: true
       trunk:
         native_vlan_tag: true
         native_vlan: 100
@@ -557,15 +580,18 @@ port_channel_interfaces:
   - name: Port-Channel121
     description: access_port_with_no_vlans
     switchport:
+      enabled: true
       mode: access
 
   - name: Port-Channel122
     description: trunk_port_with_no_vlans
     switchport:
+      enabled: true
       mode: trunk
 
   - name: Port-Channel130
-    type: switched
+    switchport:
+      enabled: true
     description: IP NAT Testing
     ip_nat:
       destination:
@@ -587,6 +613,7 @@ port_channel_interfaces:
   - name: Port-Channel131
     description: dot1q-tunnel mode
     switchport:
+      enabled: true
       mode: dot1q-tunnel
       access_vlan: 115
 
@@ -706,6 +733,7 @@ ethernet_interfaces:
       id: 104
       mode: active
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 100
@@ -741,6 +769,7 @@ ethernet_interfaces:
       id: 112
       mode: active
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 112

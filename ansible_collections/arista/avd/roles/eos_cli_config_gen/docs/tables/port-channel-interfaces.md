@@ -248,18 +248,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "port_channel_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "port_channel_interfaces.[].switchport") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.enabled") | Boolean |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].type = routed`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_security</samp>](## "port_channel_interfaces.[].switchport.port_security") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.port_security.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.mac_address_maximum") | Dictionary |  |  |  | Maximum number of MAC addresses allowed on the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "port_channel_interfaces.[].switchport.port_security.mac_address_maximum.disabled") | Boolean |  |  |  | Disable port level check for port security (only in violation 'shutdown' mode). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "port_channel_interfaces.[].switchport.port_security.mac_address_maximum.limit") | Integer |  |  | Min: 1<br>Max: 1000 | MAC address limit. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "port_channel_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect), EOS default is 'shutdown'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.port_security.violation.mode") | String |  |  | Valid Values:<br>- <code>shutdown</code><br>- <code>protect</code> | Configure port security mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect_log</samp>](## "port_channel_interfaces.[].switchport.port_security.violation.protect_log") | Boolean |  |  |  | Log new addresses seen after limit is reached in protect mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_default_mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlan_default_mac_address_maximum") | Integer |  |  | Min: 0<br>Max: 1000 | Default maximum MAC addresses for all VLANs on this interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;range</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].range") | String | Required, Unique |  |  | VLAN ID or range(s) of VLAN IDs, <1-4094>.<br>Example:<br>  - 3<br>  - 1,3<br>  - 1-10<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].mac_address_maximum") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `port_channel_interfaces[].mode` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "port_channel_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "port_channel_interfaces.[].switchport.trunk") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "port_channel_interfaces.[].switchport.trunk.allowed_vlan") | String |  |  |  | VLAN ID or range(s) of VLAN IDs (1-4094).<br>Warning: This should not be combined with `port_channel_interfaces.mode = trunk` and `ethernet_interface[].vlans`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "port_channel_interfaces.[].switchport.trunk.native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set native VLAN when interface is in trunking mode.<br>Warning: This should not be combined with `port_channel_interfaces[].native_vlan`. |
@@ -267,32 +257,30 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan_secondary</samp>](## "port_channel_interfaces.[].switchport.trunk.private_vlan_secondary") | Boolean |  |  |  | Enable secondary VLAN mapping for a private vlan.<br>Warning: This should not be combined with `port_channel_interfaces[].trunk_private_vlan_secondary`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "port_channel_interfaces.[].switchport.trunk.groups") | List, items: String |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].switchport.trunk.groups.[]") | String |  |  |  | Trunk group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "port_channel_interfaces.[].switchport.phone") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "port_channel_interfaces.[].switchport.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "port_channel_interfaces.[].switchport.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | Warning: This should not be combined with `port_channel_interfaces[].phone.trunk` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "port_channel_interfaces.[].switchport.pvlan_mapping") | String |  |  |  | Secondary VLAN IDs of the private VLAN mapping.<br>Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "port_channel_interfaces.[].switchport.dot1q") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethertype</samp>](## "port_channel_interfaces.[].switchport.dot1q.ethertype") | Integer |  |  | Min: 1536<br>Max: 65535 | Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "port_channel_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "port_channel_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out of the source interface.<br>tx multicast: Allow multicast packets only to go out of the source interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "port_channel_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "port_channel_interfaces.[].switchport.phone") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "port_channel_interfaces.[].switchport.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "port_channel_interfaces.[].switchport.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> | Warning: This should not be combined with `port_channel_interfaces[].phone.trunk` |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `port_channel_interfaces[].mode` |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "port_channel_interfaces.[].switchport.pvlan_mapping") | String |  |  |  | Secondary VLAN IDs of the private VLAN mapping.<br>Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "port_channel_interfaces.[].switchport.vlan_translations") | Dictionary |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.required") | Boolean |  |  |  | Drop the ingress packets that do not match any VLAN mapping. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in") | List, items: Dictionary |  |  |  | Map ingress packets only. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].from") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].from") | String |  |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].dot1q_tunnel") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].inner_vlan_from") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map from. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out") | List, items: Dictionary |  |  |  | Map egress packets only. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].from") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].from") | String | Required |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.all") | Boolean |  |  |  | The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range(s) of VLAN IDs to map to.<br>The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].inner_vlan_to") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_both</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both") | List, items: Dictionary |  |  |  | Map both egress and ingress packets. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].from") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID or range of VLAN IDs to map from. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].from") | String | Required |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].to") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].dot1q_tunnel") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].inner_vlan_from") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map from. |
@@ -307,6 +295,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst</samp>](## "port_channel_interfaces.[].switchport.backup.mac_move_burst") | Integer |  |  | Min: 0<br>Max: 65535 | Size of MAC move bursts. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst_interval</samp>](## "port_channel_interfaces.[].switchport.backup.mac_move_burst_interval") | Integer |  |  | Min: 0<br>Max: 65535 | MAC move burst interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preemption_delay</samp>](## "port_channel_interfaces.[].switchport.backup.preemption_delay") | Integer |  |  | Min: 0<br>Max: 65535 | Preemption delay in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_security</samp>](## "port_channel_interfaces.[].switchport.port_security") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.port_security.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.mac_address_maximum") | Dictionary |  |  |  | Maximum number of MAC addresses allowed on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "port_channel_interfaces.[].switchport.port_security.mac_address_maximum.disabled") | Boolean |  |  |  | Disable port level check for port security (only in violation 'shutdown' mode). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "port_channel_interfaces.[].switchport.port_security.mac_address_maximum.limit") | Integer |  |  | Min: 1<br>Max: 1000 | MAC address limit. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violation</samp>](## "port_channel_interfaces.[].switchport.port_security.violation") | Dictionary |  |  |  | Configure violation mode (shutdown or protect), EOS default is 'shutdown'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.port_security.violation.mode") | String |  |  | Valid Values:<br>- <code>shutdown</code><br>- <code>protect</code> | Configure port security mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protect_log</samp>](## "port_channel_interfaces.[].switchport.port_security.violation.protect_log") | Boolean |  |  |  | Log new addresses seen after limit is reached in protect mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_default_mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlan_default_mac_address_maximum") | Integer |  |  | Min: 0<br>Max: 1000 | Default maximum MAC addresses for all VLANs on this interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;range</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].range") | String | Required, Unique |  |  | VLAN ID or range(s) of VLAN IDs, <1-4094>.<br>Example:<br>  - 3<br>  - 1,3<br>  - 1-10<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].mac_address_maximum") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "port_channel_interfaces.[].validate_state") | Boolean |  |  |  | Set to false to disable interface validation by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "port_channel_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;esi</samp>](## "port_channel_interfaces.[].esi") <span style="color:red">removed</span> | String |  |  |  | EVPN Ethernet Segment Identifier (Type 1 format).<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>evpn_ethernet_segment.identifier</samp> instead.</span> |
@@ -798,38 +798,13 @@
 
           # Warning: This should not be combined with `port_channel_interfaces[].type = routed`.
           enabled: <bool>
-          port_security:
-            enabled: <bool>
 
-            # Maximum number of MAC addresses allowed on the interface.
-            mac_address_maximum:
+          # Warning: This should not be combined with `port_channel_interfaces[].mode`
+          mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
 
-              # Disable port level check for port security (only in violation 'shutdown' mode).
-              disabled: <bool>
-
-              # MAC address limit.
-              limit: <int; 1-1000>
-
-            # Configure violation mode (shutdown or protect), EOS default is 'shutdown'.
-            violation:
-
-              # Configure port security mode.
-              mode: <str; "shutdown" | "protect">
-
-              # Log new addresses seen after limit is reached in protect mode.
-              protect_log: <bool>
-
-            # Default maximum MAC addresses for all VLANs on this interface.
-            vlan_default_mac_address_maximum: <int; 0-1000>
-            vlans:
-
-                # VLAN ID or range(s) of VLAN IDs, <1-4094>.
-                # Example:
-                #   - 3
-                #   - 1,3
-                #   - 1-10
-              - range: <str; required; unique>
-                mac_address_maximum: <int>
+          # Set VLAN when interface is in access mode.
+          # Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
+          access_vlan: <int; 1-4094>
           trunk:
 
             # VLAN ID or range(s) of VLAN IDs (1-4094).
@@ -853,6 +828,17 @@
 
                 # Trunk group name.
               - <str>
+          phone:
+
+            # Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`.
+            vlan: <int; 1-4094>
+
+            # Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`
+            trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
+
+          # Secondary VLAN IDs of the private VLAN mapping.
+          # Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`.
+          pvlan_mapping: <str>
           dot1q:
 
             # Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames.
@@ -863,24 +849,6 @@
           # tx multicast: Allow multicast packets only to go out of the source interface.
           source_interface: <str; "tx" | "tx multicast">
 
-          # Set VLAN when interface is in access mode.
-          # Warning: This should not be combined with `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
-          access_vlan: <int; 1-4094>
-          phone:
-
-            # Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`.
-            vlan: <int; 1-4094>
-
-            # Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`
-            trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
-
-          # Warning: This should not be combined with `port_channel_interfaces[].mode`
-          mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
-
-          # Secondary VLAN IDs of the private VLAN mapping.
-          # Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`.
-          pvlan_mapping: <str>
-
           # Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.
           vlan_translations:
 
@@ -890,8 +858,8 @@
             # Map ingress packets only.
             direction_in:
 
-                # VLAN ID or range of VLAN IDs to map from.
-              - from: <int; 1-4094>
+                # VLAN ID or range of VLAN IDs to map from. Range 1-4094.
+              - from: <str>
 
                 # VLAN ID to map to.
                 to: <int; 1-4094>
@@ -903,8 +871,8 @@
             # Map egress packets only.
             direction_out:
 
-                # VLAN ID or range of VLAN IDs to map from.
-              - from: <int; 1-4094; required>
+                # VLAN ID or range of VLAN IDs to map from. Range 1-4094.
+              - from: <str; required>
 
                 # VLAN ID to map to.
                 to: <int; 1-4094>
@@ -923,8 +891,8 @@
             # Map both egress and ingress packets.
             direction_both:
 
-                # VLAN ID or range of VLAN IDs to map from.
-              - from: <int; 1-4094; required>
+                # VLAN ID or range of VLAN IDs to map from. Range 1-4094.
+              - from: <str; required>
 
                 # VLAN ID to map to.
                 to: <int; 1-4094; required>
@@ -964,6 +932,38 @@
 
             # Preemption delay in milliseconds.
             preemption_delay: <int; 0-65535>
+          port_security:
+            enabled: <bool>
+
+            # Maximum number of MAC addresses allowed on the interface.
+            mac_address_maximum:
+
+              # Disable port level check for port security (only in violation 'shutdown' mode).
+              disabled: <bool>
+
+              # MAC address limit.
+              limit: <int; 1-1000>
+
+            # Configure violation mode (shutdown or protect), EOS default is 'shutdown'.
+            violation:
+
+              # Configure port security mode.
+              mode: <str; "shutdown" | "protect">
+
+              # Log new addresses seen after limit is reached in protect mode.
+              protect_log: <bool>
+
+            # Default maximum MAC addresses for all VLANs on this interface.
+            vlan_default_mac_address_maximum: <int; 0-1000>
+            vlans:
+
+                # VLAN ID or range(s) of VLAN IDs, <1-4094>.
+                # Example:
+                #   - 3
+                #   - 1,3
+                #   - 1-10
+              - range: <str; required; unique>
+                mac_address_maximum: <int>
 
         # Set to false to disable interface validation by the `eos_validate_state` role.
         validate_state: <bool>

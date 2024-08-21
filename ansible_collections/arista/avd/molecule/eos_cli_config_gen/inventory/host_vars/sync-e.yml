@@ -11,6 +11,7 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
     switchport:
+      enabled: true
       mode: trunk
       trunk:
         allowed_vlan: 2,14

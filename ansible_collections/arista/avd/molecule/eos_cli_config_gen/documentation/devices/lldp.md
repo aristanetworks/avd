@@ -107,12 +107,14 @@ interface Ethernet2
    description Switched port with no LLDP rx/tx
    switchport access vlan 110
    switchport mode access
+   switchport
    no lldp transmit
 !
 interface Ethernet3
    description No special LLDP settings
    switchport access vlan 110
    switchport mode access
+   switchport
 !
 interface Ethernet4
    description test

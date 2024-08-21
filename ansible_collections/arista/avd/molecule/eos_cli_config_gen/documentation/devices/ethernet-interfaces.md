@@ -98,7 +98,7 @@ sFlow is disabled.
 | Ethernet13 | interface_in_mode_access_with_voice | trunk phone |  | 100 | - | - |
 | Ethernet14 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet15 | PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
-| Ethernet16 | PVLAN Promiscuous Trunk | trunk | 110-112 | - | - | - |
+| Ethernet16 | PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
 | Ethernet17 | PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
 | Ethernet19 | Switched port with no LLDP rx/tx | access | 110 | - | - | - |
 | Ethernet21 | 200MBit/s shape | - | - | - | - | - |
@@ -172,8 +172,8 @@ sFlow is disabled.
 
 ##### VLAN Translations
 
-| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
 | Ethernet1 | both | 12 | 20 | - | - | - | - |
 | Ethernet1 | both | 24 | 46 | 78 | - | True | - |
 | Ethernet1 | both | 24 | 46 | 78 | - | False | - |
@@ -186,6 +186,7 @@ sFlow is disabled.
 | Ethernet1 | out | 45 | True | - | - | - | True |
 | Ethernet1 | out | 55 | - | - | - | - | - |
 | Ethernet3 | out | 23 | 50 | - | - | - | True |
+| Ethernet16 | out | 111-112 | 110 | - | - | - | - |
 
 ##### TCP MSS Clamping
 
@@ -390,6 +391,7 @@ interface Ethernet1
    switchport vlan forwarding accept all
    switchport trunk group g1
    switchport trunk group g2
+   no switchport
    switchport source-interface tx
    switchport vlan translation 12 20
    switchport vlan translation 24 inner 78 network 46
@@ -442,7 +444,7 @@ interface Ethernet2
    switchport dot1q vlan tag disallowed
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   no switchport
+   switchport
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
@@ -462,6 +464,7 @@ interface Ethernet3
    mtu 1500
    switchport mode trunk
    switchport trunk native vlan 5
+   no switchport
    switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
    ip address 172.31.128.1/31
@@ -486,6 +489,7 @@ interface Ethernet4
    description Molecule IPv6
    shutdown
    mtu 9100
+   no switchport
    snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
@@ -509,6 +513,7 @@ interface Ethernet5
    no shutdown
    mtu 9100
    switchport access vlan 220
+   no switchport
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
@@ -540,6 +545,7 @@ interface Ethernet6
    logging event storm-control discards
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
 !
@@ -603,12 +609,14 @@ interface Ethernet11
    description interface_in_mode_access_accepting_tagged_LACP
    switchport access vlan 200
    switchport mode access
+   switchport
    l2-protocol encapsulation dot1q vlan 200
 !
 interface Ethernet12
    description interface_with_dot1q_tunnel
    switchport access vlan 300
    switchport mode dot1q-tunnel
+   switchport
 !
 interface Ethernet13
    description interface_in_mode_access_with_voice
@@ -620,28 +628,34 @@ interface Ethernet13
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+   switchport
 !
 interface Ethernet14
    description SRV-POD02_Eth1
    logging event link-status
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
    switchport access vlan 110
    switchport mode access
+   switchport
    switchport pvlan mapping 111
 !
 interface Ethernet16
-   description PVLAN Promiscuous Trunk
+   description PVLAN Promiscuous Trunk - vlan translation out
    switchport trunk allowed vlan 110-112
    switchport mode trunk
+   switchport
+   switchport vlan translation out 111-112 110
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
    switchport trunk allowed vlan 110-112
    switchport mode trunk
+   switchport
    switchport trunk private-vlan secondary
 !
 interface Ethernet18
@@ -655,6 +669,7 @@ interface Ethernet19
    description Switched port with no LLDP rx/tx
    switchport access vlan 110
    switchport mode access
+   switchport
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
@@ -858,6 +873,7 @@ interface Ethernet46
    description native-vlan-tag-precedence
    switchport trunk native vlan tag
    switchport mode trunk
+   switchport
 !
 interface Ethernet47
    description IP Helper
@@ -979,6 +995,7 @@ interface Ethernet61
    switchport phone vlan 70
    switchport phone trunk untagged phone
    switchport mode trunk phone
+   switchport
 !
 interface Ethernet62
    description interface_in_mode_access_with_voice
@@ -990,6 +1007,7 @@ interface Ethernet62
    switchport phone vlan 70
    switchport phone trunk tagged phone
    switchport mode trunk phone
+   switchport
 !
 interface Ethernet63
    description DHCP client interface

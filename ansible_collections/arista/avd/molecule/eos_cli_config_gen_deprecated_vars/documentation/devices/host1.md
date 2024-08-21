@@ -27,8 +27,8 @@
 
 ##### VLAN Translations
 
-| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
 | Ethernet4 | in | 23 | 50 | - | - | - | - |
 | Ethernet4 | out | 25 | 49 | - | - | - | - |
 | Ethernet4 | both | 34 | 60 | - | - | - | - |

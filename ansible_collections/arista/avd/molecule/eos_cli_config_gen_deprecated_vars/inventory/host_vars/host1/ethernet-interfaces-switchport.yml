@@ -2,6 +2,8 @@
 ### Ethernet Interfaces ###
 
 # Testing deprecated keys for switchport config in ethernet_interfaces
+# The deprecated keys listed below will be removed in AVD6.0.0:
+# mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone, vlan_translations, trunk_private_vlan_secondary, pvlan_mapping
 ethernet_interfaces:
   - name: Ethernet1
     mode: access
