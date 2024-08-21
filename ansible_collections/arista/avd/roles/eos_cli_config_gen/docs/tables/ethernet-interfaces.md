@@ -419,7 +419,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethertype</samp>](## "ethernet_interfaces.[].switchport.dot1q.ethertype") | Integer |  |  | Min: 1536<br>Max: 65535 | Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "ethernet_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> | Allow/disallow VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ethernet_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out of the source interface.<br>tx multicast: Allow multicast packets only to go out of the source interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].switchport.vlan_translations") | Dictionary |  |  |  | Map packets from one VLAN to another.<br>Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].switchport.vlan_translations") | Dictionary |  |  |  | VLAN Translation mappings.<br>Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;required</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.required") | Boolean |  |  |  | Drop the ingress packets that do not match any VLAN mapping. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_in") | List, items: Dictionary |  |  |  | Map ingress packets only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_in.[].from") | String | Required |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
@@ -438,13 +438,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_both.[].to") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_both.[].dot1q_tunnel") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_from</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_both.[].inner_vlan_from") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map from. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_both.[].network") | Boolean |  |  |  | Enable use of network-side VLAN ID.<br>This setting can be enabled only when inner_vlan_from is defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network</samp>](## "ethernet_interfaces.[].switchport.vlan_translations.direction_both.[].network") | Boolean |  |  |  | Enable use of network-side VLAN ID.<br>This setting can only be enabled when `inner_vlan_from` is defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_forwarding_accept_all</samp>](## "ethernet_interfaces.[].switchport.vlan_forwarding_accept_all") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_link</samp>](## "ethernet_interfaces.[].switchport.backup_link") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "ethernet_interfaces.[].switchport.backup_link.interface") | String |  |  |  | Backup interface. Example - Ethernet4, Vlan10 etc. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefer_vlan</samp>](## "ethernet_interfaces.[].switchport.backup_link.prefer_vlan") | String |  |  |  | VLANs to carry on the backup interface (1-4094). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "ethernet_interfaces.[].switchport.backup") | Dictionary |  |  |  | The `backup_link` is required for this setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_macaddr</samp>](## "ethernet_interfaces.[].switchport.backup.dest_macaddr") | String |  |  | Pattern: `^([0-9a-f]{2}:){5}[0-9a-f]{2}$` | Destination MAC address for MAC move updates.<br>The mac address should be multicast or broadcast.<br>Example:  01:00:00:00:00:00 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_macaddr</samp>](## "ethernet_interfaces.[].switchport.backup.dest_macaddr") | String |  |  | Format: mac | Destination MAC address for MAC move updates.<br>The mac address should be multicast or broadcast.<br>Example: 01:00:00:00:00:00 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial_mac_move_delay</samp>](## "ethernet_interfaces.[].switchport.backup.initial_mac_move_delay") | Integer |  |  | Min: 0<br>Max: 65535 | Initial MAC move delay in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst") | Integer |  |  | Min: 0<br>Max: 65535 | Size of MAC move bursts. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_move_burst_interval</samp>](## "ethernet_interfaces.[].switchport.backup.mac_move_burst_interval") | Integer |  |  | Min: 0<br>Max: 65535 | MAC move burst interval in milliseconds. |
@@ -1279,7 +1279,7 @@
           # tx multicast: Allow multicast packets only to go out of the source interface.
           source_interface: <str; "tx" | "tx multicast">
 
-          # Map packets from one VLAN to another.
+          # VLAN Translation mappings.
           # Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.
           vlan_translations:
 
@@ -1333,7 +1333,7 @@
                 inner_vlan_from: <int; 1-4094>
 
                 # Enable use of network-side VLAN ID.
-                # This setting can be enabled only when inner_vlan_from is defined.
+                # This setting can only be enabled when `inner_vlan_from` is defined.
                 network: <bool>
           vlan_forwarding_accept_all: <bool>
           backup_link:
@@ -1349,7 +1349,7 @@
 
             # Destination MAC address for MAC move updates.
             # The mac address should be multicast or broadcast.
-            # Example:  01:00:00:00:00:00
+            # Example: 01:00:00:00:00:00
             dest_macaddr: <str>
 
             # Initial MAC move delay in milliseconds.

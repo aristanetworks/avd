@@ -3616,7 +3616,7 @@ keys:
               - tx
               - tx multicast
             vlan_translations:
-              description: 'Map packets from one VLAN to another.
+              description: 'VLAN Translation mappings.
 
                 Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
               type: dict
@@ -3733,8 +3733,8 @@ keys:
                         type: bool
                         description: 'Enable use of network-side VLAN ID.
 
-                          This setting can be enabled only when inner_vlan_from is
-                          defined.'
+                          This setting can only be enabled when `inner_vlan_from`
+                          is defined.'
             vlan_forwarding_accept_all:
               type: bool
             backup_link:
@@ -3754,12 +3754,12 @@ keys:
               keys:
                 dest_macaddr:
                   type: str
-                  pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                  format: mac
                   description: 'Destination MAC address for MAC move updates.
 
                     The mac address should be multicast or broadcast.
 
-                    Example:  01:00:00:00:00:00'
+                    Example: 01:00:00:00:00:00'
                 initial_mac_move_delay:
                   type: int
                   convert_types:
@@ -9841,7 +9841,9 @@ keys:
               - tx
               - tx multicast
             vlan_translations:
-              description: 'Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.'
+              description: 'VLAN Translation mappings.
+
+                Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.'
               type: dict
               keys:
                 required:
@@ -9954,8 +9956,8 @@ keys:
                         type: bool
                         description: 'Enable use of network-side VLAN ID.
 
-                          This setting can be enabled only when inner_vlan_from is
-                          defined.'
+                          This setting can only be enabled when `inner_vlan_from`
+                          is defined.'
             vlan_forwarding_accept_all:
               type: bool
             backup_link:
@@ -9976,12 +9978,12 @@ keys:
               keys:
                 dest_macaddr:
                   type: str
-                  pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                  format: mac
                   description: 'Destination MAC address for MAC move updates.
 
                     The mac address should be multicast or broadcast.
 
-                    Example:  01:00:00:00:00:00'
+                    Example: 01:00:00:00:00:00'
                 initial_mac_move_delay:
                   type: int
                   convert_types:
