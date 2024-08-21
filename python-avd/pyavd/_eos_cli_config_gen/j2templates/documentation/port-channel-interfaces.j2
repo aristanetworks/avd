@@ -382,7 +382,7 @@
 {%             set isis_metric = port_channel_interface.isis_metric | arista.avd.default("-") %}
 {%             set isis_circuit_type = port_channel_interface.isis_circuit_type | arista.avd.default("-") %}
 {%             set isis_hello_padding = port_channel_interface.isis_hello_padding | arista.avd.default("-") %}
-{%              if port_channel_interface.isis_authentication_mode is arista.avd.defined %}
+{%             if port_channel_interface.isis_authentication_mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = port_channel_interface.isis_authentication_mode %}
 {%             elif port_channel_interface.isis_authentication.both.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = port_channel_interface.isis_authentication.both.mode %}
