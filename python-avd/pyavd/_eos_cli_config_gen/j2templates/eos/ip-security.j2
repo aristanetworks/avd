@@ -7,7 +7,7 @@
 {% if ip_security is arista.avd.defined %}
 !
 ip security
-{%     for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
+{%     for ike_policy in ip_security.ike_policies | arista.avd.natural_sort('name') %}
    !
    ike policy {{ ike_policy.name }}
 {%         if ike_policy.local_id_fqdn is arista.avd.defined %}
@@ -25,7 +25,7 @@ ip security
       dh-group {{ ike_policy.dh_group }}
 {%         endif %}
 {%     endfor %}
-{%     for sa_policy in ip_security.sa_policies | arista.avd.default([]) %}
+{%     for sa_policy in ip_security.sa_policies | arista.avd.natural_sort('name') %}
    !
    sa policy {{ sa_policy.name }}
 {%         if sa_policy.esp.integrity is arista.avd.defined %}
@@ -49,7 +49,7 @@ ip security
       pfs dh-group {{ sa_policy.pfs_dh_group }}
 {%         endif %}
 {%     endfor %}
-{%     for profile in ip_security.profiles | arista.avd.default([]) %}
+{%     for profile in ip_security.profiles | arista.avd.natural_sort('name') %}
    !
    profile {{ profile.name }}
 {%         if profile.ike_policy is arista.avd.defined %}
