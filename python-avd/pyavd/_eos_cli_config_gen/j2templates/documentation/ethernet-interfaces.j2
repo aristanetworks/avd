@@ -614,9 +614,6 @@
 {%                         set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode %}
 {%                     elif port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
 {%                         set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode %}
-{%                     else %}
-{%                         set isis_authentication_mode = "-" %}
-{%                     endif %}
 {%                     if port_channel_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
 {%                     elif port_channel_interface.isis_passive is arista.avd.defined(true) %}
@@ -624,7 +621,7 @@
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface.name }} | {{ channel_group }} | *{{ isis_instance }} | {{ isis_bfd }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode }} |
+| {{ ethernet_interface.name }} | {{ channel_group }} | *{{ isis_instance }} | {{ isis_bfd }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode | arista.avd.default("-") }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface in ethernet_interfaces_isis %}
@@ -644,8 +641,6 @@
 {%                         set isis_authentication_mode = "Level-1: " ~ ethernet_interface.isis_authentication.level_1.mode %}
 {%                     elif ethernet_interface.isis_authentication.level_2.mode is arista.avd.defined %}
 {%                         set isis_authentication_mode = "Level-2: " ~ ethernet_interface.isis_authentication.level_2.mode %}
-{%                     else %}
-{%                         set isis_authentication_mode = "-" %}
 {%                     endif %}
 {%                     if ethernet_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
@@ -654,7 +649,7 @@
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface.name }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_bfd }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode }} |
+| {{ ethernet_interface.name }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_bfd }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
