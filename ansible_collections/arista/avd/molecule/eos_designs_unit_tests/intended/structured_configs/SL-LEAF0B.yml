@@ -48,12 +48,14 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: none
+  mlag: 27
 - name: Port-Channel41
   description: SL-LEAF2_Po41
   type: switched
   shutdown: false
   mode: trunk
   vlans: none
+  mlag: 41
 ethernet_interfaces:
 - name: Ethernet25
   peer: SL-LEAF0A
