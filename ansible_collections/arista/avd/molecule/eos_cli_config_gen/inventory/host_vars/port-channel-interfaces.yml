@@ -186,7 +186,7 @@ port_channel_interfaces:
         vlan_tag: required
       source_interface: tx multicast
       vlan_translations:
-        required: true
+        in_required: true
         direction_in:
           - from: 34
             to: 23
@@ -366,6 +366,7 @@ port_channel_interfaces:
       trunk:
         allowed_vlan: 110-112
       vlan_translations:
+        out_required: true
         direction_out:
           - from: 111-112
             to: 110

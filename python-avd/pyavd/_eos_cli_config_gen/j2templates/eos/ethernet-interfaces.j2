@@ -174,8 +174,11 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.phone.trunk is arista.avd.defined %}
    switchport phone trunk {{ ethernet_interface.switchport.phone.trunk }}
 {%     endif %}
-{%     if ethernet_interface.switchport.vlan_translations.required is arista.avd.defined(true) %}
+{%     if ethernet_interface.switchport.vlan_translations.in_required is arista.avd.defined(true) %}
    switchport vlan translation in required
+{%     endif %}
+{%     if ethernet_interface.switchport.vlan_translations.out_required is arista.avd.defined(true) %}
+   switchport vlan translation out required
 {%     endif %}
 {%     if ethernet_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ ethernet_interface.switchport.dot1q.vlan_tag }}

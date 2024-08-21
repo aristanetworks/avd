@@ -57,7 +57,7 @@ ethernet_interfaces:
         ethertype: 1536
         vlan_tag: required
       vlan_translations:
-        required: true
+        in_required: true
         direction_in:
           - from: 10
             to: 24
@@ -178,7 +178,7 @@ ethernet_interfaces:
           mode: protect
           protect_log: true
       vlan_translations:
-        required: true
+        in_required: false
       backup_link:
         prefer_vlan: 20
 
@@ -212,10 +212,10 @@ ethernet_interfaces:
     spanning_tree_guard: root
     tcp_mss_ceiling:
       ipv6_segment_size: 65
-    mode: trunk
     # test for switchport settings
     switchport:
       enabled: false
+      mode: trunk
       trunk:
         native_vlan: 5
       port_security:
@@ -228,6 +228,7 @@ ethernet_interfaces:
           - range: 1-3
             mac_address_maximum: 3
       vlan_translations:
+        out_required: false
         direction_out:
           - from: 23
             dot1q_tunnel:
@@ -480,6 +481,7 @@ ethernet_interfaces:
       trunk:
         allowed_vlan: 110-112
       vlan_translations:
+        out_required: true
         direction_out:
           - from: 111-112
             to: 110

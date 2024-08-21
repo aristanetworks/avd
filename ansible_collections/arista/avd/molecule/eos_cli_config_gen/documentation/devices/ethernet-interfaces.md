@@ -89,7 +89,7 @@ sFlow is disabled.
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | dot1q-tunnel | 110-111,200,210-211 | tag | ['g1', 'g2'] | - |
 | Ethernet2 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - |  | 5 | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | trunk |  | 5 | - | - |
 | Ethernet5 | Molecule Routing | - | 220 | - | - | - |
 | Ethernet6 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 | Molecule L2 | - | - | - | - | - |
@@ -440,7 +440,6 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
-   switchport vlan translation in required
    switchport dot1q vlan tag disallowed
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
@@ -462,8 +461,8 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
-   switchport mode trunk
    switchport trunk native vlan 5
+   switchport mode trunk
    no switchport
    switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
@@ -646,6 +645,7 @@ interface Ethernet15
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
+   switchport vlan translation out required
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport
