@@ -150,7 +150,7 @@ class AnsibleEOSDevice(AntaDevice):
 
         except Exception as e:
             message = f"Command '{command.command}' failed"
-            command.failed = e
+            command.errors.append(e)
             logger.debug(command)
             msg = f"{message}: {e!s}"
             raise e.__class__(msg) from e
