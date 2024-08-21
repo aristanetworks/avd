@@ -59,13 +59,10 @@ interface Management1
 | SA-1 | - | aes128 | - | 14 |
 | SA-2 | - | aes128 | 42 gigabytes | 14 |
 | SA-3 | disabled | disabled | 8 hours | 17 |
-<<<<<<< HEAD
 | SA-4 | md5 | 3des | - | - |
 | SA-5 | sha512 | - | - | - |
 | SA-6 | sha384 | - | - | - |
-=======
-| SA-4 | - | - | - | - |
->>>>>>> 4f209178e6 (Fix(eos_cli_config_gen): Sort IPsec SA, IKE policies and profiles)
+| SA-7 | - | - | - | - |
 
 ### IPSec profiles
 
@@ -118,7 +115,6 @@ ip security
       pfs dh-group 17
    !
    sa policy SA-4
-<<<<<<< HEAD
       esp integrity md5
       esp encryption 3des
    !
@@ -127,8 +123,8 @@ ip security
    !
    sa policy SA-6
       esp integrity sha384
-=======
->>>>>>> 4f209178e6 (Fix(eos_cli_config_gen): Sort IPsec SA, IKE policies and profiles)
+   !
+   sa policy SA-7
    !
    profile Profile-1
       ike-policy IKE-1

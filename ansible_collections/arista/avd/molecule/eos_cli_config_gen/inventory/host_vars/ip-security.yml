@@ -16,7 +16,7 @@ ip_security:
       local_id: 192.168.42.42
   sa_policies:
     # Testing sorting
-    - name: SA-4
+    - name: SA-7
     - name: SA-1
       esp:
         encryption: aes128
