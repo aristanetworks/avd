@@ -4,10 +4,12 @@
 # mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone, vlan_translations, trunk_private_vlan_secondary, pvlan_mapping
 port_channel_interfaces:
   - name: Port-Channel2
+    type: switched
     mode: access
     vlans: 100
 
   - name: Port-Channel3
+    type: switched
     mode: trunk
     vlans: 110
     native_vlan: 10
@@ -16,6 +18,7 @@ port_channel_interfaces:
       - group2
 
   - name: Port-Channel4
+    type: switched
     native_vlan_tag: true
     native_vlan: 20
     mode: trunk phone
@@ -24,6 +27,7 @@ port_channel_interfaces:
       trunk: tagged
 
   - name: Port-Channel5
+    type: switched
     vlan_translations:
       - from: 23
         to: 50
