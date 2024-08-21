@@ -375,18 +375,18 @@ interface Ethernet50
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
-| Port-Channel3 | EVPN_UNDERLAY | - | - | - | - | - | - | sha | sha |
-| Port-Channel8 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
-| Port-Channel10 | EVPN_UNDERLAY | - | - | - | - | - | - | sha | sha |
-| Port-Channel12 | EVPN_UNDERLAY | - | - | - | - | - | - | sha | - |
-| Port-Channel16 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
-| Port-Channel20 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
-| Port-Channel50 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
-| Port-Channel51 | EVPN_UNDERLAY | - | - | - | - | - | - | shared-secret | shared-secret |
-| Port-Channel100 | EVPN_UNDERLAY | - | - | - | - | - | - | md5 | md5 |
-| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | - | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Port-Channel3 | EVPN_UNDERLAY | - | - | - | - | - | sha |
+| Port-Channel8 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Port-Channel10 | EVPN_UNDERLAY | - | - | - | - | - | sha |
+| Port-Channel12 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha |
+| Port-Channel16 | EVPN_UNDERLAY | - | - | - | - | - | md5 |
+| Port-Channel20 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Port-Channel50 | EVPN_UNDERLAY | - | - | - | - | - | shared-secret |
+| Port-Channel51 | EVPN_UNDERLAY | - | - | - | - | - | shared-secret |
+| Port-Channel100 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: text |
+| Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -443,7 +443,7 @@ interface Port-Channel8
    isis authentication mode md5 level-1
    isis authentication mode md5 level-2
    isis authentication key 0 password level-1
-   isis authentication key 0 password level-2
+   isis authentication key 0 password1 level-2
    switchport port-security violation protect
 !
 interface Port-Channel8.101
@@ -553,7 +553,7 @@ interface Port-Channel20
    l2-protocol encapsulation dot1q vlan 200
    isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-2
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
@@ -610,7 +610,7 @@ interface Port-Channel100
    no switchport
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 rx-disabled level-1
-   isis authentication mode md5 rx-disabled level-2
+   isis authentication mode text rx-disabled level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password level-2
    switchport source-interface tx multicast

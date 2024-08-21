@@ -231,7 +231,7 @@ port_channel_interfaces:
       level_2:
         key_type: 0
         key: password
-        mode: md5
+        mode: text
         rx_disabled: true
 
     switchport:
@@ -343,7 +343,7 @@ port_channel_interfaces:
         mode: md5
       level_2:
         key_type: 0
-        key: password
+        key: password1
         mode: md5
 
   - name: Port-Channel8.101
@@ -387,8 +387,8 @@ port_channel_interfaces:
       level_2:
         mode: shared-secret
         shared_secret:
-          profile: profile1
-          algorithm: sha-256
+          profile: profile2
+          algorithm: sha-1
         rx_disabled: true
 
   - name: Port-Channel12
