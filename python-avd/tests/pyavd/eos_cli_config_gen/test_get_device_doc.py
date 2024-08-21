@@ -9,7 +9,7 @@ def test_get_device_doc(hostname: str, all_inputs: dict, device_docs: dict) -> N
     structured_config: dict = all_inputs[hostname]
     if not structured_config.get("generate_device_documentation", True):
         return
-    
+
     # run validation on structured_config to ensure it is covered
     validate_structured_config(structured_config)
 
