@@ -118,6 +118,9 @@ router_bgp:
       - name: TEST_RCF
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()
+    redistribute_routes:
+      - source_protocol: isis level-1
+        rcf: Address_Family_IPV6_ISIS()
   vlans:
     - id: 24
       rd: "10.50.64.15:10024"

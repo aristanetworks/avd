@@ -176,6 +176,8 @@ router_bgp:
         include_leaked: true
       - source_protocol: connected
         rcf: Address_Family_IPV6_Connected()
+      - source_protocol: isis level-2
+        rcf: Address_Family_IPV6_ISIS()
   neighbors:
     - ip_address: 192.0.3.1
       remote_as: 65432

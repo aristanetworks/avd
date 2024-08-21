@@ -12180,6 +12180,9 @@ keys:
                   - attached-host
                   - connected
                   - isis
+                  - isis level-1
+                  - isis level-2
+                  - isis level-1-2
                   - ospf
                   - ospfv3
                   - static
@@ -12351,6 +12354,9 @@ keys:
                   - dhcp
                   - dynamic
                   - isis
+                  - isis level-1
+                  - isis level-2
+                  - isis level-1-2
                   - ospfv3
                   - static
                   - user
@@ -13451,6 +13457,9 @@ keys:
                     - connected
                     - dynamic
                     - isis
+                    - isis level-1
+                    - isis level-2
+                    - isis level-1-2
                     - ospf
                     - ospfv3
                     - rip

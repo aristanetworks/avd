@@ -984,12 +984,12 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_route_cli = redistribute_route_cli ~ " match " ~  redistribute_route.ospf_route_type %}
 {%                     endif %}
 {%                 endif %}
-{%                 if redistribute_route.include_leaked is arista.avd.defined and redistribute_route.source_protocol == "isis" %}
+{%                 if redistribute_route.include_leaked is arista.avd.defined(true) and redistribute_route.source_protocol in ["isis", "isis level-1", "isis level-2", "isis level-1-2"] %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
 {%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
-{%                 elif redistribute_route.source_protocol == "isis" and redistribute_route.rcf is arista.avd.defined %}
+{%                 elif redistribute_route.source_protocol in ["isis", "isis level-1", "isis level-2", "isis level-1-2"] and redistribute_route.rcf is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                 endif %}
       {{ redistribute_route_cli }}
@@ -1103,12 +1103,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if redistribute_route.source_protocol == "bgp" %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " leaked" %}
-{%                 elif redistribute_route.include_leaked is arista.avd.defined %}
+{%                 elif redistribute_route.include_leaked is arista.avd.defined(true) and redistribute_route.source_protocol in ["connected", "static", "isis", "isis level-1", "isis level-2", "isis level-1-2", "ospfv3"] %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
 {%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
-{%                 elif redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
+{%                 elif redistribute_route.source_protocol in ["connected", "static", "isis", "isis level-1", "isis level-2", "isis level-1-2", "user", "dynamic"] %}
 {%                     if redistribute_route.rcf is arista.avd.defined %}
 {%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                     endif %}
@@ -1743,12 +1743,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if redistribute_route.source_protocol == "bgp" %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " leaked" %}
-{%                 elif redistribute_route.include_leaked is arista.avd.defined %}
+{%                 elif redistribute_route.include_leaked is arista.avd.defined(true) and redistribute_route.source_protocol in ["connected", "static", "isis", "isis level-1", "isis level-2", "isis level-1-2", "ospf", "ospfv3"] %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
 {%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
-{%                 elif redistribute_route.source_protocol in ["connected", "static", "isis", "user", "dynamic"] %}
+{%                 elif redistribute_route.source_protocol in ["connected", "static", "isis", "isis level-1", "isis level-2", "isis level-1-2", "user", "dynamic"] %}
 {%                     if redistribute_route.rcf is arista.avd.defined %}
 {%                         set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                     endif %}
