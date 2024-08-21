@@ -606,14 +606,16 @@
 {%                     set isis_hello_padding = port_channel_interface.isis_hello_padding | arista.avd.default("-") %}
 {%                     if port_channel_interface.isis_authentication_mode is arista.avd.defined %}
 {%                         set isis_authentication_mode = port_channel_interface.isis_authentication_mode %}
-{%                     elif port_channel_interface.isis_authentication.both.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = port_channel_interface.isis_authentication.both.mode %}
-{%                     elif port_channel_interface.isis_authentication.level_1.mode is arista.avd.defined and port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode ~ "<br>" ~ "Level-2: " ~ port_channel_interface.isis_authentication.level_2.mode %}
-{%                     elif port_channel_interface.isis_authentication.level_1.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode %}
-{%                     elif port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode %}
+{%                     else %}
+{%                         if port_channel_interface.isis_authentication.both.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = port_channel_interface.isis_authentication.both.mode %}
+{%                         elif port_channel_interface.isis_authentication.level_1.mode is arista.avd.defined and port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode ~ "<br>" ~ "Level-2: " ~ port_channel_interface.isis_authentication.level_2.mode %}
+{%                         elif port_channel_interface.isis_authentication.level_1.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode %}
+{%                         elif port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = "Level-1: " ~ port_channel_interface.isis_authentication.level_1.mode %}
+{%                         endif %}
 {%                     endif %}
 {%                     if port_channel_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
@@ -634,14 +636,16 @@
 {%                     set isis_hello_padding = ethernet_interface.isis_hello_padding | arista.avd.default("-") %}
 {%                     if ethernet_interface.isis_authentication_mode is arista.avd.defined %}
 {%                         set isis_authentication_mode = ethernet_interface.isis_authentication_mode %}
-{%                     elif ethernet_interface.isis_authentication.both.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = ethernet_interface.isis_authentication.both.mode %}
-{%                     elif ethernet_interface.isis_authentication.level_1.mode is arista.avd.defined and ethernet_interface.isis_authentication.level_2.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = "Level-1: " ~ ethernet_interface.isis_authentication.level_1.mode ~ "<br>" ~ "Level-2: " ~ ethernet_interface.isis_authentication.level_2.mode %}
-{%                     elif ethernet_interface.isis_authentication.level_1.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = "Level-1: " ~ ethernet_interface.isis_authentication.level_1.mode %}
-{%                     elif ethernet_interface.isis_authentication.level_2.mode is arista.avd.defined %}
-{%                         set isis_authentication_mode = "Level-2: " ~ ethernet_interface.isis_authentication.level_2.mode %}
+{%                     else %}
+{%                         if ethernet_interface.isis_authentication.both.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = ethernet_interface.isis_authentication.both.mode %}
+{%                         elif ethernet_interface.isis_authentication.level_1.mode is arista.avd.defined and ethernet_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = "Level-1: " ~ ethernet_interface.isis_authentication.level_1.mode ~ "<br>" ~ "Level-2: " ~ ethernet_interface.isis_authentication.level_2.mode %}
+{%                         elif ethernet_interface.isis_authentication.level_1.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = "Level-1: " ~ ethernet_interface.isis_authentication.level_1.mode %}
+{%                         elif ethernet_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                             set isis_authentication_mode = "Level-2: " ~ ethernet_interface.isis_authentication.level_2.mode %}
+{%                         endif %}
 {%                     endif %}
 {%                     if ethernet_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
