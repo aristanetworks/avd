@@ -17,7 +17,7 @@
 
 | Policy name | IKE lifetime | Encryption | DH group | Local ID |
 | ----------- | ------------ | ---------- | -------- | -------- |
-{%         for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
+{%         for ike_policy in ip_security.ike_policies | arista.avd.natural_sort('name') %}
 | {{ ike_policy.name }} | {{ ike_policy.ike_lifetime | arista.avd.default("-") }} | {{ ike_policy.encryption | arista.avd.default("-") }} | {{ ike_policy.dh_group | arista.avd.default("-") }} | {{ ike_policy.local_id_fqdn | arista.avd.default(ike_policy.local_id, "-") }} |
 {%         endfor %}
 {%     endif %}
@@ -27,7 +27,7 @@
 
 | Policy name | ESP Integrity | ESP Encryption | Lifetime | PFS DH Group |
 | ----------- | ------------- | -------------- | -------- | ------------ |
-{%         for sa_policy in ip_security.sa_policies | arista.avd.default([]) %}
+{%         for sa_policy in ip_security.sa_policies | arista.avd.natural_sort('name') %}
 {%             if sa_policy.sa_lifetime.value is arista.avd.defined %}
 {%                 set lifetime = sa_policy.sa_lifetime.value ~ " " ~ sa_policy.sa_lifetime.unit | arista.avd.default("hours") %}
 {%             endif %}
@@ -40,7 +40,7 @@
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
-{%         for profile in ip_security.profiles | arista.avd.default([]) %}
+{%         for profile in ip_security.profiles | arista.avd.natural_sort('name') %}
 {%             set ike_policy = profile.ike_policy | arista.avd.default("-") %}
 {%             set sa_policy = profile.sa_policy | arista.avd.default("-") %}
 {%             set connection = profile.connection | arista.avd.default("-") %}
