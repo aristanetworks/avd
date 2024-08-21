@@ -502,7 +502,7 @@ ethernet_interfaces:
       phone:
         trunk: untagged
         vlan: 70
-    # Test isis auth l1l2 md5 rx
+    # Test isis auth l1 md5 l2 text rx
     isis_authentication:
       level_1:
         key_type: 0
@@ -512,7 +512,7 @@ ethernet_interfaces:
       level_2:
         key_type: 0
         key: password
-        mode: md5
+        mode: text
         rx_disabled: true
 
   - name: Ethernet14
@@ -529,7 +529,7 @@ ethernet_interfaces:
       mode: trunk
       trunk:
         allowed_vlan: 110-111,210-211
-    # Test isis auth l1l2 md5
+    # Test isis auth l1 md5 l2 sha
     isis_authentication:
       level_1:
         key_type: 0
@@ -538,7 +538,9 @@ ethernet_interfaces:
       level_2:
         key_type: 0
         key: password
-        mode: md5
+        mode: sha
+        sha:
+          key_id: 10
 
   - name: Ethernet15
     description: PVLAN Promiscuous Access - only one secondary
@@ -558,8 +560,8 @@ ethernet_interfaces:
       level_2:
         mode: shared-secret
         shared_secret:
-          profile: profile1
-          algorithm: sha-256
+          profile: profile2
+          algorithm: sha-1
 
   - name: Ethernet16
     description: PVLAN Promiscuous Trunk - vlan translation out
@@ -584,8 +586,8 @@ ethernet_interfaces:
       level_2:
         mode: shared-secret
         shared_secret:
-          profile: profile1
-          algorithm: sha-256
+          profile: profile2
+          algorithm: sha-1
         rx_disabled: true
 
   - name: Ethernet17
@@ -606,7 +608,7 @@ ethernet_interfaces:
       level_2:
         mode: sha
         sha:
-          key_id: 5
+          key_id: 10
         rx_disabled: true
 
   - name: Ethernet18
@@ -627,7 +629,7 @@ ethernet_interfaces:
       level_2:
         mode: sha
         sha:
-          key_id: 5
+          key_id: 10
 
   - name: Ethernet19
     description: Switched port with no LLDP rx/tx

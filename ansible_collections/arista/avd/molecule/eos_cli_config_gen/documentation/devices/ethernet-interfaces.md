@@ -348,8 +348,8 @@ sFlow is disabled.
 | Ethernet10 | - | - | - | - | - | - | - | sha |
 | Ethernet11 | - | - | - | - | - | - | - | shared-secret |
 | Ethernet12 | - | - | - | - | - | - | - | shared-secret |
-| Ethernet13 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: md5 |
-| Ethernet14 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: md5 |
+| Ethernet13 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: text |
+| Ethernet14 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: sha |
 | Ethernet15 | - | - | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
 | Ethernet16 | - | - | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
 | Ethernet17 | - | - | - | - | - | - | - | Level-1: sha<br>Level-2: sha |
@@ -663,7 +663,7 @@ interface Ethernet13
    switchport mode trunk phone
    switchport
    isis authentication mode md5 rx-disabled level-1
-   isis authentication mode md5 rx-disabled level-2
+   isis authentication mode text rx-disabled level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password level-2
 !
@@ -674,7 +674,7 @@ interface Ethernet14
    switchport mode trunk
    switchport
    isis authentication mode md5 level-1
-   isis authentication mode md5 level-2
+   isis authentication mode sha key-id 10 level-2
    isis authentication key 0 password level-1
    isis authentication key 0 password level-2
 !
@@ -685,7 +685,7 @@ interface Ethernet15
    switchport
    switchport pvlan mapping 111
    isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 level-2
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
@@ -695,7 +695,7 @@ interface Ethernet16
    switchport
    switchport vlan translation out 111-112 110
    isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-1
-   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-2
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
@@ -704,7 +704,7 @@ interface Ethernet17
    switchport
    switchport trunk private-vlan secondary
    isis authentication mode sha key-id 5 rx-disabled level-1
-   isis authentication mode sha key-id 5 rx-disabled level-2
+   isis authentication mode sha key-id 10 rx-disabled level-2
 !
 interface Ethernet18
    description PBR Description
@@ -713,7 +713,7 @@ interface Ethernet18
    ip address 192.0.2.1/31
    service-policy type pbr input MyLANServicePolicy
    isis authentication mode sha key-id 5 level-1
-   isis authentication mode sha key-id 5 level-2
+   isis authentication mode sha key-id 10 level-2
 !
 interface Ethernet19
    description Switched port with no LLDP rx/tx
