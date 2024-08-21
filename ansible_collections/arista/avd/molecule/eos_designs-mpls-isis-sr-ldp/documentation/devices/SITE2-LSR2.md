@@ -237,10 +237,10 @@ interface Ethernet15
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode | Level-1 Authentication Mode | Level-2 Authentication Mode |
-| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------- | --------------------------- | --------------------------- |
-| Port-Channel12 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 | - | - |
-| Port-Channel110 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Port-Channel12 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
+| Port-Channel110 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
 
 #### Port-Channel Interfaces Device Configuration
 
