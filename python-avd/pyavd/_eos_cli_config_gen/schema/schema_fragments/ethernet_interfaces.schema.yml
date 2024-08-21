@@ -817,7 +817,7 @@ keys:
             warning: true
             removed: false
             remove_in_version: 6.0.0
-            new_key: ethernet_interfaces[].switchport.vlan_tanslations
+            new_key: ethernet_interfaces[].switchport.vlan_translations
           type: list
           items:
             type: dict
@@ -1445,7 +1445,7 @@ keys:
             access_vlan:
               type: int
               convert_types:
-                - "str"
+                - str
               min: 1
               max: 4094
               # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` and `ethernet_interface[].vlans` are removed in AVD6.0

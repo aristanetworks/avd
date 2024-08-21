@@ -2828,7 +2828,7 @@ keys:
             warning: true
             removed: false
             remove_in_version: 6.0.0
-            new_key: ethernet_interfaces[].switchport.vlan_tanslations
+            new_key: ethernet_interfaces[].switchport.vlan_translations
           type: list
           items:
             type: dict
@@ -9175,7 +9175,7 @@ keys:
             warning: true
             removed: false
             remove_in_version: 6.0.0
-            new_key: port_channel_interfaces[].switchport.vlan_tanslations
+            new_key: port_channel_interfaces[].switchport.vlan_translations
           type: list
           items:
             type: dict
@@ -9758,7 +9758,7 @@ keys:
                   - int
                   description: 'VLAN ID or range(s) of VLAN IDs (1-4094).
 
-                    Warning: This should not be combined with `port_channel_interfaces.mode
+                    Warning: This should not be combined with `port_channel_interfaces[].mode
                     = trunk` and `port_channel_interfaces[].vlans`.'
                 native_vlan:
                   type: int
