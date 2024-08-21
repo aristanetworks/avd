@@ -16364,7 +16364,7 @@ keys:
               type: bool
       ifmib_ifspeed_shape_rate:
         type: bool
-        description: SNMP ifspeed reflecting shaping rate
+        description: SNMP ifspeed reflecting shaping rate.
   spanning_tree:
     type: dict
     keys:
