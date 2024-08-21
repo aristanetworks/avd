@@ -28130,6 +28130,11 @@
             ]
           },
           "title": "VRFs"
+        },
+        "ifmib_ifspeed_shape_rate": {
+          "type": "boolean",
+          "description": "SNMP ifspeed reflecting shaping rate",
+          "title": "Ifmib Ifspeed Shape Rate"
         }
       },
       "additionalProperties": false,
