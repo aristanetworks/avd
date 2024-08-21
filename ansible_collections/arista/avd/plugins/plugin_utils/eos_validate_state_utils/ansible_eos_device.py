@@ -9,10 +9,10 @@ from json import JSONDecodeError, loads
 from logging import getLogger
 from typing import TYPE_CHECKING
 from urllib.error import HTTPError
-from anta.logger import exc_to_str
 
 from ansible.errors import AnsibleActionFail, AnsibleConnectionFailure
 from ansible.module_utils.connection import ConnectionError
+from anta.logger import exc_to_str
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
