@@ -45,7 +45,7 @@
 {%                     set native_vlan = port_channel_interface.switchport.trunk.native_vlan | arista.avd.default('-') %}
 {%                 endif %}
 {%                 set channel_group = ethernet_interface.channel_group.id %}
-{%                 set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default('-') %}
+{%                 set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default(['-']) | join(', ') %}
 | {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ trunk_groups }} | {{ channel_group }} |
 {# TODO: AVD6.0 Below elif block should be removed once the deprecated keys are removed in AVD6.0 #}
 {%             elif port_channel_interface.type is arista.avd.defined('switched') %}
@@ -58,7 +58,7 @@
 {%                     set native_vlan = port_channel_interface.native_vlan | arista.avd.default('-') %}
 {%                 endif %}
 {%                 set channel_group = ethernet_interface.channel_group.id %}
-{%                 set trunk_groups = port_channel_interface.trunk_groups | arista.avd.default('-') %}
+{%                 set trunk_groups = port_channel_interface.trunk_groups | arista.avd.default(['-']) | join(', ') %}
 | {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ trunk_groups }} | {{ channel_group }} |
 {%             endif %}
 {%         else %}
@@ -86,7 +86,7 @@
 {%                 else %}
 {%                     set native_vlan = ethernet_interface.switchport.trunk.native_vlan | arista.avd.default('-') %}
 {%                 endif %}
-{%                 set trunk_groups = ethernet_interface.switchport.trunk.groups | arista.avd.default('-') %}
+{%                 set trunk_groups = ethernet_interface.switchport.trunk.groups | arista.avd.default(['-']) | join(', ') %}
 | {{ ethernet_interface.name }} | {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ trunk_groups }} | - |
 {# TODO: AVD6.0 Below elif block should be removed once the deprecated keys are removed in AVD6.0 #}
 {%             elif ethernet_interface.type is arista.avd.defined('switched') %}
@@ -98,7 +98,7 @@
 {%                 else %}
 {%                     set native_vlan = ethernet_interface.native_vlan | arista.avd.default('-') %}
 {%                 endif %}
-{%                 set trunk_groups = ethernet_interface.trunk_groups | arista.avd.default('-') %}
+{%                 set trunk_groups = ethernet_interface.trunk_groups | arista.avd.default(['-']) | join(', ') %}
 | {{ ethernet_interface.name }} | {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ trunk_groups }} | - |
 {%             endif %}
 {%         endif %}

@@ -264,23 +264,23 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "port_channel_interfaces.[].switchport.dot1q") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethertype</samp>](## "port_channel_interfaces.[].switchport.dot1q.ethertype") | Integer |  |  | Min: 1536<br>Max: 65535 | Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_tag</samp>](## "port_channel_interfaces.[].switchport.dot1q.vlan_tag") | String |  |  | Valid Values:<br>- <code>disallowed</code><br>- <code>required</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "port_channel_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged packets to go out of the source interface.<br>tx multicast: Allow multicast packets only to go out of the source interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "port_channel_interfaces.[].switchport.source_interface") | String |  |  | Valid Values:<br>- <code>tx</code><br>- <code>tx multicast</code> | tx: Allow bridged traffic to go out of the source interface.<br>tx multicast: Allow multicast traffic only to go out of the source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "port_channel_interfaces.[].switchport.vlan_translations") | Dictionary |  |  |  | VLAN Translation mappings.<br>Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in_required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.in_required") | Boolean |  |  |  | Drop the ingress packets that do not match any VLAN mapping. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out_required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.out_required") | Boolean |  |  |  | Drop the egress packets that do not match any VLAN mapping. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in") | List, items: Dictionary |  |  |  | Map ingress packets only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in_required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.in_required") | Boolean |  |  |  | Drop the ingress traffic that do not match any VLAN mapping. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;out_required</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.out_required") | Boolean |  |  |  | Drop the egress traffic that do not match any VLAN mapping. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in") | List, items: Dictionary |  |  |  | Map ingress traffic only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].from") | String |  |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].dot1q_tunnel") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_in.[].inner_vlan_from") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map from. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out") | List, items: Dictionary |  |  |  | Map egress packets only. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out") | List, items: Dictionary |  |  |  | Map egress traffic only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].from") | String | Required |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.all") | Boolean |  |  |  | The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].dot1q_tunnel.to") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID or range(s) of VLAN IDs to map to.<br>The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_out.[].inner_vlan_to") | Integer |  |  | Min: 1<br>Max: 4094 | Inner VLAN ID to map to. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_both</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both") | List, items: Dictionary |  |  |  | Map both egress and ingress packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_both</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both") | List, items: Dictionary |  |  |  | Map both egress and ingress traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;from</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].from") | String | Required |  |  | VLAN ID or range of VLAN IDs to map from. Range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].to") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID to map to. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q_tunnel</samp>](## "port_channel_interfaces.[].switchport.vlan_translations.direction_both.[].dot1q_tunnel") | Boolean |  |  |  |  |
@@ -846,21 +846,21 @@
             ethertype: <int; 1536-65535>
             vlan_tag: <str; "disallowed" | "required">
 
-          # tx: Allow bridged packets to go out of the source interface.
-          # tx multicast: Allow multicast packets only to go out of the source interface.
+          # tx: Allow bridged traffic to go out of the source interface.
+          # tx multicast: Allow multicast traffic only to go out of the source interface.
           source_interface: <str; "tx" | "tx multicast">
 
           # VLAN Translation mappings.
           # Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.
           vlan_translations:
 
-            # Drop the ingress packets that do not match any VLAN mapping.
+            # Drop the ingress traffic that do not match any VLAN mapping.
             in_required: <bool>
 
-            # Drop the egress packets that do not match any VLAN mapping.
+            # Drop the egress traffic that do not match any VLAN mapping.
             out_required: <bool>
 
-            # Map ingress packets only.
+            # Map ingress traffic only.
             direction_in:
 
                 # VLAN ID or range of VLAN IDs to map from. Range 1-4094.
@@ -873,7 +873,7 @@
                 # Inner VLAN ID to map from.
                 inner_vlan_from: <int; 1-4094>
 
-            # Map egress packets only.
+            # Map egress traffic only.
             direction_out:
 
                 # VLAN ID or range of VLAN IDs to map from. Range 1-4094.
@@ -893,7 +893,7 @@
                 # Inner VLAN ID to map to.
                 inner_vlan_to: <int; 1-4094>
 
-            # Map both egress and ingress packets.
+            # Map both egress and ingress traffic.
             direction_both:
 
                 # VLAN ID or range of VLAN IDs to map from. Range 1-4094.

@@ -39,7 +39,7 @@
 {%             else %}
 {%                 set native_vlan = port_channel_interface.switchport.trunk.native_vlan | arista.avd.default('-') %}
 {%             endif %}
-{%             set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default('-') %}
+{%             set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default(['-']) | join(', ') %}
 {%             set lacp_fallback_timeout = port_channel_interface.lacp_fallback_timeout | arista.avd.default("-") %}
 {%             set lacp_fallback_mode = port_channel_interface.lacp_fallback_mode | arista.avd.default("-") %}
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
@@ -55,7 +55,7 @@
 {%             else %}
 {%                 set native_vlan = port_channel_interface.native_vlan | arista.avd.default('-') %}
 {%             endif %}
-{%             set trunk_groups = port_channel_interface.trunk_groups | arista.avd.default('-') %}
+{%             set trunk_groups = port_channel_interface.trunk_groups | arista.avd.default(['-']) | join(', ') %}
 {%             set lacp_fallback_timeout = port_channel_interface.lacp_fallback_timeout | arista.avd.default("-") %}
 {%             set lacp_fallback_mode = port_channel_interface.lacp_fallback_mode | arista.avd.default("-") %}
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}

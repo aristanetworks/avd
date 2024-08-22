@@ -87,7 +87,7 @@ sFlow is disabled.
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | dot1q-tunnel | 110-111,200,210-211 | tag | ['g1', 'g2'] | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | dot1q-tunnel | 110-111,200,210-211 | tag | g1, g2 | - |
 | Ethernet2 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | trunk |  | 5 | - | - |
 | Ethernet5 | Molecule Routing | - | 220 | - | - | - |

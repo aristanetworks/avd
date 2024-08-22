@@ -1543,8 +1543,8 @@ keys:
             source_interface:
               type: str
               description: |-
-                tx: Allow bridged packets to go out of the source interface.
-                tx multicast: Allow multicast packets only to go out of the source interface.
+                tx: Allow bridged traffic to go out of the source interface.
+                tx multicast: Allow multicast traffic only to go out of the source interface.
               valid_values:
                 - tx
                 - tx multicast
@@ -1557,13 +1557,13 @@ keys:
               keys:
                 in_required:
                   type: bool
-                  description: Drop the ingress packets that do not match any VLAN mapping.
+                  description: Drop the ingress traffic that do not match any VLAN mapping.
                 out_required:
                   type: bool
-                  description: Drop the egress packets that do not match any VLAN mapping.
+                  description: Drop the egress traffic that do not match any VLAN mapping.
                 direction_in:
                   type: list
-                  description: Map ingress packets only.
+                  description: Map ingress traffic only.
                   items:
                     type: dict
                     keys:
@@ -1592,7 +1592,7 @@ keys:
                         description: Inner VLAN ID to map from.
                 direction_out:
                   type: list
-                  description: Map egress packets only.
+                  description: Map egress traffic only.
                   items:
                     type: dict
                     keys:
@@ -1633,7 +1633,7 @@ keys:
                         description: Inner VLAN ID to map to.
                 direction_both:
                   type: list
-                  description: Map both egress and ingress packets.
+                  description: Map both egress and ingress traffic.
                   items:
                     type: dict
                     keys:
