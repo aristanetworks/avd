@@ -155,8 +155,7 @@ interface {{ port_channel_interface.name }}
    switchport source-interface {{ port_channel_interface.switchport.source_interface }}
 {%     endif %}
 {%     for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
-{%         set vlan_translation_both_cli = 'switchport vlan translation' %}
-{%         set vlan_translation_both_cli = vlan_translation_both_cli ~ ' ' ~  vlan_translation.from %}
+{%         set vlan_translation_both_cli = 'switchport vlan translation ' ~ vlan_translation.from %}
 {%         if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
 {%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' dot1q-tunnel' %}
 {%         elif vlan_translation.inner_vlan_from is arista.avd.defined %}
