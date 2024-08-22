@@ -10,7 +10,7 @@ traffic-policies
 {# FIELD SET #}
 {#     -- L4 PORT MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ports is arista.avd.defined %}
-{%         for field_set_port in traffic_policies.field_sets.ports %}
+{%         for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort('name') %}
    field-set l4-port {{ field_set_port.name }}
 {%             if field_set_port.port_range is arista.avd.defined %}
       {{ field_set_port.port_range }}
@@ -20,7 +20,7 @@ traffic-policies
 {%     endif %}
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
-{%         for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
+{%         for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
 {%             if field_set_ipv4.name is arista.avd.defined %}
    field-set ipv4 prefix {{ field_set_ipv4.name }}
 {%                 if field_set_ipv4.prefixes is arista.avd.defined %}
@@ -32,7 +32,7 @@ traffic-policies
 {%     endif %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
 {%     if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
-{%         for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
+{%         for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
 {%             if field_set_ipv6.name is arista.avd.defined %}
    field-set ipv6 prefix {{ field_set_ipv6.name }}
 {%                 if field_set_ipv6.prefixes is arista.avd.defined %}
@@ -49,7 +49,7 @@ traffic-policies
 {%     endif %}
 {# TRAFFIC POLICIES #}
 {%     if traffic_policies.policies is arista.avd.defined %}
-{%         for policy in traffic_policies.policies %}
+{%         for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
    traffic-policy {{ policy.name }}
 {%             if policy.matches is arista.avd.defined %}
 {# COUNTER CREATION SECTION #}

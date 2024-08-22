@@ -14,7 +14,7 @@
 
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
+{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
 {%                 if field_set_ipv4.prefixes is arista.avd.defined %}
 {%                     set value = field_set_ipv4.prefixes | arista.avd.natural_sort | join('<br/>') %}
 {%                 endif %}
@@ -27,7 +27,7 @@
 
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
+{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
 {%                 if field_set_ipv6.prefixes is arista.avd.defined %}
 {%                     set value = field_set_ipv6.prefixes | arista.avd.natural_sort | join('<br/>') %}
 {%                 endif %}
@@ -40,7 +40,7 @@
 
 | Field Set Name | Values |
 | -------------- | ------ |
-{%             for field_set_port in traffic_policies.field_sets.ports %}
+{%             for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort('name') %}
 | {{ field_set_port.name }} | {{ field_set_port.port_range | arista.avd.default("-") }}|
 {%             endfor %}
 {%         endif %}
