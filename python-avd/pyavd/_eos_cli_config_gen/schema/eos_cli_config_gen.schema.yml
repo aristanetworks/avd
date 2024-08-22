@@ -16986,6 +16986,7 @@ keys:
                     valid_values:
                     - ipv4
                     - ipv6
+                    required: true
                   source:
                     type: dict
                     keys:
