@@ -167,4 +167,5 @@ snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server enable traps
 no snmp-server vrf default
 snmp-server vrf MGMT
+snmp-server ifmib ifspeed shape-rate
 ```
