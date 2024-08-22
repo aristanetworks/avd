@@ -207,11 +207,13 @@
 | {{ ethernet_interface.name }} | in | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | - | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
 {%                 endfor %}
 {%                 for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort('from') %}
-{%                     set to_vlan_id = vlan_translation.dot1q_tunnel_to | arista.avd.default(vlan_translation.to, "-") %}
 {%                     if vlan_translation.dot1q_tunnel_to is arista.avd.defined %}
 {%                         set dot1q_tunnel = "True" %}
+{%                         set to_vlan_id = vlan_translation.dot1q_tunnel_to %}
+{%                     else %}
+{%                         set to_vlan_id = vlan_translation.to | arista.avd.default("-") %}
 {%                     endif %}
-| {{ ethernet_interface.name }} | out | {{ vlan_translation.from }} | {{ to_vlan_id }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ dot1q_tunnel | arista.avd.default(vlan_translation.dot1q_tunnel, '-') }} |
+| {{ ethernet_interface.name }} | out | {{ vlan_translation.from }} | {{ to_vlan_id }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ dot1q_tunnel | arista.avd.default('-') }} |
 {%                 endfor %}
 {%             elif ethernet_interface.vlan_translations is arista.avd.defined %}
 {%                 for vlan_translation in ethernet_interface.vlan_translations | arista.avd.natural_sort %}
