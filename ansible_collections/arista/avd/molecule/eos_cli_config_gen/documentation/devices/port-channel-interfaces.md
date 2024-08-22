@@ -285,7 +285,7 @@ interface Ethernet50
 | Port-Channel100 | in | 37 | 49 | - | 56 | - | - |
 | Port-Channel100 | out | 10 | 45 | - | 34 | - | - |
 | Port-Channel100 | out | 34 | 50 | - | - | - | - |
-| Port-Channel100 | out | 45 | True | - | - | - | True |
+| Port-Channel100 | out | 45 | all | - | - | - | True |
 | Port-Channel100 | out | 55 | - | - | - | - | - |
 | Port-Channel102 | out | 111-112 | 110 | - | - | - | - |
 

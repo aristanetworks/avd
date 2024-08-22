@@ -1609,21 +1609,13 @@ keys:
                         min: 1
                         max: 4094
                         description: VLAN ID to map to.
-                      dot1q_tunnel:
-                        type: dict
-                        keys:
-                          all:
-                            type: bool
-                            description: The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.
-                          to:
-                            type: int
-                            convert_types:
-                              - str
-                            min: 1
-                            max: 4094
-                            description: |-
-                              VLAN ID or range(s) of VLAN IDs to map to.
-                              The `dot1q_tunnel.all` and `dot1q_tunnel.to` are mutually exclusive, `dot1q_tunnel.all` takes precedence.
+                      dot1q_tunnel_to:
+                        type: str
+                        convert_types:
+                          - int
+                        description: |-
+                          VLAN ID or range of VLAN IDs or "all". Range 1-4094.
+                          This takes precedence over `to` and `inner_vlan_to`.
                       inner_vlan_to:
                         type: int
                         min: 1

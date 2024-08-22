@@ -17,7 +17,7 @@
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | - | access | 100 | - | - | - |
-| Ethernet2 | - | trunk | 110 | 10 | ['group1', 'group2'] | - |
+| Ethernet2 | - | trunk | 110 | 10 | group1, group2 | - |
 | Ethernet3 | - | trunk phone | - | tag | - | - |
 | Ethernet4 | - | - | - | - | - | - |
 
@@ -86,7 +86,7 @@ interface Ethernet4
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel2 | - | access | 100 | - | - | - | - | - | - |
-| Port-Channel3 | - | trunk | 110 | 10 | ['group1', 'group2'] | - | - | - | - |
+| Port-Channel3 | - | trunk | 110 | 10 | group1, group2 | - | - | - | - |
 | Port-Channel4 | - | trunk phone | - | tag | - | - | - | - | - |
 | Port-Channel5 | - | - | - | - | - | - | - | - | - |
 

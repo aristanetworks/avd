@@ -382,8 +382,8 @@ vlan 4094
 | Ethernet97/3 | LEAF3C_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 973 |
 | Ethernet97/4 | LEAF3D_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 974 |
 | Ethernet98/1 | LEAF3E_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 981 |
-| Ethernet98/3 | MLAG_PEER_LEAF3B_Ethernet98/3 | *trunk | *- | *- | *['MLAG'] | 983 |
-| Ethernet98/4 | MLAG_PEER_LEAF3B_Ethernet98/4 | *trunk | *- | *- | *['MLAG'] | 983 |
+| Ethernet98/3 | MLAG_PEER_LEAF3B_Ethernet98/3 | *trunk | *- | *- | *MLAG | 983 |
+| Ethernet98/4 | MLAG_PEER_LEAF3B_Ethernet98/4 | *trunk | *- | *- | *MLAG | 983 |
 
 *Inherited from Port-Channel Interface
 
@@ -2460,7 +2460,7 @@ interface Ethernet98/4
 | Port-Channel973 | LEAF3C_Po971 | trunk | 10,310,320,330 | - | - | - | - | 973 | - |
 | Port-Channel974 | LEAF3D_Po971 | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
 | Port-Channel981 | LEAF3E_Po971 | trunk | 10,310,320,330 | - | - | - | - | 981 | - |
-| Port-Channel983 | MLAG_PEER_LEAF3B_Po983 | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel983 | MLAG_PEER_LEAF3B_Po983 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

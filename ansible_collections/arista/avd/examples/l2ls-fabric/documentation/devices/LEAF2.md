@@ -293,8 +293,8 @@ vlan 4094
 | Ethernet1 | SPINE1_Ethernet2 | *trunk | *10,20 | *- | *- | 1 |
 | Ethernet2 | SPINE2_Ethernet2 | *trunk | *10,20 | *- | *- | 1 |
 | Ethernet3 | HostB_Eth1 | access | 20 | - | - | - |
-| Ethernet47 | MLAG_PEER_LEAF1_Ethernet47 | *trunk | *- | *- | *['MLAG'] | 47 |
-| Ethernet48 | MLAG_PEER_LEAF1_Ethernet48 | *trunk | *- | *- | *['MLAG'] | 47 |
+| Ethernet47 | MLAG_PEER_LEAF1_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet48 | MLAG_PEER_LEAF1_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -340,7 +340,7 @@ interface Ethernet48
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | SPINES_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
-| Port-Channel47 | MLAG_PEER_LEAF1_Po47 | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel47 | MLAG_PEER_LEAF1_Po47 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -183,7 +183,7 @@ sFlow is disabled.
 | Ethernet1 | in | 37 | 49 | 56 | - | - | - |
 | Ethernet1 | out | 10 | 45 | - | 34 | - | - |
 | Ethernet1 | out | 34 | 50 | - | - | - | - |
-| Ethernet1 | out | 45 | True | - | - | - | True |
+| Ethernet1 | out | 45 | all | - | - | - | True |
 | Ethernet1 | out | 55 | - | - | - | - | - |
 | Ethernet3 | out | 23 | 50 | - | - | - | True |
 | Ethernet16 | out | 111-112 | 110 | - | - | - | - |

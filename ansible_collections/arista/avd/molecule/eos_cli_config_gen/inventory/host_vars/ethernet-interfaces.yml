@@ -88,8 +88,7 @@ ethernet_interfaces:
             to: 45
             inner_vlan_to: 34
           - from: 45
-            dot1q_tunnel:
-              all: true
+            dot1q_tunnel_to: all
           - from: 55
       vlan_forwarding_accept_all: true
       source_interface: tx
@@ -231,8 +230,7 @@ ethernet_interfaces:
         out_required: false
         direction_out:
           - from: 23
-            dot1q_tunnel:
-              to: 50
+            dot1q_tunnel_to: 50
       backup_link:
         interface: Ethernet4
 

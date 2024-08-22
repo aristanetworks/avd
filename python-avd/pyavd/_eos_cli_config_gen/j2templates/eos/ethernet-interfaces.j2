@@ -207,8 +207,7 @@ interface {{ ethernet_interface.name }}
    switchport source-interface {{ ethernet_interface.switchport.source_interface }}
 {%     endif %}
 {%     for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
-{%         set vlan_translation_both_cli = 'switchport vlan translation' %}
-{%         set vlan_translation_both_cli = vlan_translation_both_cli ~ ' ' ~  vlan_translation.from %}
+{%         set vlan_translation_both_cli = 'switchport vlan translation ' ~ vlan_translation.from %}
 {%         if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
 {%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' dot1q-tunnel' %}
 {%         elif vlan_translation.inner_vlan_from is arista.avd.defined %}
@@ -234,17 +233,12 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.switchport.vlan_translations.direction_out is arista.avd.defined %}
 {%         for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_out %}
-{%             if vlan_translation.to is arista.avd.defined %}
+{%             if vlan_translation.dot1q_tunnel_to is arista.avd.defined %}
+{%                 set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from ~ ' dot1q-tunnel ' ~ vlan_translation.dot1q_tunnel_to %}
+{%             elif vlan_translation.to is arista.avd.defined %}
 {%                 set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from ~ ' ' ~  vlan_translation.to %}
 {%                 if vlan_translation.inner_vlan_to is arista.avd.defined %}
 {%                     set vlan_translation_out_cli = vlan_translation_out_cli ~ ' inner ' ~ vlan_translation.inner_vlan_to %}
-{%                 endif %}
-{%             elif vlan_translation.dot1q_tunnel is arista.avd.defined %}
-{%                 set vlan_translation_out_cli = 'switchport vlan translation out ' ~  vlan_translation.from %}
-{%                 if vlan_translation.dot1q_tunnel.all is arista.avd.defined(true) %}
-{%                     set vlan_translation_out_cli = vlan_translation_out_cli ~ ' dot1q-tunnel all' %}
-{%                 elif vlan_translation.dot1q_tunnel.to is arista.avd.defined %}
-{%                     set vlan_translation_out_cli = vlan_translation_out_cli ~ ' dot1q-tunnel ' ~ vlan_translation.dot1q_tunnel.to %}
 {%                 endif %}
 {%             endif %}
 {%             if vlan_translation_out_cli is arista.avd.defined %}
