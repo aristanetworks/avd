@@ -12,7 +12,6 @@ from urllib.error import HTTPError
 
 from ansible.errors import AnsibleActionFail, AnsibleConnectionFailure
 from ansible.module_utils.connection import ConnectionError
-from anta.logger import exc_to_str
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
@@ -33,7 +32,7 @@ logger = getLogger(__name__)
 try:
     from anta import __DEBUG__
     from anta.device import AntaDevice
-    from anta.logger import anta_log_exception
+    from anta.logger import anta_log_exception, exc_to_str
 
     HAS_ANTA = True
 except ImportError:
@@ -144,7 +143,7 @@ class AnsibleEOSDevice(AntaDevice):
             command.output = {"messages": [response]}
         except Exception as e:
             command.errors = [exc_to_str(e)]
-            logger.error("Command '%s' failed: %s", command.command, exc_to_str(e))
+            logger.error("Command '%s' failed: %s", command.command, exc_to_str(e))  # noqa: TRY400
         logger.debug("%s: %s", self.name, command)
 
     async def refresh(self) -> None:
