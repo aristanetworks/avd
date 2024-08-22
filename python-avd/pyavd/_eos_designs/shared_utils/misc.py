@@ -193,7 +193,7 @@ class MiscMixin:
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
         if not self.platform_settings_feature_support_per_interface_mtu:
             return None
-        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=9194)
         return get(self.switch_data_combined, "uplink_mtu", default=p2p_uplinks_mtu)
 
     @cached_property
