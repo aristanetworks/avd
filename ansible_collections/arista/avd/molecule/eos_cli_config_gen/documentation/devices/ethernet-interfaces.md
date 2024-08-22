@@ -89,13 +89,13 @@ sFlow is disabled.
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | dot1q-tunnel | 110-111,200,210-211 | tag | g1, g2 | - |
 | Ethernet2 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | trunk |  | 5 | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | trunk | - | 5 | - | - |
 | Ethernet5 | Molecule Routing | - | 220 | - | - | - |
 | Ethernet6 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 | Molecule L2 | - | - | - | - | - |
 | Ethernet11 | interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 | interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
-| Ethernet13 | interface_in_mode_access_with_voice | trunk phone |  | 100 | - | - |
+| Ethernet13 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet14 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet15 | PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
 | Ethernet16 | PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
@@ -125,7 +125,7 @@ sFlow is disabled.
 | Ethernet43 | DOT1X Testing - timeout values | - | - | - | - | - |
 | Ethernet44 | DOT1X Testing - reauthorization_request_limit | - | - | - | - | - |
 | Ethernet45 | DOT1X Testing - all features | - | - | - | - | - |
-| Ethernet46 | native-vlan-tag-precedence | trunk |  | tag | - | - |
+| Ethernet46 | native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 | Load Interval | - | - | - | - | - |
 | Ethernet50 | SFlow Interface Testing - SFlow ingress enabled | - | - | - | - | - |
 | Ethernet51 | SFlow Interface Testing - SFlow egress enabled | - | - | - | - | - |
@@ -136,8 +136,8 @@ sFlow is disabled.
 | Ethernet57 | Interface with poe commands and limit in watts | - | - | - | - | - |
 | Ethernet58 | Interface with poe disabled and no other poe keys | - | - | - | - | - |
 | Ethernet60 | IP NAT Testing | - | - | - | - | - |
-| Ethernet61 | interface_in_mode_access_with_voice | trunk phone |  | 100 | - | - |
-| Ethernet62 | interface_in_mode_access_with_voice | trunk phone |  | 100 | - | - |
+| Ethernet61 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet62 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet67 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet68 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 | IP NAT service-profile | - | - | - | - | - |

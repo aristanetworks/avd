@@ -31,14 +31,17 @@
                 (port_channel_interface.type is not arista.avd.defined or (port_channel_interface.type is arista.avd.defined and port_channel_interface.type not in ["switched", "routed"])) %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                 set mode = port_channel_interface.switchport.mode | arista.avd.default('-') %}
-{%                 set vlans = [] %}
-{%                 if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
-{%                     do vlans.append(port_channel_interface.switchport.access_vlan) %}
+{%                 if port_channel_interface.switchport.access_vlan is arista.avd.defined or
+                    port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                     set vlans = [] %}
+{%                     if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
+{%                         do vlans.append(port_channel_interface.switchport.access_vlan) %}
+{%                     endif %}
+{%                     if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                         do vlans.extend(port_channel_interface.switchport.trunk.allowed_vlan | arista.avd.range_expand | map('int')) %}
+{%                     endif %}
+{%                     set vlans = vlans | arista.avd.list_compress %}
 {%                 endif %}
-{%                 if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
-{%                     do vlans.extend(port_channel_interface.switchport.trunk.allowed_vlan | arista.avd.range_expand | map('int')) %}
-{%                 endif %}
-{%                 set vlans = vlans | arista.avd.list_compress | arista.avd.default('-') %}
 {%                 if port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
 {%                     set native_vlan = "tag" %}
 {%                 else %}
@@ -46,7 +49,7 @@
 {%                 endif %}
 {%                 set channel_group = ethernet_interface.channel_group.id %}
 {%                 set trunk_groups = port_channel_interface.switchport.trunk.groups | arista.avd.default(['-']) | join(', ') %}
-| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ trunk_groups }} | {{ channel_group }} |
+| {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans | arista.avd.default('-') }} | *{{ native_vlan }} | *{{ trunk_groups }} | {{ channel_group }} |
 {# TODO: AVD6.0 Below elif block should be removed once the deprecated keys are removed in AVD6.0 #}
 {%             elif port_channel_interface.type is arista.avd.defined('switched') %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
@@ -73,21 +76,24 @@
                 (ethernet_interface.type is not arista.avd.defined or (ethernet_interface.type is arista.avd.defined and ethernet_interface.type not in ["switched", "routed"])) %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                 set mode = ethernet_interface.switchport.mode | arista.avd.default('-') %}
-{%                 set vlans = [] %}
-{%                 if ethernet_interface.switchport.access_vlan is arista.avd.defined %}
-{%                     do vlans.append(ethernet_interface.switchport.access_vlan) %}
+{%                 if ethernet_interface.switchport.access_vlan is arista.avd.defined or
+                    ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                     set vlans = [] %}
+{%                     if ethernet_interface.switchport.access_vlan is arista.avd.defined %}
+{%                         do vlans.append(ethernet_interface.switchport.access_vlan) %}
+{%                     endif %}
+{%                     if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+{%                         do vlans.extend(ethernet_interface.switchport.trunk.allowed_vlan | arista.avd.range_expand | map('int')) %}
+{%                     endif %}
+{%                     set vlans = vlans | arista.avd.list_compress %}
 {%                 endif %}
-{%                 if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
-{%                     do vlans.extend(ethernet_interface.switchport.trunk.allowed_vlan | arista.avd.range_expand | map('int')) %}
-{%                 endif %}
-{%                 set vlans = vlans | arista.avd.list_compress | arista.avd.default('-') %}
 {%                 if ethernet_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
 {%                     set native_vlan = "tag" %}
 {%                 else %}
 {%                     set native_vlan = ethernet_interface.switchport.trunk.native_vlan | arista.avd.default('-') %}
 {%                 endif %}
 {%                 set trunk_groups = ethernet_interface.switchport.trunk.groups | arista.avd.default(['-']) | join(', ') %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ trunk_groups }} | - |
+| {{ ethernet_interface.name }} | {{ description }} | {{ mode }} | {{ vlans | arista.avd.default('-') }} | {{ native_vlan }} | {{ trunk_groups }} | - |
 {# TODO: AVD6.0 Below elif block should be removed once the deprecated keys are removed in AVD6.0 #}
 {%             elif ethernet_interface.type is arista.avd.defined('switched') %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
