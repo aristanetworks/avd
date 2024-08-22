@@ -34,7 +34,7 @@ class PrefixListsMixin(UtilsMixin):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        if self.shared_utils.underlay_ipv6 and not self.shared_utils.underlay_rfc5549:
+        if self.shared_utils.underlay_ipv6 and not self.shared_utils.loopback_ipv4_pool:
             return None
 
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
