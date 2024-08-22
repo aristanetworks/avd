@@ -18,11 +18,9 @@ router_pim_sparse_mode:
         priority: 20
       - address: 10.238.1.161
         groups:
-          - 239.12.12.12/32
+          - 239.12.12.17/32
         access_lists:
-          - RP_ACL
-          - RP_ACL2
-        priority: 20
+          - RP_ACL3
     anycast_rps:
       - address: 10.38.1.161
         other_anycast_rp_addresses:
