@@ -136,6 +136,17 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
+        if self.shared_utils.underlay_ipv6:
+            if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_primary"):
+                return self._template(
+                    template_path,
+                    mlag_primary_id=self._mlag_primary_id,
+                    mlag_secondary_id=self._mlag_secondary_id,
+                    switch_data={"combined": {"mlag_peer_l3_ipv6_pool": self._mlag_peer_l3_ipv6_pool}},
+                )
+
+            return self._mlag_ip(self._mlag_peer_l3_ipv6_pool, 0, address_family="ipv6")
+
         if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_primary"):
             return self._template(
                 template_path,
@@ -152,6 +163,17 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
+        if self.shared_utils.underlay_ipv6:
+            if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_secondary"):
+                return self._template(
+                    template_path,
+                    mlag_primary_id=self._mlag_primary_id,
+                    mlag_secondary_id=self._mlag_secondary_id,
+                    switch_data={"combined": {"mlag_peer_l3_ipv6_pool": self._mlag_peer_l3_ipv6_pool}},
+                )
+
+            return self._mlag_ip(self._mlag_peer_l3_ipv6_pool, 1, address_family="ipv6")
+
         if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_secondary"):
             return self._template(
                 template_path,
@@ -176,6 +198,20 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 1)
 
+    def p2p_uplinks_ipv6(self, uplink_switch_index: int) -> str:
+        """Return Child IP for P2P Uplinks."""
+        uplink_switch_index = int(uplink_switch_index)
+        if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_ip"):
+            return self._template(
+                template_path,
+                uplink_switch_index=uplink_switch_index,
+            )
+
+        prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv6_prefix_length
+        p2p_ipv6_pool, offset = self._get_p2p_ipv6_pool_and_offset(uplink_switch_index)
+
+        return get_ip_from_pool(p2p_ipv6_pool, prefixlen, offset, 1)
+
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """Return Parent IP for P2P Uplinks."""
         uplink_switch_index = int(uplink_switch_index)
@@ -189,6 +225,20 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         p2p_ipv4_pool, offset = self._get_p2p_ipv4_pool_and_offset(uplink_switch_index)
 
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 0)
+
+    def p2p_uplinks_peer_ipv6(self, uplink_switch_index: int) -> str:
+        """Return Parent IP for P2P Uplinks."""
+        uplink_switch_index = int(uplink_switch_index)
+        if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_peer_ip"):
+            return self._template(
+                template_path,
+                uplink_switch_index=uplink_switch_index,
+            )
+
+        prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv6_prefix_length
+        p2p_ipv6_pool, offset = self._get_p2p_ipv6_pool_and_offset(uplink_switch_index)
+
+        return get_ip_from_pool(p2p_ipv6_pool, prefixlen, offset, 0)
 
     def p2p_vrfs_uplinks_ip(
         self,
@@ -213,6 +263,30 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
         """
         return self.p2p_uplinks_peer_ip(uplink_switch_index)
+
+    def p2p_vrfs_uplinks_ipv6(
+        self,
+        uplink_switch_index: int,
+        vrf: str,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
+    ) -> str:
+        """
+        Return Child IP for P2P-VRFs Uplinks.
+
+        Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
+        """
+        return self.p2p_uplinks_ipv6(uplink_switch_index)
+
+    def p2p_vrfs_uplinks_peer_ipv6(
+        self,
+        uplink_switch_index: int,
+        vrf: str,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
+    ) -> str:
+        """
+        Return Parent IP for P2P-VRFs Uplinks.
+
+        Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
+        """
+        return self.p2p_uplinks_peer_ipv6(uplink_switch_index)
 
     def router_id(self) -> str:
         """

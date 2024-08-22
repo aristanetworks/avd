@@ -31,6 +31,17 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         loopback_interfaces = []
         # Loopback 0
+        if self.shared_utils.underlay_ipv6 and not self.shared_utils.underlay_rfc5549:
+            loopback0 = {
+                "name": "Loopback0",
+                "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
+                    ),
+                ),
+                "shutdown": False,
+                "ipv6_address": f"{self.shared_utils.ipv6_router_id}/128",
+            }
         loopback0 = {
             "name": "Loopback0",
             "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(

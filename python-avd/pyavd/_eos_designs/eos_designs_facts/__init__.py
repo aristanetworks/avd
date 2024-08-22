@@ -108,6 +108,13 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         return None
 
     @cached_property
+    def uplink_ipv6_pool(self) -> str | None:
+        """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.uplink_ipv6_pool
+        return None
+
+    @cached_property
     def downlink_pools(self) -> dict | None:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_router:
