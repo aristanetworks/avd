@@ -61,6 +61,12 @@
 | Ethernet3 | trunk phone | 20 | 20 | tagged |
 | Port-Channel4 | trunk phone | 20 | 20 | tagged |
 
+##### ISIS
+
+| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
+| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
+| Ethernet12 | - | ISIS_TEST | - | - | - | - | - | md5 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -128,6 +134,12 @@ interface Ethernet10
 !
 interface Ethernet11
    channel-group 16 mode active
+!
+interface Ethernet12
+   description isis_authentication_mode and isis_authentication_key deprecated
+   isis enable ISIS_TEST
+   isis authentication mode md5
+   isis authentication key 7 <removed>
 ```
 
 ### Port-Channel Interfaces

@@ -1139,6 +1139,56 @@ interface Ethernet68
    transceiver media override 100gbase-ar4
    transceiver frequency 190080.000 ghz
 !
+interface Ethernet68.1
+   description Test_encapsulation_vlan1
+   encapsulation vlan
+      client dot1q outer 23 inner dot1q 45 network dot1ad outer 32 inner dot1ad 54
+!
+interface Ethernet68.2
+   description Test_encapsulation_vlan2
+   encapsulation vlan
+      client dot1q 10 network dot1q outer 32 inner 54
+!
+interface Ethernet68.3
+   description Test_encapsulation_vlan3
+   encapsulation vlan
+      client dot1ad 12 network dot1q 25
+!
+interface Ethernet68.4
+   description Test_encapsulation_vlan4
+   encapsulation vlan
+      client dot1ad outer 35 inner dot1q 60 network dot1q outer 53 inner dot1ad 6
+!
+interface Ethernet68.5
+   description Test_encapsulation_vlan5
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1ad outer 52 inner 62
+!
+interface Ethernet68.6
+   description Test_encapsulation_vlan6
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network client
+!
+interface Ethernet68.7
+   description Test_encapsulation_vlan7
+   encapsulation vlan
+      client untagged network dot1ad outer 35 inner 60
+!
+interface Ethernet68.8
+   description Test_encapsulation_vlan8
+   encapsulation vlan
+      client untagged network dot1q outer 35 inner 60
+!
+interface Ethernet68.9
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client untagged network untagged
+!
+interface Ethernet68.10
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client dot1q outer 14 inner 11 network client inner
+!
 interface Ethernet69
    description IP NAT service-profile
    switchport
