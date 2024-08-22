@@ -80,6 +80,7 @@ DEFAULT_PLATFORM_SETTINGS = [
     },
     {
         "platforms": ["7280R3"],
+        "tcam_profile": "vxlan-routing",
         "reload_delay": {
             "mlag": 900,
             "non_mlag": 1020,
@@ -97,6 +98,7 @@ DEFAULT_PLATFORM_SETTINGS = [
     },
     {
         "platforms": ["7500R3", "7800R3"],
+        "tcam_profile": "vxlan-routing",
         "management_interface": "Management0",
         "reload_delay": {
             "mlag": 900,
