@@ -7481,6 +7481,15 @@ keys:
             type: bool
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
+  monitor_session_default_encapsulation_gre:
+    type: dict
+    keys:
+      payload:
+        type: str
+        description: Mirroring GRE payload type configuration commands.
+        valid_values:
+        - full-packet
+        - inner-packet
   monitor_sessions:
     type: list
     items:
@@ -16362,6 +16371,9 @@ keys:
               - int
             enable:
               type: bool
+      ifmib_ifspeed_shape_rate:
+        type: bool
+        description: SNMP ifspeed reflecting shaping rate.
   spanning_tree:
     type: dict
     keys:
