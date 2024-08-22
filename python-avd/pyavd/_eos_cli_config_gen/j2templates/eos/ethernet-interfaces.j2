@@ -952,8 +952,7 @@ interface {{ ethernet_interface.name }}
                and (ethernet_interface.isis_authentication.level_2.mode in ["md5", "text"]
                or (ethernet_interface.isis_authentication.level_2.mode == "sha" and ethernet_interface.isis_authentication.level_2.sha.key_id is arista.avd.defined)
                or (ethernet_interface.isis_authentication.level_2.mode == "shared-secret"
-                   and ethernet_interface.isis_authentication.level_2.shared_secret.profile is arista.avd.defined
-                   and ethernet_interface.isis_authentication.level_2.shared_secret.algorithm is arista.avd.defined)) %}
+                   and ethernet_interface.isis_authentication.level_2.shared_secret is arista.avd.defined)) %}
 {%             set isis_auth_cli = "isis authentication mode " ~ ethernet_interface.isis_authentication.level_2.mode %}
 {%             if ethernet_interface.isis_authentication.level_2.mode == "sha" %}
 {%                 set isis_auth_cli = isis_auth_cli ~ " key-id " ~ ethernet_interface.isis_authentication.level_2.sha.key_id %}
