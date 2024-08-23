@@ -433,6 +433,7 @@ class FilteredTenantsMixin:
                 if ospf_keys:
                     svi_config.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
 
+    @cached_property
     def bgp_in_network_services(self: SharedUtils) -> bool:
         """
         True if any VRFs are enabled for BGP.

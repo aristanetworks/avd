@@ -151,7 +151,7 @@ class RouterBgpMixin(UtilsMixin):
                 }
 
                 if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
-                    # For EVPN configs get evpn keys and continue after the elif block below.
+                    # The called function in-place updates the bgp_vrf dict.
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
 
                 if vrf_name != "default":

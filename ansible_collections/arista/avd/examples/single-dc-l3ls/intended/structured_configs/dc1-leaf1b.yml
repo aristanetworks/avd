@@ -74,7 +74,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF10
-    router_id: 10.255.0.4
     rd: 10.255.0.4:10
     route_targets:
       import:
@@ -85,6 +84,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
+    router_id: 10.255.0.4
     redistribute_routes:
     - source_protocol: connected
     neighbors:
@@ -92,7 +92,6 @@ router_bgp:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc1-leaf1a
   - name: VRF11
-    router_id: 10.255.0.4
     rd: 10.255.0.4:11
     route_targets:
       import:
@@ -103,6 +102,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 10.255.0.4
     redistribute_routes:
     - source_protocol: connected
     neighbors:

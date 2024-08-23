@@ -68,7 +68,6 @@ router_bgp:
     remote_as: '65001'
   vrfs:
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.9
     rd: 192.168.255.9:20
     route_targets:
       import:
@@ -79,6 +78,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
     neighbors:
