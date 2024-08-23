@@ -6,6 +6,7 @@ traffic_policies:
     ports:
       - name: SERVICE-DEMO
         port_range: "10,20,80,440-450"
+      - name: SERVICE-DEMO2
     ipv4:
       - name: DEMO-02
         prefixes:
@@ -83,6 +84,7 @@ traffic_policies:
           protocols:
             - protocol: tcp
               src_port: "22"
+              dst_port: "80"
               flags:
                 - established
             - protocol: icmp
@@ -97,7 +99,7 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            - protocol: tcp
+            - protocol: bgp
           fragment:
           actions:
             traffic_class: 5
@@ -207,6 +209,7 @@ traffic_policies:
           type: ipv4
           protocols:
             - protocol: neighbors
+              enforce_gtsm: true
 ethernet_interfaces:
   - name: Ethernet1
     type: routed

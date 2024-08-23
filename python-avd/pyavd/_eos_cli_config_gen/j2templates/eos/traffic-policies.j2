@@ -70,44 +70,51 @@ traffic-policies
 {%                 endif %}
 {#                 -- PROTOCOL MANAGEMENT -- #}
 {%                 if match.protocols is arista.avd.defined %}
-{%                     set flags = {'bgp': False, 'neighbors': False, 'all': False} %}
+{%                     set bgp_flag = True %}
 {%                     for protocol in match.protocols %}
-{%                         if protocol.protocol is arista.avd.defined and protocol.protocol not in ['neighbors', 'bgp'] and not flags.bgp and not flags.neighbors %}
-{%                             do flags.update({'all': True}) %}
+{%                         if protocol.protocol in ['neighbors', 'bgp'] and bgp_flag %}
+{%                             if protocol.protocol | lower == 'neighbors' and protocol.enforce_gtsm is arista.avd.defined(true) %}
+         protocol neighbors bgp enforce ttl maximum-hops
+{%                             elif protocol.protocol | lower == 'neighbors' %}
+         protocol neighbors bgp
+{%                             elif protocol.protocol | lower == 'bgp' %}
+         protocol bgp
+{%                             endif %}
+{%                             break %}
+{%                         else %}
+{%                             set bgp_flag = False %}
 {%                             set protocol_cli = 'protocol ' ~ protocol.protocol %}
 {%                             if protocol.flags is arista.avd.defined and protocol.protocol | lower == 'tcp' %}
 {%                                 for flag in protocol.flags %}
          {{ protocol_cli }} flags {{ flag }}
 {%                                 endfor %}
 {%                             endif %}
-{#                             -- source/destination port-list -- #}
-{%                             if protocol.src_port is arista.avd.defined and protocol.dst_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                             if protocol.protocol | lower in ['tcp','udp'] and (
+                                 protocol.src_port is arista.avd.defined or
+                                 protocol.dst_port is arista.avd.defined or
+                                 protocol.src_field is arista.avd.defined or
+                                 protocol.dst_field is arista.avd.defined) %}
+{#                                 -- source/destination port-list -- #}
+{%                                 if protocol.src_port is arista.avd.defined and protocol.dst_port is arista.avd.defined %}
          {{ protocol_cli }} source port {{ protocol.src_port }} destination port {{ protocol.dst_port }}
-{%                             elif protocol.src_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 elif protocol.src_port is arista.avd.defined %}
          {{ protocol_cli }} source port {{ protocol.src_port }}
-{%                             elif protocol.dst_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 elif protocol.dst_port is arista.avd.defined %}
          {{ protocol_cli }} destination port {{ protocol.dst_port }}
-{%                             endif %}
-{#                             -- source/destination field-set -- #}
-{%                             if protocol.src_field is arista.avd.defined and protocol.dst_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 endif %}
+{#                                 -- source/destination field-set -- #}
+{%                                 if protocol.src_field is arista.avd.defined and protocol.dst_field is arista.avd.defined %}
          {{ protocol_cli }} source port field-set {{ protocol.src_field }} destination port field-set {{ protocol.dst_field }}
-{%                             elif protocol.src_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 elif protocol.src_field is arista.avd.defined %}
          {{ protocol_cli }} source port field-set {{ protocol.src_field }}
-{%                             elif protocol.dst_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 elif protocol.dst_field is arista.avd.defined %}
          {{ protocol_cli }} destination port field-set {{ protocol.dst_field }}
-{%                             endif %}
-{%                             if protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
+{%                                 endif %}
+{%                             elif protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
          {{ protocol_cli }} type {{ protocol.icmp_type | arista.avd.natural_sort | join(' ') }} code all
-{%                             endif %}
-{%                             if protocol.protocol is arista.avd.defined and protocol.icmp_type is not arista.avd.defined and protocol.dst_field is not arista.avd.defined and protocol.src_field is not arista.avd.defined and protocol.dst_port is not arista.avd.defined and protocol.src_port is not arista.avd.defined and protocol.flags is not arista.avd.defined %}
+{%                             else %}
          {{ protocol_cli }}
 {%                             endif %}
-{%                         elif protocol.protocol is arista.avd.defined and protocol.protocol | lower == 'neighbors' and not flags.bgp and not flags.all %}
-         protocol neighbors bgp
-{%                             do flags.update({'neighbors': True}) %}
-{%                         elif protocol.protocol is arista.avd.defined and protocol.protocol | lower == 'bgp' and not flags.neighbors and not flags.all %}
-         protocol bgp
-{%                             do flags.update({'bgp': True}) %}
 {%                         endif %}
 {%                     endfor %}
 {%                 endif %}
@@ -118,7 +125,7 @@ traffic-policies
 {#                 -- FRAGMENT MANAGEMENT -- #}
 {%                 if match.fragment.offset is arista.avd.defined %}
          fragment offset {{ match.fragment.offset }}
-{%                 elif  match.fragment is defined %}
+{%                 elif match.fragment is defined %}
          fragment
 {%                 endif %}
 {#       -- ACTIONS SECTION -- #}

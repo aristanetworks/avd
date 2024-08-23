@@ -50,6 +50,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].flags.[]") | String |  |  | Valid Values:<br>- <code>established</code><br>- <code>initial</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].icmp_type") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].icmp_type.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforce_gtsm</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].enforce_gtsm") | Boolean |  |  |  | Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "traffic_policies.policies.[].matches.[].actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].matches.[].actions.dscp") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "traffic_policies.policies.[].matches.[].actions.traffic_class") | Integer |  |  |  | Traffic class ID. |
@@ -155,6 +156,9 @@
                     - <str; "established" | "initial">
                   icmp_type:
                     - <str>
+
+                  # Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
+                  enforce_gtsm: <bool>
               actions:
                 dscp: <int>
 

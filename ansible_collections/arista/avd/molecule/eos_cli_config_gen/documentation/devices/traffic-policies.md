@@ -94,6 +94,7 @@ interface Port-Channel2
 | Field Set Name | Values |
 | -------------- | ------ |
 | SERVICE-DEMO | 10,20,80,440-450|
+| SERVICE-DEMO2 | -|
 
 #### Traffic Policies
 
@@ -104,8 +105,8 @@ interface Port-Channel2
 | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>all | -<br/>SERVICE-DEMO | all<br/>all | -<br/>- | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | all<br/>- | -<br/>- | all<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
 | BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
-| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | all<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | tcp | all | - | all | - | action: PASS<br/>traffic-class: 5 |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
+| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>all<br/>- | -<br/>-<br/>-<br/>- | action: PASS |
 | BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | default action: PASS |
 | BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | all<br/>all | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>all | -<br/>SERVICE-DEMO-DST | default action: PASS |
@@ -146,6 +147,8 @@ interface Port-Channel2
 traffic-policies
    field-set l4-port SERVICE-DEMO
       10,20,80,440-450
+   !
+   field-set l4-port SERVICE-DEMO2
    !
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
@@ -194,7 +197,7 @@ traffic-policies
          source prefix field-set DEMO-02
          destination prefix field-set DEMO-01
          protocol tcp flags established
-         protocol tcp source port 22
+         protocol tcp source port 22 destination port 80
          protocol icmp
          !
          actions
@@ -203,7 +206,7 @@ traffic-policies
       match BLUE-C1-POLICY-05 ipv4
          source prefix field-set DEMO-02
          destination prefix field-set DEMO-01
-         protocol tcp
+         protocol bgp
          fragment
          !
          actions
@@ -295,7 +298,7 @@ traffic-policies
    !
    traffic-policy BLUE-C7-POLICY
       match BLUE-C7-POLICY-01 ipv4
-         protocol neighbors bgp
+         protocol neighbors bgp enforce ttl maximum-hops
       !
       match ipv4-all-default ipv4
       !
