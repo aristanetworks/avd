@@ -88,8 +88,8 @@ lldp tlv transmit system-description
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet2 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
-| Ethernet3 |  No special LLDP settings | access | 110 | - | - | - |
+| Ethernet2 | Switched port with no LLDP rx/tx | access | 110 | - | - | - |
+| Ethernet3 | No special LLDP settings | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

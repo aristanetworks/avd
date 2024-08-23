@@ -138,7 +138,7 @@ vlan 4092
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | ISIS-LEAF1_Ethernet1 | *trunk | *110,4092 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 110 | - | - | - |
+| Ethernet10 | Endpoint | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
