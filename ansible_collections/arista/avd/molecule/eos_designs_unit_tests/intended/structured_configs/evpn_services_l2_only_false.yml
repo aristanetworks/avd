@@ -197,8 +197,6 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 123:123
-    redistribute_routes:
-    - source_protocol: ospf
   - name: Tenant_D_OP_Zone
     rd: 192.168.255.109:40
     route_targets:

@@ -180,7 +180,7 @@ class UtilsMixin(UtilsZscalerMixin):
         Decides if MLAG BGP peer-group should be configured.
         Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         """
-        if self.shared_utils.underlay_bgp or (bgp_vrfs := self._router_bgp_vrfs) is None:
+        if self.shared_utils.underlay_bgp or not (bgp_vrfs := get(self._router_bgp_vrfs, "vrfs", default=[])):
             return False
 
         for bgp_vrf in bgp_vrfs:

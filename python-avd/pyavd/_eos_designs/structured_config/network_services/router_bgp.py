@@ -40,14 +40,18 @@ class RouterBgpMixin(UtilsMixin):
 
         tenant_svis_l2vlans_dict = self._router_bgp_sorted_vlans_and_svis_lists()
 
-        router_bgp = {
-            **self._router_bgp_peer_groups(),
-            "vrfs": self._router_bgp_vrfs,
-            "vlans": self._router_bgp_vlans(tenant_svis_l2vlans_dict),
-            "vlan_aware_bundles": self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict),
-            "redistribute_routes": self._router_bgp_redistribute_routes,
-            "vpws": self._router_bgp_vpws,
-        }
+        router_bgp = {}
+        merge(
+            router_bgp,
+            self._router_bgp_peer_groups(),
+            self._router_bgp_vrfs,
+            {
+                "vlans": self._router_bgp_vlans(tenant_svis_l2vlans_dict),
+                "vlan_aware_bundles": self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict),
+                "redistribute_routes": self._router_bgp_redistribute_routes,
+                "vpws": self._router_bgp_vpws,
+            },
+        )
         # Configure MLAG iBGP peer-group if needed
         if self._configure_bgp_mlag_peer_group:
             merge(router_bgp, self._router_bgp_mlag_peer_group())
@@ -125,18 +129,21 @@ class RouterBgpMixin(UtilsMixin):
                 },
             )
 
-        if router_bgp["peer_groups"]:
-            return router_bgp
-
-        return {}
+        return strip_empties_from_dict(router_bgp)
 
     @cached_property
-    def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServices) -> list | None:
-        """Return structured config for router_bgp.vrfs."""
-        if not self.shared_utils.network_services_l3:
-            return None
+    def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServices) -> dict:
+        """
+        Return partial structured config for router_bgp.
 
-        vrfs = []
+        Covers these areas:
+        - vrfs for all VRFs.
+        - neighbors and address_family_ipv4/6 for VRF default.
+        """
+        if not self.shared_utils.network_services_l3:
+            return {}
+
+        router_bgp = {"vrfs": []}
 
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
@@ -144,17 +151,19 @@ class RouterBgpMixin(UtilsMixin):
                     continue
 
                 vrf_name = vrf["name"]
-                bgp_vrf = {
-                    "name": vrf_name,
-                    "eos_cli": get(vrf, "bgp.raw_eos_cli"),
-                    "struct_cfg": get(vrf, "bgp.structured_config"),
-                }
+                bgp_vrf = strip_empties_from_dict(
+                    {
+                        "eos_cli": get(vrf, "bgp.raw_eos_cli"),
+                        "struct_cfg": get(vrf, "bgp.structured_config"),
+                    }
+                )
 
                 if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
                     # The called function in-place updates the bgp_vrf dict.
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
 
                 if vrf_name != "default":
+                    # Non-default VRF
                     bgp_vrf |= {
                         "router_id": self.shared_utils.router_id,
                         "redistribute_routes": [{"source_protocol": "connected"}],
@@ -166,6 +175,19 @@ class RouterBgpMixin(UtilsMixin):
                     # MLAG IBGP Peering VLANs per VRF (except VRF default)
                     if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                         self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
+
+                elif bgp_vrf:
+                    # Default VRF with RD/RT and eos_cli/struct_cfg which should go under the vrf default context.
+                    # Any peers added later will be put directly under router_bgp
+                    append_if_not_duplicate(
+                        list_of_dicts=router_bgp["vrfs"],
+                        primary_key="name",
+                        new_dict={"name": vrf_name, **bgp_vrf},
+                        context="BGP VRFs defined under network services",
+                        context_keys=["name"],
+                    )
+                    # Resetting bgp_vrf so we only add global keys if there are any neighbors for VRF default
+                    bgp_vrf = {}
 
                 for bgp_peer in vrf["bgp_peers"]:
                     # Below we pop various keys that are not supported by the eos_cli_config_gen schema.
@@ -225,18 +247,21 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_vrf = strip_empties_from_dict(bgp_vrf)
 
                 # Skip adding the VRF if we have no config.
-                if bgp_vrf == {"name": vrf_name}:
+                if not bgp_vrf:
                     continue
 
-                append_if_not_duplicate(
-                    list_of_dicts=vrfs,
-                    primary_key="name",
-                    new_dict=bgp_vrf,
-                    context="BGP VRFs defined under network services",
-                    context_keys=["name"],
-                )
-
-        return vrfs or None
+                if vrf_name == "default":
+                    # VRF default is added directly under router_bgp
+                    router_bgp.update(bgp_vrf)
+                else:
+                    append_if_not_duplicate(
+                        list_of_dicts=router_bgp["vrfs"],
+                        primary_key="name",
+                        new_dict={"name": vrf_name, **bgp_vrf},
+                        context="BGP VRFs defined under network services",
+                        context_keys=["name"],
+                    )
+        return strip_empties_from_dict(router_bgp)
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(self: AvdStructuredConfigNetworkServices, bgp_vrf: dict, vrf: dict, vrf_address_families: list) -> None:
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
