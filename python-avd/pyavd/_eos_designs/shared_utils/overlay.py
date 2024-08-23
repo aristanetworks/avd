@@ -221,6 +221,9 @@ class OverlayMixin:
 
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
+        
+        if self.underlay_ipv6 and not self.underlay_rfc5549:
+            return self.ipv6_router_id
 
         return self.router_id
 
