@@ -175,7 +175,7 @@ vlan 2020
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet8 |  CPE_TENANT_A_SITE2_eth0 | trunk | 10 | - | - | - |
+| Ethernet8 | CPE_TENANT_A_SITE2_eth0 | trunk | 10 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
