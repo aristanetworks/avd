@@ -140,40 +140,17 @@ class RouterBgpMixin(UtilsMixin):
 
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # If bgp.enabled is set to True, we will always configure the VRF.
-                # If bgp.enabled is set to False, we will never configure the VRF.
-                # Otherwise we will autodetect:
-                #  - if the VRF is part of an overlay we will configure BGP for it.
-                #  - if any BGP peers are configured we will configure BGP for it.
-                #  - if uplink type is p2p_vrfs and the vrf is included in uplink VRFs.
-
-                if (bgp_enabled := get(vrf, "bgp.enabled")) is False:
+                if not self.shared_utils.bgp_enabled_for_vrf(vrf):
                     continue
 
-                vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]
                 vrf_name = vrf["name"]
-                if not any(
-                    [
-                        bgp_enabled,
-                        vrf_address_families,
-                        vrf["bgp_peers"],
-                        (
-                            self.shared_utils.uplink_type == "p2p-vrfs"
-                            and vrf_name in (self.shared_utils.get_switch_fact("uplink_switch_vrfs", required=False) or [])
-                        ),
-                    ]
-                ):
-                    continue
-
                 bgp_vrf = {
                     "name": vrf_name,
-                    # Adding router_id here to avoid reordering structured config for all hosts. TODO: Remove router_id.
-                    "router_id": None,
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
                 }
 
-                if vrf_address_families:
+                if vrf_address_families := [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]:
                     # For EVPN configs get evpn keys and continue after the elif block below.
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
 

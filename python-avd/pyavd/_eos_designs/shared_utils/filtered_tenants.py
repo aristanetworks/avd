@@ -432,3 +432,38 @@ class FilteredTenantsMixin:
                     ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
                 if ospf_keys:
                     svi_config.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
+
+    def bgp_in_network_services(self: SharedUtils) -> bool:
+        """
+        True if any VRFs are enabled for BGP.
+
+        Used to enable router_bgp even if there is no overlay or underlay routing protocol.
+        """
+        if not self.network_services_l3:
+            return False
+
+        return any(self.bgp_enabled_for_vrf(vrf) for tenant in self.filtered_tenants for vrf in tenant["vrfs"])
+
+    def bgp_enabled_for_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        True if the given VRF should be included under Router BGP.
+
+        - If bgp.enabled is set to True, we will always configure the VRF.
+        - If bgp.enabled is set to False, we will never configure the VRF.
+
+        Otherwise we will autodetect:
+        - If the VRF is part of an overlay we will configure BGP for it.
+        - If any BGP peers are configured we will configure BGP for it.
+        - If uplink type is p2p_vrfs and the vrf is included in uplink VRFs.
+        """
+        if (bgp_enabled := get(vrf, "bgp.enabled")) is not None:
+            return bgp_enabled
+
+        vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self.overlay_address_families]
+        return any(
+            [
+                vrf_address_families,
+                vrf["bgp_peers"],
+                (self.uplink_type == "p2p-vrfs" and vrf["name"] in (self.get_switch_fact("uplink_switch_vrfs", required=False) or [])),
+            ]
+        )
