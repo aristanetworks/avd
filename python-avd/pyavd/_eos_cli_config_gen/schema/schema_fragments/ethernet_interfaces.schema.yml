@@ -281,24 +281,9 @@ keys:
               type: dict
               keys:
                 dot1q:
-                  type: dict
-                  keys:
-                    vlan:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Client VLAN ID.
-                    outer:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Client Outer VLAN ID.
-                    inner:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Client Inner VLAN ID.
-                dot1ad:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
@@ -318,33 +303,40 @@ keys:
                       description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
-                  description: Match traffic that do not match any other client encapsulation on the port.
-                untagged:
-                  type: bool
-                  description: No encapsulation.
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                vlan:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                outer:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                inner:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                protocol:
+                  type: str
+                  valid_values:
+                    - dot1q
+                    - dot1ad
+                    - unmatched
+                    - untagged
+                  # required: true
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if using client unmatched.
               keys:
                 dot1q:
-                  type: dict
-                  keys:
-                    vlan:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Network VLAN ID.
-                    outer:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Network outer VLAN ID.
-                    inner:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Network inner VLAN ID.
-                dot1ad:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
@@ -364,9 +356,34 @@ keys:
                       description: Network inner VLAN ID.
                 client:
                   type: bool
-                untagged:
-                  type: bool
-                  description: No encapsulation.
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                vlan:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
+                protocol:
+                  description: |-
+                    `untagged` (no encapsulation) is applicable for `untagged` client only.
+                    `client` (retain client encapsulation) is not applicable for `untagged` client.
+                  type: str
+                  valid_values:
+                    - dot1q
+                    - dot1ad
+                    - client
+                    - untagged
         vlan_id:
           type: int
           min: 1
