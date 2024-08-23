@@ -1185,6 +1185,11 @@ ethernet_interfaces:
     transceiver:
       frequency: 190050
 
+  - name: Ethernet67.1
+    encapsulation_dot1q:
+      vlan: 4
+      inner_vlan: 34
+
   - name: Ethernet68
     type: switched
     description: Custom_Transceiver_Frequency
@@ -1194,3 +1199,111 @@ ethernet_interfaces:
       frequency_unit: ghz
       media:
         override: 100gbase-ar4
+
+  - name: Ethernet68.1
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 23
+          inner: 45
+      network:
+        dot1ad:
+          outer: 32
+          inner: 54
+
+  - name: Ethernet68.2
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 10
+      network:
+        dot1q:
+          outer: 32
+          inner: 54
+
+  - name: Ethernet68.3
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 10
+      network:
+        dot1ad:
+          vlan: 20
+
+  - name: Ethernet68.4
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 10
+      network:
+        client: true
+
+  - name: Ethernet68.5
+    encapsulation_vlan:
+      client:
+        dot1ad:
+          vlan: 12
+      network:
+        dot1q:
+          vlan: 25
+
+  - name: Ethernet68.6
+    encapsulation_vlan:
+      client:
+        dot1ad:
+          outer: 35
+          inner: 60
+      network:
+        dot1q:
+          outer: 53
+          inner: 6
+
+  - name: Ethernet68.7
+    encapsulation_vlan:
+      client:
+        dot1ad:
+          outer: 35
+          inner: 60
+      network:
+        dot1ad:
+          outer: 52
+          inner: 62
+
+  - name: Ethernet68.8
+    encapsulation_vlan:
+      client:
+        dot1ad:
+          outer: 35
+          inner: 60
+      network:
+        client: true
+
+  - name: Ethernet68.9
+    encapsulation_vlan:
+      client:
+        untagged: true
+      network:
+        dot1ad:
+          outer: 35
+          inner: 60
+
+  - name: Ethernet69.1
+    encapsulation_vlan:
+      client:
+        untagged: true
+      network:
+        dot1q:
+          outer: 35
+          inner: 60
+
+  - name: Ethernet69.2
+    encapsulation_vlan:
+      client:
+        untagged: true
+      network:
+        untagged: true
+
+  - name: Ethernet69.3
+    encapsulation_vlan:
+      client:
+        unmatched: true

@@ -2204,8 +2204,34 @@ keys:
           convert_types:
           - str
           description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        encapsulation_dot1q:
+          description: 'Warning: This should not be combined with `ethernet_interfaces[].type
+            == l3dot1q/l2dot1q`.'
+          type: dict
+          keys:
+            vlan:
+              type: int
+              convert_types:
+              - str
+              required: true
+              description: VLAD ID.
+            inner_vlan:
+              type: int
+              convert_types:
+              - str
+              description: Inner VLAN ID. This setting can be applied to sub-interfaces
+                only.
         encapsulation_vlan:
           type: dict
+          description: 'This setting can be applied to sub-interfaces only.
+
+            Warning: This should not be combined with `ethernet_interfaces[].type
+            == l3dot1q/l2dot1q`.'
           keys:
             client:
               type: dict
@@ -2228,8 +2254,31 @@ keys:
                       convert_types:
                       - str
                       description: Client Inner VLAN ID.
+                dot1ad:
+                  type: dict
+                  keys:
+                    vlan:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Client VLAN ID.
+                    outer:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Client Outer VLAN ID.
+                    inner:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
+                  description: Match traffic that do not match any other client encapsulation
+                    on the port.
+                untagged:
+                  type: bool
+                  description: No encapsulation.
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
@@ -2253,8 +2302,29 @@ keys:
                       convert_types:
                       - str
                       description: Network inner VLAN ID.
+                dot1ad:
+                  type: dict
+                  keys:
+                    vlan:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Network VLAN ID.
+                    outer:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Network outer VLAN ID.
+                    inner:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Network inner VLAN ID.
                 client:
                   type: bool
+                untagged:
+                  type: bool
+                  description: No encapsulation.
         vlan_id:
           type: int
           min: 1

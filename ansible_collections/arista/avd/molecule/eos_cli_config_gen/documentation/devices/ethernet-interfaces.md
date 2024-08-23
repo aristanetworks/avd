@@ -715,9 +715,13 @@ interface Ethernet26.1
    description TENANT_A pseudowire 1 interface
    encapsulation vlan
       client unmatched
+   encapsulation vlan
+      client unmatched
 !
 interface Ethernet26.100
    description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client dot1q 100 network client
    encapsulation vlan
       client dot1q 100 network client
 !
@@ -725,9 +729,13 @@ interface Ethernet26.200
    description TENANT_A pseudowire 2 interface
    encapsulation vlan
       client dot1q 200
+   encapsulation vlan
+      client dot1q 200
 !
 interface Ethernet26.300
    description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q 300 network dot1q 400
    encapsulation vlan
       client dot1q 300 network dot1q 400
 !
@@ -735,9 +743,13 @@ interface Ethernet26.400
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
       client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+   encapsulation vlan
+      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
 !
 interface Ethernet26.500
    description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 500 inner 50
    encapsulation vlan
       client dot1q outer 500 inner 50
 !
@@ -1064,6 +1076,9 @@ interface Ethernet67
    switchport
    transceiver frequency 190050.000
 !
+interface Ethernet67.1
+   encapsulation dot1q vlan 4 inner 34
+!
 interface Ethernet68
    description Custom_Transceiver_Frequency
    no shutdown
@@ -1071,10 +1086,58 @@ interface Ethernet68
    transceiver media override 100gbase-ar4
    transceiver frequency 190080.000 ghz
 !
+interface Ethernet68.1
+   encapsulation vlan
+      client dot1q outer 23 inner 45 network dot1ad outer 32 inner 54
+!
+interface Ethernet68.2
+   encapsulation vlan
+      client dot1q 10 network dot1q outer 32 inner 54
+!
+interface Ethernet68.3
+   encapsulation vlan
+      client dot1q 10 network dot1ad 20
+!
+interface Ethernet68.4
+   encapsulation vlan
+      client dot1q 10 network client
+!
+interface Ethernet68.5
+   encapsulation vlan
+      client dot1ad 12 network dot1q 25
+!
+interface Ethernet68.6
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1q outer 6 inner 53
+!
+interface Ethernet68.7
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1ad outer 52 inner 62
+!
+interface Ethernet68.8
+   encapsulation vlan
+      client dot1ad outer 35 inner 60
+!
+interface Ethernet68.9
+   encapsulation vlan
+      client untagged network dot1ad outer 35 inner 60
+!
 interface Ethernet69
    description IP NAT service-profile
    switchport
    ip nat service-profile TEST-NAT-PROFILE
+!
+interface Ethernet69.1
+   encapsulation vlan
+      client untagged network dot1q outer 35 inner 60
+!
+interface Ethernet69.2
+   encapsulation vlan
+      client untagged network untagged
+!
+interface Ethernet69.3
+   encapsulation vlan
+      client unmatched
 ```
 
 ## BFD
