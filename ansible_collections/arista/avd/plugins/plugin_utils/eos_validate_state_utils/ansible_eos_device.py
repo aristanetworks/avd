@@ -143,7 +143,7 @@ class AnsibleEOSDevice(AntaDevice):
             command.output = {"messages": [response]}
         except Exception as e:
             command.errors = [exc_to_str(e)]
-            logger.error("Command '%s' failed: %s", command.command, exc_to_str(e))  # noqa: TRY400
+            logger.warning("Command '%s' failed: %s", command.command, exc_to_str(e))
         logger.debug("%s: %s", self.name, command)
 
     async def refresh(self) -> None:
