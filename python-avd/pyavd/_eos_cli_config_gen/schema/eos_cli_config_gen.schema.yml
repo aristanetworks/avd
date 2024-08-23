@@ -15562,6 +15562,7 @@ keys:
           rp_addresses:
             type: list
             primary_key: address
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
