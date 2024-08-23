@@ -1831,9 +1831,7 @@ keys:
       configured under the node attributes are used to generate the system-id.
 
       If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
-      will be ignored and the loopback address will be used to generate the system-id.
-
-      The default value of `isis_system_id_format` is `underlay_loopback`.'
+      will be ignored and the loopback address will be used to generate the system-id.'
     documentation_options:
       table: isis-settings
     type: str
