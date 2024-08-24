@@ -136,7 +136,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if self.shared_utils.underlay_ipv6:
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
             if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_primary"):
                 return self._template(
                     template_path,
@@ -163,7 +163,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if self.shared_utils.underlay_ipv6:
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
             if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_secondary"):
                 return self._template(
                     template_path,
@@ -339,6 +339,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
 
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+            return None
+
         if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip_mlag"):
             return self._template(
                 template_path,
@@ -363,6 +366,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
 
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+            return None
+
         if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip"):
             return self._template(
                 template_path,
@@ -373,6 +379,52 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         offset = self._id + self._loopback_ipv4_offset
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+
+    def vtep_ipv6_mlag(self) -> str:
+        """
+        Return IP address for VTEP for MLAG Leaf.
+
+        If "vtep_loopback_ipv6_address" is set, it is used.
+        Default pool is "vtep_loopback_ipv6_pool"
+        Default offset from pool is `mlag_primary_id + loopback_ipv6_offset`
+        """
+        if self._vtep_loopback_ipv6_address:
+            return self._vtep_loopback_ipv6_address
+
+        if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ipv6_mlag"):
+            return self._template(
+                template_path,
+                switch_id=self._id,
+                switch_vtep_loopback_ipv6_pool=self._vtep_loopback_ipv6_pool,
+                loopback_ipv6_offset=self._loopback_ipv6_offset,
+                mlag_primary_id=self._mlag_primary_id,
+                mlag_secondary_id=self._mlag_secondary_id,
+            )
+
+        offset = self._mlag_primary_id + self._loopback_ipv6_offset
+        return get_ip_from_pool(self._vtep_loopback_ipv6_pool, 64, offset, 0)
+
+    def vtep_ipv6(self) -> str:
+        """
+        Return IP address for VTEP.
+
+        If "vtep_loopback_ipv6_address" is set, it is used.
+        Default pool is "vtep_loopback_ipv6_pool"
+        Default offset from pool is `id + loopback_ipv6_offset`
+        """
+        if self._vtep_loopback_ipv6_address:
+            return self._vtep_loopback_ipv6_address
+
+        if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ipv6"):
+            return self._template(
+                template_path,
+                switch_id=self._id,
+                switch_vtep_loopback_ipv6_pool=self._vtep_loopback_ipv6_pool,
+                loopback_ipv6_offset=self._loopback_ipv6_offset,
+            )
+
+        offset = self._id + self._loopback_ipv6_offset
+        return get_ip_from_pool(self._vtep_loopback_ipv6_pool, 64, offset, 0)
 
     def vrf_loopback_ip(self, pool: str) -> str:
         """

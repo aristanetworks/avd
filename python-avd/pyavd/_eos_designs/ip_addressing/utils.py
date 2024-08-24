@@ -129,6 +129,14 @@ class UtilsMixin:
         return self.shared_utils.vtep_loopback_ipv4_pool
 
     @cached_property
+    def _vtep_loopback_ipv6_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.vtep_loopback_ipv6_address
+
+    @cached_property
+    def _vtep_loopback_ipv6_pool(self: AvdIpAddressing) -> str:
+        return self.shared_utils.vtep_loopback_ipv6_pool
+
+    @cached_property
     def _mlag_odd_id_based_offset(self: AvdIpAddressing) -> int:
         """
         Return the subnet offset for an MLAG pair based on odd id.

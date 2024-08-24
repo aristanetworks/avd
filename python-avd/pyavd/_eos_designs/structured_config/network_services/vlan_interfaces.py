@@ -168,7 +168,7 @@ class VlanInterfacesMixin(UtilsMixin):
         }
         if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
             vlan_interface_config["ipv6_enable"] = True
-        elif self.shared_utils.underlay_ipv6:
+        elif self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
             if (mlag_ibgp_peering_ipv6_pool := vrf.get("mlag_ibgp_peering_ipv6_pool")) is not None:
                 if self.shared_utils.mlag_role == "primary":
                     vlan_interface_config["ipv6_address"] = (

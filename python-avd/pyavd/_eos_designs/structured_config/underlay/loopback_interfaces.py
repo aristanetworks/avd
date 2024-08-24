@@ -31,7 +31,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         loopback_interfaces = []
         # Loopback 0
-        if self.shared_utils.underlay_ipv6 and not self.shared_utils.underlay_rfc5549:
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
             loopback0 = {
                 "name": "Loopback0",
                 "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
@@ -81,14 +81,24 @@ class LoopbackInterfacesMixin(UtilsMixin):
             and self.shared_utils.vtep_loopback.lower() != "loopback0"
             and self.shared_utils.vtep_loopback.lower().startswith("lo")
         ):
-            vtep_loopback = {
-                "name": self.shared_utils.vtep_loopback,
-                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
-                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
-                ),
-                "shutdown": False,
-                "ip_address": f"{self.shared_utils.vtep_ip}/32",
-            }
+            if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+                vtep_loopback = {
+                    "name": self.shared_utils.vtep_loopback,
+                    "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
+                        InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
+                    ),
+                    "shutdown": False,
+                    "ipv6_address": f"{self.shared_utils.vtep_ipv6}/128",
+                }
+            else:
+                vtep_loopback = {
+                    "name": self.shared_utils.vtep_loopback,
+                    "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
+                        InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
+                    ),
+                    "shutdown": False,
+                    "ip_address": f"{self.shared_utils.vtep_ip}/32",
+                }
 
             if self.shared_utils.network_services_l3 is True and self.shared_utils.vtep_vvtep_ip is not None:
                 vtep_loopback["ip_address_secondaries"] = [self.shared_utils.vtep_vvtep_ip]

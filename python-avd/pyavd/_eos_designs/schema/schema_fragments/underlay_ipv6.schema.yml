@@ -14,3 +14,14 @@ keys:
       Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
     type: bool
     default: false
+  underlay_routing_protocol_address_family:
+    documentation_options:
+      table: fabric-settings
+    description: |
+      This feature requires IPv6 underlay routing protocol with numbered addresses to be used for all underlay interfaces.
+      Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
+    type: str
+    valid_values:
+      - ipv4
+      - ipv6
+    default: ipv4

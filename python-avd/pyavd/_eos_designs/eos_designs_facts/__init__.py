@@ -136,6 +136,8 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
     @cached_property
     def vtep_loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+            return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
         return None

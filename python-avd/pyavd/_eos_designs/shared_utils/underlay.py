@@ -107,6 +107,10 @@ class UnderlayMixin:
         return get(self.hostvars, "underlay_rfc5549") is True
 
     @cached_property
+    def underlay_routing_protocol_address_family(self: SharedUtils) -> str:
+        return get(self.hostvars, "underlay_routing_protocol_address_family", default="ipv4")
+
+    @cached_property
     def underlay_ospf_process_id(self: SharedUtils) -> int:
         return get(self.hostvars, "underlay_ospf_process_id", default=100)
 
