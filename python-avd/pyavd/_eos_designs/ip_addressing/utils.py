@@ -109,6 +109,10 @@ class UtilsMixin:
         return self.shared_utils.loopback_ipv4_pool
 
     @cached_property
+    def _router_id_pool(self: AvdIpAddressing) -> str:
+        return self.shared_utils.router_id_pool
+
+    @cached_property
     def _loopback_ipv4_offset(self: AvdIpAddressing) -> int:
         return self.shared_utils.loopback_ipv4_offset
 

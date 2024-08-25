@@ -40,21 +40,22 @@ class LoopbackInterfacesMixin(UtilsMixin):
                     ),
                 ),
                 "shutdown": False,
-                "ipv6_address": f"{self.shared_utils.ipv6_router_id}/128",
+                "ipv6_address": f"{self.shared_utils.ipv6_router_id}/64",
             }
-        loopback0 = {
-            "name": "Loopback0",
-            "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
-                InterfaceDescriptionData(
-                    shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
+        else:
+            loopback0 = {
+                "name": "Loopback0",
+                "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
+                    ),
                 ),
-            ),
-            "shutdown": False,
-            "ip_address": f"{self.shared_utils.router_id}/32",
-        }
+                "shutdown": False,
+                "ip_address": f"{self.shared_utils.router_id}/32",
+            }
 
         if self.shared_utils.ipv6_router_id is not None:
-            loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/128"
+            loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/64"
 
         if self.shared_utils.underlay_ospf:
             loopback0["ospf_area"] = self.shared_utils.underlay_ospf_area
@@ -88,7 +89,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                         InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
                     ),
                     "shutdown": False,
-                    "ipv6_address": f"{self.shared_utils.vtep_ipv6}/128",
+                    "ipv6_address": f"{self.shared_utils.vtep_ipv6}/64",
                 }
             else:
                 vtep_loopback = {

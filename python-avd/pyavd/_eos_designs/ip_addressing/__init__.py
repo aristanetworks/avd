@@ -299,6 +299,18 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._loopback_ipv4_address:
             return self._loopback_ipv4_address
 
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+            if template_path := self.shared_utils.ip_addressing_templates.get("router_id"):
+                return self._template(
+                    template_path,
+                    switch_id=self._id,
+                    loopback_ipv4_pool=self._router_id_pool,
+                    loopback_ipv4_offset=self._loopback_ipv4_offset,
+                )
+
+            offset = self._id + self._loopback_ipv4_offset
+            return get_ip_from_pool(self._router_id_pool, 32, offset, 0)
+
         if template_path := self.shared_utils.ip_addressing_templates.get("router_id"):
             return self._template(
                 template_path,
@@ -326,7 +338,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv6_offset
-        return get_ip_from_pool(self._loopback_ipv6_pool, 128, offset, 0)
+        return get_ip_from_pool(self._loopback_ipv6_pool, 64, offset, 0)
 
     def vtep_ip_mlag(self) -> str:
         """

@@ -107,9 +107,9 @@ class PrefixListsMixin(UtilsMixin):
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
 
-        sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 128"}]
+        sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 64"}]
 
         if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
-            sequence_numbers.append({"sequence": 20, "action": f"permit {self.shared_utils.vtep_loopback_ipv6_pool} eq 128"})
+            sequence_numbers.append({"sequence": 20, "action": f"permit {self.shared_utils.vtep_loopback_ipv6_pool} eq 64"})
 
         return [{"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": sequence_numbers}]

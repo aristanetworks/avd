@@ -55,6 +55,9 @@ class VxlanInterfaceMixin(UtilsMixin):
         if self.shared_utils.overlay_cvx:
             vxlan["controller_client"] = {"enabled": True}
 
+        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+            vxlan["ipv6_underlay"] = {"enabled": True}
+
         vlans = []
         vrfs = []
         # vnis is a list of dicts only used for duplication checks across multiple types of objects all having "vni" as a key.

@@ -45,7 +45,11 @@ class IpAddressingMixin:
 
     @cached_property
     def loopback_ipv4_pool(self: SharedUtils) -> str:
-        return get(self.switch_data_combined, "loopback_ipv4_pool", required=False)
+        return get(self.switch_data_combined, "loopback_ipv4_pool", required=True)
+
+    @cached_property
+    def router_id_pool(self: SharedUtils) -> str:
+        return get(self.switch_data_combined, "router_id_pool", required=True)
 
     @cached_property
     def loopback_ipv4_address(self: SharedUtils) -> str:

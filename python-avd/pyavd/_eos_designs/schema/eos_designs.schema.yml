@@ -7668,6 +7668,12 @@ $defs:
             description: IPv4 subnet for VTEP-Loopback allocation.
             type: str
             format: ipv4_cidr
+          router_id_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: IPv4 subnet for allocation router-id allocation.
+            type: str
+            format: ipv4_cidr
           vtep_loopback_ipv6_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
