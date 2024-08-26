@@ -6,6 +6,10 @@ $defs:
   additional_paths:
     type: dict
     keys:
+      install:
+        type: bool
+      install_ecmp_primary:
+        type: bool
       receive:
         type: bool
       send:
@@ -15,18 +19,18 @@ $defs:
           any: Send any eligible path.
           backup: Best path and installed backup path.
           ecmp: All paths in best path ECMP group.
-          limit: Limit to n eligible paths.
-        valid_values: [ 'any', 'backup', 'ecmp', 'limit', 'null' ]
+          limit: Limit to n eligible paths
+        valid_values: [ 'any', 'backup', 'ecmp', 'limit' ]
       send_ecmp_limit:
         type: int
-        description: Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+        description: Amount of ECMP paths to send. If this key-value pair is not set, it will send all paths in best ECMP group.
         convert_types:
           - str
         min: 2
         max: 64
       send_limit:
         type: int
-        description: Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+        description: Number of paths to send through bgp updates(The value of 'send' key must be 'limit').
         convert_types:
           - str
         min: 2
