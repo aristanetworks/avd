@@ -378,8 +378,8 @@ ethernet_interfaces:
 
   - name: Ethernet8.101
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 101
+    encapsulation_dot1q:
+      vlan: 101
     ip_address: 172.31.128.1/31
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
@@ -557,64 +557,58 @@ ethernet_interfaces:
     type: routed
 
   - name: Ethernet26.1
-    type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
       client:
-        unmatched: true
+        protocol: unmatched
 
   - name: Ethernet26.100
-    type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 100
+        protocol: dot1q
+        vlan: 100
       network:
-        client: true
+        protocol: client
 
   - name: Ethernet26.200
-    type: l2dot1q
     description: TENANT_A pseudowire 2 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 200
+        protocol: dot1q
+        vlan: 200
 
   - name: Ethernet26.300
-    type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 300
+        protocol: dot1q
+        vlan: 300
       network:
-        dot1q:
-          vlan: 400
+        protocol: dot1q
+        vlan: 400
 
   - name: Ethernet26.400
-    type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          outer: 400
-          inner: 20
+        protocol: dot1q
+        outer: 400
+        inner: 20
       network:
-        dot1q:
-          outer: 401
-          inner: 21
+        protocol: dot1q
+        outer: 401
+        inner: 21
 
   - name: Ethernet26.500
-    type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          outer: 500
-          inner: 50
+        protocol: dot1q
+        outer: 500
+        inner: 50
       network:
-        client: true
+        protocol: client
 
   - name: Ethernet27
     type: switched

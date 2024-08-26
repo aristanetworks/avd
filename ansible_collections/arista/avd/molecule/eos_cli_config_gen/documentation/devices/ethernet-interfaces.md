@@ -146,20 +146,33 @@ sFlow is disabled.
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 | - |
+| Ethernet67.1 | - | - | 4 | 34 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
-| Ethernet26.100 | TENANT_A pseudowire 1 interface | - | False | 100 | - | - | True | - | - | - |
-| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | False | 200 | - | - | False | - | - | - |
-| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | False | 300 | - | - | False | 400 | - | - |
-| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | False | - | 500 | 50 | True | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | - | dot1q | 100 | - | - | client | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | dot1q | 200 | - | - | - | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | dot1q | 300 | - | - | dot1q | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | 400 | 20 | dot1q | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | dot1q | - | 500 | 50 | client | - | - | - |
+| Ethernet68.1 | - | - | dot1q | - | 23 | 45 | dot1ad | - | 32 | 54 |
+| Ethernet68.2 | - | - | dot1q | 10 | - | - | dot1q | - | 32 | 54 |
+| Ethernet68.3 | - | - | dot1q | 10 | - | - | dot1ad | 20 | - | - |
+| Ethernet68.4 | - | - | dot1q | 10 | - | - | client | - | - | - |
+| Ethernet68.5 | - | - | dot1ad | 12 | - | - | dot1q | 25 | - | - |
+| Ethernet68.6 | - | - | dot1ad | - | 35 | 60 | dot1q | - | 53 | 6 |
+| Ethernet68.7 | - | - | dot1ad | - | 35 | 60 | dot1ad | - | 52 | 62 |
+| Ethernet68.8 | - | - | dot1ad | - | 35 | 60 | client | - | - | - |
+| Ethernet68.9 | - | - | untagged | - | - | - | dot1ad | - | 35 | 60 |
+| Ethernet69.1 | - | - | untagged | - | - | - | dot1q | - | 35 | 60 |
+| Ethernet69.2 | - | - | untagged | - | - | - | untagged | - | - | - |
+| Ethernet69.3 | - | - | unmatched | - | - | - | - | - | - | - |
 
 ##### Private VLAN
 
@@ -734,12 +747,12 @@ interface Ethernet26.300
 interface Ethernet26.400
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
-      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+      client dot1q outer 400 inner 20 network dot1q outer 401 inner 21
 !
 interface Ethernet26.500
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
-      client dot1q outer 500 inner 50
+      client dot1q outer 500 inner 50 network client
 !
 interface Ethernet27
    description EVPN-Vxlan single-active redundancy

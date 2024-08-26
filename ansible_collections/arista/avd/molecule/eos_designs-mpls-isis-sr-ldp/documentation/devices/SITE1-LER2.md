@@ -179,9 +179,9 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet5.100 | TENANT_B_SITE_3 | - | 100 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet5.100 | TENANT_B_SITE_3 | - | 100 | - |
 
 ##### IPv4
 

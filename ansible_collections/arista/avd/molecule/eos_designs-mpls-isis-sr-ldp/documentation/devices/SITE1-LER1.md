@@ -180,9 +180,9 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10 | - |
 
 ##### IPv4
 

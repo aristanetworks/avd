@@ -321,6 +321,7 @@ keys:
                   convert_types:
                     - str
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
                 protocol:
                   type: str
                   valid_values:
@@ -328,7 +329,6 @@ keys:
                     - dot1ad
                     - unmatched
                     - untagged
-                  # required: true
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if using client unmatched.
@@ -374,6 +374,7 @@ keys:
                   convert_types:
                     - str
                   description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
+                # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
                 protocol:
                   description: |-
                     `untagged` (no encapsulation) is applicable for `untagged` client only.

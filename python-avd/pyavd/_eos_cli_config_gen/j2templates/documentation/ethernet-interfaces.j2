@@ -115,7 +115,13 @@
 {%     set encapsulation_dot1q_interfaces = [] %}
 {%     set flexencap_interfaces = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
+{%         if ethernet_interface.type | arista.avd.default not in ['l3dot1q', 'l2dot1q'] %}
+{%             if ethernet_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
+{%                 do encapsulation_dot1q_interfaces.append(ethernet_interface) %}
+{%             elif ethernet_interface.encapsulation_vlan is arista.avd.defined %}
+{%                 do flexencap_interfaces.append(ethernet_interface) %}
+{%             endif %}
+{%         elif ethernet_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
 {%             if ethernet_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
 {%                 do encapsulation_dot1q_interfaces.append(ethernet_interface) %}
 {%             elif ethernet_interface.encapsulation_vlan is arista.avd.defined %}
@@ -127,33 +133,52 @@
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
 {%         for ethernet_interface in encapsulation_dot1q_interfaces %}
 {%             set description = ethernet_interface.description | arista.avd.default('-') %}
 {%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
-{%             set encapsulation_dot1q_vlan = ethernet_interface.encapsulation_dot1q_vlan | arista.avd.default('-') %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} |
+{%             set encapsulation_dot1q_vlan = ethernet_interface.encapsulation_dot1q.vlan | arista.avd.default(ethernet_interface.encapsulation_dot1q_vlan, '-') %}
+{%             set encapsulation_dot1q_inner_vlan = ethernet_interface.encapsulation_dot1q.inner_vlan | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ description }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} | {{ encapsulation_dot1q_inner_vlan }} |
 {%         endfor %}
 {%     endif %}
 {%     if flexencap_interfaces | length > 0 %}
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
 {%         for ethernet_interface in flexencap_interfaces %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
-{%             set client_unmatched = ethernet_interface.encapsulation_vlan.client.unmatched | arista.avd.default(false) %}
-{%             set client_dot1q_vlan = ethernet_interface.encapsulation_vlan.client.dot1q.vlan | arista.avd.default("-") %}
-{%             set client_dot1q_outer = ethernet_interface.encapsulation_vlan.client.dot1q.outer | arista.avd.default("-") %}
-{%             set client_dot1q_inner = ethernet_interface.encapsulation_vlan.client.dot1q.inner | arista.avd.default("-") %}
-{%             set network_client = ethernet_interface.encapsulation_vlan.network.client | arista.avd.default(false) %}
-{%             set network_dot1q_vlan = ethernet_interface.encapsulation_vlan.network.dot1q.vlan | arista.avd.default("-") %}
-{%             set network_dot1q_outer = ethernet_interface.encapsulation_vlan.network.dot1q.outer | arista.avd.default("-") %}
-{%             set network_dot1q_inner = ethernet_interface.encapsulation_vlan.network.dot1q.inner | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ vlan_id }} | {{ client_unmatched }} | {{ client_dot1q_vlan }} | {{ client_dot1q_outer }} | {{ client_dot1q_inner }} | {{ network_client }} | {{ network_dot1q_vlan }} | {{ network_dot1q_outer }} | {{ network_dot1q_inner }} |
+{%             set client_protocol = ethernet_interface.encapsulation_vlan.client.protocol | arista.avd.default('-') %}
+{%             if client_protocol == '-' %}
+{%                 if ethernet_interface.encapsulation_vlan.client.dot1q is arista.avd.defined %}
+{%                     set client_protocol = 'dot1q' %}
+{%                 elif ethernet_interface.encapsulation_vlan.client.unmatched is arista.avd.defined(true) %}
+{%                     set client_protocol = 'unmatched' %}
+{%                 endif %}
+{%             endif %}
+{%             if client_protocol in ['dot1q', 'dot1ad'] %}
+{%                 set client_vlan = ethernet_interface.encapsulation_vlan.client.vlan | arista.avd.default(ethernet_interface.encapsulation_vlan.client.dot1q.vlan) %}
+{%                 set client_outer_vlan = ethernet_interface.encapsulation_vlan.client.outer | arista.avd.default(ethernet_interface.encapsulation_vlan.client.dot1q.outer) %}
+{%                 set client_inner_vlan = ethernet_interface.encapsulation_vlan.client.inner | arista.avd.default(ethernet_interface.encapsulation_vlan.client.dot1q.inner) %}
+{%             endif %}
+{%             set network_protocol = ethernet_interface.encapsulation_vlan.network.protocol | arista.avd.default('-') %}
+{%             if network_protocol == '-' %}
+{%                 if ethernet_interface.encapsulation_vlan.network.dot1q is arista.avd.defined %}
+{%                     set network_protocol = 'dot1q' %}
+{%                 elif ethernet_interface.encapsulation_vlan.network.client is arista.avd.defined(true) %}
+{%                     set network_protocol = 'client' %}
+{%                 endif %}
+{%             endif %}
+{%             if network_protocol in ['dot1q', 'dot1ad'] %}
+{%                 set network_vlan = ethernet_interface.encapsulation_vlan.network.vlan | arista.avd.default(ethernet_interface.encapsulation_vlan.network.dot1q.vlan) %}
+{%                 set network_outer_vlan = ethernet_interface.encapsulation_vlan.network.outer | arista.avd.default(ethernet_interface.encapsulation_vlan.network.dot1q.outer) %}
+{%                 set network_inner_vlan = ethernet_interface.encapsulation_vlan.network.inner | arista.avd.default(ethernet_interface.encapsulation_vlan.network.dot1q.inner) %}
+{%             endif %}
+| {{ ethernet_interface.name }} | {{ description }} | {{ vlan_id }} | {{ client_protocol }} | {{ client_vlan | arista.avd.default('-') }} | {{ client_outer_vlan | arista.avd.default('-') }} | {{ client_inner_vlan | arista.avd.default('-') }} | {{ network_protocol }} | {{ network_vlan | arista.avd.default('-') }} | {{ network_outer_vlan | arista.avd.default('-') }} | {{ network_inner_vlan | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {# PVLAN #}
