@@ -45,4 +45,4 @@ tenants:
 
 expected_error_message: >-
   'pim: enabled' set on l3_interface 'Ethernet1' on 'failure-missing-evpn-multicast-with-pim'
-  requires evpn_multicast: true
+  requires 'evpn_multicast: true'
