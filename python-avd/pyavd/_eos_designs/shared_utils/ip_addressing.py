@@ -62,7 +62,7 @@ class IpAddressingMixin:
 
     @cached_property
     def vtep_loopback_ipv4_address(self: SharedUtils) -> str:
-        """Set the VTEP loopback IPv6 for this host, takes precedence over vtep_loopback_ipv6_pool."""
+        """Set the VTEP loopback IPv4 for this host, takes precedence over vtep_loopback_ipv4_pool."""
         return get(self.switch_data_combined, "vtep_loopback_ipv4_address")
 
     @cached_property
