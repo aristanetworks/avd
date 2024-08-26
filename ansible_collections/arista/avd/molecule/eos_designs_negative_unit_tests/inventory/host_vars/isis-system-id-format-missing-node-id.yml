@@ -21,4 +21,4 @@ pe:
       id: 1
 
 expected_error_message: >-
-  'isis_system_id_prefix' is not set on 'isis-system-id-format-missing-node-id' and it is required to set ISIS NET address using node ID
+  'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'. 'isis_system_id_prefix' was not set for 'isis-system-id-format-missing-node-id'
