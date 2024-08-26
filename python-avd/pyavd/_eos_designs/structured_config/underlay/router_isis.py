@@ -80,8 +80,8 @@ class RouterIsisMixin(UtilsMixin):
             isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
             if self.shared_utils.underlay_isis is True and isis_system_id_prefix is None:
                 msg = (
-                f"'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'."
-                f" 'isis_system_id_prefix' was not set for '{self.shared_utils.hostname}'"
+                    f"'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'."
+                    f" 'isis_system_id_prefix' was not set for '{self.shared_utils.hostname}'"
                 )
                 raise AristaAvdMissingVariableError(msg)
 
