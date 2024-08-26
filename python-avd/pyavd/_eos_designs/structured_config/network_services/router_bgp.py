@@ -172,12 +172,8 @@ class RouterBgpMixin(UtilsMixin):
                     if bgp_vrf_redistribute_static is True or (vrf["static_routes"] and bgp_vrf_redistribute_static is not False):
                         bgp_vrf.setdefault("redistribute_routes", []).append({"source_protocol": "static"})
 
-                    # MLAG IBGP Peering VLANs per VRF (except VRF default)
-                    if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
-                        self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
-
                 elif bgp_vrf:
-                    # Default VRF with RD/RT and eos_cli/struct_cfg which should go under the vrf default context.
+                    # VRF default with RD/RT and eos_cli/struct_cfg which should go under the vrf default context.
                     # Any peers added later will be put directly under router_bgp
                     append_if_not_duplicate(
                         list_of_dicts=router_bgp["vrfs"],
@@ -188,6 +184,11 @@ class RouterBgpMixin(UtilsMixin):
                     )
                     # Resetting bgp_vrf so we only add global keys if there are any neighbors for VRF default
                     bgp_vrf = {}
+
+                # MLAG IBGP Peering VLANs per VRF
+                # Will only be configured for VRF default if underlay_routing_protocol == "none".
+                if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
+                    self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
 
                 for bgp_peer in vrf["bgp_peers"]:
                     # Below we pop various keys that are not supported by the eos_cli_config_gen schema.

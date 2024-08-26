@@ -436,7 +436,7 @@ class FilteredTenantsMixin:
     @cached_property
     def bgp_in_network_services(self: SharedUtils) -> bool:
         """
-        True if any VRFs are enabled for BGP.
+        True if VRF default is enabled for BGP under network services.
 
         Used to enable router_bgp even if there is no overlay or underlay routing protocol.
         """
