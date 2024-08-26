@@ -86,7 +86,7 @@ ptp monitor threshold missing-message sync 204 sequence-ids
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
@@ -149,9 +149,9 @@ interface Ethernet6
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
-   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   switchport
    mlag 5
    ptp enable
    ptp mpass
