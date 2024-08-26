@@ -61,10 +61,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_flood_filter_time</samp>](## "ethernet_interfaces.[].evpn_ethernet_segment.mpls.tunnel_flood_filter_time") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target</samp>](## "ethernet_interfaces.[].evpn_ethernet_segment.route_target") | String |  |  |  | EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "ethernet_interfaces.[].encapsulation_dot1q_vlan") <span style="color:red">deprecated</span> | Integer |  |  |  | VLAN tag to configure on sub-interface.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>encapsulation_dot1q.vlan</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q</samp>](## "ethernet_interfaces.[].encapsulation_dot1q") | Dictionary |  |  |  | Warning: This should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q</samp>](## "ethernet_interfaces.[].encapsulation_dot1q") | Dictionary |  |  |  | Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_dot1q.vlan") | Integer | Required |  |  | VLAD ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "ethernet_interfaces.[].encapsulation_dot1q.inner_vlan") | Integer |  |  |  | Inner VLAN ID. This setting can be applied to sub-interfaces only. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan") | Dictionary |  |  |  | This setting can be applied to sub-interfaces only.<br>Warning: This should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "ethernet_interfaces.[].encapsulation_dot1q.inner_vlan") | Integer |  |  |  | Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan") | Dictionary |  |  |  | This setting can only be applied to sub-interfaces on EOS.<br>Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q.vlan") | Integer |  |  |  | Client VLAN ID. |
@@ -85,7 +85,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.outer") | Integer |  |  |  | Network outer VLAN ID. Not applicable for `protocol==untagged/client`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.inner") | Integer |  |  |  | Network inner VLAN ID. Not applicable for `protocol==untagged/client`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.protocol") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>dot1ad</code><br>- <code>client</code><br>- <code>untagged</code> | `untagged` (no encapsulation) is applicable for `untagged` client only.<br>`client` (retain client encapsulation) is not applicable for `untagged` client. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "ethernet_interfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "ethernet_interfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | This setting can only be applied to sub-interfaces on EOS.<br>Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "ethernet_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask or "dhcp". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address_secondaries</samp>](## "ethernet_interfaces.[].ip_address_secondaries") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].ip_address_secondaries.[]") | String |  |  |  |  |
@@ -601,17 +601,17 @@
         # Use <samp>encapsulation_dot1q.vlan</samp> instead.
         encapsulation_dot1q_vlan: <int>
 
-        # Warning: This should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
+        # Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
         encapsulation_dot1q:
 
           # VLAD ID.
           vlan: <int; required>
 
-          # Inner VLAN ID. This setting can be applied to sub-interfaces only.
+          # Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
           inner_vlan: <int>
 
-        # This setting can be applied to sub-interfaces only.
-        # Warning: This should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
+        # This setting can only be applied to sub-interfaces on EOS.
+        # Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
         encapsulation_vlan:
           client:
             # This key is deprecated.
@@ -670,6 +670,9 @@
             # `untagged` (no encapsulation) is applicable for `untagged` client only.
             # `client` (retain client encapsulation) is not applicable for `untagged` client.
             protocol: <str; "dot1q" | "dot1ad" | "client" | "untagged">
+
+        # This setting can only be applied to sub-interfaces on EOS.
+        # Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`.
         vlan_id: <int; 1-4094>
 
         # IPv4 address/mask or "dhcp".

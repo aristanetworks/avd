@@ -160,6 +160,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.pvlan_mapping is arista.avd.defined %}
    switchport pvlan mapping {{ ethernet_interface.pvlan_mapping }}
 {%     endif %}
+{%     if ethernet_interface.vlan_id is arista.avd.defined %}
+   vlan id {{ ethernet_interface.vlan_id }}
+{%     endif %}
 {%     if ethernet_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
 {%         set encapsulation_dot1q_cli = 'encapsulation dot1q vlan ' ~ ethernet_interface.encapsulation_dot1q.vlan %}
 {%         if ethernet_interface.encapsulation_dot1q.inner_vlan is arista.avd.defined %}

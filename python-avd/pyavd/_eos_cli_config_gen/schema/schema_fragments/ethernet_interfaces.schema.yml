@@ -257,7 +257,7 @@ keys:
             new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:
           description: |-
-            Warning: This should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
+            Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
           type: dict
           keys:
             vlan:
@@ -270,12 +270,12 @@ keys:
               type: int
               convert_types:
                 - str
-              description: Inner VLAN ID. This setting can be applied to sub-interfaces only.
+              description: Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
         encapsulation_vlan:
           type: dict
           description: |-
-            This setting can be applied to sub-interfaces only.
-            Warning: This should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
+            This setting can only be applied to sub-interfaces on EOS.
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
           keys:
             client:
               type: dict
@@ -386,6 +386,9 @@ keys:
                     - client
                     - untagged
         vlan_id:
+          description: |-
+            This setting can only be applied to sub-interfaces on EOS.
+            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`.
           type: int
           min: 1
           max: 4094

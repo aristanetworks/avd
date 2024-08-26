@@ -564,6 +564,7 @@ ethernet_interfaces:
 
   - name: Ethernet26.100
     description: TENANT_A pseudowire 1 interface
+    vlan_id: 10
     encapsulation_vlan:
       client:
         protocol: dot1q
@@ -1180,6 +1181,7 @@ ethernet_interfaces:
       frequency: 190050
 
   - name: Ethernet67.1
+    description: Test_encapsulation_dot1q
     encapsulation_dot1q:
       vlan: 4
       inner_vlan: 34
@@ -1195,6 +1197,7 @@ ethernet_interfaces:
         override: 100gbase-ar4
 
   - name: Ethernet68.1
+    description: Test_encapsulation_vlan1
     encapsulation_vlan:
       client:
         outer: 23
@@ -1206,6 +1209,7 @@ ethernet_interfaces:
         inner: 54
 
   - name: Ethernet68.2
+    description: Test_encapsulation_vlan2
     encapsulation_vlan:
       client:
         protocol: dot1q
@@ -1216,23 +1220,7 @@ ethernet_interfaces:
         inner: 54
 
   - name: Ethernet68.3
-    encapsulation_vlan:
-      client:
-        protocol: dot1q
-        vlan: 10
-      network:
-        protocol: dot1ad
-        vlan: 20
-
-  - name: Ethernet68.4
-    encapsulation_vlan:
-      client:
-        protocol: dot1q
-        vlan: 10
-      network:
-        protocol: client
-
-  - name: Ethernet68.5
+    description: Test_encapsulation_vlan3
     encapsulation_vlan:
       client:
         protocol: dot1ad
@@ -1241,7 +1229,8 @@ ethernet_interfaces:
         protocol: dot1q
         vlan: 25
 
-  - name: Ethernet68.6
+  - name: Ethernet68.4
+    description: Test_encapsulation_vlan4
     encapsulation_vlan:
       client:
         protocol: dot1ad
@@ -1252,7 +1241,8 @@ ethernet_interfaces:
         outer: 53
         inner: 6
 
-  - name: Ethernet68.7
+  - name: Ethernet68.5
+    description: Test_encapsulation_vlan5
     encapsulation_vlan:
       client:
         protocol: dot1ad
@@ -1263,7 +1253,8 @@ ethernet_interfaces:
         outer: 52
         inner: 62
 
-  - name: Ethernet68.8
+  - name: Ethernet68.6
+    description: Test_encapsulation_vlan6
     encapsulation_vlan:
       client:
         protocol: dot1ad
@@ -1272,7 +1263,8 @@ ethernet_interfaces:
       network:
         protocol: client
 
-  - name: Ethernet68.9
+  - name: Ethernet68.7
+    description: Test_encapsulation_vlan7
     encapsulation_vlan:
       client:
         protocol: untagged
@@ -1281,7 +1273,8 @@ ethernet_interfaces:
         outer: 35
         inner: 60
 
-  - name: Ethernet69.1
+  - name: Ethernet68.8
+    description: Test_encapsulation_vlan8
     encapsulation_vlan:
       client:
         protocol: untagged
@@ -1290,14 +1283,10 @@ ethernet_interfaces:
         outer: 35
         inner: 60
 
-  - name: Ethernet69.2
+  - name: Ethernet68.9
+    description: Test_encapsulation_vlan9
     encapsulation_vlan:
       client:
         protocol: untagged
       network:
         protocol: untagged
-
-  - name: Ethernet69.3
-    encapsulation_vlan:
-      client:
-        protocol: unmatched
