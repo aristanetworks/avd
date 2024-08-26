@@ -24,7 +24,7 @@
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | `False` |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note that this setting cannot be used while there are EVPN services present in the default VRF.<br> |
     | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | `True` |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
     | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | `False` |  | This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.<br> |
-    | [<samp>underlay_routing_protocol_address_family</samp>](## "underlay_routing_protocol_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | This feature requires IPv6 underlay routing protocol with numbered addresses to be used for all underlay interfaces.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.<br> |
+    | [<samp>underlay_ipv4</samp>](## "underlay_ipv4") | Boolean |  | `True` |  | Setting this feature to false allows a pure IPv6 underlay routing protocol with numbered addresses.<br>Requires "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type settings.<br> |
     | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | `False` |  | Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.<br>Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.<br>No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).<br>The configuration is intended to be used as multicast underlay for EVPN OISM overlay.<br> |
     | [<samp>underlay_multicast_anycast_rp</samp>](## "underlay_multicast_anycast_rp") | Dictionary |  |  |  | If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured<br>with one of the following methods:<br>- Anycast RP using PIM (RFC4610).<br>- Anycast RP using MSDP (RFC4611).<br><br>NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".<br> |
     | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- <code>pim</code><br>- <code>msdp</code> |  |
@@ -114,9 +114,9 @@
     # Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
     underlay_ipv6: <bool; default=False>
 
-    # This feature requires IPv6 underlay routing protocol with numbered addresses to be used for all underlay interfaces.
-    # Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
-    underlay_routing_protocol_address_family: <str; "ipv4" | "ipv6"; default="ipv4">
+    # Setting this feature to false allows a pure IPv6 underlay routing protocol with numbered addresses.
+    # Requires "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type settings.
+    underlay_ipv4: <bool; default=True>
 
     # Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
     # Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.

@@ -3923,21 +3923,18 @@ keys:
       '
     type: bool
     default: false
-  underlay_routing_protocol_address_family:
+  underlay_ipv4:
     documentation_options:
       table: fabric-settings
-    description: 'This feature requires IPv6 underlay routing protocol with numbered
-      addresses to be used for all underlay interfaces.
+    description: 'Setting this feature to false allows a pure IPv6 underlay routing
+      protocol with numbered addresses.
 
-      Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type
+      Requires "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type
       settings.
 
       '
-    type: str
-    valid_values:
-    - ipv4
-    - ipv6
-    default: ipv4
+    type: bool
+    default: true
   underlay_isis_bfd:
     documentation_options:
       table: isis-settings

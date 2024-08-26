@@ -34,7 +34,7 @@ class PrefixListsMixin(UtilsMixin):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             return None
 
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY

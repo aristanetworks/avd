@@ -55,7 +55,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         if self.shared_utils.overlay_cvx:
             vxlan["controller_client"] = {"enabled": True}
 
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             vxlan["ipv6_underlay"] = {"enabled": True}
 
         vlans = []

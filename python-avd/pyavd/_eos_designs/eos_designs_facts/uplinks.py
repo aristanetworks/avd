@@ -204,7 +204,7 @@ class UplinksMixin:
 
         if self.shared_utils.underlay_rfc5549:
             uplink["ipv6_enable"] = True
-        elif self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        elif not self.shared_utils.underlay_ipv4:
             uplink["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv6_prefix_length
             uplink["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ipv6(uplink_index)
             uplink["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ipv6(uplink_index)
@@ -337,7 +337,7 @@ class UplinksMixin:
 
                 if self.shared_utils.underlay_rfc5549:
                     subinterface["ipv6_enable"] = True
-                elif self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+                elif not self.shared_utils.underlay_ipv4:
                     subinterface["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv6_prefix_length
                     subinterface["ipv6_address"] = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ipv6(uplink_index, vrf["name"])
                     subinterface["peer_ipv6_address"] = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ipv6(uplink_index, vrf["name"])

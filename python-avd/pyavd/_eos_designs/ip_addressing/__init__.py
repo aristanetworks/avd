@@ -136,7 +136,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_primary"):
                 return self._template(
                     template_path,
@@ -163,7 +163,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
         Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_secondary"):
                 return self._template(
                     template_path,
@@ -299,7 +299,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._loopback_ipv4_address:
             return self._loopback_ipv4_address
 
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             if template_path := self.shared_utils.ip_addressing_templates.get("router_id"):
                 return self._template(
                     template_path,
@@ -351,7 +351,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
 
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             return None
 
         if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip_mlag"):
@@ -378,7 +378,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
 
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             return None
 
         if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip"):

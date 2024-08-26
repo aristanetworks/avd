@@ -31,7 +31,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         loopback_interfaces = []
         # Loopback 0
-        if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+        if not self.shared_utils.underlay_ipv4:
             loopback0 = {
                 "name": "Loopback0",
                 "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
@@ -82,7 +82,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
             and self.shared_utils.vtep_loopback.lower() != "loopback0"
             and self.shared_utils.vtep_loopback.lower().startswith("lo")
         ):
-            if self.shared_utils.underlay_routing_protocol_address_family == "ipv6":
+            if not self.shared_utils.underlay_ipv4:
                 vtep_loopback = {
                     "name": self.shared_utils.vtep_loopback,
                     "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(

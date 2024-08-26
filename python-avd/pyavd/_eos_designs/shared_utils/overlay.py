@@ -222,7 +222,7 @@ class OverlayMixin:
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
 
-        if self.underlay_routing_protocol_address_family == "ipv6":
+        if not self.underlay_ipv4:
             return self.ipv6_router_id
 
         return self.router_id
