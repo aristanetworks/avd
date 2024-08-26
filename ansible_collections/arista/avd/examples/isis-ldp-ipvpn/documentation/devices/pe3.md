@@ -463,13 +463,6 @@ ASN Notation: asplain
 | 10.255.2.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 10.1.1.10 | 65124 | C2_VRF1 | - | standard | 100 | - | - | - | - | - | - |
 
-#### Router BGP EVPN Address Family
-
-##### EVPN Peer Groups
-
-| Peer Group | Activate | Encapsulation |
-| ---------- | -------- | ------------- |
-
 #### Router BGP VPN-IPv4 Address Family
 
 ##### VPN-IPv4 Peer Groups
@@ -505,8 +498,6 @@ router bgp 65001
    neighbor 10.255.2.1 description rr1
    neighbor 10.255.2.2 peer group MPLS-OVERLAY-PEERS
    neighbor 10.255.2.2 description rr2
-   !
-   address-family evpn
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
