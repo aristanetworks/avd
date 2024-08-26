@@ -169,7 +169,7 @@ interface {{ ethernet_interface.name }}
 {%             set encapsulation_dot1q_cli = encapsulation_dot1q_cli ~ ' inner ' ~ ethernet_interface.encapsulation_dot1q.inner_vlan %}
 {%         endif %}
    {{ encapsulation_dot1q_cli }}
-{%     elif ethernet_interface.encapsulation_vlan is arista.avd.defined and ethernet_interface.type | arista.avd.default not in ['l3dot1q', 'l2dot1q'] %}
+{%     elif ethernet_interface.encapsulation_vlan.client.protocol is arista.avd.defined %}
 {%         set protocol = ethernet_interface.encapsulation_vlan.client.protocol %}
 {%         if protocol in ['dot1q', 'dot1ad'] %}
 {%             if ethernet_interface.encapsulation_vlan.client.vlan is arista.avd.defined %}

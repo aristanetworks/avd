@@ -115,12 +115,10 @@
 {%     set encapsulation_dot1q_interfaces = [] %}
 {%     set flexencap_interfaces = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.type | arista.avd.default not in ['l3dot1q', 'l2dot1q'] %}
-{%             if ethernet_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
-{%                 do encapsulation_dot1q_interfaces.append(ethernet_interface) %}
-{%             elif ethernet_interface.encapsulation_vlan is arista.avd.defined %}
-{%                 do flexencap_interfaces.append(ethernet_interface) %}
-{%             endif %}
+{%         if ethernet_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
+{%             do encapsulation_dot1q_interfaces.append(ethernet_interface) %}
+{%         elif ethernet_interface.encapsulation_vlan.client.protocol is arista.avd.defined %}
+{%             do flexencap_interfaces.append(ethernet_interface) %}
 {%         elif ethernet_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
 {%             if ethernet_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
 {%                 do encapsulation_dot1q_interfaces.append(ethernet_interface) %}

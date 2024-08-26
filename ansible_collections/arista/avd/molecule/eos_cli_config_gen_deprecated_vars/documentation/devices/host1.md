@@ -18,12 +18,27 @@
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | - | access | 100 | - | - | - |
-| Ethernet2 | - | trunk | 110 | 10 | group1, group2 | - |
-| Ethernet3 | - | trunk phone | - | tag | - | - |
-| Ethernet4 | - | - | - | - | - | - |
+| Ethernet1 | Test_mode_and_vlans | access | 100 | - | - | - |
+| Ethernet2 | Test_trunk_groups_and_native_vlan | trunk | 110 | 10 | group1, group2 | - |
+| Ethernet3 | Test_native_vlan_tag_and_phone | trunk phone | - | tag | - | - |
+| Ethernet4 | Test_vlan_translations | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
+
+##### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet5 | Test_encapsulation_dot1q_vlan | - | 20 | - |
+
+##### Flexible Encapsulation Interfaces
+
+| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
+| Ethernet6 | Test_encapsulation_vlan1 | - | dot1q | 10 | - | - | dot1q | 20 | - | - |
+| Ethernet7 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | 12 | client | - | - | - |
+| Ethernet8 | Test_encapsulation_vlan3 | - | unmatched | - | - | - | - | - | - | - |
+| Ethernet9 | Test_encapsulation_vlan4 | - | dot1q | - | 10 | 12 | dot1q | - | 20 | 22 |
 
 ##### Private VLAN
 
@@ -51,11 +66,13 @@
 ```eos
 !
 interface Ethernet1
+   description Test_mode_and_vlans
    switchport access vlan 100
    switchport mode access
    switchport
 !
 interface Ethernet2
+   description Test_trunk_groups_and_native_vlan
    switchport trunk native vlan 10
    switchport trunk allowed vlan 110
    switchport mode trunk
@@ -64,6 +81,7 @@ interface Ethernet2
    switchport
 !
 interface Ethernet3
+   description Test_native_vlan_tag_and_phone
    switchport trunk native vlan tag
    switchport phone vlan 20
    switchport phone trunk tagged
@@ -71,12 +89,37 @@ interface Ethernet3
    switchport
 !
 interface Ethernet4
+   description Test_vlan_translations
    switchport vlan translation in 23 50
    switchport vlan translation out 25 49
    switchport vlan translation 34 60
    switchport
    switchport trunk private-vlan secondary
    switchport pvlan mapping 2,3,4
+!
+interface Ethernet5
+   description Test_encapsulation_dot1q_vlan
+   encapsulation dot1q vlan 20
+!
+interface Ethernet6
+   description Test_encapsulation_vlan1
+   encapsulation vlan
+      client dot1q 10 network dot1q 20
+!
+interface Ethernet7
+   description Test_encapsulation_vlan2
+   encapsulation vlan
+      client dot1q outer 10 inner 12
+!
+interface Ethernet8
+   description Test_encapsulation_vlan3
+   encapsulation vlan
+      client unmatched
+!
+interface Ethernet9
+   description Test_encapsulation_vlan4
+   encapsulation vlan
+      client dot1q outer 10 inner 12 network dot1q outer 20 inner 22
 ```
 
 ### Port-Channel Interfaces
