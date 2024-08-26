@@ -70,6 +70,10 @@ class IpAddressingMixin:
         return get(self.switch_data_combined, "loopback_ipv6_pool", required=True)
 
     @cached_property
+    def loopback_ipv6_prefix_length(self: SharedUtils) -> str:
+        return get(self.switch_data_combined, "loopback_ipv6_prefix_length", default=128)
+
+    @cached_property
     def vtep_loopback_ipv6_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "vtep_loopback_ipv6_pool", required=True)
 

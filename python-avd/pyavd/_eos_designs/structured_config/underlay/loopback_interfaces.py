@@ -40,7 +40,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                     ),
                 ),
                 "shutdown": False,
-                "ipv6_address": f"{self.shared_utils.ipv6_router_id}/64",
+                "ipv6_address": f"{self.shared_utils.ipv6_router_id}/{self.shared_utils.loopback_ipv6_prefix_length}",
             }
         else:
             loopback0 = {
@@ -55,7 +55,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
             }
 
         if self.shared_utils.ipv6_router_id is not None:
-            loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/64"
+            loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/{self.shared_utils.loopback_ipv6_prefix_length}"
 
         if self.shared_utils.underlay_ospf:
             loopback0["ospf_area"] = self.shared_utils.underlay_ospf_area
@@ -89,7 +89,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                         InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
                     ),
                     "shutdown": False,
-                    "ipv6_address": f"{self.shared_utils.vtep_ipv6}/64",
+                    "ipv6_address": f"{self.shared_utils.vtep_ipv6}/{self.shared_utils.loopback_ipv6_prefix_length}",
                 }
             else:
                 vtep_loopback = {

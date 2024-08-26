@@ -488,6 +488,15 @@ $defs:
             description: IPv6 subnet for Loopback0 allocation.
             type: str
             format: ipv6_cidr
+          loopback_ipv6_prefix_length:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: IPv6 prefix length used for loopbacks
+            type: int
+            valid_values:
+              - 64
+              - 128
+            default: 128
           loopback_ipv6_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration

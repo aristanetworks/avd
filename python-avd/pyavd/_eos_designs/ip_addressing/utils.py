@@ -121,6 +121,10 @@ class UtilsMixin:
         return self.shared_utils.loopback_ipv6_pool
 
     @cached_property
+    def _loopback_ipv6_prefix_length(self: AvdIpAddressing) -> str:
+        return self.shared_utils.loopback_ipv6_prefix_length
+
+    @cached_property
     def _loopback_ipv6_offset(self: AvdIpAddressing) -> int:
         return self.shared_utils.loopback_ipv6_offset
 

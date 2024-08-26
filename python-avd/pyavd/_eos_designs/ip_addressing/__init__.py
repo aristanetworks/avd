@@ -338,7 +338,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv6_offset
-        return get_ip_from_pool(self._loopback_ipv6_pool, 64, offset, 0)
+        return get_ip_from_pool(self._loopback_ipv6_pool, self.shared_utils.loopback_ipv6_prefix_length, offset, 0)
 
     def vtep_ip_mlag(self) -> str:
         """
