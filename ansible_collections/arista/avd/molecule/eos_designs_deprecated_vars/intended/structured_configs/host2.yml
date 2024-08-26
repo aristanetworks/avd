@@ -19,8 +19,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '102'
-  address_family_evpn:
-    peer_groups: []
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
