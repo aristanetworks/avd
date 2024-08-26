@@ -2662,6 +2662,9 @@ keys:
                     additional_paths:
                       type: dict
                       $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                    redistribute_internal:
+                      type: bool
+                      description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -2782,6 +2785,9 @@ keys:
                     additional_paths:
                       type: dict
                       $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                    redistribute_internal:
+                      type: bool
+                      description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
                 neighbors:
                   type: list
                   primary_key: ip_address

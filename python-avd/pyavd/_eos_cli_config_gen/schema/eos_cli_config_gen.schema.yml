@@ -12891,32 +12891,7 @@ keys:
                   - mpls
                 additional_paths:
                   type: dict
-                  keys:
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/additional_paths
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -13758,32 +13733,7 @@ keys:
             keys:
               additional_paths:
                 type: dict
-                keys:
-                  receive:
-                    type: bool
-                  send:
-                    type: dict
-                    keys:
-                      any:
-                        type: bool
-                      backup:
-                        type: bool
-                      ecmp:
-                        type: bool
-                      ecmp_limit:
-                        type: int
-                        description: Amount of ECMP paths to send.
-                        convert_types:
-                        - str
-                        min: 2
-                        max: 64
-                      limit:
-                        type: int
-                        description: Amount of paths to send.
-                        convert_types:
-                        - str
-                        min: 2
-                        max: 64
+                $ref: eos_cli_config_gen#/$defs/additional_paths
           neighbors:
             type: list
             primary_key: ip_address
@@ -13796,36 +13746,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/additional_paths
           peer_groups:
             type: list
             primary_key: name
@@ -13839,36 +13760,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/additional_paths
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -14572,36 +14464,7 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
-                      keys:
-                        install:
-                          type: bool
-                        install_ecmp_primary:
-                          type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
+                      $ref: eos_cli_config_gen#/$defs/additional_paths
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -14732,36 +14595,7 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
-                      keys:
-                        install:
-                          type: bool
-                        install_ecmp_primary:
-                          type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
+                      $ref: eos_cli_config_gen#/$defs/additional_paths
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -19250,6 +19084,48 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/keys/vxlan_interface/keys/vxlan1
 $defs:
+  additional_paths:
+    type: dict
+    keys:
+      install:
+        type: bool
+      install_ecmp_primary:
+        type: bool
+      receive:
+        type: bool
+      send:
+        type: str
+        description: 'Select an option to send multiple paths for same prefix through
+          bgp updates.
+
+          any: Send any eligible path.
+
+          backup: Best path and installed backup path.
+
+          ecmp: All paths in best path ECMP group.
+
+          limit: Limit to n eligible paths'
+        valid_values:
+        - any
+        - backup
+        - ecmp
+        - limit
+      send_ecmp_limit:
+        type: int
+        description: Amount of ECMP paths to send. If this key-value pair is not set,
+          it will send all paths in best ECMP group.
+        convert_types:
+        - str
+        min: 2
+        max: 64
+      send_limit:
+        type: int
+        description: Number of paths to send through bgp updates(The value of 'send'
+          key must be 'limit').
+        convert_types:
+        - str
+        min: 2
+        max: 64
   application_traffic_recognition_application:
     type: dict
     keys:

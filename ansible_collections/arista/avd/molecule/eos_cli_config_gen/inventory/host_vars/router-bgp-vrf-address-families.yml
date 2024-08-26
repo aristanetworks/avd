@@ -50,8 +50,7 @@ router_bgp:
           additional_paths:
             install_ecmp_primary: true
             receive: true
-            send: ecmp
-            ecmp_limit: 4
+            send_ecmp_limit: 4
           redistribute_internal: false
         neighbors:
           - ip_address: 1.2.3.4
@@ -179,8 +178,7 @@ router_bgp:
       address_family_ipv6:
         bgp:
           additional_paths:
-            send: limit
-            limit: 3
+            send_limit: 3
 
     - name: VRF03
       address_family_ipv4:

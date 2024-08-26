@@ -117,13 +117,11 @@ router_bgp:
       - name: ADDITIONAL-PATH-PG-4
         activate: true
         additional_paths:
-          send: ecmp
-          ecmp_limit: 42
+          send_ecmp_limit: 42
       - name: ADDITIONAL-PATH-PG-5
         activate: true
         additional_paths:
-          send: limit
-          limit: 42
+          send_limit: 42
       # Checking the `no neighbor <PG> additional-paths send any is rendered
       - name: ADDITIONAL-PATH-PG-6
         activate: true
