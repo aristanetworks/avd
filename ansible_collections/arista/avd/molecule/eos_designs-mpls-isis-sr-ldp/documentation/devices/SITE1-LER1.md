@@ -546,7 +546,7 @@ router ospf 19 vrf TENANT_B_INTRA
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0005.00 |
+| Net-ID | 49.0001.1000.7000.0005.00 |
 | Type | level-1-2 |
 | Router-ID | 100.70.0.5 |
 | Log Adjacency Changes | True |
@@ -590,7 +590,7 @@ router ospf 19 vrf TENANT_B_INTRA
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0005.00
+   net 49.0001.1000.7000.0005.00
    is-type level-1-2
    router-id ipv4 100.70.0.5
    log-adjacency-changes

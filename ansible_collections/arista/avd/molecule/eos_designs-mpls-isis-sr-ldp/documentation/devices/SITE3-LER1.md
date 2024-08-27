@@ -247,7 +247,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0010.00 |
+| Net-ID | 49.0001.1000.7000.0010.00 |
 | Type | level-1-2 |
 | Router-ID | 100.70.0.10 |
 | Log Adjacency Changes | True |
@@ -289,7 +289,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0010.00
+   net 49.0001.1000.7000.0010.00
    is-type level-1-2
    router-id ipv4 100.70.0.10
    log-adjacency-changes
