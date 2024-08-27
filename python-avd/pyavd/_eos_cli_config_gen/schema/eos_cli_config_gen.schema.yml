@@ -2334,13 +2334,14 @@ keys:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
 
-                    `client` (retain client encapsulation) is not applicable for `untagged`
-                    client.'
+                    `client` and `client inner` (retain client encapsulation) is not
+                    applicable for `untagged` client.'
                   type: str
                   valid_values:
                   - dot1q
                   - dot1ad
                   - client
+                  - client inner
                   - untagged
         vlan_id:
           description: 'This setting can only be applied to sub-interfaces on EOS.

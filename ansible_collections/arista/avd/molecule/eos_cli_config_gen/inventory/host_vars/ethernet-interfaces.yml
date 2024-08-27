@@ -1290,3 +1290,13 @@ ethernet_interfaces:
         protocol: untagged
       network:
         protocol: untagged
+
+  - name: Ethernet68.10
+    description: Test_encapsulation_vlan9
+    encapsulation_vlan:
+      client:
+        protocol: dot1q
+        outer: 14
+        inner: 11
+      network:
+        protocol: client inner

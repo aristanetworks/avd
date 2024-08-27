@@ -151,6 +151,7 @@
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
 {%             set client_protocol = ethernet_interface.encapsulation_vlan.client.protocol | arista.avd.default('-') %}
+{# The below if condition is to get client protocol from deprecated keys #}
 {%             if client_protocol == '-' %}
 {%                 if ethernet_interface.encapsulation_vlan.client.dot1q is arista.avd.defined %}
 {%                     set client_protocol = 'dot1q' %}
@@ -164,6 +165,7 @@
 {%                 set client_inner_vlan = ethernet_interface.encapsulation_vlan.client.inner | arista.avd.default(ethernet_interface.encapsulation_vlan.client.dot1q.inner) %}
 {%             endif %}
 {%             set network_protocol = ethernet_interface.encapsulation_vlan.network.protocol | arista.avd.default('-') %}
+{# The below if condition is to get network protocol from deprecated keys #}
 {%             if network_protocol == '-' %}
 {%                 if ethernet_interface.encapsulation_vlan.network.dot1q is arista.avd.defined %}
 {%                     set network_protocol = 'dot1q' %}

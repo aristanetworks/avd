@@ -170,6 +170,7 @@ sFlow is disabled.
 | Ethernet68.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | dot1ad | - | 35 | 60 |
 | Ethernet68.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | dot1q | - | 35 | 60 |
 | Ethernet68.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | untagged | - | - | - |
+| Ethernet68.10 | Test_encapsulation_vlan9 | - | dot1q | - | 14 | 11 | client inner | - | - | - |
 
 ##### Private VLAN
 
@@ -1130,6 +1131,11 @@ interface Ethernet68.9
    description Test_encapsulation_vlan9
    encapsulation vlan
       client untagged network untagged
+!
+interface Ethernet68.10
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client dot1q outer 14 inner 11 network client inner
 !
 interface Ethernet69
    description IP NAT service-profile
