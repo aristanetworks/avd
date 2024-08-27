@@ -179,8 +179,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
 service_routing_protocols_model: multi-agent
 ip_routing: true
 aaa_root:

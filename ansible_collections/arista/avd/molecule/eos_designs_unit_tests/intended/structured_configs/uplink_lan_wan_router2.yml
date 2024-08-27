@@ -54,8 +54,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   vrfs:
   - name: VRF1
     rd: 192.168.1.2:123

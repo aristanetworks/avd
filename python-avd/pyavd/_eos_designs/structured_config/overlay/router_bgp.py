@@ -361,7 +361,7 @@ class RouterBgpMixin(UtilsMixin):
                     "activate": True,
                 },
             ],
-            "bgp": {"additional_paths": {"receive": True, "send": {"any": True}}},
+            "bgp": {"additional_paths": {"receive": True, "send": "any"}},
         }
 
         if self._is_wan_server_with_peers:
