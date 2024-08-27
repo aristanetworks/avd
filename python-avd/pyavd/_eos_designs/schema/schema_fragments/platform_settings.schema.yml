@@ -29,6 +29,11 @@ keys:
       If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
       If you need to add custom platforms, create them under `custom_platform_settings`.
       Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+
+      Campus platforms are separated out by their ability to support "trident_forwarding_table_partition".
+      This is required for EVPN multicast, currently only supported on all 720XP platforms.
+      This command is not supported on 710P or 722XP platforms. 720D range has some devices that support this
+      and others that don't, but they are all grouped together as none of them support EVPN multicast.
     items:
       type: dict
       keys:
