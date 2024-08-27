@@ -97,6 +97,31 @@ flow tracking hardware
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666
+   tracker T2
+      exporter T2-E1
+         collector 42.42.42.42
+   tracker T3
+      exporter T3-E1
+      exporter T3-E2
+         collector 10.10.10.10 port 777
+      exporter T3-E3
+         collector this.is.my.awesome.collector.dns.name port 888
+         format ipfix version 10
+         local interface Management1
+         template interval 424242
+      exporter T3-E4
+         collector dead:beef::cafe
+   record format ipfix standard timestamps counters
+   no shutdown
+!
+flow tracking sampled
+   encapsulation ipv4 ipv6 mpls
+   sample 666
+   hardware offload ipv4
+   hardware offload threshold minimum 2 samples
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
    !
    tracker T2
       !
@@ -119,41 +144,6 @@ flow tracking hardware
       exporter T3-E4
          collector dead:beef::cafe
    record format ipfix standard timestamps counters
-   no shutdown
-!
-flow tracking sampled
-   encapsulation ipv4 ipv6 mpls
-   sample 666
-   hardware offload ipv4
-   hardware offload threshold minimum 2 samples
-   !
-   tracker T1
-      record export on inactive timeout 3666
-      record export on interval 5666
-      record export mpls
-   !
-   tracker T2
-      flow table size 614400 entries
-      !
-      exporter T2-E1
-         collector 42.42.42.42
-   !
-   tracker T3
-      flow table size 100000 entries
-      !
-      exporter T3-E1
-      !
-      exporter T3-E2
-         collector 10.10.10.10 port 777
-      !
-      exporter T3-E3
-         collector this.is.my.awesome.collector.dns.name port 888
-         format ipfix version 10
-         local interface Management1
-         template interval 424242
-      !
-      exporter T3-E4
-         collector dead:beef::cafe
    no shutdown
 ```
 
