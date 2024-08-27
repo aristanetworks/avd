@@ -8,14 +8,9 @@ from re import search
 from typing import TYPE_CHECKING
 
 from pyavd._utils import default, get
-from pyavd.avd_schema_tools import AvdSchemaTools
-from pyavd.constants import EOS_DESIGNS_SCHEMA_ID
 
 if TYPE_CHECKING:
     from . import SharedUtils
-
-eos_designs_schema_tools = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID)
-DEFAULT_PLATFORM_SETTINGS = eos_designs_schema_tools.avdschema.subschema(["platform_settings"])["default"]
 
 
 class PlatformMixin:
@@ -33,7 +28,10 @@ class PlatformMixin:
     @cached_property
     def platform_settings(self: SharedUtils) -> dict:
         custom_platform_settings = get(self.hostvars, "custom_platform_settings", default=[])
-        platform_settings = custom_platform_settings + get(self.hostvars, "platform_settings", default=DEFAULT_PLATFORM_SETTINGS)
+
+        # Reading default value from schema
+        default_platform_settings = self.schema.get_default_value(["platform_settings"])
+        platform_settings = custom_platform_settings + get(self.hostvars, "platform_settings", default=default_platform_settings)
 
         # First look for a matching platform setting specifying our platform
         for platform_setting in platform_settings:
