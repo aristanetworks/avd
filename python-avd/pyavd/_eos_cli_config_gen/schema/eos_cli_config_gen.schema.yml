@@ -873,22 +873,11 @@ keys:
         type: str
   community_lists:
     type: list
-    primary_key: name
-    display_name: Community Lists (legacy model)
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Community-list Name.
-        action:
-          type: str
-          required: true
-          description: 'Action as string.
-
-            Example: "permit GSHUT 65123:123"
-
-            '
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 5.0.0
+      new_key: ip_community_lists
   config_comment:
     type: str
     description: 'Add a comment to provide information about the configuration.

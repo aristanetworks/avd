@@ -7,19 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>community_lists</samp>](## "community_lists") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "community_lists.[].name") | String | Required, Unique |  |  | Community-list Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "community_lists.[].action") | String | Required |  |  | Action as string.<br>Example: "permit GSHUT 65123:123"<br> |
+    | [<samp>community_lists</samp>](## "community_lists") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ip_community_lists</samp> instead.</span> |
 
 === "YAML"
 
     ```yaml
-    community_lists:
 
-        # Community-list Name.
-      - name: <str; required; unique>
-
-        # Action as string.
-        # Example: "permit GSHUT 65123:123"
-        action: <str; required>
     ```
