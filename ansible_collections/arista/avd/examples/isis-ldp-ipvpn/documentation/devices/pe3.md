@@ -389,7 +389,7 @@ router ospf 10 vrf C1_VRF1
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0003.00 |
+| Net-ID | 49.0001.0102.5500.1003.00 |
 | Type | level-2 |
 | Router-ID | 10.255.1.3 |
 | Log Adjacency Changes | True |
@@ -415,7 +415,7 @@ router ospf 10 vrf C1_VRF1
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0003.00
+   net 49.0001.0102.5500.1003.00
    is-type level-2
    router-id ipv4 10.255.1.3
    log-adjacency-changes

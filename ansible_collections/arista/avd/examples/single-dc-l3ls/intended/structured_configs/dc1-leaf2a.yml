@@ -90,6 +90,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.101
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc1-leaf2b
   - name: VRF11
     router_id: 10.255.0.5
     rd: 10.255.0.5:11
@@ -107,6 +108,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.101
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc1-leaf2b
   vlans:
   - id: 11
     tenant: TENANT1
