@@ -8,7 +8,7 @@ type: dict
 keys:
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-output-settings
+      table: role-documentation-settings
     description: |
       Control fabric documentation generation.
     type: dict
@@ -18,3 +18,7 @@ keys:
           Generate fabric-wide documentation for connected endpoints.
         type: bool
         default: false
+        deprecation:
+          warning: true
+          new_key: avd_documentation_connected_endpoints
+          remove_in_version: 6.0.0

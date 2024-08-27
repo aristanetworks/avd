@@ -59,33 +59,19 @@
 
 - name: Generate fabric documentation
   tags: [build, provision, documentation]
-  run_once: true
-  delegate_to: localhost
-  check_mode: false
-  ansible.builtin.copy:
-    content: "{{ lookup('template', 'documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-    mode: "0o664"
-
-- name: Generate fabric point-to-point links summary in csv format.
-  tags: [build, provision, documentation]
-  ansible.builtin.template:
-    src: documentation/fabric-p2p-links.j2
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
+  arista.avd.eos_designs_documentation:
+    # cprofile_file: "eos_designs_docs.prof"
+    device_list: "{{ ansible_play_hosts }}"
+    structured_config_dir: "{{ structured_dir }}"
+    structured_config_suffix: "{{ avd_structured_config_file_format }}"
+    fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    fabric_documentation: true
+    include_connected_endpoints: "{{ avd_connected_endpoints_documentation | arista.avd.default(eos_designs_documentation.connected_endpoints, false) }}"
     mode: "0o664"
   delegate_to: localhost
-  run_once: true
   check_mode: false
-
-- name: Generate fabric topology in csv format.
-  tags: [build, provision, documentation]
-  ansible.builtin.template:
-    src: documentation/fabric-topology.j2
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
-    mode: "0o664"
-  delegate_to: localhost
   run_once: true
-  check_mode: false
+  when: avd_fabric_documentation | arista.avd.default(true)
 
 - name: Remove avd_switch_facts
   tags: [build, provision, facts, remove_avd_switch_facts]

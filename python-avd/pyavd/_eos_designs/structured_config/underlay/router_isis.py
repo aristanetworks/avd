@@ -31,7 +31,7 @@ class RouterIsisMixin(UtilsMixin):
         router_isis = {
             "instance": self.shared_utils.isis_instance_name,
             "log_adjacency_changes": True,
-            "net": self._isis_net,
+            "net": self.shared_utils.isis_net,
             "router_id": self.shared_utils.router_id,
             "is_type": self._is_type,
             "address_family_ipv4": {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths", default=4)},
@@ -102,16 +102,3 @@ class RouterIsisMixin(UtilsMixin):
         if is_type not in ["level-1", "level-2", "level-1-2"]:
             is_type = "level-2"
         return is_type
-
-    @staticmethod
-    def ipv4_to_isis_system_id(ipv4_address: str) -> str:
-        """
-        Converts an IPv4 address into an IS-IS system-id.
-
-        Examples:
-        192.168.0.1 -> 1921.6800.0001
-        10.0.0.3 -> 0100.0000.0003
-        """
-        octets = str(ipv4_address).split(".")
-        padded_addr = octets[0].zfill(3) + octets[1].zfill(3) + octets[2].zfill(3) + octets[3].zfill(3)
-        return ".".join(padded_addr[i : i + 4] for i in range(0, len(padded_addr), 4))

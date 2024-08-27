@@ -87,7 +87,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 5 | 1.96 % |
+| 192.168.255.0/24 | 256 | 5 | 1.95 % |
 
 ### Loopback0 Interfaces Node Allocation
 
@@ -108,7 +108,7 @@
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 
 ### VTEP Loopback Node allocation
 

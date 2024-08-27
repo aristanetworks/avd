@@ -9,3 +9,4 @@ __pycache__/
 *.prof
 /site/
 /pyavd/_eos_cli_config_gen/j2templates/compiled_templates
+/pyavd/_eos_designs/j2templates/compiled_templates

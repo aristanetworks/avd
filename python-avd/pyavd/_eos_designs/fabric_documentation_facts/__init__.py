@@ -1,0 +1,292 @@
+# Copyright (c) 2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+from functools import cached_property
+from ipaddress import IPv4Network, IPv6Network, ip_network
+
+from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._utils import default, get, get_item
+from pyavd.j2filters import natural_sort
+
+from .topology import Topology
+
+
+class FabricDocumentationFacts(AvdFacts):
+    avd_switch_facts: dict[str, dict]
+    structured_configs: dict[str, dict]
+    _fabric_name: str
+    _include_connected_endpoints: bool
+    """Avoid building data for connected endpoints unless we need it."""
+
+    # Overriding class vars from AvdFacts, since fabric documentation covers all devices.
+    _hostvars = NotImplemented
+    shared_utils = NotImplemented
+
+    def __init__(self, avd_facts: dict[str, dict], structured_configs: dict[str, dict], fabric_name: str, include_connected_endpoints: bool) -> None:  # pylint: disable=super-init-not-called
+        self.avd_switch_facts = {hostname: facts["switch"] for hostname, facts in get(avd_facts, "avd_switch_facts", required=True).items()}
+        self._fabric_name = fabric_name
+        self.structured_configs = structured_configs
+        self._include_connected_endpoints = include_connected_endpoints
+
+    @cached_property
+    def fabric_name(self) -> str:
+        """
+        Fabric Name.
+
+        We assume that all devices are part of the same fabric, so only fetching from the first.
+        """
+        return self._fabric_name
+
+    @cached_property
+    def fabric_switches(self) -> list[dict]:
+        """List of fabric switches."""
+        return natural_sort(
+            [
+                {
+                    "node": hostname,
+                    "type": self.avd_switch_facts[hostname]["type"],
+                    "pod": self.avd_switch_facts[hostname].get("pod"),
+                    "mgmt_ip": self.avd_switch_facts[hostname].get("mgmt_ip") or "-",
+                    "platform": self.avd_switch_facts[hostname].get("platform") or "-",
+                    "provisioned": "Provisioned" if self.avd_switch_facts[hostname].get("is_deployed") else "Not Available",
+                    "serial_number": self.avd_switch_facts[hostname].get("serial_number") or "-",
+                    "inband_mgmt_ip": self.avd_switch_facts[hostname].get("inband_mgmt_ip"),
+                    "inband_mgmt_interface": self.avd_switch_facts[hostname].get("inband_mgmt_interface"),
+                    "loopback0_ip_address": get(
+                        get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback0", default={}), "ip_address"
+                    ),
+                    # TODO: Improve VTEP loopback detection
+                    "vtep_loopback_ip_address": get(
+                        get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback1", default={}), "ip_address"
+                    ),
+                    "router_isis_net": get(structured_config, "router_isis.net"),
+                }
+                for hostname, structured_config in self.structured_configs.items()
+            ],
+            sort_key="node",
+        )
+
+    @cached_property
+    def has_isis(self) -> bool:
+        return any(fabric_switch.get("router_isis_net") for fabric_switch in self.fabric_switches)
+
+    @cached_property
+    def _node_types(self) -> set[str]:
+        return {switch["type"] for switch in self.fabric_switches}
+
+    @cached_property
+    def _topology(self) -> Topology:
+        topology = Topology()
+        for hostname, structured_config in self.structured_configs.items():
+            for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
+                if (peer_type := get(ethernet_interface, "peer_type")) not in self._node_types and peer_type != "mlag_peer":
+                    continue
+
+                peer = get(ethernet_interface, "peer", required=True)
+                if peer_type == "mlag_peer":
+                    peer_type = self.avd_switch_facts[peer]["type"]
+                    mlag_peer = True
+                else:
+                    mlag_peer = False
+                if peer_interface := get(ethernet_interface, "peer_interface"):
+                    peer_ip_address = get(
+                        get_item(get(self.structured_configs, f"{peer}..ethernet_interfaces", separator="..", default=[]), "name", peer_interface, default={}),
+                        "ip_address",
+                    )
+                else:
+                    peer_ip_address = None
+
+                data = (
+                    self.avd_switch_facts[hostname]["type"],  # type
+                    get(ethernet_interface, "name"),  # interface
+                    get(ethernet_interface, "ip_address"),  # ip_address
+                    mlag_peer,  # is_mlag_peer
+                )
+                peer_data = (
+                    peer_type,  # type
+                    peer_interface,  # interface
+                    peer_ip_address,  # ip_address
+                    mlag_peer,  # is_mlag_peer
+                )
+                topology.add_edge(hostname, peer, data, peer_data)
+
+        return topology
+
+    @cached_property
+    def topology_links(self) -> list[dict]:
+        """
+        List of topology links.
+
+        These are links defined using "uplinks" + MLAG
+        """
+        return natural_sort(
+            [
+                {
+                    "node": hostname,
+                    "type": data[0],
+                    "node_interface": data[1],
+                    "node_ip_address": data[2],
+                    "peer": peer_name,
+                    "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
+                    "peer_interface": peer_data[1],
+                    "peer_ip_address": peer_data[2],
+                }
+                for hostname, edges in self._topology.get_edges_by_node_unidirectional_sorted().items()
+                if edges
+                for edge in edges
+                for node_name, data in edge.node_data
+                if node_name == hostname
+                # Below is just a way to set the peer variables for easy reuse.
+                for peer_name, peer_data in edge.node_data
+                if peer_name != hostname
+            ]
+        )
+
+    @cached_property
+    def uplink_ipv4_pools(self) -> list[dict]:
+        # Build set of loopback_ipv4_pool for all devices
+        pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "uplink_ipv4_pool"))}
+        pools = [ip_network(pool, strict=False) for pool in pools_set]
+
+        # Build list of ip addresses found in topology
+        ip_addresses = [ip_network(data[2], strict=False) for edge in self._topology.get_edges() for _, data in edge.node_data if data[2] is not None]
+
+        return self.render_pools_as_list(pools, ip_addresses)
+
+    @cached_property
+    def loopback_ipv4_pools(self) -> list[dict]:
+        # Build set of loopback_ipv4_pool for all devices
+        pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "loopback_ipv4_pool"))}
+        pools = [ip_network(pool, strict=False) for pool in pools_set]
+
+        # Build list of ip addresses found in fabric switches
+        ip_addresses = [
+            ip_network(fabric_switch["loopback0_ip_address"], strict=False)
+            for fabric_switch in self.fabric_switches
+            if fabric_switch["loopback0_ip_address"] is not None
+        ]
+        return self.render_pools_as_list(pools, ip_addresses)
+
+    @cached_property
+    def vtep_loopback_ipv4_pools(self) -> list[dict]:
+        # Build set of vtep_loopback_ipv4_pool from all devices
+        pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "vtep_loopback_ipv4_pool"))}
+        pools = [ip_network(pool, strict=False) for pool in pools_set]
+
+        # Build list of ip addresses found in fabric switches
+        ip_addresses = [
+            ip_network(fabric_switch["vtep_loopback_ip_address"], strict=False)
+            for fabric_switch in self.fabric_switches
+            if fabric_switch["vtep_loopback_ip_address"] is not None
+        ]
+        return self.render_pools_as_list(pools, ip_addresses)
+
+    def render_pools_as_list(self, pools: list[ip_network], addresses: list[ip_network]) -> list:
+        return natural_sort([self.get_pool_data(pool, addresses) for pool in pools], sort_key="pool")
+
+    def get_pool_data(self, pool: IPv4Network | IPv6Network, addresses: list[IPv4Network | IPv6Network]) -> dict:
+        size = self.get_pool_size(pool)
+        used = self.count_addresses_in_pool(pool, addresses)
+        return {"pool": pool, "size": size, "used": used, "used_percent": round(100 * used / size, 2)}
+
+    def get_pool_size(self, pool: IPv4Network | IPv6Network) -> int:
+        max_prefixlen = 128 if pool.version == 6 else 32
+        return 2 ** (max_prefixlen - pool.prefixlen)
+
+    def count_addresses_in_pool(self, pool: IPv4Network | IPv6Network, addresses: list[IPv4Network | IPv6Network]) -> int:
+        return len([True for address in addresses if address.subnet_of(pool)])
+
+    @cached_property
+    def all_connected_endpoints(self) -> dict[str, list]:
+        """
+        Returning list of connected_endpoints from all devices.
+
+        First generate a dict of lists keyed with connected endpoint key.
+        Then return a natural sorted dict where the inner lists are natural sorted on peer.
+        """
+        if not self._include_connected_endpoints:
+            return {}
+
+        all_connected_endpoints = {}
+        for hostname, structured_config in self.structured_configs.items():
+            connected_endpoints_keys = get(self.avd_switch_facts[hostname], "connected_endpoints_keys", default=[])
+            connected_endpoints_by_type = {item["type"]: item for item in connected_endpoints_keys}
+            port_channel_interfaces = get(structured_config, "port_channel_interfaces", default=[])
+            for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
+                if (peer_type := get(ethernet_interface, "peer_type")) not in connected_endpoints_by_type:
+                    continue
+
+                if (channel_group := get(ethernet_interface, "channel_group.id")) is not None:
+                    # Port channel member
+                    port_channel_interface = get_item(port_channel_interfaces, "name", f"Port-Channel{channel_group}")
+                else:
+                    port_channel_interface = {}
+
+                all_connected_endpoints.setdefault(connected_endpoints_by_type[peer_type]["key"], []).append(
+                    {
+                        "peer": get(ethernet_interface, "peer", default="-"),
+                        "peer_type": peer_type,
+                        "peer_interface": get(ethernet_interface, "peer_interface", default="-"),
+                        "fabric_switch": hostname,
+                        "fabric_port": ethernet_interface["name"],
+                        "description": get(ethernet_interface, "description", default="-"),
+                        "shutdown": default(get(ethernet_interface, "shutdown"), get(port_channel_interface, "shutdown"), "-"),
+                        "type": default(get(port_channel_interface, "type"), get(ethernet_interface, "type"), "-"),
+                        "mode": default(get(ethernet_interface, "mode"), get(port_channel_interface, "mode"), "-"),
+                        "vlans": default(get(ethernet_interface, "vlans"), get(port_channel_interface, "vlans"), "-"),
+                        "profile": default(get(ethernet_interface, "port_profile"), "-"),
+                    }
+                )
+
+        return {key: natural_sort(all_connected_endpoints[key], sort_key="peer") for key in natural_sort(all_connected_endpoints)}
+
+    @cached_property
+    def all_connected_endpoints_keys(self) -> list[dict]:
+        """
+        Returning list of unique connected_endpoints_keys from all devices.
+
+        First generating a set of tuples and then returning as a natural sorted list of dicts.
+        """
+        if not self._include_connected_endpoints:
+            return []
+
+        set_of_tuples = {
+            (item["key"], item["type"], item.get("description"))
+            for switch in self.avd_switch_facts.values()
+            for item in get(switch, "connected_endpoints_keys", default=[])
+        }
+        return natural_sort(
+            [
+                {
+                    "key": key,
+                    "type": item_type,
+                    "description": description,
+                }
+                for key, item_type, description in set_of_tuples
+            ],
+            sort_key="key",
+        )
+
+    @cached_property
+    def all_port_profiles(self) -> list[dict]:
+        """
+        Returning list of unique port-profiles from all devices.
+
+        First generating a set of tuples and then returning as a natural sorted list of dicts.
+        """
+        if not self._include_connected_endpoints:
+            return []
+
+        set_of_tuples = {
+            (item["profile"], item.get("parent_profile")) for switch in self.avd_switch_facts.values() for item in get(switch, "port_profile_names", default=[])
+        }
+        return natural_sort(
+            [
+                {
+                    "profile": profile,
+                    "parent_profile": parent_profile,
+                }
+                for profile, parent_profile in set_of_tuples
+            ],
+            sort_key="profile",
+        )
