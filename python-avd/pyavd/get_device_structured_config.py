@@ -37,7 +37,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
     )
 
     # We do not validate input variables in this stage (done in "validate_inputs")
-    input_schema_tools = AvdSchemaTools(schema=EOS_DESIGNS_SCHEMA_ID, validate=False)
+    input_schema_tools = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID, validate=False)
     output_schema_tools = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
     result = {}
     structured_config = get_structured_config(
