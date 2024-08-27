@@ -81,7 +81,7 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
         )
 
         # Initialize SharedUtils class to be passed to each python_module below.
-        shared_utils = SharedUtils(hostvars=mapped_hostvars, templar=None)
+        shared_utils = SharedUtils(hostvars=mapped_hostvars, templar=None, schema={})
 
         # Notice templar is set as None, so any calls to jinja templates will fail with Nonetype has no "_loader" attribute
         avd_switch_facts[hostname] = {"switch": EosDesignsFacts(hostvars=mapped_hostvars, shared_utils=shared_utils)}
