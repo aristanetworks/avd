@@ -1055,6 +1055,7 @@ router bgp 65102
       router-id 192.168.255.7
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.2 description DC1-LEAF2A
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1064,6 +1065,7 @@ router bgp 65102
       router-id 192.168.255.7
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.2 description DC1-LEAF2A
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1073,6 +1075,7 @@ router bgp 65102
       router-id 192.168.255.7
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.2 description DC1-LEAF2A
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
@@ -1082,6 +1085,7 @@ router bgp 65102
       router-id 192.168.255.7
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.2 description DC1-LEAF2A
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1091,6 +1095,7 @@ router bgp 65102
       router-id 192.168.255.7
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.2 description DC1-LEAF2A
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1100,6 +1105,7 @@ router bgp 65102
       router-id 192.168.255.7
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.2 description DC1-LEAF2A
       redistribute connected
 ```
 

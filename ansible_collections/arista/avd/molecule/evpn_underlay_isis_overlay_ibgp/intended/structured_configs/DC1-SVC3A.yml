@@ -264,7 +264,7 @@ loopback_interfaces:
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
-  net: 49.0001.0001.0001.0004.00
+  net: 49.0001.1921.6825.5008.00
   router_id: 192.168.255.8
   is_type: level-2
   address_family_ipv4:

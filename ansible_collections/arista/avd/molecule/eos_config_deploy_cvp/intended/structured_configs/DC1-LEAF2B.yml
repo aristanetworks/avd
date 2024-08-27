@@ -114,6 +114,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     updates:
       wait_install: true
   - name: Tenant_A_DB_Zone
@@ -133,6 +134,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     updates:
       wait_install: true
   - name: Tenant_A_OP_Zone
@@ -152,6 +154,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     updates:
       wait_install: true
   - name: Tenant_A_WEB_Zone
@@ -171,6 +174,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
@@ -190,6 +194,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     updates:
       wait_install: true
   - name: Tenant_C_OP_Zone
@@ -209,6 +214,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     updates:
       wait_install: true
   vlan_aware_bundles:
