@@ -5,13 +5,17 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
+from typing import TYPE_CHECKING
 
-from ..._utils import get, get_v2
-from ..._utils.password_utils.password import simple_7_decrypt
-from ..api.arista.studio.v1 import InputSchema
-from ..client import CVClient
-from ..client.exceptions import CVResourceNotFound
-from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
+from pyavd._cv.client.exceptions import CVResourceNotFound
+from pyavd._utils import get, get_v2
+from pyavd._utils.password_utils.password import simple_7_decrypt
+
+if TYPE_CHECKING:
+    from pyavd._cv.api.arista.studio.v1 import InputSchema
+    from pyavd._cv.client import CVClient
+
+    from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
@@ -26,7 +30,7 @@ CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
 
 
 def is_pathfinder_location_supported(studio_schema: InputSchema) -> bool:
-    """Detect if pathfinder location is supported by the metadata studio"""
+    """Detect if pathfinder location is supported by the metadata studio."""
     pathfinder_group_fields = get_v2(studio_schema, "fields.values.pathfinderGroup.group_props.members.values")
     if pathfinder_group_fields is None:
         return False
@@ -35,23 +39,24 @@ def is_pathfinder_location_supported(studio_schema: InputSchema) -> bool:
 
 
 def is_avt_hop_count_supported(studio_schema: InputSchema) -> bool:
-    """Detect if AVT hop count is supported by the metadata studio"""
+    """Detect if AVT hop count is supported by the metadata studio."""
     return bool(get_v2(studio_schema, "fields.values.avtHopCount"))
 
 
 def is_internet_exit_zscaler_supported(studio_schema: InputSchema) -> bool:
-    """Detect if zscaler internet exit is supported by the metadata studio"""
+    """Detect if zscaler internet exit is supported by the metadata studio."""
     return bool(get_v2(studio_schema, "fields.values.zscaler"))
 
 
 def is_applications_supported(studio_schema: InputSchema) -> bool:
-    """Detect if applications is supported by the metadata studio"""
+    """Detect if applications is supported by the metadata studio."""
     return bool(get_v2(studio_schema, "fields.values.applications"))
 
 
 async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
     """
     Download and return the input schema for the cv pathfinder metadata studio.
+
     Returns None if the metadata studio is not found.
     """
     try:
@@ -69,9 +74,7 @@ async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClie
 
 
 def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
-    """
-    In-place update general metadata in studio_inputs.
-    """
+    """In-place update general metadata in studio_inputs."""
     warnings = []
 
     # Temporary fix for default values in metadata studio
@@ -109,7 +112,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
             ],
             "regions": get(metadata, "regions", default=[]),
             "vrfs": get(metadata, "vrfs", default=[]),
-        }
+        },
     )
 
     if applications := generate_applications_metadata(metadata):
@@ -146,7 +149,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
                                 "circuitId": interface.get("circuit_id", ""),
                                 "pathgroup": interface.get("pathgroup", ""),
                                 "publicIp": interface.get("public_ip", ""),
-                            }
+                            },
                         },
                         "tags": {"query": f"interface:{interface.get('name', '')}@{device.serial_number}"},
                     }
@@ -207,7 +210,7 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_sc
                                 "carrier": interface.get("carrier", ""),
                                 "circuitId": interface.get("circuit_id", ""),
                                 "pathgroup": interface.get("pathgroup", ""),
-                            }
+                            },
                         },
                         "tags": {"query": f"interface:{interface.get('name', '')}@{device.serial_number}"},
                     }
@@ -311,7 +314,6 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
         vni: 100
     ```
     """
-
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Got cv_pathfinder_metadata for %s devices", len(cv_pathfinder_metadata))
 
     if not cv_pathfinder_metadata:
@@ -322,7 +324,9 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     # Get existing studio inputs
     existing_studio_inputs = await cv_client.get_studio_inputs(
-        studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS
+        studio_id=CV_PATHFINDER_METADATA_STUDIO_ID,
+        workspace_id=result.workspace.id,
+        default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS,
     )
     studio_inputs = deepcopy(existing_studio_inputs)
 
@@ -370,7 +374,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 
     for pathfinder in pathfinders:
         result.warnings.extend(
-            upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_schema=studio_schema)
+            upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_schema=studio_schema),
         )
 
     for edge in edges:
@@ -385,7 +389,8 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
 def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
     """
     Generate internet-exit related metadata for one device.
-    To be inserted into edge router metadata under "services"
+
+    To be inserted into edge router metadata under "services".
 
     Returns metadata dict and list of any warnings raised.
     """
@@ -441,7 +446,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
                     }
                     for vpn_credential in internet_exit_policy["vpn_credentials"]
                 ],
-            }
+            },
         )
         services_dict["zscaler"]["tunnels"].extend(
             {
@@ -457,7 +462,8 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
 def generate_applications_metadata(metadata: dict) -> dict:
     """
     Generate application traffic recognition related metadata for one patfinder.
-    To be inserted into the common metadata under "applications"
+
+    To be inserted into the common metadata under "applications".
     """
     if (applications := get(metadata, "applications")) is None:
         return {}

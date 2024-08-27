@@ -120,6 +120,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_A_DB_Zone
@@ -140,6 +141,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_A_OP_Zone
@@ -159,6 +161,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_A_WAN_Zone
@@ -181,6 +184,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_A_WEB_Zone
@@ -201,6 +205,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.31.11.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
@@ -220,6 +225,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_B_WAN_Zone
@@ -239,6 +245,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_C_OP_Zone
@@ -258,6 +265,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   - name: Tenant_C_WAN_Zone
@@ -277,6 +285,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+      description: DC1_UNDEPLOYED_LEAF1A
     updates:
       wait_install: true
   vlan_aware_bundles:
@@ -379,15 +388,15 @@ ip_routing: true
 hardware:
   speed_groups:
   - speed_group: '1'
-    serdes: 10G
+    serdes: 25G
   - speed_group: '2'
     serdes: 25G
   - speed_group: '3'
-    serdes: 25G
-  - speed_group: '4'
     serdes: 10G
-  - speed_group: 5/1
+  - speed_group: '4'
     serdes: 25G
+  - speed_group: 5/1
+    serdes: 10G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -403,6 +412,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -465,7 +480,7 @@ vrfs:
   tenant: Tenant_C
   ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management42
   description: oob_management
   shutdown: false
   vrf: MGMT
@@ -485,7 +500,7 @@ management_api_http:
   default_services: false
 ntp:
   local_interface:
-    name: Management1
+    name: Management42
     vrf: MGMT
   servers:
   - name: 192.168.200.5
@@ -1000,7 +1015,7 @@ ip_igmp_snooping:
     enabled: false
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1_UNDEPLOYED_LEAF1B_VTEP
     vxlan:
       udp_port: 4789
@@ -1066,4 +1081,4 @@ virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.22
 metadata:
-  platform: 7280R
+  platform: my_custom_platform

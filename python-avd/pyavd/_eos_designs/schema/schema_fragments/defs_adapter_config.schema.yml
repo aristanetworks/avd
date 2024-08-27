@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -431,13 +431,6 @@ $defs:
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
-      # short_esi:
-      #   type: str
-      #   description: |
-      #     Allocates an automatic short_esi to all ports using this profile.
-      #     Please see the notes under "EVPN A/A ESI dual-attached endpoint examples" in this document before setting `short_esi: auto`.
-      #   valid_values:
-      #     - "auto"
       port_channel:
         type: dict
         description: Used for port-channel adapter.
@@ -474,21 +467,6 @@ $defs:
               When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.
               Arista PTP enabled devices always place PTP messages on the same physical link within the port-channel.
               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista devices.
-          esi:
-            type: str
-            description: Format xxxx:xxxx:xxxx.
-            deprecation:
-              warning: true
-              removed: true
-              remove_in_version: "4.0.0"
-              new_key: short_esi
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              warning: true
-              remove_in_version: "5.0.0"
-              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -578,6 +556,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              removed: true
+              warning: true
+              remove_in_version: "5.0.0"
+              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface validation by the `eos_validate_state` role.

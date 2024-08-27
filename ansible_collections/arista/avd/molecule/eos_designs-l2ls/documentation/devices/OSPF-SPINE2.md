@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -61,6 +63,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## MLAG
 
@@ -154,16 +162,16 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | OSPF-LEAF1_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | OSPF-LEAF2_Ethernet2 | *trunk | *100,4092 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_OSPF-SPINE1_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_OSPF-SPINE1_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_OSPF-SPINE1_Ethernet3 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
+| Ethernet4 | MLAG_PEER_OSPF-SPINE1_Ethernet4 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/2 | routed | - | 192.168.253.2/31 | default | 9214 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/2 | - | 192.168.253.2/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -205,11 +213,11 @@ interface Ethernet5
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | OSPF-LEAF1_Po1 | switched | trunk | 100,4092 | - | - | - | - | 1 | - |
-| Port-Channel2 | OSPF-LEAF2_Po1 | switched | trunk | 100,4092 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_OSPF-SPINE1_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | OSPF-LEAF1_Po1 | trunk | 100,4092 | - | - | - | - | 1 | - |
+| Port-Channel2 | OSPF-LEAF2_Po1 | trunk | 100,4092 | - | - | - | - | 2 | - |
+| Port-Channel3 | MLAG_PEER_OSPF-SPINE1_Po3 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -279,11 +287,11 @@ interface Loopback0
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan100 |  default  |  -  |  10.0.100.1/24  |  -  |  -  |  -  |  -  |
-| Vlan4092 |  default  |  172.23.254.3/24  |  -  |  172.23.254.1  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan100 |  default  |  -  |  10.0.100.1/24  |  -  |  -  |  -  |
+| Vlan4092 |  default  |  172.23.254.3/24  |  -  |  172.23.254.1  |  -  |  -  |
+| Vlan4094 |  default  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

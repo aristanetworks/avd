@@ -90,42 +90,42 @@ interface Management1
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
-| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
-| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
-| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
-| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |  -  |
-| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
-| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
-| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
-| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
-| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
-| Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
-| Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
-| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |
+| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |
+| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |
+| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |
+| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |
+| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |
+| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |
+| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
+| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
+| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |
+| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |
+| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
+| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |
+| Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |
+| Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
+| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |
+| Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |
+| Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
+| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
+| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |
+| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |
+| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |
 
 ##### IP NAT: Source Static
 
@@ -153,25 +153,25 @@ interface Management1
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - |
-| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - |
-| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - |
-| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - |
-| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - |
-| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - | - |
-| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | True | True | - | - | - |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | True | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | True | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | True | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | True | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | True | - | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | True | - | - | - |
 
 ##### VRRP Details
 
@@ -185,9 +185,20 @@ interface Management1
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
-| --------- | ------------- | -------- | ----------- | ---- |
-| Vlan2002 | EVPN_UNDERLAY | True | - | - |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
+| Vlan42 | EVPN_UNDERLAY | - | - | - | Level-1: sha |
+| Vlan83 | EVPN_UNDERLAY | - | - | - | md5 |
+| Vlan84 | EVPN_UNDERLAY | - | - | - | sha |
+| Vlan85 | EVPN_UNDERLAY | - | - | - | sha |
+| Vlan86 | EVPN_UNDERLAY | - | - | - | shared-secret |
+| Vlan87 | EVPN_UNDERLAY | - | - | - | shared-secret |
+| Vlan88 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
+| Vlan90 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
+| Vlan92 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
+| Vlan2002 | EVPN_UNDERLAY | True | - | - | md5 |
+| Vlan4094 | EVPN_UNDERLAY | - | - | - | Level-1: sha<br>Level-2: sha |
 
 ##### Multicast Routing
 
@@ -246,6 +257,8 @@ interface Vlan42
    ip helper-address 10.10.64.150 source-interface Loopback0
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 5 level-1
    ip address virtual 10.10.42.1/24
 !
 interface Vlan43
@@ -253,6 +266,13 @@ interface Vlan43
    no shutdown
    ipv6 dhcp relay destination a0::2 vrf TEST local-interface Loopback44 link-address a0::4
    ipv6 address a0::1/64
+   isis authentication key-id 2 algorithm sha-512 key 0 password
+   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
+   isis authentication key-id 1 algorithm sha-1 key 0 password level-1
+   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
+   isis authentication key-id 5 algorithm sha-1 key 0 password3 level-1
+   isis authentication key-id 1 algorithm sha-1 key 0 password level-2
+   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
 !
 interface Vlan44
    description SVI Description
@@ -267,6 +287,8 @@ interface Vlan50
    ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
+   isis authentication mode text rx-disabled level-2
+   isis authentication key 0 password level-2
 !
 interface Vlan75
    description SVI Description
@@ -294,6 +316,9 @@ interface Vlan81
 interface Vlan83
    description SVI Description
    no shutdown
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5
+   isis authentication key 0 password
    ip address virtual 10.10.83.1/24
    ip address virtual 10.11.83.1/24 secondary
    ip address virtual 10.11.84.1/24 secondary
@@ -303,6 +328,9 @@ interface Vlan84
    arp gratuitous accept
    arp monitor mac-address
    ip address 10.10.84.1/24
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 2 rx-disabled
+   isis authentication key 0 password
    ip virtual-router address 10.10.84.254
    ip virtual-router address 10.11.84.254/24
 !
@@ -310,12 +338,17 @@ interface Vlan85
    description SVI Description
    arp cache dynamic capacity 50000
    ip address 10.10.84.1/24
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 2
+   isis authentication key 0 password
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
 !
 interface Vlan86
    description SVI Description
    ip address 10.10.83.1/24
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile1 algorithm sha-1 rx-disabled
    ip attached-host route export 10
 !
 interface Vlan87
@@ -324,10 +357,17 @@ interface Vlan87
    ip address 10.10.87.1/24
    ip access-group ACL_IN in
    ip access-group ACL_OUT out
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile1 algorithm sha-1
 !
 interface Vlan88
    description SVI Description
    shutdown
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5 rx-disabled level-1
+   isis authentication mode text rx-disabled level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
    ip address virtual 10.10.87.1/23
 !
 interface Vlan89
@@ -354,11 +394,19 @@ interface Vlan89
 interface Vlan90
    description SVI Description
    ip address 10.10.83.1/24
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 level-2
    ip attached-host route export
 !
 interface Vlan91
    description PBR Description
    shutdown
+   isis enable EVPN_UNDERLAY
+   isis authentication mode md5 level-1
+   isis authentication mode text level-2
+   isis authentication key 0 password level-1
+   isis authentication key 0 password level-2
    service-policy type pbr input MyServicePolicy
 !
 interface Vlan92
@@ -366,6 +414,9 @@ interface Vlan92
    ip proxy-arp
    ip directed-broadcast
    ip address 10.10.92.1/24
+   isis enable EVPN_UNDERLAY
+   isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-1
+   isis authentication mode shared-secret profile profile1 algorithm sha-256 rx-disabled level-2
 !
 interface Vlan110
    description PVLAN Primary with vlan mapping
@@ -493,6 +544,8 @@ interface Vlan2002
    ip verify unicast source reachable-via rx
    isis enable EVPN_UNDERLAY
    isis bfd
+   isis authentication mode md5 rx-disabled
+   isis authentication key 0 password
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094
@@ -506,6 +559,9 @@ interface Vlan4094
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
    pim ipv4 bfd
+   isis enable EVPN_UNDERLAY
+   isis authentication mode sha key-id 5 rx-disabled level-1
+   isis authentication mode sha key-id 10 rx-disabled level-2
 ```
 
 ## BFD

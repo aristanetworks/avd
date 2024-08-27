@@ -7,24 +7,22 @@ import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestInterfacesState(AvdTestBase):
-    """
-    AvdTestInterfacesState class for interfaces state tests.
-    """
+    """AvdTestInterfacesState class for interfaces state tests."""
 
     anta_module = "anta.tests.interfaces"
-    interfaces_to_test = [
+    interfaces_to_test = (
         "ethernet_interfaces",
         "port_channel_interfaces",
         "vlan_interfaces",
         "loopback_interfaces",
         "dps_interfaces",
-    ]
+    )
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -34,7 +32,6 @@ class AvdTestInterfacesState(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-
         anta_tests = []
 
         required_keys = ["name", "shutdown"]
@@ -72,7 +69,8 @@ class AvdTestInterfacesState(AvdTestBase):
                 )
 
         # Add Vxlan1 interface state test if it exists
-        if get(self.structured_config, "vxlan_interface.Vxlan1") is not None:
+        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+        if default(get(self.structured_config, "vxlan_interface.vxlan1"), get(self.structured_config, "vxlan_interface.Vxlan1")) is not None:
             anta_tests.append(
                 {
                     "VerifyInterfacesStatus": {

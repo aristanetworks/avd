@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._utils import append_if_not_duplicate, default, get
+from pyavd._utils import append_if_not_duplicate, default, get
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,17 +17,17 @@ if TYPE_CHECKING:
 class StandardAccessListsMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def standard_access_lists(self: AvdStructuredConfigNetworkServices) -> list | None:
         """
-        return structured config for standard_access_lists
+        return structured config for standard_access_lists.
 
         Used for to configure ACLs used by multicast RPs in each VRF
         """
-
         if not self.shared_utils.network_services_l3:
             return None
 

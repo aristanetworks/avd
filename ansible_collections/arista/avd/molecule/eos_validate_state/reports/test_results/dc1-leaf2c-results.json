@@ -403,6 +403,15 @@
   },
   {
     "name": "dc1-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Vxlan1 = 'up'"
+  },
+  {
+    "name": "dc1-leaf2c",
     "test": "VerifyLANZ",
     "categories": [
       "lanz"
@@ -448,6 +457,213 @@
       "ptp"
     ],
     "description": "Verifies the PTP interfaces state."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.1 - Peer: dc1-spine1"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.2 - Peer: dc1-spine2"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.3 - Peer: dc1-leaf1a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.4 - Peer: dc1-leaf1b"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.0.5 - Peer: dc1-leaf2a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.1.3 - Peer: dc1-leaf1a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.1.5 - Peer: dc1-leaf2a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.11 - Peer: dc2-spine1"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.12 - Peer: dc2-spine2"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.13 - Peer: dc2-leaf1a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.14 - Peer: dc2-leaf1b"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.15 - Peer: dc2-leaf2a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.16 - Peer: dc2-leaf2b"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.17 - Peer: dc2-leaf3a.arista.com"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.128.18 - Peer: dc2-leaf3b.arista.com"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.129.13 - Peer: dc2-leaf1a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.129.15 - Peer: dc2-leaf2a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.129.17 - Peer: dc2-leaf3a.arista.com"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.2.1 - Peer: dc1-wan1"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.255.2.2 - Peer: dc1-wan2"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.33.0.5 - Peer: dc1-svc-leaf1a"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.33.0.6 - Peer: dc1-svc-leaf1b"
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "routing"
+    ],
+    "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
+    "custom_field": "Route: 10.33.1.5 - Peer: dc1-svc-leaf1a"
   },
   {
     "name": "dc1-leaf2c",
@@ -705,6 +921,14 @@
       "system"
     ],
     "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-leaf2c",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
   },
   {
     "name": "dc1-leaf2c",

@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -185,8 +185,6 @@ keys:
       peer_groups:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -241,16 +239,6 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
-            peer_filter:
-              type: str
-              description: |
-                Peer-filter name.
-                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
-                the new `listen_ranges` key above to avoid conflicts.
-              deprecation:
-                warning: true
-                remove_in_version: 5.0.0
-                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -419,16 +407,6 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
-            bgp_listen_range_prefix:
-              type: str
-              description: |
-                IP prefix range.
-                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
-                the new `listen_ranges` key above to avoid conflicts.
-              deprecation:
-                warning: true
-                remove_in_version: 5.0.0
-                new_key: listen_ranges
             session_tracker:
               type: str
             shared_secret:
@@ -454,11 +432,23 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            peer_filter:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 5.0.0
+                new_key: router_bgp.listen_ranges[].peer_filter
+            bgp_listen_range_prefix:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 5.0.0
+                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -707,8 +697,6 @@ keys:
       neighbor_interfaces:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -736,8 +724,6 @@ keys:
       aggregate_addresses:
         type: list
         primary_key: prefix
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -748,20 +734,6 @@ keys:
               type: bool
             as_set:
               type: bool
-            advertise_map:
-              type: str
-              description: Route-map name.
-              deprecation:
-                removed: true
-                warning: true
-                remove_in_version: v4.9.0
-            supress_map:
-              type: str
-              description: Route-map name.
-              deprecation:
-                removed: true
-                warning: true
-                remove_in_version: v4.9.0
             summary_only:
               type: bool
             attribute_map:
@@ -774,9 +746,6 @@ keys:
         type: list
         primary_key: source_protocol
         allow_duplicate_primary_key: True
-        convert_types:
-          - dict
-          - list
         items:
           type: dict
           keys:
@@ -818,8 +787,6 @@ keys:
       vlan_aware_bundles:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -916,8 +883,6 @@ keys:
       vlans:
         type: list
         primary_key: id
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -1007,8 +972,6 @@ keys:
       vpws:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -1035,8 +998,6 @@ keys:
             pseudowires:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -1130,8 +1091,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1303,8 +1262,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1326,8 +1283,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1346,8 +1301,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1380,6 +1333,12 @@ keys:
                     route_map:
                       description: Route-map name.
                       type: str
+                prefix_list_in:
+                  type: str
+                  description: Inbound prefix-list name.
+                prefix_list_out:
+                  type: str
+                  description: Outbound prefix-list name.
                 next_hop:
                   type: dict
                   keys:
@@ -1395,20 +1354,12 @@ keys:
                       type: bool
                       deprecation:
                         warning: true
-                        removed: false
+                        removed: true
                         new_key: address_family_ipv6
                         remove_in_version: 5.0.0
-                prefix_list_in:
-                  type: str
-                  description: Inbound prefix-list name.
-                prefix_list_out:
-                  type: str
-                  description: Outbound prefix-list name.
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1494,8 +1445,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1513,8 +1462,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1532,8 +1479,6 @@ keys:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1612,8 +1557,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1632,8 +1575,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1667,8 +1608,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1702,8 +1641,6 @@ keys:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: True
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1771,8 +1708,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1789,8 +1724,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1802,8 +1735,6 @@ keys:
           networks:
             type: list
             primary_key: prefix
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1816,8 +1747,6 @@ keys:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1996,8 +1925,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2008,8 +1935,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2042,8 +1967,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2054,8 +1977,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2101,8 +2022,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2193,8 +2112,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2241,8 +2158,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2291,8 +2206,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2339,8 +2252,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -2384,8 +2295,6 @@ keys:
       vrfs:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -2465,9 +2374,6 @@ keys:
                 import:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2495,9 +2401,6 @@ keys:
                 export:
                   type: list
                   primary_key: address_family
-                  secondary_key: route_targets
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2531,8 +2434,6 @@ keys:
             networks:
               type: list
               primary_key: prefix
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2585,8 +2486,6 @@ keys:
             neighbors:
               type: list
               primary_key: ip_address
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2750,6 +2649,7 @@ keys:
                     description: Inbound prefix-list name.
                     deprecation:
                       warning: true
+                      removed: true
                       new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in"
                       remove_in_version: 5.0.0
                   prefix_list_out:
@@ -2757,13 +2657,12 @@ keys:
                     description: Outbound prefix-list name.
                     deprecation:
                       warning: true
+                      removed: true
                       new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out"
                       remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2789,9 +2688,6 @@ keys:
               type: list
               primary_key: source_protocol
               allow_duplicate_primary_key: true
-              convert_types:
-                - dict
-                - list
               items:
                 type: dict
                 keys:
@@ -2834,8 +2730,6 @@ keys:
             aggregate_addresses:
               type: list
               primary_key: prefix
-              convert_types:
-                - dict
               items:
                 type: dict
                 keys:
@@ -2846,20 +2740,6 @@ keys:
                     type: bool
                   as_set:
                     type: bool
-                  advertise_map:
-                    type: str
-                    description: Route-map name.
-                    deprecation:
-                      removed: true
-                      warning: true
-                      remove_in_version: v4.9.0
-                  supress_map:
-                    type: str
-                    description: Route-map name.
-                    deprecation:
-                      removed: true
-                      warning: true
-                      remove_in_version: v4.9.0
                   summary_only:
                     type: bool
                   attribute_map:
@@ -2925,8 +2805,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2970,8 +2848,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -2984,8 +2860,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3083,8 +2957,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3117,8 +2989,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3131,8 +3001,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3199,8 +3067,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3217,8 +3083,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3231,8 +3095,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3297,8 +3159,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3315,8 +3175,6 @@ keys:
                 networks:
                   type: list
                   primary_key: prefix
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3329,8 +3187,6 @@ keys:
                   type: list
                   primary_key: source_protocol
                   allow_duplicate_primary_key: true
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3389,8 +3245,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3422,8 +3276,6 @@ keys:
                 neighbors:
                   type: list
                   primary_key: ip_address
-                  convert_types:
-                    - dict
                   items:
                     type: dict
                     keys:
@@ -3431,95 +3283,18 @@ keys:
                         type: str
                       activate:
                         type: bool
-            address_families:
-              type: list
-              primary_key: address_family
-              convert_types:
-                - dict
-              deprecation:
-                warning: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
-              items:
-                type: dict
-                keys:
-                  address_family:
-                    type: str
-                  bgp:
-                    type: dict
-                    keys:
-                      missing_policy:
-                        type: dict
-                        keys:
-                          direction_in_action:
-                            type: str
-                            valid_values:
-                              - "deny"
-                              - "deny-in-out"
-                              - "permit"
-                          direction_out_action:
-                            type: str
-                            valid_values:
-                              - "deny"
-                              - "deny-in-out"
-                              - "permit"
-                      additional_paths:
-                        type: list
-                        items:
-                          type: str
-                  neighbors:
-                    type: list
-                    primary_key: ip_address
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        ip_address:
-                          type: str
-                        activate:
-                          type: bool
-                        route_map_in:
-                          type: str
-                          description: Inbound route-map name.
-                        route_map_out:
-                          type: str
-                          description: Outbound route-map name.
-                  peer_groups:
-                    type: list
-                    primary_key: name
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        name:
-                          type: str
-                          description: Peer-group name.
-                        activate:
-                          type: bool
-                        next_hop:
-                          type: dict
-                          keys:
-                            address_family_ipv6_originate:
-                              type: bool
-                  networks:
-                    type: list
-                    primary_key: prefix
-                    convert_types:
-                      - dict
-                    items:
-                      type: dict
-                      keys:
-                        prefix:
-                          type: str
-                          description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
-                        route_map:
-                          type: str
             eos_cli:
               type: str
               description: |
                 Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
+            address_families:
+              type: list
+              primary_key: address_family
+              deprecation:
+                warning: true
+                removed: true
+                new_key: address_family_*
+                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name

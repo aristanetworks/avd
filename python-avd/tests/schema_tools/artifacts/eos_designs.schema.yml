@@ -1,56 +1,19 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../pyavd/_schema/avd_meta_schema.json
 $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    valid_values:
-    - disabled
-    - error
-    - warning
-    - info
-    - debug
-    - quiet
-    default: debug
-    description: 'Conversion Mode for AVD input data conversion.
-
-      Input data conversion will perform type conversion of input variables as defined
-      in the schema.
-
-      The type conversion is intended to help the user to identify minor issues with
-      the input data, while still allowing the data to be validated.
-
-      During conversion, messages will generated with information about the host(s)
-      and key(s) which required conversion.
-
-      "disabled" means that conversion will not run - avoid this since conversion
-      is also handling data deprecation and upgrade.
-
-      "error" will produce error messages and fail the task.
-
-      "warning" will produce warning messages.
-
-      "info" will produce regular log messages.
-
-      "debug" will produce hidden debug messages viewable with -v.
-
-      "quiet" will not produce any messages'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
     type: str
     valid_values:
-    - disabled
     - error
     - warning
-    - info
-    - debug
-    default: warning
+    default: error
     description: 'Validation Mode for AVD input data validation.
 
       Input data validation will validate the input variables according to the schema.
@@ -58,15 +21,9 @@ keys:
       During validation, messages will generated with information about the host(s)
       and key(s) which failed validation.
 
-      "disabled" means that validation will not run.
-
       "error" will produce error messages and fail the task.
 
-      "warning" will produce warning messages.
-
-      "info" will produce regular log messages.
-
-      "debug" will produce hidden debug messages viewable with -v.'
+      "warning" will produce warning messages.'
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -375,8 +332,6 @@ keys:
       '
     type: list
     primary_key: key
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -458,8 +413,6 @@ keys:
     documentation_options:
       table: custom-structured-configuration
     type: list
-    convert_types:
-    - str
     items:
       type: str
     description: "Custom EOS Structured Configuration keys can be set on any group
@@ -1241,8 +1194,6 @@ keys:
   network_services_keys:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'Network Services can be grouped by using separate keys.
 
       The keys can be customized to provide a better better organization or grouping
@@ -1275,8 +1226,6 @@ keys:
       to copy the defaults and modify them.
 
       '
-    convert_types:
-    - dict
     primary_key: key
     items:
       type: dict
@@ -1351,8 +1300,6 @@ keys:
             '
         default_overlay_address_families:
           type: list
-          convert_types:
-          - str
           items:
             type: str
             convert_to_lower_case: true
@@ -2058,9 +2005,6 @@ keys:
       table: platform-settings
     type: list
     primary_key: platform
-    secondary_key: speeds
-    convert_types:
-    - dict
     description: Set Hardware Speed Groups per Platform.
     items:
       type: dict
@@ -2070,9 +2014,6 @@ keys:
         speeds:
           type: list
           primary_key: speed
-          secondary_key: speed_groups
-          convert_types:
-          - dict
           items:
             type: dict
             keys:
@@ -2103,8 +2044,6 @@ keys:
   port_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Optional profiles to share common settings for connected_endpoints
       and/or network_ports.
 
@@ -2587,8 +2526,6 @@ keys:
   svi_profiles:
     type: list
     primary_key: profile
-    convert_types:
-    - dict
     description: 'Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 
       Keys are the same used under SVIs. Keys defined under SVIs take precedence.
@@ -3569,8 +3506,6 @@ $defs:
   connected_endpoints:
     type: list
     primary_key: name
-    convert_types:
-    - dict
     description: 'This should be applied to group_vars or host_vars where endpoints
       are connecting.
 
@@ -3655,10 +3590,7 @@ $defs:
     keys:
       p2p_links_ip_pools:
         type: list
-        convert_types:
-        - dict
         primary_key: name
-        secondary_key: ipv4_pool
         items:
           type: dict
           keys:
@@ -3678,8 +3610,6 @@ $defs:
               max: 31
       p2p_links_profiles:
         type: list
-        convert_types:
-        - dict
         primary_key: name
         $ref: eos_designs#/$defs/p2p_links
         items:
@@ -3706,8 +3636,6 @@ $defs:
       table: network-services-common-settings
     type: list
     primary_key: name
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -3811,8 +3739,6 @@ $defs:
             table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'List of BGP peer groups definitions.
 
             This will configure BGP peer groups to be used inside the tenant VRF for
@@ -3989,8 +3915,6 @@ $defs:
             table: network-services-vrfs-settings
           type: list
           primary_key: name
-          convert_types:
-          - dict
           description: 'VRFs will only be configured on a node if any of the underlying
             objects like `svis` or `l3_interfaces` apply to the node.
 
@@ -4082,8 +4006,6 @@ $defs:
               ip_helpers:
                 type: list
                 primary_key: ip_helper
-                convert_types:
-                - dict
                 description: IP helper for DHCP relay.
                 items:
                   type: dict
@@ -4335,8 +4257,6 @@ $defs:
                   table: network-services-vrfs-svis-settings
                 type: list
                 primary_key: id
-                convert_types:
-                - dict
                 description: 'List of SVIs.
 
                   This will create both the L3 SVI and L2 VLAN based on filters applied
@@ -4601,8 +4521,6 @@ $defs:
                   table: network-services-vrfs-bgp-settings
                 type: list
                 primary_key: ip_address
-                convert_types:
-                - dict
                 description: 'List of BGP peer definitions.
 
                   This will configure BGP neighbors inside the tenant VRF for peering
@@ -4744,7 +4662,7 @@ $defs:
                       for eos_cli_config_gen.
                     documentation_options:
                       hide_keys: true
-                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items
               bgp_peer_groups:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -4811,14 +4729,12 @@ $defs:
                 description: Custom structured config for eos_cli_config_gen.
                 documentation_options:
                   hide_keys: true
-                $ref: eos_cli_config_gen#/
+                $ref: eos_cli_config_gen#
         l2vlans:
           documentation_options:
             table: network-services-l2vlans-settings
           type: list
           primary_key: id
-          convert_types:
-          - dict
           description: Define L2 network services organized by vlan id.
           items:
             type: dict
@@ -4973,7 +4889,7 @@ $defs:
                       '
                     documentation_options:
                       hide_keys: true
-                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/
+                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items
                   raw_eos_cli:
                     type: str
                     description: 'EOS cli commands rendered on router_bgp.vlans.
@@ -5243,7 +5159,7 @@ $defs:
               hide_keys: true
             description: Custom structured config for eos_cli_config_gen.
             type: dict
-            $ref: eos_cli_config_gen#/
+            $ref: eos_cli_config_gen#
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration
@@ -5411,7 +5327,7 @@ $defs:
 
               '
           mlag_peer_vlan_structured_config:
-            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -5428,7 +5344,7 @@ $defs:
 
               '
           mlag_peer_l3_vlan_structured_config:
-            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+            $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
             documentation_options:
               table: node-type-l2-mlag-configuration
               hide_keys: true
@@ -6114,8 +6030,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: list
-            convert_types:
-            - str
             items:
               type: str
               valid_values:
@@ -6129,8 +6043,6 @@ $defs:
             documentation_options:
               table: node-type-mpls-configuration
             type: list
-            convert_types:
-            - str
             description: List of inventory hostname acting as MPLS route-reflectors.
             items:
               type: str
@@ -6338,8 +6250,6 @@ $defs:
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
-        convert_types:
-        - dict
         primary_key: group
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -6361,8 +6271,6 @@ $defs:
       nodes:
         description: Define variables per node.
         type: list
-        convert_types:
-        - dict
         primary_key: name
         items:
           $ref: eos_designs#/$defs/node_type/keys/defaults
@@ -6514,9 +6422,6 @@ $defs:
             nodes_child_interfaces:
               type: list
               primary_key: node
-              secondary_key: interfaces
-              convert_types:
-              - dict
               items:
                 type: dict
                 keys:
@@ -6547,8 +6452,6 @@ $defs:
       nodes:
         type: list
         primary_key: node
-        convert_types:
-        - dict
         description: 'Define node specific configuration, such as unique IP addresses.
 
           Any keys set here will be merged onto the SVI config, except `structured_config`
@@ -6666,8 +6569,6 @@ $defs:
       ip_helpers:
         type: list
         primary_key: ip_helper
-        convert_types:
-        - dict
         description: IP helper for DHCP relay
         items:
           type: dict
@@ -6877,7 +6778,7 @@ $defs:
               '
             documentation_options:
               hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items
           raw_eos_cli:
             type: str
             description: 'EOS CLI rendered directly on the Router BGP, VLAN definition
@@ -6898,4 +6799,4 @@ $defs:
           '
         documentation_options:
           hide_keys: true
-        $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+        $ref: eos_cli_config_gen#/keys/vlan_interfaces/items

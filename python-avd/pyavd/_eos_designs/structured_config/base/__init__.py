@@ -5,10 +5,11 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ...._errors import AristaAvdMissingVariableError
-from ...._utils import default, get, strip_null_from_data
-from ....j2filters import convert_dicts, natural_sort
-from ...avdfacts import AvdFacts
+from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import get, strip_null_from_data
+from pyavd.j2filters import natural_sort
+
 from .ntp import NtpMixin
 from .snmp_server import SnmpServerMixin
 
@@ -37,16 +38,15 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def serial_number(self) -> str | None:
-        """
-        serial_number variable set based on serial_number fact
-        """
+        """serial_number variable set based on serial_number fact."""
         return self.shared_utils.serial_number
 
     @cached_property
     def router_bgp(self) -> dict | None:
         """
-        router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts
-        and aggregating the values of bgp_maximum_paths and bgp_ecmp variables
+        Structured config for router_bgp.
+
+        router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts and aggregating the values of bgp_maximum_paths and bgp_ecmp variables.
         """
         if self.shared_utils.bgp_as is None:
             return None
@@ -99,73 +99,62 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def static_routes(self) -> list | None:
-        """
-        static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf
-        """
+        """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
         if self.shared_utils.mgmt_gateway is None:
             return None
 
-        static_routes = []
         if (mgmt_destination_networks := get(self._hostvars, "mgmt_destination_networks")) is not None:
-            for mgmt_destination_network in mgmt_destination_networks:
-                static_routes.append(
-                    {
-                        "vrf": self.shared_utils.mgmt_interface_vrf,
-                        "destination_address_prefix": mgmt_destination_network,
-                        "gateway": self.shared_utils.mgmt_gateway,
-                    }
-                )
-        else:
-            static_routes.append(
+            return [
                 {
                     "vrf": self.shared_utils.mgmt_interface_vrf,
-                    "destination_address_prefix": "0.0.0.0/0",
+                    "destination_address_prefix": mgmt_destination_network,
                     "gateway": self.shared_utils.mgmt_gateway,
                 }
-            )
+                for mgmt_destination_network in mgmt_destination_networks
+            ]
 
-        return static_routes
+        return [
+            {
+                "vrf": self.shared_utils.mgmt_interface_vrf,
+                "destination_address_prefix": "0.0.0.0/0",
+                "gateway": self.shared_utils.mgmt_gateway,
+            }
+        ]
 
     @cached_property
     def ipv6_static_routes(self) -> list | None:
-        """
-        ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
-        """
+        """ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf."""
         if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.ipv6_mgmt_ip is None:
             return None
 
-        ipv6_static_routes = []
         if (ipv6_mgmt_destination_networks := get(self._hostvars, "ipv6_mgmt_destination_networks")) is not None:
-            for mgmt_destination_network in ipv6_mgmt_destination_networks:
-                ipv6_static_routes.append(
-                    {
-                        "vrf": self.shared_utils.mgmt_interface_vrf,
-                        "destination_address_prefix": mgmt_destination_network,
-                        "gateway": self.shared_utils.ipv6_mgmt_gateway,
-                    }
-                )
-        else:
-            ipv6_static_routes.append(
+            return [
                 {
                     "vrf": self.shared_utils.mgmt_interface_vrf,
-                    "destination_address_prefix": "::/0",
+                    "destination_address_prefix": mgmt_destination_network,
                     "gateway": self.shared_utils.ipv6_mgmt_gateway,
                 }
-            )
+                for mgmt_destination_network in ipv6_mgmt_destination_networks
+            ]
 
-        return ipv6_static_routes
+        return [
+            {
+                "vrf": self.shared_utils.mgmt_interface_vrf,
+                "destination_address_prefix": "::/0",
+                "gateway": self.shared_utils.ipv6_mgmt_gateway,
+            },
+        ]
 
     @cached_property
     def service_routing_protocols_model(self) -> str:
-        """
-        service_routing_protocols_model set to 'multi-agent'
-        """
+        """service_routing_protocols_model set to 'multi-agent'."""
         return "multi-agent"
 
     @cached_property
     def ip_routing(self) -> bool | None:
         """
         For l3 devices, configure ip routing unless ip_routing_ipv6_interfaces is True.
+
         For other devices only configure if "always_configure_ip_routing" is True.
         """
         if not self.shared_utils.underlay_router and not self.shared_utils.always_configure_ip_routing:
@@ -177,9 +166,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ipv6_unicast_routing(self) -> bool | None:
-        """
-        ipv6_unicast_routing set based on underlay_rfc5549 and underlay_ipv6
-        """
+        """ipv6_unicast_routing set based on underlay_rfc5549 and underlay_ipv6."""
         if not self.shared_utils.underlay_router and not self.shared_utils.always_configure_ip_routing:
             return None
 
@@ -189,9 +176,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_routing_ipv6_interfaces(self) -> bool | None:
-        """
-        ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
-        """
+        """ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable."""
         if not self.shared_utils.underlay_router and not self.shared_utils.always_configure_ip_routing:
             return None
 
@@ -201,10 +186,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def router_multicast(self) -> dict | None:
-        """
-        router_multicast set based on underlay_multicast, underlay_router
-        and switch.evpn_multicast facts
-        """
+        """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
         if not self.shared_utils.underlay_multicast:
             return None
 
@@ -216,16 +198,15 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def hardware_counters(self) -> dict | None:
-        """
-        hardware_counters set based on hardware_counters.features variable
-        """
+        """hardware_counters set based on hardware_counters.features variable."""
         return get(self._hostvars, "hardware_counters")
 
     @cached_property
     def hardware(self) -> dict | None:
         """
         hardware set based on platform_speed_groups variable and switch.platform fact.
-        Converting nested dict to list of dict to support avd_v4.0
+
+        Converting nested dict to list of dict to support avd_v4.0.
         """
         platform_speed_groups = get(self._hostvars, "platform_speed_groups")
         switch_platform = self.shared_utils.platform
@@ -233,12 +214,9 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return None
 
         tmp_speed_groups = {}
-        # converting nested dict to list of dict to support avd_v4.0
-        platform_speed_groups = convert_dicts(platform_speed_groups, "platform", "speeds")
         for platform_item in platform_speed_groups:
             if platform_item["platform"] == switch_platform:
-                # converting nested dict to list of dict to support avd_v4.0
-                speeds = convert_dicts(platform_item.get("speeds"), "speed", "speed_groups")
+                speeds = platform_item.get("speeds")
                 for speed in natural_sort(speeds, "speed"):
                     for speed_group in speed["speed_groups"]:
                         tmp_speed_groups[speed_group] = speed["speed"]
@@ -248,24 +226,21 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             for speed_group in natural_sort(tmp_speed_groups):
                 hardware["speed_groups"].append({"speed_group": speed_group, "serdes": tmp_speed_groups[speed_group]})
             return hardware
+        return None
 
     @cached_property
     def daemon_terminattr(self) -> dict | None:
         """
-        daemon_terminattr set based on cvp_instance_ip and cvp_instance_ips variables
+        daemon_terminattr set based on cvp_instance_ips.
 
         Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
 
-            if 'arista.io' in cvp_instance_ip:
+            if 'arista.io' in cvp_instance_ips:
                  <updating as cvaas_ip>
             else:
                  <updating as cvp_on_prem ip>
         """
-        # cvp_instance_ip will be removed in AVD5.0
-        cvp_instance_ip = get(self._hostvars, "cvp_instance_ip")
         cvp_instance_ip_list = get(self._hostvars, "cvp_instance_ips", [])
-        if cvp_instance_ip is not None:
-            cvp_instance_ip_list.append(cvp_instance_ip)
         if not cvp_instance_ip_list:
             return None
 
@@ -277,7 +252,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 daemon_terminattr["cvauth"] = {
                     "method": "token-secure",
                     # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                    "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),  # NOSONAR
+                    "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),  # NOSONAR # noqa: S108
                 }
             else:
                 # updating for cvp_on_prem_ips
@@ -292,7 +267,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                     daemon_terminattr["cvauth"] = {
                         "method": "token",
                         # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/token"),  # NOSONAR
+                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/token"),  # NOSONAR # noqa: S108
                     }
 
         daemon_terminattr["cvvrf"] = self.shared_utils.mgmt_interface_vrf
@@ -304,62 +279,65 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def vlan_internal_order(self) -> dict | None:
-        """
-        vlan_internal_order set based on internal_vlan_order data-model
-        """
+        """vlan_internal_order set based on internal_vlan_order data-model."""
         if self.shared_utils.wan_role:
             return None
 
-        DEFAULT_INTERNAL_VLAN_ORDER = {
+        default_internal_vlan_order = {
             "allocation": "ascending",
             "range": {
                 "beginning": 1006,
                 "ending": 1199,
             },
         }
-        return get(self._hostvars, "internal_vlan_order", default=DEFAULT_INTERNAL_VLAN_ORDER)
+        return get(self._hostvars, "internal_vlan_order", default=default_internal_vlan_order)
 
     @cached_property
-    def transceiver_qsfp_default_mode_4x10(self) -> bool | None:
-        """
-        transceiver_qsfp_default_mode_4x10 is on by default in eos_cli_config_gen.
+    def aaa_root(self) -> dict:
+        """aaa_root.disable is always set to match EOS default config and historic configs."""
+        return {"disabled": True}
 
-        Set to false for WAN routers.
+    @cached_property
+    def config_end(self) -> bool:
+        """config_end is always set to match EOS default config and historic configs."""
+        return True
+
+    @cached_property
+    def enable_password(self) -> dict:
+        """enable_password.disable is always set to match EOS default config and historic configs."""
+        return {"disabled": True}
+
+    @cached_property
+    def transceiver_qsfp_default_mode_4x10(self) -> bool:
+        """
+        transceiver_qsfp_default_mode_4x10 is on for all devices except WAN routers.
+
         TODO: Add platform_setting to control this.
         """
-        return False if self.shared_utils.wan_role else None
+        return not self.shared_utils.is_wan_router
 
     @cached_property
     def event_monitor(self) -> dict | None:
-        """
-        event_monitor set based on event_monitor data-model
-        """
+        """event_monitor set based on event_monitor data-model."""
         if get(self._hostvars, "event_monitor") is True:
             return {"enabled": "true"}
         return None
 
     @cached_property
     def event_handlers(self) -> list | None:
-        """
-        event_handlers set based on event_handlers data-model
-        """
+        """event_handlers set based on event_handlers data-model."""
         return get(self._hostvars, "event_handlers")
 
     @cached_property
     def load_interval(self) -> dict | None:
-        """
-        load_interval set based on load_interval_default variable
-        """
+        """load_interval set based on load_interval_default variable."""
         if (load_interval_default := get(self._hostvars, "load_interval_default")) is not None:
             return {"default": load_interval_default}
         return None
 
     @cached_property
     def queue_monitor_length(self) -> dict | None:
-        """
-        queue_monitor_length set based on queue_monitor_length data-model and
-        platform_settings.feature_support.queue_monitor_length_notify fact
-        """
+        """queue_monitor_length set based on queue_monitor_length data-model and platform_settings.feature_support.queue_monitor_length_notify fact."""
         if (queue_monitor_length := get(self._hostvars, "queue_monitor_length")) is None:
             return None
 
@@ -371,9 +349,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_name_servers(self) -> list | None:
-        """
-        ip_name_servers set based on name_servers data-model and mgmt_interface_vrf
-        """
+        """ip_name_servers set based on name_servers data-model and mgmt_interface_vrf."""
         ip_name_servers = [
             {
                 "ip_address": name_server,
@@ -388,18 +364,14 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def redundancy(self) -> dict | None:
-        """
-        redundancy set based on redundancy data-model
-        """
+        """Redundancy set based on redundancy data-model."""
         if get(self._hostvars, "redundancy") is not None:
             return {"protocol": get(self._hostvars, "redundancy.protocol")}
         return None
 
     @cached_property
     def interface_defaults(self) -> dict | None:
-        """
-        interface_defaults set based on default_interface_mtu
-        """
+        """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             return {
                 "mtu": self.shared_utils.default_interface_mtu,
@@ -408,10 +380,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def spanning_tree(self) -> dict | None:
-        """
-        spanning_tree set based on spanning_tree_root_super, spanning_tree_mode
-        and spanning_tree_priority
-        """
+        """spanning_tree set based on spanning_tree_root_super, spanning_tree_mode and spanning_tree_priority."""
         if not self.shared_utils.network_services_l2:
             return {"mode": "none"}
 
@@ -437,9 +406,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def service_unsupported_transceiver(self) -> dict | None:
-        """
-        service_unsupported_transceiver based on unsupported_transceiver data-model
-        """
+        """service_unsupported_transceiver based on unsupported_transceiver data-model."""
         if (unsupported_transceiver := get(self._hostvars, "unsupported_transceiver")) is not None:
             return {"license_name": unsupported_transceiver.get("license_name"), "license_key": unsupported_transceiver.get("license_key")}
 
@@ -447,28 +414,22 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def local_users(self) -> list | None:
-        """
-        local_users set based on local_users data model
-        """
+        """local_users set based on local_users data model."""
         if (local_users := get(self._hostvars, "local_users")) is None:
             return None
 
-        return natural_sort(convert_dicts(local_users, "name"), "name")
+        return natural_sort(local_users, "name")
 
     @cached_property
     def clock(self) -> dict | None:
-        """
-        clock set based on timezone variable
-        """
+        """Clock set based on timezone variable."""
         if (timezone := get(self._hostvars, "timezone")) is not None:
             return {"timezone": timezone}
         return None
 
     @cached_property
     def vrfs(self) -> list:
-        """
-        vrfs set based on mgmt_interface_vrf variable
-        """
+        """Vrfs set based on mgmt_interface_vrf variable."""
         mgmt_vrf_routing = get(self._hostvars, "mgmt_vrf_routing", default=False)
         vrf_settings = {
             "name": self.shared_utils.mgmt_interface_vrf,
@@ -480,10 +441,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def management_interfaces(self) -> list | None:
-        """
-        management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts,
-        mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables
-        """
+        """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         mgmt_interface = self.shared_utils.mgmt_interface
         if (
             mgmt_interface is not None
@@ -508,7 +466,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                         "ipv6_enable": True,
                         "ipv6_address": self.shared_utils.ipv6_mgmt_ip,
                         "ipv6_gateway": self.shared_utils.ipv6_mgmt_gateway,
-                    }
+                    },
                 )
 
             return [interface_settings]
@@ -517,9 +475,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def management_security(self) -> dict | None:
-        """
-        Return structured config for management_security.
-        """
+        """Return structured config for management_security."""
         if (entropy_sources := get(self.shared_utils.platform_settings, "security_entropy_sources")) is not None:
             return {"entropy_sources": entropy_sources}
 
@@ -527,9 +483,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def tcam_profile(self) -> dict | None:
-        """
-        tcam_profile set based on platform_settings.tcam_profile fact
-        """
+        """tcam_profile set based on platform_settings.tcam_profile fact."""
         if (tcam_profile := get(self.shared_utils.platform_settings, "tcam_profile")) is not None:
             return {"system": tcam_profile}
         return None
@@ -537,10 +491,11 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     @cached_property
     def platform(self) -> dict | None:
         """
-        platform set based on:
+        platform set based on.
+
         * platform_settings.lag_hardware_only,
         * platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
-        * data_plane_cpu_allocation_max
+        * data_plane_cpu_allocation_max.
         """
         platform = {}
         if (lag_hardware_only := get(self.shared_utils.platform_settings, "lag_hardware_only")) is not None:
@@ -555,7 +510,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         elif self.shared_utils.is_wan_server:
             # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
             # this value is required for the solution to work.
-            raise AristaAvdMissingVariableError("For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set")
+            msg = "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set"
+            raise AristaAvdMissingVariableError(msg)
 
         if platform:
             return platform
@@ -563,19 +519,14 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def mac_address_table(self) -> dict | None:
-        """
-        mac_address_table set based on mac_address_table data-model
-        """
+        """mac_address_table set based on mac_address_table data-model."""
         if (aging_time := get(self._hostvars, "mac_address_table.aging_time")) is not None:
             return {"aging_time": aging_time}
         return None
 
     @cached_property
     def queue_monitor_streaming(self) -> dict | None:
-        """
-        queue_monitor_streaming set based on queue_monitor_streaming data-model
-
-        """
+        """queue_monitor_streaming set based on queue_monitor_streaming data-model."""
         enable = get(self._hostvars, "queue_monitor_streaming.enable")
         vrf = get(self._hostvars, "queue_monitor_streaming.vrf")
         if enable is not True or vrf is None:
@@ -593,15 +544,13 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def management_api_http(self) -> dict | None:
-        """
-        management_api_http set based on management_eapi data-model
-        """
+        """management_api_http set based on management_eapi data-model."""
         if (management_eapi := get(self._hostvars, "management_eapi", default={"enable_https": True})) is None:
             return None
 
         management_api_http = {"enable_vrfs": [{"name": self.shared_utils.mgmt_interface_vrf}]}
         management_api = management_eapi.fromkeys(["enable_http", "enable_https", "default_services"])
-        for key in dict(management_api).keys():
+        for key in dict(management_api):
             if (value := management_eapi.get(key)) is not None:
                 management_api[key] = value
             else:
@@ -612,22 +561,19 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def link_tracking_groups(self) -> list | None:
-        """
-        link_tracking_groups
-        """
+        """link_tracking_groups."""
         return self.shared_utils.link_tracking_groups
 
     @cached_property
     def lacp(self) -> dict | None:
-        """
-        lacp set based on lacp_port_id_range
-        """
+        """Lacp set based on lacp_port_id_range."""
         lacp_port_id_range = get(self.shared_utils.switch_data_combined, "lacp_port_id_range", default={})
         if lacp_port_id_range.get("enabled") is not True:
             return None
 
         if (switch_id := self.shared_utils.id) is None:
-            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges")
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges"
+            raise AristaAvdMissingVariableError(msg)
 
         node_group_length = max(len(self.shared_utils.switch_data_node_group_nodes), 1)
         port_range = int(get(lacp_port_id_range, "size", default=128))
@@ -641,30 +587,26 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 "range": {
                     "begin": begin,
                     "end": end,
-                }
-            }
+                },
+            },
         }
 
     @cached_property
     def ptp(self) -> dict | None:
         """
         Generates PTP config on node level as well as for interfaces, using various defaults.
+
         - The following are set in default node_type_keys for design "l3ls-evpn":
                 spine:
                   default_ptp_priority1: 20
                 l3leaf:
                   default_ptp_priority1: 30
         PTP priority2 is set in the code below, calculated based on the node id:
-            default_priority2 = self.id % 256
+            default_priority2 = self.id % 256.
         """
         if not self.shared_utils.ptp_enabled:
-            # Since we have overlapping data model "ptp" between eos_designs and eos_cli_config_gen,
-            # we need to overwrite the input dict if set but not enabled.
-            # TODO: AVD5.0.0 Remove this handling since the `ptp` key is removed from eos_designs.
-            if get(self._hostvars, "ptp") is not None:
-                return {}
             return None
-        default_ptp_domain = default(get(self._hostvars, "ptp_settings.domain"), get(self._hostvars, "ptp.domain"), 127)
+        default_ptp_domain = get(self._hostvars, "ptp_settings.domain", default=127)
         default_ptp_priority1 = get(self.shared_utils.node_type_key_data, "default_ptp_priority1", default=127)
         default_clock_identity = None
 
@@ -672,10 +614,11 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         priority2 = get(self.shared_utils.switch_data_combined, "ptp.priority2")
         if priority2 is None:
             if self.shared_utils.id is None:
-                raise AristaAvdMissingVariableError(f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2")
+                msg = f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2"
+                raise AristaAvdMissingVariableError(msg)
 
             priority2 = self.shared_utils.id % 256
-        default_auto_clock_identity = default(get(self._hostvars, "ptp_settings.auto_clock_identity"), get(self._hostvars, "ptp.auto_clock_identity"), True)
+        default_auto_clock_identity = get(self._hostvars, "ptp_settings.auto_clock_identity", default=True)
         if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=default_auto_clock_identity) is True:
             clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
             default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
@@ -724,14 +667,11 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 },
             },
         }
-        ptp = strip_null_from_data(ptp, (None, {}))
-        return ptp
+        return strip_null_from_data(ptp, (None, {}))
 
     @cached_property
     def eos_cli(self) -> str | None:
-        """
-        Aggregate the values of raw_eos_cli and platform_settings.platform_raw_eos_cli facts
-        """
+        """Aggregate the values of raw_eos_cli and platform_settings.platform_raw_eos_cli facts."""
         raw_eos_cli = get(self.shared_utils.switch_data_combined, "raw_eos_cli")
         platform_raw_eos_cli = get(self.shared_utils.platform_settings, "raw_eos_cli")
         if raw_eos_cli is not None or platform_raw_eos_cli is not None:
@@ -740,9 +680,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_radius_source_interfaces(self) -> list | None:
-        """
-        Parse source_interfaces.radius and return list of source_interfaces.
-        """
+        """Parse source_interfaces.radius and return list of source_interfaces."""
         if (inputs := self._source_interfaces.get("radius")) is None:
             return None
 
@@ -753,9 +691,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_tacacs_source_interfaces(self) -> list | None:
-        """
-        Parse source_interfaces.tacacs and return list of source_interfaces.
-        """
+        """Parse source_interfaces.tacacs and return list of source_interfaces."""
         if (inputs := self._source_interfaces.get("tacacs")) is None:
             return None
 
@@ -766,9 +702,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_ssh_client_source_interfaces(self) -> list | None:
-        """
-        Parse source_interfaces.ssh_client and return list of source_interfaces.
-        """
+        """Parse source_interfaces.ssh_client and return list of source_interfaces."""
         if (inputs := self._source_interfaces.get("ssh_client")) is None:
             return None
 
@@ -779,14 +713,14 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_domain_lookup(self) -> dict | None:
-        """
-        Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list.
-        """
+        """Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list."""
         if (inputs := self._source_interfaces.get("domain_lookup")) is None:
             return None
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Domain Lookup"
+            inputs.get("mgmt_interface", False),
+            inputs.get("inband_mgmt_interface", False),
+            "IP Domain Lookup",
         ):
             return {"source_interfaces": source_interfaces}
 
@@ -794,14 +728,14 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
     @cached_property
     def ip_http_client_source_interfaces(self) -> list | None:
-        """
-        Parse source_interfaces.http_client and return list of source_interfaces.
-        """
+        """Parse source_interfaces.http_client and return list of source_interfaces."""
         if (inputs := self._source_interfaces.get("http_client")) is None:
             return None
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP HTTP Client"
+            inputs.get("mgmt_interface", False),
+            inputs.get("inband_mgmt_interface", False),
+            "IP HTTP Client",
         ):
             return source_interfaces
 

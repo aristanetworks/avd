@@ -73,44 +73,24 @@ repos:
           - --comment-style
           - '<!--|  ~|  -->'
 
-  # - repo: https://github.com/pre-commit/mirrors-autopep8
-  #   rev: 'v1.5.6'  # Use the sha / tag you want to point at
-  #   hooks:
-  #   -   id: autopep8
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.6.2
     hooks:
-      - id: isort
-        name: Check for changes when running isort on all python files.
-
-  - repo: https://github.com/psf/black
-    rev: 24.4.2
-    hooks:
-      - id: black
-        name: Check for changes when running Black on all python files.
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-        name: Check for Flake8 errors on Python files.
-        # ignoring errors and selecting line length as per
-        # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
-        types: [python]
-        # The cv client api is generated from proto files, so it should not be linted.
-        exclude: ^python-avd/pyavd/_cv/api
+      # Run the linter.
+      - id: ruff
+        args:
+          - --fix
+      # Run the formatter.
+      - id: ruff-format
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.1.1"
+    rev: "v3.2.6"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
-        args:
-          # Suppress duplicate code for modules header
-          - -d duplicate-code
       - id: pylint # Use pylintrc file in Ansible collection
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
@@ -118,8 +98,6 @@ repos:
         files: ansible_collections/arista/avd/
         args:
           - --rcfile=ansible_collections/arista/avd/pylintrc
-          # Suppress duplicate code for modules header
-          - -d duplicate-code
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: "v1.35.1"
@@ -159,7 +137,6 @@ repos:
             ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
             python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
-            python-avd/pyavd/.*/schema/.*jsonschema\.json| # Exclude JSON schemas file
             python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
             python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
             ansible-avd/ansible_collections/arista/avd/docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
@@ -233,7 +210,7 @@ repos:
         language: python
         files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0', 'jsonschema>=4.10.3']
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.41.0

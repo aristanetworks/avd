@@ -110,8 +110,6 @@
 {% include 'eos/poe.j2' %}
 {# ptp #}
 {% include 'eos/ptp.j2' %}
-{# radius servers #}
-{% include 'eos/radius-servers.j2' %}
 {# radius server #}
 {% include 'eos/radius-server.j2' %}
 {# sflow #}
@@ -230,6 +228,7 @@
 {% include 'eos/ipv6-hardware.j2' %}
 {# Monitor Sessions #}
 {% include 'eos/monitor-sessions.j2' %}
+{% include 'eos/monitor-session-default-encapsulation-gre.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
 {# eos - priority flow control #}

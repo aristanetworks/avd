@@ -43,17 +43,16 @@
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         set row_vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%         set row_ip_addr = vlan_interface.ip_address | arista.avd.default('-') %}
 {%         set row_ip_vaddr = vlan_interface.ip_address_virtual | arista.avd.default('-') %}
 {%         set row_varp = vlan_interface.ip_virtual_router_addresses | arista.avd.default('-') | join(", ") %}
-{%         set row_vrrp = vlan_interface.vrrp.ipv4 | arista.avd.default('-') %}
 {%         set row_acl_in = vlan_interface.access_group_in | arista.avd.default('-') %}
 {%         set row_acl_out = vlan_interface.access_group_out | arista.avd.default('-') %}
-| {{ vlan_interface.name }} |  {{ row_vrf }}  |  {{ row_ip_addr }}  |  {{ row_ip_vaddr }}  |  {{ row_varp }}  |  {{ row_vrrp }}  |  {{ row_acl_in }}  |  {{ row_acl_out }}  |
+| {{ vlan_interface.name }} |  {{ row_vrf }}  |  {{ row_ip_addr }}  |  {{ row_ip_vaddr }}  |  {{ row_varp }}  |  {{ row_acl_in }}  |  {{ row_acl_out }}  |
 {%     endfor %}
 {# IP NAT Documentation #}
 {%     set ip_nat_interfaces = vlan_interfaces %}
@@ -61,7 +60,7 @@
 {# IPv6 #}
 {%     set vlan_interfaces_ipv6 = [] %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
-{%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtual is arista.avd.defined or vlan_interface.ipv6_address_virtuals is arista.avd.defined %}
+{%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtuals is arista.avd.defined %}
 {%             do vlan_interfaces_ipv6.append(vlan_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -69,28 +68,19 @@
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
 {%         for vlan_interface in vlan_interfaces_ipv6 | arista.avd.natural_sort('name') %}
 {%             set row_vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%             set row_ip_addr = vlan_interface.ipv6_address | arista.avd.default('-') %}
-{%             if vlan_interface.ipv6_address_virtual is arista.avd.defined %}
-{%                 set row_ip_vaddr = ([vlan_interface.ipv6_address_virtual] + vlan_interface.ipv6_address_virtuals | arista.avd.default([])) | join(", ") %}
-{%             else %}
-{%                 set row_ip_vaddr = vlan_interface.ipv6_address_virtuals | arista.avd.default('-') | join(", ") %}
-{%             endif %}
-{%             if vlan_interface.ipv6_virtual_router_addresses is arista.avd.defined %}
-{%                 set row_varp = vlan_interface.ipv6_virtual_router_addresses | join(", ") %}
-{%             else %}
-{%                 set row_varp = vlan_interface.ipv6_virtual_router_address | arista.avd.default('-') %}
-{%             endif %}
-{%             set row_vrrp = vlan_interface.vrrp.ipv6 | arista.avd.default('-') %}
+{%             set row_ip_vaddr = vlan_interface.ipv6_address_virtuals | arista.avd.default('-') | join(", ") %}
+{%             set row_varp = vlan_interface.ipv6_virtual_router_addresses | arista.avd.default('-') | join(", ") %}
 {%             set row_nd_ra_disabled = vlan_interface.ipv6_nd_ra_disabled | arista.avd.default('-') %}
 {%             set row_nd_man_cfg = vlan_interface.ipv6_nd_managed_config_flag | arista.avd.default('-') %}
 {%             set row_nd_oth_cfg = vlan_interface.ipv6_nd_other_config_flag | arista.avd.default('-') %}
 {%             set row_acl_in = vlan_interface.ipv6_access_group_in | arista.avd.default('-') %}
 {%             set row_acl_out = vlan_interface.ipv6_access_group_out | arista.avd.default('-') %}
-| {{ vlan_interface.name }} | {{ row_vrf }} | {{ row_ip_addr }} | {{ row_ip_vaddr }} | {{ row_varp }} | {{ row_vrrp }} | {{ row_nd_ra_disabled }} | {{ row_nd_man_cfg }} | {{ row_nd_oth_cfg }} | {{ row_acl_in }} | {{ row_acl_out }} |
+| {{ vlan_interface.name }} | {{ row_vrf }} | {{ row_ip_addr }} | {{ row_ip_vaddr }} | {{ row_varp }} | {{ row_nd_ra_disabled }} | {{ row_nd_man_cfg }} | {{ row_nd_oth_cfg }} | {{ row_acl_in }} | {{ row_acl_out }} |
 {%         endfor %}
 {%     endif %}
 {# VRRP #}
@@ -149,9 +139,18 @@
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
-| --------- | ------------- | -------- | ----------- | ---- |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{%             if vlan_interface.isis_authentication.both.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = vlan_interface.isis_authentication.both.mode %}
+{%             elif vlan_interface.isis_authentication.level_1.mode is arista.avd.defined and vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = "Level-1: " ~ vlan_interface.isis_authentication.level_1.mode ~ "<br>" ~ "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
+{%             elif vlan_interface.isis_authentication.level_1.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = "Level-1: " ~ vlan_interface.isis_authentication.level_1.mode %}
+{%             elif vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
+{%                 set isis_authentication_mode = "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
+{%             endif %}
 {%             if vlan_interface.isis_enable is arista.avd.defined %}
 {%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
 {%                 if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
@@ -161,7 +160,7 @@
 {%                 else %}
 {%                     set mode = "-" %}
 {%                 endif %}
-| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} |
+| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

@@ -1,11 +1,10 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 import pytest
+
 from pyavd._utils import short_esi_to_route_target
 
 ESI_TO_RT_TEST_CASES = [
@@ -19,7 +18,7 @@ ESI_TO_RT_TEST_CASES = [
 
 
 class TestGenerateRouteTargetFilter:
-    @pytest.mark.parametrize("short_esi, route_target", ESI_TO_RT_TEST_CASES)
-    def test_short_esi_to_route_target(self, short_esi, route_target):
+    @pytest.mark.parametrize(("short_esi", "route_target"), ESI_TO_RT_TEST_CASES)
+    def test_short_esi_to_route_target(self, short_esi: str, route_target: str) -> None:
         resp = short_esi_to_route_target(short_esi)
         assert resp == route_target

@@ -3,11 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal
 
-from ..api.arista.configlet.v1 import (
+from pyavd._cv.api.arista.configlet.v1 import (
     Configlet,
     ConfigletAssignment,
     ConfigletAssignmentConfig,
@@ -26,12 +25,15 @@ from ..api.arista.configlet.v1 import (
     ConfigletStreamRequest,
     MatchPolicy,
 )
-from ..api.arista.time import TimeBounds
-from ..api.fmp import RepeatedString
+from pyavd._cv.api.arista.time import TimeBounds
+from pyavd._cv.api.fmp import RepeatedString
+
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from . import CVClient
 
 
@@ -43,9 +45,7 @@ ASSIGNMENT_MATCH_POLICY_MAP = {
 
 
 class ConfigletMixin:
-    """
-    Only to be used as mixin on CVClient class.
-    """
+    """Only to be used as mixin on CVClient class."""
 
     configlet_api_version: Literal["v1"] = "v1"
 
@@ -72,21 +72,19 @@ class ConfigletMixin:
         if container_ids:
             for container_id in container_ids:
                 request.partial_eq_filter.append(
-                    ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id, configlet_assignment_id=container_id))
+                    ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id, configlet_assignment_id=container_id)),
                 )
         else:
             request.partial_eq_filter.append(ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id)))
 
         client = ConfigletAssignmentServiceStub(self._channel)
-        configlet_assignments = []
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                configlet_assignments.append(response.value)
-            return configlet_assignments
-
+            configlet_assignments = [response.value async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{container_ids}'") or e
+
+        return configlet_assignments
 
     async def set_configlet_container(
         self: CVClient,
@@ -122,15 +120,15 @@ class ConfigletMixin:
                 query=query,
                 child_assignment_ids=RepeatedString(values=child_assignment_ids),
                 match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy),
-            )
+            ),
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{container_id}'") or e
+
+        return response.value
 
     async def set_configlet_containers(
         self: CVClient,
@@ -150,7 +148,6 @@ class ConfigletMixin:
         Returns:
             ConfigletAssignmentKey objects after being set including any server-generated values.
         """
-
         request = ConfigletAssignmentConfigSetSomeRequest(
             values=[
                 ConfigletAssignmentConfig(
@@ -163,19 +160,16 @@ class ConfigletMixin:
                     match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy),
                 )
                 for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
-            ]
+            ],
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
-        assignment_keys = []
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.5)
-            async for response in responses:
-                assignment_keys.append(response.key)
-
-            return assignment_keys
-
+            assignment_keys = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Containers '{containers}'") or e
+
+        return assignment_keys
 
     async def delete_configlet_container(
         self: CVClient,
@@ -197,15 +191,15 @@ class ConfigletMixin:
             value=ConfigletAssignmentConfig(
                 key=ConfigletAssignmentKey(workspace_id=workspace_id, configlet_assignment_id=assignment_id),
                 remove=True,
-            )
+            ),
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{assignment_id}'") or e
+
+        return response.value
 
     async def get_configlets(
         self: CVClient,
@@ -216,6 +210,7 @@ class ConfigletMixin:
     ) -> list[Configlet]:
         """
         Get Configlets using arista.configlet.v1.ConfigletServiceStub.GetAll API.
+
         Missing objects will not produce an error.
 
         Parameters:
@@ -235,16 +230,14 @@ class ConfigletMixin:
             request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id)))
 
         client = ConfigletServiceStub(self._channel)
-        configlets = []
+
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                configlets.append(response.value)
-
-            return configlets
-
+            configlets = [response.value async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet IDs '{configlet_ids}'") or e
+
+        return configlets
 
     async def set_configlet(
         self: CVClient,
@@ -275,15 +268,15 @@ class ConfigletMixin:
                 display_name=display_name,
                 description=description,
                 body=body,
-            )
+            ),
         )
         client = ConfigletConfigServiceStub(self._channel)
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet ID '{configlet_id}'") or e
+
+        return response.value
 
     async def set_configlet_from_file(
         self: CVClient,
@@ -314,15 +307,15 @@ class ConfigletMixin:
                 display_name=display_name,
                 description=description,
                 body=Path(file).read_text(encoding="UTF-8"),
-            )
+            ),
         )
         client = ConfigletConfigServiceStub(self._channel)
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response.value
-
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet ID '{configlet_id}', File '{file}'") or e
+
+        return response.value
 
     async def delete_configlets(
         self: CVClient,
@@ -347,16 +340,14 @@ class ConfigletMixin:
                 ConfigletConfig(
                     key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
                     remove=True,
-                )
+                ),
             )
         client = ConfigletConfigServiceStub(self._channel)
 
-        configlet_configs = []
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                configlet_configs.append(response.key)
-
-            return configlet_configs
+            configlet_configs = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet IDs '{configlet_ids}'") or e
+
+        return configlet_configs

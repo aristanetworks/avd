@@ -110,3 +110,14 @@ tenant_d:
             tags: ['v6wan']
             enabled: True
             profile: GENERIC_DUAL_STACK
+      - name: default
+        vrf_id: 123
+        ospf:
+          enabled: true
+          process_id: 123
+        svis:
+          - id: 1234
+            name: VRF_DEFAULT_SVI_WITH_OSPF
+            ospf:
+              area: 0.0.0.0
+              enabled: true

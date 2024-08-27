@@ -1,14 +1,11 @@
 ---
 fabric_name: SINGLE_LINK_TO_MLAG_PAIR
 
-design:
-  type: l2ls
+type: l2leaf
 
-type: leaf
+mlag_on_orphan_port_channel_downlink: true
 
-mlag_on_orphan_port_channel_downlink: false
-
-leaf:
+l2leaf:
   defaults:
     mlag_peer_ipv4_pool: 10.10.255.0/24
     platform: vEOS-LAB

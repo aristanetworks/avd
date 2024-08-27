@@ -29,7 +29,6 @@
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
     read_structured_config_from_file: "{{ structured_config is not arista.avd.defined }}"
-    conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
     # The logic to be on par with previous tags behavior is as follow:
     # either all tasks should be run OR the config should explicitly be generated because of a tag in [all, build, provision]

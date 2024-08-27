@@ -25,11 +25,11 @@
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
 {%     set node_facts = avd_switch_facts[node] %}
-{%     do all_connected_endpoints_keys.extend(node_hostvars.connected_endpoints_keys | arista.avd.convert_dicts("key") | arista.avd.default(default_connected_endpoints_keys)) %}
+{%     do all_connected_endpoints_keys.extend(node_hostvars.connected_endpoints_keys | arista.avd.default(default_connected_endpoints_keys)) %}
 {# Populate profiles #}
-{%     do all_profiles.extend(node_hostvars.port_profiles | arista.avd.convert_dicts("profile") | arista.avd.default([])) %}
+{%     do all_profiles.extend(node_hostvars.port_profiles | arista.avd.default([])) %}
 {# Populate endpoints #}
-{%     for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | arista.avd.natural_sort("name") %}
+{%     for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.natural_sort("name") %}
 {%         set peer_type = ethernet_interface.peer_type | arista.avd.default('undefined') %}
 {%         if peer_type in all_connected_endpoints_keys | map(attribute='type') | list %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}

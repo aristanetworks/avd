@@ -6,24 +6,26 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import TYPE_CHECKING
 
-from ..._errors import AristaAvdError
-from ..._utils import get, get_item, merge, template_var
+from pyavd._errors import AristaAvdError
+from pyavd._utils import get, get_item, merge, template_var
 
 if TYPE_CHECKING:
-    from ...eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+
     from . import SharedUtils
 
 
 class UtilsMixin:
     """
-    Mixin Class providing a subset of SharedUtils
-    Class should only be used as Mixin to the SharedUtils class
+    Mixin Class providing a subset of SharedUtils.
+
+    Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     def get_peer_facts(self: SharedUtils, peer_name: str, required: bool = True) -> EosDesignsFacts | dict | None:
         """
-        util function to retrieve peer_facts for peer_name
+        util function to retrieve peer_facts for peer_name.
 
         returns avd_switch_facts.{peer_name}.switch
 
@@ -42,19 +44,16 @@ class UtilsMixin:
         )
 
     def template_var(self: SharedUtils, template_file: str, template_vars: dict) -> str:
-        """
-        Run the simplified templater using the passed Ansible "templar" engine.
-        """
+        """Run the simplified templater using the passed Ansible "templar" engine."""
         try:
             return template_var(template_file, template_vars, self.templar)
         except Exception as e:
-            raise AristaAvdError(f"Error during templating of template: {template_file}") from e
+            msg = f"Error during templating of template: {template_file}"
+            raise AristaAvdError(msg) from e
 
-    @lru_cache
+    @lru_cache  # noqa: B019
     def get_merged_port_profile(self: SharedUtils, profile_name: str) -> list:
-        """
-        Return list of merged "port_profiles" where "parent_profile" has been applied.
-        """
+        """Return list of merged "port_profiles" where "parent_profile" has been applied."""
         port_profile = get_item(self.port_profiles, "profile", profile_name, default={})
         if "parent_profile" in port_profile:
             parent_profile = get_item(self.port_profiles, "profile", port_profile["parent_profile"], default={})
@@ -67,6 +66,7 @@ class UtilsMixin:
     def get_merged_adapter_settings(self: SharedUtils, adapter_or_network_port_settings: dict) -> dict:
         """
         Applies port-profiles to the given adapter_or_network_port and returns the combined result.
+
         adapter_or_network_port can either be an adapter of a connected endpoint or one item under network_ports.
         """
         profile_name = adapter_or_network_port_settings.get("profile")

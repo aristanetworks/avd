@@ -5,8 +5,11 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
 from jinja2.runtime import Undefined
+
 from pyavd.j2tests.contains import contains
 
 TEST_DATA = [
@@ -26,7 +29,7 @@ TEST_DATA = [
 class TestContainsTest:
     """Test Contains."""
 
-    @pytest.mark.parametrize(("value, test_value, expected_result"), TEST_DATA)
-    def test_contains(self, value, test_value, expected_result):
+    @pytest.mark.parametrize(("value", "test_value", "expected_result"), TEST_DATA)
+    def test_contains(self, value: Any, test_value: Any, expected_result: bool) -> None:
         """Test the contains function."""
         assert contains(value, test_value) == expected_result

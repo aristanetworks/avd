@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
@@ -150,6 +151,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ### AAA Authorization
 
 #### AAA Authorization Summary
@@ -240,102 +245,102 @@ vlan 330
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet2 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet3 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet4 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet5 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet6 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet7 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet8 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet9 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet10 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet11 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet12 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet13 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet14 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet15 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet16 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet17 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet18 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet19 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet20 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet21 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet22 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet23 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet24 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet25 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet26 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet27 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet28 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet29 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet30 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet31 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet32 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet33 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet34 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet35 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet36 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet37 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet38 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet39 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet40 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet41 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet42 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet43 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet44 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet45 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet46 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet47 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet48 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet49 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet50 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet51 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet52 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet53 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet54 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet55 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet56 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet57 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet58 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet59 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet60 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet61 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet62 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet63 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet64 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet65 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet66 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet67 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet68 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet69 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet70 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet71 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet72 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet73 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet74 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet75 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet76 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet77 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet78 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet79 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet80 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet81 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet82 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet83 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet84 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet85 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet86 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet87 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet88 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet89 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet90 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet91 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet92 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet93 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet94 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet95 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet96 |  IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet1 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet2 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet3 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet4 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet5 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet6 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet7 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet8 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet9 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet10 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet11 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet12 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet13 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet14 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet15 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet16 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet17 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet18 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet19 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet20 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet21 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet22 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet23 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet24 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet25 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet26 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet27 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet28 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet29 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet30 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet31 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet32 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet33 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet34 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet35 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet36 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet37 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet38 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet39 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet40 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet41 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet42 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet43 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet44 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet45 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet46 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet47 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet48 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet49 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet50 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet51 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet52 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet53 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet54 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet55 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet56 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet57 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet58 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet59 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet60 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet61 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet62 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet63 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet64 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet65 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet66 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet67 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet68 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet69 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet70 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet71 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet72 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet73 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet74 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet75 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet76 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet77 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet78 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet79 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet80 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet81 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet82 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet83 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet84 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet85 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet86 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet87 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet88 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet89 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet90 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet91 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet92 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet93 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet94 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet95 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
+| Ethernet96 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
 | Ethernet97/1 | LEAF3A_Ethernet98/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
 | Ethernet97/2 | LEAF3B_Ethernet98/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
 
@@ -2383,9 +2388,9 @@ interface Ethernet97/2
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel971 | IDF3_AGG_Po981 | switched | trunk | 10,310,320,330 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel971 | IDF3_AGG_Po981 | trunk | 10,310,320,330 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -2409,9 +2414,9 @@ interface Port-Channel971
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.13/24  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan10 |  default  |  10.10.10.13/24  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 

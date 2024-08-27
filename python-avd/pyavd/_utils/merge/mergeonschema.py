@@ -13,19 +13,19 @@ from deepmerge import STRATEGY_END
 
 class MergeOnSchema:
     """
-    MergeOnSchema provides the method "strategy" to be used as
-    list merge strategy with the deepmerge library.
+    MergeOnSchema provides the method "strategy" to be used as list merge strategy with the deepmerge library.
 
     The class is needed to allow a schema to be passed along to the method.
     """
 
-    def __init__(self, schema: AvdSchema = None):
+    def __init__(self, schema: AvdSchema = None) -> None:
         self.schema = schema
 
-    def strategy(self, config, path: list, base: list, nxt: list):
+    def strategy(self, config: object, path: list, base: list, nxt: list) -> list:
         """
-        The argument "config" should be an instance of deepmerge.Merger,
-        but Ansible sanity test breaks type hinting with imported libs
+        Custom strategy to merge lists on schema primary key.
+
+        The argument "config" should be an instance of deepmerge.Merger, but Ansible sanity test breaks type hinting with imported libs.
         """
         # Skip if no schema is supplied
         if not self.schema:
@@ -68,10 +68,8 @@ class MergeOnSchema:
                     base[base_index] = config.value_strategy(path, base_item, nxt_item)
 
         except Exception as e:
-            raise RuntimeError(
-                f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} using primary key '{primary_key}'"
-            ) from e
-
+            msg = f"An issue occurred while trying to do schema-based deepmerge for the schema path {path} using primary key '{primary_key}'"
+            raise RuntimeError(msg) from e
         # If all nxt items got merged, we can just return the updated base.
         if len(merged_nxt_indexes) == len(nxt):
             return base
@@ -84,11 +82,9 @@ class MergeOnSchema:
                 del nxt[merged_nxt_index]
 
         except Exception as e:
-            raise RuntimeError(
+            msg = (
                 f"An issue occurred after schema-based deepmerge for the schema path {path} using primary key '{primary_key}', "
                 f"while preparing remaining items with to be merged with regular strategies. Merged indexes were {merged_nxt_indexes}"
-            ) from e
-
-        # Since we did inplace updates of both nxt and base, we return STRATEGY_END
-        # so deepmerge will run the next strategy on the remaining nxt items.
+            )
+            raise RuntimeError(msg) from e
         return STRATEGY_END

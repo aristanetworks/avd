@@ -30,7 +30,7 @@ def validate_inputs(inputs: dict) -> ValidationResult:
 
     # pylint: enable=import-outside-toplevel
     # Initialize a global instance of eos_designs_schema_tools
-    global eos_designs_schema_tools
+    global eos_designs_schema_tools  # noqa: PLW0603 TODO: improve code without global
     if eos_designs_schema_tools is None:
         eos_designs_schema_tools = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID)
 

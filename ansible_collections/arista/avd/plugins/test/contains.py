@@ -1,28 +1,25 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-#
-# arista.avd.contains
-#
-# Example:
-# A is [1, 2]
-# B is [3, 4]
-# C is [2, 3]
-#
-# Jinja test examples:
-# {% if A is arista.avd.contains(B) %}  =>  false
-# {% if B is arista.avd.contains(C) %}  =>  true
-# {% if C is arista.avd.contains(A) %}  =>  true
-# {% if C is arista.avd.contains(B) %}  =>  true
-#
-# {% if A is arista.avd.contains(0) %}  =>  false
-# {% if B is arista.avd.contains(1) %}  =>  false
-# {% if C is arista.avd.contains(2) %}  =>  true
-# {% if D is arista.avd.contains(3) %}  =>  false <- Protecting against undefined gracefully.
 
-from __future__ import absolute_import, division, print_function
+"""
+arista.avd.contains test plugin.
 
-__metaclass__ = type
+Example:
+A = [1, 2]
+B = [3, 4]
+C = [2, 3]
+
+Jinja test examples:
+{% if A is arista.avd.contains(B) %}  =>  false
+{% if B is arista.avd.contains(C) %}  =>  true
+{% if C is arista.avd.contains(A) %}  =>  true
+{% if C is arista.avd.contains(B) %}  =>  true
+{% if A is arista.avd.contains(0) %}  =>  false
+{% if B is arista.avd.contains(1) %}  =>  false
+{% if C is arista.avd.contains(2) %}  =>  true
+{% if D is arista.avd.contains(3) %}  =>  false <- Protecting against undefined gracefully.
+"""
 
 from ansible.errors import AnsibleFilterError
 
@@ -37,7 +34,7 @@ except ImportError as e:
         AnsibleFilterError(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
-        )
+        ),
     )
 
 
@@ -81,6 +78,6 @@ _value:
 """
 
 
-class TestModule(object):
-    def tests(self):
+class TestModule:
+    def tests(self) -> dict:
         return {"contains": wrap_test(PLUGIN_NAME)(contains)}

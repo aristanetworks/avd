@@ -1,11 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
+
+from typing import Any
 
 import pytest
+
 from pyavd._utils import strip_null_from_data
 
 STRIP_EMPTIES_LIST = {
@@ -30,7 +31,7 @@ STRIP_EMPTIES = {"None": None, "empty_string": "", "valid_string": "string1", "v
 
 
 class TestStripEmpties:
-    def strip_empties_checks(self, output):
+    def strip_empties_checks(self, output: Any) -> None:
         assert None not in output
         assert "" not in output
         assert [] not in output
@@ -41,15 +42,15 @@ class TestStripEmpties:
             if isinstance(entry, dict):
                 self.strip_empties_checks(entry.values())
 
-    @pytest.mark.parametrize("DATA", STRIP_EMPTIES.values(), ids=STRIP_EMPTIES.keys())
-    def test_strip_empties_string(self, DATA):
-        output = strip_null_from_data(DATA)
-        assert output == DATA
+    @pytest.mark.parametrize("data", STRIP_EMPTIES.values(), ids=STRIP_EMPTIES.keys())
+    def test_strip_empties_string(self, data: Any) -> None:
+        output = strip_null_from_data(data)
+        assert output == data
 
-    @pytest.mark.parametrize("DATA", STRIP_EMPTIES_LIST.values(), ids=STRIP_EMPTIES_LIST.keys())
-    def test_strip_empties_list(self, DATA):
+    @pytest.mark.parametrize("data", STRIP_EMPTIES_LIST.values(), ids=STRIP_EMPTIES_LIST.keys())
+    def test_strip_empties_list(self, data: Any) -> None:
         output = strip_null_from_data(
-            DATA,
+            data,
             strip_values_tuple=(
                 None,
                 "",
@@ -59,10 +60,10 @@ class TestStripEmpties:
         )
         self.strip_empties_checks(output)
 
-    @pytest.mark.parametrize("DATA", STRIP_EMPTIES_DICT.values(), ids=STRIP_EMPTIES_DICT.keys())
-    def test_strip_empties_dict(self, DATA):
+    @pytest.mark.parametrize("data", STRIP_EMPTIES_DICT.values(), ids=STRIP_EMPTIES_DICT.keys())
+    def test_strip_empties_dict(self, data: Any) -> None:
         output = strip_null_from_data(
-            DATA,
+            data,
             strip_values_tuple=(
                 None,
                 "",

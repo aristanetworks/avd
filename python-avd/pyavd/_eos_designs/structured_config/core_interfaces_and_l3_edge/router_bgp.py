@@ -6,7 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ...._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._utils import get_ip_from_ip_prefix
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -16,15 +18,13 @@ if TYPE_CHECKING:
 class RouterBgpMixin(UtilsMixin):
     """
     Mixin Class used to generate structured config for one key.
-    Class should only be used as Mixin to a AvdStructuredConfig class
+
+    Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
     @cached_property
     def router_bgp(self: AvdStructuredConfigCoreInterfacesAndL3Edge) -> dict | None:
-        """
-        Return structured config for router_bgp
-        """
-
+        """Return structured config for router_bgp."""
         if not self.shared_utils.underlay_bgp:
             return None
 
@@ -35,7 +35,8 @@ class RouterBgpMixin(UtilsMixin):
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
-                raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links.[].as or {self.data_model}.p2p_links_profiles.[].as")
+                msg = f"{self.data_model}.p2p_links.[].as or {self.data_model}.p2p_links_profiles.[].as"
+                raise AristaAvdMissingVariableError(msg)
 
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
@@ -51,7 +52,8 @@ class RouterBgpMixin(UtilsMixin):
 
             # Regular BGP Neighbors
             if p2p_link["data"]["ip"] is None or p2p_link["data"]["peer_ip"] is None:
-                raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links.[].ip, .subnet or .ip_pool")
+                msg = f"{self.data_model}.p2p_links.[].ip, .subnet or .ip_pool"
+                raise AristaAvdMissingVariableError(msg)
 
             neighbor["bfd"] = p2p_link.get("bfd")
             if p2p_link["data"]["bgp_as"] != self.shared_utils.bgp_as:
@@ -60,7 +62,7 @@ class RouterBgpMixin(UtilsMixin):
             # Remove None values
             neighbor = {key: value for key, value in neighbor.items() if value is not None}
 
-            neighbors.append({"ip_address": p2p_link["data"]["peer_ip"].split("/")[0], **neighbor})
+            neighbors.append({"ip_address": get_ip_from_ip_prefix(p2p_link["data"]["peer_ip"]), **neighbor})
 
         router_bgp = {}
         if neighbors:

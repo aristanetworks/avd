@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -98,6 +100,12 @@ management api http-commands
       no shutdown
 ```
 
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
+
 ## Spanning Tree
 
 ### Spanning Tree Summary
@@ -172,24 +180,24 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | l3dot1q | - | 10 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10 |
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | routed | - | 100.64.48.0/31 | default | 9178 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | routed | - | 100.64.48.4/31 | default | 9178 | False | - | - |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | l3dot1q | - | 123.1.1.0/31 | TENANT_B_INTRA | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 123.1.1.0/31 | TENANT_B_INTRA | - | False | - | - |
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -280,21 +288,21 @@ interface Ethernet8
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel3.1000 | - | l2dot1q | - | False | 1000 | - | - | True | - | - | - |
-| Port-Channel3.1001 | - | l2dot1q | - | False | 1001 | - | - | True | - | - | - |
-| Port-Channel3.1002 | - | l2dot1q | - | False | 1002 | - | - | True | - | - | - |
-| Port-Channel3.1003 | - | l2dot1q | - | False | 1003 | - | - | True | - | - | - |
-| Port-Channel3.1004 | - | l2dot1q | - | False | 1004 | - | - | True | - | - | - |
-| Port-Channel8.111 | - | l2dot1q | 111 | False | 111 | - | - | True | - | - | - |
-| Port-Channel8.222 | - | l2dot1q | 222 | False | 222 | - | - | True | - | - | - |
-| Port-Channel8.333 | - | l2dot1q | 434 | False | 333 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel3.1000 | - | - | False | 1000 | - | - | True | - | - | - |
+| Port-Channel3.1001 | - | - | False | 1001 | - | - | True | - | - | - |
+| Port-Channel3.1002 | - | - | False | 1002 | - | - | True | - | - | - |
+| Port-Channel3.1003 | - | - | False | 1003 | - | - | True | - | - | - |
+| Port-Channel3.1004 | - | - | False | 1004 | - | - | True | - | - | - |
+| Port-Channel8.111 | - | 111 | False | 111 | - | - | True | - | - | - |
+| Port-Channel8.222 | - | 222 | False | 222 | - | - | True | - | - | - |
+| Port-Channel8.333 | - | 434 | False | 333 | - | - | True | - | - | - |
 
 ##### EVPN Multihoming
 
@@ -410,9 +418,9 @@ interface Loopback0
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
@@ -538,7 +546,7 @@ router ospf 19 vrf TENANT_B_INTRA
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0005.00 |
+| Net-ID | 49.0001.1000.7000.0005.00 |
 | Type | level-1-2 |
 | Router-ID | 100.70.0.5 |
 | Log Adjacency Changes | True |
@@ -582,7 +590,7 @@ router ospf 19 vrf TENANT_B_INTRA
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0005.00
+   net 49.0001.1000.7000.0005.00
    is-type level-1-2
    router-id ipv4 100.70.0.5
    log-adjacency-changes
