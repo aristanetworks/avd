@@ -114,6 +114,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-BL1A
     updates:
       wait_install: true
   - name: Tenant_B_WAN_Zone
@@ -133,6 +134,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-BL1A
     updates:
       wait_install: true
   - name: Tenant_C_WAN_Zone
@@ -152,6 +154,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-BL1A
     updates:
       wait_install: true
   vlan_aware_bundles:
