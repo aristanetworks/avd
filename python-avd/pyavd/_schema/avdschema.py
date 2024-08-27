@@ -163,7 +163,7 @@ class AvdSchema:
         -------
           AvdSchemaError if no default value is defined.
         """
-        if "default" not in self.subschema(datapath):
+        if "default" not in (subschema := self.subschema(datapath)):
             msg = f"The datapath '{datapath}' does not have a default value"
             raise AvdSchemaError(msg)
-        return self.subschema(datapath)["default"]
+        return subschema["default"]

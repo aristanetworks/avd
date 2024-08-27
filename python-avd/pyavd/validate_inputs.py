@@ -27,8 +27,9 @@ def validate_inputs(inputs: dict) -> ValidationResult:
 
     # pylint: enable=import-outside-toplevel
 
+    eos_designs_schema_tools = EosDesignsAvdSchemaTools()
     # Initialize SharedUtils class to fetch default variables below.
-    shared_utils = SharedUtils(hostvars=inputs, templar=None, schema=EosDesignsAvdSchemaTools().avdschema)
+    shared_utils = SharedUtils(hostvars=inputs, templar=None, schema=eos_designs_schema_tools.avdschema)
 
     # Insert dynamic keys into the input data if not set.
     # These keys are required by the schema, but the default values are set inside shared_utils.
