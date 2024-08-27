@@ -1139,6 +1139,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG_PEER
+      neighbor 10.255.251.3 description DC1-LEAF2B
       redistribute connected
       !
       address-family ipv4
@@ -1151,6 +1152,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG_PEER
+      neighbor 10.255.251.3 description DC1-LEAF2B
       redistribute connected
       !
       address-family ipv4
@@ -1163,6 +1165,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG_PEER
+      neighbor 10.255.251.3 description DC1-LEAF2B
       redistribute connected
       !
       address-family ipv4
@@ -1175,6 +1178,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG_PEER
+      neighbor 10.255.251.3 description DC1-LEAF2B
       redistribute connected
       !
       address-family ipv4
@@ -1187,6 +1191,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG_PEER
+      neighbor 10.255.251.3 description DC1-LEAF2B
       redistribute connected
       !
       address-family ipv4
@@ -1199,6 +1204,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG_PEER
+      neighbor 10.255.251.3 description DC1-LEAF2B
       redistribute connected
       !
       address-family ipv4

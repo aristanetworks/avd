@@ -755,6 +755,7 @@ router bgp 65103
       router-id 192.168.255.8
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
 ```
 
