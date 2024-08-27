@@ -12,6 +12,12 @@ keys:
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
+  avd_connected_endpoints_documentation:
+    documentation_options:
+      table: role-documentation-settings
+    description: Generate fabric-wide documentation for connected endpoints.
+    type: bool
+    default: false
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -43,6 +49,12 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_fabric_documentation:
+    documentation_options:
+      table: role-documentation-settings
+    description: Generate fabric-wide documentation.
+    type: bool
+    default: true
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -1031,7 +1043,7 @@ keys:
               default: true
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-output-settings
+      table: role-documentation-settings
     description: 'Control fabric documentation generation.
 
       '
@@ -1043,6 +1055,10 @@ keys:
           '
         type: bool
         default: false
+        deprecation:
+          warning: true
+          new_key: avd_documentation_connected_endpoints
+          remove_in_version: 6.0.0
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     documentation_options:
