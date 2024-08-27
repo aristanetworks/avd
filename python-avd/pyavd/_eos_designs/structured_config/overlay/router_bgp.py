@@ -208,7 +208,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return {"peer_groups": peer_groups}
 
-    def _address_family_evpn(self: AvdStructuredConfigOverlay) -> dict:
+    def _address_family_evpn(self: AvdStructuredConfigOverlay) -> dict | None:
         address_family_evpn = {}
 
         peer_groups = []
