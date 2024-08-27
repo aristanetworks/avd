@@ -29,13 +29,6 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          # Need to choose what to test here or create multiple hosts...
-          # any: true
-          # backup: true
-          # ecmp: true
-          ecmp_limit: 42
-          # limit: 42
         send: ecmp
         send_ecmp_limit: 42
     peer_groups:

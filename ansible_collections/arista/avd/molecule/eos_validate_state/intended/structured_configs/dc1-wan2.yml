@@ -101,8 +101,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   vrfs:
   - name: default
     rd: 10.255.2.2:1
