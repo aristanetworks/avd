@@ -69,6 +69,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.224.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: MLAG_SAME_SUBNET_L3LEAF2B
     updates:
       wait_install: true
   vlans:

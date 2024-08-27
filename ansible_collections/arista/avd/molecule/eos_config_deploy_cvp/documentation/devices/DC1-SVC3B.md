@@ -1172,6 +1172,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1181,6 +1182,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1190,6 +1192,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1199,6 +1202,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
@@ -1208,6 +1212,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1217,6 +1222,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1226,6 +1232,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1235,6 +1242,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1244,6 +1252,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
 ```
 

@@ -90,6 +90,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.129.125
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc2-leaf3b.arista.com
   - name: VRF11
     router_id: 10.255.128.17
     rd: 10.255.128.17:11
@@ -107,6 +108,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.129.125
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc2-leaf3b.arista.com
   vlans:
   - id: 11
     tenant: TENANT1
