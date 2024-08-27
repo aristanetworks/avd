@@ -47,7 +47,7 @@ class IpSecurityMixin(UtilsMixin):
         return strip_null_from_data(ip_security)
 
     def _append_data_plane(self: AvdStructuredConfigOverlay, ip_security: dict, data_plane_config: dict) -> None:
-        """In place update of ip_security."""
+        """In place update of ip_security for DataPlane."""
         ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY") if self.shared_utils.wan_ha_ipsec else None
         sa_policy_name = get(data_plane_config, "sa_policy_name", default="DP-SA-POLICY")
         profile_name = get(data_plane_config, "profile_name", default="DP-PROFILE")
