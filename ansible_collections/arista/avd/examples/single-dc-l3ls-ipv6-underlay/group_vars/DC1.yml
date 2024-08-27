@@ -13,7 +13,7 @@ spine:
     router_id_pool: 10.255.0.0/24
     # Pool of IPv6 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv6_pool: 2001:DB8:0::/48
-    # Modifies the default loopback prefix length of 128. 
+    # Modifies the default loopback prefix length of 128
     loopback_ipv6_prefix_length: 64
     # ASN to be used by BGP
     bgp_as: 65100
@@ -41,7 +41,7 @@ l3leaf:
     router_id_pool: 10.255.1.0/24
     # Pool of IPv6 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv6_pool: 2001:DB8:1::/48
-    # Modifies the default loopback prefix length of 128. 
+    # Modifies the default loopback prefix length of 128
     loopback_ipv6_prefix_length: 64
     # Pool of IPv6 addresses to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
     vtep_loopback_ipv6_pool: 2001:DB8:5::/48
