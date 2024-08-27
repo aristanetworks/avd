@@ -76,9 +76,6 @@ dot1x
 {%             if dot1x.aaa.unresponsive.eap_response is arista.avd.defined %}
    {{ aaa_config }} eap response {{ dot1x.aaa.unresponsive.eap_response }}
 {%             endif %}
-{%             if dot1x.aaa.unresponsive.recovery_action_reauthenticate is arista.avd.defined(true) %}
-   {{ aaa_config }} recovery action reauthenticate
-{%             endif %}
 {%         endif %}
 {%         if dot1x.aaa.accounting_update_interval is arista.avd.defined %}
    aaa accounting update interval {{ dot1x.aaa.accounting_update_interval }} seconds
@@ -101,6 +98,9 @@ dot1x
 {%         endif %}
 {%         if dot1x.radius_av_pair_username_format.delimiter is arista.avd.defined and dot1x.radius_av_pair_username_format.mac_string_case is arista.avd.defined %}
    mac-based-auth radius av-pair user-name delimiter {{ dot1x.radius_av_pair_username_format.delimiter }} {{ dot1x.radius_av_pair_username_format.mac_string_case }}
+{%         endif %}
+{%         if dot1x.aaa.unresponsive.recovery_action_reauthenticate is arista.avd.defined(true) %}
+   {{ aaa_config }} recovery action reauthenticate
 {%         endif %}
 {%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
    supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds

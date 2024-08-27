@@ -64,7 +64,7 @@ switchport default mode routed
 ```eos
 !
 interface defaults
+   mtu 9000
    ethernet
       shutdown
-   mtu 9000
 ```

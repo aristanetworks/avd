@@ -83,8 +83,8 @@ group interface QSFP_Interface_Group
 group interface SFP_Interface_Group
    interface Ethernet10-20
    interface Ethernet30-48
-   maintenance profile interface downlink-interfaces
-   maintenance profile interface ix-interfaces
    maintenance profile bgp downlink-neighbors
    maintenance profile bgp local-ix
+   maintenance profile interface downlink-interfaces
+   maintenance profile interface ix-interfaces
 ```
