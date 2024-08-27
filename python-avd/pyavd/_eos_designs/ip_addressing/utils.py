@@ -52,12 +52,21 @@ class UtilsMixin:
         return self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
 
     @cached_property
+    def _mlag_peer_ipv4_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.mlag_peer_ipv4_address
+
+    @cached_property
     def _mlag_peer_ipv4_pool(self: AvdIpAddressing) -> str:
         return self.shared_utils.mlag_peer_ipv4_pool
 
     @cached_property
     def _mlag_peer_ipv6_pool(self: AvdIpAddressing) -> str:
         return self.shared_utils.mlag_peer_ipv6_pool
+
+
+    @cached_property
+    def _mlag_peer_l3_ipv4_address(self: AvdIpAddressing) -> str:
+        return self.shared_utils.mlag_peer_l3_ipv4_address
 
     @cached_property
     def _mlag_peer_l3_ipv4_pool(self: AvdIpAddressing) -> str:

@@ -45,7 +45,7 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   neighbors:
-  - ip_address: 10.255.251.6
+  - ip_address: 192.168.44.41
     peer_group: MLAG-PEERS
     peer: DC1-SVC3A
     description: DC1-SVC3A
@@ -118,7 +118,7 @@ router_bgp:
     - source_protocol: connected
       route_map: RM-CONN-2-BGP-VRFS
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -138,7 +138,7 @@ router_bgp:
     - source_protocol: connected
       route_map: RM-CONN-2-BGP-VRFS
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -157,7 +157,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -179,7 +179,7 @@ router_bgp:
     - source_protocol: connected
       route_map: RM-CONN-2-BGP-VRFS
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -218,7 +218,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -237,7 +237,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -256,7 +256,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -275,7 +275,7 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - ip_address: 10.255.251.6
+    - ip_address: 192.168.44.41
       peer_group: MLAG-PEERS
     updates:
       wait_install: true
@@ -599,13 +599,13 @@ vlan_interfaces:
   description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan4092
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
   mtu: 1500
-  ip_address: 10.255.252.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan130
   tenant: Tenant_A
   tags:
@@ -630,7 +630,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
   vrf: Tenant_A_APP_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan140
   tenant: Tenant_A
   tags:
@@ -655,7 +655,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
   vrf: Tenant_A_DB_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan110
   tenant: Tenant_A
   tags:
@@ -697,7 +697,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
   vrf: Tenant_A_OP_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan150
   tenant: Tenant_A
   tags:
@@ -718,7 +718,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
   vrf: Tenant_A_WAN_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan120
   tenant: Tenant_A
   tags:
@@ -775,7 +775,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
   vrf: Tenant_B_OP_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan250
   tenant: Tenant_B
   tags:
@@ -791,7 +791,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
   vrf: Tenant_B_WAN_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan310
   tenant: Tenant_C
   tags:
@@ -815,7 +815,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
   vrf: Tenant_C_OP_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 - name: Vlan350
   tenant: Tenant_C
   tags:
@@ -831,7 +831,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
   vrf: Tenant_C_WAN_Zone
   mtu: 1500
-  ip_address: 10.255.251.7/31
+  ip_address: 192.168.44.42/31
 port_channel_interfaces:
 - name: Port-Channel2000
   description: MLAG_PEER_DC1-SVC3A_Po2000
@@ -1450,7 +1450,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: custom_mlag_domain_id
   local_interface: Vlan4092
-  peer_address: 10.255.252.6
+  peer_address: 192.168.44.41
   peer_link: Port-Channel2000
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
@@ -1500,9 +1500,9 @@ prefix_lists:
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
-    action: permit 10.255.251.6/31
-  - sequence: 20
     action: permit 172.31.11.6/31
+  - sequence: 20
+    action: permit 192.168.44.42/31
 router_bfd:
   multihop:
     interval: 1200
