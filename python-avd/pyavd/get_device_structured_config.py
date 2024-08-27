@@ -21,7 +21,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
     from ._eos_designs.structured_config import get_structured_config
     from ._errors import AristaAvdError
     from .avd_schema_tools import AvdSchemaTools
-    from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
+    from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID, EOS_DESIGNS_SCHEMA_ID
 
     # pylint: enable=import-outside-toplevel
     #
@@ -37,8 +37,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -
     )
 
     # We do not validate input variables in this stage (done in "validate_inputs")
-    # So we feed the vendored code an empty schema to avoid failures.
-    input_schema_tools = AvdSchemaTools(schema={})
+    input_schema_tools = AvdSchemaTools(schema=EOS_DESIGNS_SCHEMA_ID, validate=False)
     output_schema_tools = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
     result = {}
     structured_config = get_structured_config(

@@ -63,7 +63,7 @@ def get_structured_config(
     )
 
     # Initialize SharedUtils class to be passed to each python_module below.
-    shared_utils = SharedUtils(module_vars, templar)
+    shared_utils = SharedUtils(hostvars=module_vars, templar=templar, schema=input_schema_tools.avdschema)
 
     # Insert dynamic keys into the input data if not set.
     # These keys are required by the schema, but the default values are set inside shared_utils.

@@ -145,7 +145,7 @@ class ActionModule(ActionBase):
             host_hostvars = dict(hostvars.get(host))
 
             # Initialize SharedUtils class to be passed to EosDesignsFacts below.
-            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar)
+            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar, schema=avdschematools.avdschema)
 
             # Insert dynamic keys into the input data if not set.
             # These keys are required by the schema, but the default values are set inside shared_utils.

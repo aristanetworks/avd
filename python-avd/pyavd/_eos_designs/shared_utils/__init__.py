@@ -1,11 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing_extensions import Self
-
 from pyavd._schema.avdschema import AvdSchema
-from pyavd.avd_schema_tools import AvdSchemaTools
-from pyavd.constants import EOS_DESIGNS_SCHEMA_ID
 
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
@@ -30,15 +26,6 @@ from .switch_data import SwitchDataMixin
 from .underlay import UnderlayMixin
 from .utils import UtilsMixin
 from .wan import WanMixin
-
-
-class AvdEosDesignsSchema(AvdSchema):
-    """Singleton class to access the eos_designs schema to read default values."""
-
-    def __new__(cls) -> Self:
-        if not hasattr(cls, "instance"):
-            cls.instance = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID).avdschema
-        return cls.instance
 
 
 class SharedUtils(
@@ -80,7 +67,7 @@ class SharedUtils(
     The class cannot be overridden.
     """
 
-    def __init__(self, hostvars: dict, templar: object) -> None:
+    def __init__(self, hostvars: dict, templar: object, schema: AvdSchema) -> None:
         self.hostvars = hostvars
         self.templar = templar
-        self.schema = AvdEosDesignsSchema()
+        self.schema = schema
