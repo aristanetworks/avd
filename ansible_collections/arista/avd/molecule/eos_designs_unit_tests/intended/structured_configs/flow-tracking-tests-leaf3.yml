@@ -88,6 +88,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.254.1.105
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: flow-tracking-tests-leaf4
   vlans:
   - id: 11
     tenant: FLOW_TRACKING

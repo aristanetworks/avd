@@ -79,6 +79,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.240.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: CUSTOM-TEMPLATES-L3LEAF1B
     updates:
       wait_install: true
   vlans:

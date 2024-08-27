@@ -801,6 +801,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.10 description DC1-BL1A
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -810,6 +811,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.10 description DC1-BL1A
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -819,6 +821,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.10 description DC1-BL1A
       redistribute connected
 ```
 
