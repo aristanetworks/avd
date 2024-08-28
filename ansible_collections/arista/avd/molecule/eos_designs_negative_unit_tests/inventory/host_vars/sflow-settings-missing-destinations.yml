@@ -4,10 +4,6 @@ l2leaf:
     - name: sflow-settings-missing-destinations
       id: 1
 
-sflow_settings:
-  sample:
-    rate: 10
-
 servers:
   - name: test
     adapters:
