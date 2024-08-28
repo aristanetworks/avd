@@ -877,7 +877,6 @@ keys:
     display_name: Community Lists (legacy model)
     deprecation:
       warning: true
-      removed: false
       remove_in_version: 6.0.0
       new_key: ip_community_lists
     items:
