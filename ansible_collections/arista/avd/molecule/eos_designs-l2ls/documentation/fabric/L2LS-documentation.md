@@ -18,18 +18,18 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| L2LS_BGP | leaf | BGP-LEAF1 | - | - | Provisioned | - |
-| L2LS_BGP | leaf | BGP-LEAF2 | - | - | Provisioned | - |
+| L2LS_BGP | l2leaf | BGP-LEAF1 | - | - | Provisioned | - |
+| L2LS_BGP | l2leaf | BGP-LEAF2 | - | - | Provisioned | - |
 | L2LS_BGP | l3spine | BGP-SPINE1 | - | - | Provisioned | - |
 | L2LS_BGP | l3spine | BGP-SPINE2 | - | - | Provisioned | - |
-| L2LS_ISIS | leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
+| L2LS_ISIS | l2leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
 | L2LS_ISIS | l3spine | ISIS-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned | - |
-| L2LS_L2ONLY | leaf | L2ONLY-LEAF1 | - | - | Provisioned | - |
-| L2LS_L2ONLY | leaf | L2ONLY-LEAF2 | - | - | Provisioned | - |
-| L2LS_L2ONLY | spine | L2ONLY-SPINE1 | - | - | Provisioned | - |
-| L2LS_L2ONLY | spine | L2ONLY-SPINE2 | - | - | Provisioned | - |
-| L2LS_OSPF | leaf | OSPF-LEAF1 | - | - | Provisioned | - |
-| L2LS_OSPF | leaf | OSPF-LEAF2 | - | - | Provisioned | - |
+| L2LS_L2ONLY | l2leaf | L2ONLY-LEAF1 | - | - | Provisioned | - |
+| L2LS_L2ONLY | l2leaf | L2ONLY-LEAF2 | - | - | Provisioned | - |
+| L2LS_L2ONLY | l2spine | L2ONLY-SPINE1 | - | - | Provisioned | - |
+| L2LS_L2ONLY | l2spine | L2ONLY-SPINE2 | - | - | Provisioned | - |
+| L2LS_OSPF | l2leaf | OSPF-LEAF1 | - | - | Provisioned | - |
+| L2LS_OSPF | l2leaf | OSPF-LEAF2 | - | - | Provisioned | - |
 | L2LS_OSPF | l3spine | OSPF-SPINE1 | - | - | Provisioned | - |
 | L2LS_OSPF | l3spine | OSPF-SPINE2 | - | - | Provisioned | - |
 
@@ -39,35 +39,35 @@
 
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
-| L2LS_BGP | leaf | BGP-LEAF1 | 172.23.254.4/24 | Vlan4092 |
-| L2LS_BGP | leaf | BGP-LEAF2 | 172.23.254.5/24 | Vlan4092 |
-| L2LS_ISIS | leaf | ISIS-LEAF1 | 172.23.254.4/24 | Vlan4092 |
-| L2LS_L2ONLY | leaf | L2ONLY-LEAF1 | 172.23.254.4/24 | Vlan4092 |
-| L2LS_L2ONLY | leaf | L2ONLY-LEAF2 | 172.23.254.5/24 | Vlan4092 |
-| L2LS_OSPF | leaf | OSPF-LEAF1 | 172.23.254.4/24 | Vlan4092 |
-| L2LS_OSPF | leaf | OSPF-LEAF2 | 172.23.254.5/24 | Vlan4092 |
+| L2LS_BGP | l2leaf | BGP-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_BGP | l2leaf | BGP-LEAF2 | 172.23.254.5/24 | Vlan4092 |
+| L2LS_ISIS | l2leaf | ISIS-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_L2ONLY | l2leaf | L2ONLY-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_L2ONLY | l2leaf | L2ONLY-LEAF2 | 172.23.254.5/24 | Vlan4092 |
+| L2LS_OSPF | l2leaf | OSPF-LEAF1 | 172.23.254.4/24 | Vlan4092 |
+| L2LS_OSPF | l2leaf | OSPF-LEAF2 | 172.23.254.5/24 | Vlan4092 |
 
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| leaf | BGP-LEAF1 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet1 |
-| leaf | BGP-LEAF1 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet1 |
-| leaf | BGP-LEAF2 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet2 |
-| leaf | BGP-LEAF2 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet2 |
+| l2leaf | BGP-LEAF1 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet1 |
+| l2leaf | BGP-LEAF1 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet1 |
+| l2leaf | BGP-LEAF2 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet2 |
+| l2leaf | BGP-LEAF2 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet2 |
 | l3spine | BGP-SPINE1 | Ethernet3 | mlag_peer | BGP-SPINE2 | Ethernet3 |
 | l3spine | BGP-SPINE1 | Ethernet4 | mlag_peer | BGP-SPINE2 | Ethernet4 |
-| leaf | ISIS-LEAF1 | Ethernet1 | l3spine | ISIS-SPINE1 | Ethernet1 |
-| leaf | L2ONLY-LEAF1 | Ethernet1 | spine | L2ONLY-SPINE1 | Ethernet1 |
-| leaf | L2ONLY-LEAF1 | Ethernet2 | spine | L2ONLY-SPINE2 | Ethernet1 |
-| leaf | L2ONLY-LEAF2 | Ethernet1 | spine | L2ONLY-SPINE1 | Ethernet2 |
-| leaf | L2ONLY-LEAF2 | Ethernet2 | spine | L2ONLY-SPINE2 | Ethernet2 |
-| spine | L2ONLY-SPINE1 | Ethernet3 | mlag_peer | L2ONLY-SPINE2 | Ethernet3 |
-| spine | L2ONLY-SPINE1 | Ethernet4 | mlag_peer | L2ONLY-SPINE2 | Ethernet4 |
-| leaf | OSPF-LEAF1 | Ethernet1 | l3spine | OSPF-SPINE1 | Ethernet1 |
-| leaf | OSPF-LEAF1 | Ethernet2 | l3spine | OSPF-SPINE2 | Ethernet1 |
-| leaf | OSPF-LEAF2 | Ethernet1 | l3spine | OSPF-SPINE1 | Ethernet2 |
-| leaf | OSPF-LEAF2 | Ethernet2 | l3spine | OSPF-SPINE2 | Ethernet2 |
+| l2leaf | ISIS-LEAF1 | Ethernet1 | l3spine | ISIS-SPINE1 | Ethernet1 |
+| l2leaf | L2ONLY-LEAF1 | Ethernet1 | l2spine | L2ONLY-SPINE1 | Ethernet1 |
+| l2leaf | L2ONLY-LEAF1 | Ethernet2 | l2spine | L2ONLY-SPINE2 | Ethernet1 |
+| l2leaf | L2ONLY-LEAF2 | Ethernet1 | l2spine | L2ONLY-SPINE1 | Ethernet2 |
+| l2leaf | L2ONLY-LEAF2 | Ethernet2 | l2spine | L2ONLY-SPINE2 | Ethernet2 |
+| l2spine | L2ONLY-SPINE1 | Ethernet3 | mlag_peer | L2ONLY-SPINE2 | Ethernet3 |
+| l2spine | L2ONLY-SPINE1 | Ethernet4 | mlag_peer | L2ONLY-SPINE2 | Ethernet4 |
+| l2leaf | OSPF-LEAF1 | Ethernet1 | l3spine | OSPF-SPINE1 | Ethernet1 |
+| l2leaf | OSPF-LEAF1 | Ethernet2 | l3spine | OSPF-SPINE2 | Ethernet1 |
+| l2leaf | OSPF-LEAF2 | Ethernet1 | l3spine | OSPF-SPINE1 | Ethernet2 |
+| l2leaf | OSPF-LEAF2 | Ethernet2 | l3spine | OSPF-SPINE2 | Ethernet2 |
 | l3spine | OSPF-SPINE1 | Ethernet3 | mlag_peer | OSPF-SPINE2 | Ethernet3 |
 | l3spine | OSPF-SPINE1 | Ethernet4 | mlag_peer | OSPF-SPINE2 | Ethernet4 |
 
@@ -103,7 +103,7 @@
 
 | POD | Node | CLNS Address |
 | --- | ---- | ------------ |
-| L2LS_ISIS | ISIS-SPINE1 | 49.0001.0001.0000.0001.00 |
+| L2LS_ISIS | ISIS-SPINE1 | 49.0001.1921.6825.5001.00 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

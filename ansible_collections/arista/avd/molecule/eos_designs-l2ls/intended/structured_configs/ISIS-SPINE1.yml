@@ -14,6 +14,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -33,7 +39,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: ISIS-LEAF1
   peer_interface: Ethernet1
-  peer_type: leaf
+  peer_type: l2leaf
   description: ISIS-LEAF1_Ethernet1
   shutdown: false
   type: port-channel-member
@@ -65,7 +71,7 @@ loopback_interfaces:
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
-  net: 49.0001.0001.0000.0001.00
+  net: 49.0001.1921.6825.5001.00
   router_id: 192.168.255.1
   is_type: level-2
   address_family_ipv4:

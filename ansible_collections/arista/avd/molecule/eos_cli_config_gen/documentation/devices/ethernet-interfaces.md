@@ -87,89 +87,106 @@ sFlow is disabled.
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet7 |  Molecule L2 | access | - | - | - | - |
-| Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
-| Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
-| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
-| Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
-| Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
-| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
-| Ethernet21 |  200MBit/s shape | access | - | - | - | - |
-| Ethernet22 |  10% shape | access | - | - | - | - |
-| Ethernet23 |  Error-correction encoding | access | - | - | - | - |
-| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
-| Ethernet25 |  Molecule MAC | access | - | - | - | - |
-| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
-| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
-| Ethernet29 |  DOT1X Testing - auto phone true | access | - | - | - | - |
-| Ethernet30 |  DOT1X Testing - force-authorized phone false | access | - | - | - | - |
-| Ethernet31 |  DOT1X Testing - force-unauthorized - no phone | access | - | - | - | - |
-| Ethernet32 |  DOT1X Testing - auto reauthentication | access | - | - | - | - |
-| Ethernet33 |  DOT1X Testing - pae mode authenticator | access | - | - | - | - |
-| Ethernet34 |  DOT1X Testing - authentication_failure allow | access | - | - | - | - |
-| Ethernet35 |  DOT1X Testing - authentication_failure drop | access | - | - | - | - |
-| Ethernet36 |  DOT1X Testing - host-mode single-host | access | - | - | - | - |
-| Ethernet37 |  DOT1X Testing - host-mode multi-host | access | - | - | - | - |
-| Ethernet38 |  DOT1X Testing - host-mode multi-host authenticated | access | - | - | - | - |
-| Ethernet39 |  DOT1X Testing - mac_based_authentication host-mode common true | access | - | - | - | - |
-| Ethernet40 |  DOT1X Testing - mac_based_authentication always | access | - | - | - | - |
-| Ethernet41 |  DOT1X Testing - mac_based_authentication always and host-mode common | access | - | - | - | - |
-| Ethernet42 |  DOT1X Testing - mac_based_authentication | access | - | - | - | - |
-| Ethernet43 |  DOT1X Testing - timeout values | access | - | - | - | - |
-| Ethernet44 |  DOT1X Testing - reauthorization_request_limit | access | - | - | - | - |
-| Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
-| Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
-| Ethernet48 |  Load Interval | access | - | - | - | - |
-| Ethernet50 |  SFlow Interface Testing - SFlow ingress enabled | access | - | - | - | - |
-| Ethernet51 |  SFlow Interface Testing - SFlow egress enabled | access | - | - | - | - |
-| Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
-| Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
-| Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
-| Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
-| Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
-| Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
-| Ethernet60 |  IP NAT Testing | access | - | - | - | - |
-| Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
-| Ethernet67 |  Custom_Transceiver_Frequency | access | - | - | - | - |
-| Ethernet68 |  Custom_Transceiver_Frequency | access | - | - | - | - |
-| Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | dot1q-tunnel | 110-111,200,210-211 | tag | g1, g2 | - |
+| Ethernet2 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | trunk | - | 5 | - | - |
+| Ethernet5 | Molecule Routing | - | 220 | - | - | - |
+| Ethernet6 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet7 | Molecule L2 | - | - | - | - | - |
+| Ethernet11 | interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
+| Ethernet12 | interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
+| Ethernet13 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet14 | SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet15 | PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
+| Ethernet16 | PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
+| Ethernet17 | PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
+| Ethernet19 | Switched port with no LLDP rx/tx | access | 110 | - | - | - |
+| Ethernet21 | 200MBit/s shape | - | - | - | - | - |
+| Ethernet22 | 10% shape | - | - | - | - | - |
+| Ethernet23 | Error-correction encoding | - | - | - | - | - |
+| Ethernet24 | Disable error-correction encoding | - | - | - | - | - |
+| Ethernet25 | Molecule MAC | - | - | - | - | - |
+| Ethernet27 | EVPN-Vxlan single-active redundancy | - | - | - | - | - |
+| Ethernet28 | EVPN-MPLS multihoming | - | - | - | - | - |
+| Ethernet29 | DOT1X Testing - auto phone true | - | - | - | - | - |
+| Ethernet30 | DOT1X Testing - force-authorized phone false | - | - | - | - | - |
+| Ethernet31 | DOT1X Testing - force-unauthorized - no phone | - | - | - | - | - |
+| Ethernet32 | DOT1X Testing - auto reauthentication | - | - | - | - | - |
+| Ethernet33 | DOT1X Testing - pae mode authenticator | - | - | - | - | - |
+| Ethernet34 | DOT1X Testing - authentication_failure allow | - | - | - | - | - |
+| Ethernet35 | DOT1X Testing - authentication_failure drop | - | - | - | - | - |
+| Ethernet36 | DOT1X Testing - host-mode single-host | - | - | - | - | - |
+| Ethernet37 | DOT1X Testing - host-mode multi-host | - | - | - | - | - |
+| Ethernet38 | DOT1X Testing - host-mode multi-host authenticated | - | - | - | - | - |
+| Ethernet39 | DOT1X Testing - mac_based_authentication host-mode common true | - | - | - | - | - |
+| Ethernet40 | DOT1X Testing - mac_based_authentication always | - | - | - | - | - |
+| Ethernet41 | DOT1X Testing - mac_based_authentication always and host-mode common | - | - | - | - | - |
+| Ethernet42 | DOT1X Testing - mac_based_authentication | - | - | - | - | - |
+| Ethernet43 | DOT1X Testing - timeout values | - | - | - | - | - |
+| Ethernet44 | DOT1X Testing - reauthorization_request_limit | - | - | - | - | - |
+| Ethernet45 | DOT1X Testing - all features | - | - | - | - | - |
+| Ethernet46 | native-vlan-tag-precedence | trunk | - | tag | - | - |
+| Ethernet48 | Load Interval | - | - | - | - | - |
+| Ethernet50 | SFlow Interface Testing - SFlow ingress enabled | - | - | - | - | - |
+| Ethernet51 | SFlow Interface Testing - SFlow egress enabled | - | - | - | - | - |
+| Ethernet52 | SFlow Interface Testing - SFlow ingress and egress unmodified enabled | - | - | - | - | - |
+| Ethernet53 | SFlow Interface Testing - SFlow ingress and egress disabled | - | - | - | - | - |
+| Ethernet54 | SFlow Interface Testing - SFlow ingress and egress unmodified disabled | - | - | - | - | - |
+| Ethernet56 | Interface with poe commands and limit in class | - | - | - | - | - |
+| Ethernet57 | Interface with poe commands and limit in watts | - | - | - | - | - |
+| Ethernet58 | Interface with poe disabled and no other poe keys | - | - | - | - | - |
+| Ethernet60 | IP NAT Testing | - | - | - | - | - |
+| Ethernet61 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet62 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet67 | Custom_Transceiver_Frequency | - | - | - | - | - |
+| Ethernet68 | Custom_Transceiver_Frequency | - | - | - | - | - |
+| Ethernet69 | IP NAT service-profile | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 101 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
-| Ethernet26.100 | TENANT_A pseudowire 1 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
-| Ethernet26.200 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
-| Ethernet26.300 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
-| Ethernet26.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Ethernet26.500 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 500 | 50 | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | - | False | 100 | - | - | True | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | False | 200 | - | - | False | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | False | 300 | - | - | False | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | False | - | 500 | 50 | True | - | - | - |
 
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
+| Ethernet1 | 20-30 | True |
+| Ethernet2 | - | False |
 | Ethernet15 | 111 | - |
 | Ethernet17 | - | True |
 
 ##### VLAN Translations
 
-| Interface | From VLAN ID(s) | To VLAN ID | Direction |
-| --------- | --------------- | -----------| --------- |
-| Ethernet16 | 111-112 | 110 | out |
+| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Ethernet1 | both | 12 | 20 | - | - | - | - |
+| Ethernet1 | both | 24 | 46 | 78 | - | True | - |
+| Ethernet1 | both | 24 | 46 | 78 | - | False | - |
+| Ethernet1 | both | 43 | 30 | - | - | - | True |
+| Ethernet1 | in | 10 | 24 | - | - | - | - |
+| Ethernet1 | in | 23 | 45 | - | - | - | True |
+| Ethernet1 | in | 37 | 49 | 56 | - | - | - |
+| Ethernet1 | out | 10 | 45 | - | 34 | - | - |
+| Ethernet1 | out | 34 | 50 | - | - | - | - |
+| Ethernet1 | out | 45 | all | - | - | - | True |
+| Ethernet1 | out | 55 | - | - | - | - | - |
+| Ethernet3 | out | 23 | 50 | - | - | - | True |
+| Ethernet16 | out | 111-112 | 110 | - | - | - | - |
 
 ##### TCP MSS Clamping
 
@@ -199,6 +216,7 @@ sFlow is disabled.
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet1 | dot1q-tunnel | 5 | 110 | tagged |
 | Ethernet13 | trunk phone | 100 | 70 | untagged |
 | Ethernet61 | trunk phone | 100 | 70 | untagged phone |
 | Ethernet62 | trunk phone | 100 | 70 | tagged phone |
@@ -216,19 +234,19 @@ sFlow is disabled.
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.128.1/31 | default | 1500 | - | - | - |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
-| Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
-| Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
-| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
-| Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
-| Ethernet63 | DHCP client interface | routed | - | dhcp | default | - | - | - | - |
-| Ethernet64 | DHCP server interface | routed | - | 192.168.42.42/24 | default | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | routed | - | 192.0.2.2/25 | default | - | False | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | routed | - | 192.0.2.2/25 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
+| Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
+| Ethernet10 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
+| Ethernet18 | PBR Description | - | 192.0.2.1/31 | default | 1500 | - | - | - |
+| Ethernet47 | IP Helper | - | 172.31.255.1/31 | default | - | - | - | - |
+| Ethernet63 | DHCP client interface | - | dhcp | default | - | - | - | - |
+| Ethernet64 | DHCP server interface | - | 192.168.42.42/24 | default | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 192.0.2.2/25 | default | - | False | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 192.0.2.2/25 | default | - | False | - | - |
 
 ##### IP NAT: Source Static
 
@@ -289,14 +307,14 @@ sFlow is disabled.
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | routed | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
 
 ##### VRRP Details
 
@@ -361,8 +379,39 @@ interface Ethernet1
    l2 mtu 8000
    l2 mru 8000
    bgp session tracker ST1
+   switchport access vlan 200
+   switchport trunk native vlan tag
+   switchport phone vlan 110
+   switchport phone trunk tagged
+   switchport vlan translation in required
+   switchport dot1q vlan tag required
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode dot1q-tunnel
+   switchport dot1q ethertype 1536
+   switchport vlan forwarding accept all
+   switchport trunk group g1
+   switchport trunk group g2
    no switchport
+   switchport source-interface tx
+   switchport vlan translation 12 20
+   switchport vlan translation 24 inner 78 network 46
+   switchport vlan translation 24 inner 78 46
+   switchport vlan translation 43 dot1q-tunnel 30
+   switchport vlan translation in 10 24
+   switchport vlan translation in 37 inner 56 49
+   switchport vlan translation in 23 dot1q-tunnel 45
+   switchport vlan translation out 34 50
+   switchport vlan translation out 10 45 inner 34
+   switchport vlan translation out 45 dot1q-tunnel all
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 20-30
    ip address 172.31.255.1/31
+   switchport backup-link Ethernet5 prefer vlan 10
+   switchport backup preemption-delay 35
+   switchport backup mac-move-burst 20
+   switchport backup mac-move-burst-interval 30
+   switchport backup initial-mac-move-delay 10
+   switchport backup dest-macaddr 01:00:00:00:00:00
    ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
@@ -380,6 +429,7 @@ interface Ethernet1
    ip igmp host-proxy version 2
    tcp mss ceiling ipv4 70 ipv6 75 egress
    switchport port-security
+   switchport port-security mac-address maximum disabled
    priority-flow-control on
    priority-flow-control priority 5 drop
    link tracking group EVPN_MH_ES1 upstream
@@ -390,6 +440,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
+   switchport dot1q vlan tag disallowed
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
@@ -410,9 +461,13 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
+   switchport trunk native vlan 5
+   switchport mode trunk
    no switchport
+   switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
    ip address 172.31.128.1/31
+   switchport backup-link Ethernet4
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
@@ -448,6 +503,7 @@ interface Ethernet4
    multicast ipv6 boundary ff00::/16 out
    multicast ipv6 boundary ff01::/16 out
    multicast ipv4 static
+   switchport port-security violation protect
    priority-flow-control on
    spanning-tree guard none
 !
@@ -455,6 +511,7 @@ interface Ethernet5
    description Molecule Routing
    no shutdown
    mtu 9100
+   switchport access vlan 220
    no switchport
    ip ospf cost 99
    ip ospf network point-to-point
@@ -588,10 +645,11 @@ interface Ethernet15
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
-   switchport vlan translation out 111-112 110
+   switchport vlan translation out required
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport
+   switchport vlan translation out 111-112 110
 !
 interface Ethernet17
    description PVLAN Secondary Trunk

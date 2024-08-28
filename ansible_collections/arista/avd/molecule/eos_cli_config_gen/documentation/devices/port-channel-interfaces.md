@@ -73,8 +73,8 @@ sFlow is disabled.
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *LEAF_PEER_L3, MLAG | 3 |
+| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *LEAF_PEER_L3, MLAG | 3 |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
 | Ethernet10/1 | LAG Member | *access | *110 | *- | *- | 101 |
 | Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
@@ -82,7 +82,7 @@ sFlow is disabled.
 | Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
 | Ethernet11/2 | LAG Member LACP fallback LLDP ZTP VLAN | *trunk | *112 | *- | *- | 112 |
 | Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
-| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
+| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *10 | *- | 16 |
 | Ethernet18 | LAG Member | *access | *110 | *- | *- | 109 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
@@ -99,12 +99,13 @@ sFlow is disabled.
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
 | Port-Channel12 | trunk phone | 100 | 70 | untagged |
+| Port-Channel100 | dot1q-tunnel | 5 | 110 | tagged |
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet17 | LAG Member | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 
 *Inherited from Port-Channel Interface
 
@@ -214,66 +215,79 @@ interface Ethernet50
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
-| Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
-| Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
-| Port-Channel13 | EVPN-Vxlan single-active redundancy | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
-| Port-Channel14 | EVPN-MPLS multihoming | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
-| Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
-| Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
-| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
-| Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
-| Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
-| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
-| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
-| Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
-| Port-Channel104 | LACP fallback individual | switched | trunk | 112 | - | - | 300 | individual | - | - |
-| Port-Channel105 | bpdu disabled | switched | access | - | - | - | - | - | - | - |
-| Port-Channel106 | bpdu enabled | switched | access | - | - | - | - | - | - | - |
-| Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
-| Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
-| Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
-| Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
-| Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
-| Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
-| Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
-| Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
-| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | 115 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | trunk | 2-4094 | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel14 | EVPN-MPLS multihoming | - | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
+| Port-Channel15 | DC1_L2LEAF3_Po1 | trunk | 110,201 | - | - | - | - | 15 | - |
+| Port-Channel16 | DC1_L2LEAF4_Po1 | trunk | 110,201 | 10 | - | - | - | 16 | - |
+| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | access | 200 | - | - | - | - | - | - |
+| Port-Channel50 | SRV-POD03_PortChanne1 | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel51 | ipv6_prefix | trunk | 1-500 | - | - | - | - | - | - |
+| Port-Channel100 | - | dot1q-tunnel | 10-11,200 | tag | g1, g2 | - | - | - | - |
+| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - | - | - | - |
+| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel103 | PVLAN Secondary Trunk | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel104 | LACP fallback individual | trunk | 112 | - | - | 300 | individual | - | - |
+| Port-Channel105 | bpdu disabled | - | - | - | - | - | - | - | - |
+| Port-Channel106 | bpdu enabled | - | - | - | - | - | - | - | - |
+| Port-Channel107 | bpdu true | - | - | - | - | - | - | - | - |
+| Port-Channel108 | bpdu false | - | - | - | - | - | - | - | - |
+| Port-Channel109 | Molecule ACLs | access | 110 | - | - | - | - | - | - |
+| Port-Channel112 | LACP fallback individual | trunk | 112 | - | - | 5 | individual | - | - |
+| Port-Channel115 | native-vlan-tag-precedence | trunk | - | tag | - | - | - | - | - |
+| Port-Channel121 | access_port_with_no_vlans | access | - | - | - | - | - | - | - |
+| Port-Channel122 | trunk_port_with_no_vlans | trunk | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | dot1q-tunnel | 115 | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
-| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | -----| ------- | -------------- |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | l3dot1q | - | 101 |
-| Port-Channel100.101 | IFL for TENANT01 | l3dot1q | - | 101 |
-| Port-Channel100.102 | IFL for TENANT02 | l3dot1q | - | 102 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | ------- | -------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 101 |
+| Port-Channel100.101 | IFL for TENANT01 | - | 101 |
+| Port-Channel100.102 | IFL for TENANT02 | - | 102 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel111.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
-| Port-Channel111.100 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
-| Port-Channel111.200 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
-| Port-Channel111.300 | TENANT_A pseudowire 4 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
-| Port-Channel111.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Port-Channel111.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | False | 100 | - | - | True | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | False | 200 | - | - | False | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | False | 300 | - | - | False | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | 1000 | False | 100 | - | - | True | - | - | - |
 
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
+| Port-Channel15 | - | False |
+| Port-Channel100 | 20-30 | True |
 | Port-Channel101 | 111 | - |
 | Port-Channel103 | - | True |
 
 ##### VLAN Translations
 
-| Interface | From VLAN ID(s) | To VLAN ID | Direction |
-| --------- | --------------- | -----------| --------- |
-| Port-Channel102 | 111-112 | 110 | out |
+| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Port-Channel16 | out | 23 | 22 | - | - | - | True |
+| Port-Channel100 | both | 12 | 20 | - | - | - | - |
+| Port-Channel100 | both | 23 | 42 | 74 | - | False | - |
+| Port-Channel100 | both | 24 | 46 | 78 | - | True | - |
+| Port-Channel100 | both | 43 | 30 | - | - | - | True |
+| Port-Channel100 | in | 23 | 45 | - | - | - | True |
+| Port-Channel100 | in | 34 | 23 | - | - | - | - |
+| Port-Channel100 | in | 37 | 49 | - | 56 | - | - |
+| Port-Channel100 | out | 10 | 45 | - | 34 | - | - |
+| Port-Channel100 | out | 34 | 50 | - | - | - | - |
+| Port-Channel100 | out | 45 | all | - | - | - | True |
+| Port-Channel100 | out | 55 | - | - | - | - | - |
+| Port-Channel102 | out | 111-112 | 110 | - | - | - | - |
 
 ##### EVPN Multihoming
 
@@ -308,16 +322,16 @@ interface Ethernet50
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
-| Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
-| Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
-| Port-Channel99 | MCAST | routed | - | 192.0.2.10/31 | default | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | routed | - | 10.1.1.3/31 | default | 1500 | - | - | - |
-| Port-Channel100.102 | IFL for TENANT02 | routed | - | 10.1.2.3/31 | C2 | 1500 | - | - | - |
-| Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
-| Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 10.1.2.3/31 | default | - | - | - | - |
+| Port-Channel9 | - | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel17 | PBR Description | - | 192.0.2.3/31 | default | - | - | - | - |
+| Port-Channel99 | MCAST | - | 192.0.2.10/31 | default | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | 10.1.1.3/31 | default | 1500 | - | - | - |
+| Port-Channel100.102 | IFL for TENANT02 | - | 10.1.2.3/31 | C2 | 1500 | - | - | - |
+| Port-Channel113 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
+| Port-Channel114 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -355,20 +369,20 @@ interface Ethernet50
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
-   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
    no snmp trap link-change
    shape rate 200000 kbps
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
    bgp session tracker ST2
-   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   switchport
    ip igmp host-proxy
    ip igmp host-proxy 239.0.0.1
    ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
@@ -397,6 +411,7 @@ interface Port-Channel5
 interface Port-Channel8
    description to Dev02 Port-channel 8
    no switchport
+   switchport port-security violation protect
 !
 interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
@@ -414,9 +429,9 @@ interface Port-Channel9
 !
 interface Port-Channel10
    description SRV01_bond0
-   switchport
    switchport trunk allowed vlan 2-3000
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
@@ -424,11 +439,11 @@ interface Port-Channel10
 !
 interface Port-Channel12
    description interface_in_mode_access_with_voice
-   switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+   switchport
 !
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
@@ -452,21 +467,27 @@ interface Port-Channel14
 !
 interface Port-Channel15
    description DC1_L2LEAF3_Po1
-   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   switchport
    mlag 15
    spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
    description DC1_L2LEAF4_Po1
-   switchport
+   switchport trunk native vlan 10
+   switchport dot1q vlan tag disallowed
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   switchport
+   switchport vlan translation out 23 dot1q-tunnel 22
    snmp trap link-change
    mlag 16
+   switchport port-security violation protect log
+   switchport port-security mac-address maximum 100
    spanning-tree guard none
+   switchport backup-link Port-Channel100.102 prefer vlan 20
 !
 interface Port-Channel17
    description PBR Description
@@ -476,15 +497,16 @@ interface Port-Channel17
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
-   switchport
    switchport access vlan 200
+   switchport mode access
+   switchport
    l2-protocol encapsulation dot1q vlan 200
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
-   switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -492,9 +514,15 @@ interface Port-Channel50
 !
 interface Port-Channel51
    description ipv6_prefix
-   switchport
    switchport trunk allowed vlan 1-500
    switchport mode trunk
+   switchport
+   switchport port-security
+   no switchport port-security mac-address maximum disabled
+   switchport port-security vlan 1 mac-address maximum 3
+   switchport port-security vlan 2 mac-address maximum 3
+   switchport port-security vlan 3 mac-address maximum 3
+   switchport port-security vlan default mac-address maximum 2
    ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
 !
 interface Port-Channel99
@@ -510,7 +538,40 @@ interface Port-Channel99
 !
 interface Port-Channel100
    logging event link-status
+   switchport access vlan 200
+   switchport trunk native vlan tag
+   switchport phone vlan 110
+   switchport phone trunk tagged
+   switchport vlan translation in required
+   switchport dot1q vlan tag required
+   switchport trunk allowed vlan 10-11
+   switchport mode dot1q-tunnel
+   switchport dot1q ethertype 1536
+   switchport vlan forwarding accept all
+   switchport trunk group g1
+   switchport trunk group g2
    no switchport
+   switchport source-interface tx multicast
+   switchport vlan translation 12 20
+   switchport vlan translation 23 inner 74 42
+   switchport vlan translation 24 inner 78 network 46
+   switchport vlan translation 43 dot1q-tunnel 30
+   switchport vlan translation in 34 23
+   switchport vlan translation in 37 inner 56 49
+   switchport vlan translation in 23 dot1q-tunnel 45
+   switchport vlan translation out 34 50
+   switchport vlan translation out 10 45 inner 34
+   switchport vlan translation out 45 dot1q-tunnel all
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 20-30
+   switchport port-security
+   switchport port-security mac-address maximum disabled
+   switchport backup-link Port-channel51
+   switchport backup preemption-delay 35
+   switchport backup mac-move-burst 20
+   switchport backup mac-move-burst-interval 30
+   switchport backup initial-mac-move-delay 10
+   switchport backup dest-macaddr 01:00:00:00:00:00
 !
 interface Port-Channel100.101
    description IFL for TENANT01
@@ -530,30 +591,32 @@ interface Port-Channel100.102
 !
 interface Port-Channel101
    description PVLAN Promiscuous Access - only one secondary
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    switchport pvlan mapping 111
    no qos trust
 !
 interface Port-Channel102
    description PVLAN Promiscuous Trunk - vlan translation out
-   switchport
+   switchport vlan translation out required
    switchport trunk allowed vlan 110-112
    switchport mode trunk
+   switchport
    switchport vlan translation out 111-112 110
 !
 interface Port-Channel103
    description PVLAN Secondary Trunk
-   switchport
    switchport trunk allowed vlan 110-112
    switchport mode trunk
+   switchport
    switchport trunk private-vlan secondary
 !
 interface Port-Channel104
    description LACP fallback individual
-   switchport
    switchport trunk allowed vlan 112
    switchport mode trunk
+   switchport
    port-channel lacp fallback timeout 300
    port-channel lacp fallback individual
 !
@@ -581,8 +644,9 @@ interface Port-Channel108
 !
 interface Port-Channel109
    description Molecule ACLs
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    ip access-group IPV4_ACL_IN in
    ip access-group IPV4_ACL_OUT out
    ipv6 access-group IPV6_ACL_IN in
@@ -643,9 +707,9 @@ interface Port-Channel111.1000
 !
 interface Port-Channel112
    description LACP fallback individual
-   switchport
    switchport trunk allowed vlan 112
    switchport mode trunk
+   switchport
    port-channel lacp fallback timeout 5
    port-channel lacp fallback individual
 !
@@ -666,9 +730,9 @@ interface Port-Channel114
 !
 interface Port-Channel115
    description native-vlan-tag-precedence
-   switchport
    switchport trunk native vlan tag
    switchport mode trunk
+   switchport
 !
 interface Port-Channel117
    description interface_with_sflow_ingress_egress_enabled
@@ -696,12 +760,13 @@ interface Port-Channel120
 !
 interface Port-Channel121
    description access_port_with_no_vlans
+   switchport mode access
    switchport
 !
 interface Port-Channel122
    description trunk_port_with_no_vlans
-   switchport
    switchport mode trunk
+   switchport
 !
 interface Port-Channel130
    description IP NAT Testing
@@ -713,9 +778,9 @@ interface Port-Channel130
 !
 interface Port-Channel131
    description dot1q-tunnel mode
-   switchport
    switchport access vlan 115
    switchport mode dot1q-tunnel
+   switchport
 ```
 
 ## BFD

@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
@@ -162,6 +163,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -276,20 +281,20 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *none | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | 172.31.255.17/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | 172.31.255.19/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | 172.31.255.21/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | 172.31.255.23/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | - | 172.31.255.17/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | - | 172.31.255.19/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | - | 172.31.255.21/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | - | 172.31.255.23/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -374,10 +379,10 @@ interface Ethernet7
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1-L2LEAF1A_Po1 | switched | trunk | none | - | - | - | - | 7 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk | none | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -462,9 +467,9 @@ interface Loopback10
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
-| --------- | ------------- | -------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | True | 50 | point-to-point |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
+| Vlan4093 | EVPN_UNDERLAY | True | 50 | point-to-point | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -581,7 +586,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
-| Net-ID | 49.0001.0001.0001.0003.00 |
+| Net-ID | 49.0001.1921.6825.5007.00 |
 | Type | level-2 |
 | Router-ID | 192.168.255.7 |
 | Log Adjacency Changes | True |
@@ -610,7 +615,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis EVPN_UNDERLAY
-   net 49.0001.0001.0001.0003.00
+   net 49.0001.1921.6825.5007.00
    is-type level-2
    router-id ipv4 192.168.255.7
    log-adjacency-changes

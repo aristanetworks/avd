@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security Device Configuration](#management-security-device-configuration)
@@ -113,6 +114,10 @@ username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Management Security
 
 ### Management Security Summary
@@ -172,12 +177,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_p3_Ethernet1 | routed | - | 10.255.3.22/31 | default | 1500 | False | - | - |
-| Ethernet2 | C1_L3_SERVICE | routed | - | 10.0.1.9/30 | C1_VRF1 | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_p4_Ethernet3 | routed | - | 10.255.3.24/31 | default | 1500 | False | - | - |
-| Ethernet4 | C2_L3_SERVICE | routed | - | 10.1.1.9/30 | C2_VRF1 | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_p3_Ethernet1 | - | 10.255.3.22/31 | default | 1500 | False | - | - |
+| Ethernet2 | C1_L3_SERVICE | - | 10.0.1.9/30 | C1_VRF1 | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_p4_Ethernet3 | - | 10.255.3.24/31 | default | 1500 | False | - | - |
+| Ethernet4 | C2_L3_SERVICE | - | 10.1.1.9/30 | C2_VRF1 | - | False | - | - |
 
 ##### ISIS
 
@@ -384,7 +389,7 @@ router ospf 10 vrf C1_VRF1
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0003.00 |
+| Net-ID | 49.0001.0102.5500.1003.00 |
 | Type | level-2 |
 | Router-ID | 10.255.1.3 |
 | Log Adjacency Changes | True |
@@ -410,7 +415,7 @@ router ospf 10 vrf C1_VRF1
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0003.00
+   net 49.0001.0102.5500.1003.00
    is-type level-2
    router-id ipv4 10.255.1.3
    log-adjacency-changes

@@ -16,7 +16,7 @@ PLUGIN_NAME = "arista.avd.eos_validate_state"
 
 try:
     from pyavd._errors import AristaAvdError
-    from pyavd._utils import get, get_item
+    from pyavd._utils import default, get, get_item
 except ImportError as e:
     AristaAvdError = RaiseOnUse(
         AnsibleActionFail(
@@ -139,8 +139,11 @@ class ConfigManager:
                 else:
                     results["loopback0_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
 
-            # Handle VTEP interface
-            vtep_interface = get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface")
+            # If the host is a VTEP, add the VTEP IP to the mapping
+            # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+            vtep_interface = default(
+                get(host_struct_cfg, "vxlan_interface.vxlan1.vxlan.source_interface"), get(host_struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface")
+            )
             if vtep_interface is None:
                 continue
 

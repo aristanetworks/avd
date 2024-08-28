@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -119,6 +120,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## MLAG
 
@@ -249,8 +254,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc1-leaf2b_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_dc1-leaf2b_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_dc1-leaf2b_Ethernet3 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
+| Ethernet4 | MLAG_PEER_dc1-leaf2b_Ethernet4 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
 | Ethernet5 | dc1-leaf2-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC1-LEAF2C_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
@@ -258,11 +263,11 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | 10.255.255.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | 10.255.255.11/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_dc2-leaf2a_Ethernet6 | routed | - | 172.16.100.0/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | - | 10.255.255.9/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | - | 10.255.255.11/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_dc2-leaf2a_Ethernet6 | - | 172.16.100.0/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -316,11 +321,11 @@ interface Ethernet8
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc1-leaf2b_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | dc1-leaf2-server1_PortChannel dc1-leaf2-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
-| Port-Channel8 | DC1-LEAF2C_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_dc1-leaf2b_Po3 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel5 | dc1-leaf2-server1_PortChannel dc1-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
+| Port-Channel8 | DC1-LEAF2C_Po1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -825,6 +830,7 @@ router bgp 65102
       route-target export evpn 10:10
       router-id 10.255.0.5
       neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.1.101 description dc1-leaf2b
       redistribute connected
    !
    vrf VRF11
@@ -833,6 +839,7 @@ router bgp 65102
       route-target export evpn 11:11
       router-id 10.255.0.5
       neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.1.101 description dc1-leaf2b
       redistribute connected
 ```
 

@@ -173,6 +173,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -217,7 +223,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0001.0007.00
+  net: 49.0001.1000.7000.0007.00
   router_id: 100.70.0.7
   is_type: level-1-2
   address_family_ipv4:

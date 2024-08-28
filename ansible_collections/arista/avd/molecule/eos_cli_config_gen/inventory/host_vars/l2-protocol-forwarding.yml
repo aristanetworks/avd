@@ -64,12 +64,14 @@ l2_protocol:
 
 ethernet_interfaces:
   - name: Ethernet1
+    type: switched
     description: L2PF test
     l2_protocol:
       forwarding_profile: TEST1
 
 port_channel_interfaces:
   - name: Port-Channel1
+    type: switched
     description: L2PF test
     l2_protocol:
       forwarding_profile: TEST2

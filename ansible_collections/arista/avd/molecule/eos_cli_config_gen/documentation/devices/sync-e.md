@@ -58,15 +58,15 @@ sync-e
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.15/31 | default | 1500 | - | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | - | 172.31.255.15/31 | default | 1500 | - | - | - |
 
 #### Synchronous Ethernet
 

@@ -112,6 +112,11 @@ router_bgp:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -411,7 +416,7 @@ dps_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: cv-pathfinder-custom-control-plane-policy-edge-1_VTEP
     vxlan:
       udp_port: 4789
