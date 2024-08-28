@@ -37,9 +37,8 @@ class AvdStructuredConfigFlows(AvdFacts):
 
         destinations = get(self._hostvars, "sflow_settings.destinations")
         if destinations is None:
-            # TODO: AVD5.0.0 raise an error if sflow is enabled on an interface but there are no destinations configured.
-            # This cannot be implemented today since it would be breaking for already released support for sflow on interfaces.
-            return None
+            msg = "sFlow is enabled but `sflow_settings.destination` is not configured."
+            raise AristaAvdMissingVariableError(msg)
 
         sflow_settings_vrfs = get(self._hostvars, "sflow_settings.vrfs", default=[])
 

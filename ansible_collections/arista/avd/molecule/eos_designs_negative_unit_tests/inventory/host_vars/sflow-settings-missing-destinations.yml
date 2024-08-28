@@ -1,0 +1,19 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: sflow-settings-missing-destinations
+      id: 1
+
+sflow_settings:
+  sample:
+    rate: 10
+
+servers:
+  - name: test
+    adapters:
+      - switches: [sflow-settings-missing-destinations]
+        switch_ports: [Ethernet1]
+        sflow: true
+
+expected_error_message: >-
+  sFlow is enabled but `sflow_settings.destination` is not configured.
