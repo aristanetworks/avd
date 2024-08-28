@@ -8,6 +8,7 @@ from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFac
 class FabricDocumentation:
     fabric_documentation: str = ""
     topology_csv: str = ""
+    p2p_links_csv: str = ""
 
 
 def get_fabric_documentation(
@@ -17,6 +18,7 @@ def get_fabric_documentation(
     fabric_documentation: bool = True,
     include_connected_endpoints: bool = False,
     topology_csv: bool = False,
+    p2p_links_csv: bool = False,
 ) -> FabricDocumentation:
     # pylint: disable=import-outside-toplevel
     from pyavd.j2filters import add_md_toc
@@ -38,6 +40,8 @@ def get_fabric_documentation(
 
     if topology_csv:
         result.topology_csv = _get_topology_csv(fabric_documentation_facts)
+    if p2p_links_csv:
+        result.p2p_links_csv = _get_p2p_links_csv(fabric_documentation_facts)
     return result
 
 
@@ -51,5 +55,32 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
     csv_writer = writer(csv_content, lineterminator="\n")
     csv_writer.writerow(("Node Type", "Node", "Node Interface", "Peer Type", "Peer Node", "Peer Interface", "Node Interface Enabled"))
     csv_writer.writerows(fabric_documentation_facts.get_physical_links())
+    csv_content.seek(0)
+    return csv_content.read()
+
+
+def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> str:
+    # pylint: disable=import-outside-toplevel
+    from csv import writer
+    from io import StringIO
+    # pylint: enable=import-outside-toplevel
+
+    csv_content = StringIO()
+    csv_writer = writer(csv_content, lineterminator="\n")
+    csv_writer.writerow(("Type", "Node", "Node Interface", "Leaf IP Address", "Peer Type", "Peer Node", "Peer Interface", "Peer IP Address"))
+    csv_writer.writerows(
+        (
+            topology_link["type"],
+            topology_link["node"],
+            topology_link["node_interface"],
+            topology_link["node_ip_address"],
+            topology_link["peer_type"],
+            topology_link["peer"],
+            topology_link["peer_interface"],
+            topology_link["peer_ip_address"],
+        )
+        for topology_link in fabric_documentation_facts.topology_links
+        if topology_link["node_ip_address"] and topology_link["peer_ip_address"]
+    )
     csv_content.seek(0)
     return csv_content.read()

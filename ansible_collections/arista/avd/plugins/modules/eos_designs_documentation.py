@@ -43,23 +43,38 @@ options:
     required: true
     type: str
   topology_csv:
-    description: Generate Topology CSV with all interfaces towards other devices. Contains both ends of a link.
+    description: Generate Topology CSV with all interfaces towards other devices.
+    default: false
+    type: bool
+  p2p_links_csv_file:
+    description: Path to output P2P links CSV file.
+    required: true
+    type: str
+  p2p_links_csv:
+    description: Generate P2P links CSV with all routed point-to-point links between devices.
     default: false
     type: bool
 """
 
 EXAMPLES = r"""
 ---
+
 - name: Generate fabric documentation
   tags: [build, provision, documentation]
   arista.avd.eos_designs_documentation:
-    device_list: "{{ ansible_play_hosts }}"
     structured_config_dir: "{{ structured_dir }}"
     structured_config_suffix: "{{ avd_structured_config_file_format }}"
     fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-    fabric_documentation: true
+    fabric_documentation: "{{ eos_designs_documentation.enabled | arista.avd.default(true) }}"
     include_connected_endpoints: "{{ eos_designs_documentation.connected_endpoints | arista.avd.default(false) }}"
+    topology_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+    topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(true) }}"
+    p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+    p2p_links_csv: "{{ eos_designs_documentation.p2p_links_csv | arista.avd.default(true) }}"
     mode: "0o664"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
 """
 
 # TODO: RETURN

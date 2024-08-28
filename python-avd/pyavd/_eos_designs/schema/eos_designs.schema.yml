@@ -1047,7 +1047,11 @@ keys:
         default: false
       topology_csv:
         description: Generate Topology CSV with all interfaces towards other devices.
-          Contains both ends of a link.
+        type: bool
+        default: true
+      p2p_links_csv:
+        description: Generate P2P links CSV with all routed point-to-point links between
+          devices.
         type: bool
         default: true
   event_handlers:
