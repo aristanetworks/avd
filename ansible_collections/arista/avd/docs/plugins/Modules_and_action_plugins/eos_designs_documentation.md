@@ -29,9 +29,11 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
 | <samp>structured_config_dir</samp> | str | True | None |  | Path to directory containing files with AVD structured configurations. |
 | <samp>structured_config_suffix</samp> | str | optional | yml |  | File suffix for AVD structured configuration files. |
 | <samp>fabric_documentation_file</samp> | str | True | None |  | Path to output Markdown file. |
-| <samp>mode</samp> | str | optional | 0o664 |  | Mode of output Markdown file. |
+| <samp>mode</samp> | str | optional | 0o664 |  | Mode of output files. |
 | <samp>fabric_documentation</samp> | bool | optional | True |  | Generate fabric documentation. |
 | <samp>include_connected_endpoints</samp> | bool | optional | False |  | Include connected endpoints in fabric documentation. |
+| <samp>topology_csv_file</samp> | str | True | None |  | Path to output topology CSV file. |
+| <samp>topology_csv</samp> | bool | optional | False |  | Generate Topology CSV with all interfaces towards other devices. Contains both ends of a link. |
 
 ## Examples
 

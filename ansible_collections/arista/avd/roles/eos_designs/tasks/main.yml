@@ -65,6 +65,8 @@
     fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
     fabric_documentation: true
     include_connected_endpoints: "{{ eos_designs_documentation.connected_endpoints | arista.avd.default(false) }}"
+    topology_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+    topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(true) }}"
     mode: "0o664"
   delegate_to: localhost
   check_mode: false
@@ -76,16 +78,6 @@
   ansible.builtin.template:
     src: documentation/fabric-p2p-links.j2
     dest: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
-    mode: "0o664"
-  delegate_to: localhost
-  run_once: true
-  check_mode: false
-
-- name: Generate fabric topology in csv format.
-  tags: [build, provision, documentation]
-  ansible.builtin.template:
-    src: documentation/fabric-topology.j2
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
     mode: "0o664"
   delegate_to: localhost
   run_once: true

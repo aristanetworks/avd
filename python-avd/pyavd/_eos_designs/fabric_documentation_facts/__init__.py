@@ -89,10 +89,10 @@ class FabricDocumentationFacts(AvdFacts):
                 else:
                     mlag_peer = False
                 if peer_interface := get(ethernet_interface, "peer_interface"):
-                    peer_ip_address = get(
-                        get_item(get(self.structured_configs, f"{peer}..ethernet_interfaces", separator="..", default=[]), "name", peer_interface, default={}),
-                        "ip_address",
+                    peer_ethernet_interface = get_item(
+                        get(self.structured_configs, f"{peer}..ethernet_interfaces", separator="..", default=[]), "name", peer_interface, default={}
                     )
+                    peer_ip_address = get(peer_ethernet_interface, "ip_address")
                 else:
                     peer_ip_address = None
 
@@ -290,3 +290,24 @@ class FabricDocumentationFacts(AvdFacts):
             ],
             sort_key="profile",
         )
+
+    def get_physical_links(self) -> list[tuple]:
+        """
+        Returning list of physical links from all devices used for topology CSV.
+
+        First generate a dict of lists keyed with connected endpoint key.
+        Then return a natural sorted dict where the inner lists are natural sorted on peer.
+        """
+        return [
+            (
+                self.avd_switch_facts[hostname]["type"],
+                hostname,
+                ethernet_interface["name"],
+                get(ethernet_interface, "peer_type", default=""),
+                get(ethernet_interface, "peer", default=""),
+                get(ethernet_interface, "peer_interface", default=""),
+                not get(ethernet_interface, "shutdown", default=False),
+            )
+            for hostname in natural_sort(self.structured_configs)
+            for ethernet_interface in natural_sort(get(self.structured_configs[hostname], "ethernet_interfaces"), sort_key="name")
+        ]

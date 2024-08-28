@@ -27,7 +27,7 @@ options:
     required: true
     type: str
   mode:
-    description: Mode of output Markdown file.
+    description: Mode of output files.
     default: "0o664"
     type: str
   fabric_documentation:
@@ -36,6 +36,14 @@ options:
     type: bool
   include_connected_endpoints:
     description: Include connected endpoints in fabric documentation.
+    default: false
+    type: bool
+  topology_csv_file:
+    description: Path to output topology CSV file.
+    required: true
+    type: str
+  topology_csv:
+    description: Generate Topology CSV with all interfaces towards other devices. Contains both ends of a link.
     default: false
     type: bool
 """

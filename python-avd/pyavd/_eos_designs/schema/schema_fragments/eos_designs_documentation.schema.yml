@@ -18,7 +18,10 @@ keys:
         type: bool
         default: true
       connected_endpoints:
-        description: |
-          Include connected endpoints in the fabric-wide documentation.
+        description: Include connected endpoints in the fabric-wide documentation.
         type: bool
         default: false
+      topology_csv:
+        description: Generate Topology CSV with all interfaces towards other devices. Contains both ends of a link.
+        type: bool
+        default: true
