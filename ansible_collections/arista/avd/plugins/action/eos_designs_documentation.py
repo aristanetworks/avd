@@ -10,7 +10,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, write_file
 
 try:
     from pyavd._utils import get, strip_empties_from_dict
@@ -77,7 +77,7 @@ class ActionModule(ActionBase):
             fabric_documentation=validated_args["fabric_documentation"],
             include_connected_endpoints=validated_args["include_connected_endpoints"],
         )
-        result["changed"] = self.write_file(
+        result["changed"] = write_file(
             content=output.fabric_documentation,
             filename=validated_args["fabric_documentation_file"],
             file_mode=validated_args["mode"],
@@ -98,31 +98,6 @@ class ActionModule(ActionBase):
 
             # JSON
             return json.load(stream)
-
-    def write_file(self, content: str, filename: str, file_mode: str = "0o664", dir_mode: str = "0o775") -> bool:
-        """
-        This function writes the file only if the content has changed.
-
-        Parameters
-        ----------
-            content: The content to write
-            filename: Target filename
-
-        Returns:
-        -------
-            bool: Indicate if the content of filename has changed.
-        """
-        path = Path(filename)
-        if not path.exists():
-            # Create parent dirs automatically.
-            path.parent.mkdir(mode=int(dir_mode, 8), parents=True, exist_ok=True)
-            # Touch file
-            path.touch(mode=int(file_mode, 8))
-        elif path.read_text(encoding="UTF-8") == content:
-            return False
-
-        path.write_text(content, encoding="UTF-8")
-        return True
 
 
 def setup_module_logging(result: dict) -> None:

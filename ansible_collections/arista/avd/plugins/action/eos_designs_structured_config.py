@@ -6,7 +6,6 @@ import cProfile
 import json
 import pstats
 from collections import ChainMap
-from pathlib import Path
 from typing import Any
 
 import yaml
@@ -16,7 +15,7 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
@@ -148,13 +147,13 @@ class ActionModule(ActionBase):
         if filename:
             # Depending on the file suffix of 'filename' (default: 'json') we will format the data to yaml or just write the output data directly.
             if filename.endswith((".yml", ".yaml")):
-                result["changed"] = self.write_file(
+                result["changed"] = write_file(
                     content=yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
                     filename=filename,
                     file_mode=file_mode,
                 )
             else:
-                result["changed"] = self.write_file(
+                result["changed"] = write_file(
                     content=json.dumps(output),
                     filename=filename,
                     file_mode=file_mode,
@@ -173,28 +172,3 @@ class ActionModule(ActionBase):
             stats.dump_stats(cprofile_file)
 
         return result
-
-    def write_file(self, content: str, filename: str, file_mode: str = "0o664", dir_mode: str = "0o775") -> bool:
-        """
-        This function writes the file only if the content has changed.
-
-        Parameters
-        ----------
-            content: The content to write
-            filename: Target filename
-
-        Returns:
-        -------
-            bool: Indicate if the content of filename has changed.
-        """
-        path = Path(filename)
-        if not path.exists():
-            # Create parent dirs automatically.
-            path.parent.mkdir(mode=int(dir_mode, 8), parents=True, exist_ok=True)
-            # Touch file
-            path.touch(mode=int(file_mode, 8))
-        elif path.read_text(encoding="UTF-8") == content:
-            return False
-
-        path.write_text(content, encoding="UTF-8")
-        return True
