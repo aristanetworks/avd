@@ -96,17 +96,21 @@ class FabricDocumentationFacts(AvdFacts):
                 else:
                     peer_ip_address = None
 
+                routed = get(ethernet_interface, "type") == "routed"
+
                 data = (
                     self.avd_switch_facts[hostname]["type"],  # type
                     get(ethernet_interface, "name"),  # interface
                     get(ethernet_interface, "ip_address"),  # ip_address
                     mlag_peer,  # is_mlag_peer
+                    routed,  # boolean to tell if the interface is routed or switched
                 )
                 peer_data = (
                     peer_type,  # type
                     peer_interface,  # interface
                     peer_ip_address,  # ip_address
                     mlag_peer,  # is_mlag_peer
+                    routed,  # boolean to tell if the interface is routed or switched
                 )
                 topology.add_edge(hostname, peer, data, peer_data)
 
@@ -126,6 +130,7 @@ class FabricDocumentationFacts(AvdFacts):
                     "type": data[0],
                     "node_interface": data[1],
                     "node_ip_address": data[2],
+                    "routed": data[4],
                     "peer": peer_name,
                     "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
                     "peer_interface": peer_data[1],

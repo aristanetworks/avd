@@ -80,7 +80,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
             topology_link["peer_ip_address"],
         )
         for topology_link in fabric_documentation_facts.topology_links
-        if topology_link["node_ip_address"] and topology_link["peer_ip_address"]
+        if topology_link["routed"]
     )
     csv_content.seek(0)
     return csv_content.read()
