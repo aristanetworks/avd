@@ -159,6 +159,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.31.12.6
       peer_group: MLAG-PEERS
+      description: DC1-SVC3A
     updates:
       wait_install: true
   - name: Tenant_A_OP_Zone
