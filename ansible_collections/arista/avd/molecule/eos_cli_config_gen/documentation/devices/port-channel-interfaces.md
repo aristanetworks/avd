@@ -245,22 +245,32 @@ interface Ethernet50
 
 ##### Encapsulation Dot1q
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 101 |
-| Port-Channel100.101 | IFL for TENANT01 | - | 101 |
-| Port-Channel100.102 | IFL for TENANT02 | - | 102 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 101 | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | 101 | - |
+| Port-Channel100.102 | IFL for TENANT02 | - | 102 | 110 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
-| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | False | 100 | - | - | True | - | - | - |
-| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | False | 200 | - | - | False | - | - | - |
-| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | False | 300 | - | - | False | 400 | - | - |
-| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Port-Channel111.1000 | L2 Subinterface | 1000 | False | 100 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | dot1q | 100 | - | - | client | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | dot1q | 200 | - | - | - | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | dot1q | 300 | - | - | dot1q | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | 400 | 20 | dot1q | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | 1000 | dot1q | 100 | - | - | client | - | - | - |
+| Port-Channel131.1 | Test_encapsulation_vlan1 | - | dot1q | - | 23 | 45 | dot1ad | - | 32 | 54 |
+| Port-Channel131.2 | Test_encapsulation_vlan2 | - | dot1q | 10 | - | - | dot1q | - | 32 | 54 |
+| Port-Channel131.3 | Test_encapsulation_vlan3 | - | dot1ad | 12 | - | - | dot1q | 25 | - | - |
+| Port-Channel131.4 | Test_encapsulation_vlan4 | - | dot1ad | - | 35 | 60 | dot1q | - | 53 | 6 |
+| Port-Channel131.5 | Test_encapsulation_vlan5 | - | dot1ad | - | 35 | 60 | dot1ad | - | 52 | 62 |
+| Port-Channel131.6 | Test_encapsulation_vlan6 | - | dot1ad | - | 35 | 60 | client | - | - | - |
+| Port-Channel131.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | dot1ad | - | 35 | 60 |
+| Port-Channel131.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | dot1q | - | 35 | 60 |
+| Port-Channel131.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | untagged | - | - | - |
+| Port-Channel131.10 | Test_encapsulation_vlan9 | - | dot1q | - | 14 | 11 | client inner | - | - | - |
 
 ##### Private VLAN
 
@@ -585,7 +595,7 @@ interface Port-Channel100.102
    no logging event link-status
    logging event storm-control discards
    mtu 1500
-   encapsulation dot1q vlan 102
+   encapsulation dot1q vlan 102 inner 110
    vrf C2
    ip address 10.1.2.3/31
 !
@@ -693,7 +703,7 @@ interface Port-Channel111.300
 interface Port-Channel111.400
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
-      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+      client dot1q outer 400 inner 20 network dot1q outer 401 inner 21
 !
 interface Port-Channel111.1000
    description L2 Subinterface
@@ -781,6 +791,56 @@ interface Port-Channel131
    switchport access vlan 115
    switchport mode dot1q-tunnel
    switchport
+!
+interface Port-Channel131.1
+   description Test_encapsulation_vlan1
+   encapsulation vlan
+      client dot1q outer 23 inner 45 network dot1ad outer 32 inner 54
+!
+interface Port-Channel131.2
+   description Test_encapsulation_vlan2
+   encapsulation vlan
+      client dot1q 10 network dot1q outer 32 inner 54
+!
+interface Port-Channel131.3
+   description Test_encapsulation_vlan3
+   encapsulation vlan
+      client dot1ad 12 network dot1q 25
+!
+interface Port-Channel131.4
+   description Test_encapsulation_vlan4
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1q outer 53 inner 6
+!
+interface Port-Channel131.5
+   description Test_encapsulation_vlan5
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1ad outer 52 inner 62
+!
+interface Port-Channel131.6
+   description Test_encapsulation_vlan6
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network client
+!
+interface Port-Channel131.7
+   description Test_encapsulation_vlan7
+   encapsulation vlan
+      client untagged network dot1ad outer 35 inner 60
+!
+interface Port-Channel131.8
+   description Test_encapsulation_vlan8
+   encapsulation vlan
+      client untagged network dot1q outer 35 inner 60
+!
+interface Port-Channel131.9
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client untagged network untagged
+!
+interface Port-Channel131.10
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client dot1q outer 14 inner 11 network client inner
 ```
 
 ## BFD

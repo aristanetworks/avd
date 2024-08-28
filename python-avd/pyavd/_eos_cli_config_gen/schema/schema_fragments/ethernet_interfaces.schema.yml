@@ -252,7 +252,6 @@ keys:
           description: VLAN tag to configure on sub-interface.
           deprecation:
             warning: true
-            removed: false
             remove_in_version: 6.0.0
             new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:

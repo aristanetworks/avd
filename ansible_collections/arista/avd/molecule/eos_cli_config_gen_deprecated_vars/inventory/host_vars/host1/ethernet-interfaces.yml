@@ -4,7 +4,7 @@
 # Testing deprecated keys in ethernet_interfaces
 # The deprecated keys listed below will be removed in AVD6.0.0:
 #     - mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone, vlan_translations, trunk_private_vlan_secondary, pvlan_mapping
-#     - encapsulation_dot1q_vlan, encapsulation_vlan.client.dot1q, encapsulation_vlan.client.unmatched
+#     - vlan_id, encapsulation_dot1q_vlan, encapsulation_vlan.client.dot1q, encapsulation_vlan.client.unmatched
 #     - encapsulation_vlan.network.dot1q, encapsulation_vlan.network.client
 ethernet_interfaces:
   - name: Ethernet1
@@ -86,7 +86,9 @@ ethernet_interfaces:
 
   - name: Ethernet9
     description: Test_encapsulation_vlan4
-    type: l3dot1q
+    # test for vlan_id
+    vlan_id: 100
+    type: l2dot1q
     encapsulation_vlan:
       client:
         dot1q:

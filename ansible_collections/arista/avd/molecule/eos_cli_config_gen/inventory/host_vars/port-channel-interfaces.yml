@@ -229,17 +229,16 @@ port_channel_interfaces:
         preemption_delay: 35
 
   - name: Port-Channel100.101
-    type: l3dot1q
     logging:
       event:
         link_status: true
     description: IFL for TENANT01
     mtu: 1500
     ip_address: 10.1.1.3/31
-    encapsulation_dot1q_vlan: 101
+    encapsulation_dot1q:
+      vlan: 101
 
   - name: Port-Channel100.102
-    type: l3dot1q
     logging:
       event:
         link_status: false
@@ -248,7 +247,9 @@ port_channel_interfaces:
     mtu: 1500
     ip_address: 10.1.2.3/31
     vrf: C2
-    encapsulation_dot1q_vlan: 102
+    encapsulation_dot1q:
+      vlan: 102
+      inner_vlan: 110
     bfd:
 
   - name: Port-Channel8
@@ -261,9 +262,9 @@ port_channel_interfaces:
 
   - name: Port-Channel8.101
     description: to Dev02 Port-Channel8.101 - VRF-C1
-    type: l3dot1q
     ip_address: 10.1.2.3/31
-    encapsulation_dot1q_vlan: 101
+    encapsulation_dot1q:
+      vlan: 101
 
   - name: Port-Channel9
     type: routed
@@ -443,64 +444,58 @@ port_channel_interfaces:
     type: routed
 
   - name: Port-Channel111.1
-    type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
       client:
-        unmatched: true
+        protocol: unmatched
 
   - name: Port-Channel111.100
-    type: l2dot1q
     description: TENANT_A pseudowire 2 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 100
+        protocol: dot1q
+        vlan: 100
       network:
-        client: true
+        protocol: client
 
   - name: Port-Channel111.200
-    type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 200
+        protocol: dot1q
+        vlan: 200
 
   - name: Port-Channel111.300
-    type: l2dot1q
     description: TENANT_A pseudowire 4 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 300
+        protocol: dot1q
+        vlan: 300
       network:
-        dot1q:
-          vlan: 400
+        protocol: dot1q
+        vlan: 400
 
   - name: Port-Channel111.400
-    type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
       client:
-        dot1q:
-          outer: 400
-          inner: 20
+        protocol: dot1q
+        outer: 400
+        inner: 20
       network:
-        dot1q:
-          outer: 401
-          inner: 21
+        protocol: dot1q
+        outer: 401
+        inner: 21
 
   - name: Port-Channel111.1000
-    type: l2dot1q
     description: L2 Subinterface
     vlan_id: 1000
     encapsulation_vlan:
       client:
-        dot1q:
-          vlan: 100
+        protocol: dot1q
+        vlan: 100
       network:
-        client: true
+        protocol: client
     evpn_ethernet_segment:
       identifier: 0000:0000:0303:0202:0101
       route_target: 03:03:02:02:01:01
@@ -615,6 +610,111 @@ port_channel_interfaces:
       enabled: true
       mode: dot1q-tunnel
       access_vlan: 115
+
+  - name: Port-Channel131.1
+    description: Test_encapsulation_vlan1
+    encapsulation_vlan:
+      client:
+        outer: 23
+        inner: 45
+        protocol: dot1q
+      network:
+        protocol: dot1ad
+        outer: 32
+        inner: 54
+
+  - name: Port-Channel131.2
+    description: Test_encapsulation_vlan2
+    encapsulation_vlan:
+      client:
+        protocol: dot1q
+        vlan: 10
+      network:
+        protocol: dot1q
+        outer: 32
+        inner: 54
+
+  - name: Port-Channel131.3
+    description: Test_encapsulation_vlan3
+    encapsulation_vlan:
+      client:
+        protocol: dot1ad
+        vlan: 12
+      network:
+        protocol: dot1q
+        vlan: 25
+
+  - name: Port-Channel131.4
+    description: Test_encapsulation_vlan4
+    encapsulation_vlan:
+      client:
+        protocol: dot1ad
+        outer: 35
+        inner: 60
+      network:
+        protocol: dot1q
+        outer: 53
+        inner: 6
+
+  - name: Port-Channel131.5
+    description: Test_encapsulation_vlan5
+    encapsulation_vlan:
+      client:
+        protocol: dot1ad
+        outer: 35
+        inner: 60
+      network:
+        protocol: dot1ad
+        outer: 52
+        inner: 62
+
+  - name: Port-Channel131.6
+    description: Test_encapsulation_vlan6
+    encapsulation_vlan:
+      client:
+        protocol: dot1ad
+        outer: 35
+        inner: 60
+      network:
+        protocol: client
+
+  - name: Port-Channel131.7
+    description: Test_encapsulation_vlan7
+    encapsulation_vlan:
+      client:
+        protocol: untagged
+      network:
+        protocol: dot1ad
+        outer: 35
+        inner: 60
+
+  - name: Port-Channel131.8
+    description: Test_encapsulation_vlan8
+    encapsulation_vlan:
+      client:
+        protocol: untagged
+      network:
+        protocol: dot1q
+        outer: 35
+        inner: 60
+
+  - name: Port-Channel131.9
+    description: Test_encapsulation_vlan9
+    encapsulation_vlan:
+      client:
+        protocol: untagged
+      network:
+        protocol: untagged
+
+  - name: Port-Channel131.10
+    description: Test_encapsulation_vlan9
+    encapsulation_vlan:
+      client:
+        protocol: dot1q
+        outer: 14
+        inner: 11
+      network:
+        protocol: client inner
 
 # Children interfaces
 ethernet_interfaces:

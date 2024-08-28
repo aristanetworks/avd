@@ -73,9 +73,29 @@ keys:
             Interface will not be listed in device documentation, unless "type" is set.
         encapsulation_dot1q_vlan:
           type: int
-          description: VLAN tag to configure on sub-interface.
           convert_types:
             - str
+          description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        encapsulation_dot1q:
+          description: |-
+            Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
+          type: dict
+          keys:
+            vlan:
+              type: int
+              convert_types:
+                - str
+              required: true
+              description: VLAD ID.
+            inner_vlan:
+              type: int
+              convert_types:
+                - str
+              description: Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
         vrf:
           type: str
           description: VRF name.
@@ -88,6 +108,9 @@ keys:
               type: dict
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
@@ -107,11 +130,40 @@ keys:
                       description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                vlan:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                outer:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                inner:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
+                protocol:
+                  type: str
+                  valid_values:
+                    - dot1q
+                    - dot1ad
+                    - unmatched
+                    - untagged
             network:
               type: dict
               description: Network encapsulation are all optional, and skipped if using client unmatched.
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
@@ -131,7 +183,40 @@ keys:
                       description: Network Inner VLAN ID.
                 client:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                vlan:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
+                # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
+                protocol:
+                  description: |-
+                    `untagged` (no encapsulation) is applicable for `untagged` client only.
+                    `client` and `client inner` (retain client encapsulation) is not applicable for `untagged` client.
+                  type: str
+                  valid_values:
+                    - dot1q
+                    - dot1ad
+                    - client
+                    - client inner
+                    - untagged
         vlan_id:
+          description: |-
+            This setting can only be applied to sub-interfaces on EOS.
+            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`.
           type: int
           convert_types:
             - str
