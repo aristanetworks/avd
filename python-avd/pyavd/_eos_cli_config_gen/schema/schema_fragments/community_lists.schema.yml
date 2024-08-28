@@ -8,7 +8,6 @@ type: dict
 keys:
   community_lists:
     type: list
-    description: If both `community_lists` and `ip_community_lists` are defined, then `ip_community_lists` takes precedence.
     primary_key: name
     display_name: Community Lists (legacy model)
     deprecation:
