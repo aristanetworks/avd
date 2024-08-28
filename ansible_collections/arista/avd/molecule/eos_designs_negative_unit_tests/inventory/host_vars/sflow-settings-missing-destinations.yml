@@ -16,4 +16,4 @@ servers:
         sflow: true
 
 expected_error_message: >-
-  sFlow is enabled but `sflow_settings.destination` is not configured.
+  Unable to configure `sflow` because it is enabled on interface but `sflow_settings.destinations` is not configured.
