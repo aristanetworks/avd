@@ -16587,6 +16587,7 @@ keys:
     keys:
       enabled:
         type: bool
+        required: true
       router_id:
         type: dict
         keys:
