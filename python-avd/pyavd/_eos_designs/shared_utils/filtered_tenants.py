@@ -316,7 +316,7 @@ class FilteredTenantsMixin:
         # deepmerge all levels of config - later vars override previous.
         # Using destructive_merge=False to avoid having references to profiles and other data.
         # Instead it will be doing deep copies inside merge.
-        merged_svi = merge(
+        merged_svi: dict = merge(
             svi_parent_profile,
             svi_profile,
             filtered_svi,
@@ -326,26 +326,8 @@ class FilteredTenantsMixin:
             list_merge="replace",
             destructive_merge=False,
         )
-
-        # Override structured configs since we don't want to deep-merge those
-        merged_svi["structured_config"] = default(
-            filtered_svi["nodes"][0].get("structured_config"),
-            svi_profile["nodes"][0].get("structured_config"),
-            svi_parent_profile["nodes"][0].get("structured_config"),
-            filtered_svi.get("structured_config"),
-            svi_profile.get("structured_config"),
-            svi_parent_profile.get("structured_config"),
-        )
-
-        # Override bgp.structured configs since we don't want to deep-merge those
-        merged_svi.setdefault("bgp", {})["structured_config"] = default(
-            get(filtered_svi["nodes"][0], "bgp.structured_config"),
-            get(svi_profile["nodes"][0], "bgp.structured_config"),
-            get(svi_parent_profile["nodes"][0], "bgp.structured_config"),
-            get(filtered_svi, "bgp.structured_config"),
-            get(svi_profile, "bgp.structured_config"),
-            get(svi_parent_profile, "bgp.structured_config"),
-        )
+        merged_svi.pop("profile", None)
+        merged_svi.pop("parent_profile", None)
         return merged_svi
 
     def filtered_svis(self: SharedUtils, vrf: dict) -> list[dict]:
