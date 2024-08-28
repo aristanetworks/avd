@@ -195,7 +195,7 @@ ip nat profile NAT-PROFILE-NO-VRF-2
    ip nat destination dynamic access-list ACL5 pool POOL5 priority 4294967295 comment Priority high end
    ip nat destination dynamic access-list ACL6 pool POOL6 comment Priority default
 !
-ip nat profile NAT-PROFILE-TEST-VRF vrf NAT-PROFILE-TEST-VRF
+ip nat profile NAT-PROFILE-TEST-VRF vrf TEST
 !
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254
