@@ -112,37 +112,3 @@ class RoutingMixin:
     @cached_property
     def always_configure_ip_routing(self: SharedUtils) -> bool:
         return get(self.switch_data_combined, "always_configure_ip_routing")
-
-    @cached_property
-    def isis_net(self: SharedUtils) -> str | None:
-        if not self.underlay_isis:
-            return None
-
-        if get(self.hostvars, "isis_system_id_format", default="node_id") == "node_id":
-            isis_system_id_prefix = get(self.switch_data_combined, "isis_system_id_prefix")
-            if isis_system_id_prefix is None:
-                # TODO: Raise for this situation if underlay is ISIS.
-                return None
-
-            if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required to set ISIS NET address using the node ID"
-                raise AristaAvdMissingVariableError(msg)
-            system_id = f"{isis_system_id_prefix}.{self.id:04d}"
-        else:
-            system_id = self.ipv4_to_isis_system_id(self.router_id)
-
-        isis_area_id = get(self.hostvars, "isis_area_id", default="49.0001")
-        return f"{isis_area_id}.{system_id}.00"
-
-    @staticmethod
-    def ipv4_to_isis_system_id(ipv4_address: str) -> str:
-        """
-        Converts an IPv4 address into an IS-IS system-id.
-
-        Examples:
-        192.168.0.1 -> 1921.6800.0001
-        10.0.0.3 -> 0100.0000.0003
-        """
-        octets = str(ipv4_address).split(".")
-        padded_addr = octets[0].zfill(3) + octets[1].zfill(3) + octets[2].zfill(3) + octets[3].zfill(3)
-        return ".".join(padded_addr[i : i + 4] for i in range(0, len(padded_addr), 4))
