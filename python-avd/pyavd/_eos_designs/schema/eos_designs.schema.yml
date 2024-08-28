@@ -3359,6 +3359,8 @@ keys:
               A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
+        required: true
+        min_length: 1
         items:
           type: dict
           keys:
