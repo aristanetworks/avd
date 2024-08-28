@@ -13,12 +13,12 @@ keys:
       Control fabric documentation generation.
     type: dict
     keys:
+      enable:
+        description: Generate fabric-wide documentation.
+        type: bool
+        default: true
       connected_endpoints:
         description: |
-          Generate fabric-wide documentation for connected endpoints.
+          Include connected endpoints in the fabric-wide documentation.
         type: bool
         default: false
-        deprecation:
-          warning: true
-          new_key: avd_documentation_connected_endpoints
-          remove_in_version: 6.0.0

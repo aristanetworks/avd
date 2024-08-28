@@ -25,13 +25,12 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
-    "device_list": {"type": "list", "elements": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": True},
     "structured_config_suffix": {"type": "str", "default": "yml"},
     "fabric_documentation_file": {"type": "str", "required": True},
+    "mode": {"type": "str", "default": "0o664"},
     "fabric_documentation": {"type": "bool", "default": True},
     "include_connected_endpoints": {"type": "bool", "default": False},
-    "mode": {"type": "str", "default": "0x664"},
 }
 
 
@@ -62,12 +61,14 @@ class ActionModule(ActionBase):
         return self.main(validated_args, task_vars, result)
 
     def main(self, validated_args: dict, task_vars: dict, result: dict) -> dict:
+        avd_switch_facts: dict = get(task_vars, "avd_switch_facts", required=True)
+        device_list = list(avd_switch_facts.keys())
+
         structured_configs = self.read_structured_configs(
-            device_list=validated_args["device_list"],
+            device_list=device_list,
             structured_config_dir=validated_args["structured_config_dir"],
             structured_config_suffix=validated_args["structured_config_suffix"],
         )
-        avd_switch_facts = get(task_vars, "avd_switch_facts", required=True)
         fabric_name = get(task_vars, "fabric_name", required=True)
         output = get_fabric_documentation(
             {"avd_switch_facts": avd_switch_facts},
@@ -84,11 +85,15 @@ class ActionModule(ActionBase):
         return result
 
     def read_structured_configs(self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str) -> dict[str, dict]:
-        return {device: self.read_one_structured_config(Path(structured_config_dir, f"{device}.{structured_config_suffix}")) for device in device_list}
+        return {device: self.read_one_structured_config(device, structured_config_dir, structured_config_suffix) for device in device_list}
 
-    def read_one_structured_config(self, path: Path) -> dict:
+    def read_one_structured_config(self, device: str, structured_config_dir: str, structured_config_suffix: str) -> dict:
+        path = Path(structured_config_dir, f"{device}.{structured_config_suffix}")
+        if not path.exists():
+            logging.warning("Could not find structured config file for '%s'. The documentation may be incomplete.", device)
+
         with path.open(encoding="UTF-8") as stream:
-            if path.suffix in [".yml", ".yaml"]:
+            if structured_config_suffix in ["yml", "yaml"]:
                 return load(stream, Loader=YamlLoader)  # noqa: S506
 
             # JSON
