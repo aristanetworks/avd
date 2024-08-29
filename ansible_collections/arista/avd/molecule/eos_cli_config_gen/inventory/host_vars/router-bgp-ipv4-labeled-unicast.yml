@@ -64,7 +64,7 @@ router_bgp:
         activate: true
         additional_paths:
           receive: true
-          send: 
+          send:
             ecmp: true
         graceful_restart: true
         maximum_advertised_routes: 0
