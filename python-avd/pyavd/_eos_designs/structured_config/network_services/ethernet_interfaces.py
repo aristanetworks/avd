@@ -138,12 +138,12 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     if not self.shared_utils.evpn_multicast:
                                         msg = (
                                             f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
-                                            "'evpn_multicast: true'"
+                                            "'evpn_multicast: true' at the fabric level"
                                         )
                                     else:
                                         msg = (
                                             f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
-                                            f"'evpn_l3_multicast: enabled: true' under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
+                                            f"'evpn_l3_multicast.enabled: true' under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
                                         )
                                     raise AristaAvdError(
                                         msg,
