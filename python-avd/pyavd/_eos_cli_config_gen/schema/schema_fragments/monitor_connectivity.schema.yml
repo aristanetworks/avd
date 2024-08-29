@@ -35,6 +35,7 @@ keys:
           When address-only is configured, the source IP of the packet is set to the interface
           IP but the packet may exit the device via a different interface.
           When set to `false`, the probe uses the interface to exit the device.
+        default: true
       hosts:
         type: list
         primary_key: name
@@ -56,6 +57,7 @@ keys:
                 When address-only is configured, the source IP of the packet is set to the interface
                 IP but the packet may exit the device via a different interface.
                 When set to `false`, the probe uses the interface to exit the device.
+              default: true
             url:
               type: str
       vrfs:
@@ -88,6 +90,7 @@ keys:
                 When address-only is configured, the source IP of the packet is set to the interface
                 IP but the packet may exit the device via a different interface.
                 When set to `false`, the probe uses the interface to exit the device.
+              default: true
             hosts:
               type: list
               primary_key: name
@@ -109,5 +112,6 @@ keys:
                       When address-only is configured, the source IP of the packet is set to the interface
                       IP but the packet may exit the device via a different interface.
                       When set to `false`, the probe uses the interface to exit the device.
+                    default: true
                   url:
                     type: str

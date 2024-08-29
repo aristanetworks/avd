@@ -7,4 +7,4 @@ monitor_connectivity:
     - name: HOST_SET2
       interfaces: Loopback2-4, Loopback10-12
   local_interfaces: HOST_SET2
-  address_only: true
+  address_only: false

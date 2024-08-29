@@ -50,7 +50,7 @@ interface Management1
 
 | Enabled | Interval | Default Interface Set | Address Only |
 | ------- | -------- | --------------------- | ------------ |
-| False | 5 | HOST_SET2 | True |
+| False | 5 | HOST_SET2 | False |
 
 ### Monitor Connectivity Device Configuration
 
@@ -60,5 +60,5 @@ monitor connectivity
    interval 5
    shutdown
    interface set HOST_SET2 Loopback2-4, Loopback10-12
-   local-interfaces HOST_SET2 address-only default
+   local-interfaces HOST_SET2 default
 ```

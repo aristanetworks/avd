@@ -7342,6 +7342,7 @@ keys:
           IP but the packet may exit the device via a different interface.
 
           When set to `false`, the probe uses the interface to exit the device.'
+        default: true
       hosts:
         type: list
         primary_key: name
@@ -7365,6 +7366,7 @@ keys:
                 IP but the packet may exit the device via a different interface.
 
                 When set to `false`, the probe uses the interface to exit the device.'
+              default: true
             url:
               type: str
       vrfs:
@@ -7399,6 +7401,7 @@ keys:
                 IP but the packet may exit the device via a different interface.
 
                 When set to `false`, the probe uses the interface to exit the device.'
+              default: true
             hosts:
               type: list
               primary_key: name
@@ -7423,6 +7426,7 @@ keys:
 
                       When set to `false`, the probe uses the interface to exit the
                       device.'
+                    default: true
                   url:
                     type: str
   monitor_layer1:

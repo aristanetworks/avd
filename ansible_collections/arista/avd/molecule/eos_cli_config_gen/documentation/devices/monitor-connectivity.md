@@ -52,23 +52,23 @@ interface Management1
 
 | Enabled | Interval | Default Interface Set | Address Only |
 | ------- | -------- | --------------------- | ------------ |
-| True | 5 | GLOBAL_SET | - |
+| True | 5 | GLOBAL_SET | True |
 
 #### Host Parameters
 
 | Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 | server1 | server1_connectivity_monitor | 10.10.10.1 | HOST_SET | True | https://server1.local.com |
-| server2 | server2_connectivity_monitor | 10.10.10.2 | HOST_SET | - | https://server2.local.com |
+| server2 | server2_connectivity_monitor | 10.10.10.2 | HOST_SET | True | https://server2.local.com |
 | server3 | server3_connectivity_monitor | 10.10.10.3 | HOST_SET | False | - |
-| server4 | - | - | - | - | - |
+| server4 | - | - | - | True | - |
 
 ### VRF Configuration
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
-| blue | - | VRF_GLOBAL_SET | True |
-| red | vrf_connectivity_monitor | VRF_GLOBAL_SET | - |
+| blue | - | VRF_GLOBAL_SET | False |
+| red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
 | yellow | - | - | True |
 
 #### Vrf blue Configuration
@@ -85,7 +85,7 @@ interface Management1
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
 | server4 | server4_connectivity_monitor | 10.10.20.1 | VRF_GLOBAL_SET | False | https://server2.local.com |
 | server5 | server5_connectivity_monitor | 10.10.20.11 | VRF_GLOBAL_SET | True | https://server5.local.com |
-| server6 | - | - | - | - | - |
+| server6 | - | - | - | True | - |
 
 #### Vrf red Configuration
 
@@ -100,7 +100,7 @@ interface Management1
 
 | Host Name | Description | IPv4 Address | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | --------------------- | ------------ | --- |
-| server2 | server2_connectivity_monitor | 10.10.20.1 | VRF_HOST_SET | - | https://server2.local.com |
+| server2 | server2_connectivity_monitor | 10.10.20.1 | VRF_HOST_SET | True | https://server2.local.com |
 
 #### Vrf yellow Configuration
 
@@ -118,7 +118,7 @@ monitor connectivity
    no shutdown
    interface set GLOBAL_SET Ethernet1-4
    interface set HOST_SET Loopback2-4, Loopback10-12
-   local-interfaces GLOBAL_SET default
+   local-interfaces GLOBAL_SET address-only default
    !
    host server1
       description
@@ -130,7 +130,7 @@ monitor connectivity
    host server2
       description
       server2_connectivity_monitor
-      local-interfaces HOST_SET
+      local-interfaces HOST_SET address-only
       ip 10.10.10.2
       url https://server2.local.com
    !
@@ -143,7 +143,7 @@ monitor connectivity
    host server4
    vrf blue
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
-      local-interfaces VRF_GLOBAL_SET address-only default
+      local-interfaces VRF_GLOBAL_SET default
       !
       host server4
          description
@@ -163,14 +163,14 @@ monitor connectivity
    vrf red
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
       interface set VRF_HOST_SET Loopback12-14, 19-23
-      local-interfaces VRF_GLOBAL_SET default
+      local-interfaces VRF_GLOBAL_SET address-only default
       description
       vrf_connectivity_monitor
       !
       host server2
          description
          server2_connectivity_monitor
-         local-interfaces VRF_HOST_SET
+         local-interfaces VRF_HOST_SET address-only
          ip 10.10.20.1
          url https://server2.local.com
    vrf yellow

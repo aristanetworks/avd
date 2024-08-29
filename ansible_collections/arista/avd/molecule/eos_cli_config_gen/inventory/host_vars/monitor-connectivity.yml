@@ -45,7 +45,7 @@ monitor_connectivity:
           url: https://server2.local.com
     - name: blue
       local_interfaces: VRF_GLOBAL_SET
-      address_only: true
+      address_only: false
       interface_sets:
         - name: VRF_GLOBAL_SET
           interfaces: Vlan21-24, Vlan29-32
