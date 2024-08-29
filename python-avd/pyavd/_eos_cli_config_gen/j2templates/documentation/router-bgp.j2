@@ -655,7 +655,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 | Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
-{%             for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort() %}
+{%             for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = peer.rcf_in | arista.avd.default("-") %}

@@ -976,57 +976,57 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.next_hop_unchanged is arista.avd.defined(true) %}
       bgp next-hop-unchanged
 {%         endif %}
-{%         for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort() %}
+{%         for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort('name') %}
 {%             if peer.activate is arista.avd.defined(true) %}
-      peer {{ peer.name }} activate
+      neighbor {{ peer.name }} activate
 {%             else %}
-      no peer {{ peer.name }} activate
+      no neighbor {{ peer.name }} activate
 {%             endif %}
 {%             if peer.additional_paths.receive is arista.avd.defined(true) %}
-      peer {{ peer.name }} additional-paths receive
+      neighbor {{ peer.name }} additional-paths receive
 {%             endif %}
 {%             if peer.route_map_in is arista.avd.defined %}
-      peer {{ peer.name }} route-map {{ peer.route_map_in }} in
+      neighbor {{ peer.name }} route-map {{ peer.route_map_in }} in
 {%             endif %}
 {%             if peer.route_map_out is arista.avd.defined %}
-      peer {{ peer.name }} route-map {{ peer.route_map_out }} out
+      neighbor {{ peer.name }} route-map {{ peer.route_map_out }} out
 {%             endif %}
 {%             if peer.rcf_in is arista.avd.defined %}
-      peer {{ peer.name }} rcf in {{ peer.rcf_in }}
+      neighbor {{ peer.name }} rcf in {{ peer.rcf_in }}
 {%             endif %}
 {%             if peer.rcf_out is arista.avd.defined %}
-      peer {{ peer.name }} rcf out {{ peer.rcf_out }}
+      neighbor {{ peer.name }} rcf out {{ peer.rcf_out }}
 {%             endif %}
 {%             if peer.graceful_restart is arista.avd.defined(true) %}
-      peer {{ peer.name }} graceful-restart
+      neighbor {{ peer.name }} graceful-restart
 {%             endif %}
 {%             if peer.graceful_restart_helper.stale_route_map is arista.avd.defined %}
-      peer {{ peer.name }} graceful-restart-helper stale-route route-map {{ peer.graceful_restart_helper.stale_route_map }}
+      neighbor {{ peer.name }} graceful-restart-helper stale-route route-map {{ peer.graceful_restart_helper.stale_route_map }}
 {%             endif %}
 {%             if peer.additional_paths.send.any is arista.avd.defined(true) %}
-      peer {{ peer.name }} additional-paths send any
+      neighbor {{ peer.name }} additional-paths send any
 {%             elif peer.additional_paths.send.backup is arista.avd.defined(true) %}
-      peer {{ peer.name }} additional-paths send backup
+      neighbor {{ peer.name }} additional-paths send backup
 {%             elif peer.additional_paths.send.ecmp is arista.avd.defined(true) %}
-      peer {{ peer.name }} additional-paths send ecmp
+      neighbor {{ peer.name }} additional-paths send ecmp
 {%             elif peer.additional_paths.send.ecmp_limit is arista.avd.defined %}
-      peer {{ peer.name }} additional-paths send ecmp limit {{ peer.additional_paths.send.ecmp_limit }}
+      neighbor {{ peer.name }} additional-paths send ecmp limit {{ peer.additional_paths.send.ecmp_limit }}
 {%             elif peer.additional_paths.send.limit is arista.avd.defined %}
-      peer {{ peer.name }} additional-paths send limit {{ peer.additional_paths.send.limit }}
+      neighbor {{ peer.name }} additional-paths send limit {{ peer.additional_paths.send.limit }}
 {%             endif %}
 {%             if peer.next_hop_unchanged is arista.avd.defined(true) %}
-      peer {{ peer.name }} next-hop-unchanged
+      neighbor {{ peer.name }} next-hop-unchanged
 {%             endif %}
 {%             if peer.next_hop_self is arista.avd.defined(true) %}
-      peer {{ peer.name }} next-hop-self
+      neighbor {{ peer.name }} next-hop-self
 {%             endif %}
 {%             if peer.next_hop_self_v4_mapped_v6_source_interface is arista.avd.defined %}
-      peer {{ peer.name }} next-hop-self v4-mapped-v6 source-interface {{ peer.next_hop_self_v4_mapped_v6_source_interface }}
+      neighbor {{ peer.name }} next-hop-self v4-mapped-v6 source-interface {{ peer.next_hop_self_v4_mapped_v6_source_interface }}
 {%             elif peer.next_hop_self_source_interface is arista.avd.defined %}
-      peer {{ peer.name }} next-hop-self source-interface {{ peer.next_hop_self_source_interface }}
+      neighbor {{ peer.name }} next-hop-self source-interface {{ peer.next_hop_self_source_interface }}
 {%             endif %}
 {%             if peer.maximum_advertised_routes is arista.avd.defined %}
-{%                 set maximum_routes_cli = "peer " ~peer.name ~ " maximum-routes " ~peer.maximum_advertised_routes %}
+{%                 set maximum_routes_cli = "neighbor " ~peer.name ~ " maximum-routes " ~peer.maximum_advertised_routes %}
 {%                 if peer.maximum_advertised_routes_warning_limit is arista.avd.defined %}
 {%                     set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ peer.maximum_advertised_routes_warning_limit %}
 {%                 endif %}
@@ -1037,7 +1037,7 @@ router bgp {{ router_bgp.as }}
 {%                     set dir = 'direction_' ~ direction %}
 {%                     set policy = peer.missing_policy[dir] %}
 {%                     if policy.action is arista.avd.defined %}
-{%                         set missing_policy_cli = "peer " ~ peer.name ~ " missing-policy address-family all" %}
+{%                         set missing_policy_cli = "neighbor " ~ peer.name ~ " missing-policy address-family all" %}
 {%                         if policy.include_community_list is arista.avd.defined(true) or policy.include_prefix_list is arista.avd.defined(true) or policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " include" %}
 {%                             if policy.include_community_list is arista.avd.defined(true) %}
@@ -1056,15 +1056,15 @@ router bgp {{ router_bgp.as }}
 {%                 endfor %}
 {%             endif %}
 {%             if peer.aigp_session is arista.avd.defined(true) %}
-      peer {{ peer.name }} aigp-session
+      neighbor {{ peer.name }} aigp-session
 {%             endif %}
 {%             if peer.multi_path is arista.avd.defined(true) %}
-      peer {{ peer.name }} multi-path
+      neighbor {{ peer.name }} multi-path
 {%             endif %}
 {%             if peer.next_hop_resolution.v4_mapped_v6_translation is arista.avd.defined(true) %}
-      peer {{ peer.name }} next-hop resolution v4-mapped-v6 translation
+      neighbor {{ peer.name }} next-hop resolution v4-mapped-v6 translation
 {%             elif peer.next_hop_resolution.v4_mapped_v6_translation is arista.avd.defined(false) %}
-      peer {{ peer.name }} next-hop resolution v4-mapped-v6 translation disabled
+      neighbor {{ peer.name }} next-hop resolution v4-mapped-v6 translation disabled
 {%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv4_labeled_unicast.neighbors | arista.avd.natural_sort('ip_address') %}

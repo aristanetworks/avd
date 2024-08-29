@@ -78,12 +78,21 @@ ASN Notation: asplain
 | Address Family | ipv4 |
 | Remote AS | 65101 |
 
+##### PG-BGP-LU
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | IPv4 Labeled-Unicast |
+| Remote AS | 65555 |
+| Source | Loopback0 |
+
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
+| 198.51.100.3 | Inherited from peer group PG-BGP-LU | default | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP IPv4 Labeled Unicast
 
@@ -94,6 +103,11 @@ ASN Notation: asplain
 | Update - wait-for-convergence | Enabled |
 | Next-hop Unchanged | True |
 | label local-termination | implicit-null |
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| PG-BGP-LU | True | - | - | - | - |
 ##### IPv4 BGP-LU Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
@@ -124,8 +138,12 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
+   neighbor PG-BGP-LU peer group
+   neighbor PG-BGP-LU remote-as 65555
+   neighbor PG-BGP-LU update-source Loopback0
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 198.51.100.3 peer group PG-BGP-LU
    !
    address-family ipv4 labeled-unicast
       update wait-for-convergence
@@ -133,6 +151,7 @@ router bgp 65101
       bgp additional-paths receive
       bgp additional-paths send ecmp
       bgp next-hop-unchanged
+      neighbor PG-BGP-LU activate
       neighbor 198.51.100.1 activate
       neighbor 198.51.100.1 additional-paths receive
       neighbor 198.51.100.1 rcf in RCF_TEST(ARGS)
