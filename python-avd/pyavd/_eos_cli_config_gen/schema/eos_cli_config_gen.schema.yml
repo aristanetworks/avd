@@ -2074,6 +2074,9 @@ keys:
             new_key: ethernet_interfaces[].switchport.trunk.groups
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
           valid_values:
           - routed
           - switched
@@ -8990,6 +8993,9 @@ keys:
           type: bool
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
           valid_values:
           - routed
           - switched
