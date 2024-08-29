@@ -7,10 +7,11 @@ import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Tuple
 
-from ...._errors import AristaAvdError, AristaAvdMissingVariableError
-from ...._utils import default, get, get_item
-from ...._utils.password_utils.password import simple_7_encrypt
-from ....j2filters import natural_sort, range_expand
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils import default, get, get_all, get_item
+from pyavd._utils.password_utils.password import simple_7_encrypt
+from pyavd.j2filters import natural_sort, range_expand
+
 from .utils_zscaler import UtilsZscalerMixin
 
 if TYPE_CHECKING:
@@ -792,16 +793,22 @@ class UtilsMixin(UtilsZscalerMixin):
         internet_exit_policies = []
 
         for internet_exit_policy in candidate_internet_exit_policies:
-            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy)
-            if not internet_exit_policy["connections"]:
+            local_interfaces = [
+                wan_interface
+                for wan_interface in self.shared_utils.wan_interfaces
+                if internet_exit_policy["name"] in get_all(wan_interface, "cv_pathfinder_internet_exit.policies.name")
+            ]
+            if not local_interfaces:
                 # No local interface for this policy
                 # TODO: Decide if we should raise here instead
                 continue
+
+            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy, local_interfaces)
             internet_exit_policies.append(internet_exit_policy)
 
         return internet_exit_policies
 
-    def get_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
+    def get_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict, local_interfaces: list[dict]) -> list:
         """
         Return a list of connections (dicts) for the given internet_exit_policy.
 
@@ -811,24 +818,22 @@ class UtilsMixin(UtilsZscalerMixin):
         policy_type = internet_exit_policy["type"]
 
         if policy_type == "direct":
-            return self.get_direct_internet_exit_connections(internet_exit_policy)
+            return self.get_direct_internet_exit_connections(internet_exit_policy, local_interfaces)
 
         if policy_type == "zscaler":
-            return self.get_zscaler_internet_exit_connections(internet_exit_policy)
+            return self.get_zscaler_internet_exit_connections(internet_exit_policy, local_interfaces)
 
         raise AristaAvdError(f"Unsupported type '{policy_type}' found in cv_pathfinder_internet_exit[name={policy_name}].")
 
-    def get_direct_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
-        """
-        Return a list of connections (dicts) for the given internet_exit_policy of type direct.
-        """
+    def get_direct_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict, local_interfaces: list[dict]) -> list:
+        """Return a list of connections (dicts) for the given internet_exit_policy of type direct."""
         if get(internet_exit_policy, "type") != "direct":
             return []
 
         connections = []
 
-        # Check if the policy has any local interface
-        for wan_interface in self.shared_utils.wan_interfaces:
+        # Build internet exit connection for each local interface (wan_interface)
+        for wan_interface in local_interfaces:
             wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
             if get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"]) is None:
                 continue
@@ -864,10 +869,8 @@ class UtilsMixin(UtilsZscalerMixin):
 
         return connections
 
-    def get_zscaler_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
-        """
-        Return a list of connections (dicts) for the given internet_exit_policy of type zscaler.
-        """
+    def get_zscaler_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict, local_interfaces: list[dict]) -> list:
+        """Return a list of connections (dicts) for the given internet_exit_policy of type zscaler."""
         if get(internet_exit_policy, "type") != "zscaler":
             return []
 
@@ -876,8 +879,8 @@ class UtilsMixin(UtilsZscalerMixin):
         cloud_name = get(self._zscaler_endpoints, "cloud_name", required=True)
         connections = []
 
-        # Check if the policy has any local interface
-        for wan_interface in self.shared_utils.wan_interfaces:
+        # Build internet exit connection for each local interface (wan_interface)
+        for wan_interface in local_interfaces:
             wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
             if (interface_policy_config := get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])) is None:
                 continue
