@@ -37,29 +37,42 @@ router_bgp:
     - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
   address_family_ipv4_labeled_unicast:
+    update_wait_for_convergence: true
+    aigp_session:
+      ebgp: true
+      confederation: true
     bgp:
       additional_paths:
+        receive: true
         send:
-          limit: 10
-    aigp_session:
-      confederation: true
-    next_hop_resolution_ribs:
-      - rib_type: "tunnel-rib-colored"
-      - rib_type: "tunnel-rib"
-        rib_name: "test-rib"
-      - rib_type: "system-connected"
-    label_local_termination: explicit-null
-
-    neighbors:
-      - ip_address: 192.168.255.3
-        activate: true
-        aigp_session: true
-        multi_path: true
-        graceful_restart: true
-      - ip_address: 192.168.255.4
-        rcf_in: Address_Family_EVPN_In()
-        rcf_out: Address_Family_EVPN_Out()
+          ecmp: true
+          ecmp_limit: 20
+      missing_policy:
+        direction_in_action: deny
+      next_hop_unchanged: true
+    label_local_termination: implicit-null
     networks:
       - prefix: 203.0.113.0/25
-        route_map: RM_TEST
+        route_map: RM-TEST
       - prefix: 203.0.113.128/25
+    tunnel_source_protocols:
+      - protocol: isis segment-routing
+      - protocol: ldp
+        rcf: TEST(ARGS)
+    neighbors:
+      - ip_address: 198.51.100.1
+        activate: true
+        additional_paths:
+          receive: true
+          send: 
+            ecmp: true
+        graceful_restart: true
+        maximum_advertised_routes: 0
+        rcf_in: RCF_TEST(ARGS)
+      - ip_address: 198.51.100.2
+        aigp_session: true
+        multi_path: true
+        graceful_restart_helper:
+          stale_route_map: RM_STALE
+        next_hop_unchanged: true
+        route_map_out: RM_OUT_TEST
