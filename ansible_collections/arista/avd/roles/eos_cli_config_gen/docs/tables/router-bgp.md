@@ -385,6 +385,82 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;address_family_ipv4_labeled_unicast</samp>](## "router_bgp.address_family_ipv4_labeled_unicast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;confederation</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session.confederation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ebgp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session.ebgp") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ibgp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session.ibgp") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths") | Dictionary |  |  |  | BGP additional-paths commands. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.receive") | Boolean |  |  |  | Receive multiple paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.send") | Dictionary |  |  |  | Send multiple paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.send.any") | Boolean |  |  |  | Any eligible path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.send.backup") | Boolean |  |  |  | Best path and installed backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_missing_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_next_hop_unchanged</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp_next_hop_unchanged") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.graceful_restart") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;label_local_termination</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.label_local_termination") | String |  |  | Valid Values:<br>- <code>explicit-null</code><br>- <code>implicit-null</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lfib_entry_installation_skipped</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.lfib_entry_installation_skipped") | Boolean |  |  |  | Skip LFIB entry installation and next hop self route advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbor_default</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbor_default") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbor_default.next_hop_self") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths") | Dictionary |  |  |  | BGP additional-paths commands. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Receive multiple paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send") | Dictionary |  |  |  | Send multiple paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send.any") | Boolean |  |  |  | Any eligible path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send.backup") | Boolean |  |  |  | Best path and installed backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].aigp_session") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart_helper") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stale_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart_helper.stale_route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_advertised_routes</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].maximum_advertised_routes") | Integer |  |  | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy") | Dictionary |  |  |  | Missing policy configuration for BGP Labeled-Unicast neighbor. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_in.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out") | Dictionary |  |  |  | Missing policy outbound direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_path</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].multi_path") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_resolution") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v4_mapped_v6_translation</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_resolution.v4_mapped_v6_translation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self_source_interface") | String |  |  |  | Source interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_v4_mapped_v6_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self_v4_mapped_v6_source_interface") | String |  |  |  | v4-mapped-v6 source interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_unchanged</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_unchanged") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hops</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].ip_address") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].originate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lfib_backup_ip_forwarding</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].lfib_backup_ip_forwarding") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution_ribs</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 3 | Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB lookups. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;rib_type</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs.[].rib_type") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib-colored</code><br>- <code>tunnel-rib</code> | Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib_name</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs.[].rib_name") | String |  |  |  | The name of the tunnel-rib to use when using 'tunnel-rib' type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_source_protocol</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocol") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;protocol</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocol.[].protocol") | String |  |  | Valid Values:<br>- <code>isis segment-routing</code><br>- <code>ldp</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocol.[].rcf") | String |  |  |  | Optional RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;update_wait_for_convergence</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.update_wait_for_convergence") | Boolean |  |  |  | Wait for BGP to converge before sending out any route updates. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4_multicast</samp>](## "router_bgp.address_family_ipv4_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
@@ -1609,6 +1685,173 @@
             # Routes learned by the OSPF protocol.
             # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
             ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
+      address_family_ipv4_labeled_unicast:
+        aigp_session:
+          confederation: <bool>
+          ebgp: <bool>
+          ibgp: <bool>
+
+        # BGP additional-paths commands.
+        bgp_additional_paths:
+
+          # Receive multiple paths.
+          receive: <bool>
+
+          # Send multiple paths.
+          send:
+
+            # Any eligible path.
+            any: <bool>
+
+            # Best path and installed backup path.
+            backup: <bool>
+
+            # All paths in best path ECMP group.
+            ecmp: <bool>
+
+            # Amount of ECMP paths to send.
+            ecmp_limit: <int; 2-64>
+
+            # Amount of paths to send.
+            limit: <int; 2-64>
+        bgp_missing_policy:
+          direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+          direction_out_action: <str; "deny" | "deny-in-out" | "permit">
+        bgp_next_hop_unchanged: <bool>
+        graceful_restart: <bool>
+        label_local_termination: <str; "explicit-null" | "implicit-null">
+
+        # Skip LFIB entry installation and next hop self route advertisements.
+        lfib_entry_installation_skipped: <bool>
+        neighbor_default:
+          next_hop_self: <bool>
+        neighbors:
+          - ip_address: <str; required; unique>
+            activate: <bool>
+
+            # BGP additional-paths commands.
+            additional_paths:
+
+              # Receive multiple paths.
+              receive: <bool>
+
+              # Send multiple paths.
+              send:
+
+                # Any eligible path.
+                any: <bool>
+
+                # Best path and installed backup path.
+                backup: <bool>
+
+                # All paths in best path ECMP group.
+                ecmp: <bool>
+
+                # Amount of ECMP paths to send.
+                ecmp_limit: <int; 2-64>
+
+                # Amount of paths to send.
+                limit: <int; 2-64>
+            aigp_session: <bool>
+            graceful_restart: <bool>
+            graceful_restart_helper:
+              stale_route_map: <str>
+
+            # Maximum number of routes (0 means unlimited).
+            maximum_advertised_routes: <int; 0-4294967294>
+
+            # Missing policy configuration for BGP Labeled-Unicast neighbor.
+            missing_policy:
+
+              # Missing policy inbound direction.
+              direction_in:
+
+                # Missing policy action.
+                action: <str; "deny" | "permit" | "deny-in-out"; required>
+
+                # Include community-list references in missing policy decision.
+                include_community_list: <bool>
+
+                # Include prefix-list references in missing policy decision.
+                include_prefix_list: <bool>
+
+                # Include sub-route-map references in missing policy decision.
+                include_sub_route_map: <bool>
+
+              # Missing policy outbound direction.
+              direction_out:
+
+                # Missing policy action.
+                action: <str; "deny" | "permit" | "deny-in-out"; required>
+
+                # Include community-list references in missing policy decision.
+                include_community_list: <bool>
+
+                # Include prefix-list references in missing policy decision.
+                include_prefix_list: <bool>
+
+                # Include sub-route-map references in missing policy decision.
+                include_sub_route_map: <bool>
+            multi_path: <bool>
+            next_hop_resolution:
+              v4_mapped_v6_translation: <bool>
+            next_hop_self: <bool>
+
+            # Source interface name.
+            next_hop_self_source_interface: <str>
+
+            # v4-mapped-v6 source interface name.
+            next_hop_self_v4_mapped_v6_source_interface: <str>
+            next_hop_unchanged: <bool>
+
+            # Inbound prefix-list name.
+            prefix_list_in: <str>
+
+            # Outbound prefix-list name.
+            prefix_list_out: <str>
+
+            # Inbound RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            rcf_in: <str>
+
+            # Outbound RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            rcf_out: <str>
+
+            # Inbound route-map name.
+            route_map_in: <str>
+
+            # Outbound route-map name.
+            route_map_out: <str>
+        networks:
+
+            # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+          - prefix: <str; required; unique>
+
+            # Route-map name.
+            route_map: <str>
+        next_hops:
+          - ip_address: <str; required; unique>
+            originate: <bool>
+            lfib_backup_ip_forwarding: <bool>
+
+        # Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB lookups.
+        next_hop_resolution_ribs: # 1-3 items
+
+            # Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.
+          - rib_type: <str; "system-connected" | "tunnel-rib-colored" | "tunnel-rib"; required>
+
+            # The name of the tunnel-rib to use when using 'tunnel-rib' type.
+            rib_name: <str>
+        tunnel_source_protocol: # 1-2 items
+          - protocol: <str; "isis segment-routing" | "ldp">
+
+            # Optional RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            rcf: <str>
+
+        # Wait for BGP to converge before sending out any route updates.
+        update_wait_for_convergence: <bool>
       address_family_ipv4_multicast:
         peer_groups:
 
