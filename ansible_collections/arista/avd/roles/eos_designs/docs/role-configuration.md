@@ -46,7 +46,6 @@ roles/eos_designs/docs/tables/role-input-validation.md
 ## Documentation settings
 
 The following settings can be leveraged to control documentation generation.
-This can be useful if for instance the project has thousands of endpoints, to be able to disable fabric-wide connected endpoints documentation.
 
 --8<--
 roles/eos_designs/docs/tables/role-documentation-settings.md

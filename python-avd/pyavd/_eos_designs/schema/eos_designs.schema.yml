@@ -1042,7 +1042,10 @@ keys:
         type: bool
         default: true
       connected_endpoints:
-        description: Include connected endpoints in the fabric-wide documentation.
+        description: 'Include connected endpoints in the fabric-wide documentation.
+
+          This is `false` by default to avoid cluttering documentation for projects
+          with thousands of endpoints.'
         type: bool
         default: false
       topology_csv:

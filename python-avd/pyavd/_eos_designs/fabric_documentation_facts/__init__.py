@@ -13,6 +13,13 @@ from .topology import Topology
 
 
 class FabricDocumentationFacts(AvdFacts):
+    """
+    Class calculating/holding facts used for generating Fabric Documentation and CSVs.
+
+    For use in Jinja call the .render() method to return a dict of the cached_properties.
+    For use in Python the instance can be used directly to avoid calculating facts unless needed.
+    """
+
     avd_switch_facts: dict[str, dict]
     structured_configs: dict[str, dict]
     _fabric_name: str
@@ -31,11 +38,7 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def fabric_name(self) -> str:
-        """
-        Fabric Name.
-
-        We assume that all devices are part of the same fabric, so only fetching from the first.
-        """
+        """Fabric Name used for heading of MarkDown doc."""
         return self._fabric_name
 
     @cached_property
@@ -69,14 +72,26 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def has_isis(self) -> bool:
+        """At least one device has ISIS configured, so we should include the section in the docs."""
         return any(fabric_switch.get("router_isis_net") for fabric_switch in self.fabric_switches)
 
     @cached_property
     def _node_types(self) -> set[str]:
+        """Set of node types that are part of the fabric."""
         return {switch["type"] for switch in self.fabric_switches}
 
     @cached_property
     def _topology(self) -> Topology:
+        """
+        Internal Topology mode.
+
+        The topology model is an undirected graph containing links between devices that are of any type covered by the fabric.
+        The model is populated by traversing all ethernet_interfaces and adding the links using information about the device itself as well as the peer.
+        The links (edges) of the graph contain FrozenSets to enable automatic deduplication. The same link will only be once in the Graph even if added
+        from both ends.
+
+        The topology model is only used for listing deduplicated edges in various ways, but it can be used for other purposes like diagrams later.
+        """
         topology = Topology()
         for hostname, structured_config in self.structured_configs.items():
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
@@ -119,11 +134,7 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def topology_links(self) -> list[dict]:
-        """
-        List of topology links.
-
-        These are links defined using "uplinks" + MLAG
-        """
+        """List of topology links extracted from _topology."""
         return natural_sort(
             [
                 {
@@ -150,6 +161,7 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def uplink_ipv4_pools(self) -> list[dict]:
+        """List of unique uplink_ipv4_pools containing information about size and usage."""
         # Build set of loopback_ipv4_pool for all devices
         pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "uplink_ipv4_pool"))}
         pools = [ip_network(pool, strict=False) for pool in pools_set]
@@ -161,6 +173,7 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def loopback_ipv4_pools(self) -> list[dict]:
+        """List of unique loopback_ipv4_pools containing information about size and usage."""
         # Build set of loopback_ipv4_pool for all devices
         pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "loopback_ipv4_pool"))}
         pools = [ip_network(pool, strict=False) for pool in pools_set]
@@ -175,6 +188,7 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def vtep_loopback_ipv4_pools(self) -> list[dict]:
+        """List of unique vtep_loopback_ipv4_pools containing information about size and usage."""
         # Build set of vtep_loopback_ipv4_pool from all devices
         pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "vtep_loopback_ipv4_pool"))}
         pools = [ip_network(pool, strict=False) for pool in pools_set]
@@ -188,19 +202,27 @@ class FabricDocumentationFacts(AvdFacts):
         return self.render_pools_as_list(pools, ip_addresses)
 
     def render_pools_as_list(self, pools: list[ip_network], addresses: list[ip_network]) -> list:
+        """Helper function to build IP pool data for a list of pools."""
         return natural_sort([self.get_pool_data(pool, addresses) for pool in pools], sort_key="pool")
 
     def get_pool_data(self, pool: IPv4Network | IPv6Network, addresses: list[IPv4Network | IPv6Network]) -> dict:
+        """Helper function to build IP pool data for one IP pool."""
         size = self.get_pool_size(pool)
         used = self.count_addresses_in_pool(pool, addresses)
         # rounding up on 100 * percent and then divide by 100 to give 11.22% rounded up on last decimal.
         return {"pool": pool, "size": size, "used": used, "used_percent": (ceil((100 * used / size) * 100) / 100)}
 
     def get_pool_size(self, pool: IPv4Network | IPv6Network) -> int:
+        """
+        Helper function returning the size of one IP pool.
+
+        Ignores hosts, broadcast etc since this is a pool of subnets, not one subnet.
+        """
         max_prefixlen = 128 if pool.version == 6 else 32
         return 2 ** (max_prefixlen - pool.prefixlen)
 
     def count_addresses_in_pool(self, pool: IPv4Network | IPv6Network, addresses: list[IPv4Network | IPv6Network]) -> int:
+        """Helper function to count the number of addresses that fall within the given IP pool."""
         return len([True for address in addresses if address.subnet_of(pool)])
 
     @cached_property
