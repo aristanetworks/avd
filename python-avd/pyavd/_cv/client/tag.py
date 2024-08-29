@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal
 
 from pyavd._cv.api.arista.time import TimeBounds
 
-from ..api.arista.tag.v2 import (
+from pyavd._cv.api.arista.tag.v2 import (
     CreatorType,
     ElementType,
     Tag,
