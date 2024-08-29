@@ -1725,7 +1725,6 @@ keys:
           update_wait_for_convergence:
             type: bool
             description: Wait for BGP to converge before sending out any route updates.
-
       address_family_ipv4_multicast:
         type: dict
         keys:
