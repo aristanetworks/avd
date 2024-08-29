@@ -103,11 +103,13 @@ ASN Notation: asplain
 | Update - wait-for-convergence | Enabled |
 | Next-hop Unchanged | True |
 | label local-termination | implicit-null |
+
 ##### IPv4 BGP-LU Peer-groups
 
 | Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
 | PG-BGP-LU | True | - | - | - | - |
+
 ##### IPv4 BGP-LU Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
