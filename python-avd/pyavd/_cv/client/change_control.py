@@ -24,6 +24,7 @@ from ..api.arista.changecontrol.v1 import (
     ChangeControlStreamRequest,
     FlagConfig,
 )
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -52,7 +53,7 @@ class ChangeControlMixin:
         self: CVClient,
         change_control_id: str,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ChangeControl:
         """
         Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
@@ -83,7 +84,7 @@ class ChangeControlMixin:
         change_control_id: str,
         name: str | None = None,
         description: str | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ChangeControlConfigSetResponse:
         """
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API
@@ -118,7 +119,7 @@ class ChangeControlMixin:
         change_control_id: str,
         timestamp: _DateTime,
         description: str | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ApproveConfig:
         """
         Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
@@ -154,7 +155,7 @@ class ChangeControlMixin:
         self: CVClient,
         change_control_id: str,
         description: str | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ChangeControlConfig:
         """
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API

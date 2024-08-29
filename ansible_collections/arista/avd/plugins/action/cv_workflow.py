@@ -76,8 +76,8 @@ if HAS_PYAVD:
         "timeouts": {
             "type": "dict",
             "options": {
-                "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout},
-                "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout},
+                "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout if HAS_PYAVD else 300.0},
+                "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300.0},
             },
         },
         "return_details": {"type": "bool", "required": False, "default": False},
@@ -328,7 +328,11 @@ def setup_module_logging(result: dict) -> None:
         result: The dictionary used for the ansible module results
     """
     python_to_ansible_handler = PythonToAnsibleHandler(result, display)
-    LOGGER.addHandler(python_to_ansible_handler)
-    # TODO mechanism to manipulate the logger globally for pyavd
-    # Keep debug to be able to see logs with `-v` and `-vvv`
-    LOGGER.setLevel(logging.DEBUG)
+
+    # Modifying the root logger to also cover pyavd.
+    root_logger = logging.getLogger()
+    root_logger.addHandler(python_to_ansible_handler)
+    if display.verbosity >= 3:
+        root_logger.setLevel(logging.DEBUG)
+    elif display.verbosity >= 1:
+        root_logger.setLevel(logging.INFO)

@@ -52,7 +52,7 @@ class StudioMixin:
         studio_id: str,
         workspace_id: str,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Studio:
         """
         Get Studio definition using arista.studio.v1.StudioService.GetOne.
