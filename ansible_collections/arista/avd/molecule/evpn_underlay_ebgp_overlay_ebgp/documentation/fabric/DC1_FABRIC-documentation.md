@@ -157,7 +157,7 @@
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------ | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 4 | 1.56 % |
+| 192.168.254.0/24 | 256 | 4 | 1.57 % |
 
 ### VTEP Loopback Node allocation
 

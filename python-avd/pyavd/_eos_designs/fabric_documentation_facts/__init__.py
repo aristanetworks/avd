@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from functools import cached_property
 from ipaddress import IPv4Network, IPv6Network, ip_network
+from math import ceil
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import default, get, get_item
@@ -192,7 +193,8 @@ class FabricDocumentationFacts(AvdFacts):
     def get_pool_data(self, pool: IPv4Network | IPv6Network, addresses: list[IPv4Network | IPv6Network]) -> dict:
         size = self.get_pool_size(pool)
         used = self.count_addresses_in_pool(pool, addresses)
-        return {"pool": pool, "size": size, "used": used, "used_percent": round(100 * used / size, 2)}
+        # rounding up on 100 * percent and then divide by 100 to give 11.22% rounded up on last decimal.
+        return {"pool": pool, "size": size, "used": used, "used_percent": (ceil((100 * used / size) * 100) / 100)}
 
     def get_pool_size(self, pool: IPv4Network | IPv6Network) -> int:
         max_prefixlen = 128 if pool.version == 6 else 32
@@ -300,8 +302,7 @@ class FabricDocumentationFacts(AvdFacts):
         """
         Returning list of physical links from all devices used for topology CSV.
 
-        First generate a dict of lists keyed with connected endpoint key.
-        Then return a natural sorted dict where the inner lists are natural sorted on peer.
+        Return a list naturally sorted on hostname and sub-sorted on interface name.
         """
         return [
             (

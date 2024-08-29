@@ -118,7 +118,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 17 | 6.64 % |
+| 192.168.255.0/24 | 256 | 17 | 6.65 % |
 
 ### Loopback0 Interfaces Node Allocation
 
