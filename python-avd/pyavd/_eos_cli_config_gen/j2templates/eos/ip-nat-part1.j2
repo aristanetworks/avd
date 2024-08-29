@@ -12,7 +12,7 @@ ip nat translation address selection any
 {%     if ip_nat.translation.address_selection.hash_field_source_ip | arista.avd.default(false) %}
 ip nat translation address selection hash field source-ip
 {%     endif %}
-{%     for timeout in ip_nat.translation.timeouts | arista.avd.default([]) %}
+{%     for timeout in ip_nat.translation.timeouts | arista.avd.default([]) | arista.avd.natural_sort %}
 ip nat translation {{ timeout.protocol }}-timeout {{ timeout.timeout }}
 {%     endfor %}
 {%     if ip_nat.translation.max_entries.limit is arista.avd.defined %}
