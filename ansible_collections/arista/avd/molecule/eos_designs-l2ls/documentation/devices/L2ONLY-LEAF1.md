@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -53,6 +55,12 @@ management api http-commands
       no shutdown
 ```
 
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
+
 ## Internal VLAN Allocation Policy
 
 ### Internal VLAN Allocation Policy Summary
@@ -100,8 +108,8 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2ONLY-SPINE1_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | L2ONLY-SPINE2_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 100 | - | - | - |
-| Ethernet11 |  Endpoint | access | 100 | - | - | - |
+| Ethernet10 | Endpoint | access | 100 | - | - | - |
+| Ethernet11 | Endpoint | access | 100 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -140,9 +148,9 @@ interface Ethernet11
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2ONLY_SPINES_Po1 | switched | trunk | 100,4092 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2ONLY_SPINES_Po1 | trunk | 100,4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

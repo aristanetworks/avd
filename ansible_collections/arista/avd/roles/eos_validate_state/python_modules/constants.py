@@ -10,6 +10,7 @@ from .tests import (
     AvdTestAvtPath,
     AvdTestAvtRole,
     AvdTestBGP,
+    AvdTestDpsReachability,
     AvdTestHardware,
     AvdTestInbandReachability,
     AvdTestInterfacesState,
@@ -44,6 +45,7 @@ AVD_TEST_CLASSES: dict[str, dict[Any, Any]] = {
     AvdTestAPIHttpsSSL: {},
     AvdTestIPSecurity: {},
     AvdTestStun: {},
+    AvdTestDpsReachability: {},
     AvdTestAvtPath: {},
     AvdTestAvtRole: {},
 }

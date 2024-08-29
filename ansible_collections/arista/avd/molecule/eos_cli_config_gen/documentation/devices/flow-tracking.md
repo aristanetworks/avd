@@ -168,9 +168,9 @@ interface Dps1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet40 |  - | access | - | - | - | - |
-| Ethernet41 |  - | access | - | - | - | - |
-| Ethernet42 |  - | access | - | - | - | - |
+| Ethernet40 | - | - | - | - | - | - |
+| Ethernet41 | - | - | - | - | - | - |
+| Ethernet42 | - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -199,9 +199,9 @@ interface Ethernet42
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel42 | - | switched | access | - | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel42 | - | - | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

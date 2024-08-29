@@ -82,10 +82,10 @@ keys:
                   - '0'
                   - '7'
                   - '8a'
-                description: Configure authentication key type. Default key_id is 0.
+                description: Configure authentication key type.
               key:
                 type: str
-                description: Password string.
+                description: Password string. `key_type` is required for this setting.
               key_ids:
                 type: list
                 primary_key: id
@@ -164,6 +164,7 @@ keys:
                       - sha-512
               rx_disabled:
                 type: bool
+                description: Disable authentication check on the receive side.
           level_1:
             type: dict
             description: Authentication settings for level-1. 'both' takes precedence over 'level_1' and 'level_2' settings.

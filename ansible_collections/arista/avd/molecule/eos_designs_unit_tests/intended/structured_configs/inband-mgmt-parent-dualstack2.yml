@@ -70,6 +70,7 @@ router_bgp:
     neighbors:
     - ip_address: 100.64.1.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: inband-mgmt-parent-dualstack1
     updates:
       wait_install: true
 service_routing_protocols_model: multi-agent
@@ -79,6 +80,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -373,7 +380,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: inband-mgmt-parent-dualstack2_VTEP
     vxlan:
       udp_port: 4789

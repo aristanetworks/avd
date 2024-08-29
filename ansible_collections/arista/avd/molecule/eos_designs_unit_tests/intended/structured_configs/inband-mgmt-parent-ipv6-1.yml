@@ -59,6 +59,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -321,7 +327,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: inband-mgmt-parent-ipv6-1_VTEP
     vxlan:
       udp_port: 4789

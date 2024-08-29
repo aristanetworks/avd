@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -153,6 +154,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ### AAA Authorization
 
 #### AAA Authorization Summary
@@ -276,57 +281,57 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet2 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet3 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet4 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet5 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet6 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet7 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet8 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet9 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet10 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet11 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet12 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet13 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet14 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet15 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet16 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet17 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet18 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet19 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet20 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet21 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet22 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet23 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet24 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet25 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet26 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet27 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet28 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet29 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet30 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet31 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet32 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet33 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet34 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet35 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet36 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet37 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet38 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet39 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet40 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet41 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet42 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet43 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet44 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet45 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet46 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet47 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet48 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet1 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet2 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet3 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet4 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet5 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet6 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet7 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet8 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet9 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet10 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet11 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet12 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet13 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet14 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet15 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet16 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet17 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet18 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet19 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet20 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet21 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet22 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet23 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet24 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet25 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet26 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet27 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet28 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet29 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet30 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet31 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet32 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet33 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet34 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet35 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet36 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet37 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet38 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet39 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet40 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet41 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet42 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet43 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet44 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet45 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet46 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet47 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
+| Ethernet48 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet51 | SPINE2_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
-| Ethernet53 | MLAG_PEER_LEAF1A_Ethernet53 | *trunk | *- | *- | *['MLAG'] | 53 |
-| Ethernet54 | MLAG_PEER_LEAF1A_Ethernet54 | *trunk | *- | *- | *['MLAG'] | 53 |
+| Ethernet53 | MLAG_PEER_LEAF1A_Ethernet53 | *trunk | *- | *- | *MLAG | 53 |
+| Ethernet54 | MLAG_PEER_LEAF1A_Ethernet54 | *trunk | *- | *- | *MLAG | 53 |
 
 *Inherited from Port-Channel Interface
 
@@ -1369,10 +1374,10 @@ interface Ethernet54
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel51 | SPINES_Po1 | switched | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
-| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel51 | SPINES_Po1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
+| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

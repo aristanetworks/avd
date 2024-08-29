@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -169,6 +170,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -354,21 +359,21 @@ vlan 311
 | Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | CUSTOM_server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
-| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
-| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9 | *access | *- | *- | *- | 12 |
+| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *- | *- | *- | *- | 12 |
+| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9 | *- | *- | *- | *- | 12 |
 | Ethernet20 | CUSTOM_FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
-| Ethernet21 |  CUSTOM_ROUTER01_Eth1 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_ROUTER01_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | 172.31.255.33/31 | default | 1500 | False | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | 172.31.255.35/31 | default | 1500 | False | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | 172.31.255.37/31 | default | 1500 | False | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | 172.31.255.39/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3 | - | 172.31.255.33/31 | default | 1500 | False | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3 | - | 172.31.255.35/31 | default | 1500 | False | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3 | - | 172.31.255.37/31 | default | 1500 | False | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3 | - | 172.31.255.39/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -460,14 +465,14 @@ interface Ethernet21
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
-| Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
-| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | - | - |
-| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
-| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
-| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
+| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | - | - |
+| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | - | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | - | - | - | - | - | - | - | - |
+| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ##### EVPN Multihoming
 

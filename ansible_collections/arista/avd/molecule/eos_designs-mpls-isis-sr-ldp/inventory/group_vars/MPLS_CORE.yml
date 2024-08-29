@@ -2,9 +2,6 @@
 # Shared attributes
 root_dir: '{{ playbook_dir }}'
 
-design:
-  type: "mpls"
-
 fabric_name: MPLS_CORE
 
 underlay_ipv6: true

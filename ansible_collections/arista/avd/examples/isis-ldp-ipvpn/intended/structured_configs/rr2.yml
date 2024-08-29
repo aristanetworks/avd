@@ -32,10 +32,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-  address_family_evpn:
-    peer_groups:
-    - name: RR-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
@@ -76,6 +72,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -115,7 +117,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0002.0002.00
+  net: 49.0001.0102.5500.2002.00
   router_id: 10.255.2.2
   is_type: level-2
   address_family_ipv4:

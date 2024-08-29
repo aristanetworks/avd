@@ -71,8 +71,6 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
-      activate: true
   address_family_vpn_ipv4:
     peer_groups:
     - name: RR-OVERLAY-PEERS
@@ -88,6 +86,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -175,7 +179,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: bgp-peer-groups-2_VTEP
     vxlan:
       udp_port: 4789

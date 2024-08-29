@@ -7,6 +7,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security Device Configuration](#management-security-device-configuration)
@@ -109,6 +110,10 @@ username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Management Security
 
 ### Management Security Summary
@@ -168,11 +173,11 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_p3_Ethernet2 | routed | - | 10.255.3.12/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_p1_Ethernet3 | routed | - | 10.255.3.10/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_rr2_Ethernet4 | routed | - | 10.255.3.14/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet2 | P2P_LINK_TO_p3_Ethernet2 | - | 10.255.3.12/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_p1_Ethernet3 | - | 10.255.3.10/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_rr2_Ethernet4 | - | 10.255.3.14/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -332,7 +337,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0002.0001.00 |
+| Net-ID | 49.0001.0102.5500.2001.00 |
 | Type | level-2 |
 | Router-ID | 10.255.2.1 |
 | Log Adjacency Changes | True |
@@ -359,7 +364,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0002.0001.00
+   net 49.0001.0102.5500.2001.00
    is-type level-2
    router-id ipv4 10.255.2.1
    log-adjacency-changes
@@ -424,14 +429,6 @@ ASN Notation: asplain
 | 10.255.1.3 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
 | 10.255.2.2 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
 
-#### Router BGP EVPN Address Family
-
-##### EVPN Peer Groups
-
-| Peer Group | Activate | Encapsulation |
-| ---------- | -------- | ------------- |
-| RR-OVERLAY-PEERS | True | default |
-
 #### Router BGP VPN-IPv4 Address Family
 
 ##### VPN-IPv4 Peer Groups
@@ -474,9 +471,6 @@ router bgp 65001
    neighbor 10.255.1.3 description pe3
    neighbor 10.255.2.2 peer group RR-OVERLAY-PEERS
    neighbor 10.255.2.2 description rr2
-   !
-   address-family evpn
-      neighbor RR-OVERLAY-PEERS activate
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate

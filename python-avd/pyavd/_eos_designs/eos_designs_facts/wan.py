@@ -43,7 +43,7 @@ class WanMixin:
         Return the list of VRF names present on uplink switches.
         These VRFs will be attracted (configured) on WAN "clients" (edge/transit) unless filtered.
 
-        Note that if the attracted VRFs do not have 'wan_vni' set, the code for interface Vxlan1 will raise an error.
+        Note that if the attracted VRFs do not have 'wan_vni' set, the code for interface vxlan1 will raise an error.
         """
         if not self.shared_utils.is_wan_client or self.shared_utils.uplink_type != "p2p-vrfs":
             return None
