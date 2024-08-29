@@ -322,6 +322,7 @@ class RouterBgpMixin(UtilsMixin):
                 {
                     "ip_address": ip_address,
                     "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"],
+                    "description": self.shared_utils.mlag_peer,
                 },
             )
             if self.shared_utils.underlay_rfc5549:

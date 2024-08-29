@@ -772,6 +772,7 @@ router bgp 65201
       route-target export evpn 10:10
       router-id 10.255.128.14
       neighbor 10.255.129.116 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.129.116 description dc2-leaf1a
       redistribute connected
    !
    vrf VRF11
@@ -780,6 +781,7 @@ router bgp 65201
       route-target export evpn 11:11
       router-id 10.255.128.14
       neighbor 10.255.129.116 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.129.116 description dc2-leaf1a
       redistribute connected
 ```
 

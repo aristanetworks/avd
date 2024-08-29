@@ -69,6 +69,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf1a
     updates:
       wait_install: true
   - name: TG_200
@@ -88,6 +89,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf1a
     updates:
       wait_install: true
   - name: TG_300
@@ -107,6 +109,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf1a
     updates:
       wait_install: true
   vlans:

@@ -391,7 +391,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | CUSTOM_NAME |
-| Net-ID | 49.0001.0000.0000.0004.00 |
+| Net-ID | 49.0001.1000.7000.0004.00 |
 | Type | level-2 |
 | Router-ID | 100.70.0.4 |
 | Log Adjacency Changes | True |
@@ -434,7 +434,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis CUSTOM_NAME
-   net 49.0001.0000.0000.0004.00
+   net 49.0001.1000.7000.0004.00
    is-type level-2
    router-id ipv4 100.70.0.4
    log-adjacency-changes
