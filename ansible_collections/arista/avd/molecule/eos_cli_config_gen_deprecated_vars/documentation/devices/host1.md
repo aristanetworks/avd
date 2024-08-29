@@ -5,6 +5,8 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+- [Filters](#filters)
+  - [Community-lists](#community-lists)
 
 ## Interfaces
 
@@ -134,4 +136,23 @@ interface Port-Channel5
    switchport vlan translation in 23 50
    switchport vlan translation out 25 49
    switchport vlan translation 34 60
+```
+
+## Filters
+
+### Community-lists
+
+#### Community-lists Summary
+
+| Name | Action |
+| -------- | ------ |
+| TEST1 | permit 1000:1000 |
+| TEST2 | permit 2000:3000 |
+
+#### Community-lists Device Configuration
+
+```eos
+!
+ip community-list TEST1 permit 1000:1000
+ip community-list TEST2 permit 2000:3000
 ```
