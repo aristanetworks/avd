@@ -44,46 +44,44 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 if HAS_PYAVD:
-    ARGUMENT_SPEC = (
-        {
-            "configuration_dir": {"type": "str", "required": True},
-            "structured_config_dir": {"type": "str", "required": True},
-            "structured_config_suffix": {"type": "str", "default": "yml"},
-            "device_list": {"type": "list", "elements": "str", "required": True},
-            "strict_tags": {"type": "bool", "required": False, "default": False},
-            "skip_missing_devices": {"type": "bool", "required": False, "default": False},
-            "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
-            "cv_servers": {"type": "list", "elements": "str", "required": True},
-            "cv_token": {"type": "str", "secret": True, "required": True},
-            "cv_verify_certs": {"type": "bool", "default": True},
-            "workspace": {
-                "type": "dict",
-                "options": {
-                    "name": {"type": "str", "required": False},
-                    "description": {"type": "str", "required": False},
-                    "id": {"type": "str", "required": False},
-                    "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
-                    "force": {"type": "bool", "default": False},
-                },
-            },
-            "change_control": {
-                "type": "dict",
-                "options": {
-                    "name": {"type": "str", "required": False},
-                    "description": {"type": "str", "required": False},
-                    "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
-                },
-            },
-            "timeouts": {
-                "type": "dict",
-                "options": {
-                    "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout if HAS_PYAVD else 300.0},
-                    "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300.0},
-                },
-                "return_details": {"type": "bool", "required": False, "default": False},
+    ARGUMENT_SPEC = {
+        "configuration_dir": {"type": "str", "required": True},
+        "structured_config_dir": {"type": "str", "required": True},
+        "structured_config_suffix": {"type": "str", "default": "yml"},
+        "device_list": {"type": "list", "elements": "str", "required": True},
+        "strict_tags": {"type": "bool", "required": False, "default": False},
+        "skip_missing_devices": {"type": "bool", "required": False, "default": False},
+        "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
+        "cv_servers": {"type": "list", "elements": "str", "required": True},
+        "cv_token": {"type": "str", "secret": True, "required": True},
+        "cv_verify_certs": {"type": "bool", "default": True},
+        "workspace": {
+            "type": "dict",
+            "options": {
+                "name": {"type": "str", "required": False},
+                "description": {"type": "str", "required": False},
+                "id": {"type": "str", "required": False},
+                "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
+                "force": {"type": "bool", "default": False},
             },
         },
-    )
+        "change_control": {
+            "type": "dict",
+            "options": {
+                "name": {"type": "str", "required": False},
+                "description": {"type": "str", "required": False},
+                "requested_state": {"type": "str", "default": "pending approval", "choices": ["pending approval", "approved", "running", "completed"]},
+            },
+        },
+        "timeouts": {
+            "type": "dict",
+            "options": {
+                "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout if HAS_PYAVD else 300.0},
+                "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300.0},
+            },
+        },
+        "return_details": {"type": "bool", "required": False, "default": False},
+    }
 
 
 class ActionModule(ActionBase):
