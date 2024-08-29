@@ -1827,9 +1827,8 @@ keys:
     display_name: ISIS Default IS System-ID format
     description: 'Configures source for the system-id within the ISIS net id.
 
-      By default the `id` and `isis_system_id_prefix` fields configured under the
-      node attributes are used to generate the system-id.
-
+      If this key is set to `node_id`, the fields `id` and `isis_system_id_prefix`
+      configured under the node attributes are used to generate the system-id.
 
       If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
       will be ignored and the loopback address will be used to generate the system-id.'
@@ -1839,7 +1838,7 @@ keys:
     valid_values:
     - node_id
     - underlay_loopback
-    default: node_id
+    default: underlay_loopback
   isis_ti_lfa:
     documentation_options:
       table: isis-settings
@@ -2000,14 +1999,12 @@ keys:
     type: bool
     documentation_options:
       table: fabric-settings
-    description: 'If `true` (default) an MLAG ID will always be configured on a Port-Channel
+    description: 'If `true` an MLAG ID will always be configured on a Port-Channel
       downlink even if the downlink is only on one node in the MLAG pair.
 
-      If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed
-      to two MLAG switches.
-
-      Note the default value will change to `false` in AVD version 5.0'
-    default: true
+      If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
+      dual-homed to two MLAG switches.'
+    default: false
   name_servers:
     documentation_options:
       table: management-settings

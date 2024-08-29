@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
@@ -146,6 +147,10 @@ username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -248,7 +253,7 @@ vlan 3402
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1-LEAF2A_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
 | Ethernet2 | DC1-LEAF2B_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
-| Ethernet5 |  dc1-leaf2-server1_iLO | access | 11 | - | - | - |
+| Ethernet5 | dc1-leaf2-server1_iLO | access | 11 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

@@ -1,6 +1,6 @@
 cvp_configlets:
-  AVD_DC1-BL1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-BL1A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-BL1A\nip name-server vrf
@@ -102,17 +102,20 @@ cvp_configlets:
     activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_WAN_Zone\n
     \     rd 192.168.255.10:14\n      route-target import evpn 14:14\n      route-target
     export evpn 14:14\n      router-id 192.168.255.10\n      update wait-install\n
-    \     neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n      route-target
-    import evpn 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.10\n
+    \     neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n      neighbor
+    10.255.251.11 description DC1-BL1B\n      redistribute connected\n   !\n   vrf
+    Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n      route-target import evpn
+    21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.10\n
     \     update wait-install\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n
-    \     route-target import evpn 31:31\n      route-target export evpn 31:31\n      router-id
-    192.168.255.10\n      update wait-install\n      neighbor 10.255.251.11 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nmanagement api http-commands\n
-    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-BL1B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    \     neighbor 10.255.251.11 description DC1-BL1B\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n      route-target
+    import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.10\n
+    \     update wait-install\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.11 description DC1-BL1B\n      redistribute connected\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\nend\n"
+  AVD_DC1-BL1B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-BL1B\nip name-server vrf
@@ -214,17 +217,20 @@ cvp_configlets:
     activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_WAN_Zone\n
     \     rd 192.168.255.11:14\n      route-target import evpn 14:14\n      route-target
     export evpn 14:14\n      router-id 192.168.255.11\n      update wait-install\n
-    \     neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n      route-target
-    import evpn 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.11\n
+    \     neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n      neighbor
+    10.255.251.10 description DC1-BL1A\n      redistribute connected\n   !\n   vrf
+    Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n      route-target import evpn
+    21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.11\n
     \     update wait-install\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n
-    \     route-target import evpn 31:31\n      route-target export evpn 31:31\n      router-id
-    192.168.255.11\n      update wait-install\n      neighbor 10.255.251.10 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n!\nmanagement api http-commands\n
-    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-L2LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    \     neighbor 10.255.251.10 description DC1-BL1A\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n      route-target
+    import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.11\n
+    \     update wait-install\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.10 description DC1-BL1A\n      redistribute connected\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\nend\n"
+  AVD_DC1-L2LEAF1A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -245,8 +251,8 @@ cvp_configlets:
     address 192.168.200.112/24\nno ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0
     192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
     \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-L2LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-L2LEAF2A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -281,8 +287,8 @@ cvp_configlets:
     mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-L2LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-L2LEAF2B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -317,8 +323,8 @@ cvp_configlets:
     mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-LEAF1A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -399,8 +405,8 @@ cvp_configlets:
     export evpn 11:11\n      router-id 192.168.255.5\n      redistribute connected\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-LEAF2A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -553,27 +559,31 @@ cvp_configlets:
     activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.6:12\n      route-target
     import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.6\n
     \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n
-    \     route-target import evpn 13:13\n      route-target export evpn 13:13\n      router-id
-    192.168.255.6\n      update wait-install\n      neighbor 10.255.251.3 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_A_OP_Zone\n
-    \     rd 192.168.255.6:10\n      route-target import evpn 10:10\n      route-target
-    export evpn 10:10\n      router-id 192.168.255.6\n      update wait-install\n
-    \     neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.6:11\n      route-target
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n      route-target import
+    evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.6\n
+    \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.6:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.6\n
+    \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.6:11\n      route-target
     import evpn 11:11\n      route-target export evpn 11:11\n      router-id 192.168.255.6\n
     \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.6:20\n
-    \     route-target import evpn 20:20\n      route-target export evpn 20:20\n      router-id
-    192.168.255.6\n      update wait-install\n      neighbor 10.255.251.3 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n
-    \     rd 192.168.255.6:30\n      route-target import evpn 30:30\n      route-target
-    export evpn 30:30\n      router-id 192.168.255.6\n      update wait-install\n
-    \     neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n
+    \  !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.6:20\n      route-target import
+    evpn 20:20\n      route-target export evpn 20:20\n      router-id 192.168.255.6\n
+    \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.6:30\n      route-target import
+    evpn 30:30\n      route-target export evpn 30:30\n      router-id 192.168.255.6\n
+    \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\nend\n"
+  AVD_DC1-LEAF2B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -726,27 +736,31 @@ cvp_configlets:
     activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.7:12\n      route-target
     import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.7\n
     \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n
-    \     route-target import evpn 13:13\n      route-target export evpn 13:13\n      router-id
-    192.168.255.7\n      update wait-install\n      neighbor 10.255.251.2 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_A_OP_Zone\n
-    \     rd 192.168.255.7:10\n      route-target import evpn 10:10\n      route-target
-    export evpn 10:10\n      router-id 192.168.255.7\n      update wait-install\n
-    \     neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.7:11\n      route-target
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n      route-target import
+    evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.7\n
+    \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.7:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.7\n
+    \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.7:11\n      route-target
     import evpn 11:11\n      route-target export evpn 11:11\n      router-id 192.168.255.7\n
     \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.7:20\n
-    \     route-target import evpn 20:20\n      route-target export evpn 20:20\n      router-id
-    192.168.255.7\n      update wait-install\n      neighbor 10.255.251.2 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n
-    \     rd 192.168.255.7:30\n      route-target import evpn 30:30\n      route-target
-    export evpn 30:30\n      router-id 192.168.255.7\n      update wait-install\n
-    \     neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-SPINE1: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n
+    \  !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.7:20\n      route-target import
+    evpn 20:20\n      route-target export evpn 20:20\n      router-id 192.168.255.7\n
+    \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.7:30\n      route-target import
+    evpn 30:30\n      route-target export evpn 30:30\n      router-id 192.168.255.7\n
+    \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\nend\n"
+  AVD_DC1-SPINE1: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE1\nip name-server vrf
@@ -815,8 +829,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SPINE2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE2: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE2\nip name-server vrf
@@ -885,8 +899,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SPINE3: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE3: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE3\nip name-server vrf
@@ -955,8 +969,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SPINE4: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SPINE4: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SPINE4\nip name-server vrf
@@ -1025,8 +1039,8 @@ cvp_configlets:
     neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\nend\n"
-  AVD_DC1-SVC3A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+  AVD_DC1-SVC3A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -1208,37 +1222,43 @@ cvp_configlets:
     activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.8:12\n      route-target
     import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.8\n
     \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n
-    \     route-target import evpn 13:13\n      route-target export evpn 13:13\n      router-id
-    192.168.255.8\n      update wait-install\n      neighbor 10.255.251.7 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_A_OP_Zone\n
-    \     rd 192.168.255.8:10\n      route-target import evpn 10:10\n      route-target
-    export evpn 10:10\n      router-id 192.168.255.8\n      update wait-install\n
-    \     neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.8:14\n      route-target
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n      route-target import
+    evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.8\n
+    \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.8:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.8\n
+    \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.8:14\n      route-target
     import evpn 14:14\n      route-target export evpn 14:14\n      router-id 192.168.255.8\n
     \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.8:11\n
-    \     route-target import evpn 11:11\n      route-target export evpn 11:11\n      router-id
-    192.168.255.8\n      update wait-install\n      neighbor 10.255.251.7 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n
-    \     rd 192.168.255.8:20\n      route-target import evpn 20:20\n      route-target
-    export evpn 20:20\n      router-id 192.168.255.8\n      update wait-install\n
-    \     neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.8:21\n      route-target
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.8:11\n      route-target
+    import evpn 11:11\n      route-target export evpn 11:11\n      router-id 192.168.255.8\n
+    \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.8:20\n      route-target import
+    evpn 20:20\n      route-target export evpn 20:20\n      router-id 192.168.255.8\n
+    \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.8:21\n      route-target
     import evpn 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.8\n
     \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.8:30\n
-    \     route-target import evpn 30:30\n      route-target export evpn 30:30\n      router-id
-    192.168.255.8\n      update wait-install\n      neighbor 10.255.251.7 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n
-    \     rd 192.168.255.8:31\n      route-target import evpn 31:31\n      route-target
-    export evpn 31:31\n      router-id 192.168.255.8\n      update wait-install\n
-    \     neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
-  AVD_DC1-SVC3B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
-    -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.8:30\n      route-target import
+    evpn 30:30\n      route-target export evpn 30:30\n      router-id 192.168.255.8\n
+    \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.8:31\n      route-target
+    import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.8\n
+    \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\nend\n"
+  AVD_DC1-SVC3B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
+    -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
     internal order ascending range 1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver
     qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
@@ -1415,35 +1435,41 @@ cvp_configlets:
     activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.9:12\n      route-target
     import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.9\n
     \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n
-    \     route-target import evpn 13:13\n      route-target export evpn 13:13\n      router-id
-    192.168.255.9\n      update wait-install\n      neighbor 10.255.251.6 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_A_OP_Zone\n
-    \     rd 192.168.255.9:10\n      route-target import evpn 10:10\n      route-target
-    export evpn 10:10\n      router-id 192.168.255.9\n      update wait-install\n
-    \     neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.9:14\n      route-target
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n      route-target import
+    evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.9\n
+    \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.9:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.9\n
+    \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.9:14\n      route-target
     import evpn 14:14\n      route-target export evpn 14:14\n      router-id 192.168.255.9\n
     \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.9:11\n
-    \     route-target import evpn 11:11\n      route-target export evpn 11:11\n      router-id
-    192.168.255.9\n      update wait-install\n      neighbor 10.255.251.6 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n
-    \     rd 192.168.255.9:20\n      route-target import evpn 20:20\n      route-target
-    export evpn 20:20\n      router-id 192.168.255.9\n      update wait-install\n
-    \     neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.9:21\n      route-target
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.9:11\n      route-target
+    import evpn 11:11\n      route-target export evpn 11:11\n      router-id 192.168.255.9\n
+    \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.9:20\n      route-target import
+    evpn 20:20\n      route-target export evpn 20:20\n      router-id 192.168.255.9\n
+    \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.9:21\n      route-target
     import evpn 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.9\n
     \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.9:30\n
-    \     route-target import evpn 30:30\n      route-target export evpn 30:30\n      router-id
-    192.168.255.9\n      update wait-install\n      neighbor 10.255.251.6 peer group
-    MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n
-    \     rd 192.168.255.9:31\n      route-target import evpn 31:31\n      route-target
-    export evpn 31:31\n      router-id 192.168.255.9\n      update wait-install\n
-    \     neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.9:30\n      route-target import
+    evpn 30:30\n      route-target export evpn 30:30\n      router-id 192.168.255.9\n
+    \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n
+    \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.9:31\n      route-target
+    import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.9\n
+    \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\nend\n"
 cvp_topology:
   DC1_BL1:
     devices:

@@ -88,6 +88,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.254.1.105
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: flow-tracking-tests-leaf4
   vlans:
   - id: 11
     tenant: FLOW_TRACKING
@@ -108,6 +109,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:

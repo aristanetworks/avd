@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -169,6 +170,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -354,10 +359,10 @@ vlan 311
 | Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | CUSTOM_server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
-| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
-| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9 | *access | *- | *- | *- | 12 |
+| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *- | *- | *- | *- | 12 |
+| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9 | *- | *- | *- | *- | 12 |
 | Ethernet20 | CUSTOM_FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
-| Ethernet21 |  CUSTOM_ROUTER01_Eth1 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_ROUTER01_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -466,7 +471,7 @@ interface Ethernet21
 | Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
 | Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | - | - |
 | Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | - | - |
-| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | access | - | - | - | - | - | - | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | - | - | - | - | - | - | - | - |
 | Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ##### EVPN Multihoming

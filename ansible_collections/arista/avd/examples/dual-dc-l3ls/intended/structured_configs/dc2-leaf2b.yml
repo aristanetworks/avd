@@ -116,6 +116,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.129.120
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc2-leaf2a
   - name: VRF11
     router_id: 10.255.128.16
     rd: 10.255.128.16:11
@@ -133,6 +134,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.129.120
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc2-leaf2a
   vlans:
   - id: 11
     tenant: TENANT1
@@ -229,6 +231,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:

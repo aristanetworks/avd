@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
@@ -162,6 +163,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -266,8 +271,8 @@ vlan 131
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet6 |  server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet7 |  server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
+| Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet7 | server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

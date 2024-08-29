@@ -89,6 +89,9 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 - AvdTestLoopback0Reachability
   - VerifyReachability: Validate loopback reachability between devices.
 
+- AvdTestDpsReachability
+  - VerifyReachability: Validate DPS reachability between devices.
+
 - AvdTestLLDPTopology
   - VerifyLLDPNeighbors: Validate LLDP topology.
 

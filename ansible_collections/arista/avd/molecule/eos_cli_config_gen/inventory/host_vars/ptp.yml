@@ -40,10 +40,12 @@ ptp:
 # port-channels
 port_channel_interfaces:
   - name: Port-Channel5
-    type: switched
     description: DC1_L2LEAF1_Po1
-    vlans: 110,201
-    mode: trunk
+    switchport:
+      enabled: true
+      trunk:
+        allowed_vlan: 110,201
+      mode: trunk
     mlag: 5
     ptp:
       enable: true
@@ -65,9 +67,11 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
-    type: switched
-    mode: trunk
-    vlans: 2,14
+    switchport:
+      enabled: true
+      mode: trunk
+      trunk:
+        allowed_vlan: 2,14
     ptp:
       enable: true
       delay_mechanism: e2e

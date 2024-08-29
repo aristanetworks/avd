@@ -69,6 +69,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.224.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: MLAG_SAME_SUBNET_L3LEAF1A
     updates:
       wait_install: true
   vlans:
@@ -87,6 +88,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false

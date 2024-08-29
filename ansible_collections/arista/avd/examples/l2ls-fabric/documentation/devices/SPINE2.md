@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [MLAG](#mlag)
@@ -154,6 +155,10 @@ username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin nopassword
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ### AAA Authentication
 
 #### AAA Authentication Summary
@@ -294,8 +299,8 @@ vlan 4094
 | Ethernet3 | LEAF3_Ethernet2 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet4 | LEAF4_Ethernet2 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet5 | FIREWALL_Eth2 | *trunk | *10,20,30 | *- | *- | 5 |
-| Ethernet47 | MLAG_PEER_SPINE1_Ethernet47 | *trunk | *- | *- | *['MLAG'] | 47 |
-| Ethernet48 | MLAG_PEER_SPINE1_Ethernet48 | *trunk | *- | *- | *['MLAG'] | 47 |
+| Ethernet47 | MLAG_PEER_SPINE1_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet48 | MLAG_PEER_SPINE1_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -350,7 +355,7 @@ interface Ethernet48
 | Port-Channel1 | RACK1_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
 | Port-Channel3 | RACK2_Po1 | trunk | 10,30 | - | - | - | - | 3 | - |
 | Port-Channel5 | FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
-| Port-Channel47 | MLAG_PEER_SPINE1_Po47 | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel47 | MLAG_PEER_SPINE1_Po47 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -82,6 +84,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Spanning Tree
 
@@ -320,7 +328,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | CUSTOM_NAME |
-| Net-ID | 49.0001.0000.0000.0003.00 |
+| Net-ID | 49.0001.1000.7000.0003.00 |
 | Type | level-2 |
 | Router-ID | 100.70.0.3 |
 | Log Adjacency Changes | True |
@@ -365,7 +373,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis CUSTOM_NAME
-   net 49.0001.0000.0000.0003.00
+   net 49.0001.1000.7000.0003.00
    is-type level-2
    router-id ipv4 100.70.0.3
    log-adjacency-changes

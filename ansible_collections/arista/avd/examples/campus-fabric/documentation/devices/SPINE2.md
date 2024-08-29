@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -153,6 +154,10 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authorization
 
@@ -310,8 +315,8 @@ vlan 4094
 | Ethernet49/1 | LEAF2A_Ethernet1/3 | *trunk | *10,210,220,230 | *- | *- | 491 |
 | Ethernet50/1 | LEAF3A_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
 | Ethernet51/1 | LEAF3B_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
-| Ethernet55/1 | MLAG_PEER_SPINE1_Ethernet55/1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
-| Ethernet56/1 | MLAG_PEER_SPINE1_Ethernet56/1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
+| Ethernet55/1 | MLAG_PEER_SPINE1_Ethernet55/1 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 551 |
+| Ethernet56/1 | MLAG_PEER_SPINE1_Ethernet56/1 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 551 |
 
 *Inherited from Port-Channel Interface
 
@@ -376,7 +381,7 @@ interface Ethernet56/1
 | Port-Channel1 | IDF1_Po51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
 | Port-Channel491 | LEAF2A_Po11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | IDF3_AGG_Po971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
-| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
