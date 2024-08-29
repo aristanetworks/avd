@@ -32,7 +32,7 @@ logger = getLogger(__name__)
 try:
     from anta import __DEBUG__
     from anta.device import AntaDevice
-    from anta.logger import anta_log_exception
+    from anta.logger import anta_log_exception, exc_to_str
 
     HAS_ANTA = True
 except ImportError:
@@ -113,42 +113,33 @@ class AnsibleEOSDevice(AntaDevice):
         ----
             command (AntaCommand): The command to collect.
             collection_id (str, optional): This parameter is not used in this implementation. Defaults to None.
-
-        If there is an exception while collecting the command, the exception will be propagated
-        and handled in ANTA. That means ANTA will set the test result to 'error', the play will
-        continue and the test will be marked as FAIL in the eos_validate_state report.
         """
         if self.check_mode:
             logger.info("_collect was called in check_mode, doing nothing")
             return
+        commands = []
+
+        if command.revision:
+            commands.append({"cmd": command.command, "revision": command.revision})
+        else:
+            commands.append({"cmd": command.command})
+
+        # Run the synchronous function send_request() in a separate thread to not block the asyncio event loop
+        send_request = partial(self._connection.send_request, commands, version=command.version, output=command.ofmt)
+        loop = get_event_loop()
         try:
-            commands = []
-
-            if command.revision:
-                commands.append({"cmd": command.command, "revision": command.revision})
-            else:
-                commands.append({"cmd": command.command})
-
-            # Run the synchronous function send_request() in a separate thread to not block the asyncio event loop
-            send_request = partial(self._connection.send_request, commands, version=command.version, output=command.ofmt)
-            loop = get_event_loop()
             response = await loop.run_in_executor(None, send_request)
 
             # Save the command result
             command.output = loads(response) if command.ofmt == "json" else response
-            logger.debug("%s: %s", self.name, command)
-
         except JSONDecodeError:
             # Even if the outformat is 'json' send_request() sometimes returns a non-valid JSON depending on the output content
             # https://github.com/ansible-collections/arista.eos/blob/main/plugins/httpapi/eos.py#L194
             command.output = {"messages": [response]}
-
         except Exception as e:
-            message = f"Command '{command.command}' failed"
-            command.failed = e
-            logger.debug(command)
-            msg = f"{message}: {e!s}"
-            raise e.__class__(msg) from e
+            command.errors = [exc_to_str(e)]
+            logger.warning("Command '%s' failed: %s", command.command, exc_to_str(e))
+        logger.debug("%s: %s", self.name, command)
 
     async def refresh(self) -> None:
         """Update attributes of an AnsibleEOSDevice instance.
