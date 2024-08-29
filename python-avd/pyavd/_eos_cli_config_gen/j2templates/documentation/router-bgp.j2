@@ -624,7 +624,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | L3 Gateway Inter-domain | True |
 {%         endif %}
 {%     endif %}
-{%     if router.bgp.address_family_ipv4_labeled_unicast is arista.avd.defined %}
+{%     if router_bgp.address_family_ipv4_labeled_unicast is arista.avd.defined %}
 
 #### Router BGP IPv4 Labeled Unicast
 
@@ -649,6 +649,19 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbor_default.next_hop_self is arista.avd.defined(true) %}
 | neighbor default next-hop-self | True |
+{%         endif %}
+{%         if router_bgp.address_family_ipv4_labeled_unicast.peer_groups is arista.avd.defined %}
+##### IPv4 BGP-LU Peer-groups
+
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+{%             for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort() %}
+{%                 set route_map_in = peer.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer.route_map_out | arista.avd.default("-") %}
+{%                 set rcf_in = peer.rcf_in | arista.avd.default("-") %}
+{%                 set rcf_out = peer.rcf_out | arista.avd.default("-") %}
+| {{ peer.name }} | {{ peer.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbors is arista.avd.defined %}
 ##### IPv4 BGP-LU Neighbors
