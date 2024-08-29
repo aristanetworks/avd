@@ -85,6 +85,22 @@ ASN Notation: asplain
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 
+#### Router BGP IPv4 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+| Update - wait-for-convergence | Enabled |
+| Next-hop Unchanged | True |
+| label local-termination | implicit-null |
+##### IPv4 BGP-LU Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| 198.51.100.1 | True | - | - | RCF_TEST(ARGS) | - |
+| 198.51.100.2 | False | - | RM_OUT_TEST | - | - |
+
 #### Router BGP Device Configuration
 
 ```eos
