@@ -6,8 +6,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
-from pyavd._cv.api.arista.time import TimeBounds
-
 from pyavd._cv.api.arista.tag.v2 import (
     CreatorType,
     ElementType,
@@ -28,6 +26,8 @@ from pyavd._cv.api.arista.tag.v2 import (
     TagServiceStub,
     TagStreamRequest,
 )
+from pyavd._cv.api.arista.time import TimeBounds
+
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
