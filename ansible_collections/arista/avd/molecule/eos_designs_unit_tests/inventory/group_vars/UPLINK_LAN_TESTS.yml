@@ -62,7 +62,7 @@ tenants: # dynamic_key: network_services
             ip_address: 10.0.10.1/24
             enabled: true
             tags: [wan_router, l2leaf]
-            mtu: 9214
+            mtu: 9194
           - id: 100
             name: VLAN100
             description: "My vlan 100"
