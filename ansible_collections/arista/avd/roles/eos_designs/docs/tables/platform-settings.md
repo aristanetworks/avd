@@ -271,6 +271,7 @@
           reload_delay:
             mlag: 900
             non_mlag: 1020
+          tcam_profile: vxlan-routing
         - lag_hardware_only: true
           management_interface: Management0
           platforms:
@@ -287,6 +288,7 @@
           reload_delay:
             mlag: 900
             non_mlag: 1020
+          tcam_profile: vxlan-routing
         - feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false

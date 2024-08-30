@@ -307,8 +307,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-BL1A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-BL1A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-BL1A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1-BL1A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -372,7 +372,7 @@ interface Ethernet6
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-BL1A_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-BL1A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -801,6 +801,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.10 description DC1-BL1A
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -810,6 +811,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.10 description DC1-BL1A
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -819,6 +821,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.10 description DC1-BL1A
       redistribute connected
 ```
 

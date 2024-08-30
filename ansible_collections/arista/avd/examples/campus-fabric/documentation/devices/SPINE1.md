@@ -315,8 +315,8 @@ vlan 4094
 | Ethernet49/1 | LEAF2A_Ethernet1/1 | *trunk | *10,210,220,230 | *- | *- | 491 |
 | Ethernet50/1 | LEAF3A_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 501 |
 | Ethernet51/1 | LEAF3B_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 501 |
-| Ethernet55/1 | MLAG_PEER_SPINE2_Ethernet55/1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
-| Ethernet56/1 | MLAG_PEER_SPINE2_Ethernet56/1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
+| Ethernet55/1 | MLAG_PEER_SPINE2_Ethernet55/1 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 551 |
+| Ethernet56/1 | MLAG_PEER_SPINE2_Ethernet56/1 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 551 |
 
 *Inherited from Port-Channel Interface
 
@@ -381,7 +381,7 @@ interface Ethernet56/1
 | Port-Channel1 | IDF1_Po51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
 | Port-Channel491 | LEAF2A_Po11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | IDF3_AGG_Po971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
-| Port-Channel551 | MLAG_PEER_SPINE2_Po551 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel551 | MLAG_PEER_SPINE2_Po551 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

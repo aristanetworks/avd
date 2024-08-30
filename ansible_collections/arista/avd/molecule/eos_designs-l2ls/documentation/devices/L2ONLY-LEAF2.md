@@ -108,8 +108,8 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2ONLY-SPINE1_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | L2ONLY-SPINE2_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 100 | - | - | - |
-| Ethernet11 |  Endpoint | access | 100 | - | - | - |
+| Ethernet10 | Endpoint | access | 100 | - | - | - |
+| Ethernet11 | Endpoint | access | 100 | - | - | - |
 
 *Inherited from Port-Channel Interface
 

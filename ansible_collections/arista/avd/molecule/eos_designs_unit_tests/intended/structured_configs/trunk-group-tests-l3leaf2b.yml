@@ -69,6 +69,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf2a
     updates:
       wait_install: true
   vlans:

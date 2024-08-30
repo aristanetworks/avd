@@ -54,10 +54,12 @@ management_security:
 ### L2 portchannel
 port_channel_interfaces:
   - name: Port-Channel3
-    type: switched
     description: L2-PORT
-    vlans: 1-5
-    mode: trunk
+    switchport:
+      enabled: true
+      trunk:
+        allowed_vlan: 1-5
+      mode: trunk
 
 # Children interfaces
 ethernet_interfaces:

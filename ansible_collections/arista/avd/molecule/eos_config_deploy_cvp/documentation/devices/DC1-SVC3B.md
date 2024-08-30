@@ -388,8 +388,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 
@@ -465,7 +465,7 @@ interface Ethernet8
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -1172,6 +1172,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1181,6 +1182,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1190,6 +1192,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1199,6 +1202,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
@@ -1208,6 +1212,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1217,6 +1222,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1226,6 +1232,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1235,6 +1242,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1244,6 +1252,7 @@ router bgp 65103
       router-id 192.168.255.9
       update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.6 description DC1-SVC3A
       redistribute connected
 ```
 
