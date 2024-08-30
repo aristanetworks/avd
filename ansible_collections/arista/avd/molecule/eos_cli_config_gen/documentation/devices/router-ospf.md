@@ -176,6 +176,9 @@ interface Vlan24
 | 400 | connected | enabled | - |
 | 400 | static | enabled | - |
 | 400 | bgp | enabled | - |
+| 500 | connected | disabled | - |
+| 500 | static | disabled | - |
+| 500 | bgp | disabled | - |
 
 #### Router OSPF Router Max-Metric
 

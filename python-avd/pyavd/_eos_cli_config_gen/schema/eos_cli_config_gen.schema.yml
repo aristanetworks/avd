@@ -15890,6 +15890,9 @@ keys:
                 static:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -15898,6 +15901,9 @@ keys:
                 connected:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -15906,6 +15912,9 @@ keys:
                 bgp:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
