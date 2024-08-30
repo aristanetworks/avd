@@ -1,6 +1,6 @@
 cvp_configlets:
-  AVD_DC1-BL1A: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+  AVD_DC1-BL1A: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -113,10 +113,9 @@ cvp_configlets:
     \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.10\n
     \     update wait-install\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     neighbor 10.255.251.11 description DC1-BL1B\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-BL1B: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    \     neighbor 10.255.251.11 description DC1-BL1B\n      redistribute connected\n!\nend\n"
+  AVD_DC1-BL1B: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -229,10 +228,9 @@ cvp_configlets:
     \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.11\n
     \     update wait-install\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     neighbor 10.255.251.10 description DC1-BL1A\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-L2LEAF1A: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    \     neighbor 10.255.251.10 description DC1-BL1A\n      redistribute connected\n!\nend\n"
+  AVD_DC1-L2LEAF1A: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -251,9 +249,9 @@ cvp_configlets:
     shutdown\n   channel-group 1 mode active\n!\ninterface Management1\n   description
     oob_management\n   no shutdown\n   vrf MGMT\n   ip address 192.168.200.112/24\nno
     ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
-    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nno enable password\n!\nend\n"
-  AVD_DC1-L2LEAF2A: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nend\n"
+  AVD_DC1-L2LEAF2A: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -287,9 +285,9 @@ cvp_configlets:
     DC1_L2LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.17\n   peer-link
     Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route
     vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp
-    server vrf MGMT 192.168.200.5 prefer\n!\nno enable password\n!\nend\n"
-  AVD_DC1-L2LEAF2B: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    server vrf MGMT 192.168.200.5 prefer\n!\nend\n"
+  AVD_DC1-L2LEAF2B: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -323,9 +321,9 @@ cvp_configlets:
     DC1_L2LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.16\n   peer-link
     Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route
     vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp
-    server vrf MGMT 192.168.200.5 prefer\n!\nno enable password\n!\nend\n"
-  AVD_DC1-LEAF1A: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    server vrf MGMT 192.168.200.5 prefer\n!\nend\n"
+  AVD_DC1-LEAF1A: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -404,10 +402,9 @@ cvp_configlets:
     \     route-target import evpn 12:12\n      route-target export evpn 12:12\n      router-id
     192.168.255.5\n      redistribute connected\n   !\n   vrf Tenant_A_WEB_Zone\n
     \     rd 192.168.255.5:11\n      route-target import evpn 11:11\n      route-target
-    export evpn 11:11\n      router-id 192.168.255.5\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-LEAF2A: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    export evpn 11:11\n      router-id 192.168.255.5\n      redistribute connected\n!\nend\n"
+  AVD_DC1-LEAF2A: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -582,10 +579,9 @@ cvp_configlets:
     \  !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.6:30\n      route-target import
     evpn 30:30\n      route-target export evpn 30:30\n      router-id 192.168.255.6\n
     \     update wait-install\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-LEAF2B: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    \     neighbor 10.255.251.3 description DC1-LEAF2B\n      redistribute connected\n!\nend\n"
+  AVD_DC1-LEAF2B: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -760,10 +756,9 @@ cvp_configlets:
     \  !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.7:30\n      route-target import
     evpn 30:30\n      route-target export evpn 30:30\n      router-id 192.168.255.7\n
     \     update wait-install\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-SPINE1: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    \     neighbor 10.255.251.2 description DC1-LEAF2A\n      redistribute connected\n!\nend\n"
+  AVD_DC1-SPINE1: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -829,10 +824,9 @@ cvp_configlets:
     192.168.255.11 remote-as 65104\n   neighbor 192.168.255.11 description DC1-BL1B\n
     \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n
     \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-SPINE2: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nend\n"
+  AVD_DC1-SPINE2: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -898,10 +892,9 @@ cvp_configlets:
     192.168.255.11 remote-as 65104\n   neighbor 192.168.255.11 description DC1-BL1B\n
     \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n
     \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-SPINE3: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nend\n"
+  AVD_DC1-SPINE3: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -967,10 +960,9 @@ cvp_configlets:
     192.168.255.11 remote-as 65104\n   neighbor 192.168.255.11 description DC1-BL1B\n
     \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n
     \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-SPINE4: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nend\n"
+  AVD_DC1-SPINE4: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -1036,10 +1028,9 @@ cvp_configlets:
     192.168.255.11 remote-as 65104\n   neighbor 192.168.255.11 description DC1-BL1B\n
     \  redistribute connected route-map RM-CONN-2-BGP\n   !\n   address-family evpn\n
     \     neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n      no
-    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-SVC3A: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nend\n"
+  AVD_DC1-SVC3A: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -1255,10 +1246,9 @@ cvp_configlets:
     \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.8:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.8\n
     \     update wait-install\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
-  AVD_DC1-SVC3B: "!\nusername admin privilege 15 role network-admin nopassword\nusername
-    cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
+    \     neighbor 10.255.251.7 description DC1-SVC3B\n      redistribute connected\n!\nend\n"
+  AVD_DC1-SVC3B: "!\nno enable password\n!\nusername admin privilege 15 role network-admin
+    nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\nmanagement
     api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910
     -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
@@ -1468,8 +1458,7 @@ cvp_configlets:
     \  !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.9:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.9\n
     \     update wait-install\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n
-    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n!\nno
-    enable password\n!\nend\n"
+    \     neighbor 10.255.251.6 description DC1-SVC3A\n      redistribute connected\n!\nend\n"
 cvp_topology:
   DC1_BL1:
     devices:
