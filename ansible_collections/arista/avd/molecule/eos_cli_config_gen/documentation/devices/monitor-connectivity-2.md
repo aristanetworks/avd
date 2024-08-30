@@ -1,11 +1,12 @@
-# ip-community-lists
+# monitor-connectivity-2
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Filters](#filters)
-  - [IP Community-lists](#ip-community-lists-1)
+- [Monitor Connectivity](#monitor-connectivity)
+  - [Global Configuration](#global-configuration)
+  - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 
 ## Management
 
@@ -35,29 +36,29 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Filters
+## Monitor Connectivity
 
-### IP Community-lists
+### Global Configuration
 
-#### IP Community-lists Summary
+#### Interface Sets
 
-| Name | Action | Communities / Regexp |
-| ---- | ------ | -------------------- |
-| IP_CL_TEST1 | permit | 1001:1001, 1002:1002 |
-| IP_CL_TEST1 | deny | 1010:1010 |
-| IP_CL_TEST1 | permit | 20:* |
-| IP_CL_TEST2 | deny | 1003:1003 |
-| IP_RE_TEST1 | permit | ^$ |
-| IP_RE_TEST2 | deny | ^100 |
+| Name | Interfaces |
+| ---- | ---------- |
+| HOST_SET2 | Loopback2-4, Loopback10-12 |
 
-#### IP Community-lists Device Configuration
+#### Probing Configuration
+
+| Enabled | Interval | Default Interface Set | Address Only |
+| ------- | -------- | --------------------- | ------------ |
+| False | 5 | HOST_SET2 | False |
+
+### Monitor Connectivity Device Configuration
 
 ```eos
 !
-ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
-ip community-list IP_CL_TEST1 deny 1010:1010
-ip community-list regexp IP_CL_TEST1 permit 20:*
-ip community-list IP_CL_TEST2 deny 1003:1003
-ip community-list regexp IP_RE_TEST1 permit ^$
-ip community-list regexp IP_RE_TEST2 deny ^100
+monitor connectivity
+   interval 5
+   shutdown
+   interface set HOST_SET2 Loopback2-4, Loopback10-12
+   local-interfaces HOST_SET2 default
 ```

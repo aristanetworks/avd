@@ -82,7 +82,6 @@ rr:
     mpls_route_reflectors: [ rr1, rr2 ]
     # ISIS NET system id prefix
     isis_system_id_prefix: '0000.0002'
-
   node_groups:
     - group: WAN1_RR1-2
       nodes:
