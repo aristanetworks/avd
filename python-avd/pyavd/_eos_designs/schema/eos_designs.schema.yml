@@ -1827,9 +1827,8 @@ keys:
     display_name: ISIS Default IS System-ID format
     description: 'Configures source for the system-id within the ISIS net id.
 
-      By default the `id` and `isis_system_id_prefix` fields configured under the
-      node attributes are used to generate the system-id.
-
+      If this key is set to `node_id`, the fields `id` and `isis_system_id_prefix`
+      configured under the node attributes are used to generate the system-id.
 
       If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
       will be ignored and the loopback address will be used to generate the system-id.'
@@ -1839,7 +1838,7 @@ keys:
     valid_values:
     - node_id
     - underlay_loopback
-    default: node_id
+    default: underlay_loopback
   isis_ti_lfa:
     documentation_options:
       table: isis-settings
@@ -2813,7 +2812,7 @@ keys:
     - str
     min: 68
     max: 65535
-    default: 9214
+    default: 9194
   p2p_uplinks_qos_profile:
     documentation_options:
       table: fabric-settings
@@ -3033,6 +3032,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7500R
       - 7500R2
@@ -3049,6 +3049,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7358X4
       management_interface: Management1/1

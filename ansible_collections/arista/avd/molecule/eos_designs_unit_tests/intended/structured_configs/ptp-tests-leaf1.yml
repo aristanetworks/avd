@@ -82,6 +82,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.254.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: ptp-tests-leaf2
   vlans:
   - id: 11
     tenant: PTP
