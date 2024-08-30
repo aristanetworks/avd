@@ -1031,18 +1031,32 @@ keys:
               default: true
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-output-settings
+      table: role-documentation-settings
     description: 'Control fabric documentation generation.
 
       '
     type: dict
     keys:
+      enable:
+        description: Generate fabric-wide documentation.
+        type: bool
+        default: true
       connected_endpoints:
-        description: 'Generate fabric-wide documentation for connected endpoints.
+        description: 'Include connected endpoints in the fabric-wide documentation.
 
-          '
+          This is `false` by default to avoid cluttering documentation for projects
+          with thousands of endpoints.'
         type: bool
         default: false
+      topology_csv:
+        description: Generate Topology CSV with all interfaces towards other devices.
+        type: bool
+        default: true
+      p2p_links_csv:
+        description: Generate P2P links CSV with all routed point-to-point links between
+          devices.
+        type: bool
+        default: true
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     documentation_options:
