@@ -77,7 +77,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_MLAG_ODD_ID_L3LEAF1A_Ethernet10
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.254.255.250/30
 - name: Ethernet2
@@ -86,7 +86,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_MLAG_ODD_ID_L3LEAF1B_Ethernet10
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.254.255.254/30
 loopback_interfaces:

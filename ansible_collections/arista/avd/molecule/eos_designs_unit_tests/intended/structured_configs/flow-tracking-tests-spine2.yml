@@ -119,7 +119,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF1_Ethernet2
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   flow_tracker:
     hardware: FLOW-TRACKER-2
@@ -130,7 +130,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF2_Ethernet2
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   flow_tracker:
     hardware: FLOW-TRACKER-2
@@ -141,7 +141,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF3_Ethernet2
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   flow_tracker:
     hardware: FLOW-TRACKER-2
@@ -152,7 +152,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF4_Ethernet2
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   flow_tracker:
     hardware: FLOW-TRACKER-2
@@ -164,7 +164,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-2
 - name: Ethernet10
@@ -174,7 +174,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet10
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-1
 - name: Ethernet11
@@ -184,7 +184,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet11
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
 - name: Ethernet12
   peer: flow-tracking-tests-spine1
   peer_interface: Ethernet12
@@ -192,7 +192,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet12
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
 - name: Ethernet13
   peer: flow-tracking-tests-spine1
   peer_interface: Ethernet13
@@ -200,7 +200,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet13
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-2
 - name: Ethernet14
@@ -210,7 +210,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet14
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-1
 - name: Ethernet15
@@ -220,7 +220,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet15
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
 - name: Ethernet16
   peer: flow-tracking-tests-spine1
   peer_interface: Ethernet16
@@ -228,7 +228,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_flow-tracking-tests-spine1_Ethernet16
   type: routed
   shutdown: false
-  mtu: 9194
+  mtu: 9214
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

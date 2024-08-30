@@ -137,13 +137,13 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   ip_address: 10.10.224.2/30
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
-  mtu: 9194
+  mtu: 9214
   ip_address: 10.10.255.2/30
 - name: Vlan10
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
@@ -157,7 +157,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST'
   vrf: TEST
-  mtu: 9194
+  mtu: 9214
   ip_address: 10.10.224.2/30
 port_channel_interfaces:
 - name: Port-Channel5

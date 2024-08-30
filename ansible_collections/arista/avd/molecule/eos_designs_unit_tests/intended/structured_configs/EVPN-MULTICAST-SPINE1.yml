@@ -142,7 +142,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1A_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.0/31
   pim:
@@ -154,7 +154,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1B_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.2/31
   pim:
@@ -166,7 +166,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF2A_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.4/31
   pim:
@@ -178,7 +178,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3A_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.6/31
   pim:
@@ -190,7 +190,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3B_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.8/31
   pim:
@@ -202,7 +202,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-DISABLED_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.10/31
   pim:

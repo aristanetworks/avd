@@ -171,7 +171,7 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/1 | - | 192.168.253.0/31 | default | 9194 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/1 | - | 192.168.253.0/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -200,7 +200,7 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DUMMY-CORE_Ethernet1/1
    no shutdown
-   mtu 9194
+   mtu 9214
    no switchport
    ip address 192.168.253.0/31
    ip ospf network point-to-point
@@ -283,7 +283,7 @@ interface Loopback0
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan4092 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 9194 | False |
+| Vlan4094 | MLAG_PEER | default | 9214 | False |
 
 ##### IPv4
 
@@ -313,7 +313,7 @@ interface Vlan4092
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 9194
+   mtu 9214
    no autostate
    ip address 192.168.254.0/31
    ip ospf network point-to-point

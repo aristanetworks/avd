@@ -112,7 +112,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF1_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.0.1.0/31
 - name: Ethernet4
@@ -121,7 +121,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF1_Ethernet2
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.0.1.2/31
 - name: Ethernet5
@@ -130,7 +130,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF3_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.0.1.4/31
 - name: Ethernet6
@@ -139,7 +139,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF4_Ethernet1
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.0.1.6/31
 - name: Ethernet15
@@ -148,7 +148,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF3_Ethernet3
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.0.3.0/31
 - name: Ethernet16
@@ -157,7 +157,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF4_Ethernet3
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 10.0.3.18/31
 loopback_interfaces:

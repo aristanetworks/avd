@@ -105,7 +105,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.25/31
 - name: Ethernet1.1
@@ -117,7 +117,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 1
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.16.0.25/31
 loopback_interfaces:
 - name: Loopback0

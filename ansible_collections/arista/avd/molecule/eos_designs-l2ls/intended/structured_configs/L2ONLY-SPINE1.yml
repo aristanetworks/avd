@@ -40,7 +40,7 @@ vlan_interfaces:
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
-  mtu: 9194
+  mtu: 9214
   ip_address: 192.168.254.0/31
 port_channel_interfaces:
 - name: Port-Channel3
