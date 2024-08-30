@@ -188,7 +188,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   ip_address: 172.17.0.3/31
 - name: Ethernet52.1000
@@ -200,7 +200,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 1000
-  mtu: 9214
+  mtu: 9194
   ip_address: 172.17.0.3/31
 - name: Ethernet52.142
   peer: site-ha-disabled-leaf
@@ -211,7 +211,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 142
-  mtu: 9214
+  mtu: 9194
   ip_address: 172.17.0.3/31
 - name: Ethernet52.666
   peer: site-ha-disabled-leaf
@@ -222,7 +222,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 666
-  mtu: 9214
+  mtu: 9194
   ip_address: 172.17.0.3/31
 - name: Ethernet1/49.3
   peer_type: l3_interface
@@ -814,7 +814,7 @@ router_internet_exit:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.2/32
   flow_tracker:
     hardware: FLOW-TRACKER

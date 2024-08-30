@@ -61,7 +61,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer2_ethernet2
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.0.2/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -78,7 +78,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer3_ethernet3
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.0.4/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -93,7 +93,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer4_ethernet4
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.0.6/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true

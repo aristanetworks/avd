@@ -101,7 +101,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   sflow:
     enable: true
 - name: Ethernet10
@@ -111,7 +111,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet10
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   sflow:
     enable: false
 - name: Ethernet11
@@ -121,7 +121,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet11
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   sflow:
     enable: true
 - name: Ethernet12
@@ -131,7 +131,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet12
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   sflow:
     enable: true
 - name: Ethernet13
@@ -141,7 +141,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet13
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   sflow:
     enable: false
 - name: Ethernet14
@@ -151,7 +151,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet14
   type: routed
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   sflow:
     enable: true
 sflow:

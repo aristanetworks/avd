@@ -86,7 +86,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_2_Ethernet1
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   ip_address: 192.168.153.1/31
 - name: Ethernet2
@@ -95,7 +95,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_3_Ethernet1
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   ip_address: 192.168.153.3/31
 loopback_interfaces:

@@ -185,13 +185,13 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.254.1.97/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.254.1.65/31
 - name: Vlan11
   tenant: PTP
@@ -205,7 +205,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf VRF1'
   vrf: VRF1
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.254.1.97/31
 port_channel_interfaces:
 - name: Port-Channel9
@@ -300,7 +300,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet3
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   ptp:
     announce:
@@ -318,7 +318,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet4
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   ptp:
     announce:

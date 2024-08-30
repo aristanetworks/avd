@@ -159,13 +159,13 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.254.1.105/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.254.1.73/31
 - name: Vlan11
   tenant: SFLOW
@@ -178,7 +178,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf VRF1'
   vrf: VRF1
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.254.1.105/31
 - name: Vlan4092
   description: Inband Management
@@ -269,7 +269,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet7
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   sflow:
     enable: true
@@ -280,7 +280,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet8
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   sflow:
     enable: true

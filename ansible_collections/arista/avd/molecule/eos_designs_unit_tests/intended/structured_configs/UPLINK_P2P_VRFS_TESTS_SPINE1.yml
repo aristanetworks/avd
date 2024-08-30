@@ -78,7 +78,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   mac_security:
     profile: TEST
   type: routed
@@ -92,7 +92,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.42.42.8/31
 - name: Ethernet1.66
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
@@ -103,7 +103,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 66
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.42.42.8/31
 loopback_interfaces:
 - name: Loopback0

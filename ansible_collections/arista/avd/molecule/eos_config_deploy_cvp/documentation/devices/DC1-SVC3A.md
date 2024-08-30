@@ -388,8 +388,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
@@ -471,7 +471,7 @@ interface Ethernet10
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 

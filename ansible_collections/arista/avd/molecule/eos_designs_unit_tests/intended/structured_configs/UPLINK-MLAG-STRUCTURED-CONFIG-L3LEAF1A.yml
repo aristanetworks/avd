@@ -114,7 +114,7 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.255.251.0/31
   pim:
     ipv4:
@@ -123,7 +123,7 @@ vlan_interfaces:
   description: mlag_peer_vlan_structured_config_override
   shutdown: false
   no_autostate: true
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.255.252.0/31
 port_channel_interfaces:
 - name: Port-Channel3
@@ -174,7 +174,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   type: routed
   ip_address: 172.31.255.1/31
   pim:

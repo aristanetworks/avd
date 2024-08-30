@@ -35,7 +35,7 @@ vlan_interfaces:
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
-  mtu: 9214
+  mtu: 9194
   ip_address: 100.64.0.200/31
 - name: Vlan101
   description: Inband Management
