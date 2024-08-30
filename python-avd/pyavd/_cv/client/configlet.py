@@ -28,6 +28,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
 
+from .async_decorators import grpc_msg_size_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -35,7 +36,6 @@ if TYPE_CHECKING:
     from datetime import datetime
 
     from . import CVClient
-
 
 ASSIGNMENT_MATCH_POLICY_MAP = {
     "match_first": MatchPolicy.MATCH_FIRST,
@@ -130,6 +130,7 @@ class ConfigletMixin:
 
         return response.value
 
+    @grpc_msg_size_handler("containers")
     async def set_configlet_containers(
         self: CVClient,
         workspace_id: str,
@@ -137,13 +138,13 @@ class ConfigletMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignmentKey]:
         """
-        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
+        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
             containers: List of Tuples with the format\
-                (container_id, display_name, description, configlet_ids, query, list_of_configlet_ids, match_policy).
-            timeout: Base timeout in seconds. 0.5 second will be added per container.
+                (container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy).
+            timeout: Timeout in seconds.
 
         Returns:
             ConfigletAssignmentKey objects after being set including any server-generated values.
@@ -157,14 +158,14 @@ class ConfigletMixin:
                     configlet_ids=RepeatedString(values=configlet_ids),
                     query=query,
                     child_assignment_ids=RepeatedString(values=child_assignment_ids),
-                    match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy),
+                    match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy or "match_all"),
                 )
                 for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
             ],
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
         try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.5)
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
             assignment_keys = [response.key async for response in responses]
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Containers '{containers}'") or e
@@ -201,6 +202,7 @@ class ConfigletMixin:
 
         return response.value
 
+    @grpc_msg_size_handler("configlet_ids")
     async def get_configlets(
         self: CVClient,
         workspace_id: str,
@@ -317,6 +319,47 @@ class ConfigletMixin:
 
         return response.value
 
+    @grpc_msg_size_handler("configlets")
+    async def set_configlets_from_files(
+        self: CVClient,
+        workspace_id: str,
+        configlets: list[tuple[str, str]],
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> list[ConfigletKey]:
+        """
+        Create/update multiple Configlets using arista.configlet.v1.ConfigletServiceStub.SetSome API.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is fetched.
+            configlets: List of Tuples with the format `(configlet_id, display_name, description, path_to_config_file)`.
+            timeout: Timeout in seconds.
+
+        Returns:
+            List of ConfigletConfig objects after being set including any server-generated values.
+        """
+        request = ConfigletConfigSetSomeRequest(values=[])
+        for configlet in configlets:
+            configlet_id, display_name, description, file = configlet
+            request.values.append(
+                ConfigletConfig(
+                    key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
+                    display_name=display_name,
+                    description=description,
+                    body=Path(file).read_text(encoding="UTF-8"),
+                )
+            )
+        client = ConfigletConfigServiceStub(self._channel)
+
+        try:
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            configlet_configs = [response.key async for response in responses]
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlets '{configlets}'") or e
+
+        return configlet_configs
+
+    @grpc_msg_size_handler("configlet_ids")
     async def delete_configlets(
         self: CVClient,
         workspace_id: str,
