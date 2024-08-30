@@ -84,6 +84,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   vlan_aware_bundles:

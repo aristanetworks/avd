@@ -875,6 +875,10 @@ keys:
     type: list
     primary_key: name
     display_name: Community Lists (legacy model)
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      new_key: ip_community_lists
     items:
       type: dict
       keys:
@@ -7686,16 +7690,12 @@ keys:
         type: str
       address_only:
         type: bool
-        description: 'PREVIEW: This key is in preview.
-
-          When address-only is configured, the source IP of the packet is set to the
-          interface
+        description: 'When address-only is configured, the source IP of the packet
+          is set to the interface
 
           IP but the packet may exit the device via a different interface.
 
-          When set to `false`, the probe uses the interface to exit the device.
-
-          Not supported yet in EOS.'
+          When set to `false`, the probe uses the interface to exit the device.'
         default: true
       hosts:
         type: list
@@ -7714,16 +7714,12 @@ keys:
               type: str
             address_only:
               type: bool
-              description: 'PREVIEW: This key is in preview.
-
-                When address-only is configured, the source IP of the packet is set
-                to the interface
+              description: 'When address-only is configured, the source IP of the
+                packet is set to the interface
 
                 IP but the packet may exit the device via a different interface.
 
-                When set to `false`, the probe uses the interface to exit the device.
-
-                Not supported yet in EOS.'
+                When set to `false`, the probe uses the interface to exit the device.'
               default: true
             url:
               type: str
@@ -7753,16 +7749,12 @@ keys:
               type: str
             address_only:
               type: bool
-              description: 'PREVIEW: This key is in preview.
-
-                When address-only is configured, the source IP of the packet is set
-                to the interface
+              description: 'When address-only is configured, the source IP of the
+                packet is set to the interface
 
                 IP but the packet may exit the device via a different interface.
 
-                When set to `false`, the probe uses the interface to exit the device.
-
-                Not supported yet in EOS.'
+                When set to `false`, the probe uses the interface to exit the device.'
               default: true
             hosts:
               type: list
@@ -7781,17 +7773,13 @@ keys:
                     type: str
                   address_only:
                     type: bool
-                    description: 'PREVIEW: This key is in preview.
-
-                      When address-only is configured, the source IP of the packet
-                      is set to the interface
+                    description: 'When address-only is configured, the source IP of
+                      the packet is set to the interface
 
                       IP but the packet may exit the device via a different interface.
 
                       When set to `false`, the probe uses the interface to exit the
-                      device.
-
-                      Not supported yet in EOS.'
+                      device.'
                     default: true
                   url:
                     type: str
@@ -16583,6 +16571,7 @@ keys:
     keys:
       enabled:
         type: bool
+        required: true
       router_id:
         type: dict
         keys:

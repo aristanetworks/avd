@@ -56,7 +56,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0000.0004.00
+  net: 49.0001.0102.5500.0004.00
   router_id: 10.255.0.4
   is_type: level-2
   address_family_ipv4:
