@@ -26,10 +26,11 @@ def validate_structured_config(structured_config: dict) -> ValidationResult:
 
     # pylint: enable=import-outside-toplevel
 
+    eos_cli_config_gen_schema_tools = EosCliConfigGenAvdSchemaTools()
     # Inplace conversion of data
-    deprecation_warnings = EosCliConfigGenAvdSchemaTools().convert_data(structured_config)
+    deprecation_warnings = eos_cli_config_gen_schema_tools.convert_data(structured_config)
 
     # Validate input data
-    validation_result = EosCliConfigGenAvdSchemaTools().validate_data(structured_config)
+    validation_result = eos_cli_config_gen_schema_tools.validate_data(structured_config)
     validation_result.deprecation_warnings.extend(deprecation_warnings)
     return validation_result
