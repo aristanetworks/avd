@@ -3046,6 +3046,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7500R
       - 7500R2
@@ -3062,6 +3063,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7358X4
       management_interface: Management1/1
