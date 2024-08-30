@@ -4,6 +4,28 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v4.10.1
+=======
+
+Release Summary
+---------------
+
+Release 4.10.1 - See documentation on avd.arista.com for details.
+
+Minor Changes
+-------------
+
+- Refactor(eos_designs): Optimize handling of WAN internet exits (#4372) by @gmuloc in https://github.com/aristanetworks/avd/pull/4407
+
+Bugfixes
+--------
+
+- Fix(cv_deploy): Ensure 'AVD Configurations' container is inserted first (#4356) by @gmuloc in https://github.com/aristanetworks/avd/pull/4409
+- Fix(cv_deploy): Fix Ansible Logging and increase API timeouts (#4357) by @gmuloc in https://github.com/aristanetworks/avd/pull/4408
+- Fix(eos_cli_config_gen): Use the correct VRF name for ip nat profile (#4398) by @gmuloc in https://github.com/aristanetworks/avd/pull/4405
+- Fix(eos_designs): Better error message when missing 'evpn_multicast' for PIM l3 interfaces (#4391) by @gmuloc in https://github.com/aristanetworks/avd/pull/4413
+- Fix(eos_validate_state): Ensure graceful handling of command errors from ANTA (#4385) by @gmuloc in https://github.com/aristanetworks/avd/pull/4406
+
 v4.10.0
 =======
 
