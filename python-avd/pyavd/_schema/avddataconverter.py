@@ -25,14 +25,12 @@ SIMPLE_CONVERTERS = {
 if TYPE_CHECKING:
     from collections.abc import Generator
 
-    from .avdschema import AvdSchema
-
 
 class AvdDataConverter:
     """AvdDataConverter is used to convert AVD Data Types based on schema options."""
 
-    def __init__(self, avdschema: AvdSchema) -> None:
-        self._avdschema = avdschema
+    def __init__(self, schema: dict) -> None:
+        self.schema = schema
 
         # We run through all the regular keys first, to ensure that all data has been converted
         # in case some of it is referenced in "dynamic_keys" below
@@ -43,12 +41,14 @@ class AvdDataConverter:
             "deprecation": self.deprecation,
         }
 
-    def convert_data(self, data: Any, schema: dict, path: list[str] | None = None) -> Generator:
+    def convert_data(self, data: Any, schema: dict | None = None, path: list[str] | None = None) -> Generator:
         """
         Perform in-place conversion of data according to the provided schema.
 
         Main entry function which is recursively called from the child functions performing the actual conversion of keys/items.
         """
+        if schema is None:
+            schema = self.schema
         if path is None:
             path = []
 

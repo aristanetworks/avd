@@ -110,8 +110,9 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
     )
     LOGGER.info("deploy_configs_to_cv: Found %s root containers.", len(root_containers))
     if CONFIGLET_CONTAINER_ID not in root_containers:
-        LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Fixing...")
-        root_containers.append(CONFIGLET_CONTAINER_ID)
+        LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Inserting AVD container at the top.")
+        # Inserting our container first, to allow reconcile and other static config containers to override the AVD config.
+        root_containers.insert(0, CONFIGLET_CONTAINER_ID)
         await cv_client.set_studio_inputs(
             studio_id=STATIC_CONFIGLET_STUDIO_ID,
             workspace_id=workspace_id,

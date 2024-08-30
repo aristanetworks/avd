@@ -206,18 +206,24 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1000
+  no_autostate: true
 - name: Vlan111
   tenant: svi_profile_tests
   description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.11.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1000
+  no_autostate: true
 - name: Vlan112
   tenant: svi_profile_tests
   description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.12.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1200
+  no_autostate: true
 - name: Vlan113
   tenant: svi_profile_tests
   description: set from svi.structured_config

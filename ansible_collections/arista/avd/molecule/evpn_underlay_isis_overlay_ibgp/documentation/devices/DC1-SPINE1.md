@@ -418,7 +418,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
-| Net-ID | 49.0001.0001.0000.0001.00 |
+| Net-ID | 49.0001.1921.6825.5001.00 |
 | Type | level-2 |
 | Router-ID | 192.168.255.1 |
 | Log Adjacency Changes | True |
@@ -448,7 +448,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis EVPN_UNDERLAY
-   net 49.0001.0001.0000.0001.00
+   net 49.0001.1921.6825.5001.00
    is-type level-2
    router-id ipv4 192.168.255.1
    log-adjacency-changes

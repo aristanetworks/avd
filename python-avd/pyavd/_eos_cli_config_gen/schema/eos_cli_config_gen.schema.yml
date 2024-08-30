@@ -875,6 +875,10 @@ keys:
     type: list
     primary_key: name
     display_name: Community Lists (legacy model)
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      new_key: ip_community_lists
     items:
       type: dict
       keys:
@@ -1982,14 +1986,29 @@ keys:
             For an access port this would be a single vlan "123".
 
             '
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.access_vlan or ethernet_interfaces[].switchport.trunk.allowed_vlan
         native_vlan:
           type: int
           convert_types:
           - str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.native_vlan
         native_vlan_tag:
           type: bool
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
             takes precedence.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.native_vlan_tag
         mode:
           type: str
           valid_values:
@@ -1997,7 +2016,17 @@ keys:
           - dot1q-tunnel
           - trunk
           - trunk phone
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.mode
         phone:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.phone
           type: dict
           keys:
             trunk:
@@ -2007,12 +2036,22 @@ keys:
               - tagged phone
               - untagged
               - untagged phone
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: ethernet_interfaces[].switchport.phone.trunk
             vlan:
               type: int
               min: 1
               max: 4094
               convert_types:
               - str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: ethernet_interfaces[].switchport.phone.vlan
         l2_protocol:
           type: dict
           keys:
@@ -2028,6 +2067,11 @@ keys:
           type: list
           items:
             type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.groups
         type:
           type: str
           valid_values:
@@ -2039,8 +2083,7 @@ keys:
           description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
             interface should be defined as routed.
 
-            Interface will not be listed in device documentation, unless "type" is
-            set.
+            The `type = switched/routed` should not be combined with `switchport`.
 
             '
         snmp_trap_link_change:
@@ -2769,12 +2812,27 @@ keys:
               description: ZTP vlan number.
         trunk_private_vlan_secondary:
           type: bool
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.trunk.private_vlan_secondary
         pvlan_mapping:
           type: str
           convert_types:
           - int
           description: List of vlans as string.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.pvlan_mapping
         vlan_translations:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: ethernet_interfaces[].switchport.vlan_translations
           type: list
           items:
             type: dict
@@ -3443,7 +3501,292 @@ keys:
             role.
         switchport:
           type: dict
+          description: This should not be combined with `ethernet_interfaces[].type
+            = switched/routed`.
           keys:
+            enabled:
+              type: bool
+              description: 'Warning: This should not be combined with `ethernet_interfaces[].type
+                = routed`.'
+            mode:
+              type: str
+              valid_values:
+              - access
+              - dot1q-tunnel
+              - trunk
+              - trunk phone
+              description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
+            access_vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              description: 'Set VLAN when interface is in access mode.
+
+                Warning: This should not be combined with `ethernet_interfaces[].mode
+                = access/dot1q-tunnel` and `ethernet_interface[].vlans`.'
+            trunk:
+              type: dict
+              keys:
+                allowed_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'VLAN ID or range(s) of VLAN IDs.
+
+                    Warning: This should not be combined with `ethernet_interfaces[].mode
+                    = trunk` and `ethernet_interface[].vlans`.'
+                native_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  description: 'Set native VLAN when interface is in trunking mode.
+
+                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.'
+                  min: 1
+                  max: 4094
+                native_vlan_tag:
+                  type: bool
+                  description: 'If setting both native_vlan and native_vlan_tag, native_vlan_tag
+                    takes precedence.
+
+                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.'
+                private_vlan_secondary:
+                  type: bool
+                  description: 'Enable secondary VLAN mapping for a private vlan.
+
+                    Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.'
+                groups:
+                  description: 'Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
+
+                    '
+                  type: list
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                    description: Trunk group name.
+            phone:
+              type: dict
+              description: 'Warning: This should not be combined with `ethernet_interfaces[].phone`.'
+              keys:
+                vlan:
+                  type: int
+                  min: 1
+                  max: 4094
+                  convert_types:
+                  - str
+                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.'
+                trunk:
+                  type: str
+                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.'
+                  valid_values:
+                  - tagged
+                  - tagged phone
+                  - untagged
+                  - untagged phone
+            pvlan_mapping:
+              type: str
+              convert_types:
+              - int
+              description: 'Secondary VLAN IDs of the private VLAN mapping.
+
+                Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.'
+            dot1q:
+              type: dict
+              keys:
+                ethertype:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1536
+                  max: 65535
+                  description: Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged
+                    frames.
+                vlan_tag:
+                  type: str
+                  description: Allow/disallow VLAN tagged frames.
+                  valid_values:
+                  - disallowed
+                  - required
+            source_interface:
+              type: str
+              description: 'tx: Allow bridged traffic to go out of the source interface.
+
+                tx multicast: Allow multicast traffic only to go out of the source
+                interface.'
+              valid_values:
+              - tx
+              - tx multicast
+            vlan_translations:
+              description: 'VLAN Translation mappings.
+
+                Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
+              type: dict
+              keys:
+                in_required:
+                  type: bool
+                  description: Drop the ingress traffic that do not match any VLAN
+                    mapping.
+                out_required:
+                  type: bool
+                  description: Drop the egress traffic that do not match any VLAN
+                    mapping.
+                direction_in:
+                  type: list
+                  description: Map ingress traffic only.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: str
+                        convert_types:
+                        - int
+                        description: VLAN ID or range of VLAN IDs to map from. Range
+                          1-4094.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                        description: VLAN ID to map to.
+                        required: true
+                      dot1q_tunnel:
+                        type: bool
+                      inner_vlan_from:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                direction_out:
+                  type: list
+                  description: Map egress traffic only.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: str
+                        convert_types:
+                        - int
+                        description: VLAN ID or range of VLAN IDs to map from. Range
+                          1-4094.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                        description: VLAN ID to map to.
+                      dot1q_tunnel_to:
+                        type: str
+                        convert_types:
+                        - int
+                        description: 'VLAN ID or range of VLAN IDs or "all". Range
+                          1-4094.
+
+                          This takes precedence over `to` and `inner_vlan_to`.'
+                      inner_vlan_to:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map to.
+                direction_both:
+                  type: list
+                  description: Map both egress and ingress traffic.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: str
+                        convert_types:
+                        - int
+                        description: VLAN ID or range of VLAN IDs to map from. Range
+                          1-4094.
+                        required: true
+                      to:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                        description: VLAN ID to map to.
+                        required: true
+                      dot1q_tunnel:
+                        type: bool
+                      inner_vlan_from:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 1
+                        max: 4094
+                        description: Inner VLAN ID to map from.
+                      network:
+                        type: bool
+                        description: 'Enable use of network-side VLAN ID.
+
+                          This setting can only be enabled when `inner_vlan_from`
+                          is defined.'
+            vlan_forwarding_accept_all:
+              type: bool
+            backup_link:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  description: Backup interface. Example - Ethernet4, Vlan10 etc.
+                prefer_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VLANs to carry on the backup interface (1-4094).
+            backup:
+              type: dict
+              description: The `backup_link` is required for this setting.
+              keys:
+                dest_macaddr:
+                  type: str
+                  format: mac
+                  description: 'Destination MAC address for MAC move updates.
+
+                    The mac address should be multicast or broadcast.
+
+                    Example: 01:00:00:00:00:00'
+                initial_mac_move_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Initial MAC move delay in milliseconds.
+                  min: 0
+                  max: 65535
+                mac_move_burst:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Size of MAC move bursts.
+                  min: 0
+                  max: 65535
+                mac_move_burst_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  description: MAC move burst interval in milliseconds.
+                  min: 0
+                  max: 65535
+                preemption_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Preemption delay in milliseconds.
+                  min: 0
+                  max: 65535
             port_security:
               type: dict
               keys:
@@ -7347,16 +7690,12 @@ keys:
         type: str
       address_only:
         type: bool
-        description: 'PREVIEW: This key is in preview.
-
-          When address-only is configured, the source IP of the packet is set to the
-          interface
+        description: 'When address-only is configured, the source IP of the packet
+          is set to the interface
 
           IP but the packet may exit the device via a different interface.
 
-          When set to `false`, the probe uses the interface to exit the device.
-
-          Not supported yet in EOS.'
+          When set to `false`, the probe uses the interface to exit the device.'
         default: true
       hosts:
         type: list
@@ -7375,16 +7714,12 @@ keys:
               type: str
             address_only:
               type: bool
-              description: 'PREVIEW: This key is in preview.
-
-                When address-only is configured, the source IP of the packet is set
-                to the interface
+              description: 'When address-only is configured, the source IP of the
+                packet is set to the interface
 
                 IP but the packet may exit the device via a different interface.
 
-                When set to `false`, the probe uses the interface to exit the device.
-
-                Not supported yet in EOS.'
+                When set to `false`, the probe uses the interface to exit the device.'
               default: true
             url:
               type: str
@@ -7414,16 +7749,12 @@ keys:
               type: str
             address_only:
               type: bool
-              description: 'PREVIEW: This key is in preview.
-
-                When address-only is configured, the source IP of the packet is set
-                to the interface
+              description: 'When address-only is configured, the source IP of the
+                packet is set to the interface
 
                 IP but the packet may exit the device via a different interface.
 
-                When set to `false`, the probe uses the interface to exit the device.
-
-                Not supported yet in EOS.'
+                When set to `false`, the probe uses the interface to exit the device.'
               default: true
             hosts:
               type: list
@@ -7442,17 +7773,13 @@ keys:
                     type: str
                   address_only:
                     type: bool
-                    description: 'PREVIEW: This key is in preview.
-
-                      When address-only is configured, the source IP of the packet
-                      is set to the interface
+                    description: 'When address-only is configured, the source IP of
+                      the packet is set to the interface
 
                       IP but the packet may exit the device via a different interface.
 
                       When set to `false`, the probe uses the interface to exit the
-                      device.
-
-                      Not supported yet in EOS.'
+                      device.'
                     default: true
                   url:
                     type: str
@@ -7481,6 +7808,15 @@ keys:
             type: bool
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
+  monitor_session_default_encapsulation_gre:
+    type: dict
+    keys:
+      payload:
+        type: str
+        description: Mirroring GRE payload type configuration commands.
+        valid_values:
+        - full-packet
+        - inner-packet
   monitor_sessions:
     type: list
     items:
@@ -8519,6 +8855,11 @@ keys:
             For an access port this would be a single vlan "123".
 
             '
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.access_vlan or port_channel_interfaces[].switchport.trunk.allowed_vlan
         snmp_trap_link_change:
           type: bool
         type:
@@ -8609,17 +8950,32 @@ keys:
           - dot1q-tunnel
           - trunk
           - trunk phone
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.mode
         native_vlan:
           type: int
           convert_types:
           - str
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
             takes precedence.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.native_vlan
         native_vlan_tag:
           type: bool
           default: false
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
             takes precedence.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.native_vlan_tag
         link_tracking_groups:
           type: list
           primary_key: name
@@ -8636,18 +8992,33 @@ keys:
                 - downstream
         phone:
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.phone
           keys:
             trunk:
               type: str
               valid_values:
               - tagged
               - untagged
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: port_channel_interfaces[].switchport.phone.trunk
             vlan:
               type: int
               convert_types:
               - str
               min: 1
               max: 4094
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: port_channel_interfaces[].switchport.phone.vlan
         l2_protocol:
           type: dict
           keys:
@@ -8676,6 +9047,11 @@ keys:
           type: list
           items:
             type: str
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.groups
         lacp_fallback_timeout:
           type: int
           description: Timeout in seconds.
@@ -8771,12 +9147,27 @@ keys:
                   type: bool
         trunk_private_vlan_secondary:
           type: bool
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.trunk.private_vlan_secondary
         pvlan_mapping:
           type: str
           description: List of vlans as string.
           convert_types:
           - int
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.pvlan_mapping
         vlan_translations:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 6.0.0
+            new_key: port_channel_interfaces[].switchport.vlan_translations
           type: list
           items:
             type: dict
@@ -9325,6 +9716,348 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        switchport:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              description: 'Warning: This should not be combined with `port_channel_interfaces[].type
+                = routed`.'
+            mode:
+              type: str
+              valid_values:
+              - access
+              - dot1q-tunnel
+              - trunk
+              - trunk phone
+              description: 'Warning: This should not be combined with `port_channel_interfaces[].mode`'
+            access_vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              description: 'Set VLAN when interface is in access mode.
+
+                Warning: This should not be combined with `port_channel_interfaces[].mode
+                = access/dot1q-tunnel` and `port_channel_interface.vlans`.'
+            trunk:
+              type: dict
+              keys:
+                allowed_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'VLAN ID or range(s) of VLAN IDs (1-4094).
+
+                    Warning: This should not be combined with `port_channel_interfaces[].mode
+                    = trunk` and `port_channel_interfaces[].vlans`.'
+                native_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  description: 'Set native VLAN when interface is in trunking mode.
+
+                    Warning: This should not be combined with `port_channel_interfaces[].native_vlan`.'
+                  min: 1
+                  max: 4094
+                native_vlan_tag:
+                  type: bool
+                  description: 'If setting both native_vlan and native_vlan_tag, native_vlan_tag
+                    takes precedence.
+
+                    Warning: This should not be combined with `port_channel_interfaces[].native_vlan_tag`.'
+                private_vlan_secondary:
+                  type: bool
+                  description: 'Enable secondary VLAN mapping for a private vlan.
+
+                    Warning: This should not be combined with `port_channel_interfaces[].trunk_private_vlan_secondary`.'
+                groups:
+                  description: 'Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
+
+                    '
+                  type: list
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                    description: Trunk group name.
+            phone:
+              type: dict
+              keys:
+                vlan:
+                  type: int
+                  min: 1
+                  max: 4094
+                  convert_types:
+                  - str
+                  description: 'Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`.'
+                trunk:
+                  type: str
+                  description: 'Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`'
+                  valid_values:
+                  - tagged
+                  - tagged phone
+                  - untagged
+                  - untagged phone
+            pvlan_mapping:
+              type: str
+              convert_types:
+              - int
+              description: 'Secondary VLAN IDs of the private VLAN mapping.
+
+                Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`.'
+            dot1q:
+              type: dict
+              keys:
+                ethertype:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1536
+                  max: 65535
+                  description: Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged
+                    frames.
+                vlan_tag:
+                  type: str
+                  valid_values:
+                  - disallowed
+                  - required
+            source_interface:
+              type: str
+              description: 'tx: Allow bridged traffic to go out of the source interface.
+
+                tx multicast: Allow multicast traffic only to go out of the source
+                interface.'
+              valid_values:
+              - tx
+              - tx multicast
+            vlan_translations:
+              description: 'VLAN Translation mappings.
+
+                Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.'
+              type: dict
+              keys:
+                in_required:
+                  type: bool
+                  description: Drop the ingress traffic that do not match any VLAN
+                    mapping.
+                out_required:
+                  type: bool
+                  description: Drop the egress traffic that do not match any VLAN
+                    mapping.
+                direction_in:
+                  type: list
+                  description: Map ingress traffic only.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: str
+                        convert_types:
+                        - int
+                        description: VLAN ID or range of VLAN IDs to map from. Range
+                          1-4094.
+                      to:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                      dot1q_tunnel:
+                        type: bool
+                      inner_vlan_from:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                direction_out:
+                  type: list
+                  description: Map egress traffic only.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: str
+                        convert_types:
+                        - int
+                        description: VLAN ID or range of VLAN IDs to map from. Range
+                          1-4094.
+                        required: true
+                      to:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                      dot1q_tunnel_to:
+                        type: str
+                        convert_types:
+                        - int
+                        description: 'VLAN ID or range of VLAN IDs or "all". Range
+                          1-4094.
+
+                          This takes precedence over `to` and `inner_vlan_to`.'
+                      inner_vlan_to:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map to.
+                direction_both:
+                  type: list
+                  description: Map both egress and ingress traffic.
+                  items:
+                    type: dict
+                    keys:
+                      from:
+                        type: str
+                        convert_types:
+                        - int
+                        description: VLAN ID or range of VLAN IDs to map from. Range
+                          1-4094.
+                        required: true
+                      to:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: VLAN ID to map to.
+                        required: true
+                      dot1q_tunnel:
+                        type: bool
+                      inner_vlan_from:
+                        type: int
+                        min: 1
+                        max: 4094
+                        convert_types:
+                        - str
+                        description: Inner VLAN ID to map from.
+                      network:
+                        type: bool
+                        description: 'Enable use of network-side VLAN ID.
+
+                          This setting can only be enabled when `inner_vlan_from`
+                          is defined.'
+            vlan_forwarding_accept_all:
+              type: bool
+            backup_link:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  required: true
+                  description: Backup interface. Example - Ethernet4, Vlan10 etc.
+                prefer_vlan:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VLANs to carry on the backup interface (1-4094).
+            backup:
+              type: dict
+              description: The `backup_link` is required for this setting.
+              keys:
+                dest_macaddr:
+                  type: str
+                  format: mac
+                  description: 'Destination MAC address for MAC move updates.
+
+                    The mac address should be multicast or broadcast.
+
+                    Example: 01:00:00:00:00:00'
+                initial_mac_move_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Initial MAC move delay in milliseconds.
+                  min: 0
+                  max: 65535
+                mac_move_burst:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Size of MAC move bursts.
+                  min: 0
+                  max: 65535
+                mac_move_burst_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  description: MAC move burst interval in milliseconds.
+                  min: 0
+                  max: 65535
+                preemption_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Preemption delay in milliseconds.
+                  min: 0
+                  max: 65535
+            port_security:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                mac_address_maximum:
+                  type: dict
+                  description: Maximum number of MAC addresses allowed on the interface.
+                  keys:
+                    disabled:
+                      type: bool
+                      description: Disable port level check for port security (only
+                        in violation 'shutdown' mode).
+                    limit:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 1000
+                      description: MAC address limit.
+                violation:
+                  type: dict
+                  description: Configure violation mode (shutdown or protect), EOS
+                    default is 'shutdown'.
+                  keys:
+                    mode:
+                      type: str
+                      valid_values:
+                      - shutdown
+                      - protect
+                      description: Configure port security mode.
+                    protect_log:
+                      type: bool
+                      description: Log new addresses seen after limit is reached in
+                        protect mode.
+                vlan_default_mac_address_maximum:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 1000
+                  description: Default maximum MAC addresses for all VLANs on this
+                    interface.
+                vlans:
+                  type: list
+                  primary_key: range
+                  items:
+                    type: dict
+                    keys:
+                      range:
+                        type: str
+                        convert_types:
+                        - int
+                        description: "VLAN ID or range(s) of VLAN IDs, <1-4094>.\nExample:\n
+                          \ - 3\n  - 1,3\n  - 1-10\n"
+                      mac_address_maximum:
+                        type: int
+                        convert_types:
+                        - str
         validate_state:
           type: bool
           description: Set to false to disable interface validation by the `eos_validate_state`
@@ -14336,11 +15069,10 @@ keys:
                 - '0'
                 - '7'
                 - 8a
-                description: Configure authentication key type. Default key_id is
-                  0.
+                description: Configure authentication key type.
               key:
                 type: str
-                description: Password string.
+                description: Password string. `key_type` is required for this setting.
               key_ids:
                 type: list
                 primary_key: id
@@ -14419,6 +15151,7 @@ keys:
                     - sha-512
               rx_disabled:
                 type: bool
+                description: Disable authentication check on the receive side.
           level_1:
             type: dict
             description: Authentication settings for level-1. 'both' takes precedence
@@ -15553,6 +16286,7 @@ keys:
           rp_addresses:
             type: list
             primary_key: address
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
@@ -15837,6 +16571,7 @@ keys:
     keys:
       enabled:
         type: bool
+        required: true
       router_id:
         type: dict
         keys:
@@ -16362,6 +17097,9 @@ keys:
               - int
             enable:
               type: bool
+      ifmib_ifspeed_shape_rate:
+        type: bool
+        description: SNMP ifspeed reflecting shaping rate.
   spanning_tree:
     type: dict
     keys:
@@ -17705,6 +18443,9 @@ keys:
           - str
         isis_network_point_to_point:
           type: bool
+        isis_authentication:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
         mtu:
           type: int
           convert_types:
