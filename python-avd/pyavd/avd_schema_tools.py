@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class AvdSchemaTools:
     """Tools that wrap the various schema components for easy use."""
 
-    def __init__(self, schema: dict | None = None, schema_id: str | None = None, *, validate: bool = True) -> None:
+    def __init__(self, schema: dict | None = None, schema_id: str | None = None) -> None:
         """
         Convert data according to the schema (convert_types).
 
@@ -30,8 +30,6 @@ class AvdSchemaTools:
                 Optional AVD schema as dict
             schema_id:
                 Optional Name of AVD Schema to load from store
-            validate:
-                Optional flag to disable validation
         """
         # pylint: disable=import-outside-toplevel
         from ._schema.avdschema import AvdSchema
@@ -39,7 +37,6 @@ class AvdSchemaTools:
         # pylint: enable=import-outside-toplevel
 
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
-        self.validate = validate
 
     def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
         """
@@ -90,8 +87,6 @@ class AvdSchemaTools:
         # pylint: enable=import-outside-toplevel
 
         result = ValidationResult(failed=False)
-        if not self.validate:
-            return result
 
         # avdschema.validate returns a Generator, so we have to iterate through it to perform the actual validations.
         exceptions: Generator = self.avdschema.validate(data)
