@@ -205,10 +205,10 @@ repos:
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema>=4.10.3', 'referencing>=0.35.0']
 
       - id: templates
-        name: Precompile eos_cli_config_gen Jinja2
+        name: Precompile Jinja2 templates
         entry: sh -c 'python-avd/scripts/compile_templates.py'
         language: python
-        files: python-avd/pyavd/_eos_cli_config_gen/j2templates/
+        files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
 

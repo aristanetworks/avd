@@ -100,7 +100,6 @@ class ActionModule(ActionBase):
         setup_module_logging(result)
 
         # Get task arguments and validate them
-        validated_args = strip_empties_from_dict(self._task.args)
         validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
 
