@@ -132,10 +132,18 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                             if get(l3_interface, "pim.enabled"):
                                 if not vrf.get("_evpn_l3_multicast_enabled"):
-                                    raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires evpn_l3_multicast:"
-                                        f" enabled: true under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
-                                    )
+                                    # Possibly the key was not set because `evpn_multicast` is not set to `true`.
+                                    if not self.shared_utils.evpn_multicast:
+                                        msg = (
+                                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
+                                            "'evpn_multicast: true' at the fabric level"
+                                        )
+                                    else:
+                                        msg = (
+                                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
+                                            f"'evpn_l3_multicast.enabled: true' under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
+                                        )
+                                    raise AristaAvdError(msg)
 
                                 if not vrf.get("_pim_rp_addresses"):
                                     raise AristaAvdError(
