@@ -253,24 +253,24 @@ interface Ethernet50
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
-| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - |
-| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | dot1q | 100 | - | - | client | - | - | - |
-| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | dot1q | 200 | - | - | - | - | - | - |
-| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | dot1q | 300 | - | - | dot1q | 400 | - | - |
-| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | 400 | 20 | dot1q | - | 401 | 21 |
-| Port-Channel111.1000 | L2 Subinterface | 1000 | dot1q | 100 | - | - | client | - | - | - |
-| Port-Channel131.1 | Test_encapsulation_vlan1 | - | dot1q | - | 23 | 45 | dot1ad | - | 32 | 54 |
-| Port-Channel131.2 | Test_encapsulation_vlan2 | - | dot1q | 10 | - | - | dot1q | - | 32 | 54 |
-| Port-Channel131.3 | Test_encapsulation_vlan3 | - | dot1ad | 12 | - | - | dot1q | 25 | - | - |
-| Port-Channel131.4 | Test_encapsulation_vlan4 | - | dot1ad | - | 35 | 60 | dot1q | - | 53 | 6 |
-| Port-Channel131.5 | Test_encapsulation_vlan5 | - | dot1ad | - | 35 | 60 | dot1ad | - | 52 | 62 |
-| Port-Channel131.6 | Test_encapsulation_vlan6 | - | dot1ad | - | 35 | 60 | client | - | - | - |
-| Port-Channel131.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | dot1ad | - | 35 | 60 |
-| Port-Channel131.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | dot1q | - | 35 | 60 |
-| Port-Channel131.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | untagged | - | - | - |
-| Port-Channel131.10 | Test_encapsulation_vlan9 | - | dot1q | - | 14 | 11 | client inner | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | dot1q | - | 300 | - | - | dot1q | - | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 400 | 20 | dot1q | - | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | 1000 | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Port-Channel131.1 | Test_encapsulation_vlan1 | - | dot1q | dot1q | - | 23 | 45 | dot1ad | dot1ad | - | 32 | 54 |
+| Port-Channel131.2 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | - | - | dot1q | - | - | 32 | 54 |
+| Port-Channel131.3 | Test_encapsulation_vlan3 | - | dot1ad | - | 12 | - | - | dot1q | - | 25 | - | - |
+| Port-Channel131.4 | Test_encapsulation_vlan4 | - | dot1ad | dot1q | - | 35 | 60 | dot1q | dot1ad | - | 53 | 6 |
+| Port-Channel131.5 | Test_encapsulation_vlan5 | - | dot1ad | - | - | 35 | 60 | dot1ad | - | - | 52 | 62 |
+| Port-Channel131.6 | Test_encapsulation_vlan6 | - | dot1ad | - | - | 35 | 60 | client | - | - | - | - |
+| Port-Channel131.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | - | dot1ad | - | - | 35 | 60 |
+| Port-Channel131.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | - | dot1q | - | - | 35 | 60 |
+| Port-Channel131.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | - | untagged | - | - | - | - |
+| Port-Channel131.10 | Test_encapsulation_vlan9 | - | dot1q | - | - | 14 | 11 | client inner | - | - | - | - |
 
 ##### Private VLAN
 
@@ -810,7 +810,7 @@ interface Port-Channel131.3
 interface Port-Channel131.4
    description Test_encapsulation_vlan4
    encapsulation vlan
-      client dot1ad outer 35 inner 60 network dot1q outer 53 inner 6
+      client dot1ad outer 35 inner dot1q 60 network dot1q outer 53 inner dot1ad 6
 !
 interface Port-Channel131.5
    description Test_encapsulation_vlan5

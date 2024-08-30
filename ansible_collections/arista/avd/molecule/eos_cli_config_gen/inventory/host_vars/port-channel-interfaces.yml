@@ -618,10 +618,12 @@ port_channel_interfaces:
         outer: 23
         inner: 45
         protocol: dot1q
+        inner_protocol: dot1q
       network:
         protocol: dot1ad
         outer: 32
         inner: 54
+        inner_protocol: dot1ad
 
   - name: Port-Channel131.2
     description: Test_encapsulation_vlan2
@@ -651,10 +653,12 @@ port_channel_interfaces:
         protocol: dot1ad
         outer: 35
         inner: 60
+        inner_protocol: dot1q
       network:
         protocol: dot1q
         outer: 53
         inner: 6
+        inner_protocol: dot1ad
 
   - name: Port-Channel131.5
     description: Test_encapsulation_vlan5

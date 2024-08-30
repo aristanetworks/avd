@@ -33,12 +33,12 @@
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
-| Ethernet6 | Test_encapsulation_vlan1 | - | dot1q | 10 | - | - | dot1q | 20 | - | - |
-| Ethernet7 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | 12 | client | - | - | - |
-| Ethernet8 | Test_encapsulation_vlan3 | - | unmatched | - | - | - | - | - | - | - |
-| Ethernet9 | Test_encapsulation_vlan4 | 100 | dot1q | - | 10 | 12 | dot1q | - | 20 | 22 |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
+| Ethernet6 | Test_encapsulation_vlan1 | - | dot1q | - | 10 | - | - | dot1q | - | 20 | - | - |
+| Ethernet7 | Test_encapsulation_vlan2 | - | dot1q | - | - | 10 | 12 | client | - | - | - | - |
+| Ethernet8 | Test_encapsulation_vlan3 | - | unmatched | - | - | - | - | - | - | - | - | - |
+| Ethernet9 | Test_encapsulation_vlan4 | 100 | dot1q | - | - | 10 | 12 | dot1q | - | - | 20 | 22 |
 
 ##### Private VLAN
 
@@ -144,12 +144,12 @@ interface Ethernet9
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
-| Port-Channel7 | Test_encapsulation_vlan1 | - | dot1q | 10 | - | - | dot1q | 20 | - | - |
-| Port-Channel8 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | 12 | client | - | - | - |
-| Port-Channel9 | Test_encapsulation_vlan3 | - | unmatched | - | - | - | - | - | - | - |
-| Port-Channel10 | Test_encapsulation_vlan4 | 100 | dot1q | - | 10 | 12 | dot1q | - | 20 | 22 |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel7 | Test_encapsulation_vlan1 | - | dot1q | - | 10 | - | - | dot1q | - | 20 | - | - |
+| Port-Channel8 | Test_encapsulation_vlan2 | - | dot1q | - | - | 10 | 12 | client | - | - | - | - |
+| Port-Channel9 | Test_encapsulation_vlan3 | - | unmatched | - | - | - | - | - | - | - | - | - |
+| Port-Channel10 | Test_encapsulation_vlan4 | 100 | dot1q | - | - | 10 | 12 | dot1q | - | - | 20 | 22 |
 
 ##### Private VLAN
 

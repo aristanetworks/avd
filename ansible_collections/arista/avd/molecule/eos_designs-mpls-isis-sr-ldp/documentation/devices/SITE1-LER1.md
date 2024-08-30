@@ -293,16 +293,16 @@ interface Ethernet8
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
-| Port-Channel3.1000 | - | - | dot1q | 1000 | - | - | client | - | - | - |
-| Port-Channel3.1001 | - | - | dot1q | 1001 | - | - | client | - | - | - |
-| Port-Channel3.1002 | - | - | dot1q | 1002 | - | - | client | - | - | - |
-| Port-Channel3.1003 | - | - | dot1q | 1003 | - | - | client | - | - | - |
-| Port-Channel3.1004 | - | - | dot1q | 1004 | - | - | client | - | - | - |
-| Port-Channel8.111 | - | 111 | dot1q | 111 | - | - | client | - | - | - |
-| Port-Channel8.222 | - | 222 | dot1q | 222 | - | - | client | - | - | - |
-| Port-Channel8.333 | - | 434 | dot1q | 333 | - | - | client | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
+| Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
+| Port-Channel3.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
+| Port-Channel3.1003 | - | - | dot1q | - | 1003 | - | - | client | - | - | - | - |
+| Port-Channel3.1004 | - | - | dot1q | - | 1004 | - | - | client | - | - | - | - |
+| Port-Channel8.111 | - | 111 | dot1q | - | 111 | - | - | client | - | - | - | - |
+| Port-Channel8.222 | - | 222 | dot1q | - | 222 | - | - | client | - | - | - | - |
+| Port-Channel8.333 | - | 434 | dot1q | - | 333 | - | - | client | - | - | - | - |
 
 ##### EVPN Multihoming
 

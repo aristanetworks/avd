@@ -255,6 +255,7 @@ keys:
             remove_in_version: 6.0.0
             new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:
+          # TODO: AVD 6.0 below warning should be removed when the `ethernet_interfaces[].type` key is removed in AVD 6.0
           description: |-
             Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
           type: dict
@@ -272,6 +273,7 @@ keys:
               description: Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
         encapsulation_vlan:
           type: dict
+          # TODO: AVD 6.0 below warning should be removed when the `ethernet_interfaces[].type` key is removed in AVD 6.0
           description: |-
             This setting can only be applied to sub-interfaces on EOS.
             Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`.
@@ -305,6 +307,14 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
+                # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
+                protocol:
+                  type: str
+                  valid_values:
+                    - dot1q
+                    - dot1ad
+                    - unmatched
+                    - untagged
                 vlan:
                   type: int
                   convert_types:
@@ -320,14 +330,11 @@ keys:
                   convert_types:
                     - str
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
-                protocol:
+                inner_protocol:
                   type: str
                   valid_values:
                     - dot1q
                     - dot1ad
-                    - unmatched
-                    - untagged
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if using client unmatched.
@@ -385,7 +392,13 @@ keys:
                     - client
                     - client inner
                     - untagged
+                inner_protocol:
+                  type: str
+                  valid_values:
+                    - dot1q
+                    - dot1ad
         vlan_id:
+          # TODO: AVD 6.0 below warning should be removed when the `ethernet_interfaces[].type` key is removed in AVD 6.0
           description: |-
             This setting can only be applied to sub-interfaces on EOS.
             Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`.

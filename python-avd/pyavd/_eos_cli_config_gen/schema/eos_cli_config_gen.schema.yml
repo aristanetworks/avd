@@ -2261,6 +2261,13 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
+                protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - unmatched
+                  - untagged
                 vlan:
                   type: int
                   convert_types:
@@ -2276,13 +2283,11 @@ keys:
                   convert_types:
                   - str
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                protocol:
+                inner_protocol:
                   type: str
                   valid_values:
                   - dot1q
                   - dot1ad
-                  - unmatched
-                  - untagged
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
@@ -2342,6 +2347,11 @@ keys:
                   - client
                   - client inner
                   - untagged
+                inner_protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
         vlan_id:
           description: 'This setting can only be applied to sub-interfaces on EOS.
 
@@ -8999,6 +9009,10 @@ keys:
           convert_types:
           - int
         encapsulation_vlan:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type
+            == l3dot1q/l2dot1q`.'
           type: dict
           keys:
             client:
@@ -9030,6 +9044,13 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
+                protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - unmatched
+                  - untagged
                 vlan:
                   type: int
                   convert_types:
@@ -9045,13 +9066,11 @@ keys:
                   convert_types:
                   - str
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                protocol:
+                inner_protocol:
                   type: str
                   valid_values:
                   - dot1q
                   - dot1ad
-                  - unmatched
-                  - untagged
             network:
               type: dict
               description: Network encapsulation are all optional, and skipped if
@@ -9111,6 +9130,11 @@ keys:
                   - client
                   - client inner
                   - untagged
+                inner_protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
         vlan_id:
           description: 'This setting can only be applied to sub-interfaces on EOS.
 

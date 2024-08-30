@@ -153,24 +153,24 @@ sFlow is disabled.
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | ----------- | --------------------- | --------------------- | ---------------- | ------------ | ---------------------- | ---------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - |
-| Ethernet26.100 | TENANT_A pseudowire 1 interface | 10 | dot1q | 100 | - | - | client | - | - | - |
-| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | dot1q | 200 | - | - | - | - | - | - |
-| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | dot1q | 300 | - | - | dot1q | 400 | - | - |
-| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | 400 | 20 | dot1q | - | 401 | 21 |
-| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | dot1q | - | 500 | 50 | client | - | - | - |
-| Ethernet68.1 | Test_encapsulation_vlan1 | - | dot1q | - | 23 | 45 | dot1ad | - | 32 | 54 |
-| Ethernet68.2 | Test_encapsulation_vlan2 | - | dot1q | 10 | - | - | dot1q | - | 32 | 54 |
-| Ethernet68.3 | Test_encapsulation_vlan3 | - | dot1ad | 12 | - | - | dot1q | 25 | - | - |
-| Ethernet68.4 | Test_encapsulation_vlan4 | - | dot1ad | - | 35 | 60 | dot1q | - | 53 | 6 |
-| Ethernet68.5 | Test_encapsulation_vlan5 | - | dot1ad | - | 35 | 60 | dot1ad | - | 52 | 62 |
-| Ethernet68.6 | Test_encapsulation_vlan6 | - | dot1ad | - | 35 | 60 | client | - | - | - |
-| Ethernet68.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | dot1ad | - | 35 | 60 |
-| Ethernet68.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | dot1q | - | 35 | 60 |
-| Ethernet68.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | untagged | - | - | - |
-| Ethernet68.10 | Test_encapsulation_vlan9 | - | dot1q | - | 14 | 11 | client inner | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | 10 | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | dot1q | - | 300 | - | - | dot1q | - | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 400 | 20 | dot1q | - | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 500 | 50 | client | - | - | - | - |
+| Ethernet68.1 | Test_encapsulation_vlan1 | - | dot1q | dot1q | - | 23 | 45 | dot1ad | dot1ad | - | 32 | 54 |
+| Ethernet68.2 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | - | - | dot1q | - | - | 32 | 54 |
+| Ethernet68.3 | Test_encapsulation_vlan3 | - | dot1ad | - | 12 | - | - | dot1q | - | 25 | - | - |
+| Ethernet68.4 | Test_encapsulation_vlan4 | - | dot1ad | dot1q | - | 35 | 60 | dot1q | dot1ad | - | 53 | 6 |
+| Ethernet68.5 | Test_encapsulation_vlan5 | - | dot1ad | - | - | 35 | 60 | dot1ad | - | - | 52 | 62 |
+| Ethernet68.6 | Test_encapsulation_vlan6 | - | dot1ad | - | - | 35 | 60 | client | - | - | - | - |
+| Ethernet68.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | - | dot1ad | - | - | 35 | 60 |
+| Ethernet68.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | - | dot1q | - | - | 35 | 60 |
+| Ethernet68.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | - | untagged | - | - | - | - |
+| Ethernet68.10 | Test_encapsulation_vlan9 | - | dot1q | - | - | 14 | 11 | client inner | - | - | - | - |
 
 ##### Private VLAN
 
@@ -1105,7 +1105,7 @@ interface Ethernet68.3
 interface Ethernet68.4
    description Test_encapsulation_vlan4
    encapsulation vlan
-      client dot1ad outer 35 inner 60 network dot1q outer 53 inner 6
+      client dot1ad outer 35 inner dot1q 60 network dot1q outer 53 inner dot1ad 6
 !
 interface Ethernet68.5
    description Test_encapsulation_vlan5
