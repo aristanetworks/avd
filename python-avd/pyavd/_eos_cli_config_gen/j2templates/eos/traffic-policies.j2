@@ -72,7 +72,7 @@ traffic-policies
 {%                 if match.protocols is arista.avd.defined %}
 {%                     set bgp_flag = True %}
 {%                     for protocol in match.protocols %}
-{%                         if protocol.protocol in ['neighbors', 'bgp'] and bgp_flag %}
+{%                         if protocol.protocol | lower in ['neighbors', 'bgp'] and bgp_flag %}
 {%                             if protocol.protocol | lower == 'neighbors' and protocol.enforce_gtsm is arista.avd.defined(true) %}
          protocol neighbors bgp enforce ttl maximum-hops
 {%                             elif protocol.protocol | lower == 'neighbors' %}
@@ -83,7 +83,7 @@ traffic-policies
 {%                             break %}
 {%                         else %}
 {%                             set bgp_flag = False %}
-{%                             set protocol_cli = 'protocol ' ~ protocol.protocol %}
+{%                             set protocol_cli = 'protocol ' ~ protocol.protocol | lower %}
 {%                             if protocol.flags is arista.avd.defined and protocol.protocol | lower == 'tcp' %}
 {%                                 for flag in protocol.flags %}
          {{ protocol_cli }} flags {{ flag }}
