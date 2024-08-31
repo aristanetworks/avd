@@ -430,22 +430,22 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
-| Ethernet11 |  CUSTOM_server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet12 |  CUSTOM_server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet13 |  CUSTOM_server06_override_profile_Eth1 | access | 210 | - | - | - |
+| Ethernet11 | CUSTOM_server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | CUSTOM_server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | CUSTOM_server06_override_profile_Eth1 | access | 210 | - | - | - |
 | Ethernet14 | CUSTOM_server07_inherit_all_from_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 14 |
 | Ethernet15 | CUSTOM_server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 |  CUSTOM_server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
+| Ethernet16 | CUSTOM_server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
 | Ethernet17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 17 |
 | Ethernet18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
 | Ethernet19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 19 |
-| Ethernet20 |  CUSTOM_server13_disabled_interfaces_Eth1 | access | 110 | - | - | - |
-| Ethernet21 |  CUSTOM_server14_explicitly_enabled_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet20 | CUSTOM_server13_disabled_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_server14_explicitly_enabled_interfaces_Eth1 | access | 110 | - | - | - |
 | Ethernet22 | CUSTOM_server15_port_channel_disabled_interfaces_Eth1 | *access | *110 | *- | *- | 22 |
 
 *Inherited from Port-Channel Interface
@@ -631,7 +631,7 @@ interface Ethernet44
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 | Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
 | Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
@@ -1501,6 +1501,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1510,6 +1511,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1519,6 +1521,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1530,6 +1533,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
       redistribute static
    !
@@ -1540,6 +1544,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1549,6 +1554,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1558,6 +1564,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1567,6 +1574,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1576,6 +1584,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
 ```
 

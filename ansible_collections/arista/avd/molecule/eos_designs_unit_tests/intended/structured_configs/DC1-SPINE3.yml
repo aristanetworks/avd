@@ -249,6 +249,8 @@ management_interfaces:
   ip_address: 192.168.200.103/24
   gateway: 192.168.200.5
   type: oob
+tcam_profile:
+  system: vxlan-routing
 management_api_http:
   enable_vrfs:
   - name: MGMT

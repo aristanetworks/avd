@@ -59,33 +59,20 @@
 
 - name: Generate fabric documentation
   tags: [build, provision, documentation]
-  run_once: true
-  delegate_to: localhost
-  check_mode: false
-  ansible.builtin.copy:
-    content: "{{ lookup('template', 'documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-    mode: "0o664"
-
-- name: Generate fabric point-to-point links summary in csv format.
-  tags: [build, provision, documentation]
-  ansible.builtin.template:
-    src: documentation/fabric-p2p-links.j2
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
+  arista.avd.eos_designs_documentation:
+    structured_config_dir: "{{ structured_dir }}"
+    structured_config_suffix: "{{ avd_structured_config_file_format }}"
+    fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    fabric_documentation: "{{ eos_designs_documentation.enabled | arista.avd.default(true) }}"
+    include_connected_endpoints: "{{ eos_designs_documentation.connected_endpoints | arista.avd.default(false) }}"
+    topology_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+    topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(true) }}"
+    p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
+    p2p_links_csv: "{{ eos_designs_documentation.p2p_links_csv | arista.avd.default(true) }}"
     mode: "0o664"
   delegate_to: localhost
-  run_once: true
   check_mode: false
-
-- name: Generate fabric topology in csv format.
-  tags: [build, provision, documentation]
-  ansible.builtin.template:
-    src: documentation/fabric-topology.j2
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
-    mode: "0o664"
-  delegate_to: localhost
   run_once: true
-  check_mode: false
 
 - name: Remove avd_switch_facts
   tags: [build, provision, facts, remove_avd_switch_facts]

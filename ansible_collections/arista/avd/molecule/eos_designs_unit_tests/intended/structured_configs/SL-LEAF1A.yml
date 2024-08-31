@@ -55,6 +55,7 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: none
+  mlag: 28
 ethernet_interfaces:
 - name: Ethernet25
   peer: SL-LEAF1B

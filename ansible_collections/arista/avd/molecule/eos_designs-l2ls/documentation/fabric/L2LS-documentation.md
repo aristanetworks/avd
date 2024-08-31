@@ -103,12 +103,12 @@
 
 | POD | Node | CLNS Address |
 | --- | ---- | ------------ |
-| L2LS_ISIS | ISIS-SPINE1 | 49.0001.0001.0000.0001.00 |
+| L2LS_ISIS | ISIS-SPINE1 | 49.0001.1921.6825.5001.00 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 
 ### VTEP Loopback Node allocation
 
