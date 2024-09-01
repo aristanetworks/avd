@@ -123,7 +123,7 @@ daemon_terminattr:
   taillogs:
 
 # Enable PTP for the entire fabric
-ptp:
+ptp_settings:
   enabled: true
 
 # Underlay multicast (SSM)
