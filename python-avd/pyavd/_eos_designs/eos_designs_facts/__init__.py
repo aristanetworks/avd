@@ -185,3 +185,48 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
     def router_id(self) -> str | None:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.router_id
+
+    @cached_property
+    def inband_mgmt_ip(self) -> str | None:
+        """
+        Exposed in avd_switch_facts.
+
+        Used for fabric docs
+        """
+        return self.shared_utils.inband_mgmt_ip
+
+    @cached_property
+    def inband_mgmt_interface(self) -> str | None:
+        """
+        Exposed in avd_switch_facts.
+
+        Used for fabric docs
+        """
+        return self.shared_utils.inband_mgmt_interface
+
+    @cached_property
+    def pod(self) -> str:
+        """
+        Exposed in avd_switch_facts.
+
+        Used for fabric docs
+        """
+        return self.shared_utils.pod_name or self.shared_utils.dc_name or self.shared_utils.fabric_name
+
+    @cached_property
+    def connected_endpoints_keys(self) -> list:
+        """
+        Exposed in avd_switch_facts.
+
+        Used for fabric docs
+        """
+        return self.shared_utils.connected_endpoints_keys
+
+    @cached_property
+    def port_profile_names(self) -> list:
+        """
+        Exposed in avd_switch_facts.
+
+        Used for fabric docs
+        """
+        return [{"profile": profile["profile"], "parent_profile": profile.get("parent_profile")} for profile in self.shared_utils.port_profiles]

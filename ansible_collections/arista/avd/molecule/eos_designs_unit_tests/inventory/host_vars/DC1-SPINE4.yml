@@ -1,0 +1,15 @@
+---
+# Testing the suggested method to roll back the change of default platform settings for R3 series.
+custom_platform_settings:
+  - platforms:
+      - 7280R3
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms:
+      - 7500R3
+      - 7800R3
+    management_interface: Management0
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
