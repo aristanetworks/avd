@@ -219,7 +219,7 @@ router isis {{ router_isis.instance }}
 {%         endif %}
 {%     endif %}
    !
-{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
+{%     if router_isis.address_family_ipv4.enabled is arista.avd.defined(true) %}
    address-family ipv4 unicast
 {%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
       maximum-paths {{ router_isis.address_family_ipv4.maximum_paths }}
@@ -250,7 +250,7 @@ router isis {{ router_isis.instance }}
 {%         endif %}
    !
 {%     endif %}
-{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
+{%     if router_isis.address_family_ipv6.enabled is arista.avd.defined(true) %}
    address-family ipv6 unicast
 {%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
       maximum-paths {{ router_isis.address_family_ipv6.maximum_paths }}
