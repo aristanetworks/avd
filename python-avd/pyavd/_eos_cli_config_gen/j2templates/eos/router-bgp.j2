@@ -1117,7 +1117,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} next-hop-self source-interface {{ neighbor.next_hop_self_source_interface }}
 {%             endif %}
 {%             if neighbor.maximum_advertised_routes is arista.avd.defined %}
-{%                 set maximum_routes_cli = "neighbor " ~neighbor.ip_address ~ " maximum-routes " ~neighbor.maximum_advertised_routes %}
+{%                 set maximum_routes_cli = "neighbor " ~neighbor.ip_address ~ " maximum-advertised-routes " ~neighbor.maximum_advertised_routes %}
 {%                 if neighbor.maximum_advertised_routes_warning_limit is arista.avd.defined %}
 {%                     set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ neighbor.maximum_advertised_routes_warning_limit %}
 {%                 endif %}
