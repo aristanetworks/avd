@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from pyavd._schema.avdschema import AvdSchema
+
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
 from .cv_topology import CvTopology
@@ -65,6 +67,7 @@ class SharedUtils(
     The class cannot be overridden.
     """
 
-    def __init__(self, hostvars: dict, templar: object) -> None:
+    def __init__(self, hostvars: dict, templar: object, schema: AvdSchema) -> None:
         self.hostvars = hostvars
         self.templar = templar
+        self.schema = schema
