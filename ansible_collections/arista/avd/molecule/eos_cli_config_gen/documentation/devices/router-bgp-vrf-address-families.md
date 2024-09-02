@@ -103,7 +103,7 @@ router bgp 65001
          bgp missing-policy direction out action permit
          bgp additional-paths install ecmp-primary
          bgp additional-paths receive
-         bgp additional-paths send ecmp limit 4
+         bgp additional-paths send ecmp limit 4 PL1
          neighbor 1.2.3.4 activate
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
@@ -171,5 +171,5 @@ router bgp 65001
       redistribute dynamic rcf VRF_RCF_DYNAMIC()
       !
       address-family ipv4
-         bgp additional-paths send ecmp
+         bgp additional-paths send ecmp PL1
 ```

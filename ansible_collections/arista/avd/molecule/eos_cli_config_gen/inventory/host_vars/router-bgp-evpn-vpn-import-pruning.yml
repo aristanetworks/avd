@@ -34,8 +34,8 @@ router_bgp:
   redistribute_routes:
   address_family_evpn:
     bgp_additional_paths:
-      send:
-        ecmp_limit: 20
+      send: ecmp
+      send_ecmp_limit: 20
     domain_identifier: "65101:0"
     peer_groups:
       - name: EVPN-OVERLAY-PEERS

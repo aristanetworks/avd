@@ -106,6 +106,7 @@ router_bgp:
         additional_paths:
           receive: true
           send: any
+          prefix_list: PL1
       - name: ADDITIONAL-PATH-PG-2
         activate: true
         additional_paths:
@@ -117,10 +118,12 @@ router_bgp:
       - name: ADDITIONAL-PATH-PG-4
         activate: true
         additional_paths:
+          send: ecmp
           send_ecmp_limit: 42
       - name: ADDITIONAL-PATH-PG-5
         activate: true
         additional_paths:
+          send: limit
           send_limit: 42
       # Checking the `no neighbor <PG> additional-paths send any is rendered
       - name: ADDITIONAL-PATH-PG-6
@@ -140,8 +143,7 @@ router_bgp:
       import_overlay_index_gateway: true
     bgp_additional_paths:
       receive: true
-      send:
-        any: true
+      send: any
     layer_2_fec_in_place_update:
       enabled: true
   address_family_ipv4:

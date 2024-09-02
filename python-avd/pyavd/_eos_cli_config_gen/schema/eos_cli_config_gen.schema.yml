@@ -12942,37 +12942,7 @@ keys:
           bgp_additional_paths:
             type: dict
             description: BGP additional-paths commands.
-            keys:
-              receive:
-                type: bool
-                description: Receive multiple paths.
-              send:
-                type: dict
-                description: Send multiple paths.
-                keys:
-                  any:
-                    type: bool
-                    description: Any eligible path.
-                  backup:
-                    type: bool
-                    description: Best path and installed backup path.
-                  ecmp:
-                    type: bool
-                    description: All paths in best path ECMP group.
-                  ecmp_limit:
-                    type: int
-                    description: Amount of ECMP paths to send.
-                    convert_types:
-                    - str
-                    min: 2
-                    max: 64
-                  limit:
-                    type: int
-                    description: Amount of paths to send.
-                    convert_types:
-                    - str
-                    min: 2
-                    max: 64
+            $ref: eos_cli_config_gen#/$defs/additional_paths
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
@@ -19089,8 +19059,13 @@ $defs:
     keys:
       install:
         type: bool
+        description: Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths`
+          and `router_bgp.address_family_ipv6.bgp.additional_paths.
       install_ecmp_primary:
         type: bool
+        description: Allow additional path with ECMP primary path. This setting is
+          used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and
+          `router_bgp.address_family_ipv6.bgp.additional_paths.
       receive:
         type: bool
       send:
@@ -19104,7 +19079,7 @@ $defs:
 
           ecmp: All paths in best path ECMP group.
 
-          limit: Limit to n eligible paths'
+          limit: Limit to n eligible paths.'
         valid_values:
         - any
         - backup
@@ -19112,20 +19087,25 @@ $defs:
         - limit
       send_ecmp_limit:
         type: int
-        description: Amount of ECMP paths to send. If this key-value pair is not set,
-          it will send all paths in best ECMP group.
+        description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
+          this settings. If this key-value pair is not set, it will send all paths
+          in best ECMP group.
         convert_types:
         - str
         min: 2
         max: 64
       send_limit:
         type: int
-        description: Number of paths to send through bgp updates(The value of 'send'
-          key must be 'limit').
+        description: Number of paths to send through bgp updates. `send` must be set
+          to `limit` for this setting.
         convert_types:
         - str
         min: 2
         max: 64
+      prefix_list:
+        type: str
+        description: Apply the configurations only to the routes matching the prefix
+          list.
   application_traffic_recognition_application:
     type: dict
     keys:

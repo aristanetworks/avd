@@ -259,7 +259,7 @@ router bgp 65101
       domain identifier 65101:0
       neighbor ADDITIONAL-PATH-PG-1 activate
       neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
-      neighbor ADDITIONAL-PATH-PG-1 additional-paths send any
+      neighbor ADDITIONAL-PATH-PG-1 additional-paths send any PL1
       neighbor ADDITIONAL-PATH-PG-2 activate
       neighbor ADDITIONAL-PATH-PG-2 additional-paths send backup
       neighbor ADDITIONAL-PATH-PG-3 activate

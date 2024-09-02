@@ -1186,37 +1186,7 @@ keys:
           bgp_additional_paths:
             type: dict
             description: BGP additional-paths commands.
-            keys:
-              receive:
-                type: bool
-                description: Receive multiple paths.
-              send:
-                type: dict
-                description: Send multiple paths.
-                keys:
-                  any:
-                    type: bool
-                    description: Any eligible path.
-                  backup:
-                    type: bool
-                    description: Best path and installed backup path.
-                  ecmp:
-                    type: bool
-                    description: All paths in best path ECMP group.
-                  ecmp_limit:
-                    type: int
-                    description: Amount of ECMP paths to send.
-                    convert_types:
-                      - str
-                    min: 2
-                    max: 64
-                  limit:
-                    type: int
-                    description: Amount of paths to send.
-                    convert_types:
-                      - str
-                    min: 2
-                    max: 64
+            $ref: "eos_cli_config_gen#/$defs/additional_paths"
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.

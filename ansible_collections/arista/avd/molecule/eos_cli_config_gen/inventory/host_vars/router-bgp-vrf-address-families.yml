@@ -50,7 +50,9 @@ router_bgp:
           additional_paths:
             install_ecmp_primary: true
             receive: true
+            send: ecmp
             send_ecmp_limit: 4
+            prefix_list: PL1
           redistribute_internal: false
         neighbors:
           - ip_address: 1.2.3.4
@@ -178,6 +180,7 @@ router_bgp:
       address_family_ipv6:
         bgp:
           additional_paths:
+            send: limit
             send_limit: 3
 
     - name: VRF03
@@ -185,6 +188,7 @@ router_bgp:
         bgp:
           additional_paths:
             send: ecmp
+            prefix_list: PL1
       redistribute_routes:
         - source_protocol: dynamic
           rcf: VRF_RCF_DYNAMIC()
