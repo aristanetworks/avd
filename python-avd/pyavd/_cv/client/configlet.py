@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from asyncio import gather
+from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal
 
@@ -27,6 +29,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
+from pyavd._utils import batch
 
 from .async_decorators import LimitCvVersion, grpc_msg_size_handler
 from .constants import DEFAULT_API_TIMEOUT
@@ -42,6 +45,9 @@ ASSIGNMENT_MATCH_POLICY_MAP = {
     "match_all": MatchPolicy.MATCH_ALL,
     None: MatchPolicy.UNSPECIFIED,
 }
+PARALLEL_COROUTINES = 20
+
+LOGGER = getLogger(__name__)
 
 
 class ConfigletMixin:
@@ -181,7 +187,7 @@ class ConfigletMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignmentKey]:
         """
-        Looping over the given configlets and calls the singular set_configlet_container for each.
+        Create batches of containers and do parallel calls to set_configlet_container for each batch.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -192,6 +198,28 @@ class ConfigletMixin:
         Returns:
             ConfigletAssignmentKey objects after being set including any server-generated values.
         """
+        coroutines = [
+            self.set_configlet_container(
+                workspace_id=workspace_id,
+                container_id=container_id,
+                display_name=display_name,
+                description=description,
+                configlet_ids=configlet_ids,
+                query=query,
+                child_assignment_ids=child_assignment_ids,
+                match_policy=match_policy,
+                timeout=timeout,
+            )
+            for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
+        ]
+
+        configlet_configs = []
+
+        LOGGER.info("set_configlet_containers: Deploying %s configlet assignments / containers in batches of %s.", len(coroutines), PARALLEL_COROUTINES)
+        for index, batch_coroutines in enumerate(batch(coroutines, PARALLEL_COROUTINES), start=1):
+            LOGGER.info("set_configlet_containers: Batch %s", index)
+            configlet_configs.extend(await gather(*batch_coroutines))
+
         return [
             await self.set_configlet_container(
                 workspace_id, container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy, timeout
@@ -395,7 +423,7 @@ class ConfigletMixin:
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletKey]:
         """
-        Looping over the given configlets and calls the singular set_configlet_from_file for each.
+        Create batches of configlets and do parallel calls to set_configlet_from_file for each batch.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -405,10 +433,24 @@ class ConfigletMixin:
         Returns:
             List of ConfigletConfig objects after being set including any server-generated values.
         """
-        return [
-            await self.set_configlet_from_file(workspace_id, configlet_id, file, display_name, description, timeout)
+        coroutines = [
+            self.set_configlet_from_file(
+                workspace_id=workspace_id,
+                configlet_id=configlet_id,
+                file=file,
+                display_name=display_name,
+                description=description,
+                timeout=timeout,
+            )
             for configlet_id, display_name, description, file in configlets
         ]
+
+        configlet_configs = []
+
+        LOGGER.info("set_configlets_from_files: Deploying %s configlets in batches of %s.", len(coroutines), PARALLEL_COROUTINES)
+        for index, batch_coroutines in enumerate(batch(coroutines, PARALLEL_COROUTINES), start=1):
+            LOGGER.info("set_configlets_from_files: Batch %s", index)
+            configlet_configs.extend(await gather(*batch_coroutines))
 
     @grpc_msg_size_handler("configlet_ids")
     async def delete_configlets(
