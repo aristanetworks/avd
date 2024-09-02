@@ -102,7 +102,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Update - wait-for-convergence | Enabled |
 | Next-hop Unchanged | True |
-| label local-termination | implicit-null |
+| Label local-termination | implicit-null |
 
 ##### IPv4 BGP-LU Peer-groups
 

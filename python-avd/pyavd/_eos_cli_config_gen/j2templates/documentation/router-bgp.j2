@@ -639,16 +639,16 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | Next-hop Unchanged | True |
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.lfib_entry_installation_skipped is arista.avd.defined(true) %}
-| lfib entry installation skipped | True |
+| LFIB entry installation skipped | True |
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.label_local_termination is arista.avd.defined %}
-| label local-termination | {{ router_bgp.address_family_ipv4_labeled_unicast.label_local_termination }} |
+| Label local-termination | {{ router_bgp.address_family_ipv4_labeled_unicast.label_local_termination }} |
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.graceful_restart is arista.avd.defined(true) %}
-| graceful-restart | Enabled |
+| Graceful-restart | Enabled |
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbor_default.next_hop_self is arista.avd.defined(true) %}
-| neighbor default next-hop-self | True |
+| Neighbor default next-hop-self | True |
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.peer_groups is arista.avd.defined %}
 
