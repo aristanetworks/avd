@@ -114,7 +114,7 @@ ethernet_interfaces:
   type: routed
   vrf: VRF1
   ip_address: 10.0.10.1/24
-  mtu: 9194
+  mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet2.100

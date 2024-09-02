@@ -82,7 +82,12 @@ default_node_types:
   - node_type: l3leaf
     match_hostnames:
       - ".*leaf.*"
-
+# Test p2p_uplinks_mtu
+p2p_uplinks_mtu: 9214
+platform_settings:
+  - platforms: [ default ]
+    # platform settings p2p_uplinks_mtu takes precedence
+    p2p_uplinks_mtu: 9194
 wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
@@ -289,6 +294,8 @@ wan_router:
       wan_ha:
         enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ha_interfaces: [Ethernet52]
+        # Test wan_ha mtu
+        mtu: 9194
         ha_ipv4_pool: 10.10.10.0/24
       nodes:
         - name: cv-pathfinder-edge3A

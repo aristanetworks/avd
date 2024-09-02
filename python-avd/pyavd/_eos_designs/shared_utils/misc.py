@@ -193,8 +193,7 @@ class MiscMixin:
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
         if not self.platform_settings_feature_support_per_interface_mtu:
             return None
-        default_mtu = 9194 if self.is_wan_router else 9214
-        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=default_mtu)
+        p2p_uplinks_mtu = default(self.platform_settings_p2p_uplinks_mtu, get(self.hostvars, "p2p_uplinks_mtu", default=9214))
         return get(self.switch_data_combined, "uplink_mtu", default=p2p_uplinks_mtu)
 
     @cached_property

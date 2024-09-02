@@ -9,7 +9,9 @@ keys:
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
-    description: Point to Point Links MTU. For WAN router default MTU is 9194.
+    description: |-
+      Point to Point Links MTU.
+      node_type_uplink_mtu -> platform_p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214
     type: int
     convert_types:
       - str

@@ -71,6 +71,16 @@ keys:
             Takes precedence over the root key "default_interface_mtu".
           min: 68
           max: 65535
+        p2p_uplinks_mtu:
+          type: int
+          convert_types:
+            - str
+          description: |
+            Set MTU on point to point uplink interfaces.
+            Takes precedence over the root key "p2p_uplinks_mtu".
+            node_type_uplink_mtu -> platform_p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+          min: 68
+          max: 65535
         feature_support:
           type: dict
           keys:

@@ -2806,7 +2806,9 @@ keys:
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
-    description: Point to Point Links MTU. For WAN router default MTU is 9194.
+    description: 'Point to Point Links MTU.
+
+      node_type_uplink_mtu -> platform_p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214'
     type: int
     convert_types:
     - str
@@ -2881,6 +2883,20 @@ keys:
           description: 'Default interface MTU configured on EOS under "interface defaults".
 
             Takes precedence over the root key "default_interface_mtu".
+
+            '
+          min: 68
+          max: 65535
+        p2p_uplinks_mtu:
+          type: int
+          convert_types:
+          - str
+          description: 'Set MTU on point to point uplink interfaces.
+
+            Takes precedence over the root key "p2p_uplinks_mtu".
+
+            node_type_uplink_mtu -> platform_p2p_uplinks_mtu -> p2p_uplinks_mtu ->
+            9214.
 
             '
           min: 68
@@ -8726,6 +8742,14 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              mtu:
+                type: int
+                convert_types:
+                - str
+                description: Set MTU on WAN HA interfaces.
+                min: 68
+                max: 65535
+                default: 9194
               ha_interfaces:
                 description: "Local WAN HA interfaces\nOverwrite the default behavior
                   which is to pick all the `uplink_interfaces`.\nCan be used to filter
