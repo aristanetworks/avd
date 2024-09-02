@@ -7,7 +7,7 @@ import ssl
 from typing import TYPE_CHECKING
 
 from grpclib.client import Channel
-from requests import JSONDecodeError, post
+from requests import JSONDecodeError, get, post
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
@@ -17,6 +17,7 @@ from .studio import StudioMixin
 from .swg import SwgMixin
 from .tag import TagMixin
 from .utils import UtilsMixin
+from .versioning import CvVersion
 from .workspace import WorkspaceMixin
 
 if TYPE_CHECKING:
@@ -42,6 +43,7 @@ class CVClient(
     _token: str | None
     _username: str | None
     _password: str | None
+    _cv_version: CvVersion | None = None
 
     def __init__(
         self,
@@ -89,9 +91,10 @@ class CVClient(
     def _connect(self) -> None:
         # TODO: Verify connection
         # TODO: Handle multinode clusters
-        # TODO: Detect supported API versions and set instance properties accordingly.
         if not self._token:
             self._set_token()
+
+        self._set_version()
 
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
@@ -125,8 +128,8 @@ class CVClient(
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.verify_mode = ssl.CERT_NONE  # NOSONAR
             context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE  # NOSONAR
         else:
             # None means default context which will verify certs.
             context = None
@@ -142,4 +145,38 @@ class CVClient(
             self._token = response.json()["sessionId"]
         except (KeyError, JSONDecodeError) as e:
             msg = "Unable to get token from CloudVision server. Please supply service account token instead of username/password."
+            raise CVClientException(msg) from e
+
+    def _set_version(self) -> None:
+        """
+        Fetch the CloudVision version via REST and set self._cv_version.
+
+        This version is used to decide which APIs to use later.
+
+        TODO: Handle multinode clusters
+        """
+        if not self._token:
+            msg = "Unable to get version from CloudVision server. Missing token."
+            raise CVClientException(msg)
+
+        if not self._verify_certs:
+            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
+            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE  # NOSONAR
+        else:
+            # None means default context which will verify certs.
+            context = None
+
+        try:
+            response = get(  # noqa: S113 TODO: Add configurable timeout
+                "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
+                headers={"Authorization": f"Bearer {self._token}"},
+                verify=self._verify_certs,
+                json={},
+            )
+
+            self._cv_version = CvVersion(response.json()["version"])
+        except (KeyError, JSONDecodeError) as e:
+            msg = f"Unable to get version from CloudVision server. Got {response.text}"
             raise CVClientException(msg) from e

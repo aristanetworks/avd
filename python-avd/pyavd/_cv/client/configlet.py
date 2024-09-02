@@ -28,7 +28,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
 
-from .async_decorators import grpc_msg_size_handler
+from .async_decorators import LimitCvVersion, grpc_msg_size_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -119,7 +119,7 @@ class ConfigletMixin:
                 configlet_ids=RepeatedString(values=configlet_ids),
                 query=query,
                 child_assignment_ids=RepeatedString(values=child_assignment_ids),
-                match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy),
+                match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy or "match_all"),
             ),
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
@@ -130,6 +130,7 @@ class ConfigletMixin:
 
         return response.value
 
+    @LimitCvVersion(min_ver="2024.2.0")
     @grpc_msg_size_handler("containers")
     async def set_configlet_containers(
         self: CVClient,
@@ -171,6 +172,32 @@ class ConfigletMixin:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Containers '{containers}'") or e
 
         return assignment_keys
+
+    @LimitCvVersion(max_ver="2024.1.99")
+    async def set_configlet_containers(  # noqa: F811 - Redefining with decorator.
+        self: CVClient,
+        workspace_id: str,
+        containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> list[ConfigletAssignmentKey]:
+        """
+        Looping over the given configlets and calls the singular set_configlet_container for each.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is fetched.
+            containers: List of Tuples with the format\
+                (container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy).
+            timeout: Timeout in seconds.
+
+        Returns:
+            ConfigletAssignmentKey objects after being set including any server-generated values.
+        """
+        return [
+            await self.set_configlet_container(
+                workspace_id, container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy, timeout
+            )
+            for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
+        ]
 
     async def delete_configlet_container(
         self: CVClient,
@@ -319,6 +346,7 @@ class ConfigletMixin:
 
         return response.value
 
+    @LimitCvVersion(min_ver="2024.2.0")
     @grpc_msg_size_handler("configlets")
     async def set_configlets_from_files(
         self: CVClient,
@@ -358,6 +386,29 @@ class ConfigletMixin:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlets '{configlets}'") or e
 
         return configlet_configs
+
+    @LimitCvVersion(max_ver="2024.1.99")
+    async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
+        self: CVClient,
+        workspace_id: str,
+        configlets: list[tuple[str, str]],
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> list[ConfigletKey]:
+        """
+        Looping over the given configlets and calls the singular set_configlet_from_file for each.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is fetched.
+            configlets: List of Tuples with the format `(configlet_id, display_name, description, path_to_config_file)`.
+            timeout: Timeout in seconds.
+
+        Returns:
+            List of ConfigletConfig objects after being set including any server-generated values.
+        """
+        return [
+            await self.set_configlet_from_file(workspace_id, configlet_id, file, display_name, description, timeout)
+            for configlet_id, display_name, description, file in configlets
+        ]
 
     @grpc_msg_size_handler("configlet_ids")
     async def delete_configlets(

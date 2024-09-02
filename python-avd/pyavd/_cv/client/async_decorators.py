@@ -5,11 +5,13 @@ from collections.abc import Callable
 from functools import wraps
 from inspect import signature
 from logging import getLogger
-from typing import Any
+from typing import Any, ClassVar
 
 from pyavd._utils import batch
 
+from .constants import CVAAS_VERSION_STRING
 from .exceptions import CVMessageSizeExceeded
+from .versioning import CvVersion
 
 LOGGER = getLogger(__name__)
 
@@ -67,3 +69,76 @@ def grpc_msg_size_handler(list_field: str) -> Callable:
         return wrapper_grpc_msg_size_handler
 
     return decorator_grpc_msg_size_handler
+
+
+class LimitCvVersion:
+    """
+    Decorator used to limit the supported CloudVision versions for a certain method.
+
+    The decorator will maintain a map of decorated function variants and their supported versions.
+
+    The decorator will only work in CvClient class methods since it expects the _cv_client attribute on 'self'.
+    """
+
+    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable]]] = {}
+    """
+    Map of versioned functions keyed by function name.
+
+    {
+        <function_name>: {
+            (<min_cv_version>, <max_cv_version>): <method>,
+            (<min_cv_version>, <max_cv_version>): <method>,
+        }
+    }
+    """
+
+    def __init__(self, min_ver: str = "2024.1.0", max_ver: str = CVAAS_VERSION_STRING) -> None:
+        """__init__ is called with the arguments of the decorator."""
+        # Storing these on the instance so it can be read in the __call__ method.
+        self.min_version = CvVersion(min_ver)
+        self.max_version = CvVersion(max_ver)
+
+        if self.max_version < self.min_version:
+            msg = (
+                "Invalid min and max versions passed to 'cv_version' decorator. Min version must be larger than max version. "
+                f"Got min_ver '{self.min_version}', max_var '{self.max_version}'."
+            )
+            raise ValueError(msg)
+
+    def __call__(self, func: Callable) -> Callable:
+        """
+        Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
+
+        __call__ is called with the method being decorated.
+        """
+        for existing_min_version, existing_max_version in LimitCvVersion.versioned_funcs.get(func.__name__, []):
+            if existing_min_version <= self.max_version and existing_max_version >= self.min_version:
+                msg = (
+                    "Overlapping min and max versions passed to 'cv_version' decorator."
+                    f"{self.min_version}-{self.max_version} overlaps with {existing_min_version}-{existing_max_version}."
+                )
+                raise ValueError(msg)
+
+        LimitCvVersion.versioned_funcs.setdefault(func.__name__, {})[(self.min_version, self.max_version)] = func
+
+        @wraps(func)
+        async def wrapper_cv_version(*args: Any, **kwargs: Any) -> list:
+            """
+            Call the appropriate original method depending on the _cv_version attribute of 'self'.
+
+            The wrapper is being called by regular method calls with the args and kwargs given by the calling code (including 'self').
+            """
+            # Extract the version of the connected CloudVision server from the 'self' object passed to the method.
+            # Defaulting to 'CVaaS' which means newest versions.
+            cv_version: CvVersion = getattr(args[0], "_cv_version", CvVersion("CVaaS"))
+            LOGGER.info("wrapper_cv_version: Called '%s' with version '%s'", func.__name__, cv_version)
+
+            for min_max_versions, versioned_func in LimitCvVersion.versioned_funcs[func.__name__].items():
+                min_version, max_version = min_max_versions
+                if min_version <= cv_version <= max_version:
+                    return await versioned_func(*args, **kwargs)
+
+            msg = f"Unsupported version of CloudVision: '{cv_version}'."
+            raise LookupError(msg)
+
+        return wrapper_cv_version
