@@ -294,6 +294,7 @@
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.ip_address is defined %}
 {%             set port_channel_interface_ipv4.configured = true %}
+{%             break %}
 {%         endif %}
 {%     endfor %}
 {%     if port_channel_interface_ipv4.configured %}
@@ -325,6 +326,7 @@
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.ipv6_address is defined %}
 {%             set port_channel_interface_ipv6.configured = true %}
+{%             break %}
 {%         endif %}
 {%     endfor %}
 {%     if port_channel_interface_ipv6.configured %}
