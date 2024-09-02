@@ -120,6 +120,8 @@
 {% include 'eos/router-path-selection.j2' %}
 {# router service-inserion #}
 {% include 'eos/router-service-insertion.j2' %}
+{# platform #}
+{% include 'eos/platform.j2' %}
 {# sflow #}
 {% include 'eos/sflow.j2' %}
 {# snmp settings #}
@@ -224,6 +226,8 @@
 {% include 'eos/ip-routing.j2' %}
 {# IP ICMP Redirects #}
 {% include 'eos/ip-icmp-redirect.j2' %}
+{# IP Hardware #}
+{% include 'eos/ip-hardware.j2' %}
 {# IP Routing VRFs #}
 {% include 'eos/ip-routing-vrfs.j2' %}
 {# eos - IPv6 ICMP Redirect #}
@@ -339,12 +343,8 @@
 {# management tech-support #}
 {% include 'eos/management-tech-support.j2' %}
 {# ------------------------------------couldn't check (Not supported in ATD lab) -------------- #}
-{# platform #}
-{% include 'eos/platform.j2' %}
 {# service unsupported-transceiver #}
 {% include 'eos/service-unsupported-transceiver.j2' %}
-{# IP Hardware #}
-{% include 'eos/ip-hardware.j2' %}
 {# ------------------------------------------ #}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
