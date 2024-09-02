@@ -6,18 +6,6 @@
 {# eos - logging #}
 {% if logging is arista.avd.defined %}
 !
-{%     if logging.buffered.level is arista.avd.defined('disabled') %}
-no logging buffered
-{%     elif logging.buffered.size is arista.avd.defined or logging.buffered.level is arista.avd.defined %}
-{%         set logging_buffered_cli = "logging buffered" %}
-{%         if logging.buffered.size is arista.avd.defined %}
-{%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.size %}
-{%         endif %}
-{%         if logging.buffered.level is arista.avd.defined  %}
-{%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.level %}
-{%         endif %}
-{{ logging_buffered_cli }}
-{%     endif %}
 {%     if logging.trap is arista.avd.defined('disabled') %}
 no logging trap
 {%     elif logging.trap is arista.avd.defined %}
@@ -39,6 +27,18 @@ logging event storm-control discards global
 {%     if logging.event.storm_control.discards.interval is arista.avd.defined %}
 logging event storm-control discards interval {{ logging.event.storm_control.discards.interval }}
 {%     endif %}
+{%     if logging.buffered.level is arista.avd.defined('disabled') %}
+no logging buffered
+{%     elif logging.buffered.size is arista.avd.defined or logging.buffered.level is arista.avd.defined %}
+{%         set logging_buffered_cli = "logging buffered" %}
+{%         if logging.buffered.size is arista.avd.defined %}
+{%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.size %}
+{%         endif %}
+{%         if logging.buffered.level is arista.avd.defined  %}
+{%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.level %}
+{%         endif %}
+{{ logging_buffered_cli }}
+{%     endif %}
 {%     if logging.synchronous.level is arista.avd.defined('disabled') %}
 no logging synchronous
 {%     elif logging.synchronous is arista.avd.defined %}
@@ -51,7 +51,7 @@ logging synchronous level {{ logging.synchronous.level | arista.avd.default("cri
 {%                 set logging_host_cli = logging_host_cli ~ " vrf " ~ vrf.name %}
 {%             endif %}
 {%             set logging_host_cli = logging_host_cli ~ " host " ~ host.name %}
-{%             if host.ports is arista.avd.defined() %}
+{%             if host.ports is arista.avd.defined %}
 {%                 set logging_host_cli = logging_host_cli ~ ' ' ~ host.ports | join(' ') %}
 {%             endif %}
 {%             if host.protocol is arista.avd.defined() and host.protocol is not arista.avd.defined("udp") %}

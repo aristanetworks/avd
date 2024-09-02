@@ -12,20 +12,11 @@ no lldp run
 {%     if lldp.timer is arista.avd.defined %}
 lldp timer {{ lldp.timer }}
 {%     endif %}
-{%     if lldp.timer_reinitialization is arista.avd.defined %}
-lldp timer reinitialization {{ lldp.timer_reinitialization }}
-{%     endif %}
 {%     if lldp.holdtime is arista.avd.defined %}
 lldp hold-time {{ lldp.holdtime }}
 {%     endif %}
-{%     if lldp.management_address is arista.avd.defined %}
-lldp management-address {{ lldp.management_address }}
-{%     endif %}
-{%     if lldp.vrf is arista.avd.defined %}
-lldp management-address vrf {{ lldp.vrf }}
-{%     endif %}
-{%     if lldp.receive_packet_tagged_drop is arista.avd.defined(true) %}
-lldp receive packet tagged drop
+{%     if lldp.timer_reinitialization is arista.avd.defined %}
+lldp timer reinitialization {{ lldp.timer_reinitialization }}
 {%     endif %}
 {%     if lldp.tlvs is arista.avd.defined %}
 {%         for tlv in lldp.tlvs %}
@@ -37,5 +28,14 @@ lldp receive packet tagged drop
 {{ lldp_tlv_transmit_cli }}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if lldp.management_address is arista.avd.defined %}
+lldp management-address {{ lldp.management_address }}
+{%     endif %}
+{%     if lldp.vrf is arista.avd.defined %}
+lldp management-address vrf {{ lldp.vrf }}
+{%     endif %}
+{%     if lldp.receive_packet_tagged_drop is arista.avd.defined(true) %}
+lldp receive packet tagged drop
 {%     endif %}
 {% endif %}

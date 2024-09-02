@@ -53,6 +53,7 @@ management api gnmi
    transport grpc MGMT
       vrf MGMT
       ip access-group ACL-GNMI
+   !
    transport grpc MONITORING
       port 6031
       vrf MONITORING

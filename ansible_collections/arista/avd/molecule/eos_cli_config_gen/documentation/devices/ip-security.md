@@ -86,10 +86,10 @@ interface Management1
 ip security
    !
    ike policy IKE-1
-      local-id 192.168.100.1
       ike-lifetime 24
       encryption aes256
       dh-group 20
+      local-id 192.168.100.1
    !
    ike policy IKE-2
    !
@@ -109,14 +109,14 @@ ip security
       pfs dh-group 14
    !
    sa policy SA-3
-      esp integrity null
       esp encryption null
+      esp integrity null
       sa lifetime 8 hours
       pfs dh-group 17
    !
    sa policy SA-4
-      esp integrity md5
       esp encryption 3des
+      esp integrity md5
    !
    sa policy SA-5
       esp integrity sha512

@@ -214,8 +214,8 @@ interface Loopback2
    description ISIS-SR Node-SID
    ip address 10.1.255.3/32
    isis enable EVPN_UNDERLAY
-   isis passive
    isis metric 50
+   isis passive
    node-segment ipv4 index 10
    node-segment ipv6 index 1000
 ```
