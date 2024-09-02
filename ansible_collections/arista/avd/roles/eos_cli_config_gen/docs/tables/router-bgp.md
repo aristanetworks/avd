@@ -306,8 +306,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote</samp>](## "router_bgp.address_family_evpn.peer_groups.[].domain_remote") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "router_bgp.address_family_evpn.peer_groups.[].encapsulation") | String |  |  | Valid Values:<br>- <code>vxlan</code><br>- <code>mpls</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.install") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.install") | Boolean |  |  |  | Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>null</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -521,8 +521,8 @@
     | [<samp>&nbsp;&nbsp;address_family_path_selection</samp>](## "router_bgp.address_family_path_selection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_path_selection.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.install") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>null</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -1432,7 +1432,11 @@
             domain_remote: <bool>
             encapsulation: <str; "vxlan" | "mpls">
             additional_paths:
+
+              # Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths.
               install: <bool>
+
+              # Allow additional path with ECMP primary path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths.
               install_ecmp_primary: <bool>
               receive: <bool>
 
@@ -1444,10 +1448,14 @@
               send: <str; "any" | "backup" | "ecmp" | "limit" | "null">
 
               # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
               send_ecmp_limit: <int; 2-64>
 
               # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
               send_limit: <int; 2-64>
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
         evpn_hostflap_detection:
           enabled: <bool>
 
@@ -1836,7 +1844,11 @@
       address_family_path_selection:
         bgp:
           additional_paths:
+
+            # Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths.
             install: <bool>
+
+            # Allow additional path with ECMP primary path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths.
             install_ecmp_primary: <bool>
             receive: <bool>
 
@@ -1848,10 +1860,15 @@
             send: <str; "any" | "backup" | "ecmp" | "limit" | "null">
 
             # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+            # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
             send_ecmp_limit: <int; 2-64>
 
             # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+            # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
             send_limit: <int; 2-64>
+
+            # Apply the configurations only to the routes matching the prefix list.
+            prefix_list: <str>
         neighbors:
           - ip_address: <str; required; unique>
             activate: <bool>
@@ -1866,10 +1883,15 @@
               send: <str; "any" | "backup" | "ecmp" | "limit" | "null">
 
               # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
               send_ecmp_limit: <int; 2-64>
 
               # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+              # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
               send_limit: <int; 2-64>
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
         peer_groups:
 
             # Peer-group name.
@@ -1890,6 +1912,9 @@
 
               # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
               send_limit: <int; 2-64>
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
       address_family_vpn_ipv4:
         domain_identifier: <str>
         peer_groups:
@@ -2269,6 +2294,9 @@
                 # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
                 send_limit: <int; 2-64>
 
+                # Apply the configurations only to the routes matching the prefix list.
+                prefix_list: <str>
+
               # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
               redistribute_internal: <bool>
             neighbors:
@@ -2346,6 +2374,9 @@
 
                 # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
                 send_limit: <int; 2-64>
+
+                # Apply the configurations only to the routes matching the prefix list.
+                prefix_list: <str>
 
               # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
               redistribute_internal: <bool>

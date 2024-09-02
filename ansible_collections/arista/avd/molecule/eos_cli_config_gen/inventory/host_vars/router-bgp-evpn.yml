@@ -106,6 +106,7 @@ router_bgp:
         additional_paths:
           receive: true
           send: any
+          prefix_list: PL1
       - name: ADDITIONAL-PATH-PG-2
         activate: true
         additional_paths:
