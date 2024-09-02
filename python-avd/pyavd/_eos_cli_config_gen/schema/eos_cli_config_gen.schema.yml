@@ -15200,6 +15200,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
@@ -15243,6 +15244,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
