@@ -45,12 +45,15 @@ class RouterBgpMixin(UtilsMixin):
             router_bgp,
             self._router_bgp_peer_groups(),
             self._router_bgp_vrfs,
-            {
-                "vlans": self._router_bgp_vlans(tenant_svis_l2vlans_dict),
-                "vlan_aware_bundles": self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict),
-                "redistribute_routes": self._router_bgp_redistribute_routes,
-                "vpws": self._router_bgp_vpws,
-            },
+            # stripping empties here to avoid overwriting keys with None values.
+            strip_empties_from_dict(
+                {
+                    "vlans": self._router_bgp_vlans(tenant_svis_l2vlans_dict),
+                    "vlan_aware_bundles": self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict),
+                    "redistribute_routes": self._router_bgp_redistribute_routes,
+                    "vpws": self._router_bgp_vpws,
+                }
+            ),
         )
         # Configure MLAG iBGP peer-group if needed
         if self._configure_bgp_mlag_peer_group:
@@ -168,8 +171,11 @@ class RouterBgpMixin(UtilsMixin):
                         "router_id": self.shared_utils.router_id,
                         "redistribute_routes": [{"source_protocol": "connected"}],
                     }
-                    bgp_vrf_redistribute_static = vrf.get("redistribute_static")
-                    if bgp_vrf_redistribute_static is True or (vrf["static_routes"] and bgp_vrf_redistribute_static is not False):
+                    # Redistribution of static routes for VRF default are handled elsewhere
+                    # since there is a choice between redistributing to underlay or overlay.
+                    if (bgp_vrf_redistribute_static := vrf.get("redistribute_static")) is True or (
+                        vrf["static_routes"] and bgp_vrf_redistribute_static is not False
+                    ):
                         bgp_vrf.setdefault("redistribute_routes", []).append({"source_protocol": "static"})
 
                 elif bgp_vrf:

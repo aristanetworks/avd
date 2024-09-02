@@ -34,6 +34,7 @@ router_bgp:
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  - source_protocol: ospf
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
