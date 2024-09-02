@@ -6744,11 +6744,8 @@ $defs:
                     type: bool
                     description: 'Force (no) configuration of BGP for the VRF.
 
-                      By default BGP will be configured when needed according to the
-                      following rules:
-
-                      - Honor the optional `bgp.enabled` setting, to either always
-                      or never configure BGP for the VRF.
+                      If not set, BGP will be configured when needed according to
+                      the following rules:
 
                       - If the VRF is part of an overlay (`evpn` or `mpls`), BGP will
                       be configured for it.
