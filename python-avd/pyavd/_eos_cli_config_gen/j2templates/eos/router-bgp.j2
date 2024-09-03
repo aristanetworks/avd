@@ -693,7 +693,7 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if peer_group.additional_paths.send is arista.avd.defined %}
 {%                 set evpn_pg_add_path = 'neighbor ' ~ peer_group.name ~ ' additional-paths send' %}
-{%                 if peer_group.additional_paths.send == 'null'%}
+{%                 if peer_group.additional_paths.send == 'null' %}
 {%                     set evpn_pg_add_path = 'no ' ~ evpn_pg_add_path ~ ' any' %}
 {%                 else %}
 {%                     if peer_group.additional_paths.send_ecmp_limit is arista.avd.defined and peer_group.additional_paths.send == 'ecmp' %}
