@@ -252,7 +252,8 @@ class MiscMixin:
 
         NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
-        default_network_services_keys = [{"name": "tenants"}]
+        # Reading default value from schema
+        default_network_services_keys = self.schema.get_default_value(["network_services_keys"])
         network_services_keys = get(self.hostvars, "network_services_keys", default=default_network_services_keys)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
