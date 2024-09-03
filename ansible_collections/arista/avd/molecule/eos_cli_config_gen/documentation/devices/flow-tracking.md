@@ -97,9 +97,11 @@ flow tracking hardware
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666
+   !
    tracker T2
       exporter T2-E1
          collector 42.42.42.42
+   !
    tracker T3
       exporter T3-E1
       exporter T3-E2
@@ -119,14 +121,17 @@ flow tracking sampled
    sample 666
    hardware offload ipv4
    hardware offload threshold minimum 2 samples
+   !
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
+   !
    tracker T2
       exporter T2-E1
          collector 42.42.42.42
       flow table size 614400 entries
+   !
    tracker T3
       exporter T3-E1
       exporter T3-E2

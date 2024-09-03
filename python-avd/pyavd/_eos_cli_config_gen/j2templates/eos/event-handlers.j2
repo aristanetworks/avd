@@ -35,7 +35,7 @@ event-handler {{ handler.name }}
    action log
    !
 {%             endif %}
-{%             if handler.trigger is arista.avd.defined("on-counters") and handler.trigger is arista.avd.defined%}
+{%             if handler.trigger is arista.avd.defined("on-counters") and handler.trigger is arista.avd.defined %}
    trigger on-counters
 {%                 if handler.trigger_on_counters.poll_interval is arista.avd.defined %}
       poll interval {{ handler.trigger_on_counters.poll_interval }}

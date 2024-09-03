@@ -9,6 +9,9 @@
 !
 flow tracking hardware
 {%     for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort %}
+{%         if not loop.first %}
+   !
+{%         endif %}
    tracker {{ tracker.name }}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
@@ -84,6 +87,7 @@ flow tracking sampled
 {%         endif %}
 {%     endif %}
 {%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort %}
+   !
    tracker {{ tracker.name }}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
