@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: SIT_VRF
-    router_id: 10.10.0.3
     rd: 10.10.0.3:789654
     route_targets:
       import:
@@ -49,6 +48,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 789654:789654
+    router_id: 10.10.0.3
     redistribute_routes:
     - source_protocol: connected
   vlans:

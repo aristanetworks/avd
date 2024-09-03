@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>&lt;connected_endpoints_keys.key&gt;</samp>](## "<connected_endpoints_keys.key>") | List, items: Dictionary |  |  |  | This should be applied to group_vars or host_vars where endpoints are connecting.<br>`connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".<br>The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `storage_arrays`.<br> |
+    | [<samp>&lt;connected_endpoints_keys.key&gt;</samp>](## "<connected_endpoints_keys.key>") | List, items: Dictionary |  | See (+) on YAML tab |  | This should be applied to group_vars or host_vars where endpoints are connecting.<br>`connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".<br>The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `storage_arrays`.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<connected_endpoints_keys.key>.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "<connected_endpoints_keys.key>.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
@@ -166,7 +166,7 @@
     # This should be applied to group_vars or host_vars where endpoints are connecting.
     # `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
     # The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `storage_arrays`.
-    <connected_endpoints_keys.key>:
+    <connected_endpoints_keys.key>: # (1)!
 
         # Endpoint name will be used in the switchport description.
       - name: <str; required; unique>
@@ -551,3 +551,45 @@
             # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
             structured_config: <dict>
     ```
+
+    1. Default Value
+
+        ```yaml
+        <connected_endpoints_keys.key>:
+        - description: Server
+          key: servers
+          type: server
+        - description: Firewall
+          key: firewalls
+          type: firewall
+        - description: Router
+          key: routers
+          type: router
+        - description: Load Balancer
+          key: load_balancers
+          type: load_balancer
+        - description: Storage Array
+          key: storage_arrays
+          type: storage_array
+        - description: CPE
+          key: cpes
+          type: cpe
+        - description: Workstation
+          key: workstations
+          type: workstation
+        - description: Access Point
+          key: access_points
+          type: access_point
+        - description: Phone
+          key: phones
+          type: phone
+        - description: Printer
+          key: printers
+          type: printer
+        - description: Camera
+          key: cameras
+          type: camera
+        - description: Generic Device
+          key: generic_devices
+          type: generic_device
+        ```

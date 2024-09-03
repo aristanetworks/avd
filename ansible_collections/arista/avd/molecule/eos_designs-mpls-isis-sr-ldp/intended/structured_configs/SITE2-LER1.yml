@@ -56,7 +56,6 @@ router_bgp:
     description: SITE2-RR1
   vrfs:
   - name: TENANT_B_INTRA
-    router_id: 100.70.0.7
     rd: 100.70.0.7:19
     route_targets:
       import:
@@ -67,11 +66,11 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65000:19'
+    router_id: 100.70.0.7
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
   - name: TENANT_B_WAN
-    router_id: 100.70.0.7
     rd: 100.70.0.7:20
     route_targets:
       import:
@@ -88,6 +87,7 @@ router_bgp:
       - address_family: vpn-ipv6
         route_targets:
         - '65000:20'
+    router_id: 100.70.0.7
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf

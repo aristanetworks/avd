@@ -474,40 +474,40 @@ keys:
     default:
     - key: servers
       type: server
-      description: Server.
+      description: Server
     - key: firewalls
       type: firewall
-      description: Firewall.
+      description: Firewall
     - key: routers
       type: router
-      description: Router.
+      description: Router
     - key: load_balancers
       type: load_balancer
-      description: Load Balancer.
+      description: Load Balancer
     - key: storage_arrays
       type: storage_array
-      description: Storage Array.
+      description: Storage Array
     - key: cpes
       type: cpe
-      description: CPE.
+      description: CPE
     - key: workstations
       type: workstation
-      description: Workstation.
+      description: Workstation
     - key: access_points
       type: access_point
-      description: Access Point.
+      description: Access Point
     - key: phones
       type: phone
-      description: Phone.
+      description: Phone
     - key: printers
       type: printer
-      description: Printer.
+      description: Printer
     - key: cameras
       type: camera
-      description: Camera.
+      description: Camera
     - key: generic_devices
       type: generic_device
-      description: Generic Device.
+      description: Generic Device
   core_interfaces:
     type: dict
     $ref: eos_designs#/$defs/l3_edge
@@ -1031,18 +1031,32 @@ keys:
               default: true
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-output-settings
+      table: role-documentation-settings
     description: 'Control fabric documentation generation.
 
       '
     type: dict
     keys:
+      enable:
+        description: Generate fabric-wide documentation.
+        type: bool
+        default: true
       connected_endpoints:
-        description: 'Generate fabric-wide documentation for connected endpoints.
+        description: 'Include connected endpoints in the fabric-wide documentation.
 
-          '
+          This is `false` by default to avoid cluttering documentation for projects
+          with thousands of endpoints.'
         type: bool
         default: false
+      topology_csv:
+        description: Generate Topology CSV with all interfaces towards other devices.
+        type: bool
+        default: true
+      p2p_links_csv:
+        description: Generate P2P links CSV with all routed point-to-point links between
+          devices.
+        type: bool
+        default: true
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     documentation_options:
@@ -2063,18 +2077,17 @@ keys:
     - name: tenants
   new_network_services_bgp_vrf_config:
     type: bool
-    description: 'Set this key to `true` in the node type to generate full BGP configuration
+    default: true
+    description: 'This key was used to generate BGP configuration for network services
+      even when `evpn` is not in the address families for the node as well as the
+      VRF.
 
-      for network services even when `evpn` is not in the address families
-
-      (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
-
-
-      This is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then
-      the default value is `true`.
-
-
-      This may introduce breaking changes to your configuration.'
+      This is now part of the default behavior so this key has been removed.'
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 5.0.0
+      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#new-improved-logic-for-bgp-configuration-of-network-services-vrfs
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
     default: null
@@ -3032,6 +3045,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7500R
       - 7500R2
@@ -3048,6 +3062,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7358X4
       management_interface: Management1/1
@@ -4673,6 +4688,43 @@ dynamic_keys:
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
+    default:
+    - key: servers
+      type: server
+      description: Server
+    - key: firewalls
+      type: firewall
+      description: Firewall
+    - key: routers
+      type: router
+      description: Router
+    - key: load_balancers
+      type: load_balancer
+      description: Load Balancer
+    - key: storage_arrays
+      type: storage_array
+      description: Storage Array
+    - key: cpes
+      type: cpe
+      description: CPE
+    - key: workstations
+      type: workstation
+      description: Workstation
+    - key: access_points
+      type: access_point
+      description: Access Point
+    - key: phones
+      type: phone
+      description: Phone
+    - key: printers
+      type: printer
+      description: Printer
+    - key: cameras
+      type: camera
+      description: Camera
+    - key: generic_devices
+      type: generic_device
+      description: Generic Device
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list
@@ -6727,6 +6779,21 @@ $defs:
               bgp:
                 type: dict
                 keys:
+                  enabled:
+                    type: bool
+                    description: 'Force (no) configuration of BGP for the VRF.
+
+                      If not set, BGP will be configured when needed according to
+                      the following rules:
+
+                      - If the VRF is part of an overlay (`evpn` or `mpls`), BGP will
+                      be configured for it.
+
+                      - If any BGP peers are configured under the VRF, BGP will be
+                      configured for it. This is useful for L2LS designs with VRFs.
+
+                      - If uplink type is `p2p-vrfs` *and* the vrf is included in
+                      the uplink VRFs, BGP will be configured for it.'
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
