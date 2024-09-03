@@ -124,7 +124,7 @@ interface {{ port_channel_interface.name }}
 {%             if port_channel_interface.encapsulation_vlan.client.vlan is arista.avd.defined %}
 {%                 set encapsulation_cli = 'client ' ~ client_protocol ~ ' ' ~ port_channel_interface.encapsulation_vlan.client.vlan %}
 {%             elif port_channel_interface.encapsulation_vlan.client.outer is arista.avd.defined and port_channel_interface.encapsulation_vlan.client.inner is arista.avd.defined %}
-{%                 if port_channel_interface.encapsulation_vlan.client.inner_protocol is arista.avd.defined and port_channel_interface.encapsulation_vlan.client.inner_protocol != client_protocol %}
+{%                 if port_channel_interface.encapsulation_vlan.client.inner_protocol is arista.avd.defined %}
 {%                     set encapsulation_cli = 'client ' ~ client_protocol ~ ' outer ' ~ port_channel_interface.encapsulation_vlan.client.outer ~ ' inner ' ~ port_channel_interface.encapsulation_vlan.client.inner_protocol ~ ' ' ~ port_channel_interface.encapsulation_vlan.client.inner %}
 {%                 else %}
 {%                     set encapsulation_cli = 'client ' ~ client_protocol ~ ' outer ' ~ port_channel_interface.encapsulation_vlan.client.outer ~ ' inner ' ~ port_channel_interface.encapsulation_vlan.client.inner %}
@@ -143,7 +143,7 @@ interface {{ port_channel_interface.name }}
 {%                 if port_channel_interface.encapsulation_vlan.network.vlan is arista.avd.defined %}
 {%                     set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' ' ~ port_channel_interface.encapsulation_vlan.network.vlan %}
 {%                 elif port_channel_interface.encapsulation_vlan.network.inner is arista.avd.defined and port_channel_interface.encapsulation_vlan.network.outer is arista.avd.defined %}
-{%                     if port_channel_interface.encapsulation_vlan.network.inner_protocol is arista.avd.defined and port_channel_interface.encapsulation_vlan.network.inner_protocol != network_protocol %}
+{%                     if port_channel_interface.encapsulation_vlan.network.inner_protocol is arista.avd.defined %}
 {%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ port_channel_interface.encapsulation_vlan.network.outer ~ ' inner ' ~ port_channel_interface.encapsulation_vlan.network.inner_protocol ~ ' ' ~ port_channel_interface.encapsulation_vlan.network.inner %}
 {%                     else %}
 {%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ port_channel_interface.encapsulation_vlan.network.outer ~ ' inner ' ~ port_channel_interface.encapsulation_vlan.network.inner %}

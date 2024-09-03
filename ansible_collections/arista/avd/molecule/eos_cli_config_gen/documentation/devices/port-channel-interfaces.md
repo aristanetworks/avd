@@ -795,7 +795,7 @@ interface Port-Channel131
 interface Port-Channel131.1
    description Test_encapsulation_vlan1
    encapsulation vlan
-      client dot1q outer 23 inner 45 network dot1ad outer 32 inner 54
+      client dot1q outer 23 inner dot1q 45 network dot1ad outer 32 inner dot1ad 54
 !
 interface Port-Channel131.2
    description Test_encapsulation_vlan2
