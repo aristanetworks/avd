@@ -89,7 +89,6 @@ router_bgp:
       expiry_timeout: 10
   vrfs:
   - name: Tenant_A_APP_Zone
-    router_id: 192.168.42.42
     rd: 1.1.1.1:12
     route_targets:
       import:
@@ -100,10 +99,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1234:12'
+    router_id: 192.168.42.42
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_OP_Zone
-    router_id: 192.168.42.42
     rd: 1.1.1.1:9
     route_targets:
       import:
@@ -114,11 +113,11 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1234:9'
+    router_id: 192.168.42.42
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
   - name: Tenant_A_WEB_Zone
-    router_id: 192.168.42.42
     rd: 1.1.1.1:11
     route_targets:
       import:
@@ -129,10 +128,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1234:11'
+    router_id: 192.168.42.42
     redistribute_routes:
     - source_protocol: connected
   - name: '12345678'
-    router_id: 192.168.42.42
     rd: 1.1.1.1:41
     route_targets:
       import:
@@ -143,6 +142,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1234:41'
+    router_id: 192.168.42.42
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:

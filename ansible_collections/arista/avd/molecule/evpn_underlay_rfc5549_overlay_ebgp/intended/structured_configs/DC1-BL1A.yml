@@ -107,7 +107,6 @@ router_bgp:
     peer_group: UNDERLAY_PEERS
   vrfs:
   - name: Tenant_A_WAN_Zone
-    router_id: 192.168.255.10
     rd: 192.168.255.10:14
     route_targets:
       import:
@@ -118,6 +117,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '14:14'
+    router_id: 192.168.255.10
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
@@ -152,7 +152,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_B_WAN_Zone
-    router_id: 192.168.255.10
     rd: 192.168.255.10:21
     route_targets:
       import:
@@ -163,10 +162,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
+    router_id: 192.168.255.10
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_C_WAN_Zone
-    router_id: 192.168.255.10
     rd: 192.168.255.10:31
     route_targets:
       import:
@@ -177,6 +176,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '31:31'
+    router_id: 192.168.255.10
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:

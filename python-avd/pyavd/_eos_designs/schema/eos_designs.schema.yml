@@ -2077,18 +2077,17 @@ keys:
     - name: tenants
   new_network_services_bgp_vrf_config:
     type: bool
-    description: 'Set this key to `true` in the node type to generate full BGP configuration
+    default: true
+    description: 'This key was used to generate BGP configuration for network services
+      even when `evpn` is not in the address families for the node as well as the
+      VRF.
 
-      for network services even when `evpn` is not in the address families
-
-      (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
-
-
-      This is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then
-      the default value is `true`.
-
-
-      This may introduce breaking changes to your configuration.'
+      This is now part of the default behavior so this key has been removed.'
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 5.0.0
+      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#new-improved-logic-for-bgp-configuration-of-network-services-vrfs
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
     default: null
@@ -6778,6 +6777,21 @@ $defs:
               bgp:
                 type: dict
                 keys:
+                  enabled:
+                    type: bool
+                    description: 'Force (no) configuration of BGP for the VRF.
+
+                      If not set, BGP will be configured when needed according to
+                      the following rules:
+
+                      - If the VRF is part of an overlay (`evpn` or `mpls`), BGP will
+                      be configured for it.
+
+                      - If any BGP peers are configured under the VRF, BGP will be
+                      configured for it. This is useful for L2LS designs with VRFs.
+
+                      - If uplink type is `p2p-vrfs` *and* the vrf is included in
+                      the uplink VRFs, BGP will be configured for it.'
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
