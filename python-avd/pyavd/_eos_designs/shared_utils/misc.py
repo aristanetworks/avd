@@ -357,16 +357,6 @@ class MiscMixin:
         return self.get_switch_fact("evpn_multicast", required=False) is True
 
     @cached_property
-    def new_network_services_bgp_vrf_config(self: SharedUtils) -> bool:
-        """
-        Return whether or not to use the new behavior when generating BGP VRF configuration.
-
-        TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
-        """
-        default_value = bool(self.uplink_type == "p2p-vrfs")
-        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
-
-    @cached_property
     def ipv4_acls(self: SharedUtils) -> dict:
         return {acl["name"]: acl for acl in get(self.hostvars, "ipv4_acls", default=[])}
 

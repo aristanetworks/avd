@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF1
-    router_id: 10.10.0.20
     rd: 111:222
     route_targets:
       import:
@@ -49,10 +48,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 333:444
+    router_id: 10.10.0.20
     redistribute_routes:
     - source_protocol: connected
   - name: VRF2
-    router_id: 10.10.0.20
     rd: 10.10.0.20:999
     route_targets:
       import:
@@ -63,6 +62,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 2:999
+    router_id: 10.10.0.20
     redistribute_routes:
     - source_protocol: connected
   vlans:
