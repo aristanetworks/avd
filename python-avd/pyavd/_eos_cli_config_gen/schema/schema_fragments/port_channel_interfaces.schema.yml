@@ -90,12 +90,16 @@ keys:
               type: int
               convert_types:
                 - str
+              min: 1
+              max: 4094
               required: true
               description: VLAD ID.
             inner_vlan:
               type: int
               convert_types:
                 - str
+              min: 1
+              max: 4094
               description: Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
         vrf:
           type: str
@@ -150,16 +154,22 @@ keys:
                   type: int
                   convert_types:
                     - str
+                  min: 1
+                  max: 4094
                   description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 outer:
                   type: int
                   convert_types:
                     - str
+                  min: 1
+                  max: 4094
                   description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 inner:
                   type: int
                   convert_types:
                     - str
+                  min: 1
+                  max: 4094
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 inner_protocol:
                   type: str
@@ -180,37 +190,28 @@ keys:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Network Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Network Inner VLAN ID.
                 client:
                   type: bool
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                vlan:
-                  type: int
-                  convert_types:
-                    - str
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
-                outer:
-                  type: int
-                  convert_types:
-                    - str
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner:
-                  type: int
-                  convert_types:
-                    - str
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
                 # TODO: AVD6.0 the `protocol` key should be made required once the deprecated keys are removed in AVD6.0
                 protocol:
                   description: |-
@@ -223,6 +224,27 @@ keys:
                     - client
                     - client inner
                     - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 4094
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 4094
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 4094
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
                 inner_protocol:
                   type: str
                   valid_values:

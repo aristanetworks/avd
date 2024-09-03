@@ -2217,12 +2217,16 @@ keys:
               type: int
               convert_types:
               - str
+              min: 1
+              max: 4094
               required: true
               description: VLAD ID.
             inner_vlan:
               type: int
               convert_types:
               - str
+              min: 1
+              max: 4094
               description: Inner VLAN ID. This setting can only be applied to sub-interfaces
                 on EOS.
         encapsulation_vlan:
@@ -2272,16 +2276,22 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  min: 1
+                  max: 4094
                   description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 outer:
                   type: int
                   convert_types:
                   - str
+                  min: 1
+                  max: 4094
                   description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 inner:
                   type: int
                   convert_types:
                   - str
+                  min: 1
+                  max: 4094
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 inner_protocol:
                   type: str
@@ -2319,21 +2329,6 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                vlan:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
-                outer:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
                 protocol:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
@@ -2347,6 +2342,27 @@ keys:
                   - client
                   - client inner
                   - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
                 inner_protocol:
                   type: str
                   valid_values:
@@ -8995,12 +9011,16 @@ keys:
               type: int
               convert_types:
               - str
+              min: 1
+              max: 4094
               required: true
               description: VLAD ID.
             inner_vlan:
               type: int
               convert_types:
               - str
+              min: 1
+              max: 4094
               description: Inner VLAN ID. This setting can only be applied to sub-interfaces
                 on EOS.
         vrf:
@@ -9055,16 +9075,22 @@ keys:
                   type: int
                   convert_types:
                   - str
+                  min: 1
+                  max: 4094
                   description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 outer:
                   type: int
                   convert_types:
                   - str
+                  min: 1
+                  max: 4094
                   description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 inner:
                   type: int
                   convert_types:
                   - str
+                  min: 1
+                  max: 4094
                   description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
                 inner_protocol:
                   type: str
@@ -9086,37 +9112,28 @@ keys:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network Inner VLAN ID.
                 client:
                   type: bool
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                vlan:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
-                outer:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner:
-                  type: int
-                  convert_types:
-                  - str
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
                 protocol:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
@@ -9130,6 +9147,27 @@ keys:
                   - client
                   - client inner
                   - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
                 inner_protocol:
                   type: str
                   valid_values:
