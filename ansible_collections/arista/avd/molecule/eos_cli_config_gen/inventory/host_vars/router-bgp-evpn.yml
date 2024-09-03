@@ -106,7 +106,6 @@ router_bgp:
         additional_paths:
           receive: true
           send: any
-          prefix_list: PL1
       - name: ADDITIONAL-PATH-PG-2
         activate: true
         additional_paths:
@@ -129,6 +128,7 @@ router_bgp:
       - name: ADDITIONAL-PATH-PG-6
         activate: true
         additional_paths:
+          send: 'null'
     evpn_hostflap_detection:
       enabled: true
       window: 10

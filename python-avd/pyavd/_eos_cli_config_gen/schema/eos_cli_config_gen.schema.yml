@@ -14435,6 +14435,17 @@ keys:
                     additional_paths:
                       type: dict
                       $ref: eos_cli_config_gen#/$defs/additional_paths
+                      keys:
+                        install:
+                          type: bool
+                          description: Install BGP backup path.
+                        install_ecmp_primary:
+                          type: bool
+                          description: Allow additional path with ECMP primary path.
+                        prefix_list:
+                          type: str
+                          description: Apply the configurations only to the routes
+                            matching the prefix list.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -14566,6 +14577,17 @@ keys:
                     additional_paths:
                       type: dict
                       $ref: eos_cli_config_gen#/$defs/additional_paths
+                      keys:
+                        install:
+                          type: bool
+                          description: Install BGP backup path.
+                        install_ecmp_primary:
+                          type: bool
+                          description: Allow additional path with ECMP primary path.
+                        prefix_list:
+                          type: str
+                          description: Apply the configurations only to the routes
+                            matching the prefix list.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -19057,15 +19079,6 @@ $defs:
   additional_paths:
     type: dict
     keys:
-      install:
-        type: bool
-        description: Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths`
-          and `router_bgp.address_family_ipv6.bgp.additional_paths.
-      install_ecmp_primary:
-        type: bool
-        description: Allow additional path with ECMP primary path. This setting is
-          used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and
-          `router_bgp.address_family_ipv6.bgp.additional_paths.
       receive:
         type: bool
       send:
@@ -19085,6 +19098,7 @@ $defs:
         - backup
         - ecmp
         - limit
+        - 'null'
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
@@ -19102,10 +19116,6 @@ $defs:
         - str
         min: 2
         max: 64
-      prefix_list:
-        type: str
-        description: Apply the configurations only to the routes matching the prefix
-          list.
   application_traffic_recognition_application:
     type: dict
     keys:

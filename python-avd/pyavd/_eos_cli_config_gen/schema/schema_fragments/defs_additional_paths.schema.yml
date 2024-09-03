@@ -6,12 +6,6 @@ $defs:
   additional_paths:
     type: dict
     keys:
-      install:
-        type: bool
-        description: Install BGP backup path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths.
-      install_ecmp_primary:
-        type: bool
-        description: Allow additional path with ECMP primary path. This setting is used only for `router_bgp.address_family_ipv4.bgp.additional_paths` and `router_bgp.address_family_ipv6.bgp.additional_paths.
       receive:
         type: bool
       send:
@@ -22,7 +16,7 @@ $defs:
           backup: Best path and installed backup path.
           ecmp: All paths in best path ECMP group.
           limit: Limit to n eligible paths.
-        valid_values: [ 'any', 'backup', 'ecmp', 'limit' ]
+        valid_values: [ 'any', 'backup', 'ecmp', 'limit', 'null' ]
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
@@ -37,6 +31,3 @@ $defs:
           - str
         min: 2
         max: 64
-      prefix_list:
-        type: str
-        description: Apply the configurations only to the routes matching the prefix list.
