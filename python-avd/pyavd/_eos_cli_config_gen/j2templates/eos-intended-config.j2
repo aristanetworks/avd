@@ -130,6 +130,8 @@
 {% include 'eos/spanning-tree.j2' %}
 {# sync-e #}
 {% include 'eos/sync-e.j2' %}
+{# service unsupported-transceiver #}
+{% include 'eos/service-unsupported-transceiver.j2' %}
 {# system l1 #}
 {% include 'eos/system-l1.j2' %}
 {# Tap Aggregation #}
@@ -342,10 +344,6 @@
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}
 {% include 'eos/management-tech-support.j2' %}
-{# ------------------------------------couldn't check (Not supported in ATD lab) -------------- #}
-{# service unsupported-transceiver #}
-{% include 'eos/service-unsupported-transceiver.j2' %}
-{# ------------------------------------------ #}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# end #}
