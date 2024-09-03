@@ -20,6 +20,7 @@ router_isis:
     - source_protocol: bgp
       route_map: RM-BGP
   address_family_ipv4:
+    enabled: true
     tunnel_source_labeled_unicast:
       enabled: True
     fast_reroute_ti_lfa:
@@ -29,6 +30,7 @@ router_isis:
         enable: true
         strict: false
   address_family_ipv6:
+    enabled: true
     bfd_all_interfaces: true
     fast_reroute_ti_lfa:
       level: level-2

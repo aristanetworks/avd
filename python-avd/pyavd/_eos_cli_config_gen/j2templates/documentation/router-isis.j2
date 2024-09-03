@@ -171,7 +171,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
+{%     if router_isis.address_family_ipv4.enabled is arista.avd.defined(true) %}
 
 #### ISIS IPv4 Address Family Summary
 
@@ -196,17 +196,17 @@
 | TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict }} |
 {%             endif %}
 {%         endif %}
-{%     endif %}
-{%     if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enabled is arista.avd.defined(true) %}
+{%         if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enabled is arista.avd.defined(true) %}
 
 #### Tunnel Source
 
 | Source Protocol | RCF |
 | --------------- | --- |
-{%         set rcf = router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf | arista.avd.default('-') %}
+{%             set rcf = router_isis.address_family_ipv4.tunnel_source_labeled_unicast.rcf | arista.avd.default('-') %}
 | BGP Labeled-Unicast | {{ rcf }} |
+{%         endif %}
 {%     endif %}
-{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
+{%     if router_isis.address_family_ipv6.enabled is arista.avd.defined(true) %}
 
 #### ISIS IPv6 Address Family Summary
 
