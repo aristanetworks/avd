@@ -95,7 +95,6 @@ router_bgp:
         only: true
   vrfs:
   - name: Common_VRF
-    router_id: 172.16.210.3
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under BGP for VRF Common_VRF
@@ -113,10 +112,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1025:1025
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_dc1_pod1_only
-    router_id: 172.16.210.3
     rd: 172.16.210.3:1102
     route_targets:
       import:
@@ -127,10 +126,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1102:1102
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_from_overlapping_pool
-    router_id: 172.16.210.3
     rd: 172.16.210.3:1100
     route_targets:
       import:
@@ -141,10 +140,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1100:1100
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_from_pod_pools
-    router_id: 172.16.210.3
     rd: 172.16.210.3:1101
     route_targets:
       import:
@@ -155,6 +154,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1101:1101
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
 static_routes:

@@ -71,8 +71,6 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
-      activate: true
   address_family_vpn_ipv4:
     peer_groups:
     - name: RR-OVERLAY-PEERS
