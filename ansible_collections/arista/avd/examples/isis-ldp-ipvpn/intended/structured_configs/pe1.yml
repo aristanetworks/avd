@@ -43,7 +43,6 @@ router_bgp:
     description: rr2
   vrfs:
   - name: C1_VRF1
-    router_id: 10.255.1.1
     rd: 10.255.1.1:10
     route_targets:
       import:
@@ -54,11 +53,11 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '10:10'
+    router_id: 10.255.1.1
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
   - name: C2_VRF1
-    router_id: 10.255.1.1
     rd: 10.255.1.1:20
     route_targets:
       import:
@@ -69,6 +68,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '20:20'
+    router_id: 10.255.1.1
     redistribute_routes:
     - source_protocol: connected
     address_family_ipv4:
