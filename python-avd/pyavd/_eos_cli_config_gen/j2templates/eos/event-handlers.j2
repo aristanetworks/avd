@@ -33,7 +33,9 @@ event-handler {{ handler.name }}
 {%             endif %}
 {%             if handler.actions.log is arista.avd.defined(true) and not handler.actions.bash_command is  arista.avd.defined %}
    action log
-   !
+{%             endif %}
+{%             if handler.actions.increment_device_health_metric is arista.avd.defined %}
+   action increment device-health metric {{ handler.actions.increment_device_health_metric }}
 {%             endif %}
 {%             if handler.trigger is arista.avd.defined("on-counters") and handler.trigger is arista.avd.defined %}
    trigger on-counters
@@ -88,9 +90,6 @@ event-handler {{ handler.name }}
 {%             else %}
    action bash {{ bash_command }}
 {%             endif %}
-{%         endif %}
-{%         if handler.actions.increment_device_health_metric is arista.avd.defined %}
-   action increment device-health metric {{ handler.actions.increment_device_health_metric }}
 {%         endif %}
 {%         if handler.delay is arista.avd.defined %}
    delay {{ handler.delay }}

@@ -89,6 +89,9 @@ flow tracking sampled
 {%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort %}
    !
    tracker {{ tracker.name }}
+{%             if tracker.table_size is arista.avd.defined %}
+      flow table size {{ tracker.table_size }} entries
+{%             endif %}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
 {%         endif %}
@@ -99,7 +102,8 @@ flow tracking sampled
       record export mpls
 {%         endif %}
 {%         if tracker.exporters is arista.avd.defined %}
-{%             for exporter in tracker.exporters %}
+{%             for exporter in tracker.exporters | arista.avd.natural_sort %}
+      !
       exporter {{ exporter.name }}
 {%                 if exporter.collector.host is arista.avd.defined %}
 {%                     set collector_cli = 'collector ' ~ exporter.collector.host %}
@@ -118,9 +122,6 @@ flow tracking sampled
          template interval {{ exporter.template_interval }}
 {%                 endif %}
 {%             endfor %}
-{%         endif %}
-{%         if tracker.table_size is arista.avd.defined %}
-      flow table size {{ tracker.table_size }} entries
 {%         endif %}
 {%     endfor %}
 {%     if flow_tracking.sampled.shutdown is arista.avd.defined(false) %}
