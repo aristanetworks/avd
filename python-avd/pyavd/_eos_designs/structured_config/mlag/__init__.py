@@ -37,7 +37,7 @@ class AvdStructuredConfigMlag(AvdFacts):
     @cached_property
     def vlans(self) -> list:
         vlans = []
-        if self.shared_utils.mlag_peer_l3_vlan is not None:
+        if self.shared_utils.mlag_peer_l3_vlan is not None and self.shared_utils.underlay_routing_protocol != "none":
             vlans.append(
                 {
                     "id": self.shared_utils.mlag_peer_l3_vlan,
@@ -62,7 +62,7 @@ class AvdStructuredConfigMlag(AvdFacts):
         """
         Return list with VLAN Interfaces used for MLAG.
 
-        May return both the main MLAG VLAN as well as a dedicated L3 VLAN
+        May return both the main MLAG VLAN as well as a dedicated L3 VLAN if we have an underlay routing protocol.
         Can also combine L3 configuration on the main MLAG VLAN
         """
         # Create Main MLAG VLAN Interface
@@ -80,7 +80,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             main_vlan_interface["ipv6_address"] = f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv6_prefix_length}"
         else:
             main_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
-        if not self.shared_utils.mlag_l3:
+        if not self.shared_utils.mlag_l3 or self.shared_utils.underlay_routing_protocol == "none":
             return [strip_empties_from_dict(main_vlan_interface)]
 
         # Create L3 data which will go on either a dedicated l3 vlan or the main mlag vlan

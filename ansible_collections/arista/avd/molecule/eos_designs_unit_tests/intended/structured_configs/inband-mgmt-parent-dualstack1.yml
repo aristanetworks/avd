@@ -54,7 +54,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: INBANDMGMT
-    router_id: 10.0.255.3
     rd: 10.0.255.3:1
     route_targets:
       import:
@@ -65,6 +64,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 10.0.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
