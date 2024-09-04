@@ -59,7 +59,7 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0.
+              description: Name of the SA policy.
             sa_lifetime:
               type: dict
               keys:
