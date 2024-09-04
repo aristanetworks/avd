@@ -53,7 +53,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: TG_100
-    router_id: 192.168.250.10
     rd: 192.168.250.10:100
     route_targets:
       import:
@@ -64,15 +63,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 100:100
+    router_id: 192.168.250.10
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf1a
     updates:
       wait_install: true
   - name: TG_200
-    router_id: 192.168.250.10
     rd: 192.168.250.10:200
     route_targets:
       import:
@@ -83,15 +83,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 200:200
+    router_id: 192.168.250.10
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf1a
     updates:
       wait_install: true
   - name: TG_300
-    router_id: 192.168.250.10
     rd: 192.168.250.10:300
     route_targets:
       import:
@@ -102,11 +103,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 300:300
+    router_id: 192.168.250.10
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf1a
     updates:
       wait_install: true
   vlans:

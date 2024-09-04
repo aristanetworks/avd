@@ -27,6 +27,9 @@ tenants:
           - loopback: 2
             node: filter.vrfs
             ip_address: 192.168.1.1/32
+        bgp:
+          # Testing forcefully removing BGP configuration for the VRF. (otherwise it triggers errors for missing VRF_ID since we try to configure EVPN for it)
+          enabled: false
       - name: VRF3
         description: >-
           This VRF would have been configured because it is attracted by Loopback,
@@ -42,5 +45,8 @@ tenants:
         description: This VRF would have been configured because of always_include_vrfs_in_tenants, but it is prevented by filter.deny_vrfs
       - name: VRF5
         description: This VRF will be configured because of always_include_vrfs_in_tenants and it is permitted by filter.allow_vrfs
+        bgp:
+          # Testing forcefully removing BGP configuration for the VRF. (otherwise it triggers errors for missing VRF_ID since we try to configure EVPN for it)
+          enabled: false
       - name: VRF6
         description: This VRF will not be configured because it is not permitted by filter.allow_vrfs

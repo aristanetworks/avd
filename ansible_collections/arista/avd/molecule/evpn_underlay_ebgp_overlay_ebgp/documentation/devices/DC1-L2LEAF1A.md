@@ -336,8 +336,8 @@ vlan 4091
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
 | Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
-| Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -375,7 +375,7 @@ interface Ethernet4
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | CUSTOM_DC1_LEAF2_Po7 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

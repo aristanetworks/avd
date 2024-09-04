@@ -53,7 +53,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: TG_200
-    router_id: 192.168.250.12
     rd: 192.168.250.12:200
     route_targets:
       import:
@@ -64,11 +63,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 200:200
+    router_id: 192.168.250.12
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.247.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: trunk-group-tests-l3leaf2a
     updates:
       wait_install: true
   vlans:

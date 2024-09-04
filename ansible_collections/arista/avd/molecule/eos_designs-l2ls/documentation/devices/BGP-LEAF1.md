@@ -116,11 +116,11 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | BGP-SPINE1_Ethernet1 | *trunk | *1,100,200,4092 | *- | *- | 1 |
 | Ethernet2 | BGP-SPINE2_Ethernet1 | *trunk | *1,100,200,4092 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 100 | - | - | - |
-| Ethernet11 |  Endpoint | access | 100 | - | - | - |
-| Ethernet12 |  IP Phone | trunk phone | - | 100 | - | - |
-| Ethernet13 |  IP Phone | trunk phone | - | 100 | - | - |
-| Ethernet14 |  IP Phone with no native VLAN | trunk phone | - | - | - | - |
+| Ethernet10 | Endpoint | access | 100 | - | - | - |
+| Ethernet11 | Endpoint | access | 100 | - | - | - |
+| Ethernet12 | IP Phone | trunk phone | - | 100 | - | - |
+| Ethernet13 | IP Phone | trunk phone | - | 100 | - | - |
+| Ethernet14 | IP Phone with no native VLAN | trunk phone | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -130,7 +130,7 @@ vlan 4092
 | --------- | ---- | ----------- | ---------- | --------------- |
 | Ethernet12 | trunk phone | 100 | 200 | untagged |
 | Ethernet13 | trunk phone | 100 | 200 | untagged |
-| Ethernet14 | trunk phone | 1 | 200 | untagged |
+| Ethernet14 | trunk phone | - | 200 | untagged |
 
 #### Ethernet Interfaces Device Configuration
 

@@ -62,6 +62,7 @@ interface Management1
 | SA-4 | md5 | 3des | - | - |
 | SA-5 | sha512 | - | - | - |
 | SA-6 | sha384 | - | - | - |
+| SA-7 | - | - | - | - |
 
 ### IPSec profiles
 
@@ -70,6 +71,7 @@ interface Management1
 | Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport | - |
 | Profile-2 | - | SA-2 | start | - | - | - | tunnel | False |
 | Profile-3 | - | SA-3 | start | - | - | - | tunnel | True |
+| Profile-4 | - | - | - | - | - | - | - | - |
 
 ### Key controller
 
@@ -122,6 +124,8 @@ ip security
    sa policy SA-6
       esp integrity sha384
    !
+   sa policy SA-7
+   !
    profile Profile-1
       ike-policy IKE-1
       sa-policy SA-1
@@ -142,6 +146,8 @@ ip security
       shared-key 7 <removed>
       flow parallelization encapsulation udp
       mode tunnel
+   !
+   profile Profile-4
    !
    key controller
       profile Profile-1

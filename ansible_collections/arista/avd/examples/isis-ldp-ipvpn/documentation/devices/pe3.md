@@ -389,7 +389,7 @@ router ospf 10 vrf C1_VRF1
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0003.00 |
+| Net-ID | 49.0001.0102.5500.1003.00 |
 | Type | level-2 |
 | Router-ID | 10.255.1.3 |
 | Log Adjacency Changes | True |
@@ -415,7 +415,7 @@ router ospf 10 vrf C1_VRF1
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0003.00
+   net 49.0001.0102.5500.1003.00
    is-type level-2
    router-id ipv4 10.255.1.3
    log-adjacency-changes
@@ -463,13 +463,6 @@ ASN Notation: asplain
 | 10.255.2.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 10.1.1.10 | 65124 | C2_VRF1 | - | standard | 100 | - | - | - | - | - | - |
 
-#### Router BGP EVPN Address Family
-
-##### EVPN Peer Groups
-
-| Peer Group | Activate | Encapsulation |
-| ---------- | -------- | ------------- |
-
 #### Router BGP VPN-IPv4 Address Family
 
 ##### VPN-IPv4 Peer Groups
@@ -505,8 +498,6 @@ router bgp 65001
    neighbor 10.255.2.1 description rr1
    neighbor 10.255.2.2 peer group MPLS-OVERLAY-PEERS
    neighbor 10.255.2.2 description rr2
-   !
-   address-family evpn
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate

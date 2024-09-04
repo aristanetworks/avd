@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: IGMP_QUERIER_TEST_1
-    router_id: 192.168.255.1
     rd: 192.168.255.1:11
     route_targets:
       import:
@@ -49,10 +48,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 192.168.255.1
     redistribute_routes:
     - source_protocol: connected
   - name: IGMP_QUERIER_TEST_2
-    router_id: 192.168.255.1
     rd: 192.168.255.1:21
     route_targets:
       import:
@@ -63,10 +62,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
+    router_id: 192.168.255.1
     redistribute_routes:
     - source_protocol: connected
   - name: IGMP_QUERIER_TEST_3
-    router_id: 192.168.255.1
     rd: 192.168.255.1:41
     route_targets:
       import:
@@ -77,6 +76,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '41:41'
+    router_id: 192.168.255.1
     redistribute_routes:
     - source_protocol: connected
   vlans:

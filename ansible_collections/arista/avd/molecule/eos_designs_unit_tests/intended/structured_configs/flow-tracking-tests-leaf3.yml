@@ -72,7 +72,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF1
-    router_id: 10.254.1.5
     rd: 10.254.1.5:1
     route_targets:
       import:
@@ -83,11 +82,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 10.254.1.5
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.254.1.105
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: flow-tracking-tests-leaf4
   vlans:
   - id: 11
     tenant: FLOW_TRACKING

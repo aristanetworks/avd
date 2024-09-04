@@ -5,6 +5,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from typing_extensions import Self
+
+from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID, EOS_DESIGNS_SCHEMA_ID
+
 if TYPE_CHECKING:
     from collections.abc import Generator
 
@@ -124,3 +128,21 @@ class AvdSchemaTools:
         self.convert_data(data)
         res = self.validate_data(data)
         return {"failed": res.failed, "errors": res.validation_errors}
+
+
+class EosDesignsAvdSchemaTools(AvdSchemaTools):
+    """Singleton AvdSchemaTools instance for eos_designs schema."""
+
+    def __new__(cls) -> Self:
+        if not hasattr(cls, "instance"):
+            cls.instance = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID)
+        return cls.instance
+
+
+class EosCliConfigGenAvdSchemaTools(AvdSchemaTools):
+    """Singleton AvdSchemaTools instance for eos_cli_config_gen schema."""
+
+    def __new__(cls) -> Self:
+        if not hasattr(cls, "instance"):
+            cls.instance = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
+        return cls.instance

@@ -72,6 +72,7 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "snmp_server.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "snmp_server.vrfs.[].enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ifmib_ifspeed_shape_rate</samp>](## "snmp_server.ifmib_ifspeed_shape_rate") | Boolean |  |  |  | SNMP ifspeed reflecting shaping rate. |
 
 === "YAML"
 
@@ -205,4 +206,7 @@
           # VRF name.
         - name: <str; required; unique>
           enable: <bool>
+
+      # SNMP ifspeed reflecting shaping rate.
+      ifmib_ifspeed_shape_rate: <bool>
     ```

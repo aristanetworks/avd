@@ -228,13 +228,14 @@
 {% include 'eos/ipv6-hardware.j2' %}
 {# Monitor Sessions #}
 {% include 'eos/monitor-sessions.j2' %}
+{% include 'eos/monitor-session-default-encapsulation-gre.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
 {# eos - priority flow control #}
 {% include 'eos/priority-flow-control.j2' %}
 {# Community-lists #}
 {% include 'eos/community-lists.j2' %}
-{# Community-lists, improved data model #}
+{# IP Community Lists #}
 {% include 'eos/ip-community-lists.j2' %}
 {# IP Extended Community Lists #}
 {% include 'eos/ip-extcommunity-lists.j2' %}

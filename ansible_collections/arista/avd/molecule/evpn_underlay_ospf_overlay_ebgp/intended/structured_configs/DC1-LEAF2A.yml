@@ -68,7 +68,6 @@ router_bgp:
     remote_as: '65001'
   vrfs:
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:20
     route_targets:
       import:
@@ -79,11 +78,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2B
     updates:
       wait_install: true
   vlan_aware_bundles:

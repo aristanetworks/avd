@@ -70,7 +70,6 @@ router_bgp:
         - '21:21'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: Tenant_X_OP_Zone
-    router_id: 192.168.255.35
     rd: 192.168.255.35:20
     route_targets:
       import:
@@ -81,6 +80,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.35
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:

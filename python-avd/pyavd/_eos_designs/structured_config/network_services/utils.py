@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item
+from pyavd._utils import default, get, get_all, get_ip_from_ip_prefix, get_item
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -130,13 +130,15 @@ class UtilsMixin(UtilsZscalerMixin):
         """
         Returns True if mlag ibgp_peering is enabled.
 
+        For VRF default we return False unless there is no underlay routing protocol.
+
         False otherwise.
         """
         if not self.shared_utils.mlag_l3 or not self.shared_utils.network_services_l3:
             return False
 
         mlag_ibgp_peering: bool = default(vrf.get("enable_mlag_ibgp_peering_vrfs"), tenant.get("enable_mlag_ibgp_peering_vrfs"), True)  # noqa: FBT003
-        return vrf["name"] != "default" and mlag_ibgp_peering
+        return (vrf["name"] != "default" or self.shared_utils.underlay_routing_protocol == "none") and mlag_ibgp_peering
 
     def _mlag_ibgp_peering_vlan_vrf(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict) -> int | None:
         """
@@ -180,10 +182,15 @@ class UtilsMixin(UtilsZscalerMixin):
         Decides if MLAG BGP peer-group should be configured.
         Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         """
-        if self.shared_utils.underlay_bgp or (bgp_vrfs := self._router_bgp_vrfs) is None:
+        if self.shared_utils.underlay_bgp:
             return False
 
-        for bgp_vrf in bgp_vrfs:
+        # Checking neighbors directly under BGP to cover VRF default case.
+        for neighbor_settings in get(self._router_bgp_vrfs, "neighbors", default=[]):
+            if neighbor_settings.get("peer_group") == self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]:
+                return True
+
+        for bgp_vrf in get(self._router_bgp_vrfs, "vrfs", default=[]):
             if "neighbors" not in bgp_vrf:
                 continue
             for neighbor_settings in bgp_vrf["neighbors"]:
@@ -810,16 +817,22 @@ class UtilsMixin(UtilsZscalerMixin):
         internet_exit_policies = []
 
         for internet_exit_policy in candidate_internet_exit_policies:
-            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy)
-            if not internet_exit_policy["connections"]:
+            local_interfaces = [
+                wan_interface
+                for wan_interface in self.shared_utils.wan_interfaces
+                if internet_exit_policy["name"] in get_all(wan_interface, "cv_pathfinder_internet_exit.policies.name")
+            ]
+            if not local_interfaces:
                 # No local interface for this policy
                 # TODO: Decide if we should raise here instead
                 continue
+
+            internet_exit_policy["connections"] = self.get_internet_exit_connections(internet_exit_policy, local_interfaces)
             internet_exit_policies.append(internet_exit_policy)
 
         return internet_exit_policies
 
-    def get_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
+    def get_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict, local_interfaces: list[dict]) -> list:
         """
         Return a list of connections (dicts) for the given internet_exit_policy.
 
@@ -829,23 +842,23 @@ class UtilsMixin(UtilsZscalerMixin):
         policy_type = internet_exit_policy["type"]
 
         if policy_type == "direct":
-            return self.get_direct_internet_exit_connections(internet_exit_policy)
+            return self.get_direct_internet_exit_connections(internet_exit_policy, local_interfaces)
 
         if policy_type == "zscaler":
-            return self.get_zscaler_internet_exit_connections(internet_exit_policy)
+            return self.get_zscaler_internet_exit_connections(internet_exit_policy, local_interfaces)
 
         msg = f"Unsupported type '{policy_type}' found in cv_pathfinder_internet_exit[name={policy_name}]."
         raise AristaAvdError(msg)
 
-    def get_direct_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
+    def get_direct_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict, local_interfaces: list[dict]) -> list:
         """Return a list of connections (dicts) for the given internet_exit_policy of type direct."""
         if get(internet_exit_policy, "type") != "direct":
             return []
 
         connections = []
 
-        # Check if the policy has any local interface
-        for wan_interface in self.shared_utils.wan_interfaces:
+        # Build internet exit connection for each local interface (wan_interface)
+        for wan_interface in local_interfaces:
             wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
             if get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"]) is None:
                 continue
@@ -886,7 +899,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
         return connections
 
-    def get_zscaler_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict) -> list:
+    def get_zscaler_internet_exit_connections(self: AvdStructuredConfigNetworkServices, internet_exit_policy: dict, local_interfaces: list[dict]) -> list:
         """Return a list of connections (dicts) for the given internet_exit_policy of type zscaler."""
         if get(internet_exit_policy, "type") != "zscaler":
             return []
@@ -896,8 +909,8 @@ class UtilsMixin(UtilsZscalerMixin):
         cloud_name = get(self._zscaler_endpoints, "cloud_name", required=True)
         connections = []
 
-        # Check if the policy has any local interface
-        for wan_interface in self.shared_utils.wan_interfaces:
+        # Build internet exit connection for each local interface (wan_interface)
+        for wan_interface in local_interfaces:
             wan_interface_internet_exit_policies = get(wan_interface, "cv_pathfinder_internet_exit.policies", default=[])
             if (interface_policy_config := get_item(wan_interface_internet_exit_policies, "name", internet_exit_policy["name"])) is None:
                 continue

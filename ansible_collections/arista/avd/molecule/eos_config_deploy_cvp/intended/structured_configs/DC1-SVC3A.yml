@@ -98,7 +98,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: Tenant_A_APP_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:12
     route_targets:
       import:
@@ -109,15 +108,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '12:12'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_A_DB_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:13
     route_targets:
       import:
@@ -128,15 +128,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '13:13'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_A_OP_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:10
     route_targets:
       import:
@@ -147,15 +148,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_A_WAN_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:14
     route_targets:
       import:
@@ -166,15 +168,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '14:14'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_A_WEB_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:11
     route_targets:
       import:
@@ -185,15 +188,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:20
     route_targets:
       import:
@@ -204,15 +208,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_B_WAN_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:21
     route_targets:
       import:
@@ -223,15 +228,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_C_OP_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:30
     route_targets:
       import:
@@ -242,15 +248,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '30:30'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   - name: Tenant_C_WAN_Zone
-    router_id: 192.168.255.8
     rd: 192.168.255.8:31
     route_targets:
       import:
@@ -261,11 +268,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '31:31'
+    router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     updates:
       wait_install: true
   vlan_aware_bundles:

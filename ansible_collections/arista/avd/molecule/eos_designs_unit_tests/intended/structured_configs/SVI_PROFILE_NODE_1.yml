@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: svi_profile_tests_vrf
-    router_id: 192.168.255.1
     rd: 192.168.255.1:1
     route_targets:
       import:
@@ -49,6 +48,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.1
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
@@ -334,18 +334,24 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1000
+  no_autostate: true
 - name: Vlan111
   tenant: svi_profile_tests
   description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.11.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1000
+  no_autostate: true
 - name: Vlan112
   tenant: svi_profile_tests
   description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.12.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1200
+  no_autostate: true
 - name: Vlan113
   tenant: svi_profile_tests
   description: set from svi.structured_config

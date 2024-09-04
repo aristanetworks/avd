@@ -22,8 +22,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-  address_family_evpn:
-    peer_groups: []
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
@@ -45,7 +43,6 @@ router_bgp:
     description: rr2
   vrfs:
   - name: C1_VRF1
-    router_id: 10.255.1.3
     rd: 10.255.1.3:10
     route_targets:
       import:
@@ -56,11 +53,11 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '10:10'
+    router_id: 10.255.1.3
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
   - name: C2_VRF1
-    router_id: 10.255.1.3
     rd: 10.255.1.3:20
     route_targets:
       import:
@@ -71,6 +68,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '20:20'
+    router_id: 10.255.1.3
     redistribute_routes:
     - source_protocol: connected
     address_family_ipv4:
@@ -145,7 +143,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0001.0003.00
+  net: 49.0001.0102.5500.1003.00
   router_id: 10.255.1.3
   is_type: level-2
   address_family_ipv4:

@@ -6,8 +6,6 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd.j2filters import natural_sort
-
 if TYPE_CHECKING:
     from . import EosDesignsFacts
 
@@ -34,31 +32,3 @@ class WanMixin:
             return None
 
         return self.shared_utils.wan_local_path_groups
-
-    @cached_property
-    def wan_router_uplink_vrfs(self: EosDesignsFacts) -> list[str] | None:
-        """
-        Exposed in avd_switch_facts.
-
-        Return the list of VRF names present on uplink switches.
-        These VRFs will be attracted (configured) on WAN "clients" (edge/transit) unless filtered.
-
-        Note that if the attracted VRFs do not have 'wan_vni' set, the code for interface vxlan1 will raise an error.
-        """
-        if not self.shared_utils.is_wan_client or self.shared_utils.uplink_type != "p2p-vrfs":
-            return None
-
-        # Partially recreating logic from 'uplinks', but since this fact is used to build 'filtered_tenants',
-        # which in turn is used to build 'uplinks', we cannot reuse 'uplinks' (recursion)
-
-        # Since uplinks logic silently skips extra entries in uplink vars, we only need to parse shortest list.
-        min_length = min(len(self.shared_utils.uplink_switch_interfaces), len(self.shared_utils.uplink_interfaces), len(self.shared_utils.uplink_switches))
-        # Using set to only get unique uplink switches
-        unique_uplink_switches = set(self.shared_utils.uplink_switches[:min_length])
-
-        vrfs = set()
-        for uplink_switch in unique_uplink_switches:
-            uplink_switch_facts = self.shared_utils.get_peer_facts(uplink_switch)
-            vrfs.update(uplink_switch_facts.shared_utils.vrfs)
-
-        return natural_sort(vrfs) or None

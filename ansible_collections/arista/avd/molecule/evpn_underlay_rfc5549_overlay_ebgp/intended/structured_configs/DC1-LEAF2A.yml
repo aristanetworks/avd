@@ -112,7 +112,6 @@ router_bgp:
     remote_as: '65001'
   vrfs:
   - name: Tenant_A_APP_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:12
     route_targets:
       import:
@@ -123,11 +122,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '12:12'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
+      description: DC1-LEAF2B
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -137,7 +138,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_A_DB_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:13
     route_targets:
       import:
@@ -148,11 +148,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '13:13'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
+      description: DC1-LEAF2B
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -162,7 +164,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_A_OP_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:10
     route_targets:
       import:
@@ -173,11 +174,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
+      description: DC1-LEAF2B
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -187,7 +190,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_A_WEB_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:11
     route_targets:
       import:
@@ -198,11 +200,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
+      description: DC1-LEAF2B
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -212,7 +216,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:20
     route_targets:
       import:
@@ -223,11 +226,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
+      description: DC1-LEAF2B
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -237,7 +242,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_C_OP_Zone
-    router_id: 192.168.255.6
     rd: 192.168.255.6:30
     route_targets:
       import:
@@ -248,11 +252,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '30:30'
+    router_id: 192.168.255.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
+      description: DC1-LEAF2B
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3

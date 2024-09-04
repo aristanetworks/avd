@@ -53,7 +53,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: TEST
-    router_id: 192.168.255.35
     rd: 192.168.255.35:1
     route_targets:
       import:
@@ -64,11 +63,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.35
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.10.224.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: MLAG_SAME_SUBNET_L3LEAF2A
     updates:
       wait_install: true
   vlans:
