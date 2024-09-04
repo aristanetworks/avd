@@ -295,11 +295,15 @@ keys:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Client VLAN ID.
                     outer:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Client Outer VLAN ID.
                     inner:
                       type: int
@@ -326,14 +330,14 @@ keys:
                   min: 1
                   max: 4094
                   description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                outer:
+                outer_vlan:
                   type: int
                   convert_types:
                     - str
                   min: 1
                   max: 4094
                   description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                inner:
+                inner_vlan:
                   type: int
                   convert_types:
                     - str
@@ -359,16 +363,22 @@ keys:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Network outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                         - str
+                      min: 1
+                      max: 4094
                       description: Network inner VLAN ID.
                 client:
                   type: bool
@@ -394,14 +404,14 @@ keys:
                   min: 1
                   max: 4094
                   description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
-                outer:
+                outer_vlan:
                   type: int
                   convert_types:
                     - str
                   min: 1
                   max: 4094
                   description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner:
+                inner_vlan:
                   type: int
                   convert_types:
                     - str

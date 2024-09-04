@@ -175,11 +175,11 @@ interface {{ ethernet_interface.name }}
 {%         if client_protocol in ['dot1q', 'dot1ad'] %}
 {%             if ethernet_interface.encapsulation_vlan.client.vlan is arista.avd.defined %}
 {%                 set encapsulation_cli = 'client ' ~ client_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.client.vlan %}
-{%             elif ethernet_interface.encapsulation_vlan.client.outer is arista.avd.defined and ethernet_interface.encapsulation_vlan.client.inner is arista.avd.defined %}
+{%             elif ethernet_interface.encapsulation_vlan.client.outer_vlan is arista.avd.defined and ethernet_interface.encapsulation_vlan.client.inner_vlan is arista.avd.defined %}
 {%                 if ethernet_interface.encapsulation_vlan.client.inner_protocol is arista.avd.defined %}
-{%                     set encapsulation_cli = 'client ' ~ client_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.client.outer ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.client.inner_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.client.inner %}
+{%                     set encapsulation_cli = 'client ' ~ client_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.client.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.client.inner_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.client.inner_vlan %}
 {%                 else %}
-{%                     set encapsulation_cli = 'client ' ~ client_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.client.outer ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.client.inner %}
+{%                     set encapsulation_cli = 'client ' ~ client_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.client.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.client.inner_vlan %}
 {%                 endif %}
 {%                 if ethernet_interface.encapsulation_vlan.network.protocol | arista.avd.default == 'client inner' %}
 {%                     set network_flag = True %}
@@ -194,11 +194,11 @@ interface {{ ethernet_interface.name }}
 {%                 set network_protocol = ethernet_interface.encapsulation_vlan.network.protocol %}
 {%                 if ethernet_interface.encapsulation_vlan.network.vlan is arista.avd.defined %}
 {%                     set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.vlan %}
-{%                 elif ethernet_interface.encapsulation_vlan.network.inner is arista.avd.defined and ethernet_interface.encapsulation_vlan.network.outer is arista.avd.defined %}
+{%                 elif ethernet_interface.encapsulation_vlan.network.outer_vlan is arista.avd.defined and ethernet_interface.encapsulation_vlan.network.inner_vlan is arista.avd.defined %}
 {%                     if ethernet_interface.encapsulation_vlan.network.inner_protocol is arista.avd.defined %}
-{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.inner %}
+{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
 {%                     else %}
-{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner %}
+{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
 {%                     endif %}
 {%                 elif network_protocol == 'untagged' and client_protocol == 'untagged' %}
 {%                     set encapsulation_cli = encapsulation_cli ~ ' network untagged' %}

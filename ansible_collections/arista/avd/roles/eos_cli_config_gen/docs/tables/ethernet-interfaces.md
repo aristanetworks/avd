@@ -67,25 +67,25 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan") | Dictionary |  |  |  | This setting can only be applied to sub-interfaces on EOS.<br>Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type == l3dot1q/l2dot1q`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q.vlan") | Integer |  |  |  | Client VLAN ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q.outer") | Integer |  |  |  | Client Outer VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q.outer") | Integer |  |  | Min: 1<br>Max: 4094 | Client Outer VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.dot1q.inner") | Integer |  |  |  | Client Inner VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmatched</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.unmatched") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.protocol") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>dot1ad</code><br>- <code>unmatched</code><br>- <code>untagged</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Client VLAN ID. Not applicable for `protocol==untagged/unmatched`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.outer") | Integer |  |  | Min: 1<br>Max: 4094 | Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.inner") | Integer |  |  | Min: 1<br>Max: 4094 | Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.outer_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.inner_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_protocol</samp>](## "ethernet_interfaces.[].encapsulation_vlan.client.inner_protocol") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>dot1ad</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network") | Dictionary |  |  |  | Network encapsulations are all optional and skipped if using client unmatched. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1q</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q.vlan") | Integer |  |  |  | Network VLAN ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q.outer") | Integer |  |  |  | Network outer VLAN ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q.inner") | Integer |  |  |  | Network inner VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Network VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q.outer") | Integer |  |  | Min: 1<br>Max: 4094 | Network outer VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.dot1q.inner") | Integer |  |  | Min: 1<br>Max: 4094 | Network inner VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.client") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.protocol") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>dot1ad</code><br>- <code>client</code><br>- <code>client inner</code><br>- <code>untagged</code> | `untagged` (no encapsulation) is applicable for `untagged` client only.<br>`client` and `client inner` (retain client encapsulation) is not applicable for `untagged` client. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Network VLAN ID. Not applicable for `protocol==untagged/client`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.outer") | Integer |  |  | Min: 1<br>Max: 4094 | Network outer VLAN ID. Not applicable for `protocol==untagged/client`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.inner") | Integer |  |  | Min: 1<br>Max: 4094 | Network inner VLAN ID. Not applicable for `protocol==untagged/client`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outer_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.outer_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Network outer VLAN ID. Not applicable for `protocol==untagged/client`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.inner_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Network inner VLAN ID. Not applicable for `protocol==untagged/client`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_protocol</samp>](## "ethernet_interfaces.[].encapsulation_vlan.network.inner_protocol") | String |  |  | Valid Values:<br>- <code>dot1q</code><br>- <code>dot1ad</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "ethernet_interfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | This setting can only be applied to sub-interfaces on EOS.<br>Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "ethernet_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask or "dhcp". |
@@ -621,10 +621,10 @@
             dot1q:
 
               # Client VLAN ID.
-              vlan: <int>
+              vlan: <int; 1-4094>
 
               # Client Outer VLAN ID.
-              outer: <int>
+              outer: <int; 1-4094>
 
               # Client Inner VLAN ID.
               inner: <int>
@@ -637,10 +637,10 @@
             vlan: <int; 1-4094>
 
             # Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-            outer: <int; 1-4094>
+            outer_vlan: <int; 1-4094>
 
             # Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-            inner: <int; 1-4094>
+            inner_vlan: <int; 1-4094>
             inner_protocol: <str; "dot1q" | "dot1ad">
 
           # Network encapsulations are all optional and skipped if using client unmatched.
@@ -650,13 +650,13 @@
             dot1q:
 
               # Network VLAN ID.
-              vlan: <int>
+              vlan: <int; 1-4094>
 
               # Network outer VLAN ID.
-              outer: <int>
+              outer: <int; 1-4094>
 
               # Network inner VLAN ID.
-              inner: <int>
+              inner: <int; 1-4094>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
             client: <bool>
@@ -669,10 +669,10 @@
             vlan: <int; 1-4094>
 
             # Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
-            outer: <int; 1-4094>
+            outer_vlan: <int; 1-4094>
 
             # Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
-            inner: <int; 1-4094>
+            inner_vlan: <int; 1-4094>
             inner_protocol: <str; "dot1q" | "dot1ad">
 
         # This setting can only be applied to sub-interfaces on EOS.
