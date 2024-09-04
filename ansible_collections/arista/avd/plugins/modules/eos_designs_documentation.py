@@ -60,7 +60,6 @@ EXAMPLES = r"""
 ---
 
 - name: Generate fabric documentation
-  tags: [build, provision, documentation]
   arista.avd.eos_designs_documentation:
     structured_config_dir: "{{ structured_dir }}"
     structured_config_suffix: "{{ avd_structured_config_file_format }}"
