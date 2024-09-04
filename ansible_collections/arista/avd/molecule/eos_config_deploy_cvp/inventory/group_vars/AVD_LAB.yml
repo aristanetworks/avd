@@ -1,3 +1,6 @@
+# Run tests without interacting with CVP.
+avd_eos_config_deploy_cvp_provision: false
+
 # Nashua EVE-NG LAB shared attributes
 root_dir: '{{ playbook_dir }}'
 
