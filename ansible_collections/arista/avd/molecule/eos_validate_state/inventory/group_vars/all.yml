@@ -1,0 +1,4 @@
+---
+eos_designs_documentation:
+  enabled: false
+generate_device_documentation: false
