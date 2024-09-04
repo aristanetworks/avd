@@ -372,6 +372,7 @@ router_bgp:
       - 10001:10001
     redistribute_routes:
     - learned
+    - igmp
   - id: 2
     tenant: Tenant_B
     rd: 192.168.255.6:10002
@@ -380,6 +381,7 @@ router_bgp:
       - 10002:10002
     redistribute_routes:
     - learned
+    - igmp
   - id: 3
     tenant: Tenant_B
     rd: 192.168.255.6:10003
@@ -388,6 +390,7 @@ router_bgp:
       - 10003:10003
     redistribute_routes:
     - learned
+    - igmp
   - id: 4
     tenant: Tenant_B
     rd: 192.168.255.6:10004

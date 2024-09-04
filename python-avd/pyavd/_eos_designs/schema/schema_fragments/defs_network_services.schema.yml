@@ -171,6 +171,9 @@ $defs:
             fast_leave:
               type: bool
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within Tenant.
+            redistribute_igmp_vrf:
+              type: bool
+              description: Enable redistribute igmp for BGP vlan config belonging to a VRF with evpn multicast.
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings

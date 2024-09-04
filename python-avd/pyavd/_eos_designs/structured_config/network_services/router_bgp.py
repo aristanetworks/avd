@@ -468,7 +468,11 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
 
         vlan_evpn_l2_multicast_enabled = default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled"))
-        if vlan_evpn_l2_multicast_enabled is True and not vrf:
+        redistribute_igmp_vrf_flag = default(
+            get(tenant, "evpn_l2_multicast.redistribute_igmp_vrf"),
+            False,  # noqa: FBT003
+        )
+        if vlan_evpn_l2_multicast_enabled is True and (not vrf or redistribute_igmp_vrf_flag):
             bgp_vlan["redistribute_routes"].append("igmp")
 
         # Strip None values from vlan before returning
