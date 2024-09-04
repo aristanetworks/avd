@@ -429,6 +429,7 @@ underlay_port_channel_interfaces:
 
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
+- `{{ link.peer }}`
 - `{{ link.peer_channel_group_id }}`
 - All group/hostvars
 
@@ -442,18 +443,22 @@ mlag_port_channel_interfaces:
 
 - `{{ mlag_interfaces }}`
 - `{{ mlag_peer }}`
+- `{{ mlag_port_channel_id }}`
 - All group/hostvars
 
 connected_endpoints_ethernet_interfaces:
 
 - `{{ peer }}`
 - `{{ peer_interface }}`
+- `{{ adapter_description }}`
 - All group/hostvars
 
 connected_endpoints_port_channel_interfaces:
 
 - `{{ peer }}`
+- `{{ adapter_port_channel_id }}`
 - `{{ adapter_port_channel_description }}`
+- `{{ adapter_description }}`
 - All group/hostvars
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
