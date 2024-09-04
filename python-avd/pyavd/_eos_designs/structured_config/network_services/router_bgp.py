@@ -472,7 +472,7 @@ class RouterBgpMixin(UtilsMixin):
             get(tenant, "evpn_l2_multicast.redistribute_igmp_vrf"),
             False,  # noqa: FBT003
         )
-        if vlan_evpn_l2_multicast_enabled is True and (not vrf or redistribute_igmp_vrf_flag):
+        if vlan_evpn_l2_multicast_enabled is True and (not get(vrf, "_evpn_l3_multicast_enabled") or redistribute_igmp_vrf_flag):
             bgp_vlan["redistribute_routes"].append("igmp")
 
         # Strip None values from vlan before returning

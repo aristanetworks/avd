@@ -283,6 +283,7 @@ router_bgp:
       - 10110:10110
     redistribute_routes:
     - learned
+    - igmp
   - id: 111
     tenant: Tenant_A
     rd: 192.168.255.8:10111
@@ -291,6 +292,7 @@ router_bgp:
       - 10111:10111
     redistribute_routes:
     - learned
+    - igmp
   - id: 210
     tenant: Tenant_A
     rd: 192.168.255.8:10210
@@ -299,6 +301,7 @@ router_bgp:
       - 10210:10210
     redistribute_routes:
     - learned
+    - igmp
   - id: 211
     tenant: Tenant_A
     rd: 192.168.255.8:10211
