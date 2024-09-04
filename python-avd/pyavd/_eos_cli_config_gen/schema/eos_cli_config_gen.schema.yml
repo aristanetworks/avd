@@ -14446,17 +14446,6 @@ keys:
                           type: str
                           description: Apply the configurations only to the routes
                             matching the prefix list.
-                      keys:
-                        install:
-                          type: bool
-                          description: Install BGP backup path.
-                        install_ecmp_primary:
-                          type: bool
-                          description: Allow additional path with ECMP primary path.
-                        prefix_list:
-                          type: str
-                          description: Apply the configurations only to the routes
-                            matching the prefix list.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -19109,7 +19098,7 @@ $defs:
         - backup
         - ecmp
         - limit
-        - 'null'
+        - disabled
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for

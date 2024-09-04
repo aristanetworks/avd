@@ -128,7 +128,7 @@ router_bgp:
       - name: ADDITIONAL-PATH-PG-6
         activate: true
         additional_paths:
-          send: 'null'
+          send: 'disabled'
     evpn_hostflap_detection:
       enabled: true
       window: 10
