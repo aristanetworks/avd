@@ -192,13 +192,15 @@ interface {{ ethernet_interface.name }}
 {%         if encapsulation_cli is arista.avd.defined %}
 {%             if client_protocol in ['dot1q', 'dot1ad', 'untagged'] and ethernet_interface.encapsulation_vlan.network.protocol is arista.avd.defined and not network_flag %}
 {%                 set network_protocol = ethernet_interface.encapsulation_vlan.network.protocol %}
-{%                 if ethernet_interface.encapsulation_vlan.network.vlan is arista.avd.defined %}
-{%                     set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.vlan %}
-{%                 elif ethernet_interface.encapsulation_vlan.network.outer_vlan is arista.avd.defined and ethernet_interface.encapsulation_vlan.network.inner_vlan is arista.avd.defined %}
-{%                     if ethernet_interface.encapsulation_vlan.network.inner_protocol is arista.avd.defined %}
-{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
-{%                     else %}
-{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
+{%                 if network_protocol in ['dot1q', 'dot1ad'] %}
+{%                     if ethernet_interface.encapsulation_vlan.network.vlan is arista.avd.defined %}
+{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.vlan %}
+{%                     elif ethernet_interface.encapsulation_vlan.network.outer_vlan is arista.avd.defined and ethernet_interface.encapsulation_vlan.network.inner_vlan is arista.avd.defined %}
+{%                         if ethernet_interface.encapsulation_vlan.network.inner_protocol is arista.avd.defined %}
+{%                             set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_protocol ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
+{%                         else %}
+{%                             set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_protocol ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
+{%                         endif %}
 {%                     endif %}
 {%                 elif network_protocol == 'untagged' and client_protocol == 'untagged' %}
 {%                     set encapsulation_cli = encapsulation_cli ~ ' network untagged' %}
