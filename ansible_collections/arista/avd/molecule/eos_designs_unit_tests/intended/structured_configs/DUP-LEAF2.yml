@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: TEST
-    router_id: 10.0.0.2
     rd: 10.0.0.2:10
     route_targets:
       import:
@@ -49,6 +48,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
+    router_id: 10.0.0.2
     redistribute_routes:
     - source_protocol: connected
   vlans:

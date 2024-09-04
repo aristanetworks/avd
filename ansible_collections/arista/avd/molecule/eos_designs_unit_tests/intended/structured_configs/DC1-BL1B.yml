@@ -120,7 +120,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
-    router_id: 192.168.255.15
     rd: 192.168.254.15:15
     route_targets:
       import:
@@ -131,10 +130,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65105:15'
+    router_id: 192.168.255.15
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_WAN_Zone
-    router_id: 192.168.255.15
     rd: 192.168.254.15:14
     route_targets:
       import:
@@ -153,6 +152,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - 65000:123
+    router_id: 192.168.255.15
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
@@ -213,7 +213,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.15
     rd: 192.168.254.15:20
     route_targets:
       import:
@@ -224,10 +223,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65105:20'
+    router_id: 192.168.255.15
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_B_WAN_Zone
-    router_id: 192.168.255.15
     rd: 192.168.254.15:21
     route_targets:
       import:
@@ -238,10 +237,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65105:21'
+    router_id: 192.168.255.15
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_C_WAN_Zone
-    router_id: 192.168.255.15
     rd: 192.168.254.15:31
     route_targets:
       import:
@@ -252,6 +251,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65105:31'
+    router_id: 192.168.255.15
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:

@@ -58,7 +58,6 @@ router_bgp:
           any: true
   vrfs:
   - name: VRF1
-    router_id: 192.168.1.2
     rd: 192.168.1.2:123
     route_targets:
       import:
@@ -69,6 +68,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 123:123
+    router_id: 192.168.1.2
     redistribute_routes:
     - source_protocol: connected
   - name: default
