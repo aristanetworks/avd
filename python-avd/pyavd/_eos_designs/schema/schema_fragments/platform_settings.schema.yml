@@ -294,6 +294,7 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
         management_interface: Management1/1
+        p2p_uplinks_mtu: 9194
       - platforms:
           - AWE-7220R
         feature_support:
@@ -303,3 +304,4 @@ keys:
           queue_monitor_length_notify: false
           poe: true
         management_interface: Management1
+        p2p_uplinks_mtu: 9194

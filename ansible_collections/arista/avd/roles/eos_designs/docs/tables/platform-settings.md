@@ -359,6 +359,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
           management_interface: Management1/1
+          p2p_uplinks_mtu: 9194
           platforms:
           - AWE-5310
           - AWE-5510
@@ -371,6 +372,7 @@
             poe: true
             queue_monitor_length_notify: false
           management_interface: Management1
+          p2p_uplinks_mtu: 9194
           platforms:
           - AWE-7220R
         ```
