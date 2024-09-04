@@ -189,7 +189,7 @@ ethernet_interfaces:
   peer_type: wan_router
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.17.0.0/31
 - name: Ethernet1.1000
@@ -201,7 +201,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 1000
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet1.142
   peer: cv-pathfinder-edge
@@ -212,7 +212,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 142
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet1.666
   peer: cv-pathfinder-edge
@@ -223,7 +223,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 666
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet2
   peer: cv-pathfinder-edge1
@@ -231,7 +231,7 @@ ethernet_interfaces:
   peer_type: wan_router
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE1_Ethernet52
   shutdown: false
-  mtu: 9194
+  mtu: 9214
   type: routed
   ip_address: 172.17.0.2/31
 - name: Ethernet2.1000
@@ -243,7 +243,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 1000
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.17.0.2/31
 - name: Ethernet2.142
   peer: cv-pathfinder-edge1
@@ -254,7 +254,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 142
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.17.0.2/31
 - name: Ethernet2.666
   peer: cv-pathfinder-edge1
@@ -265,7 +265,7 @@ ethernet_interfaces:
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 666
-  mtu: 9194
+  mtu: 9214
   ip_address: 172.17.0.2/31
 loopback_interfaces:
 - name: Loopback0

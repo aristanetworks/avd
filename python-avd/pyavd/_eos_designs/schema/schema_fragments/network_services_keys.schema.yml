@@ -20,4 +20,4 @@ keys:
         name:
           type: str
     default:
-      - "name": "tenants"
+      - name: tenants

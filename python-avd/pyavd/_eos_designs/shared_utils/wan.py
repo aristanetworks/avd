@@ -481,7 +481,7 @@ class WanMixin:
         raise AristaAvdError(msg)
 
     @cached_property
-    def configured_wan_ha_mtu(self: SharedUtils) -> set:
+    def configured_wan_ha_mtu(self: SharedUtils) -> int:
         """Read the device wan_ha.mtu node settings."""
         return get(self.switch_data_combined, "wan_ha.mtu", default=9194)
 

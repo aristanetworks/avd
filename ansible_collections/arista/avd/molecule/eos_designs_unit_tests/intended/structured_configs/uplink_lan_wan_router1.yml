@@ -58,7 +58,6 @@ router_bgp:
           any: true
   vrfs:
   - name: VRF1
-    router_id: 192.168.1.1
     rd: 192.168.1.1:123
     route_targets:
       import:
@@ -69,6 +68,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 123:123
+    router_id: 192.168.1.1
     redistribute_routes:
     - source_protocol: connected
   - name: default
@@ -114,7 +114,7 @@ ethernet_interfaces:
   type: routed
   vrf: VRF1
   ip_address: 10.0.10.1/24
-  mtu: 9214
+  mtu: 9218
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet2.100

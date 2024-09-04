@@ -56,7 +56,6 @@ router_bgp:
       expiry_timeout: 10
   vrfs:
   - name: Tenant_X_OP_Zone
-    router_id: 192.168.255.34
     rd: 192.168.255.34:20
     route_targets:
       import:
@@ -67,6 +66,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.34
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:

@@ -65,7 +65,6 @@ router_bgp:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: IT
-    router_id: 192.168.30.1
     rd: 192.168.30.1:100
     route_targets:
       import:
@@ -76,10 +75,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 100:100
+    router_id: 192.168.30.1
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
-    router_id: 192.168.30.1
     rd: 192.168.30.1:42
     route_targets:
       import:
@@ -90,6 +89,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '42:42'
+    router_id: 192.168.30.1
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent

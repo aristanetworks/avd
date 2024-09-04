@@ -5243,8 +5243,7 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and
-                will be removed in AVD 5.0.0.
+              description: Name of the SA policy.
             sa_lifetime:
               type: dict
               keys:
@@ -15200,6 +15199,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
@@ -15243,6 +15243,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
