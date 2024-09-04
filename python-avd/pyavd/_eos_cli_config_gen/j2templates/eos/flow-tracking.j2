@@ -89,9 +89,9 @@ flow tracking sampled
 {%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort %}
    !
    tracker {{ tracker.name }}
-{%             if tracker.table_size is arista.avd.defined %}
+{%         if tracker.table_size is arista.avd.defined %}
       flow table size {{ tracker.table_size }} entries
-{%             endif %}
+{%         endif %}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
 {%         endif %}
