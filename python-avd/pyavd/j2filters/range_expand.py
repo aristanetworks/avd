@@ -52,7 +52,7 @@ def expand_interfaces(interface_string: str, data: InterfaceData) -> list:
 
 def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list:
     result = []
-    if data.last_parent_interface:
+    if data.last_parent_interface is not None:
         if data.first_parent_interface > data.last_parent_interface:
             msg = (
                 f"Range {data.one_range} could not be expanded because the first interface {data.first_parent_interface} is larger than last"
@@ -68,7 +68,7 @@ def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list
 
 def expand_module(interface_string: str, data: InterfaceData) -> list:
     result = []
-    if data.last_module:
+    if data.last_module is not None:
         if data.first_module > data.last_module:
             msg = (
                 f"Range {data.one_range} could not be expanded because the first module {data.first_module} is larger than last module"
