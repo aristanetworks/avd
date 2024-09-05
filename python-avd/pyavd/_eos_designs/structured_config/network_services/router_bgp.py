@@ -467,13 +467,18 @@ class RouterBgpMixin(UtilsMixin):
             bgp_vlan["rd_evpn_domain"] = {"domain": "remote", "rd": vlan_rd}
             bgp_vlan["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": vlan_rt}]
 
-        vlan_evpn_l2_multicast_enabled = default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled"))
-        redistribute_igmp_vrf_flag = default(
-            get(tenant, "evpn_l2_multicast.redistribute_igmp_vrf"),
-            False,  # noqa: FBT003
+        vlan_evpn_l2_multicast_enabled = (
+            default(get(vlan, "evpn_l2_multicast.enabled"), get(tenant, "evpn_l2_multicast.enabled")) and self.shared_utils.evpn_multicast is True
         )
-        if vlan_evpn_l2_multicast_enabled is True and (not get(vrf, "_evpn_l3_multicast_enabled") or redistribute_igmp_vrf_flag):
-            bgp_vlan["redistribute_routes"].append("igmp")
+        if vlan_evpn_l2_multicast_enabled is True:
+            always_redistribute_igmp = default(
+                get(vlan, "evpn_l2_multicast.always_redistribute_igmp"),
+                get(tenant, "evpn_l2_multicast.always_redistribute_igmp"),
+                False,  # noqa: FBT003
+            )
+            # For l2vlans vrf is an empty dict so this will always configure redistribute igmp
+            if not get(vrf, "_evpn_l3_multicast_enabled") or always_redistribute_igmp:
+                bgp_vlan["redistribute_routes"].append("igmp")
 
         # Strip None values from vlan before returning
         return {key: value for key, value in bgp_vlan.items() if value is not None}
