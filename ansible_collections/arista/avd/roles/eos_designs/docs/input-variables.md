@@ -461,6 +461,14 @@ connected_endpoints_port_channel_interfaces:
 - `{{ adapter_description }}`
 - All group/hostvars
 
+overlay_loopback_interface:
+
+- All group/hostvars
+
+vtep_loopback_interface:
+
+- All group/hostvars
+
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
 the values are not part of the officially supported data models and may change without notice.
 
