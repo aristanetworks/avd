@@ -48,6 +48,18 @@ node_type_keys:
       connected_endpoints_port_channel_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
       overlay_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/overlay-loopback.j2'
       vtep_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/vtep-loopback.j2'
+  - key: l2leaf
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
 
 ip_offset_10: 10
 ip_offset_20: 20
