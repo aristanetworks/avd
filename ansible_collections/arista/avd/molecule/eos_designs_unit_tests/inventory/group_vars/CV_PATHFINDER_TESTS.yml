@@ -474,10 +474,13 @@ tenants:
         vrf_id: 1
       - name: TRANSIT
         vrf_id: 66
-      # Test that a VRF with address_families: [] on a WAN router is not configured on Vxlan1 interface nor BGP
+      # Test that a VRF with address_families: [] on a WAN router is not configured on Vxlan1 interface. Only configured for BGP because we force enabled: True
       - name: NOT-WAN-VRF
         vrf_id: 13
         address_families: []
+        bgp:
+          # Test that we can forcefully configure BGP for this VRF even if not needed by anything.
+          enabled: true
   - name: TenantC
     mac_vrf_vni_base: 1000
     vrfs:

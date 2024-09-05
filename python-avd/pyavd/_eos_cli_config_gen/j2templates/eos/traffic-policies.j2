@@ -73,10 +73,12 @@ traffic-policies
 {%                     set bgp_flag = True %}
 {%                     for protocol in match.protocols %}
 {%                         if protocol.protocol | lower in ['neighbors', 'bgp'] and bgp_flag %}
-{%                             if protocol.protocol | lower == 'neighbors' and protocol.enforce_gtsm is arista.avd.defined(true) %}
-         protocol neighbors bgp enforce ttl maximum-hops
-{%                             elif protocol.protocol | lower == 'neighbors' %}
-         protocol neighbors bgp
+{%                             if protocol.protocol | lower == 'neighbors' %}
+{%                                 set protocol_neighbors_cli = 'protocol neighbors bgp' %}
+{%                                 if protocol.enforce_gtsm is arista.avd.defined(true) %}
+{%                                     set protocol_neighbors_cli = protocol_neighbors_cli ~ ' enforce ttl maximum-hops' %}
+{%                                 endif %}
+         {{ protocol_neighbors_cli }}
 {%                             elif protocol.protocol | lower == 'bgp' %}
          protocol bgp
 {%                             endif %}
@@ -95,20 +97,26 @@ traffic-policies
                                  protocol.src_field is arista.avd.defined or
                                  protocol.dst_field is arista.avd.defined) %}
 {#                                 -- source/destination port-list -- #}
-{%                                 if protocol.src_port is arista.avd.defined and protocol.dst_port is arista.avd.defined %}
-         {{ protocol_cli }} source port {{ protocol.src_port }} destination port {{ protocol.dst_port }}
-{%                                 elif protocol.src_port is arista.avd.defined %}
-         {{ protocol_cli }} source port {{ protocol.src_port }}
-{%                                 elif protocol.dst_port is arista.avd.defined %}
-         {{ protocol_cli }} destination port {{ protocol.dst_port }}
+{%                                 if protocol.src_port is arista.avd.defined or protocol.dst_port is arista.avd.defined %}
+{%                                     set protocol_port_cli = protocol_cli %}
+{%                                     if protocol.src_port is arista.avd.defined %}
+{%                                         set protocol_port_cli = protocol_port_cli ~ ' source port ' ~ protocol.src_port %}
+{%                                     endif %}
+{%                                     if protocol.dst_port is arista.avd.defined %}
+{%                                         set protocol_port_cli = protocol_port_cli ~ ' destination port ' ~ protocol.dst_port %}
+{%                                     endif %}
+         {{ protocol_port_cli }}
 {%                                 endif %}
 {#                                 -- source/destination field-set -- #}
-{%                                 if protocol.src_field is arista.avd.defined and protocol.dst_field is arista.avd.defined %}
-         {{ protocol_cli }} source port field-set {{ protocol.src_field }} destination port field-set {{ protocol.dst_field }}
-{%                                 elif protocol.src_field is arista.avd.defined %}
-         {{ protocol_cli }} source port field-set {{ protocol.src_field }}
-{%                                 elif protocol.dst_field is arista.avd.defined %}
-         {{ protocol_cli }} destination port field-set {{ protocol.dst_field }}
+{%                                 if protocol.src_field is arista.avd.defined or protocol.dst_field is arista.avd.defined %}
+{%                                     set protocol_field_cli = protocol_cli %}
+{%                                     if protocol.src_field is arista.avd.defined %}
+{%                                         set protocol_field_cli = protocol_field_cli ~ ' source port field-set ' ~ protocol.src_field %}
+{%                                     endif %}
+{%                                     if protocol.dst_field is arista.avd.defined %}
+{%                                         set protocol_field_cli = protocol_field_cli ~ ' destination port field-set ' ~ protocol.dst_field %}
+{%                                     endif %}
+         {{ protocol_field_cli }}
 {%                                 endif %}
 {%                             elif protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
          {{ protocol_cli }} type {{ protocol.icmp_type | arista.avd.natural_sort | join(' ') }} code all

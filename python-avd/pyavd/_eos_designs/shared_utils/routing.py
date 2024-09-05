@@ -51,6 +51,7 @@ class RoutingMixin:
                     self.overlay_routing_protocol in ["ebgp", "ibgp"]
                     and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
                 )
+                or self.bgp_in_network_services
             )
         )
 

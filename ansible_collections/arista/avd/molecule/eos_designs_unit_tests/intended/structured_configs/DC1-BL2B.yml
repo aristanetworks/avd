@@ -148,7 +148,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: Tenant_A_WAN_Zone
-    router_id: 192.168.255.17
     rd: 192.168.255.17:14
     route_targets:
       import:
@@ -167,10 +166,10 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - 65000:123
+    router_id: 192.168.255.17
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.17
     rd: 192.168.255.17:20
     route_targets:
       import:
@@ -181,10 +180,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.17
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_B_WAN_Zone
-    router_id: 192.168.255.17
     rd: 192.168.255.17:21
     route_targets:
       import:
@@ -195,10 +194,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
+    router_id: 192.168.255.17
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_C_WAN_Zone
-    router_id: 192.168.255.17
     rd: 192.168.255.17:31
     route_targets:
       import:
@@ -209,6 +208,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '31:31'
+    router_id: 192.168.255.17
     redistribute_routes:
     - source_protocol: connected
     address_family_ipv4:

@@ -155,3 +155,15 @@ class AvdSchema:
             raise AvdSchemaError(msg, path=datapath)
 
         return recursive_function(datapath, schema)
+
+    def get_default_value(self, datapath: list) -> Any:
+        """Return the default value of a key given the datapath as a list.
+
+        Raises:
+        -------
+          AvdSchemaError if no default value is defined.
+        """
+        if "default" not in (subschema := self.subschema(datapath)):
+            msg = f"The datapath '{datapath}' does not have a default value"
+            raise AvdSchemaError(msg)
+        return subschema["default"]
