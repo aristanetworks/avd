@@ -2,5 +2,5 @@
 root_dir: '{{ playbook_dir }}'
 
 eos_designs_documentation:
-  enabled: false
+  enable: false
 generate_device_documentation: false

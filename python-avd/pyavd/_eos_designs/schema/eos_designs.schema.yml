@@ -1051,12 +1051,12 @@ keys:
       topology_csv:
         description: Generate Topology CSV with all interfaces towards other devices.
         type: bool
-        default: true
+        default: false
       p2p_links_csv:
         description: Generate P2P links CSV with all routed point-to-point links between
           devices.
         type: bool
-        default: true
+        default: false
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     documentation_options:
