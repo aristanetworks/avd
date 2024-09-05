@@ -1202,7 +1202,8 @@ router_ospf:
     - Ethernet22
     - Ethernet23
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2A_VTEP

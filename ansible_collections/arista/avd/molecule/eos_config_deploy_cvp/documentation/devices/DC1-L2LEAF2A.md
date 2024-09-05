@@ -339,12 +339,12 @@ vlan 4094
 !
 interface Ethernet1
    description DC1-SVC3A_Ethernet7
-   no shutdown
+   shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
    description DC1-SVC3B_Ethernet7
-   no shutdown
+   shutdown
    channel-group 1 mode active
 !
 interface Ethernet3

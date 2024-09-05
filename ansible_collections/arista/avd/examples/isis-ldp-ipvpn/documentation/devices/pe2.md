@@ -177,10 +177,10 @@ vlan internal order ascending range 1006 1199
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet4.10 | C1_L3_SERVICE | - | 10 |
-| Ethernet4.20 | C2_L3_SERVICE | - | 20 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet4.10 | C1_L3_SERVICE | - | 10 | - |
+| Ethernet4.20 | C2_L3_SERVICE | - | 20 | - |
 
 ##### IPv4
 

@@ -98,7 +98,7 @@
 {%         for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 {%             if process_id.redistribute is arista.avd.defined %}
 {%                 set source_protocols = [] %}
-{%                 if process_id.redistribute.connected is defined %}
+{%                 if process_id.redistribute.connected.enabled is arista.avd.defined(true) %}
 {%                     if process_id.redistribute.connected.include_leaked is arista.avd.defined(true) %}
 {%                         set include_leaked = 'enabled' %}
 {%                     else %}
@@ -106,7 +106,7 @@
 {%                     endif %}
 {%                     do source_protocols.append(('connected', include_leaked, process_id.redistribute.connected.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
-{%                 if process_id.redistribute.static is defined %}
+{%                 if process_id.redistribute.static.enabled is arista.avd.defined(true) %}
 {%                     if process_id.redistribute.static.include_leaked is arista.avd.defined(true) %}
 {%                         set include_leaked = 'enabled' %}
 {%                     else %}
@@ -114,7 +114,7 @@
 {%                     endif %}
 {%                     do source_protocols.append(('static', include_leaked, process_id.redistribute.static.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
-{%                 if process_id.redistribute.bgp is defined %}
+{%                 if process_id.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%                     if process_id.redistribute.bgp.include_leaked is arista.avd.defined(true) %}
 {%                         set include_leaked = 'enabled' %}
 {%                     else %}
