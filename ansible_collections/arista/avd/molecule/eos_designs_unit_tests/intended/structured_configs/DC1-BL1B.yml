@@ -634,8 +634,10 @@ router_ospf:
     - Vlan150
     max_lsa: 15000
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
       connected:
+        enabled: true
         route_map: RM_TEST
 vxlan_interface:
   vxlan1:
