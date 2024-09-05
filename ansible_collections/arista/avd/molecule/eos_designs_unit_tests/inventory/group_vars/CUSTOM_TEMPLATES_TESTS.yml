@@ -74,6 +74,7 @@ servers:
         switches: [ CUSTOM-TEMPLATES-L3LEAF1A ]
         mode: trunk
         enabled: true
+        description: management
   - name: SERVER-2
     adapters:
       - endpoint_ports: [ Nic1, Nic2 ]
@@ -81,6 +82,7 @@ servers:
         switches: [ CUSTOM-TEMPLATES-L3LEAF1B, CUSTOM-TEMPLATES-L3LEAF1B ]
         mode: trunk
         enabled: true
+        description: data
         port_channel:
           mode: active
           description: portchannel

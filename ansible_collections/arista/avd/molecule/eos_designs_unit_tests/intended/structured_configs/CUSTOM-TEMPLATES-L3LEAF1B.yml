@@ -177,7 +177,7 @@ vlan_interfaces:
   ip_address: 10.255.240.11/31
 port_channel_interfaces:
 - name: Port-Channel3
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Po3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Eth3_Eth4_Po3
   type: switched
   shutdown: false
   mode: trunk
@@ -192,7 +192,7 @@ port_channel_interfaces:
   vlans: none
   mlag: 5
 - name: Port-Channel12
-  description: TEST_CUSTOM_PREFIX_SERVER-2_portchannel
+  description: TEST_CUSTOM_PREFIX_SERVER-2_data_portchannel_12
   type: switched
   shutdown: false
   mode: trunk
@@ -240,7 +240,7 @@ ethernet_interfaces:
   peer: SERVER-2
   peer_interface: Nic1
   peer_type: server
-  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic1
+  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic1_data
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -250,7 +250,7 @@ ethernet_interfaces:
   peer: SERVER-2
   peer_interface: Nic2
   peer_type: server
-  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2
+  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2_data
   shutdown: false
   type: port-channel-member
   channel_group:
