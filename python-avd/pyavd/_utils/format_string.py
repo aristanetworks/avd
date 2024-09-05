@@ -21,7 +21,7 @@ class AvdStringFormatter(Formatter):
     Note the order of syntax field matters!
     """
 
-    def _vformat(self, format_string: str, args: list, kwargs: dict, used_args: list, recursion_depth: int, auto_arg_index: int = 0) -> str:
+    def _vformat(self, format_string: str, args: list, kwargs: dict, used_args: list, recursion_depth: int, auto_arg_index: int = 0) -> tuple[str, int]:
         """
         Perform the actual formatting.
 
@@ -50,13 +50,13 @@ class AvdStringFormatter(Formatter):
                 # handle arg indexing when empty field_names are given.
                 if field_name == "":
                     if auto_arg_index is False:
-                        msg = "cannot switch from manual field " "specification to automatic field " "numbering"
+                        msg = "cannot switch from manual field specification to automatic field numbering"
                         raise ValueError(msg)
                     field_name = str(auto_arg_index)
                     auto_arg_index += 1
                 elif field_name.isdigit():
                     if auto_arg_index:
-                        msg = "cannot switch from manual field " "specification to automatic field " "numbering"
+                        msg = "cannot switch from manual field specification to automatic field numbering"
                         raise ValueError(msg)
                     # disable auto arg incrementing, if it gets
                     # used later on, then an exception will be raised
