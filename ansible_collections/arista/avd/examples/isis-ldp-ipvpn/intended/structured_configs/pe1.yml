@@ -239,6 +239,7 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet3.10
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 metadata:
   platform: vEOS-lab
