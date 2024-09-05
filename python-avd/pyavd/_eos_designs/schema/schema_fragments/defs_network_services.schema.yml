@@ -174,9 +174,9 @@ $defs:
             always_redistribute_igmp:
               type: bool
               description: |-
-                Always configure `redistribute igmp` under BGP for all SVIs within the Tenant  if  `evpn_l2_multicast` is True.
+                Always configure `redistribute igmp` under BGP for all SVIs within the Tenant if `evpn_l2_multicast` is True.
                 By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.
-                Configuring `redistribute igmp` when both L2 and L3 EVPN Mutlicast is enabled will take up additional control-plane and data-plane resources,
+                Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
                 but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
                 This can be overridden per SVI.
         evpn_l3_multicast:

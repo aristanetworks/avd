@@ -158,7 +158,7 @@ $defs:
             description: |-
               Always configure `redistribute igmp` under BGP for the VLAN. Overrides the setting of `<network_services_key>.[].evpn_l2_multicast.always_redistribute_igmp`.
               By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.
-              Configuring `redistribute igmp` when both L2 and L3 EVPN Mutlicast is enabled will take up additional control-plane and data-plane resources,
+              Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
               but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
       evpn_l3_multicast:
         documentation_options:
