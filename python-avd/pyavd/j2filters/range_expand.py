@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 import re
+from typing import Any
 
 
-def range_expand(range_to_expand):
+def range_expand(range_to_expand: Any) -> list:
     if not isinstance(range_to_expand, (list, str)):
         raise TypeError(f"value must be of type list or str, got {type(range_to_expand)}")
 
@@ -115,7 +116,7 @@ def range_expand(range_to_expand):
 
                     def expand_parent_interfaces(interface_string):
                         result = []
-                        if last_parent_interface:
+                        if last_parent_interface is not None:
                             if first_parent_interface > last_parent_interface:
                                 raise ValueError(
                                     f"Range {one_range} could not be expanded because the first interface {first_parent_interface} is larger than last"
@@ -131,7 +132,7 @@ def range_expand(range_to_expand):
 
                     def expand_module(interface_string):
                         result = []
-                        if last_module:
+                        if last_module is not None:
                             if first_module > last_module:
                                 raise ValueError(
                                     f"Range {one_range} could not be expanded because the first module {first_module} is larger than last module"
