@@ -164,8 +164,10 @@ router_ospf:
     - Ethernet5
     bfd_enable: false
     redistribute:
-      connected: {}
-      static: {}
+      connected:
+        enabled: true
+      static:
+        enabled: true
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
