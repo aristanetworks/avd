@@ -27,7 +27,6 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
     - Upload Configlets and assign to devices.
 
     TODO: See if this can be optimized to check if the configlets are already in place and correct. A hash would have been nice.
-    TODO: Split long configs into multiple configlets for 990KB chunks. Need to figure out how to batch it.
     """
     LOGGER.info("deploy_configs_to_cv: %s", len(configs))
 
