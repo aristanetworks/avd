@@ -179,6 +179,7 @@ class ConfigletMixin:
 
         return assignment_keys
 
+    # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
     async def set_configlet_containers(  # noqa: F811 - Redefining with decorator.
         self: CVClient,
@@ -415,6 +416,7 @@ class ConfigletMixin:
 
         return configlet_configs
 
+    # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClient,
