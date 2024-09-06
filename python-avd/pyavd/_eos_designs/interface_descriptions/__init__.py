@@ -118,6 +118,9 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
     def mlag_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Available data:
+            - interface
+            - peer_interface
+            - mlag_peer
             - peer_interface
             - mpls_overlay_role
             - mpls_lsr
@@ -129,7 +132,11 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
     def mlag_ethernet_interfaces(self, mlag_interface: str) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
         if template_path := self.shared_utils.interface_descriptions_templates.get("mlag_ethernet_interfaces"):
-            return self._template(template_path, mlag_interface=mlag_interface)
+            return self._template(
+                template_path,
+                mlag_interface=mlag_interface,
+                mlag_peer=self._mlag_peer,
+            )
 
         return f"MLAG_PEER_{self._mlag_peer}_{mlag_interface}"
 
@@ -151,7 +158,12 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
     def mlag_port_channel_interfaces(self) -> str:
         """TODO: AVD5.0.0 move this to the new function."""
         if template_path := self.shared_utils.interface_descriptions_templates.get("mlag_port_channel_interfaces"):
-            return self._template(template_path)
+            return self._template(
+                template_path,
+                mlag_interfaces=self._mlag_interfaces,
+                mlag_peer=self._mlag_peer,
+                mlag_port_channel_id=self._mlag_port_channel_id,
+            )
 
         return f"MLAG_PEER_{self._mlag_peer}_Po{self._mlag_port_channel_id}"
 

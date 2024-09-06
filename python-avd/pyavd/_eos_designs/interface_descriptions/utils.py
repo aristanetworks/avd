@@ -32,6 +32,11 @@ class UtilsMixin:
         return self.shared_utils.mlag_peer
 
     @cached_property
+    def _mlag_interfaces(self: AvdInterfaceDescriptions) -> list[str]:
+        """TODO: AVD5.0.0 remove this since it has been replaced by DescriptionData."""
+        return self.shared_utils.mlag_interfaces
+
+    @cached_property
     def _mlag_port_channel_id(self: AvdInterfaceDescriptions) -> str:
         """TODO: AVD5.0.0 remove this since it has been replaced by DescriptionData."""
         return self.shared_utils.mlag_port_channel_id
