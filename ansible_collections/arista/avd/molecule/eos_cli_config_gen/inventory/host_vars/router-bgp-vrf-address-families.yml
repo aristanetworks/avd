@@ -14,10 +14,16 @@ router_bgp:
       - name: FOOBAR
         activate: false
   address_family_ipv4_multicast:
+    bgp:
+      additional_paths:
+        receive: true
     peer_groups:
       - name: FOOBAR
         activate: true
   address_family_ipv6_multicast:
+    bgp:
+      additional_paths:
+        receive: true
     peer_groups:
       - name: FOOBAR
         activate: false
@@ -52,13 +58,15 @@ router_bgp:
             receive: true
             send: ecmp
             send_ecmp_limit: 4
-            prefix_list: PL1
           redistribute_internal: false
         neighbors:
           - ip_address: 1.2.3.4
             activate: true
             route_map_in: FOO
             route_map_out: BAR
+            additional_paths:
+              send: any
+              prefix_list: PL2
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
@@ -88,6 +96,9 @@ router_bgp:
             activate: true
             route_map_in: FOO
             route_map_out: BAR
+            additional_paths:
+              send: any
+              prefix_list: PL1
           - ip_address: aa::2
             activate: true
             rcf_in: VRF_AFIPV6_RCF_IN()
@@ -120,6 +131,8 @@ router_bgp:
             activate: false
             route_map_in: FOO
             route_map_out: BAR
+            additional_paths:
+              receive: true
         networks:
           - prefix: 239.0.0.0/24
             route_map: BARFOO
@@ -142,6 +155,8 @@ router_bgp:
         neighbors:
           - ip_address: aa::1
             activate: false
+            additional_paths:
+              receive: true
         networks:
           - prefix: ff08:1::/64
         redistribute_routes:
@@ -188,7 +203,6 @@ router_bgp:
         bgp:
           additional_paths:
             send: ecmp
-            prefix_list: PL1
       redistribute_routes:
         - source_protocol: dynamic
           rcf: VRF_RCF_DYNAMIC()

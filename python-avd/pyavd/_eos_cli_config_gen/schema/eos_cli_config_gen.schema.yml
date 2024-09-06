@@ -13152,6 +13152,14 @@ keys:
       address_family_ipv4_multicast:
         type: dict
         keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -14442,10 +14450,6 @@ keys:
                         install_ecmp_primary:
                           type: bool
                           description: Allow additional path with ECMP primary path.
-                        prefix_list:
-                          type: str
-                          description: Apply the configurations only to the routes
-                            matching the prefix list.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -14493,6 +14497,14 @@ keys:
                                 required: true
                               originate:
                                 type: bool
+                      additional_paths:
+                        type: dict
+                        $ref: eos_cli_config_gen#/$defs/additional_paths
+                        keys:
+                          prefix_list:
+                            type: str
+                            description: Apply the configurations only to the routes
+                              matching the prefix list.
                 networks:
                   type: list
                   primary_key: prefix
@@ -14584,10 +14596,6 @@ keys:
                         install_ecmp_primary:
                           type: bool
                           description: Allow additional path with ECMP primary path.
-                        prefix_list:
-                          type: str
-                          description: Apply the configurations only to the routes
-                            matching the prefix list.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -14624,6 +14632,14 @@ keys:
                       prefix_list_out:
                         type: str
                         description: Outbound prefix-list name.
+                      additional_paths:
+                        type: dict
+                        $ref: eos_cli_config_gen#/$defs/additional_paths
+                        keys:
+                          prefix_list:
+                            type: str
+                            description: Apply the configurations only to the routes
+                              matching the prefix list.
                 networks:
                   type: list
                   primary_key: prefix
@@ -14724,6 +14740,11 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      additional_paths:
+                        type: dict
+                        keys:
+                          receive:
+                            type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -14822,6 +14843,11 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      additional_paths:
+                        type: dict
+                        keys:
+                          receive:
+                            type: bool
                 networks:
                   type: list
                   primary_key: prefix
