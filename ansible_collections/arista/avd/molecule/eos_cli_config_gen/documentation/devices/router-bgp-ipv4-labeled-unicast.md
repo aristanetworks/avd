@@ -151,7 +151,7 @@ router bgp 65101
       update wait-for-convergence
       bgp missing-policy include community-list direction in action deny
       bgp additional-paths receive
-      bgp additional-paths send ecmp
+      bgp additional-paths send ecmp limit 20
       bgp next-hop-unchanged
       neighbor PG-BGP-LU activate
       neighbor 198.51.100.1 activate

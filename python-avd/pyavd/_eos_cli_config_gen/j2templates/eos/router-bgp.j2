@@ -980,13 +980,11 @@ router bgp {{ router_bgp.as }}
       bgp additional-paths receive
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send is arista.avd.defined %}
-{%             set ipv4lu_add_path = "bgp additional-paths send" %}
+{%             set ipv4lu_add_path = "bgp additional-paths send " ~ router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send %}
 {%             if router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit is arista.avd.defined and router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send == "ecmp" %}
-{%                 set ipv4lu_add_path = ipv4lu_add_path ~ " ecmp limit " ~ router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit %}
+{%                 set ipv4lu_add_path = ipv4lu_add_path ~ " limit " ~ router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit %}
 {%             elif router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_limit is arista.avd.defined and router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send == "limit" %}
-{%                 set ipv4lu_add_path = ipv4lu_add_path ~ " ecmp limit " ~ router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit %}
-{%             else %}
-{%                 set ipv4lu_add_path = ipv4lu_add_path ~ ' ' ~ router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send %}
+{%                 set ipv4lu_add_path = ipv4lu_add_path ~ " " ~ router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_limit %}
 {%             endif %}
       {{ ipv4lu_add_path }}
 {%         endif %}
@@ -1021,13 +1019,11 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer.name }} rcf out {{ peer.rcf_out }}
 {%             endif %}
 {%             if peer.additional_paths.send is arista.avd.defined %}
-{%                 set lu_peer_add_path = "neighbor " ~ peer.name ~ " additional-paths send" %}
+{%                 set lu_peer_add_path = "neighbor " ~ peer.name ~ " additional-paths send " ~ peer.additional_paths.send %}
 {%                 if peer.additional_paths.send_ecmp_limit is arista.avd.defined and peer.additional_paths.send == "ecmp" %}
-{%                     set lu_peer_add_path = lu_peer_add_path ~ " ecmp limit " ~ peer.additional_paths.send_ecmp_limit %}
+{%                     set lu_peer_add_path = lu_peer_add_path ~ " limit " ~ peer.additional_paths.send_ecmp_limit %}
 {%                 elif peer.additional_paths.send_limit is arista.avd.defined and peer.additional_paths.send == "limit" %}
-{%                     set lu_peer_add_path = lu_peer_add_path~ " ecmp limit " ~ peer.additional_paths.send_ecmp_limit %}
-{%                 else %}
-{%                     set lu_peer_add_path = lu_peer_add_path ~ ' ' ~ peer.additional_paths.send %}
+{%                     set lu_peer_add_path = lu_peer_add_path~ " " ~ peer.additional_paths.send_limit %}
 {%                 endif %}
       {{ lu_peer_add_path }}
 {%             endif %}
@@ -1112,13 +1108,11 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} rcf out {{ neighbor.rcf_out }}
 {%             endif %}
 {%             if neighbor.additional_paths.send is arista.avd.defined %}
-{%                 set lu_neighbor_add_path = "neighbor " ~ neighbor.ip_address ~ " additional-paths send" %}
+{%                 set lu_neighbor_add_path = "neighbor " ~ neighbor.ip_address ~ " additional-paths send " ~ neighbor.additional_paths.send %}
 {%                 if neighbor.additional_paths.send_ecmp_limit is arista.avd.defined and neighbor.additional_paths.send == "ecmp" %}
-{%                     set lu_neighbor_add_path = lu_neighbor_add_path ~ " ecmp limit " ~ neighbor.additional_paths.send_ecmp_limit %}
+{%                     set lu_neighbor_add_path = lu_neighbor_add_path ~ " limit " ~ neighbor.additional_paths.send_ecmp_limit %}
 {%                 elif neighbor.additional_paths.send_limit is arista.avd.defined and neighbor.additional_paths.send == "limit" %}
-{%                     set lu_neighbor_add_path = lu_neighbor_add_path~ " ecmp limit " ~ neighbor.additional_paths.send_ecmp_limit %}
-{%                 else %}
-{%                     set lu_neighbor_add_path = lu_neighbor_add_path ~ ' ' ~ neighbor.additional_paths.send %}
+{%                     set lu_neighbor_add_path = lu_neighbor_add_path~ " " ~ neighbor.additional_paths.send_limit %}
 {%                 endif %}
       {{ lu_neighbor_add_path }}
 {%             endif %}

@@ -13228,38 +13228,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  description: BGP additional-paths commands.
-                  keys:
-                    receive:
-                      type: bool
-                      description: Receive multiple paths.
-                    send:
-                      type: dict
-                      description: Send multiple paths.
-                      keys:
-                        any:
-                          type: bool
-                          description: Any eligible path.
-                        backup:
-                          type: bool
-                          description: Best path and installed backup path.
-                        ecmp:
-                          type: bool
-                          description: All paths in best path ECMP group.
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 aigp_session:
                   type: bool
                 graceful_restart:
@@ -13386,38 +13355,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  description: BGP additional-paths commands.
-                  keys:
-                    receive:
-                      type: bool
-                      description: Receive multiple paths.
-                    send:
-                      type: dict
-                      description: Send multiple paths.
-                      keys:
-                        any:
-                          type: bool
-                          description: Any eligible path.
-                        backup:
-                          type: bool
-                          description: Best path and installed backup path.
-                        ecmp:
-                          type: bool
-                          description: All paths in best path ECMP group.
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 aigp_session:
                   type: bool
                 graceful_restart:
@@ -19714,6 +19652,48 @@ $defs:
           When the `protocols` list contain both `tcp` and `udp`, this key value
 
           must be the same as `udp_dest_port_set_name`.'
+  bgp_additional_paths:
+    type: dict
+    keys:
+      receive:
+        type: bool
+      send:
+        type: str
+        description: 'Select an option to send multiple paths for same prefix through
+          bgp updates.
+
+          any: Send any eligible path.
+
+          backup: Best path and installed backup path.
+
+          ecmp: All paths in best path ECMP group.
+
+          limit: Limit to n eligible paths.
+
+          disabled: Disable sending any path.'
+        valid_values:
+        - any
+        - backup
+        - ecmp
+        - limit
+        - disabled
+      send_ecmp_limit:
+        type: int
+        description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
+          this settings. If this key-value pair is not set, it will send all paths
+          in best ECMP group.
+        convert_types:
+        - str
+        min: 2
+        max: 64
+      send_limit:
+        type: int
+        description: Number of paths to send through bgp updates. `send` must be set
+          to `limit` for this setting.
+        convert_types:
+        - str
+        min: 2
+        max: 64
   flow_tracking:
     type: dict
     keys:
