@@ -12,6 +12,8 @@
 {% include 'eos/boot.j2' %}
 {# enable password #}
 {% include 'eos/enable-password.j2' %}
+{# aaa root #}
+{% include 'eos/aaa-root.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# address locking #}
@@ -20,8 +22,6 @@
 {% include 'eos/agents.j2' %}
 {# hardware counters #}
 {% include 'eos/hardware-counters.j2' %}
-{# hardware configuration #}
-{% include 'eos/hardware.j2' %}
 {# service routing configuration #}
 {% include 'eos/service-routing-configuration-bgp.j2' %}
 {# management api http #}
@@ -60,6 +60,8 @@
 {% include 'eos/ip-igmp-snooping.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
+{# hardware configuration #}
+{% include 'eos/hardware.j2' %}
 {# transceiver qsfp default mode #}
 {% include 'eos/transceiver-qsfp-default-mode.j2' %}
 {# interface defaults #}
@@ -168,8 +170,6 @@
 {% include 'eos/tacacs-servers.j2' %}
 {# aaa #}
 {% include 'eos/aaa.j2' %}
-{# aaa root #}
-{% include 'eos/aaa-root.j2' %}
 {# CVX #}
 {% include 'eos/cvx.j2' %}
 {# influxDB Telemetry #}
