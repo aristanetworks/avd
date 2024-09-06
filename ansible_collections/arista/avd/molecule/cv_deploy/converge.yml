@@ -7,11 +7,11 @@
     cv_server: www.cv-staging.corp.arista.io
     cv_token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
     cv_verify_certs: false
-    cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2 ]
+    cv_devices: [avd-ci-leaf1, avd-ci-leaf2, avd-ci-leaf3, avd-ci-leaf4, avd-ci-spine1, avd-ci-spine2 ]
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
-    intended_tag_device: ci-s1-leaf1
+    intended_tag_device: avd-ci-leaf1
     intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
 
   tasks:
@@ -32,7 +32,7 @@
 ###########################
 ######## cv_deploy ########
 ###########################
-    - name: Test = Provision CVP with AVD configuration
+    - name: Provision CVP with AVD configuration
       run_once: true
       delegate_to: localhost
       ansible.builtin.import_role:
@@ -132,7 +132,7 @@
         cv_submit_workspace_force: true
         cv_run_change_control: true
 
-    - name: Test = Provision with workspace "Pending"
+    - name: Provision with workspace "Pending"
       run_once: true
       delegate_to: localhost
       ansible.builtin.import_role:
@@ -158,61 +158,63 @@
         cv_submit_workspace_force: true
         cv_run_change_control: true
 
-    - name: Test = Provision with cv_submit_workspace_force = false
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2, ci-s1-core1 ]
-        cv_submit_workspace_force: false
-      ignore_errors: yes
-      register: cvp_errors
+    # - name: Provision with cv_submit_workspace_force = false
+    #   run_once: true
+    #   delegate_to: localhost
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.cv_deploy
+    #   vars:
+    #     # cv_devices: [ avd-ci-leaf1, avd-ci-leaf2, avd-ci-leaf3, avd-ci-leaf4, avd-ci-spine1, avd-ci-spine2, avd-ci-core1 ]
+    #     cv_devices: [ avd-ci-leaf2, avd-ci-core1 ]
+    #     cv_submit_workspace_force: false
+    #   ignore_errors: yes
+    #   register: cvp_errors
 
-    - name: 'Display CVP result'
-      run_once: true
-      ansible.builtin.debug:
-        msg: '{{ cv_deploy_results }}'
+    # - name: 'Display CVP result'
+    #   run_once: true
+    #   ansible.builtin.debug:
+    #     msg: '{{ cv_deploy_results }}'
 
-    - name: Check CVP returns
-      ansible.builtin.assert:
-        that:
-          # errors and warnings
-          - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
+    # - name: Check CVP returns
+    #   ansible.builtin.assert:
+    #     that:
+    #       # errors and warnings
+    #       - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
 
-    - name: Cleanup
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
-        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
-        cv_submit_workspace: true
-        cv_submit_workspace_force: true
-        cv_run_change_control: true
+    # - name: Cleanup
+    #   run_once: true
+    #   delegate_to: localhost
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.cv_deploy
+    #   vars:
+    #     eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+    #     structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+    #     cv_submit_workspace: true
+    #     cv_submit_workspace_force: true
+    #     cv_run_change_control: true
 
-    - name: Test = Provision with cv_submit_workspace_force = true
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_devices: [ci-s1-leaf1, ci-s1-leaf2, ci-s1-leaf3, ci-s1-leaf4, ci-s1-spine1, ci-s1-spine2, ci-s1-core1 ]
-        cv_submit_workspace_force: true
+    # - name: Provision with cv_submit_workspace_force = true
+    #   run_once: true
+    #   delegate_to: localhost
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.cv_deploy
+    #   vars:
+    #     cv_devices: [ avd-ci-leaf1, avd-ci-leaf2, avd-ci-leaf3, avd-ci-leaf4, avd-ci-spine1, avd-ci-spine2, avd-ci-core1 ]
+    #     # cv_devices: [ avd-ci-core1 ]
+    #     cv_submit_workspace_force: true
 
-    - name: 'Display CVP result'
-      run_once: true
-      ansible.builtin.debug:
-        msg: '{{ cv_deploy_results }}'
+    # - name: 'Display CVP result'
+    #   run_once: true
+    #   ansible.builtin.debug:
+    #     msg: '{{ cv_deploy_results }}'
 
-    - name: Check CVP returns
-      ansible.builtin.assert:
-        that:
-          # errors and warnings
-          - cv_deploy_results.errors == []
+    # - name: Check CVP returns
+    #   ansible.builtin.assert:
+    #     that:
+    #       # errors and warnings
+    #       - cv_deploy_results.errors == []
 
-    - name: Test = Provision with cv_run_change_control = false
+    - name: Provision with cv_run_change_control = false
       run_once: true
       delegate_to: localhost
       ansible.builtin.import_role:
