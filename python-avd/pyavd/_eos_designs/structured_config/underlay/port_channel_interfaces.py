@@ -46,6 +46,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         interface=port_channel_name,
                         peer=link["peer"],
                         peer_channel_group_id=link["peer_channel_group_id"],
+                        port_channel_id=link["channel_group_id"],
                         port_channel_description=link.get("channel_description"),
                     ),
                 ),
