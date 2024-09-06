@@ -1142,7 +1142,8 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet24
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2B_VTEP

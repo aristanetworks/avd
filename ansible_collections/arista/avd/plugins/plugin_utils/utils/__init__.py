@@ -14,11 +14,11 @@ from .write_file import write_file
 from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
 
-# TODO: AVD5.0.0 Some utils are exposed in custom modules code, so we will need to keep it here until 5.0
+# TODO: The pyavd imports can be removed once validate_state has been moved to pyavd.
 try:
-    from pyavd._utils import default, get, template, template_var
+    from pyavd._utils import default, get
 except ImportError as e:
-    default = get = template = template_var = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
+    default = get = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
 
 __all__ = [
     "compile_searchpath",
@@ -34,7 +34,5 @@ __all__ = [
     "YamlLoader",
     "default",
     "get",
-    "template",
-    "template_var",
     "write_file",
 ]
