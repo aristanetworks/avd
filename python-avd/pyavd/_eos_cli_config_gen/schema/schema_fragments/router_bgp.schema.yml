@@ -2638,7 +2638,7 @@ keys:
                           description: Install BGP backup path.
                         install_ecmp_primary:
                           type: bool
-                          description: Allow additional path with ECMP primary path. 
+                          description: Allow additional path with ECMP primary path.
                         prefix_list:
                           type: str
                           description: Apply the configurations only to the routes matching the prefix list.
@@ -2771,7 +2771,7 @@ keys:
                           description: Install BGP backup path.
                         install_ecmp_primary:
                           type: bool
-                          description: Allow additional path with ECMP primary path. 
+                          description: Allow additional path with ECMP primary path.
                         prefix_list:
                           type: str
                           description: Apply the configurations only to the routes matching the prefix list.
