@@ -89,3 +89,21 @@ async def test_valid_versions(version: str, expected_response: tuple[str, str]) 
 async def test_msg_size_handler(data: list, max_len: int, expected_response: list[int]) -> None:
     resp = await TestClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method(field=data, max_accepted_len=max_len)
     assert resp == expected_response
+
+
+@pytest.mark.asyncio
+async def test_msg_size_handler_invalid_fuction_return_type() -> None:
+    def function_not_returning_list(_field: list) -> str:
+        return "foo"
+
+    with pytest.raises(TypeError, match="grpc_msg_size_handler decorator is unable to bind to the function .+"):
+        await grpc_msg_size_handler(list_field="_field")(function_not_returning_list)(["foo", "bar"])
+
+
+@pytest.mark.asyncio
+async def test_msg_size_handler_invalid_fuction_list_field() -> None:
+    def function_not_returning_list(_wrong_field: list) -> list:
+        return ["foo"]
+
+    with pytest.raises(KeyError, match="grpc_msg_size_handler decorator is unable to find the list_field .+"):
+        await grpc_msg_size_handler(list_field="_field")(function_not_returning_list)(["foo", "bar"])
