@@ -1134,6 +1134,19 @@ releases:
     fragments:
     - v4.10.1.yml
     release_date: '2024-08-30'
+  4.10.2:
+    changes:
+      bugfixes:
+      - 'Fix(eos_designs): Fix context vars for custom interface description templates
+        by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4437'
+      - 'Fix(plugins): Support zeroes in interface numbers for range_expand by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/4430'
+      release_summary: 'Release 4.10.2 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v4.10.2.yml
+    release_date: '2024-09-06'
   4.2.0:
     changes:
       bugfixes:
