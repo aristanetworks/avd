@@ -149,7 +149,7 @@ router bgp 65101
    !
    address-family ipv4 labeled-unicast
       update wait-for-convergence
-      bgp missing-policy direction in action deny
+      bgp missing-policy include community-list direction in action deny
       bgp additional-paths receive
       bgp additional-paths send ecmp
       bgp next-hop-unchanged

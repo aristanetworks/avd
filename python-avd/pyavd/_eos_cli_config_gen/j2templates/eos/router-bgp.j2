@@ -953,11 +953,28 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.update_wait_for_convergence is arista.avd.defined(true) %}
       update wait-for-convergence
 {%         endif %}
-{%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in_action is arista.avd.defined %}
-      bgp missing-policy direction in action {{ router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in_action }}
-{%         endif %}
-{%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out_action is arista.avd.defined %}
-      bgp missing-policy direction out action {{ router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out_action }}
+{%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy is arista.avd.defined %}
+{%             for direction in ['in', 'out'] %}
+{%                 set dir = 'direction_' ~ direction %}
+{%                 set policy = router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy[dir] %}
+{%                 if policy.action is arista.avd.defined %}
+{%                     set missing_policy_cli = "bgp missing-policy" %}
+{%                     if policy.include_community_list is arista.avd.defined(true) or policy.include_prefix_list is arista.avd.defined(true) or policy.include_sub_route_map is arista.avd.defined(true) %}
+{%                         set missing_policy_cli = missing_policy_cli ~ " include" %}
+{%                         if policy.include_community_list is arista.avd.defined(true) %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " community-list" %}
+{%                         endif %}
+{%                         if policy.include_prefix_list is arista.avd.defined(true) %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " prefix-list" %}
+{%                         endif %}
+{%                         if policy.include_sub_route_map is arista.avd.defined(true) %}
+{%                             set missing_policy_cli = missing_policy_cli ~ " sub-route-map" %}
+{%                         endif %}
+{%                     endif %}
+{%                     set missing_policy_cli = missing_policy_cli ~ " direction " ~ direction ~ " action " ~ policy.action %}
+      {{ missing_policy_cli }}
+{%                 endif %}
+{%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.receive is arista.avd.defined(true) %}
       bgp additional-paths receive
@@ -1037,7 +1054,7 @@ router bgp {{ router_bgp.as }}
 {%                     set dir = 'direction_' ~ direction %}
 {%                     set policy = peer.missing_policy[dir] %}
 {%                     if policy.action is arista.avd.defined %}
-{%                         set missing_policy_cli = "neighbor " ~ peer.name ~ " missing-policy address-family all" %}
+{%                         set missing_policy_cli = "neighbor " ~ peer.name ~ " missing-policy" %}
 {%                         if policy.include_community_list is arista.avd.defined(true) or policy.include_prefix_list is arista.avd.defined(true) or policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " include" %}
 {%                             if policy.include_community_list is arista.avd.defined(true) %}
@@ -1128,7 +1145,7 @@ router bgp {{ router_bgp.as }}
 {%                     set dir = 'direction_' ~ direction %}
 {%                     set policy = neighbor.missing_policy[dir] %}
 {%                     if policy.action is arista.avd.defined %}
-{%                         set missing_policy_cli = "neighbor " ~ neighbor.ip_address ~ " missing-policy address-family all" %}
+{%                         set missing_policy_cli = "neighbor " ~ neighbor.ip_address ~ " missing-policy " %}
 {%                         if policy.include_community_list is arista.avd.defined(true) or policy.include_prefix_list is arista.avd.defined(true) or policy.include_sub_route_map is arista.avd.defined(true) %}
 {%                             set missing_policy_cli = missing_policy_cli ~ " include" %}
 {%                             if policy.include_community_list is arista.avd.defined(true) %}

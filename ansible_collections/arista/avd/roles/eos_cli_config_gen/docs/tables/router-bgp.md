@@ -399,9 +399,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out") | Dictionary |  |  |  | Missing policy outbound direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_community_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out.include_community_list") | Boolean |  |  |  | Include community-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_unchanged</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.next_hop_unchanged") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.graceful_restart") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;label_local_termination</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.label_local_termination") | String |  |  | Valid Values:<br>- <code>explicit-null</code><br>- <code>implicit-null</code> |  |
@@ -1753,9 +1761,39 @@
 
               # Amount of paths to send.
               limit: <int; 2-64>
+
+          # Missing policy configuration for all address-families.
           missing_policy:
-            direction_in_action: <str; "deny" | "deny-in-out" | "permit">
-            direction_out_action: <str; "deny" | "deny-in-out" | "permit">
+
+            # Missing policy inbound direction.
+            direction_in:
+
+              # Missing policy action.
+              action: <str; "deny" | "permit" | "deny-in-out"; required>
+
+              # Include community-list references in missing policy decision.
+              include_community_list: <bool>
+
+              # Include prefix-list references in missing policy decision.
+              include_prefix_list: <bool>
+
+              # Include sub-route-map references in missing policy decision.
+              include_sub_route_map: <bool>
+
+            # Missing policy outbound direction.
+            direction_out:
+
+              # Missing policy action.
+              action: <str; "deny" | "permit" | "deny-in-out"; required>
+
+              # Include community-list references in missing policy decision.
+              include_community_list: <bool>
+
+              # Include prefix-list references in missing policy decision.
+              include_prefix_list: <bool>
+
+              # Include sub-route-map references in missing policy decision.
+              include_sub_route_map: <bool>
           next_hop_unchanged: <bool>
         graceful_restart: <bool>
         label_local_termination: <str; "explicit-null" | "implicit-null">

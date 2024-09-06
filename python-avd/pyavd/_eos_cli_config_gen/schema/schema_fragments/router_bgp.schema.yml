@@ -1490,19 +1490,50 @@ keys:
                         max: 64
               missing_policy:
                 type: dict
+                description: Missing policy configuration for all address-families.
                 keys:
-                  direction_in_action:
-                    type: str
-                    valid_values:
-                      - "deny"
-                      - "deny-in-out"
-                      - "permit"
-                  direction_out_action:
-                    type: str
-                    valid_values:
-                      - "deny"
-                      - "deny-in-out"
-                      - "permit"
+                  direction_in:
+                    description: Missing policy inbound direction.
+                    type: dict
+                    keys:
+                      action:
+                        description: Missing policy action.
+                        type: str
+                        required: true
+                        valid_values:
+                          - deny
+                          - permit
+                          - deny-in-out
+                      include_community_list:
+                        type: bool
+                        description: Include community-list references in missing policy decision.
+                      include_prefix_list:
+                        type: bool
+                        description: Include prefix-list references in missing policy decision.
+                      include_sub_route_map:
+                        type: bool
+                        description: Include sub-route-map references in missing policy decision.
+                  direction_out:
+                    description: Missing policy outbound direction.
+                    type: dict
+                    keys:
+                      action:
+                        description: Missing policy action.
+                        type: str
+                        required: true
+                        valid_values:
+                          - deny
+                          - permit
+                          - deny-in-out
+                      include_community_list:
+                        type: bool
+                        description: Include community-list references in missing policy decision.
+                      include_prefix_list:
+                        type: bool
+                        description: Include prefix-list references in missing policy decision.
+                      include_sub_route_map:
+                        type: bool
+                        description: Include sub-route-map references in missing policy decision.
               next_hop_unchanged:
                 type: bool
           graceful_restart:
