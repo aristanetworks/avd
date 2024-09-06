@@ -181,7 +181,8 @@ router_ospf:
 
 ethernet_interfaces:
   - name: Ethernet1
-    type: routed
+    switchport:
+      enabled: false
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.1
     ospf_cost: 99
@@ -195,7 +196,8 @@ loopback_interfaces:
     ospf_area: 0.0.0.2
 port_channel_interfaces:
   - name: Port-Channel12
-    type: routed
+    switchport:
+      enabled: false
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.12
     ospf_cost: 99
