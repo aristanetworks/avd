@@ -1,1 +1,1 @@
-{{ description_prefix }}_{{ link.channel_description | arista.avd.default(link.peer) | upper }}_Po{{ link.peer_channel_group_id }}
+{{ description_prefix }}_{{ link.peer | upper }}_Po{{ link.channel_group_id }}_To_Po{{ link.peer_channel_group_id }}_{{ link.channel_description }}
