@@ -102,8 +102,8 @@ async def test_msg_size_handler_invalid_fuction_return_type() -> None:
 
 @pytest.mark.asyncio
 async def test_msg_size_handler_invalid_fuction_list_field() -> None:
-    def function_not_returning_list(_wrong_field: list) -> list:
+    def function_with_wrong_arg(_wrong_field: list) -> list:
         return ["foo"]
 
     with pytest.raises(KeyError, match="grpc_msg_size_handler decorator is unable to find the list_field .+"):
-        await grpc_msg_size_handler(list_field="_field")(function_not_returning_list)(["foo", "bar"])
+        await grpc_msg_size_handler(list_field="_field")(function_with_wrong_arg)(["foo", "bar"])
