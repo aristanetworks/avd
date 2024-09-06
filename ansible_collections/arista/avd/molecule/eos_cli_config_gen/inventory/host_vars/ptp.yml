@@ -86,7 +86,8 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
     mtu: 1500
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 172.31.255.15/31
     ptp:
       enable: true
@@ -104,7 +105,6 @@ ethernet_interfaces:
           destination_mac_address: non-forwardable
 # port-channel interfaces
   - name: Ethernet5
-    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf
