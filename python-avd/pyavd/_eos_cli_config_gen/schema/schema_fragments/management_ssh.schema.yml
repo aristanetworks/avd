@@ -17,7 +17,6 @@ keys:
             type: str
             valid_values: ["auto", "deny", "permit"]
             description: Permit or deny empty passwords for SSH authentication.
-            default: "auto"
           protocols:
             type: list
             items:
