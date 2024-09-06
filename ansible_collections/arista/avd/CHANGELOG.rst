@@ -4,6 +4,20 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v4.10.2
+=======
+
+Release Summary
+---------------
+
+Release 4.10.2 - See documentation on avd.arista.com for details.
+
+Bugfixes
+--------
+
+- Fix(eos_designs): Fix context vars for custom interface description templates by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4437
+- Fix(plugins): Support zeroes in interface numbers for range_expand by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4430
+
 v4.10.1
 =======
 
