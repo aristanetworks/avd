@@ -441,7 +441,7 @@ mlag_ethernet_interfaces:
 
 mlag_port_channel_interfaces:
 
-- `{{ mlag_interfaces }}`
+- `{{ mlag_interfaces }}` (list of strings)
 - `{{ mlag_peer }}`
 - `{{ mlag_port_channel_id }}`
 - All group/hostvars
