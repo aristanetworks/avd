@@ -21,6 +21,7 @@ flow tracking hardware
 {%         endif %}
 {%         if tracker.exporters is arista.avd.defined %}
 {%             for exporter in tracker.exporters %}
+      !
       exporter {{ exporter.name }}
 {%                 if exporter.collector.host is arista.avd.defined %}
 {%                     set collector_cli = 'collector ' ~ exporter.collector.host %}

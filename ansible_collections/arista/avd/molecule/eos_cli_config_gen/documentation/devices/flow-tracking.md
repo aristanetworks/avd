@@ -98,17 +98,22 @@ flow tracking hardware
       record export on inactive timeout 3666
       record export on interval 5666
    tracker T2
+      !
       exporter T2-E1
          collector 42.42.42.42
    tracker T3
+      !
       exporter T3-E1
+      !
       exporter T3-E2
          collector 10.10.10.10 port 777
+      !
       exporter T3-E3
          collector this.is.my.awesome.collector.dns.name port 888
          format ipfix version 10
          local interface Management1
          template interval 424242
+      !
       exporter T3-E4
          collector dead:beef::cafe
    record format ipfix standard timestamps counters
