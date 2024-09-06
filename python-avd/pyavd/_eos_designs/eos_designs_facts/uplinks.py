@@ -8,8 +8,8 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import append_if_not_duplicate, get, unique
-from pyavd.j2filters import list_compress, range_expand
+from pyavd._utils import append_if_not_duplicate, get
+from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
     from . import EosDesignsFacts
@@ -361,9 +361,11 @@ class UplinksMixin:
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
-        uplink_switches = self.shared_utils.uplink_switches
-        # Making sure each peer is unique
-        return unique(uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices)
+        # Since uplinks logic silently skips extra entries in uplink vars, we only need to parse shortest list.
+        min_length = min(len(self.shared_utils.uplink_switch_interfaces), len(self.shared_utils.uplink_interfaces), len(self.shared_utils.uplink_switches))
+        # Using set to only get unique uplink switches
+        unique_uplink_switches = set(self.shared_utils.uplink_switches[:min_length])
+        return natural_sort(unique_uplink_switches)
 
     @cached_property
     def _default_downlink_interfaces(self: EosDesignsFacts) -> list:
@@ -373,3 +375,20 @@ class UplinksMixin:
         Parsed by downstream switches during eos_designs_facts phase.
         """
         return range_expand(get(self.shared_utils.default_interfaces, "downlink_interfaces", default=[]))
+
+    @cached_property
+    def uplink_switch_vrfs(self: EosDesignsFacts) -> list[str] | None:
+        """
+        Exposed in avd_switch_facts.
+
+        Return the list of VRF names present on uplink switches.
+        """
+        if self.shared_utils.uplink_type != "p2p-vrfs":
+            return None
+
+        vrfs = set()
+        for uplink_switch in self.uplink_peers:
+            uplink_switch_facts = self.shared_utils.get_peer_facts(uplink_switch)
+            vrfs.update(uplink_switch_facts.shared_utils.vrfs)
+
+        return natural_sort(vrfs) or None

@@ -6,8 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._eos_designs.ip_addressing import AvdIpAddressing
 from pyavd._utils import get, load_python_class, merge
+from pyavd.api.ip_addressing import AvdIpAddressing
 
 if TYPE_CHECKING:
     from . import SharedUtils

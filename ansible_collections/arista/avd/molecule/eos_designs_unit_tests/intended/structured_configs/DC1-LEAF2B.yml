@@ -109,7 +109,6 @@ router_bgp:
       expiry_timeout: 10
   vrfs:
   - name: Tenant_A_APP_Zone
-    router_id: 192.168.255.11
     rd: '65001:12'
     route_targets:
       import:
@@ -120,10 +119,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:12'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_DB_Zone
-    router_id: 192.168.255.11
     rd: '65001:13'
     route_targets:
       import:
@@ -134,10 +133,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:13'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_OP_Zone
-    router_id: 192.168.255.11
     rd: '65001:9'
     route_targets:
       import:
@@ -148,10 +147,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:9'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_OSPF
-    router_id: 192.168.255.11
     rd: '65001:16'
     route_targets:
       import:
@@ -162,11 +161,11 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:16'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
   - name: Tenant_A_WEB_Zone
-    router_id: 192.168.255.11
     rd: '65001:11'
     route_targets:
       import:
@@ -177,10 +176,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:11'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.11
     rd: '65001:20'
     route_targets:
       import:
@@ -191,10 +190,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:20'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_C_OP_Zone
-    router_id: 192.168.255.11
     rd: '65001:30'
     route_targets:
       import:
@@ -205,10 +204,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:30'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: '12345678'
-    router_id: 192.168.255.11
     rd: '65001:41'
     route_targets:
       import:
@@ -219,10 +218,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:41'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_D_OP_Zone
-    router_id: 192.168.255.11
     rd: '65001:40'
     route_targets:
       import:
@@ -233,6 +232,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '100000:40'
+    router_id: 192.168.255.11
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
@@ -1142,7 +1142,8 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet24
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2B_VTEP

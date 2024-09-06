@@ -132,6 +132,11 @@ keys:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS configuration.
     default:
+      # Campus platforms are separated out by their ability to support "trident_forwarding_table_partition".
+      # This is required for EVPN multicast, currently only supported on all 720XP platforms.
+      # This command is not supported on 710P or 722XP platforms. 720D range has some devices that support this
+      # and others that don't, but they are all grouped together as none of them support EVPN multicast.
+      # TODO: This needs to be revisited as some 720 platforms now support EVPN multicast.
       - platforms:
           - default
         feature_support:
