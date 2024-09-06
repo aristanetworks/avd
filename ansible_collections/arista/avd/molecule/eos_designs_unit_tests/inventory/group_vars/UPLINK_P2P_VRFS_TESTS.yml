@@ -1,8 +1,6 @@
 ---
 # TODO: Add tests for rfc5549, overlay_routing_protocol: none with bgp peers etc under network services (since this uplink type expands bgp support there)
 overlay_routing_protocol: none
-# This is set to true by default on the nodes with uplink_type == p2p-vrfs
-# new_network_services_bgp_vrf_config: true
 
 node_type_keys:
   # modify spine to get l3 network_services
