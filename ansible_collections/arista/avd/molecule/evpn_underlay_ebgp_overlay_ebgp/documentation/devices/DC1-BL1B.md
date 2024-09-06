@@ -270,10 +270,10 @@ vlan 350
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet10.100 | subinterface test | - | 100 |
-| Ethernet10.200 | subinterface test with vlan override | - | 141 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet10.100 | subinterface test | - | 100 | - |
+| Ethernet10.200 | subinterface test with vlan override | - | 141 | - |
 
 ##### IPv4
 

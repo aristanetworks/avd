@@ -202,11 +202,11 @@ class MiscMixin:
 
     @cached_property
     def shutdown_interfaces_towards_undeployed_peers(self: SharedUtils) -> bool:
-        return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
+        return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers", default=True) is True
 
     @cached_property
     def shutdown_bgp_towards_undeployed_peers(self: SharedUtils) -> bool:
-        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers") is True
+        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers", default=True) is True
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
@@ -252,7 +252,8 @@ class MiscMixin:
 
         NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
-        default_network_services_keys = [{"name": "tenants"}]
+        # Reading default value from schema
+        default_network_services_keys = self.schema.get_default_value(["network_services_keys"])
         network_services_keys = get(self.hostvars, "network_services_keys", default=default_network_services_keys)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
@@ -354,16 +355,6 @@ class MiscMixin:
     @cached_property
     def evpn_multicast(self: SharedUtils) -> bool:
         return self.get_switch_fact("evpn_multicast", required=False) is True
-
-    @cached_property
-    def new_network_services_bgp_vrf_config(self: SharedUtils) -> bool:
-        """
-        Return whether or not to use the new behavior when generating BGP VRF configuration.
-
-        TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
-        """
-        default_value = bool(self.uplink_type == "p2p-vrfs")
-        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
 
     @cached_property
     def ipv4_acls(self: SharedUtils) -> dict:

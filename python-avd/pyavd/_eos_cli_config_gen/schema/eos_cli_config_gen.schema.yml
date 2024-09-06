@@ -2204,24 +2204,60 @@ keys:
           convert_types:
           - str
           description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        encapsulation_dot1q:
+          description: 'Warning: `encapsulation_dot1q` should not be combined with
+            `ethernet_interfaces[].type == l3dot1q/l2dot1q`.'
+          type: dict
+          keys:
+            vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              required: true
+              description: VLAD ID.
+            inner_vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              description: Inner VLAN ID. This setting can only be applied to sub-interfaces
+                on EOS.
         encapsulation_vlan:
           type: dict
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type
+            == l3dot1q/l2dot1q`.'
           keys:
             client:
               type: dict
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client Outer VLAN ID.
                     inner:
                       type: int
@@ -2230,32 +2266,123 @@ keys:
                       description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - unmatched
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                inner_protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
                 using client unmatched.
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network inner VLAN ID.
                 client:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                protocol:
+                  description: '`untagged` (no encapsulation) is applicable for `untagged`
+                    client only.
+
+                    `client` and `client inner` (retain client encapsulation) is not
+                    applicable for `untagged` client.'
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - client
+                  - client inner
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner_protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
         vlan_id:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type
+            == l2dot1q`.'
           type: int
           min: 1
           max: 4094
@@ -5243,8 +5370,7 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and
-                will be removed in AVD 5.0.0.
+              description: Name of the SA policy.
             sa_lifetime:
               type: dict
               keys:
@@ -8878,21 +9004,53 @@ keys:
             '
         encapsulation_dot1q_vlan:
           type: int
-          description: VLAN tag to configure on sub-interface.
           convert_types:
           - str
+          description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        encapsulation_dot1q:
+          description: 'Warning: `encapsulation_dot1q` should not be combined with
+            `ethernet_interfaces[].type == l3dot1q/l2dot1q`.'
+          type: dict
+          keys:
+            vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              required: true
+              description: VLAD ID.
+            inner_vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              description: Inner VLAN ID. This setting can only be applied to sub-interfaces
+                on EOS.
         vrf:
           type: str
           description: VRF name.
           convert_types:
           - int
         encapsulation_vlan:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type
+            == l3dot1q/l2dot1q`.'
           type: dict
           keys:
             client:
               type: dict
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
@@ -8904,40 +9062,135 @@ keys:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - unmatched
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                inner_protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
             network:
               type: dict
               description: Network encapsulation are all optional, and skipped if
                 using client unmatched.
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network Inner VLAN ID.
                 client:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                protocol:
+                  description: '`untagged` (no encapsulation) is applicable for `untagged`
+                    client only.
+
+                    `client` and `client inner` (retain client encapsulation) is not
+                    applicable for `untagged` client.'
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - client
+                  - client inner
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
+                inner_protocol:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
         vlan_id:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type
+            == l2dot1q`.'
           type: int
           convert_types:
           - str
@@ -15200,6 +15453,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
@@ -15243,6 +15497,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
@@ -15889,6 +16144,9 @@ keys:
                 static:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -15897,6 +16155,9 @@ keys:
                 connected:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -15905,6 +16166,9 @@ keys:
                 bgp:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.

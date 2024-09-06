@@ -136,7 +136,6 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: TRANSIT
-    router_id: 192.168.43.1
     rd: 192.168.43.1:66
     route_targets:
       import:
@@ -147,6 +146,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 66:66
+    router_id: 192.168.43.1
     redistribute_routes:
     - source_protocol: connected
   address_family_evpn:

@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: svi_profile_tests_vrf
-    router_id: 192.168.255.1
     rd: 192.168.255.1:1
     route_targets:
       import:
@@ -49,6 +48,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.1
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
@@ -476,7 +476,8 @@ router_ospf:
     - Vlan512
     max_lsa: 15000
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
   vxlan1:
     description: SVI_PROFILE_NODE_1_VTEP

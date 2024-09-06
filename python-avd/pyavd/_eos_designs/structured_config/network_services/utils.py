@@ -130,13 +130,15 @@ class UtilsMixin(UtilsZscalerMixin):
         """
         Returns True if mlag ibgp_peering is enabled.
 
+        For VRF default we return False unless there is no underlay routing protocol.
+
         False otherwise.
         """
         if not self.shared_utils.mlag_l3 or not self.shared_utils.network_services_l3:
             return False
 
         mlag_ibgp_peering: bool = default(vrf.get("enable_mlag_ibgp_peering_vrfs"), tenant.get("enable_mlag_ibgp_peering_vrfs"), True)  # noqa: FBT003
-        return vrf["name"] != "default" and mlag_ibgp_peering
+        return (vrf["name"] != "default" or self.shared_utils.underlay_routing_protocol == "none") and mlag_ibgp_peering
 
     def _mlag_ibgp_peering_vlan_vrf(self: AvdStructuredConfigNetworkServices, vrf: dict, tenant: dict) -> int | None:
         """
@@ -180,10 +182,15 @@ class UtilsMixin(UtilsZscalerMixin):
         Decides if MLAG BGP peer-group should be configured.
         Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         """
-        if self.shared_utils.underlay_bgp or (bgp_vrfs := self._router_bgp_vrfs) is None:
+        if self.shared_utils.underlay_bgp:
             return False
 
-        for bgp_vrf in bgp_vrfs:
+        # Checking neighbors directly under BGP to cover VRF default case.
+        for neighbor_settings in get(self._router_bgp_vrfs, "neighbors", default=[]):
+            if neighbor_settings.get("peer_group") == self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]:
+                return True
+
+        for bgp_vrf in get(self._router_bgp_vrfs, "vrfs", default=[]):
             if "neighbors" not in bgp_vrf:
                 continue
             for neighbor_settings in bgp_vrf["neighbors"]:
@@ -981,7 +988,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
         Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
 
-        TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
+        TODO: Maybe introduce some formatting with max length of each element, since the keys can become very very long.
         """
         secret = f"{self.shared_utils.hostname}_{name}_{salt}"
         type_7_salt = sum(salt.encode("utf-8")) % 16

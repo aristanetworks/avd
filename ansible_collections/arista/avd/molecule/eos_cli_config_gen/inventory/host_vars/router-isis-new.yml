@@ -40,6 +40,7 @@ router_isis:
       ospf_route_type: external
     - source_protocol: ospfv3
   address_family_ipv4:
+    enabled: true
     maximum_paths: 4
     bfd_all_interfaces: true
     fast_reroute_ti_lfa:
@@ -52,6 +53,7 @@ router_isis:
       enabled: True
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
+    enabled: true
     fast_reroute_ti_lfa:
       mode: node-protection
       level: level-1
