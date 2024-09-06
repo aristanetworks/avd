@@ -202,11 +202,11 @@ class MiscMixin:
 
     @cached_property
     def shutdown_interfaces_towards_undeployed_peers(self: SharedUtils) -> bool:
-        return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
+        return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers", default=True) is True
 
     @cached_property
     def shutdown_bgp_towards_undeployed_peers(self: SharedUtils) -> bool:
-        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers") is True
+        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers", default=True) is True
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
