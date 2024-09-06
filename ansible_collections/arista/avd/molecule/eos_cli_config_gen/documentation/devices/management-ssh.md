@@ -36,6 +36,13 @@ interface Management1
 
 ### Management SSH
 
+#### Authentication Settings
+
+| Authentication protocols | Empty passwords |
+| ------------ | -------------- |
+| keyboard-interactive,password,public-key | permit |
+
+
 #### IPv4 ACL
 
 | IPv4 ACL | VRF |
@@ -75,8 +82,10 @@ management ssh
    ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
    idle-timeout 15
+   authentication protocol keyboard-interactive password public-key
    connection limit 50
    connection per-host 10
+   authentication empty-passwords permit
    client-alive interval 666
    client-alive count-max 42
    fips restrictions
