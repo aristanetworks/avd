@@ -1,7 +1,7 @@
 management_ssh:
   authentication:
     empty_passwords: permit
-    protocol:
+    protocols:
       - keyboard-interactive
       - password
       - public-key

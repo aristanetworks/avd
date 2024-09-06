@@ -16,16 +16,14 @@ keys:
           empty_passwords:
             type: str
             valid_values: ["auto", "deny", "permit"]
-            description: |
-              setting to allow or deny empty passwords for ssh authentication
+            description: Permit or deny empty passwords for SSH authentication.
             default: "auto"
-          protocol:
+          protocols:
             type: list
             items:
               type: str
               valid_values: ["keyboard-interactive", "password", "public-key"]
-            description: |
-              set allowed ssh authentication methods
+            description: Allowed SSH authentication methods.
       access_groups:
         type: list
         items:

@@ -39,9 +39,8 @@ interface Management1
 #### Authentication Settings
 
 | Authentication protocols | Empty passwords |
-| ------------ | -------------- |
-| keyboard-interactive,password,public-key | permit |
-
+| ------------------------ | --------------- |
+| keyboard-interactive, password, public-key | permit |
 
 #### IPv4 ACL
 

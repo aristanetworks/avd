@@ -12,19 +12,14 @@
 #### Authentication Settings
 
 | Authentication protocols | Empty passwords |
-| ------------ | -------------- |
-{%         if management_ssh.authentication.protocol is arista.avd.defined  %}
-{%             set protocol = management_ssh.authentication.protocol | join(",") %}
+| ------------------------ | --------------- |
+{%         if management_ssh.authentication.protocols is arista.avd.defined  %}
+{%             set protocols = management_ssh.authentication.protocols | join(", ") %}
 {%         else %}
-{%             set protocol = 'keyboard-interactive public-key' %}
+{%             set protocols = 'keyboard-interactive public-key' %}
 {%         endif %}
-{%         if management_ssh.authentication.empty_passwords is arista.avd.defined  %}
-{%             set empty_passwords = management_ssh.authentication.empty_passwords %}
-{%         else %}
-{%             set empty_passwords = 'auto' %}
-{%         endif %}
-| {{ protocol }} | {{ empty_passwords }} |
-
+{%         set empty_passwords = management_ssh.authentication.empty_passwords | arista.avd.default('auto') %}
+| {{ protocols }} | {{ empty_passwords }} |
 {%    endif %}
 {%     if management_ssh.access_groups is arista.avd.defined %}
 

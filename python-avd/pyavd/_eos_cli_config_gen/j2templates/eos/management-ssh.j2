@@ -30,8 +30,8 @@ management ssh
 {%     if management_ssh.idle_timeout is arista.avd.defined %}
    idle-timeout {{ management_ssh.idle_timeout }}
 {%     endif %}
-{%     if management_ssh.authentication is arista.avd.defined and management_ssh.authentication.protocol is arista.avd.defined  %}
-   authentication protocol {{ management_ssh.authentication.protocol | join(" ") }}
+{%     if management_ssh.authentication.protocols is arista.avd.defined  %}
+   authentication protocol {{ management_ssh.authentication.protocols | join(" ") }}
 {%     endif %}
 {%     if management_ssh.connection.limit is arista.avd.defined %}
    connection limit {{ management_ssh.connection.limit }}
@@ -39,7 +39,7 @@ management ssh
 {%     if management_ssh.connection.per_host is arista.avd.defined %}
    connection per-host {{ management_ssh.connection.per_host }}
 {%     endif %}
-{%     if management_ssh.authentication is arista.avd.defined and management_ssh.authentication.empty_passwords is arista.avd.defined  %}
+{%     if management_ssh.authentication.empty_passwords is arista.avd.defined  %}
    authentication empty-passwords {{ management_ssh.authentication.empty_passwords }}
 {%     endif %}
 {%     if management_ssh.client_alive.interval is arista.avd.defined %}
