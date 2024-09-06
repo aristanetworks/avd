@@ -91,11 +91,28 @@ class CVClient(
     def _connect(self) -> None:
         # TODO: Verify connection
         # TODO: Handle multinode clusters
+
+        # Ensure that the default ssl context is initialized before doing any requests.
+        ssl_context = self._ssl_context()
+
         if not self._token:
             self._set_token()
 
         self._set_version()
 
+        if self._channel is None:
+            self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+
+        self._metadata = {"authorization": "Bearer " + self._token}
+
+    def _ssl_context(self) -> ssl.SSLContext | bool:
+        """
+        Initialize the default SSL context with relaxed verification if needed.
+
+        Otherwise we just return True.
+        The return value (The default ssl context or True) will be passed to grpclib.
+        Requests will pick it up from ssl lib itself.
+        """
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
@@ -104,11 +121,7 @@ class CVClient(
             context.set_alpn_protocols(["h2"])
         else:
             context = True
-
-        if self._channel is None:
-            self._channel = Channel(host=self._servers[0], port=self._port, ssl=context)
-
-        self._metadata = {"authorization": "Bearer " + self._token}
+        return context
 
     def _set_token(self) -> None:
         """
@@ -124,15 +137,6 @@ class CVClient(
         if not self._username or not self._password:
             msg = "Unable to authenticate. Missing token or username/password."
             raise CVClientException(msg)
-
-        if not self._verify_certs:
-            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE  # NOSONAR
-        else:
-            # None means default context which will verify certs.
-            context = None
 
         try:
             response = post(  # noqa: S113 TODO: Add configurable timeout
@@ -158,15 +162,6 @@ class CVClient(
         if not self._token:
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
-
-        if not self._verify_certs:
-            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE  # NOSONAR
-        else:
-            # None means default context which will verify certs.
-            context = None
 
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout

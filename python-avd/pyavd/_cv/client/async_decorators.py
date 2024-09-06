@@ -1,11 +1,12 @@
 # Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from collections.abc import Callable
+from __future__ import annotations
+
 from functools import wraps
 from inspect import signature
 from logging import getLogger
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, get_origin
 
 from pyavd._utils import batch
 
@@ -13,16 +14,23 @@ from .constants import CVAAS_VERSION_STRING
 from .exceptions import CVMessageSizeExceeded
 from .versioning import CvVersion
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 LOGGER = getLogger(__name__)
 
 
 def grpc_msg_size_handler(list_field: str) -> Callable:
     def decorator_grpc_msg_size_handler(func: Callable) -> Callable:
         func_signature = signature(func)
-        if isinstance(func_signature.return_annotation, list):
+        # Sometimes the return_annotation is a proper type, and sometimes - when using forward references - it is a string. Here we normalize to type.
+        return_annotation = (
+            list if type(func_signature.return_annotation) is str and func_signature.return_annotation.startswith("list") else func_signature.return_annotation
+        )
+        if return_annotation is not list and get_origin(return_annotation) is not list:
             msg = (
                 f"grpc_msg_size_handler decorator is unable to bind to the function '{func.__name__}'. "
-                f"Expected a return type of list. Got '{func_signature.return_annotation}'."
+                f"Expected a return type of 'list'. Got '{return_annotation}'."
             )
             raise TypeError(msg)
 
