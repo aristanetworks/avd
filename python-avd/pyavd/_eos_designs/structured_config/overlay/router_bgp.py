@@ -393,8 +393,8 @@ class RouterBgpMixin(UtilsMixin):
                     core_peer_group["default_route_target"] = {"only": True}
                 peer_groups.append(core_peer_group)
 
-            # Transposing the Jinja2 logic which is that if the selfevpn_overlay_core peer group is not
-            # configured thenthe default_route_target is applied in the evpn_overlay_peers peer group.
+            # Transposing the Jinja2 logic: if the evpn_overlay_core peer group is not
+            # configured then the default_route_target is applied in the evpn_overlay_peers peer group.
             elif self.shared_utils.evpn_role == "server":
                 evpn_overlay_peers["default_route_target"] = {"only": True}
 
