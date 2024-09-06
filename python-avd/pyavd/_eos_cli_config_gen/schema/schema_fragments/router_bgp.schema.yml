@@ -1136,7 +1136,7 @@ keys:
                     - "mpls"
                 additional_paths:
                   type: dict
-                  $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -1186,7 +1186,7 @@ keys:
           bgp_additional_paths:
             type: dict
             description: BGP additional-paths commands.
-            $ref: "eos_cli_config_gen#/$defs/additional_paths"
+            $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
@@ -1946,7 +1946,7 @@ keys:
             keys:
               additional_paths:
                 type: dict
-                $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
           neighbors:
             type: list
             primary_key: ip_address
@@ -1959,7 +1959,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
           peer_groups:
             type: list
             primary_key: name
@@ -1973,7 +1973,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -2639,7 +2639,7 @@ keys:
                             - "permit"
                     additional_paths:
                       type: dict
-                      $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                      $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
                       keys:
                         install:
                           type: bool
@@ -2695,7 +2695,7 @@ keys:
                                 type: bool
                       additional_paths:
                         type: dict
-                        $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                        $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
                         keys:
                           prefix_list:
                             type: str
@@ -2776,7 +2776,7 @@ keys:
                             - "permit"
                     additional_paths:
                       type: dict
-                      $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                      $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
                       keys:
                         install:
                           type: bool
@@ -2821,7 +2821,7 @@ keys:
                         description: Outbound prefix-list name.
                       additional_paths:
                         type: dict
-                        $ref: "eos_cli_config_gen#/$defs/additional_paths"
+                        $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
                         keys:
                           prefix_list:
                             type: str

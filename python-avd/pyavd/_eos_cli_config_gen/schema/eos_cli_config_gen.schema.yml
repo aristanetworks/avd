@@ -12891,7 +12891,7 @@ keys:
                   - mpls
                 additional_paths:
                   type: dict
-                  $ref: eos_cli_config_gen#/$defs/additional_paths
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -12942,7 +12942,7 @@ keys:
           bgp_additional_paths:
             type: dict
             description: BGP additional-paths commands.
-            $ref: eos_cli_config_gen#/$defs/additional_paths
+            $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
@@ -13711,7 +13711,7 @@ keys:
             keys:
               additional_paths:
                 type: dict
-                $ref: eos_cli_config_gen#/$defs/additional_paths
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           neighbors:
             type: list
             primary_key: ip_address
@@ -13724,7 +13724,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  $ref: eos_cli_config_gen#/$defs/additional_paths
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           peer_groups:
             type: list
             primary_key: name
@@ -13738,7 +13738,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  $ref: eos_cli_config_gen#/$defs/additional_paths
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -14442,7 +14442,7 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
-                      $ref: eos_cli_config_gen#/$defs/additional_paths
+                      $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                       keys:
                         install:
                           type: bool
@@ -14499,7 +14499,7 @@ keys:
                                 type: bool
                       additional_paths:
                         type: dict
-                        $ref: eos_cli_config_gen#/$defs/additional_paths
+                        $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                         keys:
                           prefix_list:
                             type: str
@@ -14588,7 +14588,7 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
-                      $ref: eos_cli_config_gen#/$defs/additional_paths
+                      $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                       keys:
                         install:
                           type: bool
@@ -14634,7 +14634,7 @@ keys:
                         description: Outbound prefix-list name.
                       additional_paths:
                         type: dict
-                        $ref: eos_cli_config_gen#/$defs/additional_paths
+                        $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                         keys:
                           prefix_list:
                             type: str
@@ -19102,46 +19102,6 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/keys/vxlan_interface/keys/vxlan1
 $defs:
-  additional_paths:
-    type: dict
-    keys:
-      receive:
-        type: bool
-      send:
-        type: str
-        description: 'Select an option to send multiple paths for same prefix through
-          bgp updates.
-
-          any: Send any eligible path.
-
-          backup: Best path and installed backup path.
-
-          ecmp: All paths in best path ECMP group.
-
-          limit: Limit to n eligible paths.'
-        valid_values:
-        - any
-        - backup
-        - ecmp
-        - limit
-        - disabled
-      send_ecmp_limit:
-        type: int
-        description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
-          this settings. If this key-value pair is not set, it will send all paths
-          in best ECMP group.
-        convert_types:
-        - str
-        min: 2
-        max: 64
-      send_limit:
-        type: int
-        description: Number of paths to send through bgp updates. `send` must be set
-          to `limit` for this setting.
-        convert_types:
-        - str
-        min: 2
-        max: 64
   application_traffic_recognition_application:
     type: dict
     keys:
@@ -19211,6 +19171,46 @@ $defs:
           When the `protocols` list contain both `tcp` and `udp`, this key value
 
           must be the same as `udp_dest_port_set_name`.'
+  bgp_additional_paths:
+    type: dict
+    keys:
+      receive:
+        type: bool
+      send:
+        type: str
+        description: 'Select an option to send multiple paths for same prefix through
+          bgp updates.
+
+          any: Send any eligible path.
+
+          backup: Best path and installed backup path.
+
+          ecmp: All paths in best path ECMP group.
+
+          limit: Limit to n eligible paths.'
+        valid_values:
+        - any
+        - backup
+        - ecmp
+        - limit
+        - disabled
+      send_ecmp_limit:
+        type: int
+        description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
+          this settings. If this key-value pair is not set, it will send all paths
+          in best ECMP group.
+        convert_types:
+        - str
+        min: 2
+        max: 64
+      send_limit:
+        type: int
+        description: Number of paths to send through bgp updates. `send` must be set
+          to `limit` for this setting.
+        convert_types:
+        - str
+        min: 2
+        max: 64
   flow_tracking:
     type: dict
     keys:

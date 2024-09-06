@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 type: dict
 $defs:
-  additional_paths:
+  bgp_additional_paths:
     type: dict
     keys:
       receive:
