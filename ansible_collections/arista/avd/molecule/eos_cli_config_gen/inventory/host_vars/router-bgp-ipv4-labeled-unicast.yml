@@ -50,9 +50,8 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          ecmp: true
-          ecmp_limit: 20
+        send: ecmp
+        send_ecmp_limit: 20
       missing_policy:
         direction_in:
           action: deny
@@ -72,8 +71,7 @@ router_bgp:
         activate: true
         additional_paths:
           receive: true
-          send:
-            ecmp: true
+          send: ecmp
         graceful_restart: true
         maximum_advertised_routes: 0
         rcf_in: RCF_TEST(ARGS)
