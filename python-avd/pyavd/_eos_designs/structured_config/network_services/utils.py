@@ -988,7 +988,7 @@ class UtilsMixin(UtilsZscalerMixin):
 
         Run type-7 obfuscation using a algorithmic salt so we ensure the same key every time.
 
-        TODO: Maybe introduce some formatting with max length of each element, since the keys can be come very very long.
+        TODO: Maybe introduce some formatting with max length of each element, since the keys can become very very long.
         """
         secret = f"{self.shared_utils.hostname}_{name}_{salt}"
         type_7_salt = sum(salt.encode("utf-8")) % 16

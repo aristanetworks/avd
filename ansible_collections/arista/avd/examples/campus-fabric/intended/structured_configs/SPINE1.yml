@@ -330,7 +330,8 @@ router_ospf:
     - Ethernet52/1
     bfd_enable: false
     redistribute:
-      connected: {}
+      connected:
+        enabled: true
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

@@ -179,9 +179,9 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet5.100 | TENANT_B_SITE_3 | - | 100 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet5.100 | TENANT_B_SITE_3 | - | 100 | - |
 
 ##### IPv4
 
@@ -287,16 +287,16 @@ interface Ethernet8
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel3.1000 | - | - | False | 1000 | - | - | True | - | - | - |
-| Port-Channel3.1001 | - | - | False | 1001 | - | - | True | - | - | - |
-| Port-Channel3.1002 | - | - | False | 1002 | - | - | True | - | - | - |
-| Port-Channel3.1003 | - | - | False | 1003 | - | - | True | - | - | - |
-| Port-Channel3.1004 | - | - | False | 1004 | - | - | True | - | - | - |
-| Port-Channel8.111 | - | 111 | False | 111 | - | - | True | - | - | - |
-| Port-Channel8.222 | - | 222 | False | 222 | - | - | True | - | - | - |
-| Port-Channel8.333 | - | 434 | False | 333 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
+| Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
+| Port-Channel3.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
+| Port-Channel3.1003 | - | - | dot1q | - | 1003 | - | - | client | - | - | - | - |
+| Port-Channel3.1004 | - | - | dot1q | - | 1004 | - | - | client | - | - | - | - |
+| Port-Channel8.111 | - | 111 | dot1q | - | 111 | - | - | client | - | - | - | - |
+| Port-Channel8.222 | - | 222 | dot1q | - | 222 | - | - | client | - | - | - | - |
+| Port-Channel8.333 | - | 434 | dot1q | - | 333 | - | - | client | - | - | - | - |
 
 ##### EVPN Multihoming
 

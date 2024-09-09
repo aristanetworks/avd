@@ -906,7 +906,8 @@ router_ospf:
     no_passive_interfaces:
     - Vlan1234
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
   vxlan1:
     description: evpn_services_l2_only_false_VTEP

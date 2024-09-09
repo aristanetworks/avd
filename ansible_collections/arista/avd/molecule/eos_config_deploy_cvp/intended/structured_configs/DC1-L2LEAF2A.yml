@@ -168,7 +168,7 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: DC1-SVC3A_Ethernet7
-  shutdown: false
+  shutdown: true
   type: port-channel-member
   channel_group:
     id: 1
@@ -178,7 +178,7 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: DC1-SVC3B_Ethernet7
-  shutdown: false
+  shutdown: true
   type: port-channel-member
   channel_group:
     id: 1

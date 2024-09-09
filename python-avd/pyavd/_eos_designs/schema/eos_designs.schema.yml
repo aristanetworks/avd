@@ -3447,14 +3447,14 @@ keys:
     documentation_options:
       table: fabric-settings
     type: bool
-    default: false
+    default: true
     description: 'When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers`
       key is set to true, the BGP neighborship is shutdown on the peer.'
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings
     type: bool
-    default: false
+    default: true
     description: '- It is possible to provision configurations for a complete topology
       but flag devices as undeployed using the host level variable `is_deployed: false`.
 
@@ -5762,7 +5762,22 @@ $defs:
             fast_leave:
               type: bool
               description: Enable IGMP snooping fast-leave feature for all SVIs and
-                l2vlans within Tenant.
+                l2vlans within the Tenant.
+            always_redistribute_igmp:
+              type: bool
+              description: 'Always configure `redistribute igmp` under BGP for all
+                SVIs within the Tenant if `evpn_l2_multicast` is True.
+
+                By default `redistribute igmp` is only configured when `evpn_l2_multicast`
+                is True and `evpn_l3_multicast` for the VRF is False.
+
+                Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast
+                is enabled will take up additional control-plane and data-plane resources,
+
+                but it is required to support forwarding of TTL=1 multicast traffic
+                within the VLAN.
+
+                This can be overridden per SVI.'
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -9546,6 +9561,19 @@ $defs:
         keys:
           enabled:
             type: bool
+          always_redistribute_igmp:
+            type: bool
+            description: 'Always configure `redistribute igmp` under BGP for the VLAN.
+              Overrides the setting of `<network_services_key>.[].evpn_l2_multicast.always_redistribute_igmp`.
+
+              By default `redistribute igmp` is only configured when `evpn_l2_multicast`
+              is True and `evpn_l3_multicast` for the VRF is False.
+
+              Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is
+              enabled will take up additional control-plane and data-plane resources,
+
+              but it is required to support forwarding of TTL=1 multicast traffic
+              within the VLAN.'
       evpn_l3_multicast:
         documentation_options:
           table: network-services-multicast-settings

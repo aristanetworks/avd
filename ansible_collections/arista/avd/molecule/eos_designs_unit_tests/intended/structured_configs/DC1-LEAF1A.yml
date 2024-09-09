@@ -556,7 +556,8 @@ router_ospf:
     no_passive_interfaces:
     - Vlan113
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF1A_VTEP
