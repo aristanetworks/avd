@@ -439,7 +439,8 @@ ethernet_interfaces:
   description: My second test
   ip_address: 10.1.2.3/12
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   mtu: 1500
   peer: MY-own-peer
   peer_interface: Ethernet123

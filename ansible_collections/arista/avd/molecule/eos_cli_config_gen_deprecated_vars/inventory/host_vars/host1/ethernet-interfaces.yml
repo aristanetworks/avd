@@ -6,9 +6,11 @@
 #     - mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone, vlan_translations, trunk_private_vlan_secondary, pvlan_mapping
 #     - vlan_id, encapsulation_dot1q_vlan, encapsulation_vlan.client.dot1q, encapsulation_vlan.client.unmatched
 #     - encapsulation_vlan.network.dot1q, encapsulation_vlan.network.client
+#     - type
 ethernet_interfaces:
   - name: Ethernet1
     description: Test_mode_and_vlans
+    # test for type `switched`
     type: switched
     mode: access
     vlans: 100
@@ -79,6 +81,7 @@ ethernet_interfaces:
 
   - name: Ethernet8
     description: Test_encapsulation_vlan3
+    # test for type 'l3dot1q`
     type: l3dot1q
     encapsulation_vlan:
       client:
@@ -88,6 +91,7 @@ ethernet_interfaces:
     description: Test_encapsulation_vlan4
     # test for vlan_id
     vlan_id: 100
+    # test for type 'l2dot1q`
     type: l2dot1q
     encapsulation_vlan:
       client:
@@ -98,3 +102,13 @@ ethernet_interfaces:
         dot1q:
           outer: 20
           inner: 22
+
+  - name: Ethernet10
+    description: Test_for_type_routed
+    type: routed
+
+  - name: Ethernet11
+    type: port-channel-member
+    channel_group:
+      id: 16
+      mode: active

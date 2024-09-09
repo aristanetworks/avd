@@ -14,7 +14,8 @@ lldp:
 ethernet_interfaces:
   - name: Ethernet1
     description: to WAN-ISP1-01 Ethernet2
-    type: routed
+    switchport:
+      enabled: false
     lldp:
       transmit: false
       receive: false
@@ -38,7 +39,8 @@ ethernet_interfaces:
 
   - name: Ethernet4
     description: test
-    type: routed
+    switchport:
+      enabled: false
     lldp:
       transmit: true
       receive: false
