@@ -11,6 +11,15 @@ evpn_multicast: true
 # overlay_rd_type:
 #   admin_subfield: overlay_loopback_ip
 
+# Test for sflow on l3_interfaces from network services
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.12
+      vrf: sflowvrf
+      port: 1234
+fabric_sflow:
+  l3_interfaces: true
+
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000

@@ -709,6 +709,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.2.52.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
@@ -718,6 +720,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.4/31
   shutdown: false
+  sflow:
+    enable: true
   type: l3dot1q
   encapsulation_dot1q_vlan: 10
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
@@ -725,6 +729,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.4/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
@@ -1434,5 +1440,12 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 232.0.136.0/21
+sflow:
+  run: true
+  vrfs:
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
 metadata:
   platform: vEOS-LAB
