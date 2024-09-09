@@ -2074,6 +2074,10 @@ keys:
             new_key: ethernet_interfaces[].switchport.trunk.groups
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
           - routed
           - switched
@@ -7189,6 +7193,25 @@ keys:
   management_ssh:
     type: dict
     keys:
+      authentication:
+        type: dict
+        keys:
+          empty_passwords:
+            type: str
+            valid_values:
+            - auto
+            - deny
+            - permit
+            description: Permit or deny empty passwords for SSH authentication.
+          protocols:
+            type: list
+            items:
+              type: str
+              valid_values:
+              - keyboard-interactive
+              - password
+              - public-key
+            description: Allowed SSH authentication methods.
       access_groups:
         type: list
         items:
@@ -8990,6 +9013,10 @@ keys:
           type: bool
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
           - routed
           - switched
