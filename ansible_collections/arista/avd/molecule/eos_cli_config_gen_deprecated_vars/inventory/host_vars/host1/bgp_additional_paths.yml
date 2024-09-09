@@ -1,0 +1,5 @@
+router_bgp:
+  address_family_evpn:
+    bgp_additional_paths:
+      receive: true
+      send: any

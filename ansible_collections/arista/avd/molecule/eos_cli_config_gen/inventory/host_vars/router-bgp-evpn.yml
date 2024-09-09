@@ -141,9 +141,10 @@ router_bgp:
       import_ethernet_segment_ip_mass_withdraw: true
       export_ethernet_segment_ip_mass_withdraw: true
       import_overlay_index_gateway: true
-    bgp_additional_paths:
-      receive: true
-      send: any
+    bgp:
+      additional_paths:
+        receive: true
+        send: any
     layer_2_fec_in_place_update:
       enabled: true
   address_family_ipv4:

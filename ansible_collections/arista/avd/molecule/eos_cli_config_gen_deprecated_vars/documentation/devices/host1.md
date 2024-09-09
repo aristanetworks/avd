@@ -5,6 +5,8 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+- [Routing](#routing)
+  - [Router BGP](#router-bgp)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
 
@@ -231,6 +233,25 @@ interface Port-Channel10
    vlan id 100
    encapsulation vlan
       client dot1q outer 10 inner 12 network dot1q outer 20 inner 22
+```
+
+## Routing
+
+### Router BGP
+
+ASN Notation: asplain
+
+#### Router BGP Summary
+
+| BGP AS | Router ID |
+| ------ | --------- |
+| - | - |
+
+#### Router BGP EVPN Address Family
+
+#### Router BGP Device Configuration
+
+```eos
 ```
 
 ## Filters

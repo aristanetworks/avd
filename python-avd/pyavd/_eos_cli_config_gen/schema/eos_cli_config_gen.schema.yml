@@ -12941,8 +12941,18 @@ keys:
             type: bool
           bgp_additional_paths:
             type: dict
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: bgp.additional_paths
             description: BGP additional-paths commands.
             $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
@@ -19197,7 +19207,7 @@ $defs:
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
-          this settings. If this key-value pair is not set, it will send all paths
+          this setting. If this key-value pair is not set, it will send all paths
           in best ECMP group.
         convert_types:
         - str

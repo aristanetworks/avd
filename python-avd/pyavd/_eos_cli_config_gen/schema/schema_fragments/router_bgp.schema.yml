@@ -1185,8 +1185,18 @@ keys:
             type: bool
           bgp_additional_paths:
             type: dict
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: bgp.additional_paths
             description: BGP additional-paths commands.
             $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.

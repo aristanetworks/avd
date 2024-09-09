@@ -600,17 +600,27 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
    !
    address-family evpn
-{%         if router_bgp.address_family_evpn.bgp_additional_paths.receive is arista.avd.defined(true) %}
+{%         if router_bgp.address_family_evpn.bgp.additional_paths.receive is arista.avd.defined(true) %}
       bgp additional-paths receive
 {%         endif %}
-{%         if router_bgp.address_family_evpn.bgp_additional_paths.send is arista.avd.defined %}
-{%             set evpn_add_path = 'bgp additional-paths send' %}
+{%         if router_bgp.address_family_evpn.bgp.additional_paths.send is arista.avd.defined %}
+{%             set evpn_add_path = 'bgp additional-paths send ' ~ router_bgp.address_family_evpn.bgp.additional_paths.send %}
+{%             if router_bgp.address_family_evpn.bgp.additional_paths.send_ecmp_limit is arista.avd.defined and router_bgp.address_family_evpn.bgp.additional_paths.send == 'ecmp' %}
+{%                 set evpn_add_path =  evpn_add_path ~ ' limit ' ~ router_bgp.address_family_evpn.bgp.additional_paths.send_ecmp_limit %}
+{%             elif router_bgp.address_family_evpn.bgp.additional_paths.send_limit is arista.avd.defined and router_bgp.address_family_evpn.bgp.additional_paths.send == 'limit' %}
+{%                 set evpn_add_path = evpn_add_path ~ ' ' ~ router_bgp.address_family_evpn.bgp.additional_paths.send_limit %}
+{%             endif %}
+      {{ evpn_add_path }}
+{%         endif %}
+{%         if router_bgp.address_family_evpn.bgp_additional_paths.receive is arista.avd.defined(true) and not router_bgp.address_family_evpn.bgp.additional_paths.receive is arista.avd.defined %}
+      bgp additional-paths receive
+{%         endif %}
+{%         if router_bgp.address_family_evpn.bgp_additional_paths.send is arista.avd.defined and not router_bgp.address_family_evpn.bgp.additional_paths.send is arista.avd.defined %}
+{%             set evpn_add_path = 'bgp additional-paths send ' ~ router_bgp.address_family_evpn.bgp_additional_paths.send %}
 {%             if router_bgp.address_family_evpn.bgp_additional_paths.send_ecmp_limit is arista.avd.defined and router_bgp.address_family_evpn.bgp_additional_paths.send == 'ecmp' %}
-{%                 set evpn_add_path =  evpn_add_path ~ ' ecmp limit ' ~ router_bgp.address_family_evpn.bgp_additional_paths.send_ecmp_limit %}
+{%                 set evpn_add_path =  evpn_add_path ~ ' limit ' ~ router_bgp.address_family_evpn.bgp_additional_paths.send_ecmp_limit %}
 {%             elif router_bgp.address_family_evpn.bgp_additional_paths.send_limit is arista.avd.defined and router_bgp.address_family_evpn.bgp_additional_paths.send == 'limit' %}
-{%                 set evpn_add_path = evpn_add_path ~ ' limit ' ~ router_bgp.address_family_evpn.bgp_additional_paths.send_limit %}
-{%             else %}
-{%                 set evpn_add_path = evpn_add_path ~ ' ' ~ router_bgp.address_family_evpn.bgp_additional_paths.send %}
+{%                 set evpn_add_path = evpn_add_path ~ ' ' ~ router_bgp.address_family_evpn.bgp_additional_paths.send_limit %}
 {%             endif %}
       {{ evpn_add_path }}
 {%         endif %}
