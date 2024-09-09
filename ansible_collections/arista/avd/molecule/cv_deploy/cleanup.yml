@@ -7,7 +7,7 @@
     cv_server: www.cv-staging.corp.arista.io
     cv_token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
     cv_verify_certs: false
-    cv_devices: [avd-ci-leaf1, avd-ci-leaf2, avd-ci-leaf3, avd-ci-leaf4, avd-ci-spine1, avd-ci-spine2 ]
+    cv_devices: [ avd-ci-leaf1, avd-ci-leaf2, avd-ci-leaf3, avd-ci-leaf4, avd-ci-spine1, avd-ci-spine2, avd-ci-core1 ]
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
