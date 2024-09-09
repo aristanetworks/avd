@@ -1,6 +1,5 @@
 router_bgp:
   as: 65101
-  router_id: 192.168.255.3
   address_family_ipv4_labeled_unicast:
     update_wait_for_convergence: true
     aigp_session:

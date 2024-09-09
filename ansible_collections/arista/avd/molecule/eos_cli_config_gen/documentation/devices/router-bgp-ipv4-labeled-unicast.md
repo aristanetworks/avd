@@ -45,54 +45,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101 | 192.168.255.3 |
-
-| BGP Tuning |
-| ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 2 ecmp 2 |
-
-#### Router BGP Peer Groups
-
-##### EVPN-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Remote AS | 65001 |
-| Source | Loopback0 |
-| RIB Pre-Policy Retain | True (All) |
-| BFD | True |
-| Ebgp multihop | 3 |
-| Default originate | True |
-| Send community | all |
-| Maximum routes | 0 (no limit) |
-
-##### MLAG-IPv4-UNDERLAY-PEER
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote AS | 65101 |
-
-##### PG-BGP-LU
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | IPv4 Labeled-Unicast |
-| Remote AS | 65555 |
-| Source | Loopback0 |
-
-#### BGP Neighbors
-
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
-| 198.51.100.3 | Inherited from peer group PG-BGP-LU | default | - | - | - | - | - | - | - | - | - |
+| 65101 | - |
 
 #### Router BGP IPv4 Labeled Unicast
 
@@ -122,30 +75,6 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65101
-   router-id 192.168.255.3
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   maximum-paths 2 ecmp 2
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65001
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS rib-in pre-policy retain all
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 <removed>
-   neighbor EVPN-OVERLAY-PEERS default-originate route-map RM-FOO always
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
-   neighbor PG-BGP-LU peer group
-   neighbor PG-BGP-LU remote-as 65555
-   neighbor PG-BGP-LU update-source Loopback0
-   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 198.51.100.3 peer group PG-BGP-LU
    !
    address-family ipv4 labeled-unicast
       update wait-for-convergence
