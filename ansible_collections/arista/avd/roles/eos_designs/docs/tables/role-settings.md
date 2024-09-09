@@ -7,6 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") | Boolean |  | `False` |  | Dump all vars and facts per device after generating `avd_switch_facts`. |
+    | [<samp>avd_eos_designs_facts</samp>](## "avd_eos_designs_facts") | Boolean |  | `True` |  | Generate `avd_switch_facts` which is a prerequisite for `eos_designs_structured_config` and `eos_designs_documentation`. |
+    | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
+    | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") | Boolean |  | `True` |  | Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables. |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
@@ -16,6 +20,18 @@
 === "YAML"
 
     ```yaml
+    # Dump all vars and facts per device after generating `avd_switch_facts`.
+    avd_eos_designs_debug: <bool; default=False>
+
+    # Generate `avd_switch_facts` which is a prerequisite for `eos_designs_structured_config` and `eos_designs_documentation`.
+    avd_eos_designs_facts: <bool; default=True>
+
+    # Generate structured configuration per device.
+    avd_eos_designs_structured_config: <bool; default=True>
+
+    # Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables.
+    avd_eos_designs_unset_facts: <bool; default=True>
+
     # Control fabric documentation generation.
     eos_designs_documentation:
 

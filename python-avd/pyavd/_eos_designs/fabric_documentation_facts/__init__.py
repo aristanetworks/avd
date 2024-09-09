@@ -38,7 +38,7 @@ class FabricDocumentationFacts(AvdFacts):
 
     @cached_property
     def fabric_name(self) -> str:
-        """Fabric Name used for heading of MarkDown doc."""
+        """Fabric Name used for heading of Markdown doc."""
         return self._fabric_name
 
     @cached_property

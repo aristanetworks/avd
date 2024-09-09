@@ -14,22 +14,15 @@
   register: avd_requirements
 
 - name: Generate eos intended configuration and device documentation
-  when: avd_eos_cli_config_gen_config | default(true) or generate_device_documentation | arista.avd.default(true)
+  when: eos_cli_config_gen_configuration.enable | default(true) or eos_cli_config_gen_documentation.enable | default(generate_device_documentation, true)
   arista.avd.eos_cli_config_gen:
     structured_config_filename: "{{ structured_config_filename }}"
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
     read_structured_config_from_file: "{{ structured_config is not arista.avd.defined }}"
     validation_mode: "{{ avd_data_validation_mode }}"
-    # The logic to be on par with previous tags behavior is as follow:
-    # either all tasks should be run OR the config should explicitly be generated because of a tag in [all, build, provision]
-    # AND the config generation should NOT be explicitly be skipped (Ansible precedence)
-    generate_device_config: "{{ avd_eos_cli_config_gen_config | default(true) }}"
-    # The logic to be on par with previous tags behavior is as follow:
-    # either all tasks should be run OR the config should explicitly be generated because of a tag in [all, build, provision, documentation]
-    # AND the config generation should NOT be explicitly be skipped (Ansible precedence)
-    # AND generate_device_documentation must NOT be false
-    generate_device_doc: "{{ generate_device_documentation | default(true) }}"
+    generate_device_config: "{{ eos_cli_config_gen_configuration.enable | default(true) }}"
+    generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | default(generate_device_documentation, true) }}"
     device_doc_toc: true
     cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
   delegate_to: localhost

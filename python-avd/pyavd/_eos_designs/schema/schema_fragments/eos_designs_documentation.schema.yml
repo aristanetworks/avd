@@ -8,7 +8,7 @@ type: dict
 keys:
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-settings
+      table: role-settings
     description: |
       Control fabric documentation generation.
     type: dict

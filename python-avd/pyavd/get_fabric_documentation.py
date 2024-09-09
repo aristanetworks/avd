@@ -24,14 +24,14 @@ def get_fabric_documentation(
     Build and return the AVD fabric documentation.
 
     The returned object will contain the content of the requested documentation areas:
-    - Fabric documentation as MarkDown, optionally including connected endpoints.
+    - Fabric documentation as Markdown, optionally including connected endpoints.
     - Topology CSV containing the physical interface connections for every device.
     - P2P links CSV containing the Routed point-to-point links.
 
     Args:
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
         structured_configs: Dictionary of structured configurations for all devices, keyed by hostname.
-        fabric_name: Name of the fabric. Only used for the main heading in the MarkDown documentation.
+        fabric_name: Name of the fabric. Only used for the main heading in the Markdown documentation.
         fabric_documentation: Returns fabric documentation when set to True.
         include_connected_endpoints: Includes connected endpoints in the fabric documentation when set to True.
         topology_csv: Returns topology CSV when set to True.

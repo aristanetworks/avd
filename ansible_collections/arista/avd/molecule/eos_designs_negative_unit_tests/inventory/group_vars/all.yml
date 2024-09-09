@@ -3,4 +3,5 @@ root_dir: '{{ playbook_dir }}'
 
 eos_designs_documentation:
   enable: false
-generate_device_documentation: false
+eos_cli_config_gen_documentation:
+  enable: false
