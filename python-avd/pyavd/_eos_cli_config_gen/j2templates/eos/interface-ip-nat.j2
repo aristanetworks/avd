@@ -5,6 +5,7 @@
 #}
 {# eos - interface ip nat #}
 {# Static source nat entries #}
+{# Sequence of eos_cli does not exactly match with EOS cli #}
 {% for nat in interface_ip_nat.source.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
 {%     if not (nat.access_list is arista.avd.defined and nat.group is arista.avd.defined) and
           not (nat.original_port is not arista.avd.defined and nat.translated_port is arista.avd.defined) %}

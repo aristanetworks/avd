@@ -3,10 +3,10 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# eos - aaa server groups #}
-{% for aaa_server_group in aaa_server_groups | arista.avd.natural_sort('name') | arista.avd.natural_sort('type') %}
+{# eos - aaa server groups ldap #}
+{% for aaa_server_group in aaa_server_groups | arista.avd.natural_sort('name') %}
 {# To match the EOS cli sequence type ldap is added in another template #}
-{%     if aaa_server_group.type | lower != 'ldap' %}
+{%     if aaa_server_group.type | lower == 'ldap' %}
 !
 aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
 {%         if aaa_server_group.servers is arista.avd.defined %}
