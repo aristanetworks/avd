@@ -44,8 +44,7 @@ class AvdStringFormatter(Formatter):
 
             # if there's a field, output it
             if field_name is not None:
-                # this is some markup, find the object and do
-                #  the formatting
+                # this is some markup, find the object and do the formatting
 
                 # handle arg indexing when empty field_names are given.
                 if field_name == "":
