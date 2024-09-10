@@ -245,23 +245,21 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         return data.description
 
-    def vtep_loopback_interface(
-        self,
-        data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
-    ) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build VTEP loopback interface description.
 
         Available data:
+            - description
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
             - type
         """
         if template_path := self.shared_utils.interface_descriptions_templates.get("vtep_loopback_interface"):
-            return self._template(template_path)
+            return self._template(template_path, vtep_loopback_description=data.description)
 
-        return "VTEP_VXLAN_Tunnel_Source"
+        return data.description
 
 
 class InterfaceDescriptionData:

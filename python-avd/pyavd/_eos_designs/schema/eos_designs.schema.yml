@@ -4192,6 +4192,12 @@ keys:
     description: 'Generate AVD configurations directly from a given CloudVision topology.
 
       See `cv_topology` for details.'
+  vtep_loopback_description:
+    documentation_options:
+      table: overlay-settings
+    description: Customize the description on VTEP interface, typically Loopback1.
+    type: str
+    default: VXLAN_TUNNEL_SOURCE
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings

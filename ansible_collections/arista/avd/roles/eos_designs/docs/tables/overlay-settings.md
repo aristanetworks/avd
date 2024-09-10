@@ -27,6 +27,7 @@
     | [<samp>&nbsp;&nbsp;vrf_admin_subfield</samp>](## "overlay_rt_type.vrf_admin_subfield") | String |  | `vrf_id` |  | The method for deriving RT Administrator subfield (first part of RT) for VRF services:<br>- 'id' means `(vrf_id or vrf_vni)`.<br>- 'vrf_id' means `(vrf_id or vrf_vni)`.<br>- 'vrf_vni' means `(vrf_vni or vrf_id)`.<br>- 'bgp_as' means the AS number of the device.<br>- Integer between <0-65535>.<br>- Integer between <0-4294967295>.<br><br>'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.<br> |
     | [<samp>&nbsp;&nbsp;vlan_assigned_number_subfield</samp>](## "overlay_rt_type.vlan_assigned_number_subfield") | String |  | `mac_vrf_id` | Valid Values:<br>- <code>mac_vrf_id</code><br>- <code>mac_vrf_vni</code><br>- <code>vlan_id</code> | The method for deriving RT Assigned Number subfield for VLAN services (second part of RT):<br>- 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.<br>- 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.<br>- 'vlan_id' will only use the 'vlan_id' and ignores all base values.<br><br>These methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).<br> |
     | [<samp>router_id_loopback_description</samp>](## "router_id_loopback_description") | String |  | `ROUTER_ID` |  | Customize the description on Router ID interface Loopback0. |
+    | [<samp>vtep_loopback_description</samp>](## "vtep_loopback_description") | String |  | `VXLAN_TUNNEL_SOURCE` |  | Customize the description on VTEP interface, typically Loopback1. |
     | [<samp>vtep_vvtep_ip</samp>](## "vtep_vvtep_ip") | String |  |  |  | IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.<br>This is only needed for centralized routing designs.<br> |
 
 === "YAML"
@@ -179,6 +180,9 @@
 
     # Customize the description on Router ID interface Loopback0.
     router_id_loopback_description: <str; default="ROUTER_ID">
+
+    # Customize the description on VTEP interface, typically Loopback1.
+    vtep_loopback_description: <str; default="VXLAN_TUNNEL_SOURCE">
 
     # IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
     # This is only needed for centralized routing designs.

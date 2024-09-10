@@ -310,7 +310,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 172.16.120.3/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 172.18.120.3/32
 - name: Loopback100

@@ -543,7 +543,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'"
+    "custom_field": "Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up'"
   },
   {
     "name": "dc1-leaf2a",

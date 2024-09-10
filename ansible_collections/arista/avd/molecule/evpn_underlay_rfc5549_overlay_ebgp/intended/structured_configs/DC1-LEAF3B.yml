@@ -705,7 +705,7 @@ loopback_interfaces:
   ip_address: 192.168.255.13/32
   ipv6_address: 2001:1::d/128
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.12/32
 - name: Loopback100
