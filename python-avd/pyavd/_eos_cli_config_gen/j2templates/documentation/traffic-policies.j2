@@ -88,9 +88,9 @@
 {#                         -- Source/Destination Port #}
 {%                         for protocol in match.protocols %}
 {%                             if protocol.protocol | lower in ['tcp','udp'] %}
-{%                                 do row.src_port.append(protocol.src_port | arista.avd.default("all")) %}
+{%                                 do row.src_port.append(protocol.src_port | arista.avd.default("any")) %}
 {%                                 do row.src_field.append(protocol.src_field | arista.avd.default("-")) %}
-{%                                 do row.dst_port.append(protocol.dst_port | arista.avd.default("all")) %}
+{%                                 do row.dst_port.append(protocol.dst_port | arista.avd.default("any")) %}
 {%                                 do row.dst_field.append(protocol.dst_field | arista.avd.default("-")) %}
 {%                             else %}
 {%                                 do row.src_port.append("-") %}

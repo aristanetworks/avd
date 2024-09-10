@@ -14,7 +14,9 @@ traffic-policies
 {%         if field_set_port.port_range is arista.avd.defined %}
       {{ field_set_port.port_range }}
 {%         endif %}
+{%         if not loop.last %}
    !
+{%         endif %}
 {%     endfor %}
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
 {%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
@@ -22,7 +24,9 @@ traffic-policies
 {%         if field_set_ipv4.prefixes is arista.avd.defined %}
       {{ field_set_ipv4.prefixes | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
+{%         if not loop.last %}
    !
+{%         endif %}
 {%     endfor %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
 {%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
@@ -30,7 +34,9 @@ traffic-policies
 {%         if field_set_ipv6.prefixes is arista.avd.defined %}
       {{ field_set_ipv6.prefixes | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
+{%         if not loop.last %}
    !
+{%         endif %}
 {%     endfor %}
 {# Global options #}
 {%     if traffic_policies.options.counter_per_interface is arista.avd.defined(true) %}
@@ -216,6 +222,8 @@ traffic-policies
 {%             endif %}
 {%         endif %}
 {# END of DEFAULT MATCH Section #}
+{%         if not loop.last %}
    !
+{%         endif %}
 {%     endfor %}
 {% endif %}
