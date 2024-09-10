@@ -688,7 +688,7 @@ vrfs:
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
