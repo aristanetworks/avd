@@ -7,7 +7,7 @@ ansible_password: arista
 ansible_become: true
 ansible_become_method: enable
 ansible_httpapi_use_ssl: true
-# Should be enabled in production
+# Should be set to true in production networks
 ansible_httpapi_validate_certs: false
 
 # Validate State
