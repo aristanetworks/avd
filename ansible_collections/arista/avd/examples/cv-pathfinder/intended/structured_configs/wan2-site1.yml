@@ -22,7 +22,7 @@ router_bgp:
     type: wan
     update_source: Dps1
     bfd: true
-    password: Z5uCe2u06sz+RpBpCiJT0CWvBhH5I916
+    password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
