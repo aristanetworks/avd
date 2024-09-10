@@ -245,7 +245,7 @@ ethernet_interfaces:
   ip_address: 10.33.255.20/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.0.1/32
 prefix_lists:

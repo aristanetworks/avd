@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import get
+from pyavd._utils import default, get
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
@@ -35,7 +35,9 @@ class LoopbackInterfacesMixin(UtilsMixin):
             "name": "Loopback0",
             "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
                 InterfaceDescriptionData(
-                    shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
+                    shared_utils=self.shared_utils,
+                    interface="Loopback0",
+                    description=default(get(self._hostvars, "router_id_loopback_description"), get(self._hostvars, "overlay_loopback_description")),
                 ),
             ),
             "shutdown": False,

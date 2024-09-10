@@ -781,7 +781,7 @@ port_channel_interfaces:
     trunk: untagged
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.11/32
 - name: Loopback1

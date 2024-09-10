@@ -261,7 +261,7 @@ ethernet_interfaces:
   description: Comcast-5G_AF830
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 prefix_lists:

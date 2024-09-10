@@ -264,14 +264,14 @@ interface Port-Channel3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.4/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.210.4/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.4/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -279,7 +279,7 @@ interface Port-Channel3
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.210.4/32
 !

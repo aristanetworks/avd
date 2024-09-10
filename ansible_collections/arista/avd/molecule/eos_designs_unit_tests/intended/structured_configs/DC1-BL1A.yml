@@ -538,7 +538,7 @@ ethernet_interfaces:
   peer_type: my_precious
 loopback_interfaces:
 - name: Loopback0
-  description: MY_OVERLAY_LOOPBACK
+  description: MY_ROUTER_ID_LOOPBACK
   shutdown: false
   ip_address: 192.168.255.14/32
 - name: Loopback1
