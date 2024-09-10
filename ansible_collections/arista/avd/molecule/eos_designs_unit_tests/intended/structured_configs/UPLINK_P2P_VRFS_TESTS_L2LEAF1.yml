@@ -26,7 +26,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet51
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -36,7 +35,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet52
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

@@ -78,7 +78,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF0B_Ethernet41
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 41
     mode: active
@@ -88,7 +87,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF0B_Ethernet42
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 41
     mode: active

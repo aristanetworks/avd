@@ -40,7 +40,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: SFLOW-TESTS-LEAF3_Ethernet16
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -50,7 +49,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: SFLOW-TESTS-LEAF4_Ethernet16
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

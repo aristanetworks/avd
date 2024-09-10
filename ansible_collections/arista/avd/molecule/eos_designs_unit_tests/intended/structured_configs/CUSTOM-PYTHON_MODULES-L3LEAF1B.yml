@@ -212,7 +212,8 @@ ethernet_interfaces:
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.23/31
 mlag_configuration:
   domain_id: CUSTOM_PYTHON_MODULES_L3LEAF1

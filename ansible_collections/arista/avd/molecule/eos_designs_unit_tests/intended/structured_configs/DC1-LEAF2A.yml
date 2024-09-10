@@ -472,7 +472,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF1A_Ethernet1
   speed: forced 10000
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -483,7 +482,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF1B_Ethernet1
   speed: forced 10000
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -493,7 +491,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF3A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 9
     mode: active
@@ -503,7 +500,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF4A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1013
     mode: active
@@ -513,7 +509,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1.L2LEAF5A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 141
     mode: active
@@ -523,7 +518,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1.L2LEAF5B_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 141
     mode: active
@@ -533,7 +527,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1.L2LEAF6A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 30
     mode: active
@@ -545,7 +538,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.33/31
 - name: Ethernet50/1
   peer: DC1-SPINE2
@@ -555,7 +549,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.35/31
 - name: Ethernet51/1
   peer: DC1-SPINE2
@@ -565,7 +560,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.37/31
 - name: Ethernet52/1
   peer: DC1-SPINE1
@@ -575,7 +571,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.39/31
 - name: Ethernet53/1
   peer: DC1-SPINE3
@@ -585,7 +582,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.41/31
 - name: Ethernet54/1
   peer: DC1-SPINE4
@@ -595,7 +593,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.43/31
 - name: Ethernet55/1
   peer: DC1-SPINE4
@@ -605,7 +604,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.45/31
 - name: Ethernet56/1
   peer: DC1-SPINE3
@@ -615,7 +615,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.47/31
 - name: Ethernet22
   peer_type: l3_interface

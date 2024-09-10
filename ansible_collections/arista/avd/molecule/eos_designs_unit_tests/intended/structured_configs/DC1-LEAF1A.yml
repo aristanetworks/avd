@@ -294,7 +294,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.1/31
 - name: Ethernet28
   peer: DC1-SPINE2
@@ -304,7 +305,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.3/31
 - name: Ethernet29
   peer: DC1-SPINE3
@@ -314,7 +316,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.5/31
 - name: Ethernet30
   peer: DC1-SPINE4
@@ -324,7 +327,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.7/31
 - name: Ethernet6
   peer: server02_SINGLE_NODE_TRUNK

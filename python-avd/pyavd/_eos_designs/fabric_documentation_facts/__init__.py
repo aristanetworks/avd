@@ -112,7 +112,7 @@ class FabricDocumentationFacts(AvdFacts):
                 else:
                     peer_ip_address = None
 
-                routed = get(ethernet_interface, "switchport.enabled") == False
+                routed = not get(ethernet_interface, "switchport.enabled")
 
                 data = (
                     self.avd_switch_facts[hostname]["type"],  # type

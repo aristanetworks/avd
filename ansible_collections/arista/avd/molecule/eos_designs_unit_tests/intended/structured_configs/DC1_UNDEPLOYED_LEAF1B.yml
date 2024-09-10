@@ -900,7 +900,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.161/31
 - name: Ethernet50/1
   peer: DC1-SPINE2
@@ -910,7 +911,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.163/31
 - name: Ethernet51/1
   peer: DC1-SPINE3
@@ -920,7 +922,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.165/31
 - name: Ethernet52/1
   peer: DC1-SPINE4
@@ -930,7 +933,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.167/31
 mlag_configuration:
   domain_id: DC1_UNDEPLOYED_LEAF1

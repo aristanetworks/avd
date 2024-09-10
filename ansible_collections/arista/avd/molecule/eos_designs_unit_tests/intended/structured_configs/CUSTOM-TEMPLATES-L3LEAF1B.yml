@@ -227,7 +227,8 @@ ethernet_interfaces:
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.23/31
 - name: Ethernet5
   peer: CUSTOM-TEMPLATES-L2LEAF1A
@@ -235,7 +236,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active
@@ -245,7 +245,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1B_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active

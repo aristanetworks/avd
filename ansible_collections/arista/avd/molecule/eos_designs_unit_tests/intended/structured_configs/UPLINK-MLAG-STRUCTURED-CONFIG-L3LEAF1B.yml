@@ -177,7 +177,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.3/31
   pim:
     ipv4:
@@ -188,7 +189,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active
@@ -198,7 +198,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active

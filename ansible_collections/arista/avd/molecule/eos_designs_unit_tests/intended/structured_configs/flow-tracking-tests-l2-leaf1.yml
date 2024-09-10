@@ -40,7 +40,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: FLOW-TRACKING-TESTS-LEAF3_Ethernet31
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -50,7 +49,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: FLOW-TRACKING-TESTS-LEAF4_Ethernet31
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

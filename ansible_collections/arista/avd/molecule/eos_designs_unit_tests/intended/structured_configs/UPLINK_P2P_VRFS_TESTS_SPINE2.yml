@@ -81,7 +81,8 @@ ethernet_interfaces:
   mtu: 9214
   mac_security:
     profile: TEST
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.42.42.10/31
 - name: Ethernet2.100
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1

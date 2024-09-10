@@ -144,7 +144,6 @@ class UtilsMixin:
     def _get_l3_interface_cfg(self: AvdStructuredConfigUnderlay, l3_interface: dict) -> dict | None:
         """Returns structured_configuration for one L3 interface."""
         interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
-        # iface_type = "l3dot1q" if "." in interface_name else "routed"
 
         interface_description = l3_interface.get("description")
         if not interface_description:

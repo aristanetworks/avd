@@ -255,24 +255,24 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-IPV6-ONLY_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 26
     mode: active
-  mode: access
-  vlans: 106
+  switchport:
+    mode: access
+    access_vlan: 106
 - name: Ethernet27
   peer: inband-mgmt-ipv6-only-vrf
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: INBAND-MGMT-IPV6-ONLY-VRF_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 27
     mode: active
-  mode: access
-  vlans: 107
+  switchport:
+    mode: access
+    access_vlan: 107
 mlag_configuration:
   domain_id: inband-mgmt-parents-ipv6
   local_interface: Vlan4094

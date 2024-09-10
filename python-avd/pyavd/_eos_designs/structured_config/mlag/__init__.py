@@ -147,16 +147,14 @@ class AvdStructuredConfigMlag(AvdFacts):
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
                 InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name),
             ),
-            "switchport":
-                {
-                    "enabled": True,
-                    "mode": "trunk",
-                    "trunk":
-                        {
-                            "groups": [self._trunk_groups_mlag_name],
-                            "allowed_vlan": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
-                        },
+            "switchport": {
+                "enabled": True,
+                "mode": "trunk",
+                "trunk": {
+                    "groups": [self._trunk_groups_mlag_name],
+                    "allowed_vlan": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
                 },
+            },
             "shutdown": False,
             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
             "struct_cfg": get(self.shared_utils.switch_data_combined, "mlag_port_channel_structured_config"),
@@ -216,7 +214,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
             if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
-                ethernet_interface.update({"mode": "access", "vlans": self.shared_utils.get_mlag_peer_fact("inband_ztp_vlan")})
+                ethernet_interface.update({"switchport": {"mode": "access", "access_vlan": self.shared_utils.get_mlag_peer_fact("inband_ztp_vlan")}})
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces

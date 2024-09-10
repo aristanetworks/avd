@@ -109,7 +109,8 @@ ethernet_interfaces:
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
   encapsulation_dot1q_vlan: 6
 - name: Ethernet6/6
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 loopback_interfaces:

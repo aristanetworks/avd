@@ -277,7 +277,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet5
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.17/31
@@ -288,7 +289,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet6
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.19/31
@@ -298,7 +300,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SFLOW-TESTS-L2-LEAF1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 16
     mode: active
@@ -308,7 +309,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SFLOW-TESTS-L2-LEAF2_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 17
     mode: active

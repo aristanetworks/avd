@@ -176,7 +176,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet19
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   link_tracking_groups:
   - name: LT_GROUP1
     direction: upstream

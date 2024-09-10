@@ -172,7 +172,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet220
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.10.101.9/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0

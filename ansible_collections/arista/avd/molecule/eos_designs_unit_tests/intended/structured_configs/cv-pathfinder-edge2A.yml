@@ -214,7 +214,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.5/31
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf2A
@@ -256,7 +257,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.7/31
 - name: Ethernet53.1000
   peer: site-ha-enabled-leaf2B

@@ -120,7 +120,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.0/31
@@ -131,7 +132,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF2_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.4/31
@@ -142,7 +144,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF3_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.16/31
@@ -153,7 +156,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF4_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.20/31

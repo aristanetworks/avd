@@ -78,7 +78,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_MLAG_ODD_ID_L3LEAF1A_Ethernet10
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.254.255.250/30
 - name: Ethernet2
   peer: MLAG_ODD_ID_L3LEAF1B
@@ -87,7 +88,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_MLAG_ODD_ID_L3LEAF1B_Ethernet10
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.254.255.254/30
 loopback_interfaces:
 - name: Loopback0

@@ -50,15 +50,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         port_channel_description=link.get("channel_description"),
                     ),
                 ),
-                "switchport":
-                    {
-                        "enabled": True,
-                        "mode": "trunk",
-                        "trunk":
-                            {
-                                "native_vlan": link.get("native_vlan"),
-                            },
+                "switchport": {
+                    "enabled": True,
+                    "mode": "trunk",
+                    "trunk": {
+                        "native_vlan": link.get("native_vlan"),
                     },
+                },
                 "shutdown": False,
                 "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                 "link_tracking_groups": link.get("link_tracking_groups"),

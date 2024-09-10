@@ -146,7 +146,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P2P-UPLINKS-IPV4-PREFIX-LENGTH_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.254.255.253/30
 mlag_configuration:
   domain_id: MLAG_ODD_ID_L3LEAF1

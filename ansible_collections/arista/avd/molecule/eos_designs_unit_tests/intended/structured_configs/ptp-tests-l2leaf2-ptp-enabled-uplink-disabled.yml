@@ -53,7 +53,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: PTP-TESTS-LEAF1_Ethernet14
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -63,7 +62,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: PTP-TESTS-LEAF2_Ethernet14
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

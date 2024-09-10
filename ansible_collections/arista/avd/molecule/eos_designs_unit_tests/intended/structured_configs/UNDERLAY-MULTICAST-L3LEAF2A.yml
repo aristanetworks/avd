@@ -161,7 +161,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE1_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.9/31
   pim:
     ipv4:
@@ -173,7 +174,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE2_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.11/31
 mlag_configuration:
   domain_id: DC1_LEAF2

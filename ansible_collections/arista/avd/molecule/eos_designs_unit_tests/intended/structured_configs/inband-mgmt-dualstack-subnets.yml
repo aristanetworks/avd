@@ -26,7 +26,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT-DUALSTACK1_Ethernet24
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -36,7 +35,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT-DUALSTACK2_Ethernet24
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

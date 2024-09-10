@@ -81,31 +81,30 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-SUBNET_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 21
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet22
   peer: inband-mgmt-subnet-vrf
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: INBAND-MGMT-SUBNET-VRF_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 22
     mode: active
-  mode: access
-  vlans: 102
+  switchport:
+    mode: access
+    access_vlan: 102
 - name: Ethernet23
   peer: inband-mgmt-ip
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: INBAND-MGMT-IP_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 23
     mode: active
@@ -115,24 +114,24 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-MLAG-A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 101
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet102
   peer: inband-mgmt-mlag-b
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: INBAND-MGMT-MLAG-B_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 101
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 port_channel_interfaces:
 - name: Port-Channel21
   description: INBAND-MGMT-SUBNET_Po1

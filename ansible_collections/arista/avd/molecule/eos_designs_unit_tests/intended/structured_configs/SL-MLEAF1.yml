@@ -26,7 +26,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF1A_Ethernet28
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 16
     mode: active

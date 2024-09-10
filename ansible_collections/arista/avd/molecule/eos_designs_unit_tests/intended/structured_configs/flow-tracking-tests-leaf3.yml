@@ -284,7 +284,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-SPINE1_Ethernet5
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     hardware: FLOW-TRACKER-3
   ip_address: 10.254.2.17/31
@@ -295,7 +296,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-SPINE2_Ethernet6
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     hardware: FLOW-TRACKER-3
   ip_address: 10.254.2.19/31
@@ -305,7 +307,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: FLOW-TRACKING-TESTS-L2-LEAF1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 31
     mode: active
@@ -315,7 +316,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: FLOW-TRACKING-TESTS-L2-LEAF2_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 32
     mode: active

@@ -298,7 +298,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -316,7 +317,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -333,7 +335,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -343,7 +344,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -353,7 +353,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 14
     mode: active

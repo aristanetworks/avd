@@ -87,7 +87,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_2_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 192.168.153.1/31
 - name: Ethernet2
   peer: underlay_filter_peer_as_evpn_3
@@ -96,7 +97,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_3_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 192.168.153.3/31
 loopback_interfaces:
 - name: Loopback0

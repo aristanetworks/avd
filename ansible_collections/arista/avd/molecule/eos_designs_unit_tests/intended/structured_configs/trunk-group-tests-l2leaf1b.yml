@@ -146,7 +146,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -156,7 +155,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1B_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

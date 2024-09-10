@@ -87,7 +87,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF1A_Ethernet27
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 27
     mode: active
@@ -97,7 +96,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF1B_Ethernet27
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 27
     mode: active
@@ -107,7 +105,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF2A_Ethernet41
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 41
     mode: active
@@ -117,7 +114,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF2A_Ethernet42
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 41
     mode: active
@@ -127,7 +123,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF2B_Ethernet41
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 41
     mode: active
@@ -137,7 +132,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF2B_Ethernet42
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 41
     mode: active

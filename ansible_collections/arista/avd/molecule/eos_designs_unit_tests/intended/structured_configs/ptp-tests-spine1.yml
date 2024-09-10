@@ -129,7 +129,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -147,7 +148,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -165,7 +167,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -183,7 +186,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0

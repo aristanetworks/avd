@@ -66,7 +66,6 @@ ethernet_interfaces:
   peer_type: spine
   description: OVERRIDE_UPLINK_TYPE-D_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

@@ -173,13 +173,12 @@ class PortChannelInterfacesMixin(UtilsMixin):
             port_channel_interface["switchport"].update(
                 {
                     "mode": adapter.get("mode"),
-                    "trunk":
-                        {
-                            "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
-                            "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-                            "native_vlan_tag": adapter.get("native_vlan_tag"),
-                            "native_vlan": adapter.get("native_vlan"),
-                        },
+                    "trunk": {
+                        "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
+                        "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                        "native_vlan_tag": adapter.get("native_vlan_tag"),
+                        "native_vlan": adapter.get("native_vlan"),
+                    },
                     "phone": self._get_adapter_phone(adapter, connected_endpoint),
                     "access_vlan": adapter.get("vlans") if adapter.get("mode") == "access" else None,
                 },

@@ -123,7 +123,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.0/31
   pim:
     ipv4:
@@ -135,7 +136,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.4/31
   pim:
     ipv4:
@@ -147,7 +149,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.8/31
   pim:
     ipv4:
@@ -159,7 +162,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2B_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.12/31
   pim:
     ipv4:

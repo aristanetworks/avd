@@ -1103,7 +1103,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF2A_Ethernet2
   speed: 100g-2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1007
     mode: active
@@ -1114,7 +1113,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF2B_Ethernet2
   speed: 100g-2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1007
     mode: active
@@ -1126,7 +1124,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.129/31
 - name: Ethernet50/1
   peer: DC1-SPINE2
@@ -1136,7 +1135,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.131/31
 - name: Ethernet51/1
   peer: DC1-SPINE3
@@ -1146,7 +1146,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.133/31
 - name: Ethernet52/1
   peer: DC1-SPINE4
@@ -1156,7 +1157,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.135/31
 - name: Ethernet11
   peer: server04_inherit_all_from_profile

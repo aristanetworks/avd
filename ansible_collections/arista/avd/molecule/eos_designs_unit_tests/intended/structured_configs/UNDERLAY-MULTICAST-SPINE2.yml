@@ -120,7 +120,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.2/31
 - name: Ethernet2
   peer: UNDERLAY-MULTICAST-L3LEAF1B
@@ -129,7 +130,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.6/31
 - name: Ethernet3
   peer: UNDERLAY-MULTICAST-L3LEAF2A
@@ -138,7 +140,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.10/31
 - name: Ethernet4
   peer: UNDERLAY-MULTICAST-L3LEAF2B
@@ -147,7 +150,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2B_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.14/31
 loopback_interfaces:
 - name: Loopback0

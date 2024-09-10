@@ -74,8 +74,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet12
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet12
@@ -85,8 +86,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet13
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet13
@@ -96,8 +98,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet14
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet14
@@ -107,8 +110,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet15
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet15
@@ -118,8 +122,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet16
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet16
@@ -129,8 +134,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet17
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet17
@@ -140,8 +146,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet18
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet18
@@ -151,8 +158,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet19
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet19
@@ -162,8 +170,9 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet20
   peer: inband-mgmt-mlag-a
   peer_interface: Ethernet20
@@ -173,15 +182,15 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  mode: access
-  vlans: 101
+  switchport:
+    mode: access
+    access_vlan: 101
 - name: Ethernet1
   peer: inband-mgmt-parent
   peer_interface: Ethernet102
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT_Ethernet102
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -191,7 +200,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT-VRF_Ethernet102
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active

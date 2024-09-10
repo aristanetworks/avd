@@ -300,24 +300,24 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-DUALSTACK-SUBNETS_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 24
     mode: active
-  mode: access
-  vlans: 104
+  switchport:
+    mode: access
+    access_vlan: 104
 - name: Ethernet25
   peer: inband-mgmt-dualstack-ips
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: INBAND-MGMT-DUALSTACK-IPS_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 25
     mode: active
-  mode: access
-  vlans: 105
+  switchport:
+    mode: access
+    access_vlan: 105
 mlag_configuration:
   domain_id: inband-mgmt-parents-dualstack
   local_interface: Vlan4094

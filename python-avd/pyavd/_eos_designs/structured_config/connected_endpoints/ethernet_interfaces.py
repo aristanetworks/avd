@@ -87,20 +87,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                 "l2_mtu": adapter.get("l2_mtu"),
                 "l2_mru": adapter.get("l2_mru"),
-                "switchport":
-                    {
-                        "enabled": True,
-                        "mode": adapter.get("mode"),
-                        "trunk":
-                            {
-                                "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
-                                "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-                                "native_vlan_tag": adapter.get("native_vlan_tag"),
-                                "native_vlan": adapter.get("native_vlan"),
-                            },
-                        "access_vlan": adapter.get("vlans") if adapter.get("mode") in ["access", "dot1q-tunnel"] else None,
-                        "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                "switchport": {
+                    "enabled": True,
+                    "mode": adapter.get("mode"),
+                    "trunk": {
+                        "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
+                        "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                        "native_vlan_tag": adapter.get("native_vlan_tag"),
+                        "native_vlan": adapter.get("native_vlan"),
                     },
+                    "access_vlan": adapter.get("vlans") if adapter.get("mode") in ["access", "dot1q-tunnel"] else None,
+                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                },
                 "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                 "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                 "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
