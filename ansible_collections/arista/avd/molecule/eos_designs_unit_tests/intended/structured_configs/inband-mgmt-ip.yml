@@ -44,10 +44,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po23
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '103'
   shutdown: false
-  mode: trunk
-  vlans: '103'
 vlans:
 - id: 103
   name: MYVLANNAME

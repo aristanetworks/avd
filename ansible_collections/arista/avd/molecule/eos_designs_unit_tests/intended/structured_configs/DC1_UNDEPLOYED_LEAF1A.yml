@@ -862,20 +862,21 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel571
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Po571
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
+      allowed_vlan: 1-4094
   shutdown: false
-  vlans: 1-4094
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet57/1
   peer: DC1_UNDEPLOYED_LEAF1B
   peer_interface: Ethernet57/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Ethernet57/1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 571
@@ -886,7 +887,6 @@ ethernet_interfaces:
   peer_interface: Ethernet58/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Ethernet58/1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 571

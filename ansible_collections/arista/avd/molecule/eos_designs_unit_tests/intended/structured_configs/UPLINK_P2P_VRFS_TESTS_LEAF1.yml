@@ -184,10 +184,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel51
   description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '66'
   shutdown: false
-  mode: trunk
-  vlans: '66'
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._utils import get, short_esi_to_route_target
+from pyavd._utils import get, short_esi_to_route_target, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
@@ -50,21 +50,27 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         port_channel_description=link.get("channel_description"),
                     ),
                 ),
-                "type": "switched",
+                "switchport":
+                    {
+                        "enabled": True,
+                        "mode": "trunk",
+                        "trunk":
+                            {
+                                "native_vlan": link.get("native_vlan"),
+                            },
+                    },
                 "shutdown": False,
-                "mode": "trunk",
                 "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                 "link_tracking_groups": link.get("link_tracking_groups"),
-                "native_vlan": link.get("native_vlan"),
                 "sflow": link.get("sflow"),
                 "flow_tracker": link.get("flow_tracker"),
                 "spanning_tree_portfast": link.get("spanning_tree_portfast"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:
-                port_channel_interface["trunk_groups"] = trunk_groups
+                port_channel_interface["switchport"]["trunk"]["groups"] = trunk_groups
             elif (vlans := link.get("vlans")) is not None:
-                port_channel_interface["vlans"] = vlans
+                port_channel_interface["switchport"]["trunk"]["allowed_vlan"] = vlans
 
             # Configure MLAG on MLAG switches if either 'mlag_on_orphan_port_channel_downlink' or 'link.mlag' is True
             if self.shared_utils.mlag is True and any([get(self._hostvars, "mlag_on_orphan_port_channel_downlink", default=False), link.get("mlag", True)]):
@@ -99,7 +105,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             port_channel_interface["struct_cfg"] = link.get("structured_config")
 
             # Remove None values
-            port_channel_interface = {key: value for key, value in port_channel_interface.items() if value is not None}
+            port_channel_interface = strip_null_from_data(port_channel_interface, strip_values_tuple=(None, "", {}))
 
             port_channel_interfaces.append(port_channel_interface)
 

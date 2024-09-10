@@ -199,54 +199,63 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel21
   description: MLAG_PEER_flow-tracking-tests-leaf4_Po21
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 - name: Port-Channel31
   description: FLOW-TRACKING-TESTS-L2-LEAF1_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   flow_tracker:
     hardware: FLOW-TRACKER
-  vlans: 11,4092
   mlag: 31
 - name: Port-Channel32
   description: FLOW-TRACKING-TESTS-L2-LEAF2_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   flow_tracker:
     hardware: FLOW-TRACKER
-  vlans: 11,4092
   mlag: 32
 - name: Port-Channel14
   description: port-channel-interface-true
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 14
 - name: Port-Channel15
   description: port-channel-interface-false
-  type: switched
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 15
 - name: Port-Channel16
   description: port-channel-interface-no-definition
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 16
 ethernet_interfaces:
@@ -255,7 +264,6 @@ ethernet_interfaces:
   peer_interface: Ethernet21
   peer_type: mlag_peer
   description: MLAG_PEER_flow-tracking-tests-leaf4_Ethernet21
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 21
@@ -265,7 +273,6 @@ ethernet_interfaces:
   peer_interface: Ethernet22
   peer_type: mlag_peer
   description: MLAG_PEER_flow-tracking-tests-leaf4_Ethernet22
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 21

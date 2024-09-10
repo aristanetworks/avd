@@ -43,10 +43,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po21
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '101'
   shutdown: false
-  mode: trunk
-  vlans: '101'
 ip_igmp_snooping:
   globally_enabled: true
 vlans:

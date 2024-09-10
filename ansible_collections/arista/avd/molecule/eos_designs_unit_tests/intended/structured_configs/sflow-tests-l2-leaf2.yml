@@ -57,12 +57,14 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: SFLOW-TESTS-LEAF-MLAG_Po17
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   sflow:
     enable: true
-  vlans: 11,4092
 vlans:
 - id: 11
   name: VLAN11

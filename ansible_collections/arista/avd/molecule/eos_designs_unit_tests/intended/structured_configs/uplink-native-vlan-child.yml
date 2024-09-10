@@ -40,10 +40,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel2
   description: UPLINK-NATIVE-VLAN-PARENT_Po2
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      native_vlan: 200
+      allowed_vlan: '100'
   shutdown: false
-  mode: trunk
-  native_vlan: 200
-  vlans: '100'
 ip_igmp_snooping:
   globally_enabled: true

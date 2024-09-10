@@ -36,10 +36,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: OVERRIDE_UPLINK_TYPE-U_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
-  vlans: none
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

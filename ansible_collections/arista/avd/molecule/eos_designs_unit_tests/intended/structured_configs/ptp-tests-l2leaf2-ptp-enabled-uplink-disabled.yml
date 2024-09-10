@@ -70,10 +70,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: PTP-TEST-LEAF_Po14
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
 vlans:
 - id: 11
   name: VLAN11

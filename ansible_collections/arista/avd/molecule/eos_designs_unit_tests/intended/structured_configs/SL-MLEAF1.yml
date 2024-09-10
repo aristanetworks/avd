@@ -33,10 +33,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel16
   description: SL-LEAF1_Po28
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
-  vlans: none
 ip_igmp_snooping:
   globally_enabled: true
 metadata:

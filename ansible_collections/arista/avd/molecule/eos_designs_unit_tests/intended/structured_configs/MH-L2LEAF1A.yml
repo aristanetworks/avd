@@ -111,13 +111,15 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: MH-LEAF2A_Po2
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '310'
   shutdown: false
-  mode: trunk
   link_tracking_groups:
   - name: l2leaf-server02
     direction: upstream
-  vlans: '310'
 vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1

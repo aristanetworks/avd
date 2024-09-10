@@ -232,26 +232,31 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
 - name: Port-Channel7
   description: PHYSICAL_PORT_DESCRIPTION_PORT_CHANNEL_DESCRIPTION
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
 - name: Port-Channel10
   description: OLD_SW-1/7_PORT_CHANNEL_DESCRIPTION
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
 - name: Port-Channel12
   description: INDIVIDUAL_1_INDIVIDUAL_1
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 90
 - name: Port-Channel15
   description: INDIVIDUAL_2_TRUNK_PHONE
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 90
 metadata:

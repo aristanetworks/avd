@@ -211,12 +211,14 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel9
   description: MLAG_PEER_ptp-tests-leaf1_Po9
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
   ptp:
     announce:
       interval: 0
@@ -228,17 +230,21 @@ port_channel_interfaces:
     enable: true
 - name: Port-Channel11
   description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 11
 - name: Port-Channel12
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 12
   ptp:
     announce:
@@ -251,14 +257,15 @@ port_channel_interfaces:
     enable: true
 - name: Port-Channel14
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 14
 - name: Port-Channel6
   description: Endpoint-with-mpass
-  type: switched
   shutdown: false
   ptp:
     announce:
@@ -271,8 +278,10 @@ port_channel_interfaces:
     enable: true
     role: master
     mpass: true
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   mlag: 6
 ethernet_interfaces:
 - name: Ethernet9
@@ -280,7 +289,6 @@ ethernet_interfaces:
   peer_interface: Ethernet9
   peer_type: mlag_peer
   description: MLAG_PEER_ptp-tests-leaf1_Ethernet9
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 9
@@ -290,7 +298,6 @@ ethernet_interfaces:
   peer_interface: Ethernet10
   peer_type: mlag_peer
   description: MLAG_PEER_ptp-tests-leaf1_Ethernet10
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 9

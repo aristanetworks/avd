@@ -147,12 +147,18 @@ class AvdStructuredConfigMlag(AvdFacts):
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
                 InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name),
             ),
-            "type": "switched",
+            "switchport":
+                {
+                    "enabled": True,
+                    "mode": "trunk",
+                    "trunk":
+                        {
+                            "groups": [self._trunk_groups_mlag_name],
+                            "allowed_vlan": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
+                        },
+                },
             "shutdown": False,
-            "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
-            "mode": "trunk",
             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
-            "trunk_groups": [self._trunk_groups_mlag_name],
             "struct_cfg": get(self.shared_utils.switch_data_combined, "mlag_port_channel_structured_config"),
             "flow_tracker": self.shared_utils.get_flow_tracker(None, "mlag_interfaces"),
         }
@@ -161,9 +167,9 @@ class AvdStructuredConfigMlag(AvdFacts):
             # Add LEAF_PEER_L3 even if we reuse the MLAG trunk group for underlay peering
             # since this trunk group is also used for overlay iBGP peerings
             # except in the case where the same trunk group name is defined.
-            port_channel_interface["trunk_groups"].append(self._trunk_groups_mlag_l3_name)
+            port_channel_interface["switchport"]["trunk"]["groups"].append(self._trunk_groups_mlag_l3_name)
             # Retain legacy order
-            port_channel_interface["trunk_groups"].reverse()
+            port_channel_interface["switchport"]["trunk"]["groups"].reverse()
 
         if (self.shared_utils.fabric_sflow_mlag_interfaces) is not None:
             port_channel_interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_mlag_interfaces}
@@ -202,7 +208,6 @@ class AvdStructuredConfigMlag(AvdFacts):
                         peer_interface=mlag_interface,
                     ),
                 ),
-                "type": "port-channel-member",
                 "shutdown": False,
                 "channel_group": {
                     "id": self.shared_utils.mlag_port_channel_id,

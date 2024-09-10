@@ -107,10 +107,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1_LEAF2_Po9
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-112,120-121,130-131,160-161
   shutdown: false
-  mode: trunk
-  vlans: 110-112,120-121,130-131,160-161
 vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1

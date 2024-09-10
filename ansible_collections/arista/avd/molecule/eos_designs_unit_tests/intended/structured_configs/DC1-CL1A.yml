@@ -357,20 +357,21 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1151
   description: MLAG_PEER_DC1-CL1B_Po1151
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
+      allowed_vlan: 1-4094
   shutdown: false
-  vlans: 1-4094
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet1/15/1
   peer: DC1-CL1B
   peer_interface: Ethernet1/15/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/15/1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1151
@@ -381,7 +382,6 @@ ethernet_interfaces:
   peer_interface: Ethernet1/16/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/16/1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1151

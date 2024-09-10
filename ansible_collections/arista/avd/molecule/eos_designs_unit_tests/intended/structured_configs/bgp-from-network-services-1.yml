@@ -97,19 +97,20 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel10
   description: MLAG_PEER_bgp-from-network-services-2_Po10
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet10
   peer: bgp-from-network-services-2
   peer_interface: Ethernet10
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-from-network-services-2_Ethernet10
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 10

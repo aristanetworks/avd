@@ -43,10 +43,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENTS-IPV6_Po27
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '107'
   shutdown: false
-  mode: trunk
-  vlans: '107'
 ip_igmp_snooping:
   globally_enabled: true
 vlans:

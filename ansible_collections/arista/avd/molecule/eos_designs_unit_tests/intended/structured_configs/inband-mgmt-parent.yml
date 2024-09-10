@@ -137,32 +137,40 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel21
   description: INBAND-MGMT-SUBNET_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '101'
   shutdown: false
-  mode: trunk
-  vlans: '101'
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 30
 - name: Port-Channel22
   description: INBAND-MGMT-SUBNET-VRF_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '102'
   shutdown: false
-  mode: trunk
-  vlans: '102'
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 90
 - name: Port-Channel23
   description: INBAND-MGMT-IP_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '103'
   shutdown: false
-  mode: trunk
-  vlans: '103'
 - name: Port-Channel101
   description: INBAND-MGMT-MLAG-TEST_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '101'
   shutdown: false
-  mode: trunk
-  vlans: '101'
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 30
 loopback_interfaces:

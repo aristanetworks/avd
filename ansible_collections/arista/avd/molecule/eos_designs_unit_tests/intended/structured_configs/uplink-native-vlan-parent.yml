@@ -50,17 +50,21 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK-NATIVE-VLAN-GRANDPARENT_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      native_vlan: 100
+      allowed_vlan: '100'
   shutdown: false
-  mode: trunk
-  native_vlan: 100
-  vlans: '100'
 - name: Port-Channel2
   description: UPLINK-NATIVE-VLAN-CHILD_Po2
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      native_vlan: 200
+      allowed_vlan: '100'
   shutdown: false
-  mode: trunk
-  native_vlan: 200
-  vlans: '100'
 ip_igmp_snooping:
   globally_enabled: true

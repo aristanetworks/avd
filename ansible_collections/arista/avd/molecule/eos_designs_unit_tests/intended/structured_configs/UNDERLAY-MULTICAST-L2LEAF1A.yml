@@ -45,10 +45,12 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1_LEAF1_Po6
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
-  vlans: none
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
