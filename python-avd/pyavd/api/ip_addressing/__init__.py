@@ -314,7 +314,6 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     def evpn_underlay_l3_multicast_group(
         self,
         underlay_l3_multicast_group_ipv4_pool: str,
-        vrf_vni: int,  # pylint: disable=unused-argument # noqa: ARG002
         vrf_id: int,
         evpn_underlay_l3_multicast_group_ipv4_pool_offset: int,
     ) -> str:
