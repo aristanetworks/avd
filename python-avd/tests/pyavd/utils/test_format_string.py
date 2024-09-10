@@ -24,6 +24,7 @@ FORMAT_STRING_TESTS = [
     pytest.param("{?!u}", (), {}, "", id="positional_optional_field_with_missing_arg_and_upper"),
     pytest.param("{?!u}", (None,), {}, "", id="positional_optional_field_with_none_arg_and_upper"),
     pytest.param("{?!u}", ("Ethernet1",), {}, "ETHERNET1", id="positional_optional_field_with_existing_arg_and_upper"),
+    pytest.param("{0?!u}{1?!u}{0?!u}", ("foo", "bar"), {}, "FOOBARFOO", id="positional_optional_repeated_fields_with_existing_args_and_upper"),
     # named fields with prefix
     pytest.param("{interface<foo  }", (), {"interface": "Ethernet1"}, "foo  Ethernet1", id="field_with_prefix_existing_arg"),
     pytest.param("{interface?<foo}", (), {}, "", id="optional_field_with_prefix_missing_arg"),
@@ -34,6 +35,7 @@ FORMAT_STRING_TESTS = [
     pytest.param("{?<foo}", (), {}, "", id="positional_optional_field_with_prefix_missing_arg"),
     pytest.param("{?< f o o }", (None,), {}, "", id="positional_optional_field_with_prefix_none_arg"),
     pytest.param("{?< f o o }", ("Ethernet1",), {}, " f o o Ethernet1", id="positional_optional_field_with_prefix_existing_arg"),
+    pytest.param("{0<one}{1<two}{0<three}", ("foo", "bar"), {}, "onefootwobarthreefoo", id="positional_repeated_fields_with_prefix_existing_args"),
     # named fields with suffix
     pytest.param("{interface>foo  }", (), {"interface": "Ethernet1"}, "Ethernet1foo  ", id="field_with_suffix_existing_arg"),
     pytest.param("{interface?>foo}", (), {}, "", id="optional_field_with_suffix_missing_arg"),
@@ -44,6 +46,7 @@ FORMAT_STRING_TESTS = [
     pytest.param("{?>foo}", (), {}, "", id="positional_optional_field_with_suffix_missing_arg"),
     pytest.param("{?> f o o }", (None,), {}, "", id="positional_optional_field_with_suffix_none_arg"),
     pytest.param("{?> f o o }", ("Ethernet1",), {}, "Ethernet1 f o o ", id="positional_optional_field_with_suffix_existing_arg"),
+    pytest.param("{0>one}{1>two}{0>three}", ("foo", "bar"), {}, "fooonebartwofoothree", id="positional_repeated_fields_with_suffix_existing_args"),
     # named fields with prefix and suffix
     pytest.param("{interface<foo  >bar  }", (), {"interface": "Ethernet1"}, "foo  Ethernet1bar  ", id="field_with_prefix_and_suffix_existing_arg"),
     pytest.param("{interface?<foo>bar}", (), {}, "", id="optional_field_with_prefix_and_suffix_missing_arg"),
@@ -56,6 +59,13 @@ FORMAT_STRING_TESTS = [
     pytest.param("{?<foo>bar}", (), {}, "", id="positional_optional_field_with_prefix_and_suffix_missing_arg"),
     pytest.param("{?< f o o > b a r }", (None,), {}, "", id="positional_optional_field_with_prefix_and_suffix_none_arg"),
     pytest.param("{?< f o o > b a r }", ("Ethernet1",), {}, " f o o Ethernet1 b a r ", id="positional_optional_field_with_prefix_and_suffix_existing_arg"),
+    pytest.param(
+        "{0<aaa>one}_{1<bbb>two}_{0<ccc>three}",
+        ("foo", "bar"),
+        {},
+        "aaafooone_bbbbartwo_cccfoothree",
+        id="positional_repeated_fields_with_prefix_and_suffix_existing_args",
+    ),
     # positional fields with prefix and suffix and upper
     pytest.param("{<foo  >bar  !u}", ("Ethernet1",), {}, "foo  ETHERNET1bar  ", id="positional_field_with_prefix_and_suffix_existing_arg_and_upper"),
     pytest.param("{?<foo>bar!u}", (), {}, "", id="positional_optional_field_with_prefix_and_suffix_missing_arg_and_upper"),
