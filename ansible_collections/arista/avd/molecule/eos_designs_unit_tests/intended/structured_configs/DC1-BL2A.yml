@@ -237,7 +237,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: TENANT_D_WAN_ZONE
-    router_id: 192.168.255.16
     rd: 192.168.255.16:42
     route_targets:
       import:
@@ -248,6 +247,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '42:42'
+    router_id: 192.168.255.16
   vlan_aware_bundles:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.16:14

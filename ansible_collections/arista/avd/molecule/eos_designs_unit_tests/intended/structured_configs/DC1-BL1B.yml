@@ -255,7 +255,6 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: TENANT_D_WAN_ZONE
-    router_id: 192.168.255.15
     rd: 192.168.254.15:42
     route_targets:
       import:
@@ -266,6 +265,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65105:42'
+    router_id: 192.168.255.15
   vlan_aware_bundles:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.254.15:14

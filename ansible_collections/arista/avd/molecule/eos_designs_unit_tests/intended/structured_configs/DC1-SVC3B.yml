@@ -145,7 +145,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_A_ERP_Zone
-    router_id: 192.168.255.13
     rd: '65103:17'
     route_targets:
       import:
@@ -156,6 +155,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '17:17'
+    router_id: 192.168.255.13
     neighbors:
     - ip_address: 172.31.12.6
       peer_group: MLAG-PEERS

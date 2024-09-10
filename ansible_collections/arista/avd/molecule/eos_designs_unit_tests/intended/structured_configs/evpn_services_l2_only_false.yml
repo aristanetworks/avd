@@ -73,8 +73,19 @@ router_bgp:
     router_id: 192.168.255.109
     redistribute_routes:
     - source_protocol: connected
-  - name: Tenant_A_OP_Zone
+  - name: Tenant_A_ERP_Zone
+    rd: 192.168.255.109:17
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '17:17'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '17:17'
     router_id: 192.168.255.109
+  - name: Tenant_A_OP_Zone
     rd: 192.168.255.109:9
     route_targets:
       import:
@@ -213,6 +224,18 @@ router_bgp:
     router_id: 192.168.255.109
     redistribute_routes:
     - source_protocol: connected
+  - name: TENANT_D_WAN_ZONE
+    rd: 192.168.255.109:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    router_id: 192.168.255.109
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.109:12
