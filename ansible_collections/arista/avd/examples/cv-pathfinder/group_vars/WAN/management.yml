@@ -1,18 +1,14 @@
 ---
 # WAN Management settings
-mgmt_interface_vrf: MGMT
-default_mgmt_method: oob
 mgmt_gateway: 192.168.17.1
 
 # NTP
 ntp_settings:
-  server_vrf: MGMT
   servers:
     - name: 0.pool.ntp.org
 
 # CloudVision/TerminAttr
 cvp_instance_ips: [apiserver.cv-staging.corp.arista.io]
-cvp_token_file: /mnt/flash/cv-onboarding-token
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 

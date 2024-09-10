@@ -1,14 +1,12 @@
 ---
-type: spine
-
-bgp_as: 65000
-
 spine:
   defaults:
     loopback_ipv4_pool: 172.31.255.0/24
+
   nodes:
     - name: mpls-cloud
       id: 22
+      bgp_as: 65042
       mgmt_ip: 192.168.17.30/24
       l3_interfaces:
         - name: Ethernet1
@@ -28,6 +26,7 @@ spine:
           ip_address: 172.18.20.1/24
     - name: inet-cloud
       id: 23
+      bgp_as: 65666
       mgmt_ip: 192.168.17.31/24
       l3_interfaces:
         - name: Ethernet1

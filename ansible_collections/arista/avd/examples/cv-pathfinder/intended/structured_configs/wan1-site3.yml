@@ -118,7 +118,7 @@ daemon_terminattr:
   - apiserver.cv-staging.corp.arista.io:443
   cvauth:
     method: token-secure
-    token_file: /mnt/flash/cv-onboarding-token
+    token_file: /tmp/cv-onboarding-token
   cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
@@ -169,6 +169,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
   servers:
   - name: 0.pool.ntp.org
     vrf: MGMT
@@ -535,12 +538,11 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 10.14.0.1
   vrf: MGMT
+dns_domain: wan.example.local
+aaa_authorization:
+  exec:
+    default: local
 system:
   l1:
     unsupported_speed_action: error
     unsupported_error_correction_action: error
-banners:
-  motd: AVD WAN Example
-aaa_authorization:
-  exec:
-    default: local

@@ -10,14 +10,6 @@ ansible_httpapi_use_ssl: true
 # Should be set to true in production networks
 ansible_httpapi_validate_certs: false
 
-# Validate State
-use_anta: true
-
-# Deploy to CV
-deploy_to_cv_accept_preview: true
-# keeping default
-# deploy_to_cv_inventory_host: cloudvision
-
 # fabric_name needs to be the same for all devices
 fabric_name: WAN
 
