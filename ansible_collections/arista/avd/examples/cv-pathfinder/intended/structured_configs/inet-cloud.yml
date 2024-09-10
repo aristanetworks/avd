@@ -1,0 +1,175 @@
+hostname: inet-cloud
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 172.31.255.23
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.17.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.cv-staging.corp.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /mnt/flash/cv-onboarding-token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
+spanning_tree:
+  mode: none
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$I39vNA.wCKPVmo27$xEpXQc.fro3uRHLjuYKMxViYWwCjto3tOaCGapDOiYHEs5ahYoODuSVnv46H6n/rjZYFkbSw6pAk0NLR5PXW..
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$a7LdQWHxWzYHpvVt$n62q.1mbm4kzQ5oBr0lhXCE9ntnTn.SNa16DovZHahFQLH.iPcPMZa5JUSFtncrDW4EDQ3oSWgP8G0S4FtOFx1
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.17.31/24
+  gateway: 192.168.17.1
+  type: oob
+  lldp:
+    transmit: false
+    receive: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ntp:
+  servers:
+  - name: 0.pool.ntp.org
+    vrf: MGMT
+    preferred: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 100.64.100.1/24
+  shutdown: false
+  type: routed
+  description: pf1-Ethernet2
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 100.64.200.1/24
+  shutdown: false
+  type: routed
+  description: pf2-Ethernet2
+- name: Ethernet5
+  peer_type: l3_interface
+  ip_address: 100.64.10.1/24
+  shutdown: false
+  type: routed
+  description: wan1-site1-Ethernet4
+- name: Ethernet6
+  peer_type: l3_interface
+  ip_address: 100.64.11.1/24
+  shutdown: false
+  type: routed
+  description: wan2-site1-Ethernet4
+- name: Ethernet7
+  peer_type: l3_interface
+  ip_address: 100.64.21.1/24
+  shutdown: false
+  type: routed
+  description: wan2-site2-Ethernet4
+- name: Ethernet8
+  peer_type: l3_interface
+  ip_address: 100.64.30.1/24
+  shutdown: false
+  type: routed
+  description: wan1-site3-Ethernet4
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 172.31.255.23/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.31.255.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_name_servers:
+- ip_address: 192.168.17.1
+  vrf: MGMT
+- ip_address: 10.14.0.1
+  vrf: MGMT
+system:
+  l1:
+    unsupported_speed_action: error
+    unsupported_error_correction_action: error
+banners:
+  motd: AVD WAN Example
+aaa_authorization:
+  exec:
+    default: local

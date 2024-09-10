@@ -1,0 +1,79 @@
+---
+# Site2 variables
+# Use eBGP for underlay routing protocol on site1
+# default is none for WAN routers.
+underlay_routing_protocol: ebgp
+
+l3leaf:
+  defaults:
+    # TODO revisit pools
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.42.0/24
+    # TODO revisit filter
+    filter:
+      always_include_vrfs_in_tenants: [all]
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: SITE2
+      bgp_as: 65102
+      nodes:
+        - name: leaf1-site2
+          id: 9
+          mgmt_ip: 192.168.17.18/24
+        - name: leaf2-site2
+          id: 10
+          mgmt_ip: 192.168.17.19/24
+
+wan_router:
+  defaults:
+    # TODO revisit pools
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.42.0/24
+    # TODO revisit filter
+    filter:
+      always_include_vrfs_in_tenants: [all]
+    uplink_type: p2p-vrfs
+    uplink_interfaces: [Ethernet1]
+    uplink_switch_interfaces: [Ethernet3]
+    uplink_ipv4_pool: 10.0.2.0/24
+    bgp_as: 65000
+  node_groups:
+    - group: SITE2
+      cv_pathfinder_region: REGION2
+      cv_pathfinder_site: SITE2
+      # Making this site a transit site
+      cv_pathfinder_transit_mode: region
+      wan_ha:
+        enabled: true
+        # Direct HA
+        ha_interfaces: [Ethernet5]
+        ha_ipv4_pool: 10.42.0.0/24
+        # Can disable ipsec on WAN HA tunnel using this knob
+        # ipsec: false
+      nodes:
+        - name: wan1-site2
+          id: 7
+          mgmt_ip: 192.168.17.16/24
+          uplink_switches: [leaf1-site2]
+          l3_interfaces:
+            - name: Ethernet3
+              profile: MPLS-WAN-INTERFACE
+              peer_interface: Ethernet7
+              peer_ip: 172.18.20.1
+              ip_address: 172.18.20.2/24
+              wan_carrier: ACME-MPLS-INC
+              wan_circuit_id: mpls-wan1-site2
+        - name: wan2-site2
+          id: 8
+          mgmt_ip: 192.168.17.17/24
+          uplink_switches: [leaf2-site2]
+          l3_interfaces:
+            - name: Ethernet4
+              peer_interface: Ethernet7
+              peer_ip: 100.64.21.1
+              ip_address: 100.64.21.2/24
+              profile: INTERNET-WAN-INTERFACE
+              wan_carrier: REGION2-INTERNET-CORP
+              wan_circuit_id: inet-wan2-site2

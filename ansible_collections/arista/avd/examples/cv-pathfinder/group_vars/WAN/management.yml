@@ -1,0 +1,59 @@
+---
+# WAN Management settings
+mgmt_interface_vrf: MGMT
+default_mgmt_method: oob
+mgmt_gateway: 192.168.17.1
+
+# NTP
+ntp_settings:
+  server_vrf: MGMT
+  servers:
+    - name: 0.pool.ntp.org
+
+# CloudVision/TerminAttr
+cvp_instance_ips: [apiserver.cv-staging.corp.arista.io]
+cvp_token_file: /mnt/flash/cv-onboarding-token
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+# For each local user in this example, password == username
+local_users:
+  - name: admin
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$I39vNA.wCKPVmo27$xEpXQc.fro3uRHLjuYKMxViYWwCjto3tOaCGapDOiYHEs5ahYoODuSVnv46H6n/rjZYFkbSw6pAk0NLR5PXW..
+  - name: arista
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
+  - name: cvpadmin
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$a7LdQWHxWzYHpvVt$n62q.1mbm4kzQ5oBr0lhXCE9ntnTn.SNa16DovZHahFQLH.iPcPMZa5JUSFtncrDW4EDQ3oSWgP8G0S4FtOFx1
+
+# DNS
+custom_structured_configuration_ip_name_servers:
+  - ip_address: 192.168.17.1
+    vrf: MGMT
+  # TODO: remove for example
+  - ip_address: 10.14.0.1
+    vrf: MGMT
+
+custom_structured_configuration_dns_domain: wan.example.local
+
+# AAA
+custom_structured_configuration_aaa_authorization:
+  exec:
+    default: local
+
+# disabling LLDP on management interface
+custom_structured_configuration_management_interfaces:
+  - name: Management1
+    lldp:
+      transmit: false
+      receive: false
+
+custom_structured_configuration_system:
+  l1:
+    unsupported_speed_action: error
+    unsupported_error_correction_action: error

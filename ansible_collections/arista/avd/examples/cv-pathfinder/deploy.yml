@@ -1,0 +1,10 @@
+---
+# deploy.yml
+- name: Deploy Configurations via CVaaS
+  hosts: WAN
+  gather_facts: false
+  tasks:
+    - name: Deploy Configurations to Devices
+      ansible.builtin.import_role:
+        # This will use by default the 'cloudvision' host in the inventory
+        name: arista.avd.cv_deploy

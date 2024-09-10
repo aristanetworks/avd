@@ -1,0 +1,45 @@
+---
+# Ansible variables
+ansible_connection: ansible.netcommon.httpapi
+ansible_network_os: arista.eos.eos
+ansible_user: arista
+ansible_password: arista
+ansible_become: true
+ansible_become_method: enable
+ansible_httpapi_use_ssl: true
+# Should be enabled in production
+ansible_httpapi_validate_certs: false
+
+# Validate State
+use_anta: true
+
+# Deploy to CV
+deploy_to_cv_accept_preview: true
+# keeping default
+# deploy_to_cv_inventory_host: cloudvision
+
+# fabric_name needs to be the same for all devices
+fabric_name: WAN
+
+# Disabling for virtual devices
+bgp_update_wait_install: false
+
+# define default node types based on hostnames
+default_node_types:
+  - node_type: wan_rr
+    match_hostnames:
+      - pf.*
+  - node_type: wan_router
+    match_hostnames:
+      - wan.*-site.*
+  - node_type: l2leaf
+    match_hostnames:
+      - leaf.*-site3
+  - node_type: l3leaf
+    match_hostnames:
+      - leaf.*-site.*
+      - border.*-site.*
+  # Transport routers
+  - node_type: spine
+    match_hostnames:
+      - .*-cloud

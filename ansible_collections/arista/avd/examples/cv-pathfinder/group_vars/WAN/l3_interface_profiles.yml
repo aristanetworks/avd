@@ -1,0 +1,20 @@
+---
+l3_interface_profiles:
+  - profile: MPLS-WAN-INTERFACE
+    peer: mpls-cloud
+    # The static_routes uses the peer_ip as next-hop
+    static_routes:
+      - prefix: 172.18.0.0/16
+    # Enabling flow tracking on WAN interfaces
+    flow_tracking:
+      enabled: true
+  - profile: INTERNET-WAN-INTERFACE
+    peer: inet-cloud
+    # TODO - DHCP not working in cEOS cloudlab for now
+    # ip_address: dhcp
+    # dhcp_accept_default_route: true
+    static_routes:
+      - prefix: 0.0.0.0/0
+    # Enabling flow tracking on WAN interfaces
+    flow_tracking:
+      enabled: true

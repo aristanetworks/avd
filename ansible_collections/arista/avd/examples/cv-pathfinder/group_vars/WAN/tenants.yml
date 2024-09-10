@@ -1,0 +1,11 @@
+---
+# WAN Tenants network services
+
+tenants:  # dynamic_key: network_services
+  - name: WAN-EXAMPLE-TENANT
+    # TODO probably see to add SFLOW to some of the interfaces in this VRF
+    vrfs:
+      - name: BLUE
+        vrf_vni: 100
+      - name: RED
+        vrf_vni: 101

@@ -1,0 +1,62 @@
+---
+type: spine
+
+bgp_as: 65000
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 172.31.255.0/24
+  nodes:
+    - name: mpls-cloud
+      id: 22
+      mgmt_ip: 192.168.17.30/24
+      l3_interfaces:
+        - name: Ethernet1
+          description: pf1-Ethernet1
+          ip_address: 172.18.100.1/24
+        - name: Ethernet2
+          description: pf2-Ethernet1
+          ip_address: 172.18.200.1/24
+        - name: Ethernet5
+          description: wan1-site1-Ethernet3
+          ip_address: 172.18.10.1/24
+        - name: Ethernet6
+          description: wan2-site1-Ethernet3
+          ip_address: 172.18.11.1/24
+        - name: Ethernet7
+          description: wan1-site2-Ethernet3
+          ip_address: 172.18.20.1/24
+    - name: inet-cloud
+      id: 23
+      mgmt_ip: 192.168.17.31/24
+      l3_interfaces:
+        - name: Ethernet1
+          description: pf1-Ethernet2
+          ip_address: 100.64.100.1/24
+          # structured_config:
+          #   dhcp_server_ipv4: true
+        - name: Ethernet2
+          description: pf2-Ethernet2
+          ip_address: 100.64.200.1/24
+          # structured_config:
+          #   dhcp_server_ipv4: true
+        - name: Ethernet5
+          description: wan1-site1-Ethernet4
+          ip_address: 100.64.10.1/24
+          # structured_config:
+          #   dhcp_server_ipv4: true
+        - name: Ethernet6
+          description: wan2-site1-Ethernet4
+          ip_address: 100.64.11.1/24
+          # structured_config:
+          #   dhcp_server_ipv4: true
+        - name: Ethernet7
+          description: wan2-site2-Ethernet4
+          ip_address: 100.64.21.1/24
+          # structured_config:
+          #   dhcp_server_ipv4: true
+        - name: Ethernet8
+          description: wan1-site3-Ethernet4
+          ip_address: 100.64.30.1/24
+          # structured_config:
+          #   dhcp_server_ipv4: true

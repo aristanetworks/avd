@@ -1,0 +1,175 @@
+---
+# WAN CV Pathfinder settings
+
+# cv-pathfinder is default
+wan_mode: cv-pathfinder
+
+# WAN hierarchy
+cv_pathfinder_regions:
+  - name: REGION1
+    id: 1
+    sites:
+      - name: SITE1
+        id: 101
+        location: Copenhaguen, Denmark
+  - name: REGION2
+    id: 2
+    sites:
+      - name: SITE2
+        id: 202
+        location: Ottawa, Canada
+      - name: SITE3
+        id: 203
+        location: Milan, Italy
+
+cv_pathfinder_global_sites:
+  - name: PF1-GLOBAL
+    location: Santa Clara, CA, USA
+  - name: PF2-GLOBAL
+    location: Coulomiers, France
+
+wan_route_servers:
+  - hostname: pf1
+  - hostname: pf2
+
+# IPsec configuration
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 045A190F1C354D
+  data_plane:
+    shared_key: 141600021F102B
+
+# Disabling STUN for now - probably need to enable it for example but requires CV
+wan_stun_dtls_disable: true
+
+# BGP settings
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "{{ bgp_password | arista.avd.encrypt(passwd_type='bgp', key='WAN-OVERLAY-PEERS')  }}"
+    listen_range_prefixes:
+      - 192.168.42.0/24  # TODO change if changing the loopback range
+  wan_rr_overlay_peers:
+    password: "{{ bgp_password | arista.avd.encrypt(passwd_type='bgp', key='WAN-RR-OVERLAY-PEERS')  }}"
+
+# WAN path groups
+wan_carriers:
+  - name: ACME-MPLS-INC
+    path_group: MPLS
+    trusted: true
+  - name: GLOBAL-INTERNET-LIMITED
+    path_group: INTERNET
+    # not trusted => requires ACL
+    # TODO: untrust the notorious Internet
+    trusted: true
+  - name: REGION1-INTERNET-CORP
+    path_group: INTERNET
+    # TODO: untrust the notorious Internet
+    trusted: true
+  - name: REGION2-INTERNET-CORP
+    path_group: INTERNET
+    # TODO: untrust the notorious Internet
+    trusted: true
+
+wan_path_groups:
+  - name: MPLS
+    id: 101
+  - name: INTERNET
+    id: 102
+
+# WAN virtual topologies
+wan_virtual_topologies:
+  vrfs:
+    - name: BLUE
+      policy: BLUE-POLICY
+      wan_vni: 100
+    - name: RED
+      policy: RED-POLICY
+      wan_vni: 101
+  policies:
+    - name: BLUE-POLICY
+      application_virtual_topologies:
+        - application_profile: VIDEO
+          id: 2
+          path_groups:
+            - names: [INTERNET]
+              preference: preferred
+            - names: [MPLS]
+              preference: alternate
+        - application_profile: VOICE
+          id: 3
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INTERNET]
+              preference: alternate
+      default_virtual_topology:
+        path_groups:
+          - names: [INTERNET, MPLS]
+            preference: preferred
+    - name: RED-POLICY
+      application_virtual_topologies:
+        - application_profile: CRITICAL-SECRET-DATA
+          id: 2
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+        - application_profile: NORMAL-DATA
+          id: 3
+          path_groups:
+            - names: [INTERNET]
+              preference: preferred
+            - names: [MPLS]
+              preference: alternate
+        - application_profile: NOT-SO-IMPORTANT-DATA
+          id: 4
+          path_groups:
+            - names: [INTERNET]
+              preference: preferred
+      default_virtual_topology:
+        # dropping unmatched traffic in VRF RED
+        drop_unmatched: true
+
+# Traffic classification
+application_classification:
+  field_sets:
+    l4_ports:
+      - name: VOICE-PORTS
+        port_values:
+          - 666-667
+      - name: VIDEO-PORTS
+        port_values:
+          - 4242-4244
+  applications:
+    ipv4_applications:
+      - name: VOICE-APP
+        protocols:
+          - tcp
+        tcp_dest_port_set_name: VOICE-PORTS
+      - name: VIDEO-APP
+        protocols:
+          - tcp
+          - udp
+        tcp_dest_port_set_name: VIDEO-PORTS
+        udp_dest_port_set_name: VIDEO-PORTS
+      - name: CRITICAL-SECRET-DATA-APP
+        dscp_ranges: [46]
+      - name: NORMAL-DATA-APP
+        dscp_ranges: [af23]
+      - name: NOT-SO-IMPORTANT-DATA-APP
+        dscp_ranges: [0]
+  application_profiles:
+    - name: VOICE
+      applications:
+        - name: VOICE-APP
+    - name: VIDEO
+      applications:
+        - name: VIDEO-APP
+    - name: CRITICAL-SECRET-DATA
+      applications:
+        - name: CRITICAL-SECRET-DATA-APP
+    - name: NORMAL-DATA
+      applications:
+        - name: NORMAL-DATA-APP
+    - name: NOT-SO-IMPORTANT-DATA
+      applications:
+        - name: NOT-SO-IMPORTANT-DATA-APP
