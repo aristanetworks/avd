@@ -37,7 +37,9 @@ class LoopbackInterfacesMixin(UtilsMixin):
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface="Loopback0",
-                    description=default(get(self._hostvars, "router_id_loopback_description"), get(self._hostvars, "overlay_loopback_description")),
+                    description=default(
+                        get(self._hostvars, "router_id_loopback_description"), get(self._hostvars, "overlay_loopback_description"), "ROUTER_ID"
+                    ),
                 ),
             ),
             "shutdown": False,

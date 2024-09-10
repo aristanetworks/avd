@@ -243,10 +243,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         ):
             return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
 
-        if data.description is not None:
-            return data.description
-
-        return "ROUTER_ID"
+        return data.description
 
     def vtep_loopback_interface(
         self,

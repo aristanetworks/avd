@@ -11,3 +11,4 @@ keys:
       table: overlay-settings
     description: Customize the description on Router ID interface Loopback0.
     type: str
+    default: ROUTER_ID

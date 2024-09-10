@@ -469,6 +469,7 @@ router_id_loopback_interfaces (replacing overlay_loopback_interface):
 
 vtep_loopback_interface:
 
+- `{{ vtep_loopback_description }}`
 - All group/hostvars
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,

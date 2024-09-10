@@ -3353,6 +3353,7 @@ keys:
       table: overlay-settings
     description: Customize the description on Router ID interface Loopback0.
     type: str
+    default: ROUTER_ID
   serial_number:
     documentation_options:
       table: system-settings
