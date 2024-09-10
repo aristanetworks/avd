@@ -275,9 +275,9 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 10.255.1.3/32
+   mpls ldp interface
    isis enable CORE
    isis passive
-   mpls ldp interface
 ```
 
 ## Routing

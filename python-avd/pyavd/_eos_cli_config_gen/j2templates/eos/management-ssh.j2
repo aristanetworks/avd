@@ -8,7 +8,7 @@
 !
 management ssh
 {%     if management_ssh.access_groups is arista.avd.defined %}
-{%         for access_group in management_ssh.access_groups %}
+{%         for access_group in management_ssh.access_groups | arista.avd.natural_sort %}
 {%             set acl_cli = "ip access-group " ~ access_group.name %}
 {%             if access_group.vrf is arista.avd.defined %}
 {%                 set acl_cli = acl_cli ~ " vrf " ~ access_group.vrf  %}
@@ -39,6 +39,12 @@ management ssh
 {%     if management_ssh.connection.per_host is arista.avd.defined %}
    connection per-host {{ management_ssh.connection.per_host }}
 {%     endif %}
+{%     if management_ssh.fips_restrictions is arista.avd.defined(true) %}
+   fips restrictions
+{%     endif %}
+{%     if management_ssh.hostkey.client_strict_checking is arista.avd.defined(true) %}
+   hostkey client strict-checking
+{%     endif %}
 {%     if management_ssh.authentication.empty_passwords is arista.avd.defined  %}
    authentication empty-passwords {{ management_ssh.authentication.empty_passwords }}
 {%     endif %}
@@ -57,15 +63,6 @@ management ssh
 {%     if management_ssh.mac is arista.avd.defined %}
    mac {{ management_ssh.mac | join(" ") }}
 {%     endif %}
-{%     if management_ssh.hostkey.server is arista.avd.defined %}
-   hostkey server {{ management_ssh.hostkey.server | join(" ") }}
-{%     endif %}
-{%     if management_ssh.fips_restrictions is arista.avd.defined(true) %}
-   fips restrictions
-{%     endif %}
-{%     if management_ssh.hostkey.client_strict_checking is arista.avd.defined(true) %}
-   hostkey client strict-checking
-{%     endif %}
 {%     if management_ssh.hostkey.server_cert is arista.avd.defined %}
    hostkey server cert {{ management_ssh.hostkey.server_cert }}
 {%     endif %}
@@ -76,6 +73,9 @@ management ssh
 {%     endif %}
 {%     if management_ssh.log_level is arista.avd.defined %}
    log-level {{ management_ssh.log_level }}
+{%     endif %}
+{%     if management_ssh.hostkey.server is arista.avd.defined %}
+   hostkey server {{ management_ssh.hostkey.server | join(" ") }}
 {%     endif %}
 {%     for vrf in management_ssh.vrfs | arista.avd.natural_sort('name') %}
    !

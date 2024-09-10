@@ -21,14 +21,14 @@ management security
    entropy source hardware exclusive
 {%         endif %}
 {%     endif %}
+{%     if management_security.password.minimum_length is arista.avd.defined %}
+   password minimum length {{ management_security.password.minimum_length }}
+{%     endif %}
 {%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
    password encryption-key common
 {%     endif %}
 {%     if management_security.password.encryption_reversible is arista.avd.defined() %}
    password encryption reversible {{ management_security.password.encryption_reversible }}
-{%     endif %}
-{%     if management_security.password.minimum_length is arista.avd.defined %}
-   password minimum length {{ management_security.password.minimum_length }}
 {%     endif %}
 {%     if management_security.password.policies is arista.avd.defined %}
 {%         for policy in management_security.password.policies %}
@@ -86,6 +86,7 @@ management security
 {%         endfor %}
 {%     endfor %}
 {%     for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
+   !
    ssl profile {{ ssl_profile.name }}
 {%         if ssl_profile.tls_versions is arista.avd.defined %}
       tls versions {{ ssl_profile.tls_versions }}

@@ -79,9 +79,9 @@ management ssh
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
-   hostkey server ecdsa-nistp256 ecdsa-nistp521
    hostkey server cert sshkey.cert
    no shutdown
+   hostkey server ecdsa-nistp256 ecdsa-nistp521
    !
    vrf mgt
       no shutdown
