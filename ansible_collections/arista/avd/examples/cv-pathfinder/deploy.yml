@@ -6,5 +6,5 @@
   tasks:
     - name: Deploy Configurations to Devices
       ansible.builtin.import_role:
-        # This will use by default the 'cloudvision' host in the inventory
+        # By default this will use ansible_host and ansible_password from the 'cloudvision' host in the inventory
         name: arista.avd.cv_deploy
