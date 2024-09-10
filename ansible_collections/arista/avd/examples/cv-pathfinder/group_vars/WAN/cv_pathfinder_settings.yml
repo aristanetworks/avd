@@ -11,7 +11,7 @@ cv_pathfinder_regions:
     sites:
       - name: SITE1
         id: 101
-        location: Copenhaguen, Denmark
+        location: Copenhagen, Denmark
   - name: REGION2
     id: 2
     sites:
