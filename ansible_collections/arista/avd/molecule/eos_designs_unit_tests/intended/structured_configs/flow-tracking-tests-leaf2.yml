@@ -144,19 +144,22 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     sampled: FLOW-TRACKER-3
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet82
   peer_type: l3_interface
   ip_address: 10.1.55.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet83
   peer_type: l3_interface
   ip_address: 10.1.55.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet84
   peer_type: l3_interface
@@ -164,7 +167,8 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     sampled: FLOW-TRACKER-4
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet10
   peer: single-interface-true
@@ -172,27 +176,30 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-true_eth2
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
 - name: Ethernet11
   peer: single-interface-false
   peer_interface: eth12
   peer_type: server
   description: single-interface-false_eth12
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
 - name: Ethernet12
   peer: single-interface-no-definition
   peer_interface: eth13
   peer_type: server
   description: single-interface-no-definition_eth13
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   flow_tracker:
     sampled: FLOW-TRACKER-3
 - name: Ethernet13
@@ -201,9 +208,10 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-true4_eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

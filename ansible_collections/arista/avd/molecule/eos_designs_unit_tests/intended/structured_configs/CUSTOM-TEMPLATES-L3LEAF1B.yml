@@ -252,7 +252,6 @@ ethernet_interfaces:
   peer_type: server
   description: TEST_CUSTOM_PREFIX_SERVER-2_Nic1_data
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -262,7 +261,6 @@ ethernet_interfaces:
   peer_type: server
   description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2_data
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active

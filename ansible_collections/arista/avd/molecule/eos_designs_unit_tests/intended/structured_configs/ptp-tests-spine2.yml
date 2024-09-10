@@ -131,7 +131,8 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ptp:
@@ -148,7 +149,8 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ptp:
@@ -165,7 +167,8 @@ ethernet_interfaces:
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ptp:
@@ -182,7 +185,8 @@ ethernet_interfaces:
   peer_interface: Ethernet9
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ptp:

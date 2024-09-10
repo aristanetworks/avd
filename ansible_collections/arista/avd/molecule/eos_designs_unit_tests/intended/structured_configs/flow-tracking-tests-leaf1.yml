@@ -148,13 +148,15 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER-3
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet82
   peer_type: l3_interface
   ip_address: 10.1.55.0/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet83
   peer_type: l3_interface
@@ -162,7 +164,8 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet84
   peer_type: l3_interface
@@ -170,7 +173,8 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
 - name: Ethernet10
   peer: single-interface-true
@@ -178,9 +182,10 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-true_eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   flow_tracker:
     hardware: FLOW-TRACKER-3
 - name: Ethernet11
@@ -189,18 +194,20 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-false_eth11
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
 - name: Ethernet12
   peer: single-interface-no-definition
   peer_interface: eth12
   peer_type: server
   description: single-interface-no-definition_eth12
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet13
@@ -209,9 +216,10 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-true4_eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   flow_tracker:
     hardware: FLOW-TRACKER
 loopback_interfaces:

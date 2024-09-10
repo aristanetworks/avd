@@ -43,8 +43,8 @@ ethernet_interfaces:
 - name: Ethernet10
   peer_type: network_port
   shutdown: false
-  type: switched
-  vlans: '66'
+  switchport:
+    enabled: true
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Po51

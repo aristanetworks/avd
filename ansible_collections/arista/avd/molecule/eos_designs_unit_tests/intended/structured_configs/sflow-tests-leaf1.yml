@@ -143,9 +143,10 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-true_eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   sflow:
     enable: true
 - name: Ethernet12
@@ -154,9 +155,10 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-false_eth11
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   sflow:
     enable: false
 - name: Ethernet14
@@ -165,9 +167,10 @@ ethernet_interfaces:
   peer_type: server
   description: single-interface-no-definition_eth12
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   sflow:
     enable: true
 loopback_interfaces:

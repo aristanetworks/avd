@@ -118,7 +118,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.10.1.1/30
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
 mlag_configuration:
   domain_id: GROUP1
   local_interface: Vlan4094

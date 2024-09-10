@@ -84,21 +84,28 @@ class EthernetInterfacesMixin(UtilsMixin):
     def _update_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, ethernet_interface: dict, connected_endpoint: dict) -> dict:
         ethernet_interface.update(
             {
-                "type": "switched",
                 "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                 "l2_mtu": adapter.get("l2_mtu"),
                 "l2_mru": adapter.get("l2_mru"),
-                "mode": adapter.get("mode"),
-                "vlans": adapter.get("vlans"),
-                "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-                "native_vlan_tag": adapter.get("native_vlan_tag"),
-                "native_vlan": adapter.get("native_vlan"),
+                "switchport":
+                    {
+                        "enabled": True,
+                        "mode": adapter.get("mode"),
+                        "trunk":
+                            {
+                                "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
+                                "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                                "native_vlan_tag": adapter.get("native_vlan_tag"),
+                                "native_vlan": adapter.get("native_vlan"),
+                            },
+                        "access_vlan": adapter.get("vlans") if adapter.get("mode") in ["access", "dot1q-tunnel"] else None,
+                        "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                    },
                 "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                 "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                 "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
                 "storm_control": self._get_adapter_storm_control(adapter),
                 "dot1x": adapter.get("dot1x"),
-                "phone": self._get_adapter_phone(adapter, connected_endpoint),
                 "poe": self._get_adapter_poe(adapter),
                 "ptp": self._get_adapter_ptp(adapter),
                 "service_profile": adapter.get("qos_profile"),
@@ -107,7 +114,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             },
         )
-        return ethernet_interface
+        return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, "", {}))
 
     def _get_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, node_index: int, connected_endpoint: dict) -> dict:
         """Return structured_config for one ethernet_interface."""
@@ -165,7 +172,6 @@ class EthernetInterfacesMixin(UtilsMixin):
         if (port_channel_mode := get(adapter, "port_channel.mode")) is not None:
             ethernet_interface.update(
                 {
-                    "type": "port-channel-member",
                     "channel_group": {
                         "id": channel_group_id,
                         "mode": port_channel_mode,

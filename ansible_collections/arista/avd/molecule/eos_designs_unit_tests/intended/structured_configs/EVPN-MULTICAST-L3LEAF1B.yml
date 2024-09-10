@@ -1351,7 +1351,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.55.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   pim:
     ipv4:
@@ -1360,7 +1361,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.60.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   pim:
     ipv4:
@@ -1369,7 +1371,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.52.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
     ipv4:
@@ -1378,7 +1381,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
     ipv4:

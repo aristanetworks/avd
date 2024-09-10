@@ -30,13 +30,13 @@ ethernet_interfaces:
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
 - name: Ethernet5
   peer: OLD_SW-1/5
   peer_type: server
   description: OLD_SW-1/5
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active
@@ -45,7 +45,6 @@ ethernet_interfaces:
   peer_type: server
   description: OLD_SW-1/5
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active
@@ -54,7 +53,6 @@ ethernet_interfaces:
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -63,7 +61,6 @@ ethernet_interfaces:
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -72,13 +69,13 @@ ethernet_interfaces:
   peer_type: server
   description: test of var set under play vars
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
 - name: Ethernet10
   peer: OLD_SW-1/7
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION_1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -87,7 +84,6 @@ ethernet_interfaces:
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION_2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -96,14 +92,16 @@ ethernet_interfaces:
   peer_type: server
   description: INDIVIDUAL_1
   shutdown: false
-  type: switched
   channel_group:
     id: 12
     mode: active
-  mode: trunk
-  vlans: 1,2,3,4,5,6,7,123,234
-  native_vlan_tag: false
-  native_vlan: 123
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan_tag: false
+      native_vlan: 123
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   dot1x:
@@ -130,14 +128,16 @@ ethernet_interfaces:
   peer_type: server
   description: INDIVIDUAL_1
   shutdown: false
-  type: switched
   channel_group:
     id: 12
     mode: active
-  mode: trunk
-  vlans: 1,2,3,4,5,6,7,123,234
-  native_vlan_tag: false
-  native_vlan: 123
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan_tag: false
+      native_vlan: 123
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   dot1x:
@@ -165,11 +165,13 @@ ethernet_interfaces:
   port_profile: INDIVIDUAL_TRUNK
   description: DOT1X_UNAUTHORIZED
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1,2,3,4,5,6,7,123,234
-  native_vlan_tag: false
-  native_vlan: 123
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan_tag: false
+      native_vlan: 123
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   dot1x:
@@ -196,14 +198,16 @@ ethernet_interfaces:
   peer_type: server
   description: INDIVIDUAL_2_TRUNK_PHONE
   shutdown: false
-  type: switched
   channel_group:
     id: 15
     mode: active
-  mode: trunk phone
-  native_vlan: 123
-  phone:
-    vlan: 321
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 123
+    phone:
+      vlan: 321
   link_tracking_groups:
   - name: LT_GROUP1
     direction: downstream
@@ -212,14 +216,16 @@ ethernet_interfaces:
   peer_type: server
   description: INDIVIDUAL_2_TRUNK_PHONE
   shutdown: false
-  type: switched
   channel_group:
     id: 15
     mode: active
-  mode: trunk phone
-  native_vlan: 123
-  phone:
-    vlan: 321
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 123
+    phone:
+      vlan: 321
   link_tracking_groups:
   - name: LT_GROUP1
     direction: downstream

@@ -621,7 +621,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.0.0.1/30
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_OSPF
   ospf_area: '0'
   ospf_network_point_to_point: true
@@ -629,7 +630,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.0.0.13/30
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_OSPF
   ospf_area: '0'
   ospf_network_point_to_point: true
@@ -639,7 +641,8 @@ ethernet_interfaces:
   port_profile: DOT1X_PORT_PROFILE
   description: PC
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
   dot1x:
     port_control: auto
     reauthentication: true
@@ -663,7 +666,8 @@ ethernet_interfaces:
   port_profile: DOT1X_PORT_PROFILE
   description: PC
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
   dot1x:
     port_control: auto
     reauthentication: true
@@ -688,7 +692,6 @@ ethernet_interfaces:
   port_profile: TENANT_B
   description: server01_MLAG_Eth2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -699,7 +702,6 @@ ethernet_interfaces:
   port_profile: TENANT_A_MTU
   description: server01_MTU_PROFILE_MLAG_Eth4
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -709,7 +711,6 @@ ethernet_interfaces:
   peer_type: server
   description: server01_MTU_ADAPTOR_MLAG_Eth6
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -720,7 +721,6 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: FIREWALL01_E0
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 20
     mode: active
@@ -731,9 +731,10 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: ROUTER01_Eth0
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 - name: Ethernet26
   peer: PHONE03_port_channel
   peer_interface: Eth0
@@ -741,7 +742,6 @@ ethernet_interfaces:
   port_profile: PHONE_WITH_PC
   description: PHONE03_port_channel_Eth0
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 26
     mode: active

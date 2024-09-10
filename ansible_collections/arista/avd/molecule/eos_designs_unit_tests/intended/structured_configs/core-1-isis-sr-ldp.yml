@@ -80,7 +80,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: unnumbered loopback0
@@ -103,7 +104,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1601
   service_profile: test_qos_profile
@@ -124,7 +126,8 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Ethernet3
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 100.64.48.4/31
@@ -147,7 +150,8 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 100.64.48.6/31
@@ -165,7 +169,8 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Ethernet5
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 100.64.48.8/31
@@ -185,7 +190,8 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: core_router
   description: Custom description on core-1-isis-sr-ldp eth6
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1602
   service_profile: test_qos_profile
@@ -209,7 +215,8 @@ ethernet_interfaces:
   peer_interface: Ethernet10
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Ethernet10
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 100.64.48.12/31
@@ -225,7 +232,6 @@ ethernet_interfaces:
       igp_sync: true
   speed: forced 1000full
 - name: Ethernet12
-  type: port-channel-member
   peer: core-2-ospf-ldp
   peer_interface: Ethernet12
   peer_type: core_router
@@ -236,7 +242,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 1000full
 - name: Ethernet13
-  type: port-channel-member
   peer: core-2-ospf-ldp
   peer_interface: Ethernet13
   peer_type: core_router
@@ -251,7 +256,8 @@ ethernet_interfaces:
   peer_interface: ethernet21
   peer_type: other
   description: P2P_LINK_TO_peer2_ethernet21
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 192.168.0.2/31
@@ -265,7 +271,8 @@ ethernet_interfaces:
   peer_interface: ethernet22
   peer_type: other
   description: P2P_LINK_TO_peer3_ethernet22
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 172.16.0.0/31
@@ -276,7 +283,8 @@ ethernet_interfaces:
   peer_interface: ethernet23
   peer_type: other
   description: P2P_LINK_TO_peer4_ethernet23
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 172.16.0.2/31
@@ -287,7 +295,8 @@ ethernet_interfaces:
   peer_interface: ethernet22
   peer_type: other
   description: P2P_LINK_TO_peer5_ethernet22
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 172.16.1.1/29
@@ -298,7 +307,8 @@ ethernet_interfaces:
   peer_interface: ethernet23
   peer_type: other
   description: P2P_LINK_TO_peer6_ethernet23
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 172.16.1.9/29
@@ -310,7 +320,8 @@ port_channel_interfaces:
   peer_interface: Port-Channel12
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 100.64.48.16/31

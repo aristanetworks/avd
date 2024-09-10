@@ -312,7 +312,6 @@ ethernet_interfaces:
   peer_type: server
   description: port-channel-interface-false_PCI11
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 13
     mode: 'on'
@@ -322,7 +321,6 @@ ethernet_interfaces:
   peer_type: server
   description: port-channel-interface-no-definition_PCI13
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'

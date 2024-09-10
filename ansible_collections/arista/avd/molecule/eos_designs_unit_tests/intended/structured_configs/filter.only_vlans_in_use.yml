@@ -39,6 +39,8 @@ ethernet_interfaces:
   peer_type: server
   description: testserver_Nic1
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1-2
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-2

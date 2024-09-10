@@ -709,7 +709,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.2.52.0/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
     ipv4:
@@ -725,13 +726,15 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.4/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
     ipv4:
       sparse_mode: true
 - name: Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 loopback_interfaces:

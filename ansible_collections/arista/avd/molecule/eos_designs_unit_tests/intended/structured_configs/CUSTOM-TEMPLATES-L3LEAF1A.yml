@@ -247,8 +247,9 @@ ethernet_interfaces:
   peer_type: server
   description: TEST_CUSTOM_PREFIX_SERVER-1_Nic1_management
   shutdown: false
-  type: switched
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
 mlag_configuration:
   domain_id: CUSTOM_TEMPLATES_L3LEAF1
   local_interface: Vlan4094

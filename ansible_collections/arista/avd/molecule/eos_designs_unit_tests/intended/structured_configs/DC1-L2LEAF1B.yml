@@ -198,7 +198,6 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: server03_ESI_L2LEAF_Eth2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active
