@@ -64,14 +64,16 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.16.0.2/30
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet1
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet2
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet2
   dhcp_client_accept_default_route: true
@@ -79,7 +81,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   access_group_in: TEST-IPV4-ACL-WITH-NO-FIELDS-IN
   access_group_out: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
   dhcp_client_accept_default_route: true
@@ -87,14 +90,16 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.19.19.0/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   access_group_in: TEST-IPV4-ACL-WITH-NO-FIELDS-IN
   access_group_out: TEST-IPV4-ACL-WITH-NO-FIELDS-OUT
 - name: Ethernet5/1
   peer_type: l3_interface
   ip_address: 172.20.20.0/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet5_1
 - name: Ethernet6/6.6
   peer_type: l3_interface

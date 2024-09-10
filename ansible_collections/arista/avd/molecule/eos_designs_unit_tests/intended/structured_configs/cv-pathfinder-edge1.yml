@@ -236,14 +236,16 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: AWS-1_212
   dhcp_client_accept_default_route: true
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_404
   dhcp_client_accept_default_route: true
   ip_nat:
@@ -252,13 +254,15 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   dhcp_client_accept_default_route: true
 - name: Ethernet5
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   dhcp_client_accept_default_route: true
 - name: Ethernet1/49
   type: routed

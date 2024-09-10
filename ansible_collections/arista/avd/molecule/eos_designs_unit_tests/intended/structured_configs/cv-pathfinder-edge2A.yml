@@ -295,7 +295,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_423-01
   dhcp_client_accept_default_route: true
 loopback_interfaces:

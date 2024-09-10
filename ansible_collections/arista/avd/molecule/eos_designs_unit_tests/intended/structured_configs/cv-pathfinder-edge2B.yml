@@ -295,7 +295,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.15.6.6/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10423
 loopback_interfaces:
 - name: Loopback0

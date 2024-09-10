@@ -142,19 +142,22 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.7.7.7/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Bouygues_Telecom_777
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10000
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 10.9.9.9/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Another-ISP_999
 loopback_interfaces:
 - name: Loopback0

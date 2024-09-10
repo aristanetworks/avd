@@ -52,7 +52,8 @@ ethernet_interfaces:
   peer_interface: eth1
   ip_address: 192.168.1.2/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: peer1_eth1
   speed: forced 10000full
   service_profile: TEST-QOS-PROFILE
@@ -67,7 +68,8 @@ ethernet_interfaces:
   peer: peer2
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: peer2
   dhcp_client_accept_default_route: true
 - name: Ethernet42
@@ -75,14 +77,16 @@ ethernet_interfaces:
   peer: peer3
   ip_address: dhcp
   shutdown: true
-  type: routed
+  switchport:
+    enabled: false
   description: This is a custom description
   dhcp_client_accept_default_route: true
 - name: Ethernet43
   peer_type: l3_interface
   ip_address: 192.168.42.42/24
   shutdown: true
-  type: routed
+  switchport:
+    enabled: false
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

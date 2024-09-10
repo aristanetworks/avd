@@ -140,7 +140,8 @@ ethernet_interfaces:
   peer_interface: Ethernet42
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_666_peer3_Ethernet42
   dhcp_client_accept_default_route: true
 loopback_interfaces:
