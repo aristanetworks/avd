@@ -3059,6 +3059,9 @@ keys:
                   type: bool
                 host_mode_common:
                   type: bool
+            mac_based_access_list:
+              type: bool
+              description: Operate interface in per-mac access-list mode.
             timeout:
               type: dict
               keys:

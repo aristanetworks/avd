@@ -282,6 +282,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].dot1x.mac_based_authentication.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "ethernet_interfaces.[].dot1x.mac_based_authentication.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode_common</samp>](## "ethernet_interfaces.[].dot1x.mac_based_authentication.host_mode_common") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_based_access_list</samp>](## "ethernet_interfaces.[].dot1x.mac_based_access_list") | Boolean |  |  |  | Operate interface in per-mac access-list mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "ethernet_interfaces.[].dot1x.timeout") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle_host</samp>](## "ethernet_interfaces.[].dot1x.timeout.idle_host") | Integer |  |  | Min: 10<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quiet_period</samp>](## "ethernet_interfaces.[].dot1x.timeout.quiet_period") | Integer |  |  | Min: 1<br>Max: 65535 |  |
@@ -1059,6 +1060,9 @@
             enabled: <bool>
             always: <bool>
             host_mode_common: <bool>
+
+          # Operate interface in per-mac access-list mode.
+          mac_based_access_list: <bool>
           timeout:
             idle_host: <int; 10-65535>
             quiet_period: <int; 1-65535>
@@ -1087,6 +1091,9 @@
               # Set action for supplicant when AAA times out.
               action:
 
+                # Name of standard access-list to apply when AAA times out.
+                traffic_allow_access_list: <str>
+
                 # Use results from a previous AAA response.
                 apply_cached_results: <bool>
                 cached_results_timeout:
@@ -1106,9 +1113,6 @@
                 # Set action for supplicant traffic when AAA times out.
                 traffic_allow: <bool>
                 traffic_allow_vlan: <int; 1-4094>
-
-                # Name of standard access-list to apply when AAA times out.
-                traffic_allow_access_list: <str>
 
               # Set action for supplicant when AAA times out.
               phone_action:

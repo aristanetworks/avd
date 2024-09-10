@@ -141,9 +141,6 @@ sFlow is disabled.
 | Ethernet67 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet68 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 | IP NAT service-profile | - | - | - | - | - |
-| Ethernet70 |  dot1x_aaa_unresponsive | access | - | - | - | - |
-| Ethernet71 |  dot1x_aaa_unresponsive1 | access | - | - | - | - |
-| Ethernet72 |  dot1x_aaa_unresponsive2 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -1148,7 +1145,6 @@ interface Ethernet69
 interface Ethernet70
    description dot1x_aaa_unresponsive
    no shutdown
-   switchport
    dot1x aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
@@ -1157,7 +1153,6 @@ interface Ethernet70
 interface Ethernet71
    description dot1x_aaa_unresponsive1
    no shutdown
-   switchport
    dot1x aaa unresponsive phone action apply cached-results timeout 10 hours
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
@@ -1166,7 +1161,6 @@ interface Ethernet71
 interface Ethernet72
    description dot1x_aaa_unresponsive2
    no shutdown
-   switchport
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
    dot1x mac based access-list
