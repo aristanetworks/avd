@@ -236,9 +236,9 @@ interface Ethernet5
 interface Port-Channel1
    description DC2_L3_LEAF1_Po8
    no shutdown
-   switchport
    switchport trunk allowed vlan 11-12,21-22,3401-3402
    switchport mode trunk
+   switchport
 ```
 
 ## Routing

@@ -754,9 +754,9 @@ interface Ethernet1/3
 interface Ethernet3/1
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -779,9 +779,9 @@ interface Ethernet3/1
 interface Ethernet3/2
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -804,9 +804,9 @@ interface Ethernet3/2
 interface Ethernet3/3
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -829,9 +829,9 @@ interface Ethernet3/3
 interface Ethernet3/4
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -854,9 +854,9 @@ interface Ethernet3/4
 interface Ethernet3/5
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -879,9 +879,9 @@ interface Ethernet3/5
 interface Ethernet3/6
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -904,9 +904,9 @@ interface Ethernet3/6
 interface Ethernet3/7
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -929,9 +929,9 @@ interface Ethernet3/7
 interface Ethernet3/8
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -954,9 +954,9 @@ interface Ethernet3/8
 interface Ethernet3/9
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -979,9 +979,9 @@ interface Ethernet3/9
 interface Ethernet3/10
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1004,9 +1004,9 @@ interface Ethernet3/10
 interface Ethernet3/11
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1029,9 +1029,9 @@ interface Ethernet3/11
 interface Ethernet3/12
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1054,9 +1054,9 @@ interface Ethernet3/12
 interface Ethernet3/13
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1079,9 +1079,9 @@ interface Ethernet3/13
 interface Ethernet3/14
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1104,9 +1104,9 @@ interface Ethernet3/14
 interface Ethernet3/15
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1129,9 +1129,9 @@ interface Ethernet3/15
 interface Ethernet3/16
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1154,9 +1154,9 @@ interface Ethernet3/16
 interface Ethernet3/17
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1179,9 +1179,9 @@ interface Ethernet3/17
 interface Ethernet3/18
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1204,9 +1204,9 @@ interface Ethernet3/18
 interface Ethernet3/19
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1229,9 +1229,9 @@ interface Ethernet3/19
 interface Ethernet3/20
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1254,9 +1254,9 @@ interface Ethernet3/20
 interface Ethernet3/21
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1279,9 +1279,9 @@ interface Ethernet3/21
 interface Ethernet3/22
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1304,9 +1304,9 @@ interface Ethernet3/22
 interface Ethernet3/23
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1329,9 +1329,9 @@ interface Ethernet3/23
 interface Ethernet3/24
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1354,9 +1354,9 @@ interface Ethernet3/24
 interface Ethernet3/25
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1379,9 +1379,9 @@ interface Ethernet3/25
 interface Ethernet3/26
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1404,9 +1404,9 @@ interface Ethernet3/26
 interface Ethernet3/27
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1429,9 +1429,9 @@ interface Ethernet3/27
 interface Ethernet3/28
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1454,9 +1454,9 @@ interface Ethernet3/28
 interface Ethernet3/29
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1479,9 +1479,9 @@ interface Ethernet3/29
 interface Ethernet3/30
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1504,9 +1504,9 @@ interface Ethernet3/30
 interface Ethernet3/31
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1529,9 +1529,9 @@ interface Ethernet3/31
 interface Ethernet3/32
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1554,9 +1554,9 @@ interface Ethernet3/32
 interface Ethernet3/33
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1579,9 +1579,9 @@ interface Ethernet3/33
 interface Ethernet3/34
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1604,9 +1604,9 @@ interface Ethernet3/34
 interface Ethernet3/35
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1629,9 +1629,9 @@ interface Ethernet3/35
 interface Ethernet3/36
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1654,9 +1654,9 @@ interface Ethernet3/36
 interface Ethernet3/37
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1679,9 +1679,9 @@ interface Ethernet3/37
 interface Ethernet3/38
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1704,9 +1704,9 @@ interface Ethernet3/38
 interface Ethernet3/39
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1729,9 +1729,9 @@ interface Ethernet3/39
 interface Ethernet3/40
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1754,9 +1754,9 @@ interface Ethernet3/40
 interface Ethernet3/41
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1779,9 +1779,9 @@ interface Ethernet3/41
 interface Ethernet3/42
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1804,9 +1804,9 @@ interface Ethernet3/42
 interface Ethernet3/43
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1829,9 +1829,9 @@ interface Ethernet3/43
 interface Ethernet3/44
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1854,9 +1854,9 @@ interface Ethernet3/44
 interface Ethernet3/45
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1879,9 +1879,9 @@ interface Ethernet3/45
 interface Ethernet3/46
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1904,9 +1904,9 @@ interface Ethernet3/46
 interface Ethernet3/47
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1929,9 +1929,9 @@ interface Ethernet3/47
 interface Ethernet3/48
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1954,9 +1954,9 @@ interface Ethernet3/48
 interface Ethernet4/1
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -1979,9 +1979,9 @@ interface Ethernet4/1
 interface Ethernet4/2
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2004,9 +2004,9 @@ interface Ethernet4/2
 interface Ethernet4/3
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2029,9 +2029,9 @@ interface Ethernet4/3
 interface Ethernet4/4
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2054,9 +2054,9 @@ interface Ethernet4/4
 interface Ethernet4/5
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2079,9 +2079,9 @@ interface Ethernet4/5
 interface Ethernet4/6
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2104,9 +2104,9 @@ interface Ethernet4/6
 interface Ethernet4/7
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2129,9 +2129,9 @@ interface Ethernet4/7
 interface Ethernet4/8
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2154,9 +2154,9 @@ interface Ethernet4/8
 interface Ethernet4/9
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2179,9 +2179,9 @@ interface Ethernet4/9
 interface Ethernet4/10
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2204,9 +2204,9 @@ interface Ethernet4/10
 interface Ethernet4/11
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2229,9 +2229,9 @@ interface Ethernet4/11
 interface Ethernet4/12
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2254,9 +2254,9 @@ interface Ethernet4/12
 interface Ethernet4/13
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2279,9 +2279,9 @@ interface Ethernet4/13
 interface Ethernet4/14
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2304,9 +2304,9 @@ interface Ethernet4/14
 interface Ethernet4/15
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2329,9 +2329,9 @@ interface Ethernet4/15
 interface Ethernet4/16
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2354,9 +2354,9 @@ interface Ethernet4/16
 interface Ethernet4/17
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2379,9 +2379,9 @@ interface Ethernet4/17
 interface Ethernet4/18
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2404,9 +2404,9 @@ interface Ethernet4/18
 interface Ethernet4/19
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2429,9 +2429,9 @@ interface Ethernet4/19
 interface Ethernet4/20
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2454,9 +2454,9 @@ interface Ethernet4/20
 interface Ethernet4/21
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2479,9 +2479,9 @@ interface Ethernet4/21
 interface Ethernet4/22
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2504,9 +2504,9 @@ interface Ethernet4/22
 interface Ethernet4/23
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2529,9 +2529,9 @@ interface Ethernet4/23
 interface Ethernet4/24
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2554,9 +2554,9 @@ interface Ethernet4/24
 interface Ethernet4/25
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2579,9 +2579,9 @@ interface Ethernet4/25
 interface Ethernet4/26
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2604,9 +2604,9 @@ interface Ethernet4/26
 interface Ethernet4/27
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2629,9 +2629,9 @@ interface Ethernet4/27
 interface Ethernet4/28
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2654,9 +2654,9 @@ interface Ethernet4/28
 interface Ethernet4/29
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2679,9 +2679,9 @@ interface Ethernet4/29
 interface Ethernet4/30
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2704,9 +2704,9 @@ interface Ethernet4/30
 interface Ethernet4/31
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2729,9 +2729,9 @@ interface Ethernet4/31
 interface Ethernet4/32
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2754,9 +2754,9 @@ interface Ethernet4/32
 interface Ethernet4/33
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2779,9 +2779,9 @@ interface Ethernet4/33
 interface Ethernet4/34
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2804,9 +2804,9 @@ interface Ethernet4/34
 interface Ethernet4/35
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2829,9 +2829,9 @@ interface Ethernet4/35
 interface Ethernet4/36
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2854,9 +2854,9 @@ interface Ethernet4/36
 interface Ethernet4/37
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2879,9 +2879,9 @@ interface Ethernet4/37
 interface Ethernet4/38
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2904,9 +2904,9 @@ interface Ethernet4/38
 interface Ethernet4/39
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2929,9 +2929,9 @@ interface Ethernet4/39
 interface Ethernet4/40
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2954,9 +2954,9 @@ interface Ethernet4/40
 interface Ethernet4/41
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -2979,9 +2979,9 @@ interface Ethernet4/41
 interface Ethernet4/42
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3004,9 +3004,9 @@ interface Ethernet4/42
 interface Ethernet4/43
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3029,9 +3029,9 @@ interface Ethernet4/43
 interface Ethernet4/44
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3054,9 +3054,9 @@ interface Ethernet4/44
 interface Ethernet4/45
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3079,9 +3079,9 @@ interface Ethernet4/45
 interface Ethernet4/46
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3104,9 +3104,9 @@ interface Ethernet4/46
 interface Ethernet4/47
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3129,9 +3129,9 @@ interface Ethernet4/47
 interface Ethernet4/48
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3154,9 +3154,9 @@ interface Ethernet4/48
 interface Ethernet5/1
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3179,9 +3179,9 @@ interface Ethernet5/1
 interface Ethernet5/2
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3204,9 +3204,9 @@ interface Ethernet5/2
 interface Ethernet5/3
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3229,9 +3229,9 @@ interface Ethernet5/3
 interface Ethernet5/4
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3254,9 +3254,9 @@ interface Ethernet5/4
 interface Ethernet5/5
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3279,9 +3279,9 @@ interface Ethernet5/5
 interface Ethernet5/6
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3304,9 +3304,9 @@ interface Ethernet5/6
 interface Ethernet5/7
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3329,9 +3329,9 @@ interface Ethernet5/7
 interface Ethernet5/8
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3354,9 +3354,9 @@ interface Ethernet5/8
 interface Ethernet5/9
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3379,9 +3379,9 @@ interface Ethernet5/9
 interface Ethernet5/10
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3404,9 +3404,9 @@ interface Ethernet5/10
 interface Ethernet5/11
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3429,9 +3429,9 @@ interface Ethernet5/11
 interface Ethernet5/12
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3454,9 +3454,9 @@ interface Ethernet5/12
 interface Ethernet5/13
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3479,9 +3479,9 @@ interface Ethernet5/13
 interface Ethernet5/14
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3504,9 +3504,9 @@ interface Ethernet5/14
 interface Ethernet5/15
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3529,9 +3529,9 @@ interface Ethernet5/15
 interface Ethernet5/16
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3554,9 +3554,9 @@ interface Ethernet5/16
 interface Ethernet5/17
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3579,9 +3579,9 @@ interface Ethernet5/17
 interface Ethernet5/18
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3604,9 +3604,9 @@ interface Ethernet5/18
 interface Ethernet5/19
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3629,9 +3629,9 @@ interface Ethernet5/19
 interface Ethernet5/20
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3654,9 +3654,9 @@ interface Ethernet5/20
 interface Ethernet5/21
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3679,9 +3679,9 @@ interface Ethernet5/21
 interface Ethernet5/22
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3704,9 +3704,9 @@ interface Ethernet5/22
 interface Ethernet5/23
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3729,9 +3729,9 @@ interface Ethernet5/23
 interface Ethernet5/24
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3754,9 +3754,9 @@ interface Ethernet5/24
 interface Ethernet5/25
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3779,9 +3779,9 @@ interface Ethernet5/25
 interface Ethernet5/26
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3804,9 +3804,9 @@ interface Ethernet5/26
 interface Ethernet5/27
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3829,9 +3829,9 @@ interface Ethernet5/27
 interface Ethernet5/28
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3854,9 +3854,9 @@ interface Ethernet5/28
 interface Ethernet5/29
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3879,9 +3879,9 @@ interface Ethernet5/29
 interface Ethernet5/30
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3904,9 +3904,9 @@ interface Ethernet5/30
 interface Ethernet5/31
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3929,9 +3929,9 @@ interface Ethernet5/31
 interface Ethernet5/32
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3954,9 +3954,9 @@ interface Ethernet5/32
 interface Ethernet5/33
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -3979,9 +3979,9 @@ interface Ethernet5/33
 interface Ethernet5/34
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4004,9 +4004,9 @@ interface Ethernet5/34
 interface Ethernet5/35
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4029,9 +4029,9 @@ interface Ethernet5/35
 interface Ethernet5/36
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4054,9 +4054,9 @@ interface Ethernet5/36
 interface Ethernet5/37
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4079,9 +4079,9 @@ interface Ethernet5/37
 interface Ethernet5/38
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4104,9 +4104,9 @@ interface Ethernet5/38
 interface Ethernet5/39
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4129,9 +4129,9 @@ interface Ethernet5/39
 interface Ethernet5/40
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4154,9 +4154,9 @@ interface Ethernet5/40
 interface Ethernet5/41
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4179,9 +4179,9 @@ interface Ethernet5/41
 interface Ethernet5/42
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4204,9 +4204,9 @@ interface Ethernet5/42
 interface Ethernet5/43
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4229,9 +4229,9 @@ interface Ethernet5/43
 interface Ethernet5/44
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4254,9 +4254,9 @@ interface Ethernet5/44
 interface Ethernet5/45
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4279,9 +4279,9 @@ interface Ethernet5/45
 interface Ethernet5/46
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4304,9 +4304,9 @@ interface Ethernet5/46
 interface Ethernet5/47
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4329,9 +4329,9 @@ interface Ethernet5/47
 interface Ethernet5/48
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4354,9 +4354,9 @@ interface Ethernet5/48
 interface Ethernet6/1
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4379,9 +4379,9 @@ interface Ethernet6/1
 interface Ethernet6/2
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4404,9 +4404,9 @@ interface Ethernet6/2
 interface Ethernet6/3
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4429,9 +4429,9 @@ interface Ethernet6/3
 interface Ethernet6/4
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4454,9 +4454,9 @@ interface Ethernet6/4
 interface Ethernet6/5
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4479,9 +4479,9 @@ interface Ethernet6/5
 interface Ethernet6/6
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4504,9 +4504,9 @@ interface Ethernet6/6
 interface Ethernet6/7
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4529,9 +4529,9 @@ interface Ethernet6/7
 interface Ethernet6/8
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4554,9 +4554,9 @@ interface Ethernet6/8
 interface Ethernet6/9
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4579,9 +4579,9 @@ interface Ethernet6/9
 interface Ethernet6/10
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4604,9 +4604,9 @@ interface Ethernet6/10
 interface Ethernet6/11
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4629,9 +4629,9 @@ interface Ethernet6/11
 interface Ethernet6/12
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4654,9 +4654,9 @@ interface Ethernet6/12
 interface Ethernet6/13
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4679,9 +4679,9 @@ interface Ethernet6/13
 interface Ethernet6/14
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4704,9 +4704,9 @@ interface Ethernet6/14
 interface Ethernet6/15
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4729,9 +4729,9 @@ interface Ethernet6/15
 interface Ethernet6/16
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4754,9 +4754,9 @@ interface Ethernet6/16
 interface Ethernet6/17
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4779,9 +4779,9 @@ interface Ethernet6/17
 interface Ethernet6/18
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4804,9 +4804,9 @@ interface Ethernet6/18
 interface Ethernet6/19
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4829,9 +4829,9 @@ interface Ethernet6/19
 interface Ethernet6/20
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4854,9 +4854,9 @@ interface Ethernet6/20
 interface Ethernet6/21
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4879,9 +4879,9 @@ interface Ethernet6/21
 interface Ethernet6/22
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4904,9 +4904,9 @@ interface Ethernet6/22
 interface Ethernet6/23
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4929,9 +4929,9 @@ interface Ethernet6/23
 interface Ethernet6/24
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4954,9 +4954,9 @@ interface Ethernet6/24
 interface Ethernet6/25
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -4979,9 +4979,9 @@ interface Ethernet6/25
 interface Ethernet6/26
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5004,9 +5004,9 @@ interface Ethernet6/26
 interface Ethernet6/27
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5029,9 +5029,9 @@ interface Ethernet6/27
 interface Ethernet6/28
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5054,9 +5054,9 @@ interface Ethernet6/28
 interface Ethernet6/29
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5079,9 +5079,9 @@ interface Ethernet6/29
 interface Ethernet6/30
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5104,9 +5104,9 @@ interface Ethernet6/30
 interface Ethernet6/31
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5129,9 +5129,9 @@ interface Ethernet6/31
 interface Ethernet6/32
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5154,9 +5154,9 @@ interface Ethernet6/32
 interface Ethernet6/33
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5179,9 +5179,9 @@ interface Ethernet6/33
 interface Ethernet6/34
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5204,9 +5204,9 @@ interface Ethernet6/34
 interface Ethernet6/35
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5229,9 +5229,9 @@ interface Ethernet6/35
 interface Ethernet6/36
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5254,9 +5254,9 @@ interface Ethernet6/36
 interface Ethernet6/37
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5279,9 +5279,9 @@ interface Ethernet6/37
 interface Ethernet6/38
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5304,9 +5304,9 @@ interface Ethernet6/38
 interface Ethernet6/39
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5329,9 +5329,9 @@ interface Ethernet6/39
 interface Ethernet6/40
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5354,9 +5354,9 @@ interface Ethernet6/40
 interface Ethernet6/41
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5379,9 +5379,9 @@ interface Ethernet6/41
 interface Ethernet6/42
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5404,9 +5404,9 @@ interface Ethernet6/42
 interface Ethernet6/43
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5429,9 +5429,9 @@ interface Ethernet6/43
 interface Ethernet6/44
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5454,9 +5454,9 @@ interface Ethernet6/44
 interface Ethernet6/45
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5479,9 +5479,9 @@ interface Ethernet6/45
 interface Ethernet6/46
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5504,9 +5504,9 @@ interface Ethernet6/46
 interface Ethernet6/47
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5529,9 +5529,9 @@ interface Ethernet6/47
 interface Ethernet6/48
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5554,9 +5554,9 @@ interface Ethernet6/48
 interface Ethernet7/1
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5579,9 +5579,9 @@ interface Ethernet7/1
 interface Ethernet7/2
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5604,9 +5604,9 @@ interface Ethernet7/2
 interface Ethernet7/3
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5629,9 +5629,9 @@ interface Ethernet7/3
 interface Ethernet7/4
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5654,9 +5654,9 @@ interface Ethernet7/4
 interface Ethernet7/5
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5679,9 +5679,9 @@ interface Ethernet7/5
 interface Ethernet7/6
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5704,9 +5704,9 @@ interface Ethernet7/6
 interface Ethernet7/7
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5729,9 +5729,9 @@ interface Ethernet7/7
 interface Ethernet7/8
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5754,9 +5754,9 @@ interface Ethernet7/8
 interface Ethernet7/9
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5779,9 +5779,9 @@ interface Ethernet7/9
 interface Ethernet7/10
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5804,9 +5804,9 @@ interface Ethernet7/10
 interface Ethernet7/11
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5829,9 +5829,9 @@ interface Ethernet7/11
 interface Ethernet7/12
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5854,9 +5854,9 @@ interface Ethernet7/12
 interface Ethernet7/13
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5879,9 +5879,9 @@ interface Ethernet7/13
 interface Ethernet7/14
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5904,9 +5904,9 @@ interface Ethernet7/14
 interface Ethernet7/15
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5929,9 +5929,9 @@ interface Ethernet7/15
 interface Ethernet7/16
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5954,9 +5954,9 @@ interface Ethernet7/16
 interface Ethernet7/17
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -5979,9 +5979,9 @@ interface Ethernet7/17
 interface Ethernet7/18
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6004,9 +6004,9 @@ interface Ethernet7/18
 interface Ethernet7/19
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6029,9 +6029,9 @@ interface Ethernet7/19
 interface Ethernet7/20
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6054,9 +6054,9 @@ interface Ethernet7/20
 interface Ethernet7/21
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6079,9 +6079,9 @@ interface Ethernet7/21
 interface Ethernet7/22
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6104,9 +6104,9 @@ interface Ethernet7/22
 interface Ethernet7/23
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6129,9 +6129,9 @@ interface Ethernet7/23
 interface Ethernet7/24
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6154,9 +6154,9 @@ interface Ethernet7/24
 interface Ethernet7/25
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6179,9 +6179,9 @@ interface Ethernet7/25
 interface Ethernet7/26
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6204,9 +6204,9 @@ interface Ethernet7/26
 interface Ethernet7/27
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6229,9 +6229,9 @@ interface Ethernet7/27
 interface Ethernet7/28
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6254,9 +6254,9 @@ interface Ethernet7/28
 interface Ethernet7/29
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6279,9 +6279,9 @@ interface Ethernet7/29
 interface Ethernet7/30
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6304,9 +6304,9 @@ interface Ethernet7/30
 interface Ethernet7/31
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6329,9 +6329,9 @@ interface Ethernet7/31
 interface Ethernet7/32
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6354,9 +6354,9 @@ interface Ethernet7/32
 interface Ethernet7/33
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6379,9 +6379,9 @@ interface Ethernet7/33
 interface Ethernet7/34
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6404,9 +6404,9 @@ interface Ethernet7/34
 interface Ethernet7/35
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6429,9 +6429,9 @@ interface Ethernet7/35
 interface Ethernet7/36
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6454,9 +6454,9 @@ interface Ethernet7/36
 interface Ethernet7/37
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6479,9 +6479,9 @@ interface Ethernet7/37
 interface Ethernet7/38
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6504,9 +6504,9 @@ interface Ethernet7/38
 interface Ethernet7/39
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6529,9 +6529,9 @@ interface Ethernet7/39
 interface Ethernet7/40
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6554,9 +6554,9 @@ interface Ethernet7/40
 interface Ethernet7/41
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6579,9 +6579,9 @@ interface Ethernet7/41
 interface Ethernet7/42
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6604,9 +6604,9 @@ interface Ethernet7/42
 interface Ethernet7/43
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6629,9 +6629,9 @@ interface Ethernet7/43
 interface Ethernet7/44
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6654,9 +6654,9 @@ interface Ethernet7/44
 interface Ethernet7/45
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6679,9 +6679,9 @@ interface Ethernet7/45
 interface Ethernet7/46
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6704,9 +6704,9 @@ interface Ethernet7/46
 interface Ethernet7/47
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6729,9 +6729,9 @@ interface Ethernet7/47
 interface Ethernet7/48
    description IDF2 Standard Port
    no shutdown
-   switchport trunk native vlan 210
    switchport phone vlan 220
    switchport phone trunk untagged
+   switchport trunk native vlan 210
    switchport mode trunk phone
    switchport
    dot1x pae authenticator
@@ -6769,9 +6769,9 @@ interface Ethernet7/48
 interface Port-Channel11
    description SPINES_Po491
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,210,220,230
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

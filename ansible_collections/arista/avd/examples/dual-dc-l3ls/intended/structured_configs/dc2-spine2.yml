@@ -129,7 +129,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-LEAF1A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.106/31
 - name: Ethernet2
   peer: dc2-leaf1b
@@ -138,7 +139,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-LEAF1B_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.110/31
 - name: Ethernet3
   peer: dc2-leaf2a
@@ -147,7 +149,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-LEAF2A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.114/31
 - name: Ethernet4
   peer: dc2-leaf2b
@@ -156,7 +159,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-LEAF2B_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.118/31
 loopback_interfaces:
 - name: Loopback0

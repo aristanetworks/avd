@@ -76,7 +76,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: pe
   description: P2P_LINK_TO_pe1_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.1/31
@@ -97,7 +98,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: pe
   description: P2P_LINK_TO_pe2_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.7/31
@@ -118,7 +120,8 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: p
   description: P2P_LINK_TO_p2_Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.8/31
@@ -139,7 +142,8 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: rr
   description: P2P_LINK_TO_rr1_Ethernet3
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.11/31

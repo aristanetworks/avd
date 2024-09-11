@@ -349,17 +349,17 @@ interface Ethernet48
 interface Port-Channel1
    description SPINES_Po3
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,30
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel47
    description MLAG_PEER_LEAF3_Po47
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces

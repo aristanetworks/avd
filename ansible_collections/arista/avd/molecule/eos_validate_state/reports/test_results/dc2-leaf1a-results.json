@@ -316,24 +316,6 @@
   },
   {
     "name": "dc2-leaf1a",
-    "test": "VerifyReachability",
-    "categories": [
-      "connectivity"
-    ],
-    "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.105) - Destination: dc2-spine1 Ethernet1 (IP: 10.255.255.104)"
-  },
-  {
-    "name": "dc2-leaf1a",
-    "test": "VerifyReachability",
-    "categories": [
-      "connectivity"
-    ],
-    "description": "Test the network reachability to one or many destination IP(s).",
-    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.107) - Destination: dc2-spine2 Ethernet1 (IP: 10.255.255.106)"
-  },
-  {
-    "name": "dc2-leaf1a",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
       "field notices"

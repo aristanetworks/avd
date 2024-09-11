@@ -212,7 +212,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE1-LSR1_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1000
@@ -238,7 +239,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: pe
   description: P2P_LINK_TO_SITE1-LER2_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1500
@@ -271,21 +273,20 @@ ethernet_interfaces:
   ospf_network_point_to_point: true
   ospf_cost: 10
 - name: Ethernet6
-  type: routed
+  switchport:
+    enabled: false
   peer_type: point_to_point_service
   shutdown: false
   lldp:
     transmit: false
     receive: false
 - name: Ethernet3
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 3
     mode: active
 - name: Ethernet4
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
@@ -298,7 +299,6 @@ ethernet_interfaces:
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 8
     mode: active
@@ -440,8 +440,9 @@ port_channel_interfaces:
   lacp_id: 0102.0000.0034
 - name: Port-Channel8
   description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
-  type: routed
   shutdown: false
+  switchport:
+    enabled: false
 - name: Port-Channel8.111
   type: l2dot1q
   vlan_id: 111

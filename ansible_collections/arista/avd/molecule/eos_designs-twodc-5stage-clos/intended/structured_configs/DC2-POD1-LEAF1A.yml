@@ -223,7 +223,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.1/31
@@ -234,7 +235,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.3/31
@@ -244,7 +246,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF1A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -253,7 +254,8 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 100.100.100.201/24
 - name: Ethernet7
@@ -261,7 +263,8 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 11.1.0.39/31
   ptp:
@@ -269,11 +272,13 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC2-POD1-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  vlans: '4092'
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

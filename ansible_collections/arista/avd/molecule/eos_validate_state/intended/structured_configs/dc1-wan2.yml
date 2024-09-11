@@ -167,7 +167,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet7
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.5/31
 - name: Ethernet2
   peer: dc1-leaf1b
@@ -176,19 +177,22 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet7
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.7/31
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.4.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: mpls-sp-1_DC1-MPLS-4
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.4.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: isp-1_DC1-INET-4
 loopback_interfaces:
 - name: Loopback0

@@ -226,7 +226,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet2
   peer: DC1-SPINE2
@@ -235,7 +236,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet3
   peer: DC1-SPINE3
@@ -244,7 +246,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet4
   peer: DC1-SPINE4
@@ -253,7 +256,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet6
   peer: server02_SINGLE_NODE_TRUNK
@@ -262,9 +266,11 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: server02_SINGLE_NODE_TRUNK_Eth1
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
@@ -288,9 +294,10 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server02_SINGLE_NODE_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

@@ -93,17 +93,21 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel53
   description: MLAG_PEER_LEAF1A_Po53
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel51
   description: SPINES_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,110,120,130
   shutdown: false
-  mode: trunk
-  vlans: 10,110,120,130
   mlag: 51
 ethernet_interfaces:
 - name: Ethernet53
@@ -111,7 +115,6 @@ ethernet_interfaces:
   peer_interface: Ethernet53
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet53
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
@@ -121,7 +124,6 @@ ethernet_interfaces:
   peer_interface: Ethernet54
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet54
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
@@ -132,7 +134,6 @@ ethernet_interfaces:
   peer_type: l3spine
   description: SPINE2_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 51
     mode: active
@@ -142,9 +143,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -173,9 +176,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -204,9 +209,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -235,9 +242,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -266,9 +275,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -297,9 +308,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -328,9 +341,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -359,9 +374,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -390,9 +407,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -421,9 +440,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -452,9 +473,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -483,9 +506,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -514,9 +539,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -545,9 +572,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -576,9 +605,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -607,9 +638,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -638,9 +671,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -669,9 +704,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -700,9 +737,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -731,9 +770,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -762,9 +803,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -793,9 +836,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -824,9 +869,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -855,9 +902,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -886,9 +935,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -917,9 +968,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -948,9 +1001,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -979,9 +1034,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1010,9 +1067,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1041,9 +1100,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1072,9 +1133,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1103,9 +1166,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1134,9 +1199,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1165,9 +1232,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1196,9 +1265,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1227,9 +1298,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1258,9 +1331,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1289,9 +1364,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1320,9 +1397,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1351,9 +1430,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1382,9 +1463,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1413,9 +1496,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1444,9 +1529,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1475,9 +1562,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1506,9 +1595,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1537,9 +1628,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1568,9 +1661,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1599,9 +1694,11 @@ ethernet_interfaces:
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 110
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 110
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:

@@ -278,7 +278,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.120.1/31
@@ -291,7 +292,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.120.3/31
@@ -302,7 +304,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-RS2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.12/31
 loopback_interfaces:
 - name: Loopback0

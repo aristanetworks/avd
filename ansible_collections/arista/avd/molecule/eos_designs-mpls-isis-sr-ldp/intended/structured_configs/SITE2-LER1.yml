@@ -264,7 +264,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR1_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1000
@@ -286,7 +287,6 @@ ethernet_interfaces:
       igp_sync: true
   speed: forced 40gfull
 - name: Ethernet11
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet12
   peer_type: p
@@ -297,7 +297,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
 - name: Ethernet12
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet13
   peer_type: p
@@ -308,7 +307,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
 - name: Ethernet13
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet14
   peer_type: p
@@ -319,7 +317,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
 - name: Ethernet14
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet15
   peer_type: p
@@ -361,24 +358,24 @@ ethernet_interfaces:
   ip_address: 123.10.10.2/31
   shutdown: false
   description: TENANT_B_SITE_5_WAN_TEST
-  type: routed
+  switchport:
+    enabled: false
   vrf: TENANT_B_WAN
 - name: Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   peer_type: point_to_point_service
   shutdown: false
   lldp:
     transmit: false
     receive: false
 - name: Ethernet4
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 4
     mode: active
 - name: Ethernet5
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
@@ -391,9 +388,11 @@ ethernet_interfaces:
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE2_eth0
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: '10'
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '10'
   spanning_tree_portfast: edge
 port_channel_interfaces:
 - name: Port-Channel11
@@ -401,7 +400,8 @@ port_channel_interfaces:
   peer_interface: Port-Channel12
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1600
@@ -426,7 +426,8 @@ port_channel_interfaces:
   peer_interface: Port-Channel110
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR2_Port-Channel110
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1600

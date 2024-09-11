@@ -75,7 +75,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-LEAF2A_Ethernet7
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -85,17 +84,18 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-LEAF2B_Ethernet7
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1_LEAF2_Po7
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
-  vlans: none
 ip_igmp_snooping:
   globally_enabled: true
 metadata:

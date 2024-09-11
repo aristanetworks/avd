@@ -357,7 +357,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.97/31
 - name: Ethernet46
   peer: DC1-SPINE2
@@ -367,7 +368,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.99/31
 - name: Ethernet47
   peer: DC1-SPINE3
@@ -377,7 +379,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.101/31
 - name: Ethernet48
   peer: DC1-SPINE4
@@ -387,7 +390,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.103/31
 - name: Ethernet7
   peer_type: l3_interface
@@ -395,7 +399,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_WAN_Zone
 - name: Ethernet8
   peer_type: l3_interface
@@ -403,7 +408,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_L3_VRF_Zone
 - name: Ethernet9
   peer_type: l3_interface
@@ -411,7 +417,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_L3_VRF_Zone
 - name: Ethernet10.100
   peer_type: l3_interface
@@ -432,7 +439,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 141
   vrf: Tenant_L3_VRF_Zone
 - name: Ethernet10
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 - name: Ethernet4000

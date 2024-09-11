@@ -812,25 +812,31 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-SVC3A_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 - name: Port-Channel7
   description: DC1_L2LEAF2_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
   shutdown: false
-  mode: trunk
-  vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
   mlag: 7
 - name: Port-Channel14
   description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
@@ -850,10 +856,12 @@ port_channel_interfaces:
   mlag: 14
 - name: Port-Channel15
   description: server08_no_profile_port_channel_server08_no_profile_port_channel
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
@@ -877,7 +885,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -887,7 +894,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -899,7 +905,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet2
   peer: DC1-SPINE2
@@ -908,7 +915,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet3
   peer: DC1-SPINE3
@@ -917,7 +925,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet4
   peer: DC1-SPINE4
@@ -926,7 +935,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet7
   peer: DC1-L2LEAF2A
@@ -934,7 +944,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -944,7 +953,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -955,9 +963,11 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth2
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
@@ -980,9 +990,11 @@ ethernet_interfaces:
   peer_type: server
   description: server05_no_profile_Eth2
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
@@ -1006,9 +1018,10 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth2
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '210'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '210'
   spanning_tree_portfast: network
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'True'
@@ -1032,7 +1045,6 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -1042,7 +1054,6 @@ ethernet_interfaces:
   peer_type: server
   description: server08_no_profile_port_channel_Eth2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -1053,9 +1064,10 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth2
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '210'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '210'
   spanning_tree_portfast: network
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'True'

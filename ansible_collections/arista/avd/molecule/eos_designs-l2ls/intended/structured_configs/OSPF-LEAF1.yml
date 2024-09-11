@@ -32,7 +32,6 @@ ethernet_interfaces:
   peer_type: l3spine
   description: OSPF-SPINE1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -42,7 +41,6 @@ ethernet_interfaces:
   peer_type: l3spine
   description: OSPF-SPINE2_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -51,24 +49,28 @@ ethernet_interfaces:
   peer_type: network_port
   description: Endpoint
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
 - name: Ethernet11
   peer: Endpoint
   peer_type: network_port
   description: Endpoint
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
 port_channel_interfaces:
 - name: Port-Channel1
   description: OSPF_SPINES_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,4092
   shutdown: false
-  mode: trunk
-  vlans: 100,4092
 vlans:
 - id: 100
   name: SVI_100

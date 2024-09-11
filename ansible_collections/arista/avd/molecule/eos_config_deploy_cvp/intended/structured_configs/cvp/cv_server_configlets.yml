@@ -17,8 +17,8 @@ cvp_configlets:
     LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
     MGMT\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf
     instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n   description MLAG_PEER_DC1-BL1B_Po5\n
-    \  no shutdown\n   switchport\n   switchport mode trunk\n   switchport trunk group
-    LEAF_PEER_L3\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n   description
+    \  no shutdown\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n   description
     P2P_LINK_TO_DC1-SPINE1_Ethernet6\n   no shutdown\n   mtu 1500\n   no switchport\n
     \  ip address 172.31.255.41/31\n!\ninterface Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet6\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.43/31\n!\ninterface
@@ -132,8 +132,8 @@ cvp_configlets:
     LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
     MGMT\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf
     instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n   description MLAG_PEER_DC1-BL1A_Po5\n
-    \  no shutdown\n   switchport\n   switchport mode trunk\n   switchport trunk group
-    LEAF_PEER_L3\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n   description
+    \  no shutdown\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n   description
     P2P_LINK_TO_DC1-SPINE1_Ethernet7\n   no shutdown\n   mtu 1500\n   no switchport\n
     \  ip address 172.31.255.49/31\n!\ninterface Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet7\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.51/31\n!\ninterface
@@ -243,8 +243,8 @@ cvp_configlets:
     120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n!\nvlan
     130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n!\nvrf
     instance MGMT\n!\ninterface Port-Channel1\n   description DC1_LEAF2_Po7\n   no
-    shutdown\n   switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131\n
-    \  switchport mode trunk\n!\ninterface Ethernet1\n   description DC1-LEAF2A_Ethernet7\n
+    shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131\n   switchport
+    mode trunk\n   switchport\n!\ninterface Ethernet1\n   description DC1-LEAF2A_Ethernet7\n
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     DC1-LEAF2B_Ethernet7\n   no shutdown\n   channel-group 1 mode active\n!\ninterface
     Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n   ip
@@ -270,11 +270,11 @@ cvp_configlets:
     310\n   name Tenant_C_OP_Zone_1\n!\nvlan 311\n   name Tenant_C_OP_Zone_2\n!\nvlan
     350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group
     MLAG\n!\nvrf instance MGMT\n!\ninterface Port-Channel1\n   description DC1_SVC3_Po7\n
-    \  no shutdown\n   switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
-    \  switchport mode trunk\n   mlag 1\n!\ninterface Port-Channel3\n   description
-    MLAG_PEER_DC1-L2LEAF2B_Po3\n   no shutdown\n   switchport\n   switchport mode
-    trunk\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n   description
-    DC1-SVC3A_Ethernet7\n   shutdown\n   channel-group 1 mode active\n!\ninterface
+    \  no shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
+    \  switchport mode trunk\n   switchport\n   mlag 1\n!\ninterface Port-Channel3\n
+    \  description MLAG_PEER_DC1-L2LEAF2B_Po3\n   no shutdown\n   switchport mode
+    trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
+    \  description DC1-SVC3A_Ethernet7\n   shutdown\n   channel-group 1 mode active\n!\ninterface
     Ethernet2\n   description DC1-SVC3B_Ethernet7\n   shutdown\n   channel-group 1
     mode active\n!\ninterface Ethernet3\n   description MLAG_PEER_DC1-L2LEAF2B_Ethernet3\n
     \  no shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet4\n   description
@@ -306,11 +306,11 @@ cvp_configlets:
     310\n   name Tenant_C_OP_Zone_1\n!\nvlan 311\n   name Tenant_C_OP_Zone_2\n!\nvlan
     350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group
     MLAG\n!\nvrf instance MGMT\n!\ninterface Port-Channel1\n   description DC1_SVC3_Po7\n
-    \  no shutdown\n   switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
-    \  switchport mode trunk\n   mlag 1\n!\ninterface Port-Channel3\n   description
-    MLAG_PEER_DC1-L2LEAF2A_Po3\n   no shutdown\n   switchport\n   switchport mode
-    trunk\n   switchport trunk group MLAG\n!\ninterface Ethernet1\n   description
-    DC1-SVC3A_Ethernet8\n   shutdown\n   channel-group 1 mode active\n!\ninterface
+    \  no shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
+    \  switchport mode trunk\n   switchport\n   mlag 1\n!\ninterface Port-Channel3\n
+    \  description MLAG_PEER_DC1-L2LEAF2A_Po3\n   no shutdown\n   switchport mode
+    trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
+    \  description DC1-SVC3A_Ethernet8\n   shutdown\n   channel-group 1 mode active\n!\ninterface
     Ethernet2\n   description DC1-SVC3B_Ethernet8\n   shutdown\n   channel-group 1
     mode active\n!\ninterface Ethernet3\n   description MLAG_PEER_DC1-L2LEAF2A_Ethernet3\n
     \  no shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet4\n   description
@@ -431,13 +431,13 @@ cvp_configlets:
     MLAG_PEER\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf
     instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf
     instance Tenant_B_OP_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\ninterface Port-Channel5\n
-    \  description MLAG_PEER_DC1-LEAF2B_Po5\n   no shutdown\n   switchport\n   switchport
-    mode trunk\n   switchport trunk group LEAF_PEER_L3\n   switchport trunk group
-    MLAG\n!\ninterface Port-Channel7\n   description DC1-L2LEAF1A_Po1\n   no shutdown\n
-    \  switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131\n   switchport
-    mode trunk\n   mlag 7\n!\ninterface Port-Channel10\n   description server01_MLAG_PortChanne1\n
-    \  no shutdown\n   switchport\n   switchport trunk allowed vlan 210-211\n   switchport
-    mode trunk\n   mlag 10\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet2\n
+    \  description MLAG_PEER_DC1-LEAF2B_Po5\n   no shutdown\n   switchport mode trunk\n
+    \  switchport trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel7\n   description DC1-L2LEAF1A_Po1\n   no shutdown\n   switchport
+    trunk allowed vlan 110-111,120-121,130-131\n   switchport mode trunk\n   switchport\n
+    \  mlag 7\n!\ninterface Port-Channel10\n   description server01_MLAG_PortChanne1\n
+    \  no shutdown\n   switchport trunk allowed vlan 210-211\n   switchport mode trunk\n
+    \  switchport\n   mlag 10\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet2\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.9/31\n!\ninterface
     Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet2\n   no shutdown\n   mtu
     1500\n   no switchport\n   ip address 172.31.255.11/31\n!\ninterface Ethernet3\n
@@ -608,13 +608,13 @@ cvp_configlets:
     MLAG_PEER\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf
     instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf
     instance Tenant_B_OP_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\ninterface Port-Channel5\n
-    \  description MLAG_PEER_DC1-LEAF2A_Po5\n   no shutdown\n   switchport\n   switchport
-    mode trunk\n   switchport trunk group LEAF_PEER_L3\n   switchport trunk group
-    MLAG\n!\ninterface Port-Channel7\n   description DC1-L2LEAF1A_Po1\n   no shutdown\n
-    \  switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131\n   switchport
-    mode trunk\n   mlag 7\n!\ninterface Port-Channel10\n   description server01_MLAG_PortChanne1\n
-    \  no shutdown\n   switchport\n   switchport trunk allowed vlan 210-211\n   switchport
-    mode trunk\n   mlag 10\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet3\n
+    \  description MLAG_PEER_DC1-LEAF2A_Po5\n   no shutdown\n   switchport mode trunk\n
+    \  switchport trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel7\n   description DC1-L2LEAF1A_Po1\n   no shutdown\n   switchport
+    trunk allowed vlan 110-111,120-121,130-131\n   switchport mode trunk\n   switchport\n
+    \  mlag 7\n!\ninterface Port-Channel10\n   description server01_MLAG_PortChanne1\n
+    \  no shutdown\n   switchport trunk allowed vlan 210-211\n   switchport mode trunk\n
+    \  switchport\n   mlag 10\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet3\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.17/31\n!\ninterface
     Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet3\n   no shutdown\n   mtu
     1500\n   no switchport\n   ip address 172.31.255.19/31\n!\ninterface Ethernet3\n
@@ -1074,13 +1074,13 @@ cvp_configlets:
     instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf instance
     Tenant_A_WEB_Zone\n!\nvrf instance Tenant_B_OP_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf
     instance Tenant_C_OP_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n
-    \  description MLAG_PEER_DC1-SVC3B_Po5\n   no shutdown\n   switchport\n   switchport
-    mode trunk\n   switchport trunk group LEAF_PEER_L3\n   switchport trunk group
-    MLAG\n!\ninterface Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n
-    \  switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
-    \  switchport mode trunk\n   mlag 7\n!\ninterface Port-Channel10\n   description
-    server03_ESI_PortChanne1\n   no shutdown\n   switchport\n   switchport trunk allowed
-    vlan 110-111,210-211\n   switchport mode trunk\n   evpn ethernet-segment\n      identifier
+    \  description MLAG_PEER_DC1-SVC3B_Po5\n   no shutdown\n   switchport mode trunk\n
+    \  switchport trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk
+    allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport
+    mode trunk\n   switchport\n   mlag 7\n!\ninterface Port-Channel10\n   description
+    server03_ESI_PortChanne1\n   no shutdown\n   switchport trunk allowed vlan 110-111,210-211\n
+    \  switchport mode trunk\n   switchport\n   evpn ethernet-segment\n      identifier
     0000:0000:0303:0202:0101\n      route-target import 03:03:02:02:01:01\n   lacp
     system-id 0303.0202.0101\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet4\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.25/31\n!\ninterface
@@ -1292,11 +1292,11 @@ cvp_configlets:
     instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf instance
     Tenant_A_WEB_Zone\n!\nvrf instance Tenant_B_OP_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf
     instance Tenant_C_OP_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n
-    \  description MLAG_PEER_DC1-SVC3A_Po5\n   no shutdown\n   switchport\n   switchport
-    mode trunk\n   switchport trunk group LEAF_PEER_L3\n   switchport trunk group
-    MLAG\n!\ninterface Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n
-    \  switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
-    \  switchport mode trunk\n   mlag 7\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet5\n
+    \  description MLAG_PEER_DC1-SVC3A_Po5\n   no shutdown\n   switchport mode trunk\n
+    \  switchport trunk group LEAF_PEER_L3\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk
+    allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport
+    mode trunk\n   switchport\n   mlag 7\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet5\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.33/31\n!\ninterface
     Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet5\n   no shutdown\n   mtu
     1500\n   no switchport\n   ip address 172.31.255.35/31\n!\ninterface Ethernet3\n
