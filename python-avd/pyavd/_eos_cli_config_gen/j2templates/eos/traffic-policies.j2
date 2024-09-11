@@ -85,7 +85,7 @@ traffic-policies
 {%                                     set protocol_neighbors_cli = protocol_neighbors_cli ~ ' enforce ttl maximum-hops' %}
 {%                                 endif %}
          {{ protocol_neighbors_cli }}
-{%                             elif protocol.protocol | lower == 'bgp' %}
+{%                             else %}
          protocol bgp
 {%                             endif %}
 {%                             break %}
