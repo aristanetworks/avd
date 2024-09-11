@@ -317,9 +317,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         vrf_id: int,
         evpn_underlay_l3_multicast_group_ipv4_pool_offset: int,
     ) -> str:
-        """
-        Return IP address to be used for EVPN underlay L3 multicast group.
-        """
+        """Return IP address to be used for EVPN underlay L3 multicast group."""
         offset = vrf_id - 1 + evpn_underlay_l3_multicast_group_ipv4_pool_offset
         return get_ip_from_pool(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
