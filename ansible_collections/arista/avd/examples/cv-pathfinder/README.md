@@ -15,14 +15,15 @@ title: AVD example for CV Pathfinder
 This example is meant to show how to use the CV Pathfinder models in AVD in a basic way.
 
 !!! important
-    CVaaS is required to run this example.
-    EOS version superior or equal to 4.32.2F is required to run this example.
+    * CVaaS is required to run this example. Without it, only configuration generation is possible.
+    * EOS version superior or equal to 4.32.2F is required to run this example.
+    * The devices must be able to reach CVaaS via their Management Interface
 
 The goal is to present the basic configuration blocks required to deploy CV Pathfinder and so does not cover all CV Pathfinder supports.  In particular, it does not cover:
 
 - Internet Exits
 - WAN routers behind NAT
-- decentralized inventory
+- Decentralized inventory
 
 More information on how these features are supported in AVD can be found in the WAN how-to document (TODO: add link).
 
@@ -55,7 +56,7 @@ PLAY RECAP
 localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
+After the playbook has run successfully, the directory structure of the example should look like below, the contents of which will be covered in later sections:
 
 ```shell
 ansible-avd-examples/ (or wherever the playbook was run)
@@ -79,44 +80,55 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The target topology is composed of two Pathfinder nodes and 3 sites distributed in two regions.
+The target topology is composed of two Pathfinder nodes and 3 sites distributed in two regions.
+
+The drawing below shows the physical topology used in this example.
 
 ![Figure: Arisat CV Pathfinder topology](images/wan-example-topo.png)
 
 - The example considers two path groups: `MPLS` and `INTERNET`
 - Pathfinders `pf1` and `pf2` are connected to both to the `INTERNET` and the `MPLS` path groups.
-    network.
-- Site 1 is a transit site in region 1. It has two routers, each connected to the `INTERNET` and the `MPLS` pathgroups. HA is done via the LAN. The LAN routing protocol is eBGP.
-- Site 2 is a transit site in region 2. It has two routers, `wan1-site2` is connected to `MPLS` only and `wan2-site2` is connected to `INTERNET` only. The site use direct HA. The LAN routing protocol is eBGP.
-- Site 3 is an edge site in region 3. It has one routers, connected to `INTERNET` only. The LAN is L2.
 - `inet-cloud` and `mpls-cloud` are used to mimic Service Providers.
+
+The following table describes the characteristics of each site:
+
+| Site Name | Region | Role (Transit/Edge) | Number of routers | Path groups | HA configuration | LAN configuration |
+| --------- | ------ | ------------------- | ----------------- | ----------- | ---------------- | ----------------- |
+| Site 1 | Region 1 | Transt | 2 routers | `INTERNET` and `MPLS` on both routers | Via the LAN | eBGP |
+| Site 2 | Region 2 | Transit | 2 routers | `MPLS` on router 1 and `INTERNET` on router 2 | Direct HA | eBGP |
+| Site 3 | Region 2 | Edge | 1 router | `INTERNET` | - | Subinterfaces facing L2Leaf |
 
 ### IP ranges used
 
-| Out-of-band management IP allocation        | 192.168.17.0/24   |
+### Out-of-band management IP allocation
+
+Subnet: `192.168.17.0/24`
+
 |---------------------------------------------|-------------------|
 | Default gateway                             | 192.168.17.1      |
-| ** Pathfinders **                           |                   |
+| **Pathfinders**                             |                   |
 | pf1                                         | 192.168.17.10     |
 | pf2                                         | 192.168.17.11     |
-| ** Site 1 **                                |                   |
+| **Site 1**                                  |                   |
 | wan1-site1                                  | 192.168.17.12     |
 | wan2-site1                                  | 192.168.17.13     |
 | border1-site1                               | 192.168.17.14     |
 | border2-site1                               | 192.168.17.15     |
-| ** Site 2 **                                |                   |
+| **Site 2**                                  |                   |
 | wan1-site2                                  | 192.168.17.16     |
 | wan2-site2                                  | 192.168.17.17     |
 | leaf1-site2                                 | 192.168.17.18     |
 | leaf2-site2                                 | 192.168.17.19     |
-| ** Site 3 **                                |                   |
+| **Site 3**                                  |                   |
 | wan1-site3                                  | 192.168.17.20     |
 | leaf1-site3                                 | 192.168.17.21     |
-| ** Clouds **                                |                   |
+| **Clouds**                                  |                   |
 | mpls-cloud                                  | 192.168.17.30     |
 | inet-cloud                                  | 192.168.17.31     |
 
-|  Other subnets IP allocation                |                   |
+### Other subnets IP allocation
+
+|  Description                                | Subnet            |
 |---------------------------------------------|-------------------|
 | **Loopback 0 interfaces**                   | 192.168.255.0/24  |
 | **DPS/VTEP interfaces**                     | 192.168.42.0/24   |
@@ -138,27 +150,30 @@ The drawing below shows the physical topology used in this example. The target t
 
 For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is allocated `.1` and the site / pf router is allocated `.2`.
 
-### WAN variables
+### VRFs SVIs used on border routers and leafs for testing
 
-### Basic EOS config
+| Site | Router | VRF | IP address |
+| ---- | ------ | --- | ---------- |
+| Site 1 | border1-site1 | BLUE | 10.66.10.1/24 |
+| Site 1 | border1-site1 | RED | 10.42.10.1/24 |
+| Site 1 | border2-site1 | BLUE | 10.66.11.1/24 |
+| Site 1 | border2-site1 | RED | 10.42.11.1/24 |
+| Site 2 | leaf1-site1 | BLUE | 10.66.20.1/24 |
+| Site 2 | leaf1-site1 | RED | 10.42.20.1/24 |
+| Site 2 | leaf2-site1 | BLUE | 10.66.21.1/24 |
+| Site 2 | leaf2-site1 | RED | 10.42.21.1/24 |
+| Site 3 | wan3-site1 | BLUE | 10.66.30.1/24 |
+| Site 3 | wan3-site1 | RED | 10.42.30.1/24 |
 
-As discussed in the single DC example, basic connectivity between the Ansible host and the switches must be established before Ansible can be used to push configurations. Remember, you must configure the following on all switches:
-
-- A hostname configured purely for ease of understanding.
-- An IP enabled interface - in this example, the dedicated out-of-band management interface is used.
-- A username and password with the proper access privileges.
-
-!!! warning
-    TODO - see if we need this
-
-!!! note
-    The folder `dual-dc-l3ls/switch-basic-configurations/` contains a file per device for the initial configurations.
+**NOTE:** For site 3 the ip addresses are configured on the WAN router as leaf1-site3 is an l2leaf.
 
 ## Ansible inventory, group vars, and naming scheme
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
-TODO: update diagram
+!!! warning
+    TODO: update diagram
+
 ![Figure: Ansible inventory and vars](images/ansible-groups.svg)
 
 The following pattern is used:
@@ -174,6 +189,10 @@ This section describes the entire `ansible-avd-examples/cv-pathfinder/inventory.
 
 In this example, we consider that no DNS entry is available to reach the devices and define the IPs the Ansible host has to reach per device.
 
+!!! Info  "CVaaS configuration"
+    * The example is targeting cv-staging. Please adjust to the correct CVaaS region as described in the `cv_deploy` role [documentation](../../roles/cv_deploy/README.md#overview)
+    * Additionally follow the [guide](../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) to create the `cv_token`
+
 === "inventory.yml"
 
     ```yaml
@@ -182,12 +201,38 @@ In this example, we consider that no DNS entry is available to reach the devices
     --8<--
     ```
 
-!!! warning
-    TODO: explain vault
+This example demonstrate the usage of ansible Vault to keep variables secure.
+`ansible.cfg` is configured to use a given file `.vault` as the vault password
+when required to decrypt files or inline variables.
+
+=== "ansible.cfg"
+
+    ```yaml
+    --8<--
+    examples/cv-pathfinder/ansible.cfg
+    --8<--
+    ```
+
+!!! danger
+    The `.vault` file is included in the example in order to be able to run it.
+    It **MUST** never be pushed to any public repository as it allows anyone
+    with read access to decrypt all the secrets.
+
+## Basic EOS config
+
+As discussed in the single DC example, basic connectivity between the Ansible host and the switches must be established before Ansible can be used to push configurations. Remember, you must configure the following on all switches:
+
+- A hostname configured purely for ease of understanding.
+- An IP enabled interface - in this example, the dedicated out-of-band management interface is used.
+- A username and password with the proper access privileges.
+
+!!! note
+    - TODO: add the configs
+    - The folder `cv-pathfinder/switch-basic-configurations/` contains a file per device for the initial configurations.
 
 ## Defining device types
 
-To define device type, this example leverage the `default_node_types` key:
+To define device types, required by AVD, this example leverages the `default_node_types` key:
 
 ```yaml title="groups_vars/all.yml"
 # define default node types based on hostnames
@@ -213,9 +258,11 @@ default_node_types:
 
 1. Using node type `spine` for transport routers.
 
-## Global settings
+Pathfinder nodes are using the node_type `wan_rr`, all WAN routers (edge and transit) are using the node_type `wan_router`.
 
-The following settings must be the same for every WAN device participating in the WAN network.
+## Global settings for WAN
+
+The following settings must be the same for every WAN device participating in the WAN network
 
 The following table list the `eos_designs` top level keys used for WAN and how they should be set:
 
@@ -249,10 +296,22 @@ cv-pathfinder/group_vars/WAN
 
 ### Management
 
+The `management.yml` file contains configuration for:
+
+- the management gateway
+- NTP
+- Terminattr to configure connection to CVaaS.
+- local user (arista/arista and cvpadmin/cvpadmin)
+- `ipv4_acls`: a list of ACL used for Internet facing WAN interfaces
+- DNS
+- AAA
+- Disabling LLDP on management interface
+- New default system l1 configuration
+
 ```yaml title="group_vars/WAN/management.yml"
 --8<--
 examples/cv-pathfinder/group_vars/WAN//management.yml
---<8--
+--8<--
 ```
 
 ### CV Pathinfder settings
@@ -262,34 +321,82 @@ The `ansible-avd-examples/cv-pathfinder/group_vars/WAN/cv_pathfinder_settings.ym
 ```yaml title="group_vars/WAN/cv_pathfinder_settings.yml"
 --8<--
 examples/cv-pathfinder/group_vars/WAN//cv_pathfinder_settings.yml
---<8--
+--8<--
 ```
 
+1. `cv_pathfinder_regions` is used to declare the Regions, Sites and their location in the WAN network
+2. `cv_pathfinder_global_sites` is used to add location for "Global" Pathfinders.
+3. `wan_route_servers` define the Pathfinders each router should connect to. It
+   is possible to have this variable for instance at a group level to have
+   per-region Pathfinders.
+4. `wan_ipsec_profiles` is used to control IP Security configuratiom, the keys
+   are required
+5. For lab purposes Flow tracking is enabled on uplinks and downlinks. Make sure
+   to verify the scalability of CloudVision depending on your network in
+   Production.
+6. `bgp_peer_groups` using listen range to establish sessions between WAN
+   routers and the Pathfinders. `wan_rr_overlay_peers` control connection
+   between Pathfinders which is a full mesh.
+7. When a carrier is not trusted (like the Internet ones), AVD requires an
+   ingress ACL on the WAN interfaces. Each carrier is tied to a path-group
+8. More on virtual topologies after the snippet.
+9. Application classification is used to configure `application_profiles` used
+   to match categories of traffic in the policies, in order to apply them a
+   virtual topology.
+
+#### Virtual topologies
+
+The cornerstone of CV Pathfinder solution are the Virtual Topologies.
+The Virtual Topologies are grouped in Policies, a policy is a list of match
+statements, each matching a specific `application profile` and applying a
+`profile` (the Virtual Topology) to this traffic. A policy may or may not have
+any default match. If no default match is configured, unmatched traffic is
+dropped.
+
+A profile is used to apply a load balancing policy and potentially an
+internet-exit policy (not in this example). The load balancing policy defines
+which path-groups can be used for the traffic.
+
+As expained above, `wan_virtual_topologies` variable must be global, AVD then
+decides for each device, based on the locally present path-groups, how to
+configure the policies (e.g. if some traffic being matched is configured to be
+sent only over `MPLS` path-group but there is no local WAN interface connected
+to `MPLS` then the match statement, profile and load-balance policy are not
+generated by AVD on the device).
+
+For this example, we define two policies, one for each VRF BLUE and RED.
+
+!!! warning
+    TODO: show the policies / AVT
+
 ### L3 interface profile
+
+L3 interface profiles are defined globally and reused on the site WAN routers to
+apply common configurations.
 
 ```yaml title="group_vars/WAN/l3_interface_profiles.yml"
 --8<--
 examples/cv-pathfinder/group_vars/WAN//l3_interface_profiles.yml
---<8--
+--8<--
 ```
 
 ### Tenants
 
+The tenants are defined globally, in this example we create SVIs in BLUE and RED
+VRFs for testing purposes.
+
+Notice that the `vrf_vni` is configured for BLUE and RED VRFs, this is
+potentially different from the `wan_vni` configured under
+`wan_virtual_topologies.vrfs`. The former is used for EVPN while the latter is
+used for DPS.
+
 ```yaml title="group_vars/WAN/tenants.yml"
 --8<--
 examples/cv-pathfinder/group_vars/WAN//tenants.yml
---<8--
-```
-
-This file is identical to the one provided in the previous example. VRFs and VLANs are configured on all devices since no `tags` or `filter` are being used.
-
-It is important to consider adding the new leaves to the Inventory as described in the [Inventory](#content-of-the-inventoryyml-file) section, so they will rely on this file to configure the network services.
-
-```yaml title="NETWORK_SERVICES.yml"
---8<--
-examples/dual-dc-l3ls/group_vars/NETWORK_SERVICES.yml
 --8<--
 ```
+
+# TODO - CONTINUE AFTER THIS
 
 ## Setting pathfinders specific configuration parameters
 

@@ -5,7 +5,7 @@
 wan_mode: cv-pathfinder
 
 # WAN hierarchy
-cv_pathfinder_regions:
+cv_pathfinder_regions:  # (1)
   - name: REGION1
     id: 1
     sites:
@@ -22,27 +22,50 @@ cv_pathfinder_regions:
         id: 203
         location: Milan, Italy
 
-cv_pathfinder_global_sites:
+cv_pathfinder_global_sites:  # (2)
   - name: PF1-GLOBAL
     location: Santa Clara, CA, USA
   - name: PF2-GLOBAL
     location: Coulomiers, France
 
-wan_route_servers:
+wan_route_servers: # (3)
   - hostname: pf1
   - hostname: pf2
 
 # IPsec configuration
-wan_ipsec_profiles:
+wan_ipsec_profiles: # (4)
   control_plane:
     shared_key: 045A190F1C354D
   data_plane:
     shared_key: 141600021F102B
 
-# Disabling STUN for now - probably need to enable it for example but requires CV
-wan_stun_dtls_disable: true
+# DTLS for STUN is enabled by default
+# It requires certificates to be generated and distributed on the participating
+# devices. To disable it for a lab, uncomment the following line.
+# wan_stun_dtls_disable: true
 
-# Vaulting bgp_password variable as an example
+# Fabric Flow tracking - by default only enabled on Dps
+fabric_flow_tracking: # (5)
+  uplinks:
+    enabled: true
+  downlinks:
+    enabled: true
+# Overwrite the default settings
+flow_tracking_settings:
+  trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        # Small export interval for demo
+        on_interval: 5000
+      exporters:
+        - name: CV-TELEMETRY
+          collector:
+            host: 127.0.0.1
+          local_interface: Loopback0
+
+# Vaulting bgp_password variable as an example. It is encrypted with the
+# password in .vault
 bgp_password: !vault |
  $ANSIBLE_VAULT;1.1;AES256
  33383161313537343432366430633733356331616665323132303263316531373135383439383730
@@ -52,7 +75,7 @@ bgp_password: !vault |
  6430
 
 # BGP settings
-bgp_peer_groups:
+bgp_peer_groups: # (6)
   wan_overlay_peers:
     password: "{{ bgp_password | arista.avd.encrypt(passwd_type='bgp', key='WAN-OVERLAY-PEERS') }}"
     listen_range_prefixes:
@@ -61,32 +84,25 @@ bgp_peer_groups:
     password: "{{ bgp_password | arista.avd.encrypt(passwd_type='bgp', key='WAN-RR-OVERLAY-PEERS') }}"
 
 # WAN path groups
-wan_carriers:
+wan_carriers: # (7)
   - name: ACME-MPLS-INC
     path_group: MPLS
     trusted: true
   - name: GLOBAL-INTERNET-LIMITED
     path_group: INTERNET
-    # not trusted => requires ACL
-    # TODO: untrust the notorious Internet
-    trusted: true
   - name: REGION1-INTERNET-CORP
     path_group: INTERNET
-    # TODO: untrust the notorious Internet
-    trusted: true
   - name: REGION2-INTERNET-CORP
     path_group: INTERNET
-    # TODO: untrust the notorious Internet
-    trusted: true
 
-wan_path_groups:
+wan_path_groups: # (7)
   - name: MPLS
     id: 101
   - name: INTERNET
     id: 102
 
 # WAN virtual topologies
-wan_virtual_topologies:
+wan_virtual_topologies: # (8)
   vrfs:
     - name: BLUE
       policy: BLUE-POLICY

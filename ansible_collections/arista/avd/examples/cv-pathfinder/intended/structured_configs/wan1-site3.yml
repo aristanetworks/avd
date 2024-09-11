@@ -132,10 +132,6 @@ transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 local_users:
-- name: admin
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$I39vNA.wCKPVmo27$xEpXQc.fro3uRHLjuYKMxViYWwCjto3tOaCGapDOiYHEs5ahYoODuSVnv46H6n/rjZYFkbSw6pAk0NLR5PXW..
 - name: arista
   privilege: 15
   role: network-admin
@@ -185,6 +181,30 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   mtu: 9214
+- name: Ethernet1.666
+  peer: leaf1-site3
+  peer_interface: Ethernet1 VLAN 666
+  peer_type: l2leaf
+  description: BLUE-TEST
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 666
+  vrf: BLUE
+  ip_address: 10.66.3.1/24
+  flow_tracker:
+    hardware: FLOW-TRACKER
+- name: Ethernet1.42
+  peer: leaf1-site3
+  peer_interface: Ethernet1 VLAN 42
+  peer_type: l2leaf
+  description: RED-TEST
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  vrf: RED
+  ip_address: 10.42.3.1/24
+  flow_tracker:
+    hardware: FLOW-TRACKER
 - name: Ethernet4
   peer_type: l3_interface
   peer: inet-cloud
@@ -193,6 +213,7 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: REGION2-INTERNET-CORP_inet-wan1-site3_inet-cloud_Ethernet8
+  access_group_in: ACL-INTERNET-IN_Ethernet4
   flow_tracker:
     hardware: FLOW-TRACKER
 loopback_interfaces:
@@ -239,6 +260,29 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
+ip_access_lists:
+- name: ACL-INTERNET-IN_Ethernet4
+  entries:
+  - sequence: 1
+    remark: 'Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface'
+  - sequence: 10
+    action: permit
+    protocol: udp
+    source: any
+    destination: 100.64.30.2
+    destination_ports_match: eq
+    destination_ports:
+    - isakmp
+    - non500-isakmp
+  - sequence: 30
+    action: permit
+    protocol: icmp
+    source: any
+    destination: 100.64.30.2
+  - action: deny
+    protocol: ip
+    source: any
+    destination: any
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -279,6 +323,16 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
@@ -409,8 +463,10 @@ stun:
     server_profiles:
     - name: INTERNET-pf1-Ethernet2
       ip_address: 100.64.100.2
+      ssl_profile: STUN-DTLS
     - name: INTERNET-pf2-Ethernet2
       ip_address: 100.64.200.2
+      ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -487,13 +543,12 @@ flow_tracking:
     - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 300000
+        on_interval: 5000
       exporters:
       - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 3600000
     shutdown: false
 metadata:
   cv_tags:
@@ -511,6 +566,14 @@ metadata:
       tags:
       - name: Type
         value: lan
+    - interface: Ethernet1.666
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1.42
+      tags:
+      - name: Type
+        value: lan
     - interface: Ethernet4
       tags:
       - name: Type
@@ -521,6 +584,7 @@ metadata:
         value: inet-wan1-site3
   cv_pathfinder:
     role: edge
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.42.11
     region: REGION2
     zone: REGION2-ZONE

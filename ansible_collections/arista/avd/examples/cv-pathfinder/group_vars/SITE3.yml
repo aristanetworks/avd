@@ -8,18 +8,17 @@ l2leaf:
       always_include_vrfs_in_tenants: [all]
   nodes:
     - name: leaf1-site3
-      mgmt_ip: 192.168.17.21/24
+      # mgmt_ip: 192.168.17.21/24
+      mgmt_ip: "{{ ansible_host }}/24"
       id: 12
 
 wan_router:
   defaults:
-    # TODO revisit pools
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     uplink_ipv4_pool: 10.0.3.0/24
-    # TODO revisit filter
-    filter:
-      always_include_vrfs_in_tenants: [all]
+    #filter:
+      #  tags: [wan1-site3]
     uplink_interfaces: [Ethernet1]
     uplink_switch_interfaces: [Ethernet1]
     uplink_type: lan
@@ -29,7 +28,8 @@ wan_router:
       cv_pathfinder_region: REGION2
       cv_pathfinder_site: SITE3
       id: 11
-      mgmt_ip: 192.168.17.20/24
+      # mgmt_ip: 192.168.17.20/24
+      mgmt_ip: "{{ ansible_host }}/24"
       uplink_switches: [leaf1-site3]
       l3_interfaces:
         - name: Ethernet4

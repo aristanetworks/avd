@@ -13,6 +13,11 @@
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
+- [Management Security](#management-security)
+  - [Management Security Summary](#management-security-summary)
+  - [Management Security SSL Profiles](#management-security-ssl-profiles)
+  - [SSL profile STUN-DTLS Certificates Summary](#ssl-profile-stun-dtls-certificates-summary)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Flow Tracking](#flow-tracking)
@@ -44,6 +49,8 @@
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
   - [IP Extended Community Lists](#ip-extended-community-lists)
+- [ACL](#acl)
+  - [IP Access-lists](#ip-access-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -193,7 +200,6 @@ management api http-commands
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-| admin | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
@@ -201,7 +207,6 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
@@ -225,6 +230,36 @@ Authorization for configuration commands is disabled.
 ```eos
 aaa authorization exec default local
 !
+```
+
+## Management Security
+
+### Management Security Summary
+
+| Settings | Value |
+| -------- | ----- |
+
+### Management Security SSL Profiles
+
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+| STUN-DTLS | 1.2 | STUN-DTLS.crt | STUN-DTLS.key | - | - |
+
+### SSL profile STUN-DTLS Certificates Summary
+
+| Trust Certificates | Requirement | Policy | System |
+| ------------------ | ----------- | ------ | ------ |
+| aristaDeviceCertProvisionerDefaultRootCA.crt | - | - | - |
+
+### Management Security Device Configuration
+
+```eos
+!
+management security
+   ssl profile STUN-DTLS
+      tls versions 1.2
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
+      certificate STUN-DTLS.crt key STUN-DTLS.key
 ```
 
 ## Monitoring
@@ -254,7 +289,7 @@ daemon TerminAttr
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-| FLOW-TRACKER | 70000 | 300000 | 1 | Dps1<br>Ethernet4 |
+| FLOW-TRACKER | 70000 | 5000 | 1 | Dps1<br>Ethernet1<br>Ethernet1.100<br>Ethernet1.101<br>Ethernet4 |
 
 ##### Exporters Summary
 
@@ -269,11 +304,10 @@ daemon TerminAttr
 flow tracking hardware
    tracker FLOW-TRACKER
       record export on inactive timeout 70000
-      record export on interval 300000
+      record export on interval 5000
       exporter CV-TELEMETRY
          collector 127.0.0.1
          local interface Loopback0
-         template interval 3600000
    no shutdown
 ```
 
@@ -405,7 +439,7 @@ interface Dps1
 | Ethernet1 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3 | - | 10.0.2.15/31 | default | 9214 | False | - | - |
 | Ethernet1.100 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3.100_vrf_BLUE | - | 10.0.2.15/31 | BLUE | 9214 | False | - | - |
 | Ethernet1.101 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3.101_vrf_RED | - | 10.0.2.15/31 | RED | 9214 | False | - | - |
-| Ethernet4 | REGION2-INTERNET-CORP_inet-wan2-site2_inet-cloud_Ethernet7 | - | 100.64.21.2/24 | default | - | False | - | - |
+| Ethernet4 | REGION2-INTERNET-CORP_inet-wan2-site2_inet-cloud_Ethernet7 | - | 100.64.21.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
 | Ethernet5 | DIRECT LAN HA LINK | - | 10.42.0.1/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -417,6 +451,7 @@ interface Ethernet1
    no shutdown
    mtu 9214
    no switchport
+   flow tracker hardware FLOW-TRACKER
    ip address 10.0.2.15/31
 !
 interface Ethernet1.100
@@ -424,6 +459,7 @@ interface Ethernet1.100
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
+   flow tracker hardware FLOW-TRACKER
    vrf BLUE
    ip address 10.0.2.15/31
 !
@@ -432,6 +468,7 @@ interface Ethernet1.101
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
+   flow tracker hardware FLOW-TRACKER
    vrf RED
    ip address 10.0.2.15/31
 !
@@ -441,6 +478,7 @@ interface Ethernet4
    no switchport
    flow tracker hardware FLOW-TRACKER
    ip address 100.64.21.2/24
+   ip access-group ACL-INTERNET-IN_Ethernet4 in
 !
 interface Ethernet5
    description DIRECT LAN HA LINK
@@ -1077,6 +1115,21 @@ route-map RM-WAN-HA-PEER-OUT permit 20
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.7:202
 ```
 
+## ACL
+
+### IP Access-lists
+
+#### IP Access-lists Device Configuration
+
+```eos
+!
+ip access-list ACL-INTERNET-IN_Ethernet4
+   1 remark Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface
+   10 permit udp any host 100.64.21.2 eq isakmp non500-isakmp
+   30 permit icmp any host 100.64.21.2
+   deny ip any any
+```
+
 ## VRF Instances
 
 ### VRF Instances Summary
@@ -1363,8 +1416,8 @@ router path-selection
 
 | Server Profile | IP address | SSL Profile | Port |
 | -------------- | ---------- | ----------- | ---- |
-| INTERNET-pf1-Ethernet2 | 100.64.100.2 | - | 3478 |
-| INTERNET-pf2-Ethernet2 | 100.64.200.2 | - | 3478 |
+| INTERNET-pf1-Ethernet2 | 100.64.100.2 | STUN-DTLS | 3478 |
+| INTERNET-pf2-Ethernet2 | 100.64.200.2 | STUN-DTLS | 3478 |
 
 ### STUN Device Configuration
 
@@ -1374,6 +1427,8 @@ stun
    client
       server-profile INTERNET-pf1-Ethernet2
          ip address 100.64.100.2
+         ssl profile STUN-DTLS
       server-profile INTERNET-pf2-Ethernet2
          ip address 100.64.200.2
+         ssl profile STUN-DTLS
 ```

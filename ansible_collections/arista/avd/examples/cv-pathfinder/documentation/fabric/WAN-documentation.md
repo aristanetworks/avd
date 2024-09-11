@@ -62,6 +62,8 @@
 | l3leaf | leaf1-site2 | Ethernet3.101 | wan_router | wan1-site2 | Ethernet1.101 |
 | l3leaf | leaf1-site2 | Ethernet5 | mlag_peer | leaf2-site2 | Ethernet5 |
 | l3leaf | leaf1-site2 | Ethernet6 | mlag_peer | leaf2-site2 | Ethernet6 |
+| l2leaf | leaf1-site3 | Ethernet1 VLAN 42 | wan_router | wan1-site3 | Ethernet1.42 |
+| l2leaf | leaf1-site3 | Ethernet1 VLAN 666 | wan_router | wan1-site3 | Ethernet1.666 |
 | l2leaf | leaf1-site3 | Ethernet1 | wan_router | wan1-site3 | Ethernet1 |
 | l2leaf | leaf1-site3 | Ethernet1 | wan_router | wan1-site3 | Ethernet1 |
 | l3leaf | leaf2-site2 | Ethernet3 | wan_router | wan2-site2 | Ethernet1 |

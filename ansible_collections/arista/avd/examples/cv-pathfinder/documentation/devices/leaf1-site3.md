@@ -14,9 +14,13 @@
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [Flow Tracking](#flow-tracking)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
+- [VLANs](#vlans)
+  - [VLANs Summary](#vlans-summary)
+  - [VLANs Device Configuration](#vlans-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
 - [Routing](#routing)
@@ -149,7 +153,6 @@ management api http-commands
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-| admin | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
@@ -157,7 +160,6 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
@@ -202,6 +204,41 @@ daemon TerminAttr
    no shutdown
 ```
 
+### Flow Tracking
+
+#### Flow Tracking Sampled
+
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
+| ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
+| 10000 | default | disabled | disabled | - |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
+| FLOW-TRACKER | 70000 | 5000 | - | 1 | Ethernet1 | - |
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | --------------- |
+| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+
+#### Flow Tracking Device Configuration
+
+```eos
+!
+flow tracking sampled
+   sample 10000
+   tracker FLOW-TRACKER
+      record export on inactive timeout 70000
+      record export on interval 5000
+      exporter CV-TELEMETRY
+         collector 127.0.0.1
+         local interface Loopback0
+   no shutdown
+```
+
 ## Internal VLAN Allocation Policy
 
 ### Internal VLAN Allocation Policy Summary
@@ -217,6 +254,26 @@ daemon TerminAttr
 vlan internal order ascending range 1006 1199
 ```
 
+## VLANs
+
+### VLANs Summary
+
+| VLAN ID | Name | Trunk Groups |
+| ------- | ---- | ------------ |
+| 42 | RED-TEST | - |
+| 666 | BLUE-TEST | - |
+
+### VLANs Device Configuration
+
+```eos
+!
+vlan 42
+   name RED-TEST
+!
+vlan 666
+   name BLUE-TEST
+```
+
 ## Interfaces
 
 ### Ethernet Interfaces
@@ -227,7 +284,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | WAN1-SITE3_Ethernet1 | trunk | none | - | - | - |
+| Ethernet1 | WAN1-SITE3_Ethernet1 | trunk | 42,666 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -238,9 +295,10 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description WAN1-SITE3_Ethernet1
    no shutdown
-   switchport trunk allowed vlan none
+   switchport trunk allowed vlan 42,666
    switchport mode trunk
    switchport
+   flow tracker sampled FLOW-TRACKER
    spanning-tree portfast
 ```
 

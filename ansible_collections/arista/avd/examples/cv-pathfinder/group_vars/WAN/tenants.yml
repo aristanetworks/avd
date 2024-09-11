@@ -3,9 +3,40 @@
 
 tenants:  # dynamic_key: network_services
   - name: WAN-EXAMPLE-TENANT
+    mac_vrf_vni_base: 10000
     # TODO probably see to add SFLOW to some of the interfaces in this VRF
     vrfs:
       - name: BLUE
         vrf_vni: 100
+        svis:
+          - id: 666
+            name: BLUE-TEST
+            enabled: true
+            nodes:
+              - node: border1-site1
+                ip_address: 10.66.1.1/24
+              - node: border2-site1
+                ip_address: 10.66.11.1/24
+              - node: leaf1-site2
+                ip_address: 10.66.2.1/24
+              - node: leaf2-site2
+                ip_address: 10.66.22.1/24
+              - node: wan1-site3
+                ip_address: 10.66.3.1/24
       - name: RED
         vrf_vni: 101
+        svis:
+          - id: 42
+            name: RED-TEST
+            enabled: true
+            nodes:
+              - node: border1-site1
+                ip_address: 10.42.1.1/24
+              - node: border2-site1
+                ip_address: 10.42.11.1/24
+              - node: leaf1-site2
+                ip_address: 10.42.2.1/24
+              - node: leaf2-site2
+                ip_address: 10.42.22.1/24
+              - node: wan1-site3
+                ip_address: 10.42.3.1/24

@@ -65,10 +65,6 @@ transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
-- name: admin
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$I39vNA.wCKPVmo27$xEpXQc.fro3uRHLjuYKMxViYWwCjto3tOaCGapDOiYHEs5ahYoODuSVnv46H6n/rjZYFkbSw6pAk0NLR5PXW..
 - name: arista
   privilege: 15
   role: network-admin

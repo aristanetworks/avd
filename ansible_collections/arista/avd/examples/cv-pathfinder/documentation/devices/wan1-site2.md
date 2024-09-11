@@ -13,6 +13,11 @@
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
+- [Management Security](#management-security)
+  - [Management Security Summary](#management-security-summary)
+  - [Management Security SSL Profiles](#management-security-ssl-profiles)
+  - [SSL profile STUN-DTLS Certificates Summary](#ssl-profile-stun-dtls-certificates-summary)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Flow Tracking](#flow-tracking)
@@ -193,7 +198,6 @@ management api http-commands
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-| admin | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
@@ -201,7 +205,6 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
@@ -225,6 +228,36 @@ Authorization for configuration commands is disabled.
 ```eos
 aaa authorization exec default local
 !
+```
+
+## Management Security
+
+### Management Security Summary
+
+| Settings | Value |
+| -------- | ----- |
+
+### Management Security SSL Profiles
+
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+| STUN-DTLS | 1.2 | STUN-DTLS.crt | STUN-DTLS.key | - | - |
+
+### SSL profile STUN-DTLS Certificates Summary
+
+| Trust Certificates | Requirement | Policy | System |
+| ------------------ | ----------- | ------ | ------ |
+| aristaDeviceCertProvisionerDefaultRootCA.crt | - | - | - |
+
+### Management Security Device Configuration
+
+```eos
+!
+management security
+   ssl profile STUN-DTLS
+      tls versions 1.2
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
+      certificate STUN-DTLS.crt key STUN-DTLS.key
 ```
 
 ## Monitoring
@@ -254,7 +287,7 @@ daemon TerminAttr
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-| FLOW-TRACKER | 70000 | 300000 | 1 | Dps1<br>Ethernet3 |
+| FLOW-TRACKER | 70000 | 5000 | 1 | Dps1<br>Ethernet1<br>Ethernet1.100<br>Ethernet1.101<br>Ethernet3 |
 
 ##### Exporters Summary
 
@@ -269,11 +302,10 @@ daemon TerminAttr
 flow tracking hardware
    tracker FLOW-TRACKER
       record export on inactive timeout 70000
-      record export on interval 300000
+      record export on interval 5000
       exporter CV-TELEMETRY
          collector 127.0.0.1
          local interface Loopback0
-         template interval 3600000
    no shutdown
 ```
 
@@ -417,6 +449,7 @@ interface Ethernet1
    no shutdown
    mtu 9214
    no switchport
+   flow tracker hardware FLOW-TRACKER
    ip address 10.0.2.13/31
 !
 interface Ethernet1.100
@@ -424,6 +457,7 @@ interface Ethernet1.100
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
+   flow tracker hardware FLOW-TRACKER
    vrf BLUE
    ip address 10.0.2.13/31
 !
@@ -432,6 +466,7 @@ interface Ethernet1.101
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
+   flow tracker hardware FLOW-TRACKER
    vrf RED
    ip address 10.0.2.13/31
 !
@@ -1363,8 +1398,8 @@ router path-selection
 
 | Server Profile | IP address | SSL Profile | Port |
 | -------------- | ---------- | ----------- | ---- |
-| MPLS-pf1-Ethernet1 | 172.18.100.2 | - | 3478 |
-| MPLS-pf2-Ethernet1 | 172.18.200.2 | - | 3478 |
+| MPLS-pf1-Ethernet1 | 172.18.100.2 | STUN-DTLS | 3478 |
+| MPLS-pf2-Ethernet1 | 172.18.200.2 | STUN-DTLS | 3478 |
 
 ### STUN Device Configuration
 
@@ -1374,6 +1409,8 @@ stun
    client
       server-profile MPLS-pf1-Ethernet1
          ip address 172.18.100.2
+         ssl profile STUN-DTLS
       server-profile MPLS-pf2-Ethernet1
          ip address 172.18.200.2
+         ssl profile STUN-DTLS
 ```

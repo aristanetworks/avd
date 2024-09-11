@@ -27,10 +27,6 @@ enable_password:
   disabled: true
 transceiver_qsfp_default_mode_4x10: true
 local_users:
-- name: admin
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$I39vNA.wCKPVmo27$xEpXQc.fro3uRHLjuYKMxViYWwCjto3tOaCGapDOiYHEs5ahYoODuSVnv46H6n/rjZYFkbSw6pAk0NLR5PXW..
 - name: arista
   privilege: 15
   role: network-admin
@@ -73,11 +69,34 @@ ethernet_interfaces:
   description: WAN1-SITE3_Ethernet1
   shutdown: false
   type: switched
-  vlans: none
+  vlans: 42,666
   mode: trunk
   spanning_tree_portfast: edge
+  flow_tracker:
+    sampled: FLOW-TRACKER
+vlans:
+- id: 666
+  name: BLUE-TEST
+  tenant: WAN-EXAMPLE-TENANT
+- id: 42
+  name: RED-TEST
+  tenant: WAN-EXAMPLE-TENANT
 ip_igmp_snooping:
   globally_enabled: true
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 5000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+    shutdown: false
 ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT

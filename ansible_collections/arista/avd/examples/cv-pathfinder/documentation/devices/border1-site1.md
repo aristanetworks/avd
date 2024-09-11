@@ -14,6 +14,7 @@
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [Flow Tracking](#flow-tracking)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -168,7 +169,6 @@ management api http-commands
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-| admin | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
@@ -176,7 +176,6 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
@@ -218,6 +217,41 @@ aaa authorization exec default local
 !
 daemon TerminAttr
    exec /usr/bin/TerminAttr -cvaddr=apiserver.cv-staging.corp.arista.io:443 -cvauth=token-secure,/tmp/cv-onboarding-token -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   no shutdown
+```
+
+### Flow Tracking
+
+#### Flow Tracking Sampled
+
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 | Encapsulations |
+| ----------- | ------------------- | ------------------------- | ------------------------- | -------------- |
+| 10000 | default | disabled | disabled | - |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
+| FLOW-TRACKER | 70000 | 5000 | - | 1 | Ethernet3<br>Ethernet3.100<br>Ethernet3.101<br>Ethernet4<br>Ethernet4.100<br>Ethernet4.101 | - |
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | --------------- |
+| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+
+#### Flow Tracking Device Configuration
+
+```eos
+!
+flow tracking sampled
+   sample 10000
+   tracker FLOW-TRACKER
+      record export on inactive timeout 70000
+      record export on interval 5000
+      exporter CV-TELEMETRY
+         collector 127.0.0.1
+         local interface Loopback0
    no shutdown
 ```
 
@@ -282,6 +316,8 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 42 | RED-TEST | - |
+| 666 | BLUE-TEST | - |
 | 3099 | MLAG_iBGP_BLUE | LEAF_PEER_L3 |
 | 3100 | MLAG_iBGP_RED | LEAF_PEER_L3 |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
@@ -290,6 +326,12 @@ vlan internal order ascending range 1006 1199
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 42
+   name RED-TEST
+!
+vlan 666
+   name BLUE-TEST
 !
 vlan 3099
    name MLAG_iBGP_BLUE
@@ -352,6 +394,7 @@ interface Ethernet3
    no shutdown
    mtu 9214
    no switchport
+   flow tracker sampled FLOW-TRACKER
    ip address 10.0.1.8/31
 !
 interface Ethernet3.100
@@ -359,6 +402,7 @@ interface Ethernet3.100
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
+   flow tracker sampled FLOW-TRACKER
    vrf BLUE
    ip address 10.0.1.8/31
 !
@@ -367,6 +411,7 @@ interface Ethernet3.101
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
+   flow tracker sampled FLOW-TRACKER
    vrf RED
    ip address 10.0.1.8/31
 !
@@ -375,6 +420,7 @@ interface Ethernet4
    no shutdown
    mtu 9214
    no switchport
+   flow tracker sampled FLOW-TRACKER
    ip address 10.0.1.12/31
 !
 interface Ethernet4.100
@@ -382,6 +428,7 @@ interface Ethernet4.100
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
+   flow tracker sampled FLOW-TRACKER
    vrf BLUE
    ip address 10.0.1.12/31
 !
@@ -390,6 +437,7 @@ interface Ethernet4.101
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
+   flow tracker sampled FLOW-TRACKER
    vrf RED
    ip address 10.0.1.12/31
 !
@@ -466,6 +514,8 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan42 | RED-TEST | RED | - | False |
+| Vlan666 | BLUE-TEST | BLUE | - | False |
 | Vlan3099 | MLAG_PEER_L3_iBGP: vrf BLUE | BLUE | 9214 | False |
 | Vlan3100 | MLAG_PEER_L3_iBGP: vrf RED | RED | 9214 | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | 9214 | False |
@@ -475,6 +525,8 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan42 |  RED  |  10.42.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan666 |  BLUE  |  10.66.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan3099 |  BLUE  |  10.255.251.8/31  |  -  |  -  |  -  |  -  |
 | Vlan3100 |  RED  |  10.255.251.8/31  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.251.8/31  |  -  |  -  |  -  |  -  |
@@ -483,6 +535,18 @@ interface Loopback1
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan42
+   description RED-TEST
+   no shutdown
+   vrf RED
+   ip address 10.42.1.1/24
+!
+interface Vlan666
+   description BLUE-TEST
+   no shutdown
+   vrf BLUE
+   ip address 10.66.1.1/24
 !
 interface Vlan3099
    description MLAG_PEER_L3_iBGP: vrf BLUE
@@ -522,6 +586,13 @@ interface Vlan4094
 | UDP port | 4789 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 
+##### VLAN to VNI, Flood List and Multicast Group Mappings
+
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 42 | 10042 | - | - |
+| 666 | 10666 | - | - |
+
 ##### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
@@ -538,6 +609,8 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 42 vni 10042
+   vxlan vlan 666 vni 10666
    vxlan vrf BLUE vni 100
    vxlan vrf RED vni 101
 ```
@@ -668,6 +741,13 @@ ASN Notation: asplain
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
 
+#### Router BGP VLANs
+
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 42 | 192.168.255.5:10042 | 10042:10042 | - | - | learned |
+| 666 | 192.168.255.5:10666 | 10666:10666 | - | - | learned |
+
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
@@ -708,6 +788,16 @@ router bgp 65101
    neighbor 10.255.251.9 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.251.9 description border2-site1
    redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan 42
+      rd 192.168.255.5:10042
+      route-target both 10042:10042
+      redistribute learned
+   !
+   vlan 666
+      rd 192.168.255.5:10666
+      route-target both 10666:10666
+      redistribute learned
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate

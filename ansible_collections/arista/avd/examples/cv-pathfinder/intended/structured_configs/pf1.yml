@@ -163,10 +163,6 @@ transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
 local_users:
-- name: admin
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$I39vNA.wCKPVmo27$xEpXQc.fro3uRHLjuYKMxViYWwCjto3tOaCGapDOiYHEs5ahYoODuSVnv46H6n/rjZYFkbSw6pAk0NLR5PXW..
 - name: arista
   privilege: 15
   role: network-admin
@@ -227,6 +223,7 @@ ethernet_interfaces:
   shutdown: false
   type: routed
   description: GLOBAL-INTERNET-LIMITED_inet-pf1_inet-cloud_Ethernet1
+  access_group_in: ACL-PF-INTERNET-IN_Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -257,6 +254,37 @@ agents:
   environment_variables:
   - name: KERNELFIB_PROGRAM_ALL_ECMP
     value: '1'
+ip_access_lists:
+- name: ACL-PF-INTERNET-IN_Ethernet2
+  entries:
+  - sequence: 1
+    remark: 'Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface'
+  - sequence: 10
+    action: permit
+    protocol: udp
+    source: any
+    destination: 100.64.100.2
+    destination_ports_match: eq
+    destination_ports:
+    - isakmp
+    - non500-isakmp
+  - sequence: 20
+    action: permit
+    protocol: udp
+    source: any
+    destination: 100.64.100.2
+    destination_ports_match: eq
+    destination_ports:
+    - '3478'
+  - sequence: 30
+    action: permit
+    protocol: icmp
+    source: any
+    destination: 100.64.100.2
+  - action: deny
+    protocol: ip
+    source: any
+    destination: any
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -282,6 +310,16 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
@@ -432,6 +470,7 @@ stun:
     local_interfaces:
     - Ethernet1
     - Ethernet2
+    ssl_profile: STUN-DTLS
 application_traffic_recognition:
   application_profiles:
   - name: VIDEO
@@ -530,6 +569,7 @@ metadata:
         user_defined_applications:
         - name: APP-CONTROL-PLANE
     role: pathfinder
+    ssl_profile: STUN-DTLS
     vtep_ip: 192.168.42.1
     site: PF1-GLOBAL
     address: Santa Clara, CA, USA
@@ -697,13 +737,12 @@ flow_tracking:
     - name: FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
-        on_interval: 300000
+        on_interval: 5000
       exporters:
       - name: CV-TELEMETRY
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
-        template_interval: 3600000
     shutdown: false
 ip_name_servers:
 - ip_address: 192.168.17.1
