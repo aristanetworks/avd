@@ -23,7 +23,7 @@ class AvdStringFormatter(Formatter):
     Note the order of syntax field matters!
     """
 
-    def _vformat(self, format_string: str, args: list, kwargs: dict, used_args: list, recursion_depth: int, auto_arg_index: int = 0) -> tuple[str, int]:
+    def _vformat(self, format_string: str, args: list, kwargs: dict, used_args: set, recursion_depth: int, auto_arg_index: int = 0) -> tuple[str, int]:
         """
         Perform the actual formatting.
 
