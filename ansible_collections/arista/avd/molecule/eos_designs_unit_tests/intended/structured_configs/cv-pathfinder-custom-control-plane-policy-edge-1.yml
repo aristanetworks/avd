@@ -145,7 +145,7 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 prefix_lists:

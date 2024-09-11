@@ -6,10 +6,10 @@ underlay_multicast: true # If set to "false" will raise an error.
 evpn_multicast: true
 # default_igmp_snooping_enabled: true # Default is true, if set to "false" will raise error.
 
-# Default is overlay_loopback_ip
+# Default is router_id
 # If set to same value on MLAG pairs will raise error. Trigger error with "bgp_as" or "vtep_loopback".
 # overlay_rd_type:
-#   admin_subfield: overlay_loopback_ip
+#   admin_subfield: router_id
 
 tenants:
   - name: Tenant_A
@@ -228,6 +228,9 @@ tenants:
   # Tenant_C is for testing of EVPN L3/OISM only
   - name: Tenant_C
     mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: False
+      underlay_l2_multicast_group_ipv4_pool: 236.0.0.0/20
     evpn_l3_multicast:
       # Enabled =
       #  - Enable multicast-routing on VRF
@@ -278,6 +281,18 @@ tenants:
                 ip_address: 10.1.14.5/24
               - node: EVPN-MULTICAST-L3LEAF3B
                 ip_address: 10.1.14.6/24
+          - id: 136
+            name: "L3_L2_MULTICAST_ENABLED_136"
+            enabled: true
+            evpn_l2_multicast:
+              enabled: true
+              always_redistribute_igmp: true
+          - id: 137
+            name: "L3_L2_MULTICAST_ENABLED_137"
+            enabled: true
+            evpn_l2_multicast:
+              enabled: true
+              always_redistribute_igmp: false
 
       - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         description: "L3_MULTICAST_ENABLED_230_DISABLED_231"

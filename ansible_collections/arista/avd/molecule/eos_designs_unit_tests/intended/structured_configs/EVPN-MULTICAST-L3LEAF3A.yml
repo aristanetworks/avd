@@ -460,6 +460,23 @@ router_bgp:
       - 10131:10131
     redistribute_routes:
     - learned
+  - id: 136
+    tenant: Tenant_C
+    rd: 192.168.255.6:10136
+    route_targets:
+      both:
+      - 10136:10136
+    redistribute_routes:
+    - learned
+    - igmp
+  - id: 137
+    tenant: Tenant_C
+    rd: 192.168.255.6:10137
+    route_targets:
+      both:
+      - 10137:10137
+    redistribute_routes:
+    - learned
   - id: 230
     tenant: Tenant_C
     rd: 192.168.255.6:10230
@@ -719,7 +736,7 @@ ethernet_interfaces:
   shutdown: false
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.6/32
 - name: Loopback1
@@ -857,6 +874,12 @@ vlans:
 - id: 131
   name: L3_MULTICAST_ENABLED_131
   tenant: Tenant_C
+- id: 136
+  name: L3_L2_MULTICAST_ENABLED_136
+  tenant: Tenant_C
+- id: 137
+  name: L3_L2_MULTICAST_ENABLED_137
+  tenant: Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
   tenant: Tenant_C
@@ -947,6 +970,14 @@ ip_igmp_snooping:
       enabled: true
       address: 2.2.2.2
       version: 1
+  - id: 136
+    querier:
+      enabled: true
+      address: 192.168.255.6
+  - id: 137
+    querier:
+      enabled: true
+      address: 192.168.255.6
   - id: 230
     querier:
       enabled: true
@@ -1092,6 +1123,24 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.1.14.1
   ip_igmp: true
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan136
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_136
+  shutdown: false
+  ip_igmp: true
+  pim:
+    ipv4:
+      local_interface: Loopback31
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan137
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_137
+  shutdown: false
+  ip_igmp: true
+  pim:
+    ipv4:
+      local_interface: Loopback31
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
 - name: Vlan230
   tenant: Tenant_C
@@ -1258,6 +1307,12 @@ vxlan_interface:
         vni: 10130
       - id: 131
         vni: 10131
+      - id: 136
+        vni: 10136
+        multicast_group: 236.0.0.135
+      - id: 137
+        vni: 10137
+        multicast_group: 236.0.0.136
       - id: 230
         vni: 10230
       - id: 231

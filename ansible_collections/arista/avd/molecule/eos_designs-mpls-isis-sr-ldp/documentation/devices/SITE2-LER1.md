@@ -445,13 +445,13 @@ interface Port-Channel220
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | MPLS_Overlay_peering | default | 100.70.0.7/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.7/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | MPLS_Overlay_peering | default | 2000:1234:ffff:ffff::7/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::7/128 |
 
 ##### ISIS
 
@@ -464,7 +464,7 @@ interface Port-Channel220
 ```eos
 !
 interface Loopback0
-   description MPLS_Overlay_peering
+   description ROUTER_ID
    no shutdown
    ip address 100.70.0.7/32
    ipv6 address 2000:1234:ffff:ffff::7/128
