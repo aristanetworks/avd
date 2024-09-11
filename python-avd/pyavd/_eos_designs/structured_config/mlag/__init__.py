@@ -196,7 +196,11 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
                 "description": self.shared_utils.interface_descriptions.mlag_ethernet_interface(
-                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=mlag_interface, peer_interface=mlag_interface),
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=mlag_interface,
+                        peer_interface=mlag_interface,
+                    ),
                 ),
                 "type": "port-channel-member",
                 "shutdown": False,

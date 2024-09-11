@@ -267,7 +267,8 @@ port_channel_interfaces:
       vlan: 101
 
   - name: Port-Channel9
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 10.9.2.3/31
     bfd:
       echo: true
@@ -316,7 +317,8 @@ port_channel_interfaces:
       route_target: "00:00:01:02:03:04"
 
   - name: Port-Channel14
-    type: switched
+    switchport:
+      enabled: true
     description: EVPN-MPLS multihoming
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
@@ -327,7 +329,8 @@ port_channel_interfaces:
 
   - name: Port-Channel17
     description: PBR Description
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 192.0.2.3/31
     service_policy:
       pbr:
@@ -335,7 +338,8 @@ port_channel_interfaces:
 
   - name: Port-Channel99
     description: MCAST
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 192.0.2.10/31
     pim:
       ipv4:
@@ -390,25 +394,29 @@ port_channel_interfaces:
     lacp_fallback_mode: individual
 
   - name: Port-Channel105
-    type: switched
+    switchport:
+      enabled: true
     description: bpdu disabled
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
 
   - name: Port-Channel106
-    type: switched
+    switchport:
+      enabled: true
     description: bpdu enabled
     spanning_tree_bpduguard: enabled
     spanning_tree_bpdufilter: enabled
 
   - name: Port-Channel107
-    type: switched
+    switchport:
+      enabled: true
     description: bpdu true
     spanning_tree_bpduguard: true
     spanning_tree_bpdufilter: true
 
   - name: Port-Channel108
-    type: switched
+    switchport:
+      enabled: true
     description: bpdu false
     spanning_tree_bpduguard: false # No config should be rendered for this case
     spanning_tree_bpdufilter: false # No config should be rendered for this case
@@ -428,7 +436,8 @@ port_channel_interfaces:
 
   - name: Port-Channel110
     description: isis_interface_knobs
-    type: routed
+    switchport:
+      enabled: false
     isis_enable: ISIS_TEST
     isis_bfd: true
     isis_passive: false
@@ -441,7 +450,8 @@ port_channel_interfaces:
 
   - name: Port-Channel111
     description: Flexencap Port-Channel
-    type: routed
+    switchport:
+      enabled: false
 
   - name: Port-Channel111.1
     description: TENANT_A pseudowire 1 interface
@@ -513,7 +523,8 @@ port_channel_interfaces:
 
   - name: Port-Channel113
     description: interface_with_mpls_enabled
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 172.31.128.9/31
     mpls:
       ip: true
@@ -523,7 +534,8 @@ port_channel_interfaces:
 
   - name: Port-Channel114
     description: interface_with_mpls_disabled
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 172.31.128.10/31
     mpls:
       ip: false
@@ -541,7 +553,8 @@ port_channel_interfaces:
 
   - name: Port-Channel117
     description: interface_with_sflow_ingress_egress_enabled
-    type: routed
+    switchport:
+      enabled: false
     sflow:
       enable: true
       egress:
@@ -549,7 +562,8 @@ port_channel_interfaces:
 
   - name: Port-Channel118
     description: interface_with_sflow_ingress_egress_unmodified_enabled
-    type: routed
+    switchport:
+      enabled: false
     sflow:
       enable: true
       egress:
@@ -557,7 +571,8 @@ port_channel_interfaces:
 
   - name: Port-Channel119
     description: interface_with_sflow_ingress_egress_disabled
-    type: routed
+    switchport:
+      enabled: false
     sflow:
       enable: false
       egress:
@@ -565,7 +580,8 @@ port_channel_interfaces:
 
   - name: Port-Channel120
     description: interface_with_sflow_ingress_egress_unmodified_disabled
-    type: routed
+    switchport:
+      enabled: false
     sflow:
       enable: false
       egress:
@@ -584,9 +600,9 @@ port_channel_interfaces:
       mode: trunk
 
   - name: Port-Channel130
+    description: IP NAT Testing
     switchport:
       enabled: true
-    description: IP NAT Testing
     ip_nat:
       destination:
         dynamic:
@@ -723,7 +739,6 @@ port_channel_interfaces:
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5
-    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -736,7 +751,6 @@ ethernet_interfaces:
         override: 100gbase-ar4
 
   - name: Ethernet3
-    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
@@ -746,7 +760,6 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet4
-    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     peer_type: mlag_peer
@@ -756,7 +769,6 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet50
-    type: port-channel-member
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
@@ -769,7 +781,6 @@ ethernet_interfaces:
       transmit: false
 
   - name: Ethernet8
-    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     description: MLAG_PEER_DC1-LEAF1B_Ethernet8
@@ -778,7 +789,6 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet15
-    type: port-channel-member
     peer: DC1-AGG03
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -791,7 +801,6 @@ ethernet_interfaces:
       multiplier: 30
 
   - name: Ethernet16
-    type: port-channel-member
     peer: DC1-AGG04
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -803,28 +812,24 @@ ethernet_interfaces:
       mode: normal
 
   - name: Ethernet17
-    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 17
       mode: active
 
   - name: Ethernet10/1
-    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 101
       mode: active
 
   - name: Ethernet10/2
-    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 102
       mode: active
 
   - name: Ethernet10/3
-    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 103
@@ -843,21 +848,18 @@ ethernet_interfaces:
     spanning_tree_portfast: edge
 
   - name: Ethernet18
-    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 109
       mode: active
 
   - name: Ethernet10/10
-    type: port-channel-member
     description: isis_port_channel_member
     channel_group:
       id: 110
       mode: active
 
   - name: Ethernet11/1
-    type: port-channel-member
     description: LAG Member with error_correction
     error_correction_encoding:
       fire_code: true

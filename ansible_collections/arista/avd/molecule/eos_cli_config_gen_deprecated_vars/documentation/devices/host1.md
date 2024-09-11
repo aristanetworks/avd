@@ -121,6 +121,13 @@ interface Ethernet9
    vlan id 100
    encapsulation vlan
       client dot1q outer 10 inner 12 network dot1q outer 20 inner 22
+!
+interface Ethernet10
+   description Test_for_type_routed
+   no switchport
+!
+interface Ethernet11
+   channel-group 16 mode active
 ```
 
 ### Port-Channel Interfaces

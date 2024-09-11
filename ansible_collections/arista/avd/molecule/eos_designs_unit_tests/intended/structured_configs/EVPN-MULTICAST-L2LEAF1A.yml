@@ -58,7 +58,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+  vlans: 1-9,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
 vlans:
 - id: 310
   name: MULTICAST_DISABLED_310
@@ -125,6 +125,12 @@ vlans:
   tenant: Tenant_C
 - id: 131
   name: L3_MULTICAST_ENABLED_131
+  tenant: Tenant_C
+- id: 136
+  name: L3_L2_MULTICAST_ENABLED_136
+  tenant: Tenant_C
+- id: 137
+  name: L3_L2_MULTICAST_ENABLED_137
   tenant: Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
