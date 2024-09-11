@@ -4195,7 +4195,7 @@ keys:
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
-    description: Customize the description on VTEP interface, typically Loopback1.
+    description: Customize the description on the VTEP interface, typically Loopback1.
     type: str
     default: VXLAN_TUNNEL_SOURCE
   vtep_vvtep_ip:
