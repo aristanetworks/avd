@@ -14,9 +14,11 @@ class AvdStringFormatter(Formatter):
 
     where
         ? ::= The literal ? signals that the field is optional and will not be printed if the value is missing or None.
-        prefix ::= string including spaces which will be inserted before the field value. Most useful in combination with ?
-        suffix ::= string including spaces which will be inserted after the field value. Most useful in combination with ?
-        conversion ::= "!u" for "upper()" (The regular Python conversions "!r" | "!s" | "!a" have been removed).
+        prefix ::= string including spaces which will be inserted before the field value.
+                   Most useful in combination with ?. Prefix should not contain "<", ">", "!" or ":".
+        suffix ::= string including spaces which will be inserted after the field value.
+                   Most useful in combination with ?. Suffix should not contain "<", ">", "!" or ":".
+        conversion ::= "!u" for "upper()" (The regular Python conversions "!r", "!s", "!a" have been removed).
 
     Note the order of syntax field matters!
     """
@@ -27,7 +29,7 @@ class AvdStringFormatter(Formatter):
 
         Mostly a copy from the base class, but adding support for using "optional", "prefix" and "suffix" from the .parse() method.
 
-        This should not be called directly. Instead call .format(format_string, /, *args, **kwargs)
+        This should not be called directly. Instead call AvdStringFormatter().format(format_string, /, *args, **kwargs)
         """
         if recursion_depth < 0:
             msg = "Max string recursion exceeded"
