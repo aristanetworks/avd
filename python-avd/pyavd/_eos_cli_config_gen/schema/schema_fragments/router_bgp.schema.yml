@@ -1190,7 +1190,37 @@ keys:
               remove_in_version: 6.0.0
               new_key: bgp.additional_paths
             description: BGP additional-paths commands.
-            $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+            keys:
+              receive:
+                type: bool
+                description: Receive multiple paths.
+              send:
+                type: dict
+                description: Send multiple paths.
+                keys:
+                  any:
+                    type: bool
+                    description: Any eligible path.
+                  backup:
+                    type: bool
+                    description: Best path and installed backup path.
+                  ecmp:
+                    type: bool
+                    description: All paths in best path ECMP group.
+                  ecmp_limit:
+                    type: int
+                    description: Amount of ECMP paths to send.
+                    convert_types:
+                      - str
+                    min: 2
+                    max: 64
+                  limit:
+                    type: int
+                    description: Amount of paths to send.
+                    convert_types:
+                      - str
+                    min: 2
+                    max: 64
           bgp:
             type: dict
             keys:
@@ -1250,6 +1280,16 @@ keys:
           bgp:
             type: dict
             keys:
+              additional_paths:
+                type: dict
+                $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                keys:
+                  install:
+                    type: bool
+                    description: Install BGP backup path.
+                  install_ecmp_primary:
+                    type: bool
+                    description: Allow additional path with ECMP primary path.
               redistribute_internal:
                 type: bool
                 description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
@@ -1351,6 +1391,16 @@ keys:
                       type: bool
                     route_map:
                       type: str
+                additional_paths:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -1438,6 +1488,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -1684,6 +1739,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           peer_groups:
             type: list
             primary_key: name

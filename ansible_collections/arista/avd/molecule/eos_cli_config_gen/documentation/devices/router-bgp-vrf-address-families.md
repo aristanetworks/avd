@@ -82,6 +82,7 @@ router bgp 65001
    address-family ipv6 multicast
       bgp additional-paths receive
       no neighbor FOOBAR activate
+      neighbor aa::1 additional-paths receive
       redistribute isis rcf Router_BGP_Isis()
       redistribute ospf match internal
       redistribute ospfv3 match external
@@ -141,6 +142,7 @@ router bgp 65001
          neighbor aa::1 activate
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
+         neighbor aa::1 additional-paths send any
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
