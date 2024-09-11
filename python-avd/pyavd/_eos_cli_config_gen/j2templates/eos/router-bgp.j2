@@ -844,6 +844,9 @@ router bgp {{ router_bgp.as }}
    !
    address-family ipv4
 {%         for peer_group in router_bgp.address_family_ipv4.peer_groups | arista.avd.natural_sort('name') %}
+{%             if peer_group.additional_paths.receive is arista.avd.defined %}
+      neighbor {{ peer_group.name }} additional-paths receive
+{%             endif %}
 {%             if peer_group.route_map_in is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_in }} in
 {%             endif %}
@@ -883,6 +886,15 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} activate
 {%             elif peer_group.activate is arista.avd.defined(false) %}
       no neighbor {{ peer_group.name }} activate
+{%             endif %}
+{%             if peer_group.additional_paths.send is arista.avd.defined %}
+{%                 set af_ipv4_pg_add_path = 'neighbor ' ~ peer_group.name ~ ' additional-path send ' ~  peer_group.additional_paths.send %}
+{%                 if peer_group.additional_paths.send_ecmp_limit is arista.avd.defined and peer_group.additional_paths.send == 'ecmp' %}
+{%                     set af_ipv4_pg_add_path = af_ipv4_pg_add_path ~ ' limit ' ~ peer_group.additional_paths.send_ecmp_limit %}
+{%                 elif peer_group.additional_paths.send_limit is arista.avd.defined and peer_group.additional_paths.send == 'limit' %}
+{%                     set af_ipv4_pg_add_path = af_ipv4_pg_add_path ~ ' ' ~ peer_group.additional_paths.send_limit %}
+{%                 endif %}
+      {{ af_ipv4_pg_add_path }}
 {%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
@@ -1048,6 +1060,9 @@ router bgp {{ router_bgp.as }}
    !
    address-family ipv6
 {%         for peer_group in router_bgp.address_family_ipv6.peer_groups | arista.avd.natural_sort('name') %}
+{%             if peer_group.additional_paths.receive is arista.avd.defined %}
+      neighbor {{ peer_group.name }} additional-paths receive
+{%             endif %}
 {%             if peer_group.route_map_in is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_in }} in
 {%             endif %}
@@ -1070,6 +1085,15 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} activate
 {%             elif peer_group.activate is arista.avd.defined(false) %}
       no neighbor {{ peer_group.name }} activate
+{%             endif %}
+{%             if peer_group.additional_paths.send is arista.avd.defined %}
+{%                 set af_ipv6_pg_add_path = 'neighbor ' ~ peer_group.name ~ ' additional-path send ' ~  peer_group.additional_paths.send %}
+{%                 if peer_group.additional_paths.send_ecmp_limit is arista.avd.defined and peer_group.additional_paths.send == 'ecmp' %}
+{%                     set af_ipv6_pg_add_path = af_ipv6_pg_add_path ~ ' limit ' ~ peer_group.additional_paths.send_ecmp_limit %}
+{%                 elif peer_group.additional_paths.send_limit is arista.avd.defined and peer_group.additional_paths.send == 'limit' %}
+{%                     set af_ipv6_pg_add_path = af_ipv6_pg_add_path ~ ' ' ~ peer_group.additional_paths.send_limit %}
+{%                 endif %}
+      {{ af_ipv6_pg_add_path }}
 {%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}

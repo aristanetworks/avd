@@ -1334,6 +1334,16 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
                 next_hop:
                   type: dict
                   keys:
@@ -1590,6 +1600,16 @@ keys:
               redistribute_internal:
                 type: bool
                 description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
+              additional_paths:
+                type: dict
+                $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                keys:
+                  install:
+                    type: bool
+                    description: Install BGP backup path.
+                  install_ecmp_primary:
+                    type: bool
+                    description: Allow additional path with ECMP primary path.
           peer_groups:
             type: list
             primary_key: name
@@ -1623,6 +1643,16 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
           neighbors:
             type: list
             primary_key: ip_address
@@ -1655,6 +1685,16 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
           redistribute_routes:
             type: list
             primary_key: source_protocol

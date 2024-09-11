@@ -237,9 +237,11 @@ router bgp 65101
    redistribute static rcf Router_BGP_Static()
    !
    address-family ipv4
+      neighbor foo additional-paths receive
       neighbor foo prefix-list PL-BAR-v4-IN in
       neighbor foo prefix-list PL-BAR-v4-OUT out
       neighbor foo default-originate route-map RM-FOO-MATCH always
+      neighbor foo additional-path send ecmp limit 20
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
@@ -257,8 +259,10 @@ router bgp 65101
       redistribute static rcf Address_Family_IPV4_Static()
    !
    address-family ipv6
+      neighbor baz additional-paths receive
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
+      neighbor baz additional-path send ecmp limit 20
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
       neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()

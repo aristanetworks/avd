@@ -114,6 +114,10 @@ router_bgp:
         default_originate:
           always: true
           route_map: RM-FOO-MATCH
+        additional_paths:
+          receive: true
+          send: ecmp
+          send_ecmp_limit: 20
     neighbors:
       - ip_address: 192.0.2.1
         prefix_list_in: PL-FOO-v4-IN
@@ -151,6 +155,10 @@ router_bgp:
       - name: baz
         prefix_list_in: PL-BAR-v6-IN
         prefix_list_out: PL-BAR-v6-OUT
+        additional_paths:
+          receive: true
+          send: ecmp
+          send_ecmp_limit: 20
     neighbors:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
