@@ -199,7 +199,7 @@ ethernet_interfaces:
   ip_address: 10.255.255.124/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.128.11/32
 prefix_lists:

@@ -208,13 +208,13 @@ interface Ethernet3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | LSR_Router_ID | default | 100.70.0.2/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | LSR_Router_ID | default | 2000:1234:ffff:ffff::2/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::2/128 |
 
 ##### ISIS
 
@@ -227,7 +227,7 @@ interface Ethernet3
 ```eos
 !
 interface Loopback0
-   description LSR_Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 100.70.0.2/32
    ipv6 address 2000:1234:ffff:ffff::2/128
