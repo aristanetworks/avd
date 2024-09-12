@@ -165,6 +165,7 @@ ethernet_interfaces:
   description: DIRECT LAN HA LINK
   ip_address: 10.10.10.0/31
   flow_tracker: null
+  mtu: 9100
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -517,7 +518,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.6/32
   flow_tracker:
     hardware: FLOW-TRACKER
