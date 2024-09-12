@@ -11,7 +11,7 @@ management api gnmi
 {%     if management_api_gnmi.transport is arista.avd.defined %}
 {%         if management_api_gnmi.transport.grpc is arista.avd.defined %}
 {%             set first_line = False %}
-{%             for transport in management_api_gnmi.transport.grpc %}
+{%             for transport in management_api_gnmi.transport.grpc | arista.avd.natural_sort("name") %}
 {%                 if not loop.first %}
    !
 {%                 endif %}
