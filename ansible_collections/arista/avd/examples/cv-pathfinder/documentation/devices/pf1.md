@@ -499,18 +499,14 @@ service routing protocols model multi-agent
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| BLUE | True |
 | MGMT | False |
-| RED | True |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
-ip routing vrf BLUE
 no ip routing vrf MGMT
-ip routing vrf RED
 ```
 
 ### IPv6 Routing
@@ -520,9 +516,7 @@ ip routing vrf RED
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| BLUE | false |
 | MGMT | false |
-| RED | false |
 
 ### Static Routes
 
@@ -823,9 +817,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| BLUE | 192.168.255.1:100 | connected |
 | default | 192.168.255.1:1 | - |
-| RED | 192.168.255.1:101 | connected |
 
 #### Router BGP Device Configuration
 
@@ -886,25 +878,11 @@ router bgp 65000
       neighbor WAN-OVERLAY-PEERS activate
       neighbor WAN-RR-OVERLAY-PEERS activate
    !
-   vrf BLUE
-      rd 192.168.255.1:100
-      route-target import evpn 100:100
-      route-target export evpn 100:100
-      router-id 192.168.255.1
-      redistribute connected
-   !
    vrf default
       rd 192.168.255.1:1
       route-target import evpn 1:1
       route-target export evpn 1:1
       route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
-   !
-   vrf RED
-      rd 192.168.255.1:101
-      route-target import evpn 101:101
-      route-target export evpn 101:101
-      router-id 192.168.255.1
-      redistribute connected
 ```
 
 ## BFD
@@ -1010,19 +988,13 @@ ip access-list ACL-PF-INTERNET-IN_Ethernet2
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| BLUE | enabled |
 | MGMT | disabled |
-| RED | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
-vrf instance BLUE
-!
 vrf instance MGMT
-!
-vrf instance RED
 ```
 
 ## Platform

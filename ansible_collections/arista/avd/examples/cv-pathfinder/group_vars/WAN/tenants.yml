@@ -1,10 +1,9 @@
 ---
 # WAN Tenants network services
 
-tenants:  # dynamic_key: network_services
+tenants:
   - name: WAN-EXAMPLE-TENANT
     mac_vrf_vni_base: 10000
-    # TODO probably see to add SFLOW to some of the interfaces in this VRF
     vrfs:
       - name: BLUE
         vrf_vni: 100

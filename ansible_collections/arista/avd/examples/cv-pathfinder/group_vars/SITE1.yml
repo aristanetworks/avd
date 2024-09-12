@@ -6,10 +6,8 @@ underlay_routing_protocol: ebgp
 
 l3leaf:
   defaults:
-    # TODO revisit pools
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
-    # TODO revisit filter
     filter:
       always_include_vrfs_in_tenants: [all]
     mlag_interfaces: [Ethernet5, Ethernet6]
@@ -30,23 +28,21 @@ l3leaf:
 
 wan_router:
   defaults:
-    # TODO revisit pools
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     uplink_ipv4_pool: 10.0.1.0/24
-    # TODO revisit filter
     filter:
       always_include_vrfs_in_tenants: [all]
     uplink_interfaces: [Ethernet1, Ethernet2]
-    uplink_switches: [border1-site1, border2-site1]
-    uplink_type: p2p-vrfs
+    uplink_switches: [border1-site1, border2-site1] # (1)
+    uplink_type: p2p-vrfs # (1)
     bgp_as: 65000
   node_groups:
     - group: SITE1
       cv_pathfinder_region: REGION1
       cv_pathfinder_site: SITE1
       # Making this site a transit site
-      cv_pathfinder_transit_mode: region
+      cv_pathfinder_transit_mode: region # (2)
       wan_ha:
         enabled: true
         # Can disable ipsec on WAN HA tunnel using this knob

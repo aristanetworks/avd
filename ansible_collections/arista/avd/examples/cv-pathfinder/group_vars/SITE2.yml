@@ -6,10 +6,8 @@ underlay_routing_protocol: ebgp
 
 l3leaf:
   defaults:
-    # TODO revisit pools
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
-    # TODO revisit filter
     filter:
       always_include_vrfs_in_tenants: [all]
     mlag_interfaces: [Ethernet5, Ethernet6]
@@ -30,10 +28,8 @@ l3leaf:
 
 wan_router:
   defaults:
-    # TODO revisit pools
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
-    # TODO revisit filter
     filter:
       always_include_vrfs_in_tenants: [all]
     uplink_type: p2p-vrfs

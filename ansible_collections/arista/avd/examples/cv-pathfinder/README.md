@@ -171,10 +171,7 @@ For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is alloca
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
-!!! warning
-    TODO: update diagram
-
-![Figure: Ansible inventory and vars](images/ansible-groups.svg)
+![Figure: Ansible inventory and vars](images/ansible-groups.png)
 
 The following pattern is used:
 
@@ -329,7 +326,7 @@ examples/cv-pathfinder/group_vars/WAN//cv_pathfinder_settings.yml
 3. `wan_route_servers` define the Pathfinders each router should connect to. It
    is possible to have this variable for instance at a group level to have
    per-region Pathfinders.
-4. `wan_ipsec_profiles` is used to control IP Security configuratiom, the keys
+4. `wan_ipsec_profiles` is used to control IP Security configuration, the keys
    are required
 5. For lab purposes Flow tracking is enabled on uplinks and downlinks. Make sure
    to verify the scalability of CloudVision depending on your network in
@@ -357,7 +354,7 @@ A profile is used to apply a load balancing policy and potentially an
 internet-exit policy (not in this example). The load balancing policy defines
 which path-groups can be used for the traffic.
 
-As expained above, `wan_virtual_topologies` variable must be global, AVD then
+As explained above, `wan_virtual_topologies` variable must be global, AVD then
 decides for each device, based on the locally present path-groups, how to
 configure the policies (e.g. if some traffic being matched is configured to be
 sent only over `MPLS` path-group but there is no local WAN interface connected
@@ -369,7 +366,40 @@ For this example, we define two policies, one for each VRF BLUE and RED.
 !!! warning
     TODO: show the policies / AVT
 
-### L3 interface profile
+### L3 interfaces and L3 interface profiles
+
+In AVD, an L3 interface configured under a node is considered a WAN interface
+when the `wan_carrier` setting is set. The `wan_carrier` allows AVD to know
+which path-group to use for the interface based on the Carrier to Path-Group mapping
+in the top level `wan_carriers` key.
+
+```yaml title"AVD WAN interfaces example"
+wan_router:
+  node_groups:
+    - group: SITE1
+      cv_pathfinder_region: REGION1
+      cv_pathfinder_site: SITE1
+      # Making this site a transit site
+      cv_pathfinder_transit_mode: region
+      wan_ha:
+        enabled: true
+      nodes:
+        - name: wan1-site1
+          id: 3
+          l3_interfaces:
+            - name: Ethernet3  # (1)
+              profile: MPLS-WAN-INTERFACE
+              peer_interface: Ethernet5
+              peer_ip: 172.18.10.1
+              ip_address: 172.18.10.2/24
+              wan_carrier: ACME-MPLS-INC
+              wan_circuit_id: mpls-wan1-site1
+            - name: Ethernet42 # (2)
+              ip_address: 100.64.10.2/24
+```
+
+1. Ethernet3 is a WAN interface because `wan_carrier` is defined
+2. Ethernet42 is **NOT** a WAN interface because `wan_carrier` is defined
 
 L3 interface profiles are defined globally and reused on the site WAN routers to
 apply common configurations.
@@ -396,45 +426,100 @@ examples/cv-pathfinder/group_vars/WAN//tenants.yml
 --8<--
 ```
 
-# TODO - CONTINUE AFTER THIS
-
 ## Setting pathfinders specific configuration parameters
+
+The pathfinder configuration can be found in `group_vars/PATHFINDERS.yml`:
+
+```yaml title="group_vars/PATHFINDERS.yml"
+--8<--
+examples/cv-pathfinder/group_vars/PATHFINDERS.yml
+--8<--
+```
 
 ## Setting site specific configuration parameters
 
-For each site a file is used to define the site specific information
+!!! Note
+    For convenience in the example, both the WAN routers and the LAN devices
+    (borders, leaf, ...) are defined in the same group_vars file. It would be
+    possible to separate them.
+
+As general principles:
+
+- WAN routers should configure as `uplink_switches` the LAN devices.
+- Each WAN router is assigned to a site. When two routers are part of a node_group, HA will be configured.
 
 ### Site 1
 
-!!! warning
-    TODO add diagram
+The following diagrams describe the Site1 physical, LAN and HA tunnels connectivity.
+
+=== "Physical"
+
+    ![Figure: Site 1 Physical](images/site1-physical.png){: style="height:700px;width:700px"}
+
+=== "LAN"
+
+    Site 1 borders are using BGP AS 65101
+
+    ![Figure: Site 1 LAN](images/site1-lan.png){: style="height:700px;width:700px"}
+
+=== "HA Tunnels"
+
+    By default AVD is using all uplink interfaces for the LAN_HA path groups. EOS then establish an IPsec tunnel between all pairs of local and remote connections, in this scenario there are four tunnels created for the LAN_HA path group.
+
+    ![Figure: Site 1 HA Tunnels](images/site1-ha.png){: style="height:700px;width:700px"}
 
 ```yaml title="group_vars/SITE1.yml"
 --8<--
 examples/cv-pathfinder/group_vars/SITE1.yml
---<8--
+--8<--
 ```
+
+1. The uplink type `p2p-vrfs` is used to connect to the LAN switches
+2. `cv_pathfinder_transit_mode` defaults to `none` and the site is considered an `edge` site. To use it as transit, the variable must be set to `region` as it is the case here.
 
 ### Site 2
 
-!!! warning
-    TODO add diagram
+The following diagrams describe the Site2 physical, LAN and HA tunnels connectivity.
+
+=== "Physical"
+
+    ![Figure: Site 2 Physical](images/site2-physical.png){: style="height:700px;width:700px"}
+
+=== "LAN"
+
+    Site 2 borders are using BGP AS 65101
+
+    ![Figure: Site 2 LAN](images/site2-lan.png){: style="height:700px;width:700px"}
+
+=== "HA Tunnels"
+
+    ![Figure: Site 2 HA Tunnels](images/site2-ha.png){: style="height:700px;width:700px"}
 
 ```yaml title="group_vars/SITE2.yml"
 --8<--
 examples/cv-pathfinder/group_vars/SITE2.yml
---<8--
+--8<--
 ```
 
 ### Site 3
 
-!!! warning
-    TODO add diagram
+The following diagrams describe the Site3 physical and LAN connectivity.
+
+=== "Physical"
+
+    ![Figure: Site 3 Physical](images/site3-physical.png){: style="height:700px;width:700px"}
+
+=== "LAN"
+
+    ![Figure: Site 3 LAN](images/site3-lan.png){: style="height:700px;width:700px"}
+
+!!! TODO
+    TODO: Add eBGP toward WAN on site3
 
 ```yaml title="group_vars/SITE3.yml"
 --8<--
 examples/cv-pathfinder/group_vars/SITE3.yml
---<8--
+--8<--
 ```
 
 ## The playbooks
@@ -455,25 +540,40 @@ Example of using this playbook without devices (local tasks):
 
 Please look through the folders and files described above to learn more about the output generated by AVD.
 
+### The metadata section in the structured_config
+
+The CV Pathfinder visualization in CloudVision relies on the inputs of a hidden metadata studio to work.
+When using AVD to generate the CV Pathfinder configurations, AVD also generates
+a `metadata` section with all the information required to be pushed to CVaaS to
+populate the studio.
+
+The `arista.avd.cv_deploy` role will then pick up the metadata section and
+populate the metadata studio as part of the same workspace, thus keeping the
+configurations and metadata in sync.
+
 ### Playbook Run
 
 To build and deploy the configurations to CVaaS, run first the `build.yml` playbook and then the `deploy.yml` playbook.
+
+!!! Note
+    In this example, the `deploy.yml` playbook is configured to auto approve and
+    execute the Change Control created by the Workspace using `cv_run_change_control: true`.
 
 === "deploy.yml"
 
     ```yaml
     --8<--
-    examples/cv-pathfinder/build.yml
+    examples/cv-pathfinder/deploy.yml
     --8<--
     ```
 
 ``` bash
+### Build the configurations
 ansible-playbook playbooks/build.yml
+
 ### Deploy Configurations to CVaaS
 ansible-playbook playbooks/deploy.yml
 ```
-
-Then you need to connect to CVaaS and apply the change control
 
 !!! warning
     TODO: add  playbook output pictures

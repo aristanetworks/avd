@@ -94,34 +94,6 @@ router_bgp:
     peer: pf1
     description: pf1
   vrfs:
-  - name: BLUE
-    rd: 192.168.255.2:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    router_id: 192.168.255.2
-    redistribute_routes:
-    - source_protocol: connected
-  - name: RED
-    rd: 192.168.255.2:101
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 101:101
-      export:
-      - address_family: evpn
-        route_targets:
-        - 101:101
-    router_id: 192.168.255.2
-    redistribute_routes:
-    - source_protocol: connected
   - name: default
     rd: 192.168.255.2:1
     route_targets:
@@ -174,12 +146,6 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: BLUE
-  tenant: WAN-EXAMPLE-TENANT
-  ip_routing: true
-- name: RED
-  tenant: WAN-EXAMPLE-TENANT
-  ip_routing: true
 management_interfaces:
 - name: Management1
   description: oob_management
@@ -540,12 +506,12 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Dps1
       vrfs:
+      - name: default
+        vni: 1
       - name: BLUE
         vni: 100
       - name: RED
         vni: 101
-      - name: default
-        vni: 1
 metadata:
   cv_pathfinder:
     applications:

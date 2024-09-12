@@ -2,20 +2,16 @@
 # WAN Pathfinder nodes
 wan_rr:
   defaults:
-    data_plane_cpu_allocation_max: 1
-    # TODO revisit pools
+    data_plane_cpu_allocation_max: 1  # (1)
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     bgp_as: 65000
-    # TODO revisit filter
-    filter:
-      always_include_vrfs_in_tenants: [all]
   nodes:
     - name: pf1
       id: 1
       # mgmt_ip: 192.168.17.10/24
       mgmt_ip: "{{ ansible_host }}/24"
-      cv_pathfinder_site: PF1-GLOBAL
+      cv_pathfinder_site: PF1-GLOBAL  # (2)
       # WAN interfaces
       l3_interfaces:
         - name: Ethernet1

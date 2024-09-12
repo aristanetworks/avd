@@ -17,8 +17,6 @@ wan_router:
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     uplink_ipv4_pool: 10.0.3.0/24
-    #filter:
-      #  tags: [wan1-site3]
     uplink_interfaces: [Ethernet1]
     uplink_switch_interfaces: [Ethernet1]
     uplink_type: lan
