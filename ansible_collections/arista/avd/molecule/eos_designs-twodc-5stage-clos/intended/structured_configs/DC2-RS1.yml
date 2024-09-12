@@ -140,7 +140,7 @@ ethernet_interfaces:
   ip_address: 172.17.20.3/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.20.1/32
 prefix_lists:

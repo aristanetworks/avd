@@ -358,14 +358,14 @@ interface Ethernet4000
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.10/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.10/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -373,7 +373,7 @@ interface Ethernet4000
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.10/32
 !
