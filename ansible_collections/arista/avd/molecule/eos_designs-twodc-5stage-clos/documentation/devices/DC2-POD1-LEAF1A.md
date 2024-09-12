@@ -296,7 +296,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.3/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.210.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.3/32 |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.201.3/32 |
@@ -305,7 +305,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
@@ -315,7 +315,7 @@ interface Port-Channel3
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.210.3/32
 !

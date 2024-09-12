@@ -217,7 +217,7 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.1/32
 ip_igmp_snooping:

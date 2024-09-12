@@ -210,20 +210,20 @@ interface Ethernet4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.200.2/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.200.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.200.2/32
 ```

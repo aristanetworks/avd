@@ -686,7 +686,7 @@ route_maps:
     - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.14/32
   ipv6_address: 2001:1::e/128
