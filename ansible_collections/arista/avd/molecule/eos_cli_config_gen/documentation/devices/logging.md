@@ -112,4 +112,6 @@ logging vrf mgt source-interface Management0
 logging level AAA warnings
 logging level ACL critical
 logging level BGP 0
+logging event storm-control discards global
+logging event storm-control discards interval 10
 ```
