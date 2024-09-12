@@ -230,6 +230,51 @@
   },
   {
     "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.2) - Destination: dc1-leaf1a Ethernet2 (IP: 10.255.255.3)"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.6) - Destination: dc1-leaf1b Ethernet2 (IP: 10.255.255.7)"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet3 (IP: 10.255.255.10) - Destination: dc1-leaf2a Ethernet2 (IP: 10.255.255.11)"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet5 (IP: 10.33.255.18) - Destination: dc1-svc-leaf1a Ethernet2 (IP: 10.33.255.19)"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet6 (IP: 10.33.255.22) - Destination: dc1-svc-leaf1b Ethernet2 (IP: 10.33.255.23)"
+  },
+  {
+    "name": "dc1-spine2",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
       "field notices"

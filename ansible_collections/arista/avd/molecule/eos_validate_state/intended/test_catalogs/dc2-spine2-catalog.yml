@@ -94,6 +94,60 @@ anta.tests.connectivity:
       port: Ethernet6
     result_overwrite:
       custom_field: 'Local: Ethernet6 - Remote: dc2-leaf3b.arista.com Ethernet2'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.107
+      repeat: 1
+      source: 10.255.255.106
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet1 (IP: 10.255.255.106) - Destination:
+        dc2-leaf1a Ethernet2 (IP: 10.255.255.107)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.111
+      repeat: 1
+      source: 10.255.255.110
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.255.255.110) - Destination:
+        dc2-leaf1b Ethernet2 (IP: 10.255.255.111)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.115
+      repeat: 1
+      source: 10.255.255.114
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet3 (IP: 10.255.255.114) - Destination:
+        dc2-leaf2a Ethernet2 (IP: 10.255.255.115)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.119
+      repeat: 1
+      source: 10.255.255.118
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet4 (IP: 10.255.255.118) - Destination:
+        dc2-leaf2b Ethernet2 (IP: 10.255.255.119)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.123
+      repeat: 1
+      source: 10.255.255.122
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet5 (IP: 10.255.255.122) - Destination:
+        dc2-leaf3a.arista.com Ethernet2 (IP: 10.255.255.123)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.127
+      repeat: 1
+      source: 10.255.255.126
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet6 (IP: 10.255.255.126) - Destination:
+        dc2-leaf3b.arista.com Ethernet2 (IP: 10.255.255.127)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null

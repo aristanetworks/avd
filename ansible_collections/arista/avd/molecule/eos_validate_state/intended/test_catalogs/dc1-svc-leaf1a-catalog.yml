@@ -82,6 +82,24 @@ anta.tests.connectivity:
       custom_field: 'Local: Ethernet2 - Remote: dc1-spine2 Ethernet5'
 - VerifyReachability:
     hosts:
+    - destination: 10.33.255.16
+      repeat: 1
+      source: 10.33.255.17
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet1 (IP: 10.33.255.17) - Destination:
+        dc1-spine1 Ethernet5 (IP: 10.33.255.16)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.33.255.18
+      repeat: 1
+      source: 10.33.255.19
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.33.255.19) - Destination:
+        dc1-spine2 Ethernet5 (IP: 10.33.255.18)'
+- VerifyReachability:
+    hosts:
     - destination: 10.255.0.1
       repeat: 1
       source: 10.33.0.5

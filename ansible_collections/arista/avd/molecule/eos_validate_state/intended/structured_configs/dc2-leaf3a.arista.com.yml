@@ -322,6 +322,26 @@ port_channel_interfaces:
   native_vlan: 4092
   spanning_tree_portfast: edge
   mlag: 11
+- name: Port-Channel12
+  description: Test_mode_and_vlans
+  type: switched
+  mode: access
+  vlans: '100'
+- name: Port-Channel13
+  description: Test_native_vlan_and_trunk_groups
+  type: switched
+  native_vlan: 4092
+  native_vlan_tag: true
+  mode: trunk
+  trunk_groups:
+  - MLAG
+- name: Port-Channel14
+  description: Test_phone
+  type: switched
+  mode: trunk phone
+  phone:
+    vlan: 20
+    trunk: tagged
 ethernet_interfaces:
 - name: Ethernet3
   peer: dc2-leaf3b.arista.com
@@ -370,6 +390,26 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
+- name: Ethernet12
+  description: Test_mode_and_vlans
+  type: switched
+  mode: access
+  vlans: '100'
+- name: Ethernet13
+  description: Test_native_vlan_and_trunk_groups
+  type: switched
+  native_vlan: 4092
+  native_vlan_tag: true
+  mode: trunk
+  trunk_groups:
+  - MLAG
+- name: Ethernet14
+  description: Test_phone
+  type: switched
+  mode: trunk phone
+  phone:
+    vlan: 20
+    trunk: tagged
 mlag_configuration:
   domain_id: DC2_L3_LEAF3
   local_interface: Vlan4094

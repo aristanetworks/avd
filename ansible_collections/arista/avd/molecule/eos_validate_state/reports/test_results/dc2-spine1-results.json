@@ -235,6 +235,60 @@
   },
   {
     "name": "dc2-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.104) - Destination: dc2-leaf1a Ethernet1 (IP: 10.255.255.105)"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.108) - Destination: dc2-leaf1b Ethernet1 (IP: 10.255.255.109)"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet3 (IP: 10.255.255.112) - Destination: dc2-leaf2a Ethernet1 (IP: 10.255.255.113)"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet4 (IP: 10.255.255.116) - Destination: dc2-leaf2b Ethernet1 (IP: 10.255.255.117)"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet5 (IP: 10.255.255.120) - Destination: dc2-leaf3a.arista.com Ethernet1 (IP: 10.255.255.121)"
+  },
+  {
+    "name": "dc2-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: P2P Interface Ethernet6 (IP: 10.255.255.124) - Destination: dc2-leaf3b.arista.com Ethernet1 (IP: 10.255.255.125)"
+  },
+  {
+    "name": "dc2-spine1",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
       "field notices"
