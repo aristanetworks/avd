@@ -150,8 +150,8 @@ NAT profile VRF is: TEST
 !
 ip nat translation address selection any
 ip nat translation address selection hash field source-ip
-ip nat translation tcp-timeout 7200
 ip nat translation udp-timeout 3600
+ip nat translation tcp-timeout 7200
 ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host

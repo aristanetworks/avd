@@ -53,8 +53,8 @@ interface Management1
 
 ```eos
 !
+logging buffered 64000
 logging console informational
 logging monitor debugging
-logging buffered 64000
 logging facility syslog
 ```

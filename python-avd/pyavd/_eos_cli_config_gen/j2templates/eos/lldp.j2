@@ -6,9 +6,6 @@
 {# eos - lldp #}
 {% if lldp is arista.avd.defined %}
 !
-{%     if lldp.run is arista.avd.defined(false) %}
-no lldp run
-{%     endif %}
 {%     if lldp.timer is arista.avd.defined %}
 lldp timer {{ lldp.timer }}
 {%     endif %}
@@ -28,6 +25,9 @@ lldp timer reinitialization {{ lldp.timer_reinitialization }}
 {{ lldp_tlv_transmit_cli }}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if lldp.run is arista.avd.defined(false) %}
+no lldp run
 {%     endif %}
 {%     if lldp.management_address is arista.avd.defined %}
 lldp management-address {{ lldp.management_address }}
