@@ -100,7 +100,7 @@ ethernet_interfaces:
   peer: server02
   peer_interface: Eth1
   peer_type: server
-  description: server02_Eth1
+  description: SERVER_server02_Eth1
   shutdown: false
   switchport:
     enabled: true

@@ -389,9 +389,9 @@ vlan 4094
 | Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
-| Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
-| Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
-| Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *- | *- | *- | *- | 12 |
+| Ethernet10 | SERVER_server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
+| Ethernet11 | SERVER_server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
+| Ethernet12 | SERVER_server01_MTU_ADAPTOR_MLAG_Eth7 | *- | *- | *- | *- | 12 |
 
 *Inherited from Port-Channel Interface
 
@@ -452,17 +452,17 @@ interface Ethernet7
    channel-group 7 mode active
 !
 interface Ethernet10
-   description server01_MLAG_Eth3
+   description SERVER_server01_MLAG_Eth3
    no shutdown
    channel-group 10 mode active
 !
 interface Ethernet11
-   description server01_MTU_PROFILE_MLAG_Eth5
+   description SERVER_server01_MTU_PROFILE_MLAG_Eth5
    no shutdown
    channel-group 11 mode active
 !
 interface Ethernet12
-   description server01_MTU_ADAPTOR_MLAG_Eth7
+   description SERVER_server01_MTU_ADAPTOR_MLAG_Eth7
    no shutdown
    channel-group 12 mode active
 ```
@@ -477,9 +477,9 @@ interface Ethernet12
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | - |
-| Port-Channel10 | server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | 10 | - |
-| Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | 11 | - |
-| Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | - | - | - | - | - | - | 12 | - |
+| Port-Channel10 | PortChanne1 | trunk | 210-211 | - | - | - | - | 10 | - |
+| Port-Channel11 | PortChanne1 | access | 110 | - | - | - | - | 11 | - |
+| Port-Channel12 | PortChanne1 | - | - | - | - | - | - | 12 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -501,7 +501,7 @@ interface Port-Channel7
    mlag 7
 !
 interface Port-Channel10
-   description server01_MLAG_PortChanne1
+   description PortChanne1
    no shutdown
    switchport trunk allowed vlan 210-211
    switchport mode trunk
@@ -509,7 +509,7 @@ interface Port-Channel10
    mlag 10
 !
 interface Port-Channel11
-   description server01_MTU_PROFILE_MLAG_PortChanne1
+   description PortChanne1
    no shutdown
    mtu 1600
    switchport access vlan 110
@@ -518,7 +518,7 @@ interface Port-Channel11
    mlag 11
 !
 interface Port-Channel12
-   description server01_MTU_ADAPTOR_MLAG_PortChanne1
+   description PortChanne1
    no shutdown
    mtu 1601
    switchport

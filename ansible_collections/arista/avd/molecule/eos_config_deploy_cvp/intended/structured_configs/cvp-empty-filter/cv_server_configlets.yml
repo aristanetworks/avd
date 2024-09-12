@@ -341,9 +341,9 @@ cvp_configlets:
     \  description P2P_LINK_TO_DC1-SPINE3_Ethernet1\n   no shutdown\n   mtu 1500\n
     \  no switchport\n   ip address 172.31.255.5/31\n!\ninterface Ethernet4\n   description
     P2P_LINK_TO_DC1-SPINE4_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.7/31\n!\ninterface Ethernet6\n   description server02_SINGLE_NODE_TRUNK_Eth1\n
+    \  ip address 172.31.255.7/31\n!\ninterface Ethernet6\n   description SERVER_server02_SINGLE_NODE_TRUNK_Eth1\n
     \  no shutdown\n   switchport trunk allowed vlan 110-111,210-211\n   switchport
-    mode trunk\n   switchport\n!\ninterface Ethernet7\n   description server02_SINGLE_NODE_Eth1\n
+    mode trunk\n   switchport\n!\ninterface Ethernet7\n   description SERVER_server02_SINGLE_NODE_Eth1\n
     \  no shutdown\n   switchport access vlan 110\n   switchport mode access\n   switchport\n!\ninterface
     Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.5/32\n!\ninterface
     Loopback1\n   description VXLAN_TUNNEL_SOURCE\n   no shutdown\n   ip address 192.168.254.5/32\n!\ninterface
@@ -431,8 +431,8 @@ cvp_configlets:
     \  switchport trunk group MLAG\n   switchport\n!\ninterface Port-Channel7\n   description
     DC1-L2LEAF1A_Po1\n   no shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131\n
     \  switchport mode trunk\n   switchport\n   mlag 7\n!\ninterface Port-Channel10\n
-    \  description server01_MLAG_PortChanne1\n   no shutdown\n   switchport trunk
-    allowed vlan 210-211\n   switchport mode trunk\n   switchport\n   mlag 10\n!\ninterface
+    \  description SERVER_server01_MLAG\n   no shutdown\n   switchport trunk allowed
+    vlan 210-211\n   switchport mode trunk\n   switchport\n   mlag 10\n!\ninterface
     Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet2\n   no shutdown\n   mtu
     1500\n   no switchport\n   ip address 172.31.255.9/31\n!\ninterface Ethernet2\n
     \  description P2P_LINK_TO_DC1-SPINE2_Ethernet2\n   no shutdown\n   mtu 1500\n
@@ -444,7 +444,7 @@ cvp_configlets:
     5 mode active\n!\ninterface Ethernet6\n   description MLAG_PEER_DC1-LEAF2B_Ethernet6\n
     \  no shutdown\n   channel-group 5 mode active\n!\ninterface Ethernet7\n   description
     DC1-L2LEAF1A_Ethernet1\n   no shutdown\n   channel-group 7 mode active\n!\ninterface
-    Ethernet10\n   description server01_MLAG_Eth2\n   no shutdown\n   channel-group
+    Ethernet10\n   description SERVER_server01_MLAG_Eth2\n   no shutdown\n   channel-group
     10 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
     \  ip address 192.168.255.6/32\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
     \  no shutdown\n   ip address 192.168.254.6/32\n!\ninterface Loopback100\n   description
@@ -607,8 +607,8 @@ cvp_configlets:
     \  switchport trunk group MLAG\n   switchport\n!\ninterface Port-Channel7\n   description
     DC1-L2LEAF1A_Po1\n   no shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131\n
     \  switchport mode trunk\n   switchport\n   mlag 7\n!\ninterface Port-Channel10\n
-    \  description server01_MLAG_PortChanne1\n   no shutdown\n   switchport trunk
-    allowed vlan 210-211\n   switchport mode trunk\n   switchport\n   mlag 10\n!\ninterface
+    \  description SERVER_server01_MLAG\n   no shutdown\n   switchport trunk allowed
+    vlan 210-211\n   switchport mode trunk\n   switchport\n   mlag 10\n!\ninterface
     Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet3\n   no shutdown\n   mtu
     1500\n   no switchport\n   ip address 172.31.255.17/31\n!\ninterface Ethernet2\n
     \  description P2P_LINK_TO_DC1-SPINE2_Ethernet3\n   no shutdown\n   mtu 1500\n
@@ -620,7 +620,7 @@ cvp_configlets:
     5 mode active\n!\ninterface Ethernet6\n   description MLAG_PEER_DC1-LEAF2A_Ethernet6\n
     \  no shutdown\n   channel-group 5 mode active\n!\ninterface Ethernet7\n   description
     DC1-L2LEAF1A_Ethernet2\n   no shutdown\n   channel-group 7 mode active\n!\ninterface
-    Ethernet10\n   description server01_MLAG_Eth3\n   no shutdown\n   channel-group
+    Ethernet10\n   description SERVER_server01_MLAG_Eth3\n   no shutdown\n   channel-group
     10 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
     \  ip address 192.168.255.7/32\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
     \  no shutdown\n   ip address 192.168.254.6/32\n!\ninterface Loopback100\n   description
@@ -1069,7 +1069,7 @@ cvp_configlets:
     Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk
     allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport
     mode trunk\n   switchport\n   mlag 7\n!\ninterface Port-Channel10\n   description
-    server03_ESI_PortChanne1\n   no shutdown\n   switchport trunk allowed vlan 110-111,210-211\n
+    SERVER_server03_ESI\n   no shutdown\n   switchport trunk allowed vlan 110-111,210-211\n
     \  switchport mode trunk\n   switchport\n   evpn ethernet-segment\n      identifier
     0000:0000:0303:0202:0101\n      route-target import 03:03:02:02:01:01\n   lacp
     system-id 0303.0202.0101\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet4\n
@@ -1085,7 +1085,7 @@ cvp_configlets:
     Ethernet7\n   description DC1-L2LEAF2A_Ethernet1\n   no shutdown\n   channel-group
     7 mode active\n!\ninterface Ethernet8\n   description DC1-L2LEAF2B_Ethernet1\n
     \  no shutdown\n   channel-group 7 mode active\n!\ninterface Ethernet10\n   description
-    server03_ESI_Eth1\n   no shutdown\n   channel-group 10 mode active\n!\ninterface
+    SERVER_server03_ESI_Eth1\n   no shutdown\n   channel-group 10 mode active\n!\ninterface
     Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.8/32\n!\ninterface
     Loopback1\n   description VXLAN_TUNNEL_SOURCE\n   no shutdown\n   ip address 192.168.254.8/32\n!\ninterface
     Loopback100\n   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS\n   no shutdown\n

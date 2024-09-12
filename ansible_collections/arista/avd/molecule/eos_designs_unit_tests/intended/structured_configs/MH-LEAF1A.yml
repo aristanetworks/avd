@@ -187,7 +187,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X
-  description: server01_ES1_Eth1
+  description: SERVER_server01_ES1_Eth1
   shutdown: false
   channel_group:
     id: 10
@@ -197,7 +197,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X
-  description: server03_AUTO_ESI_Eth1
+  description: SERVER_server03_AUTO_ESI_Eth1
   shutdown: false
   channel_group:
     id: 12
@@ -207,7 +207,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_ESI_Auto
-  description: server04_AUTO_ESI_Profile_Eth1
+  description: SERVER_server04_AUTO_ESI_Profile_Eth1
   shutdown: false
   channel_group:
     id: 13
@@ -217,7 +217,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_ESI_Auto
-  description: server05_AUTO_ESI_Profile_Override_Eth1
+  description: SERVER_server05_AUTO_ESI_Profile_Override_Eth1
   shutdown: false
   channel_group:
     id: 14
@@ -227,7 +227,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto
-  description: server06_Single_Active_Port_Channel_Eth1
+  description: SERVER_server06_Single_Active_Port_Channel_Eth1
   shutdown: false
   channel_group:
     id: 15
@@ -237,7 +237,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server07_Single_Active_Port_Channel_Manual_DF_Eth1
+  description: SERVER_server07_Single_Active_Port_Channel_Manual_DF_Eth1
   shutdown: false
   channel_group:
     id: 16
@@ -247,7 +247,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto_Eth
-  description: server08_Single_Active_Ethernet_Eth1
+  description: SERVER_server08_Single_Active_Ethernet_Eth1
   shutdown: false
   switchport:
     enabled: true
@@ -266,7 +266,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server09_All_Active_Ethernet_Eth1
+  description: SERVER_server09_All_Active_Ethernet_Eth1
   shutdown: false
   switchport:
     enabled: true
@@ -284,7 +284,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server10_Single_Active_Ethernet_Manual_DF_Eth1
+  description: SERVER_server10_Single_Active_Ethernet_Manual_DF_Eth1
   shutdown: false
   switchport:
     enabled: true
@@ -303,7 +303,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth1
+  description: SERVER_server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth1
   shutdown: false
   channel_group:
     id: 20
@@ -313,7 +313,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth1
+  description: SERVER_server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth1
   shutdown: false
   switchport:
     enabled: true
@@ -333,7 +333,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth1
+  description: SERVER_server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth1
   shutdown: false
   channel_group:
     id: 22
@@ -343,7 +343,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: Tenant_X_Trunk
-  description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth1
+  description: SERVER_server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth1
   shutdown: false
   switchport:
     enabled: true
@@ -360,7 +360,7 @@ ethernet_interfaces:
   peer: ROUTER02_WITH_SUBIF
   peer_interface: Eth1
   peer_type: router
-  description: ROUTER02_WITH_SUBIF_Eth1
+  description: ROUTER_ROUTER02_WITH_SUBIF_Eth1
   shutdown: false
   channel_group:
     id: 11
@@ -431,7 +431,7 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.1.33
 port_channel_interfaces:
 - name: Port-Channel10
-  description: server01_ES1_PortChanne1
+  description: SERVER_server01_ES1_PortChanne1
   shutdown: false
   link_tracking_groups:
   - name: LT_GROUP1
@@ -445,7 +445,7 @@ port_channel_interfaces:
     route_target: 00:01:10:10:10:10
   lacp_id: 0001.1010.1010
 - name: Port-Channel12
-  description: server03_AUTO_ESI_Auto-ESI PortChannel
+  description: SERVER_server03_AUTO_ESI_Auto-ESI PortChannel
   shutdown: false
   link_tracking_groups:
   - name: LT_GROUP1
@@ -459,7 +459,7 @@ port_channel_interfaces:
     route_target: fc:87:ae:24:2c:b3
   lacp_id: fc87.ae24.2cb3
 - name: Port-Channel13
-  description: server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
+  description: SERVER_server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
   shutdown: false
   link_tracking_groups:
   - name: LT_GROUP1
@@ -473,7 +473,7 @@ port_channel_interfaces:
     route_target: 29:cc:40:43:0a:29
   lacp_id: 29cc.4043.0a29
 - name: Port-Channel14
-  description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server
+  description: SERVER_server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server
   shutdown: false
   link_tracking_groups:
   - name: LT_GROUP1
@@ -487,7 +487,7 @@ port_channel_interfaces:
     route_target: 01:0a:01:0a:01:0a
   lacp_id: 010a.010a.010a
 - name: Port-Channel15
-  description: server06_Single_Active_Port_Channel_Single-Active ESI
+  description: SERVER_server06_Single_Active_Port_Channel_Single-Active ESI
   shutdown: false
   switchport:
     enabled: true
@@ -503,7 +503,7 @@ port_channel_interfaces:
       preference_value: 100
   lacp_id: 2873.c14b.64ec
 - name: Port-Channel16
-  description: server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
+  description: SERVER_server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
   shutdown: false
   switchport:
     enabled: true
@@ -519,7 +519,7 @@ port_channel_interfaces:
       preference_value: 250
   lacp_id: ec11.73f8.7361
 - name: Port-Channel20
-  description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF
+  description: SERVER_server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF
   shutdown: false
   switchport:
     enabled: true
@@ -536,7 +536,7 @@ port_channel_interfaces:
       dont_preempt: true
   lacp_id: 47cb.834e.c0c7
 - name: Port-Channel22
-  description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF
+  description: SERVER_server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF
   shutdown: false
   switchport:
     enabled: true
@@ -551,7 +551,7 @@ port_channel_interfaces:
       algorithm: modulus
   lacp_id: d716.1795.361e
 - name: Port-Channel11
-  description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
+  description: ROUTER_ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
   shutdown: false
   switchport:
     enabled: false

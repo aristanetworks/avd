@@ -700,7 +700,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 7
 - name: Port-Channel10
-  description: server01_MLAG_PortChanne1
+  description: PortChanne1
   shutdown: false
   switchport:
     enabled: true
@@ -709,7 +709,7 @@ port_channel_interfaces:
       allowed_vlan: 210-211
   mlag: 10
 - name: Port-Channel11
-  description: server01_MTU_PROFILE_MLAG_PortChanne1
+  description: PortChanne1
   shutdown: false
   mtu: 1600
   switchport:
@@ -718,7 +718,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 11
 - name: Port-Channel12
-  description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+  description: PortChanne1
   shutdown: false
   mtu: 1601
   switchport:
@@ -797,7 +797,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_B
-  description: server01_MLAG_Eth2
+  description: SERVER_server01_MLAG_Eth2
   shutdown: false
   channel_group:
     id: 10
@@ -807,7 +807,7 @@ ethernet_interfaces:
   peer_interface: Eth4
   peer_type: server
   port_profile: TENANT_A_MTU
-  description: server01_MTU_PROFILE_MLAG_Eth4
+  description: SERVER_server01_MTU_PROFILE_MLAG_Eth4
   shutdown: false
   channel_group:
     id: 11
@@ -816,7 +816,7 @@ ethernet_interfaces:
   peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth6
   peer_type: server
-  description: server01_MTU_ADAPTOR_MLAG_Eth6
+  description: SERVER_server01_MTU_ADAPTOR_MLAG_Eth6
   shutdown: false
   channel_group:
     id: 12

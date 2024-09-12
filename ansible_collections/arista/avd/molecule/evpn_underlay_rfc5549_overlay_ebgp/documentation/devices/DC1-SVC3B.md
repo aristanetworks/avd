@@ -417,12 +417,12 @@ vlan 4094
 | Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet11 | server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet12 | server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet13 | server06_override_profile_Eth2 | access | 210 | - | - | - |
-| Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
-| Ethernet15 | server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 | server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
+| Ethernet11 | SERVER_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | SERVER_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | SERVER_server06_override_profile_Eth2 | access | 210 | - | - | - |
+| Ethernet14 | SERVER_server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
+| Ethernet15 | SERVER_server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
+| Ethernet16 | SERVER_server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -488,7 +488,7 @@ interface Ethernet8
    channel-group 7 mode active
 !
 interface Ethernet11
-   description server04_inherit_all_from_profile_Eth2
+   description SERVER_server04_inherit_all_from_profile_Eth2
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -501,7 +501,7 @@ interface Ethernet11
    spanning-tree bpdufilter enable
 !
 interface Ethernet12
-   description server05_no_profile_Eth2
+   description SERVER_server05_no_profile_Eth2
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -514,7 +514,7 @@ interface Ethernet12
    spanning-tree bpdufilter enable
 !
 interface Ethernet13
-   description server06_override_profile_Eth2
+   description SERVER_server06_override_profile_Eth2
    no shutdown
    switchport access vlan 210
    switchport mode access
@@ -527,17 +527,17 @@ interface Ethernet13
    spanning-tree bpduguard enable
 !
 interface Ethernet14
-   description server07_inherit_all_from_profile_port_channel_Eth2
+   description SERVER_server07_inherit_all_from_profile_port_channel_Eth2
    no shutdown
    channel-group 14 mode active
 !
 interface Ethernet15
-   description server08_no_profile_port_channel_Eth2
+   description SERVER_server08_no_profile_port_channel_Eth2
    no shutdown
    channel-group 15 mode on
 !
 interface Ethernet16
-   description server09_override_profile_no_port_channel_Eth2
+   description SERVER_server09_override_profile_no_port_channel_Eth2
    no shutdown
    switchport access vlan 210
    switchport mode access
@@ -560,8 +560,8 @@ interface Ethernet16
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
-| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Port-Channel14 | ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -583,7 +583,7 @@ interface Port-Channel7
    mlag 7
 !
 interface Port-Channel14
-   description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+   description ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -597,7 +597,7 @@ interface Port-Channel14
    storm-control unknown-unicast level 2
 !
 interface Port-Channel15
-   description server08_no_profile_port_channel_server08_no_profile_port_channel
+   description server08_no_profile_port_channel
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk

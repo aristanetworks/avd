@@ -399,7 +399,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 8
 - name: Port-Channel5
-  description: dc1-leaf2-server1_PortChannel dc1-leaf2-server1
+  description: SERVER_dc1-leaf2-server1_PortChannel dc1-leaf2-server1
   shutdown: false
   switchport:
     enabled: true
@@ -471,7 +471,7 @@ ethernet_interfaces:
   peer: dc1-leaf2-server1
   peer_interface: PCI2
   peer_type: server
-  description: dc1-leaf2-server1_PCI2
+  description: SERVER_dc1-leaf2-server1_PCI2
   shutdown: false
   channel_group:
     id: 5

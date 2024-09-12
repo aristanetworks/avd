@@ -341,7 +341,7 @@ anta.tests.interfaces:
     - name: Ethernet5
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet5 - dc2-leaf2-server1_PCI2 = 'up'
+      custom_field: Interface Ethernet5 - SERVER_dc2-leaf2-server1_PCI2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Port-Channel3
@@ -359,8 +359,8 @@ anta.tests.interfaces:
     - name: Port-Channel5
       status: up
     result_overwrite:
-      custom_field: Interface Port-Channel5 - dc2-leaf2-server1_PortChannel dc2-leaf2-server1
-        = 'up'
+      custom_field: Interface Port-Channel5 - SERVER_dc2-leaf2-server1_PortChannel
+        dc2-leaf2-server1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan4093
