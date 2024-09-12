@@ -166,7 +166,7 @@ port_channel_interfaces:
   lacp_fallback_timeout: 30
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.0.255.2/32
 - name: Loopback1

@@ -459,7 +459,7 @@ interface Port-Channel5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.12/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.12/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.12/32 |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.12/32 |
 
@@ -467,7 +467,7 @@ interface Port-Channel5
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | 2001:1::c/128 |
+| Loopback0 | ROUTER_ID | default | 2001:1::c/128 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
 
@@ -476,7 +476,7 @@ interface Port-Channel5
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.12/32
    ipv6 address 2001:1::c/128
