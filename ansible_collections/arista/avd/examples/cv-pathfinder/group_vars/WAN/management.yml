@@ -40,7 +40,7 @@ ipv4_acls:
         destination_ports_match: eq
         destination_ports: [isakmp, non500-isakmp]
       - sequence: 20
-        # STUN taffic from anywhere
+        # STUN traffic from anywhere
         action: permit
         protocol: udp
         source: any
