@@ -251,6 +251,7 @@ router bgp 65101
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
       no bgp redistribute-internal
+      bgp additional-path send ecmp
       redistribute bgp leaked
       redistribute connected include leaked rcf Address_Family_IPV4_Connected()
       redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
@@ -272,6 +273,7 @@ router bgp 65101
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
       bgp redistribute-internal
+      bgp additional-path send any
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
       redistribute ospfv3 match external include leaked
