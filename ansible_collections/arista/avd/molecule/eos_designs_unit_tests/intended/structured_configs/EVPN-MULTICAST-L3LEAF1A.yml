@@ -1756,7 +1756,7 @@ standard_access_lists:
 sflow:
   run: true
   vrfs:
-  - name: sflowvrf
+  - name: sflow_vrf
     destinations:
     - destination: 10.10.10.12
       port: 1234

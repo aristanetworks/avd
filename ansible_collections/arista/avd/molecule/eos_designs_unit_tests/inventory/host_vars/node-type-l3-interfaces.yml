@@ -48,7 +48,7 @@ l3_interface_profiles:
 sflow_settings:
   destinations:
     - destination: 10.10.10.12
-      vrf: sflowvrf
+      vrf: sflow_vrf
       port: 1234
 fabric_sflow:
   l3_interfaces: true
