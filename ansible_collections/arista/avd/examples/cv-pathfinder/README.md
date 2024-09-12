@@ -479,17 +479,17 @@ The following diagrams describe the Site2 physical, LAN and HA tunnels connectiv
 
 === "Physical"
 
-    ![Figure: Site 2 Physical](images/site2-physical.png){: style="height:700px;width:700px"}
+    ![Figure: Site 2 Physical](images/site2-physical.png){: style="height:700px"}
 
 === "LAN"
 
     Site 2 borders are using BGP AS 65101
 
-    ![Figure: Site 2 LAN](images/site2-lan.png){: style="height:700px;width:700px"}
+    ![Figure: Site 2 LAN](images/site2-lan.png){: style="height:700px"}
 
 === "HA Tunnels"
 
-    ![Figure: Site 2 HA Tunnels](images/site2-ha.png){: style="height:700px;width:700px"}
+    ![Figure: Site 2 HA Tunnels](images/site2-ha.png){: style="height:700px"}
 
 ```yaml title="group_vars/SITE2.yml"
 --8<--
@@ -503,11 +503,11 @@ The following diagrams describe the Site3 physical and LAN connectivity.
 
 === "Physical"
 
-    ![Figure: Site 3 Physical](images/site3-physical.png){: style="height:700px;width:700px"}
+    ![Figure: Site 3 Physical](images/site3-physical.png){: style="height:700px"}
 
 === "LAN"
 
-    ![Figure: Site 3 LAN](images/site3-lan.png){: style="height:700px;width:700px"}
+    ![Figure: Site 3 LAN](images/site3-lan.png){: style="height:700px"}
 
 !!! TODO
     TODO: Add eBGP toward WAN on site3
