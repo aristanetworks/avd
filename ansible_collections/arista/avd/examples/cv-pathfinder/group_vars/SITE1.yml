@@ -32,7 +32,7 @@ wan_router:
     filter:
       always_include_vrfs_in_tenants: [all]
     uplink_interfaces: [Ethernet1, Ethernet2]
-    uplink_switches: [border1-site1, border2-site1] # (1)
+    uplink_switches: [border1-site1, border2-site1]
     uplink_type: p2p-vrfs # (1)
     bgp_as: 65000
   node_groups:

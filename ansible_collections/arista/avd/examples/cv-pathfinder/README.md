@@ -15,22 +15,22 @@ title: AVD example for CV Pathfinder
 This example is meant to show how to use the CV Pathfinder models in AVD in a basic way.
 
 !!! important
-    * CVaaS is required to run this example. Without it, only configuration generation is possible.
-    * EOS version superior or equal to 4.32.2F is required to run this example.
-    * The devices must be able to reach CVaaS via their Management Interface
+    - CVaaS is required to run this example. Without it, only configuration generation is possible.
+    - Minimum EOS version 4.32.2F is required to run this example.
+    - The devices must be able to reach CVaaS via their Management Interface
 
-The goal is to present the basic configuration blocks required to deploy CV Pathfinder and so does not cover all CV Pathfinder supports.  In particular, it does not cover:
+The goal is to present the basic configuration blocks required to deploy CV Pathfinder and so does not cover all CV Pathfinder features.  In particular, it does not cover:
 
 - Internet Exits
 - WAN routers behind NAT
-- Decentralized inventory
+- Multiple inventories
 
-More information on how these features are supported in AVD can be found in the WAN how-to document (TODO: add link).
+More information on how these features are supported in AVD can be found in the [WAN how-to document](../../roles/eos_designs/docs/how-to/wan.md).
 
 This example will show how to
 
-- Building the intended configurations and documentation
-- Deploying the configuration via CVaaS
+- Build the intended configurations and documentation
+- Deploy the configuration via CloudVision as a Service (CVaaS)
 
 ## Installation
 
@@ -104,27 +104,28 @@ The following table describes the characteristics of each site:
 
 Subnet: `192.168.17.0/24`
 
-|---------------------------------------------|-------------------|
-| Default gateway                             | 192.168.17.1      |
-| **Pathfinders**                             |                   |
-| pf1                                         | 192.168.17.10     |
-| pf2                                         | 192.168.17.11     |
-| **Site 1**                                  |                   |
-| wan1-site1                                  | 192.168.17.12     |
-| wan2-site1                                  | 192.168.17.13     |
-| border1-site1                               | 192.168.17.14     |
-| border2-site1                               | 192.168.17.15     |
-| **Site 2**                                  |                   |
-| wan1-site2                                  | 192.168.17.16     |
-| wan2-site2                                  | 192.168.17.17     |
-| leaf1-site2                                 | 192.168.17.18     |
-| leaf2-site2                                 | 192.168.17.19     |
-| **Site 3**                                  |                   |
-| wan1-site3                                  | 192.168.17.20     |
-| leaf1-site3                                 | 192.168.17.21     |
-| **Clouds**                                  |                   |
-| mpls-cloud                                  | 192.168.17.30     |
-| inet-cloud                                  | 192.168.17.31     |
+| Description      | IP Address    |
+| ---------------- | ------------- |
+| Default gateway  | 192.168.17.1  |
+| **Pathfinders**  |               |
+| pf1              | 192.168.17.10 |
+| pf2              | 192.168.17.11 |
+| **Site 1**       |               |
+| wan1-site1       | 192.168.17.12 |
+| wan2-site1       | 192.168.17.13 |
+| border1-site1    | 192.168.17.14 |
+| border2-site1    | 192.168.17.15 |
+| **Site 2**       |               |
+| wan1-site2       | 192.168.17.16 |
+| wan2-site2       | 192.168.17.17 |
+| leaf1-site2      | 192.168.17.18 |
+| leaf2-site2      | 192.168.17.19 |
+| **Site 3**       |               |
+| wan1-site3       | 192.168.17.20 |
+| leaf1-site3      | 192.168.17.21 |
+| **Clouds**       |               |
+| mpls-cloud       | 192.168.17.30 |
+| inet-cloud       | 192.168.17.31 |
 
 ### Other subnets IP allocation
 
@@ -260,15 +261,13 @@ Pathfinder nodes are using the node_type `wan_rr`, all WAN routers (edge and tra
 
 ## Global settings for WAN
 
-The following settings must be the same for every WAN device participating in the WAN network
-
 The following table list the `eos_designs` top level keys used for WAN and how they should be set:
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
 | `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
 | `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
-| `wan_route_servers` | ✘| Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
+| `wan_route_servers` | ✘ | Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
 | `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
 | `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
 | `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
@@ -276,11 +275,8 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 | `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
 | `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
 | `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
-| `ipv4_acls` | ✘| List of IPv4 access-lists to be assigned to WAN interfaces. |
-
-Additionally, following keys must be set for the WAN route servers for the connectivity to work:
-
-- `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes`: To set the ranges of IP address from which to expect BGP peerings for the WAN. Include the VTEP ranges for all routers connecting to this patfinder.
+| `ipv4_acls` | ✘ | List of IPv4 access-lists to be assigned to WAN interfaces. |
+| `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` | ✘ | Must be set for the pathfinders for the connectivity to work. Sets the ranges of IP addresses from which to expect BGP peerings for the WAN. Include the VTEP ranges for all WAN routers connecting to this patfinder. |
 
 In this example, the settings are set under the group `WAN`. To help logically separating the variables in meaningful categories, the group variables for `WAN` are created in several YAML files under `ansible-avd-examples/cv-pathfinder/group_vars/WAN/`:
 
@@ -299,12 +295,11 @@ The `management.yml` file contains configuration for:
 - the management gateway
 - NTP
 - Terminattr to configure connection to CVaaS.
-- local user (arista/arista and cvpadmin/cvpadmin)
+- local users (arista/arista and cvpadmin/cvpadmin)
 - `ipv4_acls`: a list of ACL used for Internet facing WAN interfaces
 - DNS
 - AAA
-- Disabling LLDP on management interface
-- New default system l1 configuration
+- Disabling LLDP on management interface - Only needed for lab environments.
 
 ```yaml title="group_vars/WAN/management.yml"
 --8<--
@@ -327,8 +322,8 @@ examples/cv-pathfinder/group_vars/WAN//cv_pathfinder_settings.yml
 3. `wan_route_servers` define the Pathfinders each router should connect to. It
    is possible to have this variable for instance at a group level to have
    per-region Pathfinders.
-4. `wan_ipsec_profiles` is used to control IP Security configuration, the keys
-   are required
+4. `wan_ipsec_profiles` is used to control IP Security configuration, these
+   settings are required.
 5. For lab purposes Flow tracking is enabled on uplinks and downlinks. Make sure
    to verify the scalability of CloudVision depending on your network in
    Production.
@@ -355,11 +350,11 @@ A profile is used to apply a load balancing policy and potentially an
 internet-exit policy (not in this example). The load balancing policy defines
 which path-groups can be used for the traffic.
 
-As explained above, `wan_virtual_topologies` variable must be global, AVD then
+As explained above, the `wan_virtual_topologies` variable must be global. AVD
 decides for each device, based on the locally present path-groups, how to
-configure the policies (e.g. if some traffic being matched is configured to be
-sent only over `MPLS` path-group but there is no local WAN interface connected
-to `MPLS` then the match statement, profile and load-balance policy are not
+configure the policies (e.g. if some traffic being matched is configured to only be
+sent over the `MPLS` path-group but there is no local WAN interface connected
+to `MPLS` then the match statement, profile and load-balance policy is not
 generated by AVD on the device).
 
 For this example, we define two policies, one for each VRF BLUE and RED.
@@ -374,7 +369,7 @@ when the `wan_carrier` setting is set. The `wan_carrier` allows AVD to know
 which path-group to use for the interface based on the Carrier to Path-Group mapping
 in the top level `wan_carriers` key.
 
-```yaml title"AVD WAN interfaces example"
+```yaml title="AVD WAN interfaces example"
 wan_router:
   node_groups:
     - group: SITE1
@@ -400,7 +395,7 @@ wan_router:
 ```
 
 1. Ethernet3 is a WAN interface because `wan_carrier` is defined
-2. Ethernet42 is **NOT** a WAN interface because `wan_carrier` is defined
+2. Ethernet42 is *not* a WAN interface because `wan_carrier` is not defined
 
 L3 interface profiles are defined globally and reused on the site WAN routers to
 apply common configurations.
@@ -455,19 +450,19 @@ The following diagrams describe the Site1 physical, LAN and HA tunnels connectiv
 
 === "Physical"
 
-    ![Figure: Site 1 Physical](images/site1-physical.png){: style="height:700px;width:700px"}
+    ![Figure: Site 1 Physical](images/site1-physical.png){: style="height:700px"}
 
 === "LAN"
 
     Site 1 borders are using BGP AS 65101
 
-    ![Figure: Site 1 LAN](images/site1-lan.png){: style="height:700px;width:700px"}
+    ![Figure: Site 1 LAN](images/site1-lan.png){: style="height:700px"}
 
 === "HA Tunnels"
 
     By default AVD is using all uplink interfaces for the LAN_HA path groups. EOS then establish an IPsec tunnel between all pairs of local and remote connections, in this scenario there are four tunnels created for the LAN_HA path group.
 
-    ![Figure: Site 1 HA Tunnels](images/site1-ha.png){: style="height:700px;width:700px"}
+    ![Figure: Site 1 HA Tunnels](images/site1-ha.png){: style="height:700px"}
 
 ```yaml title="group_vars/SITE1.yml"
 --8<--

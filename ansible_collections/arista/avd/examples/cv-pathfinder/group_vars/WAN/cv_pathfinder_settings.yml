@@ -44,7 +44,7 @@ wan_ipsec_profiles: # (4)
 # devices. To disable it for a lab, uncomment the following line.
 # wan_stun_dtls_disable: true
 
-# Fabric Flow tracking - by default only enabled on Dps
+# Fabric Flow tracking - by default only enabled for the Dps1 interface
 fabric_flow_tracking: # (5)
   uplinks:
     enabled: true
@@ -95,14 +95,14 @@ wan_carriers: # (7)
   - name: REGION2-INTERNET-CORP
     path_group: INTERNET
 
-wan_path_groups: # (7)
+wan_path_groups: # (8)
   - name: MPLS
     id: 101
   - name: INTERNET
     id: 102
 
 # WAN virtual topologies
-wan_virtual_topologies: # (8)
+wan_virtual_topologies: # (9)
   vrfs:
     - name: BLUE
       policy: BLUE-POLICY
