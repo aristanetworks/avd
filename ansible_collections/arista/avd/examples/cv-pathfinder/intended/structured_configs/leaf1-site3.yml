@@ -26,6 +26,9 @@ config_end: true
 enable_password:
   disabled: true
 transceiver_qsfp_default_mode_4x10: true
+ip_name_servers:
+- ip_address: 192.168.17.1
+  vrf: MGMT
 local_users:
 - name: arista
   privilege: 15
@@ -97,16 +100,7 @@ flow_tracking:
           host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
-- ip_address: 10.14.0.1
-  vrf: MGMT
 dns_domain: wan.example.local
 aaa_authorization:
   exec:
     default: local
-system:
-  l1:
-    unsupported_speed_action: error
-    unsupported_error_correction_action: error

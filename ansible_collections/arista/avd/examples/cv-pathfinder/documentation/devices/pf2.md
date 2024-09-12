@@ -56,9 +56,6 @@
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Device Configuration](#platform-device-configuration)
-- [System L1](#system-l1)
-  - [Unsupported Interface Configurations](#unsupported-interface-configurations)
-  - [System L1 Device Configuration](#system-l1-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Application Profiles](#application-profiles)
@@ -135,12 +132,10 @@ dns domain wan.example.local
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
 | 192.168.17.1 | MGMT | - |
-| 10.14.0.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 10.14.0.1
 ip name-server vrf MGMT 192.168.17.1
 ```
 
@@ -1012,24 +1007,6 @@ vrf instance MGMT
 ```eos
 !
 platform sfe data-plane cpu allocation maximum 1
-```
-
-## System L1
-
-### Unsupported Interface Configurations
-
-| Unsupported Configuration | action |
-| ---------------- | -------|
-| Speed | error |
-| Error correction | error |
-
-### System L1 Device Configuration
-
-```eos
-!
-system l1
-   unsupported speed action error
-   unsupported error-correction action error
 ```
 
 ## Application Traffic Recognition

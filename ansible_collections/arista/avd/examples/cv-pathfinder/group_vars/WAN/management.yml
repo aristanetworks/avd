@@ -1,7 +1,6 @@
 ---
 # WAN Management settings
 mgmt_gateway: 192.168.17.1
-# mgmt_gateway: 10.90.226.1
 
 # NTP
 ntp_settings:
@@ -81,12 +80,8 @@ ipv4_acls:
         destination: any
 
 # DNS
-custom_structured_configuration_ip_name_servers:
-  - ip_address: 192.168.17.1
-    vrf: MGMT
-  # TODO: remove for example
-  - ip_address: 10.14.0.1
-    vrf: MGMT
+name_servers:
+  - 192.168.17.1
 
 custom_structured_configuration_dns_domain: wan.example.local
 
@@ -101,8 +96,3 @@ custom_structured_configuration_management_interfaces:
     lldp:
       transmit: false
       receive: false
-
-custom_structured_configuration_system:
-  l1:
-    unsupported_speed_action: error
-    unsupported_error_correction_action: error

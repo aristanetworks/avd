@@ -33,9 +33,6 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [System L1](#system-l1)
-  - [Unsupported Interface Configurations](#unsupported-interface-configurations)
-  - [System L1 Device Configuration](#system-l1-device-configuration)
 
 ## Management
 
@@ -86,12 +83,10 @@ dns domain wan.example.local
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
 | 192.168.17.1 | MGMT | - |
-| 10.14.0.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 10.14.0.1
 ip name-server vrf MGMT 192.168.17.1
 ```
 
@@ -380,22 +375,4 @@ ip route vrf MGMT 0.0.0.0/0 192.168.17.1
 ```eos
 !
 vrf instance MGMT
-```
-
-## System L1
-
-### Unsupported Interface Configurations
-
-| Unsupported Configuration | action |
-| ---------------- | -------|
-| Speed | error |
-| Error correction | error |
-
-### System L1 Device Configuration
-
-```eos
-!
-system l1
-   unsupported speed action error
-   unsupported error-correction action error
 ```
