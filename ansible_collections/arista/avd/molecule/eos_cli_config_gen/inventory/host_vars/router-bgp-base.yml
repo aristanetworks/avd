@@ -107,6 +107,10 @@ router_bgp:
         route_map: RM-FOO-MATCH
     bgp:
       redistribute_internal: false
+      additional_paths:
+        receive: true
+        send: ecmp
+        send_ecmp_limit: 20
     peer_groups:
       - name: foo
         prefix_list_in: PL-BAR-v4-IN
@@ -122,6 +126,10 @@ router_bgp:
       - ip_address: 192.0.2.1
         prefix_list_in: PL-FOO-v4-IN
         prefix_list_out: PL-FOO-v4-OUT
+        additional_paths:
+          receive: true
+          send: limit
+          send_limit: 20
       - ip_address: 10.2.3.8
         rcf_in: Address_Family_IPV4_In()
       - ip_address: 10.2.3.9
@@ -151,6 +159,9 @@ router_bgp:
         route_map: RM-BAR-MATCH
     bgp:
       redistribute_internal: true
+      additional_paths:
+        receive: true
+        send: any
     peer_groups:
       - name: baz
         prefix_list_in: PL-BAR-v6-IN
@@ -163,6 +174,10 @@ router_bgp:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
+        additional_paths:
+          receive: true
+          send: ecmp
+          send_ecmp_limit: 20
       - ip_address: 2001:db8::2
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()

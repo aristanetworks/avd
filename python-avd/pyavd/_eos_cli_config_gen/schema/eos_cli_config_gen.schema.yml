@@ -12843,6 +12843,9 @@ keys:
                         Example: MyFunction(myarg).'
                     route_map:
                       type: str
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           peer_groups:
             type: list
             primary_key: name
@@ -13554,6 +13557,11 @@ keys:
                   description: Peer-group name.
                 activate:
                   type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           networks:
             type: list
             primary_key: prefix

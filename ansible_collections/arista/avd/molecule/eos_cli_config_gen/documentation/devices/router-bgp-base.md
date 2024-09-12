@@ -244,6 +244,7 @@ router bgp 65101
       neighbor foo additional-path send ecmp limit 20
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
+      neighbor 192.0.2.1 additional-path send limit 20
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       network 10.0.0.0/8
@@ -265,6 +266,7 @@ router bgp 65101
       neighbor baz additional-path send ecmp limit 20
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
+      neighbor 2001:db8::1 additional-path send ecmp limit 20
       neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
       network 2001:db8:100::/40
