@@ -16,7 +16,7 @@ lldp hold-time {{ lldp.holdtime }}
 lldp timer reinitialization {{ lldp.timer_reinitialization }}
 {%     endif %}
 {%     if lldp.tlvs is arista.avd.defined %}
-{%         for tlv in lldp.tlvs %}
+{%         for tlv in lldp.tlvs | arista.avd.natural_sort("name") %}
 {%             if tlv.name is arista.avd.defined and tlv.transmit is arista.avd.defined %}
 {%                 set lldp_tlv_transmit_cli = "lldp tlv transmit " ~ tlv.name %}
 {%                 if tlv.transmit is arista.avd.defined(false) %}

@@ -402,10 +402,10 @@ interface Loopback0
    ip address 100.70.0.5/32
    ipv6 address 2000:1234:ffff:ffff::5/128
    mpls ldp interface
-   isis enable CORE
-   isis passive
    node-segment ipv4 index 205
    node-segment ipv6 index 205
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces

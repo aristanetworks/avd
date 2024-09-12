@@ -256,10 +256,10 @@ interface Loopback0
    ip address 100.70.0.3/32
    ipv6 address 2000:1234:ffff:ffff::3/128
    mpls ldp interface
-   isis enable CUSTOM_NAME
-   isis passive
    node-segment ipv4 index 303
    node-segment ipv6 index 303
+   isis enable CUSTOM_NAME
+   isis passive
 ```
 
 ## Routing

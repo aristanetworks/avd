@@ -232,10 +232,10 @@ interface Loopback0
    ip address 100.70.0.2/32
    ipv6 address 2000:1234:ffff:ffff::2/128
    mpls ldp interface
-   isis enable CORE
-   isis passive
    node-segment ipv4 index 302
    node-segment ipv6 index 302
+   isis enable CORE
+   isis passive
 ```
 
 ## Routing
