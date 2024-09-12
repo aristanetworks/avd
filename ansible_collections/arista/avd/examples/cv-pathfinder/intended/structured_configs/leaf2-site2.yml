@@ -124,7 +124,7 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
   cvaddrs:
-  - apiserver.cv-staging.corp.arista.io:443
+  - www.cv-staging.corp.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token

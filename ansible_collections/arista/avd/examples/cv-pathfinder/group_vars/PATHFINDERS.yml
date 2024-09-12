@@ -9,7 +9,6 @@ wan_rr:
   nodes:
     - name: pf1
       id: 1
-      # mgmt_ip: 192.168.17.10/24
       mgmt_ip: "{{ ansible_host }}/24"
       cv_pathfinder_site: PF1-GLOBAL  # (2)
       # WAN interfaces
@@ -36,7 +35,6 @@ wan_rr:
             - prefix: 0.0.0.0/0
     - name: pf2
       id: 2
-      # mgmt_ip: 192.168.17.11/24
       mgmt_ip: "{{ ansible_host }}/24"
       cv_pathfinder_site: PF2-GLOBAL
       # WAN interfaces

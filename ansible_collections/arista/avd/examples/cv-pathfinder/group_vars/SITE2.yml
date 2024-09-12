@@ -19,11 +19,9 @@ l3leaf:
       nodes:
         - name: leaf1-site2
           id: 9
-          # mgmt_ip: 192.168.17.18/24
           mgmt_ip: "{{ ansible_host }}/24"
         - name: leaf2-site2
           id: 10
-          # mgmt_ip: 192.168.17.19/24
           mgmt_ip: "{{ ansible_host }}/24"
 
 wan_router:
@@ -53,7 +51,6 @@ wan_router:
       nodes:
         - name: wan1-site2
           id: 7
-          # mgmt_ip: 192.168.17.16/24
           mgmt_ip: "{{ ansible_host }}/24"
           uplink_switches: [leaf1-site2]
           l3_interfaces:
@@ -66,7 +63,6 @@ wan_router:
               wan_circuit_id: mpls-wan1-site2
         - name: wan2-site2
           id: 8
-          # mgmt_ip: 192.168.17.17/24
           mgmt_ip: "{{ ansible_host }}/24"
           uplink_switches: [leaf2-site2]
           l3_interfaces:

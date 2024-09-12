@@ -2,13 +2,8 @@
 # Site3 variables
 
 l2leaf:
-  defaults:
-    loopback_ipv4_pool: 192.168.255.0/24
-    filter:
-      always_include_vrfs_in_tenants: [all]
   nodes:
     - name: leaf1-site3
-      # mgmt_ip: 192.168.17.21/24
       mgmt_ip: "{{ ansible_host }}/24"
       id: 12
 
@@ -26,7 +21,6 @@ wan_router:
       cv_pathfinder_region: REGION2
       cv_pathfinder_site: SITE3
       id: 11
-      # mgmt_ip: 192.168.17.20/24
       mgmt_ip: "{{ ansible_host }}/24"
       uplink_switches: [leaf1-site3]
       l3_interfaces:
