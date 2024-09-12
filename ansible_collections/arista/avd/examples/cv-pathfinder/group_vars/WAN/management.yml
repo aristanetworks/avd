@@ -10,7 +10,7 @@ ntp_settings:
 
 # CloudVision/TerminAttr
 # **edit the cvp_instance_ips to match your CVaaS region**
-cvp_instance_ips: [apiserver.cv-staging.corp.arista.io]
+cvp_instance_ips: [www.cv-staging.corp.arista.io]
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
