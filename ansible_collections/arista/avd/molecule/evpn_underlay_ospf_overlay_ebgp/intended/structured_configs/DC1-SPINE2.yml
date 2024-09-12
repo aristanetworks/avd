@@ -248,7 +248,7 @@ ethernet_interfaces:
     key: kguPGHyy/wCN0mKibi4dLRL4PmsrU4UP
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.2/32
   ospf_area: 0.0.0.0
