@@ -653,6 +653,10 @@ roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 --8<--
 
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-session-default-encapsulation-gre.md
+--8<--
+
 ### Monitor layer 1
 
 --8<--
@@ -681,6 +685,18 @@ roles/eos_cli_config_gen/docs/tables/tap-aggregation.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/vmtracer-sessions.md
+--8<--
+
+### Monitor telemetry influx
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-telemetry-influx.md
+--8<--
+
+### Monitor telemetry postcard
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-telemetry-postcard-policy.md
 --8<--
 
 ## Multicast
