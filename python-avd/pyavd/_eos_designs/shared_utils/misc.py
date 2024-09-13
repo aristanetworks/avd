@@ -340,6 +340,10 @@ class MiscMixin:
         return get(self.hostvars, "fabric_sflow.mlag_interfaces")
 
     @cached_property
+    def fabric_sflow_l3_interfaces(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.l3_interfaces")
+
+    @cached_property
     def default_interface_mtu(self: SharedUtils) -> int | None:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
         return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)
