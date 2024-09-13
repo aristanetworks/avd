@@ -149,9 +149,9 @@ class WanMixin:
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
         """
-        List of path_groups present on this router based on the local carriers.
+        List of path-groups present on this router based on the local carriers.
 
-        Also add for each path_groups the local interfaces in a data structure
+        Also add for each path-groups the local interfaces in a data structure
             interfaces:
               - name: ...
                 public_ip: ...
@@ -181,8 +181,23 @@ class WanMixin:
 
     @cached_property
     def wan_local_path_group_names(self: SharedUtils) -> list:
-        """Return a list of wan_local_path_group names to be used by HA peer and in various places."""
+        """Return a list of wan_local_path_group names."""
         return [path_group["name"] for path_group in self.wan_local_path_groups]
+
+    @cached_property
+    def wan_ha_peer_path_groups(self: SharedUtils) -> list:
+        """
+        List of WAN HA peer path-groups coming from facts.
+        """
+        if not self.is_wan_router or not self.wan_ha:
+            return []
+        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
+        return get(peer_facts, "wan_path_groups", required=True)
+
+    @cached_property
+    def wan_ha_peer_path_group_names(self: SharedUtils) -> list:
+        """Return a list of wan_ha_peer_path_group names."""
+        return [path_group["name"] for path_group in self.wan_ha_peer_path_groups]
 
     @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
@@ -343,10 +358,7 @@ class WanMixin:
                 wan_path_groups = get(wan_rs_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
 
                 if vtep_ip is None:
-                    msg = (
-                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
-                        " facts."
-                    )
+                    msg = f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer" " facts."
                     raise AristaAvdMissingVariableError(
                         msg,
                     )

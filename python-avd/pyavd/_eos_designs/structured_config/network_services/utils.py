@@ -199,6 +199,10 @@ class UtilsMixin(UtilsZscalerMixin):
 
         return False
 
+    ################
+    ## WAN utils  ##
+    ################
+
     @cached_property
     def _filtered_wan_vrfs(self: AvdStructuredConfigNetworkServices) -> list:
         """Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode."""
@@ -255,7 +259,7 @@ class UtilsMixin(UtilsZscalerMixin):
         Inside each match and default_match statetement, the fully resolved load_balancing policy is present (it guarantees that the load-balance policy
         is not empty).
 
-        The default VRF is marked as non default.
+        The default VRF is marked as default.
         """
         # to track the names already injected
         filtered_policy_names = []
@@ -430,7 +434,9 @@ class UtilsMixin(UtilsZscalerMixin):
         """
         Generate and return a router path-selection load-balance policy.
 
-        If HA is enabled, inject the HA path-group with priority 1.
+        If HA is enabled:
+        * the remote peer path-groups are considered.
+        * inject the HA path-group with priority 1.
 
         Attrs:
         ------
@@ -450,12 +456,16 @@ class UtilsMixin(UtilsZscalerMixin):
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
 
+        # Using this flag while looping through all entries to keep track of any path group present on the remote host
+        any_path_group_on_wan_ha_peer = self.shared_utils.wan_ha
+
         for policy_entry in policy_entries:
             policy_entry_priority = None
             if preference := get(policy_entry, "preference"):
                 policy_entry_priority = self._path_group_preference_to_eos_priority(preference, f"{context_path}[{policy_entry.get('names')}]")
 
-            for path_group_name in policy_entry.get("names"):
+            entry_path_groups = policy_entry.get("names")
+            for path_group_name in entry_path_groups:
                 if (priority := policy_entry_priority) is None:
                     # No preference defined at the policy level, need to retrieve the default preference
                     wan_path_group = get_item(
@@ -481,13 +491,15 @@ class UtilsMixin(UtilsZscalerMixin):
 
                 wan_load_balance_policy["path_groups"].append(path_group)
 
-        if len(wan_load_balance_policy["path_groups"]) == 0:
-            # The policy is empty
+            # Updating peer path-groups tracking
+            any_path_group_on_wan_ha_peer = any_path_group_on_wan_ha_peer and set(self.shared_utils.wan_ha_peer_path_group_names).union(set(entry_path_groups))
+
+        if len(wan_load_balance_policy["path_groups"]) == 0 and not any_path_group_on_wan_ha_peer:
+            # The policy is empty, and either the site is not using HA or no path-group in the policy is present on the HA peer
             return None
 
-        # TODO: for now adding LAN_HA only if the path-groups list is not empty
-        # then need to add the logic to check HA peer path-group and maybe return a policy with LAN_HA only.
         if self.shared_utils.wan_ha or self.shared_utils.is_cv_pathfinder_server:
+            # TODO should we remove the end of this comment?
             # Adding HA path-group with priority 1 - it does not count as an entry with priority 1
             wan_load_balance_policy["path_groups"].append({"name": self.shared_utils.wan_ha_path_group_name})
 
