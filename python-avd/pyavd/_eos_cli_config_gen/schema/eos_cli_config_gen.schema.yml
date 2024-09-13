@@ -1556,6 +1556,26 @@ keys:
             max: 300
             convert_types:
             - str
+      radius_av_pair_username_format:
+        type: dict
+        description: RADIUS AV-pair username settings.
+        keys:
+          delimiter:
+            type: str
+            description: Delimiter to use in MAC address string.
+            required: true
+            valid_values:
+            - colon
+            - hyphen
+            - none
+            - period
+          mac_string_case:
+            type: str
+            description: MAC address string in lowercase/uppercase.
+            required: true
+            valid_values:
+            - lowercase
+            - uppercase
       radius_av_pair:
         type: dict
         keys:
@@ -3039,6 +3059,9 @@ keys:
                   type: bool
                 host_mode_common:
                   type: bool
+            mac_based_access_list:
+              type: bool
+              description: Operate interface in per-mac access-list mode.
             timeout:
               type: dict
               keys:
@@ -3096,6 +3119,30 @@ keys:
                       max: 65535
                       convert_types:
                       - str
+            aaa:
+              type: dict
+              keys:
+                unresponsive:
+                  type: dict
+                  description: Configure AAA timeout options.
+                  keys:
+                    eap_response:
+                      type: str
+                      description: EAP response to send. EOS default is `success`.
+                      valid_values:
+                      - success
+                      - disabled
+                    action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action
+                      keys:
+                        traffic_allow_access_list:
+                          type: str
+                          description: Name of standard access-list to apply when
+                            AAA times out.
+                    phone_action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
         service_profile:
           type: str
           description: QOS profile.

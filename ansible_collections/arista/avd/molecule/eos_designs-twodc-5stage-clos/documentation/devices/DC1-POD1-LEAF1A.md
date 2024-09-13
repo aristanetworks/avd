@@ -241,14 +241,14 @@ interface Port-Channel3
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 172.16.110.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.3/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.3/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -260,7 +260,7 @@ interface Loopback0
    ip address 172.16.110.3/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 172.18.110.3/32
 ```

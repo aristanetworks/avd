@@ -1410,6 +1410,9 @@ keys:
       mlag_interfaces:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
+      l3_interfaces:
+        description: Enable sFlow on all l3 interfaces.
+        type: bool
   flow_tracking_settings:
     documentation_options:
       table: management-flow-tracking-settings
@@ -2836,7 +2839,10 @@ keys:
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
-    description: Point to Point Links MTU.
+    description: 'Point to Point Links MTU.
+
+      Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
+      -> 9214'
     type: int
     convert_types:
     - str
@@ -2911,6 +2917,20 @@ keys:
           description: 'Default interface MTU configured on EOS under "interface defaults".
 
             Takes precedence over the root key "default_interface_mtu".
+
+            '
+          min: 68
+          max: 65535
+        p2p_uplinks_mtu:
+          type: int
+          convert_types:
+          - str
+          description: 'Set MTU on point to point uplink interfaces.
+
+            Takes precedence over the root key "p2p_uplinks_mtu".
+
+            <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
+            -> 9214.
 
             '
           min: 68
@@ -3143,6 +3163,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       management_interface: Management1/1
+      p2p_uplinks_mtu: 9194
     - platforms:
       - AWE-7220R
       feature_support:
@@ -3152,6 +3173,7 @@ keys:
         queue_monitor_length_notify: false
         poe: true
       management_interface: Management1
+      p2p_uplinks_mtu: 9194
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -4192,6 +4214,12 @@ keys:
     description: 'Generate AVD configurations directly from a given CloudVision topology.
 
       See `cv_topology` for details.'
+  vtep_loopback_description:
+    documentation_options:
+      table: overlay-settings
+    description: Customize the description on the VTEP interface, typically Loopback1.
+    type: str
+    default: VXLAN_TUNNEL_SOURCE
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings
@@ -8831,6 +8859,14 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              mtu:
+                type: int
+                convert_types:
+                - str
+                description: Set MTU on WAN HA interfaces.
+                min: 68
+                max: 65535
+                default: 9194
               ha_interfaces:
                 description: "Local WAN HA interfaces\nOverwrite the default behavior
                   which is to pick all the `uplink_interfaces`.\nCan be used to filter

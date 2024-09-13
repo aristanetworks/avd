@@ -293,7 +293,7 @@ interface Ethernet3
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 172.16.120.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.120.3/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.120.3/32 |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.102.3/32 |
 
@@ -302,7 +302,7 @@ interface Ethernet3
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 
@@ -316,7 +316,7 @@ interface Loopback0
    ip address 172.16.120.3/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 172.18.120.3/32
 !
