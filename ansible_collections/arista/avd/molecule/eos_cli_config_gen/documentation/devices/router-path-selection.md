@@ -178,8 +178,8 @@ router path-selection
       !
       peer static router-ip 172.16.42.42
          name TEST-STATIC-PEER-WITH-NAME
-         ipv4 address 192.168.1.42
          ipv4 address 192.168.42.42
+         ipv4 address 192.168.1.42
    !
    path-group PG-2 id 42
       ipsec profile IPSEC-P-1
@@ -201,10 +201,10 @@ router path-selection
       local interface Ethernet4.666
       !
       local ip 192.168.1.100 public address 192.168.42.42
-         stun server-profile ['1', '2', ' ', '-', '-', '-', '-', 'N', 'N', 'P', 'P', 'S', 'S', 'T', 'T', 'U', 'U']
+         stun server-profile STUN-P-1 STUN-P-2
       !
       local ip 192.168.100.1
-         stun server-profile ['1', '-', '-', 'N', 'P', 'S', 'T', 'U']
+         stun server-profile STUN-P-1
       !
       peer dynamic
          ipsec disabled

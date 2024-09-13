@@ -36,7 +36,7 @@ snmp-server location {{ snmp_server.location }}
 {%     endif %}
 {# TODO local interfaces config order is not correct as per EOS #}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
-{%         for local_interface in snmp_server.local_interfaces %}
+{%         for local_interface in snmp_server.local_interfaces | arista.avd.natural_sort('name') %}
 {%             set interface_snmp_cli = "snmp-server" %}
 {%             if local_interface.vrf is arista.avd.defined %}
 {%                 set interface_snmp_cli = interface_snmp_cli ~ " vrf " ~ local_interface.vrf %}
@@ -46,7 +46,7 @@ snmp-server location {{ snmp_server.location }}
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.views is arista.avd.defined %}
-{%         for view in snmp_server.views %}
+{%         for view in snmp_server.views | arista.avd.natural_sort('name') %}
 {%             if view.name is arista.avd.defined %}
 {%                 set view_cli = "snmp-server view " ~ view.name %}
 {%             endif %}
