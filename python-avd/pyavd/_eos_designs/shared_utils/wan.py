@@ -358,7 +358,10 @@ class WanMixin:
                 wan_path_groups = get(wan_rs_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
 
                 if vtep_ip is None:
-                    msg = f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer" " facts."
+                    msg = (
+                        f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                        " facts."
+                    )
                     raise AristaAvdMissingVariableError(
                         msg,
                     )
