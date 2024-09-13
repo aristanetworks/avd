@@ -653,10 +653,6 @@ roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 --8<--
 
---8<--
-roles/eos_cli_config_gen/docs/tables/monitor-session-default-encapsulation-gre.md
---8<--
-
 ### Monitor layer 1
 
 --8<--
