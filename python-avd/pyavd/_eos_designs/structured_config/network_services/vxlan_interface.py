@@ -188,6 +188,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
                     vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
                         underlay_l3_multicast_group_ipv4_pool,
+                        vni,
                         vrf_id,
                         underlay_l3_mcast_group_ipv4_pool_offset,
                     )
