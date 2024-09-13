@@ -8005,6 +8005,8 @@ keys:
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
   monitor_session_default_encapsulation_gre:
+    documentation_options:
+      table: monitor-sessions
     type: dict
     keys:
       payload:
@@ -8099,6 +8101,8 @@ keys:
               convert_types:
               - str
   monitor_telemetry_influx:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       vrf:
@@ -8173,6 +8177,8 @@ keys:
               required: true
               description: Value of the global tag pair.
   monitor_telemetry_postcard_policy:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       disabled:
