@@ -253,9 +253,9 @@ STP Root Super: **True**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
 no spanning-tree vlan-id 4092
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 ```
 
