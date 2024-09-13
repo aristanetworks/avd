@@ -7,20 +7,6 @@ l3leaf,DC1-BL1B,Ethernet45,172.31.255.97/31,spine,DC1-SPINE1,Ethernet7,172.31.25
 l3leaf,DC1-BL1B,Ethernet46,172.31.255.99/31,spine,DC1-SPINE2,Ethernet7,172.31.255.98/31
 l3leaf,DC1-BL1B,Ethernet47,172.31.255.101/31,spine,DC1-SPINE3,Ethernet7,172.31.255.100/31
 l3leaf,DC1-BL1B,Ethernet48,172.31.255.103/31,spine,DC1-SPINE4,Ethernet7,172.31.255.102/31
-l2leaf,DC1-L2LEAF1A,Ethernet1,,l3leaf,DC1-LEAF2A,Ethernet7,
-l2leaf,DC1-L2LEAF1A,Ethernet2,,l3leaf,DC1-LEAF2B,Ethernet7,
-l2leaf,DC1-L2LEAF1A,Ethernet3,,mlag_peer,DC1-L2LEAF1B,Ethernet3,
-l2leaf,DC1-L2LEAF1A,Ethernet4,,mlag_peer,DC1-L2LEAF1B,Ethernet4,
-l2leaf,DC1-L2LEAF1B,Ethernet1,,l3leaf,DC1-LEAF2A,Ethernet8,
-l2leaf,DC1-L2LEAF1B,Ethernet2,,l3leaf,DC1-LEAF2B,Ethernet8,
-l2leaf,DC1-L2LEAF2A,Ethernet1,,l3leaf,DC1-SVC3A,Ethernet7,
-l2leaf,DC1-L2LEAF2A,Ethernet2,,l3leaf,DC1-SVC3B,Ethernet7,
-l2leaf,DC1-L2LEAF2A,Ethernet3,,mlag_peer,DC1-L2LEAF2B,Ethernet3,
-l2leaf,DC1-L2LEAF2A,Ethernet4,,mlag_peer,DC1-L2LEAF2B,Ethernet4,
-l2leaf,DC1-L2LEAF2B,Ethernet1,,l3leaf,DC1-SVC3A,Ethernet8,
-l2leaf,DC1-L2LEAF2B,Ethernet2,,l3leaf,DC1-SVC3B,Ethernet8,
-l2leaf,DC1-L2LEAF3A,Ethernet1,,l3leaf,DC1-LEAF2A,Ethernet9,
-l2leaf,DC1-L2LEAF3A,Ethernet2,,l3leaf,DC1-LEAF2B,Ethernet9,
 l3leaf,DC1-LEAF1A,Ethernet1,172.31.255.1/31,spine,DC1-SPINE1,Ethernet1,172.31.255.0/31
 l3leaf,DC1-LEAF1A,Ethernet2,172.31.255.3/31,spine,DC1-SPINE2,Ethernet1,172.31.255.2/31
 l3leaf,DC1-LEAF1A,Ethernet3,172.31.255.5/31,spine,DC1-SPINE3,Ethernet1,172.31.255.4/31
@@ -41,5 +27,3 @@ spine,DC1-SPINE3,Ethernet4,172.31.255.52/31,l3leaf,DC1-SVC3A,Ethernet43,172.31.2
 spine,DC1-SPINE3,Ethernet5,172.31.255.68/31,l3leaf,DC1-SVC3B,Ethernet43,172.31.255.69/31
 spine,DC1-SPINE4,Ethernet4,172.31.255.54/31,l3leaf,DC1-SVC3A,Ethernet44,172.31.255.55/31
 spine,DC1-SPINE4,Ethernet5,172.31.255.70/31,l3leaf,DC1-SVC3B,Ethernet44,172.31.255.71/31
-l3leaf,DC1-SVC3A,Ethernet5,,mlag_peer,DC1-SVC3B,Ethernet5,
-l3leaf,DC1-SVC3A,Ethernet6,,mlag_peer,DC1-SVC3B,Ethernet6,

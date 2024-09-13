@@ -7,7 +7,7 @@ from math import ceil
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import default, get, get_item
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 from .topology import Topology
 
@@ -112,7 +112,7 @@ class FabricDocumentationFacts(AvdFacts):
                 else:
                     peer_ip_address = None
 
-                routed = not get(ethernet_interface, "switchport.enabled")
+                routed = get(ethernet_interface, "switchport.enabled") is not None and not get(ethernet_interface, "switchport.enabled")
 
                 data = (
                     self.avd_switch_facts[hostname]["type"],  # type
@@ -225,6 +225,15 @@ class FabricDocumentationFacts(AvdFacts):
         """Helper function to count the number of addresses that fall within the given IP pool."""
         return len([True for address in addresses if address.subnet_of(pool)])
 
+    def get_interface_vlans(self, interface: dict) -> list:
+        """Helper function to retrieve VLANs for an interface."""
+        interface_vlans = []
+        if (access_vlan := get(interface, "switchport.access_vlan")) is not None:
+            interface_vlans.append(int(access_vlan))
+        if (allowed_vlans := get(interface, "switchport.trunk.allowed_vlan")) is not None:
+            interface_vlans.extend(list(map(int, range_expand(allowed_vlans))))
+        return list_compress(interface_vlans) if interface_vlans else None
+
     @cached_property
     def all_connected_endpoints(self) -> dict[str, list]:
         """
@@ -260,9 +269,8 @@ class FabricDocumentationFacts(AvdFacts):
                         "fabric_port": ethernet_interface["name"],
                         "description": get(ethernet_interface, "description", default="-"),
                         "shutdown": default(get(ethernet_interface, "shutdown"), get(port_channel_interface, "shutdown"), "-"),
-                        "type": default(get(port_channel_interface, "type"), get(ethernet_interface, "type"), "-"),
-                        "mode": default(get(ethernet_interface, "mode"), get(port_channel_interface, "mode"), "-"),
-                        "vlans": default(get(ethernet_interface, "vlans"), get(port_channel_interface, "vlans"), "-"),
+                        "mode": default(get(ethernet_interface, "switchport.mode"), get(port_channel_interface, "switchport.mode"), "-"),
+                        "vlans": default(self.get_interface_vlans(ethernet_interface), self.get_interface_vlans(port_channel_interface), "-"),
                         "profile": default(get(ethernet_interface, "port_profile"), "-"),
                     }
                 )

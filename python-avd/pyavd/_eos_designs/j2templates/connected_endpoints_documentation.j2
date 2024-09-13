@@ -23,8 +23,8 @@ No connected endpoint configured!
 
 ### {{ key | replace("_", " ") | capitalize }}
 
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----- | ------- |
 {%         for connected_endpoint in all_connected_endpoints[key] %}
 {%             set port = connected_endpoint.peer_interface %}
 {%             set fabric_port = connected_endpoint.fabric_port %}
@@ -34,7 +34,7 @@ No connected endpoint configured!
 {%             set type = connected_endpoint.type | arista.avd.default("-") %}
 {%             set mode = connected_endpoint.mode | arista.avd.default("-") %}
 {%             set vlans = connected_endpoint.vlans | arista.avd.default("-") %}
-| {{ connected_endpoint.peer }} | {{ port }} | {{ connected_endpoint.fabric_switch }} | {{ fabric_port }} | {{ description }} | {{ shutdown }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ profile }} |
+| {{ connected_endpoint.peer }} | {{ port }} | {{ connected_endpoint.fabric_switch }} | {{ fabric_port }} | {{ description }} | {{ shutdown }} | {{ mode }} | {{ vlans }} | {{ profile }} |
 {%         endfor %}
 {%     endfor %}
 {% endif %}
