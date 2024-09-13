@@ -245,7 +245,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.255.35/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.35/32
 - name: Loopback100

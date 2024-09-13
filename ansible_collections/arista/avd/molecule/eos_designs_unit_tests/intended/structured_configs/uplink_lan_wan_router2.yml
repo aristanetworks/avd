@@ -113,7 +113,7 @@ ethernet_interfaces:
   shutdown: false
   switchport:
     enabled: false
-  mtu: 9214
+  mtu: 9218
 - name: Ethernet2.10
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet2 VLAN 10
@@ -124,7 +124,7 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 10
   vrf: VRF1
   ip_address: 10.0.10.1/24
-  mtu: 9214
+  mtu: 9218
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet2.100
@@ -310,7 +310,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.2.2/32
   flow_tracker:
     hardware: FLOW-TRACKER

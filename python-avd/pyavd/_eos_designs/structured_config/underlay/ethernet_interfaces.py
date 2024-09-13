@@ -303,6 +303,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "description": "DIRECT LAN HA LINK",
                     "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
                     "flow_tracker": direct_wan_ha_links_flow_tracker,
+                    "mtu": self.shared_utils.configured_wan_ha_mtu,
                 }
 
                 append_if_not_duplicate(

@@ -261,7 +261,7 @@ loopback_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_passive: true
 - name: Loopback10
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.6/32
   isis_enable: EVPN_UNDERLAY

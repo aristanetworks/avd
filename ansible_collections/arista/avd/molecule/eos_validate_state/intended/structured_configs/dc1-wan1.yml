@@ -502,7 +502,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.255.1.1/32
   flow_tracker:
     sampled: FLOW-TRACKER

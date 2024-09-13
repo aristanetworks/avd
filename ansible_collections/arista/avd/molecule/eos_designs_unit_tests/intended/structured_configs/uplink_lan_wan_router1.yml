@@ -115,7 +115,7 @@ ethernet_interfaces:
     enabled: false
   vrf: VRF1
   ip_address: 10.0.10.1/24
-  mtu: 9214
+  mtu: 9218
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet2.100
@@ -301,7 +301,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.2.1/32
   flow_tracker:
     hardware: FLOW-TRACKER

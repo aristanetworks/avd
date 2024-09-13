@@ -1307,6 +1307,14 @@ $defs:
                 type: bool
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is enabled.
+              mtu:
+                type: int
+                convert_types:
+                  - str
+                description: Set MTU on WAN HA interfaces.
+                min: 68
+                max: 65535
+                default: 9194
               ha_interfaces:
                 description: |-
                   Local WAN HA interfaces

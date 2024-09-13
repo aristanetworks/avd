@@ -77,6 +77,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
 
+                            if self.shared_utils.fabric_sflow_l3_interfaces is not None:
+                                interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_l3_interfaces}
+
                             if self._l3_interface_acls is not None:
                                 interface.update(
                                     {

@@ -410,7 +410,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.144.1/32
   flow_tracker:
     hardware: FLOW-TRACKER

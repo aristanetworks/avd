@@ -420,7 +420,7 @@ interface Port-Channel8
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 10.255.0.5/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.255.1.5/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 10.255.1.5/32 |
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | 10.255.10.5/32 |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | 10.255.11.5/32 |
 
@@ -429,7 +429,7 @@ interface Port-Channel8
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | - |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | - |
 
@@ -443,7 +443,7 @@ interface Loopback0
    ip address 10.255.0.5/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 10.255.1.5/32
 !
