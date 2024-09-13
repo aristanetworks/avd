@@ -1,9 +1,15 @@
-# Nashua EVE-NG LAB shared attributes
+# Shared attributes
 
 # Overwriting the default names match the <5.0 description styling
 trunk_groups:
   mlag_l3:
     name: LEAF_PEER_L3
+
+# Overwriting the default description templates to match the <5.0 description styling
+default_network_ports_description: ""
+default_network_ports_port_channel_description: "{adapter_description_or_endpoint?}{endpoint_port_channel?<_}"
+default_connected_endpoints_description: "{endpoint}{endpoint_port?<_}"
+default_connected_endpoints_port_channel_description: "{adapter_description_or_endpoint}{endpoint_port_channel?<_}"
 
 # local users
 local_users:

@@ -1,11 +1,5 @@
 ---
 
-# Overwriting the default description templates to simulate the <5.0 description styling
-default_network_ports_description: "{endpoint?}"
-default_network_ports_port_channel_description: "{adapter_description_or_endpoint?}{endpoint_port_channel?<_}"
-default_connected_endpoints_description: "{endpoint}{endpoint_port?<_}"
-default_connected_endpoints_port_channel_description: "{adapter_description_or_endpoint}{endpoint_port_channel?<_}"
-
 port_profiles:
   - profile: TENANT_A_B
     mode: trunk
