@@ -127,7 +127,7 @@ vlan_interfaces:
   - 2a00:107::1
 port_channel_interfaces:
 - name: Port-Channel11
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Po11
+  description: MLAG_inband-mgmt-parent-ipv6-2_Port-Channel11
   switchport:
     enabled: true
     mode: trunk
@@ -162,7 +162,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet11
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet11
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet11
   shutdown: false
   channel_group:
     id: 11
@@ -171,7 +171,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet12
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet12
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet12
   shutdown: false
   channel_group:
     id: 11
@@ -180,7 +180,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet13
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet13
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet13
   shutdown: false
   channel_group:
     id: 11
@@ -189,7 +189,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet14
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet14
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet14
   shutdown: false
   channel_group:
     id: 11
@@ -198,7 +198,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet15
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet15
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet15
   shutdown: false
   channel_group:
     id: 11
@@ -207,7 +207,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet16
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet16
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet16
   shutdown: false
   channel_group:
     id: 11
@@ -216,7 +216,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet17
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet17
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet17
   shutdown: false
   channel_group:
     id: 11
@@ -225,7 +225,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet18
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet18
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet18
   shutdown: false
   channel_group:
     id: 11
@@ -234,7 +234,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet19
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet19
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet19
   shutdown: false
   channel_group:
     id: 11
@@ -243,7 +243,7 @@ ethernet_interfaces:
   peer: inband-mgmt-parent-ipv6-2
   peer_interface: Ethernet20
   peer_type: mlag_peer
-  description: MLAG_PEER_inband-mgmt-parent-ipv6-2_Ethernet20
+  description: MLAG_inband-mgmt-parent-ipv6-2_Ethernet20
   shutdown: false
   channel_group:
     id: 11
