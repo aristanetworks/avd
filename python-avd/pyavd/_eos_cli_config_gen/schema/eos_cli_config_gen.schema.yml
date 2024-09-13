@@ -13097,13 +13097,6 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  keys:
-                    install:
-                      type: bool
-                      description: Install BGP backup path.
-                    install_ecmp_primary:
-                      type: bool
-                      description: Allow additional path with ECMP primary path.
                 next_hop:
                   type: dict
                   keys:
@@ -13164,13 +13157,6 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  keys:
-                    install:
-                      type: bool
-                      description: Install BGP backup path.
-                    install_ecmp_primary:
-                      type: bool
-                      description: Allow additional path with ECMP primary path.
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -14063,6 +14049,16 @@ keys:
                   type: bool
                   description: Allow redistribution of iBGP routes into an Interior
                     Gateway Protocol (IGP). EOS default is true.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
             rd:
               type: str
               description: Route distinguisher.
@@ -14436,6 +14432,9 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  additional_paths:
+                    type: dict
+                    $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name.

@@ -47,6 +47,12 @@ ASN Notation: asplain
 | ------ | --------- |
 | 65001 | 1.0.1.1 |
 
+#### BGP Neighbors
+
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - |
+
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
@@ -90,6 +96,8 @@ router bgp 65001
    !
    vrf VRF01
       no bgp redistribute-internal
+      bgp additional-paths receive
+      bgp additional-path send any
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit
@@ -167,6 +175,8 @@ router bgp 65001
          redistribute static route-map VRF_AFIPV6MULTI_RM_STATIC
    !
    vrf VRF02
+      neighbor 1.1.1.1 additional-paths receive
+      neighbor 1.1.1.1 additional-paths send ecmp limit 24
       !
       address-family ipv4
          bgp additional-paths send backup

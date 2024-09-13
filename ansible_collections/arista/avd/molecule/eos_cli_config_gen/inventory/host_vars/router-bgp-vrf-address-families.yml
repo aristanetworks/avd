@@ -52,6 +52,10 @@ router_bgp:
     - name: VRF01
       bgp:
         redistribute_internal: false
+        additional_paths:
+          receive: true
+          send: any
+          install: true
       address_family_ipv4:
         bgp:
           missing_policy:
@@ -194,6 +198,12 @@ router_bgp:
             activate: true
 
     - name: VRF02
+      neighbors:
+        - ip_address: 1.1.1.1
+          additional_paths:
+            receive: true
+            send: ecmp
+            send_ecmp_limit: 24
       address_family_ipv4:
         bgp:
           additional_paths:
