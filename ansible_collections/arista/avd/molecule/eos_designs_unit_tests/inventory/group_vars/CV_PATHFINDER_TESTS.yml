@@ -289,6 +289,8 @@ wan_router:
       wan_ha:
         enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ha_interfaces: [Ethernet52]
+        # Test wan_ha mtu
+        mtu: 9100
         ha_ipv4_pool: 10.10.10.0/24
       nodes:
         - name: cv-pathfinder-edge3A
