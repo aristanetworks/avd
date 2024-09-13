@@ -186,9 +186,7 @@ class WanMixin:
 
     @cached_property
     def wan_ha_peer_path_groups(self: SharedUtils) -> list:
-        """
-        List of WAN HA peer path-groups coming from facts.
-        """
+        """List of WAN HA peer path-groups coming from facts."""
         if not self.is_wan_router or not self.wan_ha:
             return []
         peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
