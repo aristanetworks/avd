@@ -50,7 +50,6 @@ async def deploy_to_cv(
 
     For any device referred under `configs`, `device_tags` and `interface_tags` the device:
     - The device must be present in the CloudVision Inventory and onboarded to the "Inventory & Topology Studio".
-        - TODO: See if we can relax the I&T requirement and add the device if it is missing.
         - TODO: See if we can onboard ZTP devices and/or preprovision.
     - The hostname will we updated in the I&T Studio.
     - The `serial_number` and `system_mac_address` properties will be inplace updated in the given CVDevice objects.

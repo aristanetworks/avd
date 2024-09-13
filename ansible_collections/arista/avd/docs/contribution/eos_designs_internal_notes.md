@@ -370,10 +370,6 @@ outside of that, so any inline Jinja2 could not use these values.
 | switch.type | fabric-topology.j2 |
 | switch.mpls_overlay_role |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
 | switch.mpls_lsr |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
-| switch.mlag_peer | interface_descriptions/mlag/ethernet-interfaces.j2 |
-| switch.mlag_interfaces | interface_descriptions/mlag/port-channel-interfaces.j2 |
-| switch.mlag_peer | interface_descriptions/mlag/port-channel-interfaces.j2 |
-| switch.mlag_port_channel_id | interface_descriptions/mlag/port-channel-interfaces.j2 |
 | switch.uplink_ipv4_pool | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
 | switch.id | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
 | switch.max_parallel_uplinks | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |

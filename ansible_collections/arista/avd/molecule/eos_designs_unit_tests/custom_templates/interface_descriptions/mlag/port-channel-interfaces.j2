@@ -1,1 +1,1 @@
-{{ description_prefix }}_MLAG_PEER_{{ switch.mlag_peer }}_Po{{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
+{{ description_prefix }}_MLAG_PEER_{{ mlag_peer }}_Eth{{ mlag_interfaces[0] | regex_findall("\d") | join }}_Eth{{ mlag_interfaces[1] | regex_findall("\d") | join }}_Po{{ mlag_port_channel_id }}

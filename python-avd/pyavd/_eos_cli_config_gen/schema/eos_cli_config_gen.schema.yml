@@ -1556,6 +1556,26 @@ keys:
             max: 300
             convert_types:
             - str
+      radius_av_pair_username_format:
+        type: dict
+        description: RADIUS AV-pair username settings.
+        keys:
+          delimiter:
+            type: str
+            description: Delimiter to use in MAC address string.
+            required: true
+            valid_values:
+            - colon
+            - hyphen
+            - none
+            - period
+          mac_string_case:
+            type: str
+            description: MAC address string in lowercase/uppercase.
+            required: true
+            valid_values:
+            - lowercase
+            - uppercase
       radius_av_pair:
         type: dict
         keys:
@@ -2074,6 +2094,10 @@ keys:
             new_key: ethernet_interfaces[].switchport.trunk.groups
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
           - routed
           - switched
@@ -3035,6 +3059,9 @@ keys:
                   type: bool
                 host_mode_common:
                   type: bool
+            mac_based_access_list:
+              type: bool
+              description: Operate interface in per-mac access-list mode.
             timeout:
               type: dict
               keys:
@@ -3092,6 +3119,30 @@ keys:
                       max: 65535
                       convert_types:
                       - str
+            aaa:
+              type: dict
+              keys:
+                unresponsive:
+                  type: dict
+                  description: Configure AAA timeout options.
+                  keys:
+                    eap_response:
+                      type: str
+                      description: EAP response to send. EOS default is `success`.
+                      valid_values:
+                      - success
+                      - disabled
+                    action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action
+                      keys:
+                        traffic_allow_access_list:
+                          type: str
+                          description: Name of standard access-list to apply when
+                            AAA times out.
+                    phone_action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
         service_profile:
           type: str
           description: QOS profile.
@@ -7189,6 +7240,25 @@ keys:
   management_ssh:
     type: dict
     keys:
+      authentication:
+        type: dict
+        keys:
+          empty_passwords:
+            type: str
+            valid_values:
+            - auto
+            - deny
+            - permit
+            description: Permit or deny empty passwords for SSH authentication.
+          protocols:
+            type: list
+            items:
+              type: str
+              valid_values:
+              - keyboard-interactive
+              - password
+              - public-key
+            description: Allowed SSH authentication methods.
       access_groups:
         type: list
         items:
@@ -8990,6 +9060,10 @@ keys:
           type: bool
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
           - routed
           - switched

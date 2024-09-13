@@ -125,7 +125,7 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.30.1/32
 prefix_lists:
@@ -273,7 +273,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.255.1/32
   flow_tracker:
     hardware: FLOW-TRACKER

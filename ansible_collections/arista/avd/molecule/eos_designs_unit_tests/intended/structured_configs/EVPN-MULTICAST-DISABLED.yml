@@ -283,7 +283,6 @@ router_bgp:
       - 10110:10110
     redistribute_routes:
     - learned
-    - igmp
   - id: 111
     tenant: Tenant_A
     rd: 192.168.255.8:10111
@@ -292,7 +291,6 @@ router_bgp:
       - 10111:10111
     redistribute_routes:
     - learned
-    - igmp
   - id: 210
     tenant: Tenant_A
     rd: 192.168.255.8:10210
@@ -301,7 +299,6 @@ router_bgp:
       - 10210:10210
     redistribute_routes:
     - learned
-    - igmp
   - id: 211
     tenant: Tenant_A
     rd: 192.168.255.8:10211
@@ -326,7 +323,6 @@ router_bgp:
       - 10257:10257
     redistribute_routes:
     - learned
-    - igmp
   - id: 4092
     tenant: Tenant_A
     rd: 192.168.255.8:14092
@@ -335,7 +331,6 @@ router_bgp:
       - 14092:14092
     redistribute_routes:
     - learned
-    - igmp
   - id: 5
     tenant: Tenant_B
     rd: 192.168.255.8:10005
@@ -360,7 +355,6 @@ router_bgp:
       - 10001:10001
     redistribute_routes:
     - learned
-    - igmp
   - id: 2
     tenant: Tenant_B
     rd: 192.168.255.8:10002
@@ -369,7 +363,6 @@ router_bgp:
       - 10002:10002
     redistribute_routes:
     - learned
-    - igmp
   - id: 3
     tenant: Tenant_B
     rd: 192.168.255.8:10003
@@ -378,7 +371,6 @@ router_bgp:
       - 10003:10003
     redistribute_routes:
     - learned
-    - igmp
   - id: 4
     tenant: Tenant_B
     rd: 192.168.255.8:10004
@@ -403,7 +395,6 @@ router_bgp:
       - 10008:10008
     redistribute_routes:
     - learned
-    - igmp
   - id: 9
     tenant: Tenant_B
     rd: 192.168.255.8:10009
@@ -412,7 +403,6 @@ router_bgp:
       - 10009:10009
     redistribute_routes:
     - learned
-    - igmp
   - id: 330
     tenant: Tenant_C
     rd: 192.168.255.8:10330
@@ -443,6 +433,22 @@ router_bgp:
     route_targets:
       both:
       - 10131:10131
+    redistribute_routes:
+    - learned
+  - id: 136
+    tenant: Tenant_C
+    rd: 192.168.255.8:10136
+    route_targets:
+      both:
+      - 10136:10136
+    redistribute_routes:
+    - learned
+  - id: 137
+    tenant: Tenant_C
+    rd: 192.168.255.8:10137
+    route_targets:
+      both:
+      - 10137:10137
     redistribute_routes:
     - learned
   - id: 230
@@ -541,7 +547,6 @@ router_bgp:
       - 10252:10252
     redistribute_routes:
     - learned
-    - igmp
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -652,11 +657,11 @@ ethernet_interfaces:
       sparse_mode: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.8/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.8/32
 - name: Loopback33
@@ -789,6 +794,12 @@ vlans:
   tenant: Tenant_C
 - id: 131
   name: L3_MULTICAST_ENABLED_131
+  tenant: Tenant_C
+- id: 136
+  name: L3_L2_MULTICAST_ENABLED_136
+  tenant: Tenant_C
+- id: 137
+  name: L3_L2_MULTICAST_ENABLED_137
   tenant: Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
@@ -962,6 +973,16 @@ vlan_interfaces:
   description: L3_MULTICAST_ENABLED_131
   shutdown: false
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan136
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_136
+  shutdown: false
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan137
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_137
+  shutdown: false
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
 - name: Vlan230
   tenant: Tenant_C
   tags:
@@ -1093,6 +1114,10 @@ vxlan_interface:
         vni: 10130
       - id: 131
         vni: 10131
+      - id: 136
+        vni: 10136
+      - id: 137
+        vni: 10137
       - id: 230
         vni: 10230
       - id: 231
