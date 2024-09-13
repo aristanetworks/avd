@@ -58,7 +58,7 @@ router path-selection
       !
       {{ local_ip_def }}
 {%             if local_ip.stun.server_profiles is arista.avd.defined %}
-         stun server-profile {{ local_ip.stun.server_profiles | join(" ") }}
+         stun server-profile {{ local_ip.stun.server_profiles | join(" ") | arista.avd.natural_sort }}
 {%             endif %}
 {%         endfor %}
 {#      peer dynamic #}
@@ -82,7 +82,7 @@ router path-selection
          name {{ static_peer.name }}
 {%             endif %}
 {# Not sorting these ipv4 addresses as EOS is reordering them based on a set logic which we cannot predict and changes across python version #}
-{%             for ipv4_address in static_peer.ipv4_addresses | arista.avd.default([]) %}
+{%             for ipv4_address in static_peer.ipv4_addresses | arista.avd.default([]) | arista.avd.natural_sort %}
          ipv4 address {{ ipv4_address }}
 {%             endfor %}
 {%         endfor %}
@@ -91,17 +91,17 @@ router path-selection
 {%     for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
    !
    load-balance policy {{ load_balance_policy.name }}
-{%         if load_balance_policy.lowest_hop_count is arista.avd.defined(true) %}
-      hop count lowest
+{%         if load_balance_policy.latency is arista.avd.defined %}
+      latency {{ load_balance_policy.latency }}
 {%         endif %}
 {%         if load_balance_policy.jitter is arista.avd.defined %}
       jitter {{ load_balance_policy.jitter }}
 {%         endif %}
-{%         if load_balance_policy.latency is arista.avd.defined %}
-      latency {{ load_balance_policy.latency }}
-{%         endif %}
 {%         if load_balance_policy.loss_rate is arista.avd.defined %}
       loss-rate {{ load_balance_policy.loss_rate }}
+{%         endif %}
+{%         if load_balance_policy.lowest_hop_count is arista.avd.defined(true) %}
+      hop count lowest
 {%         endif %}
 {%         for priority, entries in load_balance_policy.path_groups | arista.avd.default([]) | groupby("priority", default=1) %}
 {%             for entry in entries | arista.avd.natural_sort("name") %}

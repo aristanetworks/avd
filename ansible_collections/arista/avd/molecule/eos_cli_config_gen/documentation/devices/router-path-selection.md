@@ -178,8 +178,8 @@ router path-selection
       !
       peer static router-ip 172.16.42.42
          name TEST-STATIC-PEER-WITH-NAME
-         ipv4 address 192.168.42.42
          ipv4 address 192.168.1.42
+         ipv4 address 192.168.42.42
    !
    path-group PG-2 id 42
       ipsec profile IPSEC-P-1
@@ -201,10 +201,10 @@ router path-selection
       local interface Ethernet4.666
       !
       local ip 192.168.1.100 public address 192.168.42.42
-         stun server-profile STUN-P-1 STUN-P-2
+         stun server-profile ['1', '2', ' ', '-', '-', '-', '-', 'N', 'N', 'P', 'P', 'S', 'S', 'T', 'T', 'U', 'U']
       !
       local ip 192.168.100.1
-         stun server-profile STUN-P-1
+         stun server-profile ['1', '-', '-', 'N', 'P', 'S', 'T', 'U']
       !
       peer dynamic
          ipsec disabled
@@ -216,16 +216,16 @@ router path-selection
    load-balance policy LB-EMPTY
    !
    load-balance policy LB-P-1
-      hop count lowest
       loss-rate 17
+      hop count lowest
       path-group PG-5
       path-group PG-2 priority 42
       path-group PG-4 priority 42
       path-group PG-3 priority 666
    !
    load-balance policy LB-P-2
-      jitter 666
       latency 42
+      jitter 666
       loss-rate 42.42
       path-group PG-1 priority 1
       path-group PG-3
