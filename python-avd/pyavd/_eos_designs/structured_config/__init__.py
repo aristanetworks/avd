@@ -78,18 +78,15 @@ def get_structured_config(
     Returns:
         The structured_config as a dict
     """
-    structured_config = {}
-    module_vars = ChainMap(
-        structured_config,
-        vars,
-    )
-
     # Validate input data
     if validate:
         result.update(input_schema_tools.convert_and_validate_data(vars))
         if result.get("failed"):
             # Input data validation failed so return empty dict. Calling function should check result.get("failed").
             return {}
+
+    structured_config = {}
+    module_vars = ChainMap(structured_config, vars)
 
     # Initialize SharedUtils class to be passed to each python_module below.
     shared_utils = SharedUtils(hostvars=module_vars, templar=templar, schema=input_schema_tools.avdschema)

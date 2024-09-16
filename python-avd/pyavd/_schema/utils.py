@@ -21,4 +21,4 @@ def get_instance_with_defaults(instance: dict, dynamic_key_path: str, schema: di
         return ChainMap(instance, {"node_type_keys": DEFAULT_NODE_TYPE_KEYS[design_type]})
 
     # Fetch default value from schema
-    return ChainMap(instance, {dynamic_root_key: get(schema, f"{dynamic_root_key}.default")})
+    return ChainMap(instance, {dynamic_root_key: get(schema, f"keys.{dynamic_root_key}.default")})
