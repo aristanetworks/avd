@@ -70,7 +70,7 @@ roles/eos_cli_config_gen/docs/tables/custom-templates.md
 The following settings can be leveraged to control generation of device configuration and documentation.
 
 --8<--
-roles/eos_designs/docs/tables/role-settings.md
+roles/eos_cli_config_gen/docs/tables/role-settings.md
 --8<--
 
 ### Generate default config
