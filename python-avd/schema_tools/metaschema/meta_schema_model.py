@@ -242,7 +242,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     """Maximum value"""
     valid_values: list[int] | None = None
     """List of valid values"""
-    dynamic_valid_values: str | None = None
+    dynamic_valid_values: list[str] | None = None
     """
     Path to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
@@ -277,7 +277,7 @@ class AvdSchemaBool(AvdSchemaBaseModel):
     """Default value"""
     valid_values: list[bool] | None = None
     """List of valid values"""
-    dynamic_valid_values: str | None = None
+    dynamic_valid_values: list[str] | None = None
     """
     Path to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
@@ -339,7 +339,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     """
     valid_values: list[str] | None = None
     """List of valid values"""
-    dynamic_valid_values: str | None = None
+    dynamic_valid_values: list[str] | None = None
     """
     Path to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.

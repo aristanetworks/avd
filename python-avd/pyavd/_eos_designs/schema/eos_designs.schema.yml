@@ -3925,7 +3925,9 @@ keys:
     documentation_options:
       table: type-setting
     type: str
-    dynamic_valid_values: node_type_keys.type
+    dynamic_valid_values:
+    - custom_node_type_keys.type
+    - node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
@@ -4776,6 +4778,11 @@ dynamic_keys:
     - key: generic_devices
       type: generic_device
       description: Generic Device
+  custom_node_type_keys.key:
+    $ref: eos_designs#/$defs/node_type
+    type: dict
+    documentation_options:
+      hide_keys: true
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list

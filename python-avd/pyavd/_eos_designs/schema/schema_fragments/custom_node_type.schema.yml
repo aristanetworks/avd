@@ -5,14 +5,9 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-keys:
-  type:
+dynamic_keys:
+  "custom_node_type_keys.key":
+    $ref: "eos_designs#/$defs/node_type"
+    type: dict
     documentation_options:
-      table: type-setting
-    type: str
-    dynamic_valid_values:
-      - custom_node_type_keys.type
-      - node_type_keys.type
-    description: |
-      The `type:` variable needs to be defined for each device in the fabric.
-      This is leveraged to load the appropriate template to generate the configuration.
+      hide_keys: true
