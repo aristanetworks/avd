@@ -100,6 +100,8 @@
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
 {% include 'eos/domain-list.j2' %}
+{# aaa server groups ldap #}
+{% include 'eos/aaa-server-groups-ldap.j2' %}
 {# Object Tracking #}
 {% include 'eos/trackers.j2' %}
 {# poe #}
@@ -166,8 +168,12 @@
 {% include 'eos/management-security.j2' %}
 {# radius server #}
 {% include 'eos/radius-server.j2' %}
+{# aaa server groups radius #}
+{% include 'eos/aaa-server-groups-radius.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
+{# aaa server groups tacacs+ #}
+{% include 'eos/aaa-server-groups-tacacs-plus.j2' %}
 {# aaa #}
 {% include 'eos/aaa.j2' %}
 {# CVX #}
@@ -222,6 +228,8 @@
 {% include 'eos/access-lists.j2' %}
 {# Extended Access-lists, improved data model #}
 {% include 'eos/ip-access-lists.j2' %}
+{# PBR class-map #}
+{% include 'eos/class-maps-pbr.j2' %}
 {# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
 {# IP Routing #}
