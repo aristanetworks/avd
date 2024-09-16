@@ -10,7 +10,7 @@ management tech-support
 {%     if management_tech_support.policy_show_tech_support is arista.avd.defined %}
    policy show tech-support
 {%         if management_tech_support.policy_show_tech_support.exclude_commands is arista.avd.defined %}
-{%             for exclude_command in management_tech_support.policy_show_tech_support.exclude_commands %}
+{%             for exclude_command in management_tech_support.policy_show_tech_support.exclude_commands | arista.avd.natural_sort %}
 {%                 set exclude_cli = "" %}
 {%                 if exclude_command.type is arista.avd.defined('json') %}
 {%                     set exclude_cli = "json " %}
