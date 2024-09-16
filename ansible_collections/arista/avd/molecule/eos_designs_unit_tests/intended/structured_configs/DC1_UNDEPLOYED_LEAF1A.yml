@@ -481,7 +481,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management42
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.121/24
