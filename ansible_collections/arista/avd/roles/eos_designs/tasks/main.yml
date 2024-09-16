@@ -26,7 +26,6 @@
   run_once: true
 
 - name: Set eos_designs facts
-  when: avd_eos_designs_facts | default(true)
   arista.avd.eos_designs_facts:
     avd_switch_facts: true
     # cprofile_file: "eos_designs_facts.prof"
@@ -76,8 +75,7 @@
   run_once: true
 
 - name: Remove avd_switch_facts
-  when: avd_eos_designs_facts | default(true)
-        and avd_eos_designs_unset_facts | default(true)
+  when: avd_eos_designs_unset_facts | default(true)
   arista.avd.set_vars:
     avd_switch_facts: null
     avd_overlay_peers: null

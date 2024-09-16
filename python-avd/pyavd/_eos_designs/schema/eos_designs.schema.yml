@@ -49,13 +49,6 @@ keys:
     type: bool
     default: false
     description: Dump all vars and facts per device after generating `avd_switch_facts`.
-  avd_eos_designs_facts:
-    documentation_options:
-      table: role-settings
-    type: bool
-    default: true
-    description: Generate `avd_switch_facts` which is a prerequisite for `eos_designs_structured_config`
-      and `eos_designs_documentation`.
   avd_eos_designs_structured_config:
     documentation_options:
       table: role-settings
