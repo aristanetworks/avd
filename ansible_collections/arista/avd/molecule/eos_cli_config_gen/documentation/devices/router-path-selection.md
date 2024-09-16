@@ -92,9 +92,6 @@ interface Management1
 | Ethernet3 | - | STUN-P-1 |
 | Ethernet4.666 | - |  |
 | Port-Channel1 | 192.168.42.43 | STUN-P-1<br>STUN-P-2 |
-| Port-Channel1/1 | - |  |
-| Port-Channel1/1/3 | - |  |
-| Port-Channel2/4.666 | - |  |
 | Port-Channel4.666 | - |  |
 
 ###### Local IPs
@@ -207,12 +204,6 @@ router path-selection
       !
       local interface Port-Channel1 public address 192.168.42.43
          stun server-profile STUN-P-1 STUN-P-2
-      !
-      local interface Port-Channel1/1
-      !
-      local interface Port-Channel1/1/3
-      !
-      local interface Port-Channel2/4.666
       !
       local interface Port-Channel4.666
       !
