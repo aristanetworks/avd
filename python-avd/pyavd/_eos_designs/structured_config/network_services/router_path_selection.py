@@ -32,7 +32,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         }
 
         # When running CV Pathfinder, only load balance policies are configured
-        # for Legcay AutoVPN, need also vrfs and policies.
+        # for Legacy AutoVPN, need also vrfs and policies.
         if self.shared_utils.wan_mode == "legacy-autovpn":
             vrfs = [{"name": vrf["name"], "path_selection_policy": vrf["policy"]} for vrf in self._filtered_wan_vrfs]
 
@@ -69,7 +69,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         return load_balance_policies
 
     def _legacy_autovpn_policies(self: AvdStructuredConfigNetworkServices) -> list:
-        """Return a list of policies for Legcay AutoVPN."""
+        """Return a list of policies for Legacy AutoVPN."""
         policies = []
         for policy in self._filtered_wan_policies:
             autovpn_policy = {"name": policy["name"], "rules": []}
