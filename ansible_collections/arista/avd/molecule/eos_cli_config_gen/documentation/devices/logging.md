@@ -115,5 +115,4 @@ logging level BGP 0
 !
 logging event storm-control discards global
 logging event storm-control discards interval 10
-!
 ```
