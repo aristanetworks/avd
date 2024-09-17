@@ -159,9 +159,9 @@ interface Ethernet11
 interface Port-Channel1
    description OSPF_SPINES_Po2
    no shutdown
+   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
-   switchport
 ```
 
 ### VLAN Interfaces

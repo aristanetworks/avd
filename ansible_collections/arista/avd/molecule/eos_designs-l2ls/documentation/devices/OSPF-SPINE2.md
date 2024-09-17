@@ -226,26 +226,26 @@ interface Ethernet5
 interface Port-Channel1
    description OSPF-LEAF1_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
-   switchport
    mlag 1
 !
 interface Port-Channel2
    description OSPF-LEAF2_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
-   switchport
    mlag 2
 !
 interface Port-Channel3
    description MLAG_PEER_OSPF-SPINE1_Po3
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   switchport
 ```
 
 ### Loopback Interfaces

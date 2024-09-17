@@ -1386,17 +1386,17 @@ interface Ethernet54
 interface Port-Channel51
    description SPINES_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan 10,110,120,130
    switchport mode trunk
-   switchport
    mlag 51
 !
 interface Port-Channel53
    description MLAG_PEER_LEAF1B_Po53
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group MLAG
-   switchport
 ```
 
 ### VLAN Interfaces

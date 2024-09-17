@@ -320,17 +320,17 @@ interface Ethernet4
 interface Port-Channel1
    description DC1_SVC3_Po7
    no shutdown
+   switchport
    switchport trunk allowed vlan 210
    switchport mode trunk
-   switchport
    mlag 1
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-L2LEAF2A_Po3
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group MLAG
-   switchport
 ```
 
 ### VLAN Interfaces

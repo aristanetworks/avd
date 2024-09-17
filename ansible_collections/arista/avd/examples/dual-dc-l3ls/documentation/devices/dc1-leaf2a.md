@@ -334,27 +334,27 @@ interface Ethernet8
 interface Port-Channel3
    description MLAG_PEER_dc1-leaf2b_Po3
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   switchport
 !
 interface Port-Channel5
    description dc1-leaf2-server1_PortChannel dc1-leaf2-server1
    no shutdown
-   switchport trunk native vlan 4092
-   switchport trunk allowed vlan 11-12,21-22
-   switchport mode trunk
    switchport
+   switchport trunk allowed vlan 11-12,21-22
+   switchport trunk native vlan 4092
+   switchport mode trunk
    mlag 5
    spanning-tree portfast
 !
 interface Port-Channel8
    description DC1-LEAF2C_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan 11-12,21-22,3401-3402
    switchport mode trunk
-   switchport
    mlag 8
 ```
 

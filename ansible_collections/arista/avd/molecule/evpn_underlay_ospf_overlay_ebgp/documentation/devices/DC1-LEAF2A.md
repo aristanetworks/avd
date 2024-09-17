@@ -386,17 +386,17 @@ interface Ethernet7
 interface Port-Channel5
    description MLAG_PEER_DC1-LEAF2B_Po5
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   switchport
 !
 interface Port-Channel7
    description DC1-L2LEAF1A_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan 210
    switchport mode trunk
-   switchport
    mlag 7
 ```
 

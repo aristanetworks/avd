@@ -6769,9 +6769,9 @@ interface Ethernet7/48
 interface Port-Channel11
    description SPINES_Po491
    no shutdown
+   switchport
    switchport trunk allowed vlan 10,210,220,230
    switchport mode trunk
-   switchport
 ```
 
 ### VLAN Interfaces

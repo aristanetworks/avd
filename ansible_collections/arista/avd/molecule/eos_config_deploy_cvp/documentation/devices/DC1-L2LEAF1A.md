@@ -290,9 +290,9 @@ interface Ethernet2
 interface Port-Channel1
    description DC1_LEAF2_Po7
    no shutdown
+   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131
    switchport mode trunk
-   switchport
 ```
 
 ## Routing

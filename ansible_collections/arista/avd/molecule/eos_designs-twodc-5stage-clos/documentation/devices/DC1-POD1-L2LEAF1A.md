@@ -192,9 +192,9 @@ interface Ethernet1
 interface Port-Channel1
    description DC1-POD1-LEAF1A_Po3
    no shutdown
+   switchport
    switchport trunk allowed vlan 4085
    switchport mode trunk
-   switchport
    service-profile QOS-PROFILE
 ```
 

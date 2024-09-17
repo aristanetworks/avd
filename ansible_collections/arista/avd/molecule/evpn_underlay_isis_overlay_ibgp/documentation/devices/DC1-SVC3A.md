@@ -392,17 +392,17 @@ interface Ethernet8
 interface Port-Channel5
    description MLAG_PEER_DC1-SVC3B_Po5
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   switchport
 !
 interface Port-Channel7
    description DC1_L2LEAF2_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan none
    switchport mode trunk
-   switchport
    mlag 7
 ```
 

@@ -215,6 +215,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.access_vlan is arista.avd.defined %}
    switchport access vlan {{ ethernet_interface.switchport.access_vlan }}
 {%     endif %}
+{%     if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+   switchport trunk allowed vlan {{ ethernet_interface.switchport.trunk.allowed_vlan }}
+{%     endif %}
 {%     if ethernet_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
    switchport trunk native vlan tag
 {%     elif ethernet_interface.switchport.trunk.native_vlan is arista.avd.defined %}
@@ -235,9 +238,6 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ ethernet_interface.switchport.dot1q.vlan_tag }}
 {%     endif %}
-{%     if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
-   switchport trunk allowed vlan {{ ethernet_interface.switchport.trunk.allowed_vlan }}
-{%     endif %}
 {%     if ethernet_interface.switchport.mode is arista.avd.defined %}
    switchport mode {{ ethernet_interface.switchport.mode }}
 {%     endif %}
@@ -250,11 +250,6 @@ interface {{ ethernet_interface.name }}
 {%     for trunk_group in ethernet_interface.switchport.trunk.groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%     endfor %}
-{%     if ethernet_interface.switchport.enabled is arista.avd.defined(true) %}
-   switchport
-{%     elif ethernet_interface.switchport.enabled is arista.avd.defined(false) %}
-   no switchport
-{%     endif %}
 {%     if ethernet_interface.switchport.source_interface is arista.avd.defined %}
    switchport source-interface {{ ethernet_interface.switchport.source_interface }}
 {%     endif %}
@@ -297,6 +292,11 @@ interface {{ ethernet_interface.name }}
    {{ vlan_translation_out_cli }}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if ethernet_interface.switchport.enabled is arista.avd.defined(true) %}
+   switchport
+{%     elif ethernet_interface.switchport.enabled is arista.avd.defined(false) %}
+   no switchport
 {%     endif %}
 {%     if ethernet_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
    switchport trunk private-vlan secondary

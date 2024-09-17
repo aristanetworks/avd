@@ -656,25 +656,25 @@ interface Ethernet44
 interface Port-Channel5
    description CUSTOM_MLAG_PEER_DC1-SVC3A_Po5
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   switchport
 !
 interface Port-Channel7
    description CUSTOM_DC1_L2LEAF2_Po1
    no shutdown
+   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
-   switchport
    mlag 7
 !
 interface Port-Channel10
    description CUSTOM_server03_ESI_PortChanne1
    no shutdown
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   switchport
    evpn ethernet-segment
       identifier 0000:1234:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -683,9 +683,9 @@ interface Port-Channel10
 interface Port-Channel14
    description CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
+   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   switchport
    l2 mtu 8000
    mlag 14
    spanning-tree portfast
@@ -698,9 +698,9 @@ interface Port-Channel14
 interface Port-Channel15
    description CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
    no shutdown
+   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   switchport
    mlag 15
    spanning-tree portfast
    spanning-tree bpdufilter enable
@@ -712,9 +712,9 @@ interface Port-Channel15
 interface Port-Channel17
    description CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
    no shutdown
+   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   switchport
    port-channel lacp fallback timeout 90
    port-channel lacp fallback static
    mlag 17
@@ -728,9 +728,9 @@ interface Port-Channel17
 interface Port-Channel18
    description CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
+   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   switchport
    l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
@@ -745,9 +745,9 @@ interface Port-Channel18
 interface Port-Channel19
    description CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
+   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
-   switchport
    l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
@@ -762,9 +762,9 @@ interface Port-Channel19
 interface Port-Channel22
    description CUSTOM_server15_port_channel_disabled_interfaces_
    no shutdown
+   switchport
    switchport access vlan 110
    switchport mode access
-   switchport
    mlag 22
 ```
 

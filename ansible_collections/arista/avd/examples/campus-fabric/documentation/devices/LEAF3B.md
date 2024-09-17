@@ -2469,41 +2469,41 @@ interface Ethernet98/4
 interface Port-Channel971
    description SPINES_Po501
    no shutdown
+   switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
-   switchport
    mlag 971
 !
 interface Port-Channel973
    description LEAF3C_Po971
    no shutdown
+   switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
-   switchport
    mlag 973
 !
 interface Port-Channel974
    description LEAF3D_Po971
    no shutdown
+   switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
-   switchport
    mlag 974
 !
 interface Port-Channel981
    description LEAF3E_Po971
    no shutdown
+   switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
-   switchport
    mlag 981
 !
 interface Port-Channel983
    description MLAG_PEER_LEAF3A_Po983
    no shutdown
+   switchport
    switchport mode trunk
    switchport trunk group MLAG
-   switchport
 ```
 
 ### VLAN Interfaces
