@@ -1,4 +1,4 @@
-hostname: wan1-site3
+hostname: site3-wan1
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -177,15 +177,15 @@ ntp:
     preferred: true
 ethernet_interfaces:
 - name: Ethernet1
-  peer: leaf1-site3
+  peer: site3-leaf1
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: LEAF1-SITE3_Ethernet1
+  description: SITE3-LEAF1_Ethernet1
   shutdown: false
   type: routed
   mtu: 9214
 - name: Ethernet1.666
-  peer: leaf1-site3
+  peer: site3-leaf1
   peer_interface: Ethernet1 VLAN 666
   peer_type: l2leaf
   description: BLUE-TEST
@@ -197,7 +197,7 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet1.42
-  peer: leaf1-site3
+  peer: site3-leaf1
   peer_interface: Ethernet1 VLAN 42
   peer_type: l2leaf
   description: RED-TEST
@@ -215,13 +215,13 @@ ethernet_interfaces:
   ip_address: 100.64.30.2/24
   shutdown: false
   type: routed
-  description: REGION2-INTERNET-CORP_inet-wan1-site3_inet-cloud_Ethernet8
+  description: REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Ethernet8
   access_group_in: ACL-INTERNET-IN_Ethernet4
   flow_tracker:
     hardware: FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.11/32
 prefix_lists:
@@ -523,13 +523,13 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.42.11/32
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
   vxlan1:
-    description: wan1-site3_VTEP
+    description: site3-wan1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -584,7 +584,7 @@ metadata:
       - name: Carrier
         value: REGION2-INTERNET-CORP
       - name: Circuit
-        value: inet-wan1-site3
+        value: inet-site3-wan1
   cv_pathfinder:
     role: edge
     ssl_profile: STUN-DTLS
@@ -595,7 +595,7 @@ metadata:
     interfaces:
     - name: Ethernet4
       carrier: REGION2-INTERNET-CORP
-      circuit_id: inet-wan1-site3
+      circuit_id: inet-site3-wan1
       pathgroup: INTERNET
     pathfinders:
     - vtep_ip: 192.168.42.1

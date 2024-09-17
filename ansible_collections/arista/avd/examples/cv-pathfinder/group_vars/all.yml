@@ -23,14 +23,14 @@ default_node_types:
       - pf.*
   - node_type: wan_router
     match_hostnames:
-      - wan.*-site.*
+      - site.*-wan.*
   - node_type: l2leaf
     match_hostnames:
-      - leaf.*-site3
+      - site3-leaf.*
   - node_type: l3leaf
     match_hostnames:
-      - leaf.*-site.*
-      - border.*-site.*
+      - site.*-border.*
+      - site.*-leaf.*
   # Transport routers
   - node_type: spine
     match_hostnames:

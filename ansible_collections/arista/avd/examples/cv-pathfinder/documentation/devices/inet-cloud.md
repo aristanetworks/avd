@@ -250,10 +250,10 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | pf1-Ethernet2 | - | 100.64.100.1/24 | default | - | False | - | - |
 | Ethernet2 | pf2-Ethernet2 | - | 100.64.200.1/24 | default | - | False | - | - |
-| Ethernet5 | wan1-site1-Ethernet4 | - | 100.64.10.1/24 | default | - | False | - | - |
-| Ethernet6 | wan2-site1-Ethernet4 | - | 100.64.11.1/24 | default | - | False | - | - |
-| Ethernet7 | wan2-site2-Ethernet4 | - | 100.64.21.1/24 | default | - | False | - | - |
-| Ethernet8 | wan1-site3-Ethernet4 | - | 100.64.30.1/24 | default | - | False | - | - |
+| Ethernet5 | site1-wan1-Ethernet4 | - | 100.64.10.1/24 | default | - | False | - | - |
+| Ethernet6 | site1-wan2-Ethernet4 | - | 100.64.11.1/24 | default | - | False | - | - |
+| Ethernet7 | site2-wan2-Ethernet4 | - | 100.64.21.1/24 | default | - | False | - | - |
+| Ethernet8 | site3-wan1-Ethernet4 | - | 100.64.30.1/24 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -272,25 +272,25 @@ interface Ethernet2
    ip address 100.64.200.1/24
 !
 interface Ethernet5
-   description wan1-site1-Ethernet4
+   description site1-wan1-Ethernet4
    no shutdown
    no switchport
    ip address 100.64.10.1/24
 !
 interface Ethernet6
-   description wan2-site1-Ethernet4
+   description site1-wan2-Ethernet4
    no shutdown
    no switchport
    ip address 100.64.11.1/24
 !
 interface Ethernet7
-   description wan2-site2-Ethernet4
+   description site2-wan2-Ethernet4
    no shutdown
    no switchport
    ip address 100.64.21.1/24
 !
 interface Ethernet8
-   description wan1-site3-Ethernet4
+   description site3-wan1-Ethernet4
    no shutdown
    no switchport
    ip address 100.64.30.1/24
@@ -304,20 +304,20 @@ interface Ethernet8
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.31.255.23/32 |
+| Loopback0 | ROUTER_ID | default | 172.31.255.23/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.31.255.23/32
 ```

@@ -1,4 +1,4 @@
-# wan2-site2
+# site2-wan2
 
 ## Table of Contents
 
@@ -396,7 +396,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.8/32 | - | 9214 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.8/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
 
 #### DPS Interfaces Device Configuration
 
@@ -404,7 +404,7 @@ ip security
 !
 interface Dps1
    description DPS Interface
-   mtu 9214
+   mtu 9194
    flow tracker hardware FLOW-TRACKER
    ip address 192.168.42.8/32
 ```
@@ -424,25 +424,25 @@ interface Dps1
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet1.100 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3.100_vrf_BLUE | - | 100 | - |
-| Ethernet1.101 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3.101_vrf_RED | - | 101 | - |
+| Ethernet1.100 | P2P_LINK_TO_SITE2-LEAF2_Ethernet3.100_vrf_BLUE | - | 100 | - |
+| Ethernet1.101 | P2P_LINK_TO_SITE2-LEAF2_Ethernet3.101_vrf_RED | - | 101 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3 | - | 10.0.2.15/31 | default | 9214 | False | - | - |
-| Ethernet1.100 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3.100_vrf_BLUE | - | 10.0.2.15/31 | BLUE | 9214 | False | - | - |
-| Ethernet1.101 | P2P_LINK_TO_LEAF2-SITE2_Ethernet3.101_vrf_RED | - | 10.0.2.15/31 | RED | 9214 | False | - | - |
-| Ethernet4 | REGION2-INTERNET-CORP_inet-wan2-site2_inet-cloud_Ethernet7 | - | 100.64.21.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
-| Ethernet5 | DIRECT LAN HA LINK | - | 10.42.0.1/31 | default | - | False | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE2-LEAF2_Ethernet3 | - | 10.0.2.15/31 | default | 9214 | False | - | - |
+| Ethernet1.100 | P2P_LINK_TO_SITE2-LEAF2_Ethernet3.100_vrf_BLUE | - | 10.0.2.15/31 | BLUE | 9214 | False | - | - |
+| Ethernet1.101 | P2P_LINK_TO_SITE2-LEAF2_Ethernet3.101_vrf_RED | - | 10.0.2.15/31 | RED | 9214 | False | - | - |
+| Ethernet4 | REGION2-INTERNET-CORP_inet-site2-wan2_inet-cloud_Ethernet7 | - | 100.64.21.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
+| Ethernet5 | DIRECT LAN HA LINK | - | 10.42.0.1/31 | default | 9194 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_LEAF2-SITE2_Ethernet3
+   description P2P_LINK_TO_SITE2-LEAF2_Ethernet3
    no shutdown
    mtu 9214
    no switchport
@@ -450,7 +450,7 @@ interface Ethernet1
    ip address 10.0.2.15/31
 !
 interface Ethernet1.100
-   description P2P_LINK_TO_LEAF2-SITE2_Ethernet3.100_vrf_BLUE
+   description P2P_LINK_TO_SITE2-LEAF2_Ethernet3.100_vrf_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -459,7 +459,7 @@ interface Ethernet1.100
    ip address 10.0.2.15/31
 !
 interface Ethernet1.101
-   description P2P_LINK_TO_LEAF2-SITE2_Ethernet3.101_vrf_RED
+   description P2P_LINK_TO_SITE2-LEAF2_Ethernet3.101_vrf_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -468,7 +468,7 @@ interface Ethernet1.101
    ip address 10.0.2.15/31
 !
 interface Ethernet4
-   description REGION2-INTERNET-CORP_inet-wan2-site2_inet-cloud_Ethernet7
+   description REGION2-INTERNET-CORP_inet-site2-wan2_inet-cloud_Ethernet7
    no shutdown
    no switchport
    flow tracker hardware FLOW-TRACKER
@@ -478,6 +478,7 @@ interface Ethernet4
 interface Ethernet5
    description DIRECT LAN HA LINK
    no shutdown
+   mtu 9194
    no switchport
    ip address 10.42.0.1/31
 ```
@@ -490,20 +491,20 @@ interface Ethernet5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 192.168.255.8/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.8/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.8/32
 ```
@@ -530,7 +531,7 @@ interface Loopback0
 ```eos
 !
 interface Vxlan1
-   description wan2-site2_VTEP
+   description site2-wan2_VTEP
    vxlan source-interface Dps1
    vxlan udp-port 4789
    vxlan vrf BLUE vni 100
@@ -619,6 +620,7 @@ Topology role: transit region
 | BLUE-POLICY-VOICE | LB-BLUE-POLICY-VOICE | - |
 | DEFAULT-POLICY-CONTROL-PLANE | LB-DEFAULT-POLICY-CONTROL-PLANE | - |
 | DEFAULT-POLICY-DEFAULT | LB-DEFAULT-POLICY-DEFAULT | - |
+| RED-POLICY-CRITICAL-SECRET-DATA | LB-RED-POLICY-CRITICAL-SECRET-DATA | - |
 | RED-POLICY-NORMAL-DATA | LB-RED-POLICY-NORMAL-DATA | - |
 | RED-POLICY-NOT-SO-IMPORTANT-DATA | LB-RED-POLICY-NOT-SO-IMPORTANT-DATA | - |
 
@@ -643,6 +645,7 @@ Topology role: transit region
 
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
+| CRITICAL-SECRET-DATA | RED-POLICY-CRITICAL-SECRET-DATA | - | - |
 | NORMAL-DATA | RED-POLICY-NORMAL-DATA | - | - |
 | NOT-SO-IMPORTANT-DATA | RED-POLICY-NOT-SO-IMPORTANT-DATA | - | - |
 
@@ -679,6 +682,7 @@ Topology role: transit region
 
 | AVT Profile | AVT ID |
 | ----------- | ------ |
+| RED-POLICY-CRITICAL-SECRET-DATA | 2 |
 | RED-POLICY-NORMAL-DATA | 3 |
 | RED-POLICY-NOT-SO-IMPORTANT-DATA | 4 |
 
@@ -713,6 +717,9 @@ router adaptive-virtual-topology
    !
    policy RED-POLICY
       !
+      match application-profile CRITICAL-SECRET-DATA
+         avt profile RED-POLICY-CRITICAL-SECRET-DATA
+      !
       match application-profile NORMAL-DATA
          avt profile RED-POLICY-NORMAL-DATA
       !
@@ -734,6 +741,9 @@ router adaptive-virtual-topology
    profile DEFAULT-POLICY-DEFAULT
       path-selection load-balance LB-DEFAULT-POLICY-DEFAULT
    !
+   profile RED-POLICY-CRITICAL-SECRET-DATA
+      path-selection load-balance LB-RED-POLICY-CRITICAL-SECRET-DATA
+   !
    profile RED-POLICY-NORMAL-DATA
       path-selection load-balance LB-RED-POLICY-NORMAL-DATA
    !
@@ -753,6 +763,7 @@ router adaptive-virtual-topology
    !
    vrf RED
       avt policy RED-POLICY
+      avt profile RED-POLICY-CRITICAL-SECRET-DATA id 2
       avt profile RED-POLICY-NORMAL-DATA id 3
       avt profile RED-POLICY-NOT-SO-IMPORTANT-DATA id 4
 ```
@@ -893,13 +904,13 @@ router bgp 65000
    neighbor WAN-OVERLAY-PEERS maximum-routes 0
    neighbor 10.0.2.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.2.14 remote-as 65102
-   neighbor 10.0.2.14 description leaf2-site2_Ethernet3
+   neighbor 10.0.2.14 description site2-leaf2_Ethernet3
    neighbor 192.168.42.1 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.1 description pf1
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.2 description pf2
    neighbor 192.168.42.7 remote-as 65000
-   neighbor 192.168.42.7 description wan1-site2
+   neighbor 192.168.42.7 description site2-wan1
    neighbor 192.168.42.7 route-reflector-client
    neighbor 192.168.42.7 update-source Dps1
    neighbor 192.168.42.7 route-map RM-WAN-HA-PEER-IN in
@@ -937,7 +948,7 @@ router bgp 65000
       router-id 192.168.255.8
       neighbor 10.0.2.14 remote-as 65102
       neighbor 10.0.2.14 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.2.14 description leaf2-site2_Ethernet3.100_vrf_BLUE
+      neighbor 10.0.2.14 description site2-leaf2_Ethernet3.100_vrf_BLUE
       redistribute connected
    !
    vrf default
@@ -953,7 +964,7 @@ router bgp 65000
       router-id 192.168.255.8
       neighbor 10.0.2.14 remote-as 65102
       neighbor 10.0.2.14 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.2.14 description leaf2-site2_Ethernet3.101_vrf_RED
+      neighbor 10.0.2.14 description site2-leaf2_Ethernet3.101_vrf_RED
       redistribute connected
 ```
 
@@ -1155,6 +1166,7 @@ vrf instance RED
 | Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set | DSCP |
 | ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
 | APP-CONTROL-PLANE | - | PFX-PATHFINDERS | - | - | - | - | - | - | - |
+| CRITICAL-SECRET-DATA-APP | - | - | - | - | - | - | - | - | 46 |
 | NORMAL-DATA-APP | - | - | - | - | - | - | - | - | af23 |
 | NOT-SO-IMPORTANT-DATA-APP | - | - | - | - | - | - | - | - | 0 |
 | VIDEO-APP | - | - | tcp, udp | - | - | VIDEO-PORTS | - | VIDEO-PORTS | - |
@@ -1167,6 +1179,12 @@ vrf instance RED
 | Type | Name | Service |
 | ---- | ---- | ------- |
 | application | APP-CONTROL-PLANE | - |
+
+#### Application Profile Name CRITICAL-SECRET-DATA
+
+| Type | Name | Service |
+| ---- | ---- | ------- |
+| application | CRITICAL-SECRET-DATA-APP | - |
 
 #### Application Profile Name NORMAL-DATA
 
@@ -1216,6 +1234,9 @@ application traffic recognition
    application ipv4 APP-CONTROL-PLANE
       destination prefix field-set PFX-PATHFINDERS
    !
+   application ipv4 CRITICAL-SECRET-DATA-APP
+      dscp 46
+   !
    application ipv4 NORMAL-DATA-APP
       dscp af23
    !
@@ -1231,6 +1252,9 @@ application traffic recognition
    !
    application-profile APP-PROFILE-CONTROL-PLANE
       application APP-CONTROL-PLANE
+   !
+   application-profile CRITICAL-SECRET-DATA
+      application CRITICAL-SECRET-DATA-APP
    !
    application-profile NORMAL-DATA
       application NORMAL-DATA-APP
@@ -1309,7 +1333,7 @@ application traffic recognition
 
 | Router IP | Name | IPv4 address(es) |
 | --------- | ---- | ---------------- |
-| 192.168.42.7 | wan1-site2 | 10.42.0.0 |
+| 192.168.42.7 | site2-wan1 | 10.42.0.0 |
 
 #### Load-balance Policies
 
@@ -1320,6 +1344,7 @@ application traffic recognition
 | LB-BLUE-POLICY-VOICE | - | - | - | LAN_HA (1)<br>INTERNET (2) | False |
 | LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
 | LB-DEFAULT-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
+| LB-RED-POLICY-CRITICAL-SECRET-DATA | - | - | - | LAN_HA (1) | False |
 | LB-RED-POLICY-NORMAL-DATA | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
 | LB-RED-POLICY-NOT-SO-IMPORTANT-DATA | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
 
@@ -1353,7 +1378,7 @@ router path-selection
       local interface Ethernet5
       !
       peer static router-ip 192.168.42.7
-         name wan1-site2
+         name site2-wan1
          ipv4 address 10.42.0.0
    !
    load-balance policy LB-BLUE-POLICY-DEFAULT
@@ -1374,6 +1399,9 @@ router path-selection
    !
    load-balance policy LB-DEFAULT-POLICY-DEFAULT
       path-group INTERNET
+      path-group LAN_HA
+   !
+   load-balance policy LB-RED-POLICY-CRITICAL-SECRET-DATA
       path-group LAN_HA
    !
    load-balance policy LB-RED-POLICY-NORMAL-DATA

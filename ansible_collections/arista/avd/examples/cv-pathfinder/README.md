@@ -111,18 +111,18 @@ Subnet: `192.168.17.0/24`
 | pf1              | 192.168.17.10 |
 | pf2              | 192.168.17.11 |
 | **Site 1**       |               |
-| wan1-site1       | 192.168.17.12 |
-| wan2-site1       | 192.168.17.13 |
-| border1-site1    | 192.168.17.14 |
-| border2-site1    | 192.168.17.15 |
+| site1-wan1       | 192.168.17.12 |
+| site1-wan2       | 192.168.17.13 |
+| site1-border1    | 192.168.17.14 |
+| site1-border2    | 192.168.17.15 |
 | **Site 2**       |               |
-| wan1-site2       | 192.168.17.16 |
-| wan2-site2       | 192.168.17.17 |
-| leaf1-site2      | 192.168.17.18 |
-| leaf2-site2      | 192.168.17.19 |
+| site2-wan1       | 192.168.17.16 |
+| site2-wan2       | 192.168.17.17 |
+| site2-leaf1      | 192.168.17.18 |
+| site2-leaf2      | 192.168.17.19 |
 | **Site 3**       |               |
-| wan1-site3       | 192.168.17.20 |
-| leaf1-site3      | 192.168.17.21 |
+| site3-wan1       | 192.168.17.20 |
+| site3-leaf1      | 192.168.17.21 |
 | **Clouds**       |               |
 | mpls-cloud       | 192.168.17.30 |
 | inet-cloud       | 192.168.17.31 |
@@ -141,13 +141,13 @@ Subnet: `192.168.17.0/24`
 | **pf1 to inet-cloud**                       | 100.64.100.0/24   |
 | **pf2 to mpls-cloud**                       | 172.18.200.0/24   |
 | **pf2 to inet-cloud**                       | 100.64.200.0/24   |
-| **wan1-site1 to mpls-cloud**                | 172.18.10.0/24    |
-| **wan1-site1 to inet-cloud**                | 172.18.10.0/24    |
-| **wan2-site1 to mpls-cloud**                | 172.18.11.0/24    |
-| **wan2-site1 to inet-cloud**                | 172.18.11.0/24    |
-| **wan1-site2 to mpls-cloud**                | 172.18.20.0/24    |
-| **wan2-site2 to inet-cloud**                | 172.18.21.0/24    |
-| **wan1-site3 to inet-cloud**                | 172.18.30.0/24    |
+| **site1-wan1 to mpls-cloud**                | 172.18.10.0/24    |
+| **site1-wan1 to inet-cloud**                | 172.18.10.0/24    |
+| **site1-wan2 to mpls-cloud**                | 172.18.11.0/24    |
+| **site1-wan2 to inet-cloud**                | 172.18.11.0/24    |
+| **site2-wan1 to mpls-cloud**                | 172.18.20.0/24    |
+| **site2-wan2 to inet-cloud**                | 172.18.21.0/24    |
+| **site3-wan1 to inet-cloud**                | 172.18.30.0/24    |
 
 For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is allocated `.1` and the site / pf router is allocated `.2`.
 
@@ -155,18 +155,19 @@ For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is alloca
 
 | Site | Router | VRF | IP address |
 | ---- | ------ | --- | ---------- |
-| Site 1 | border1-site1 | BLUE | 10.66.10.1/24 |
-| Site 1 | border1-site1 | RED | 10.42.10.1/24 |
-| Site 1 | border2-site1 | BLUE | 10.66.11.1/24 |
-| Site 1 | border2-site1 | RED | 10.42.11.1/24 |
-| Site 2 | leaf1-site1 | BLUE | 10.66.20.1/24 |
-| Site 2 | leaf1-site1 | RED | 10.42.20.1/24 |
-| Site 2 | leaf2-site1 | BLUE | 10.66.21.1/24 |
-| Site 2 | leaf2-site1 | RED | 10.42.21.1/24 |
-| Site 3 | wan3-site1 | BLUE | 10.66.30.1/24 |
-| Site 3 | wan3-site1 | RED | 10.42.30.1/24 |
+| Site 1 | site1-border1 | BLUE | 10.66.10.1/24 |
+| Site 1 | site1-border1 | RED | 10.42.10.1/24 |
+| Site 1 | site1-border2 | BLUE | 10.66.11.1/24 |
+| Site 1 | site1-border2 | RED | 10.42.11.1/24 |
+| Site 2 | site1-leaf1 | BLUE | 10.66.20.1/24 |
+| Site 2 | site1-leaf1 | RED | 10.42.20.1/24 |
+| Site 2 | site1-leaf2 | BLUE | 10.66.21.1/24 |
+| Site 2 | site1-leaf2 | RED | 10.42.21.1/24 |
+| Site 3 | site1-wan3 | BLUE | 10.66.30.1/24 |
+| Site 3 | site1-wan3 | RED | 10.42.30.1/24 |
 
-**NOTE:** For site 3 the ip addresses are configured on the WAN router as leaf1-site3 is an l2leaf.
+!!! note
+    For site 3, the IP addresses are configured on the WAN router as site3-leaf1 is an l2leaf.
 
 ## Ansible inventory, group vars, and naming scheme
 
@@ -188,9 +189,9 @@ This section describes the entire `ansible-avd-examples/cv-pathfinder/inventory.
 In this example, we consider that no DNS entry is available to reach the devices and define the IPs the Ansible host has to reach per device.
 
 !!! Info  "CVaaS configuration"
-    * The example is targeting cv-staging. Please adjust to the correct CVaaS region as described in the `cv_deploy` role [documentation](../../roles/cv_deploy/README.md#overview)
-    * Additionally follow the [guide](../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) to create the `cv_token`
-    * the `cv_token` should then be loaded as an ENV variable `CV_TOKEN` using `export CV_TOKEN=<token>` for the `deploy.yml` playbook to work toward CVaaS.
+    - The example is targeting cv-staging. Please adjust to the correct CVaaS region as described in the `cv_deploy` role [documentation](../../roles/cv_deploy/README.md#overview)
+    - Additionally follow the [guide](../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) to create the `cv_token`
+    - the `cv_token` should then be loaded as an ENV variable `CV_TOKEN` using `export CV_TOKEN=<token>` for the `deploy.yml` playbook to work toward CVaaS.
 
 === "inventory.yml"
 
@@ -241,14 +242,14 @@ default_node_types:
       - pf.*
   - node_type: wan_router
     match_hostnames:
-      - wan.*-site.*
+      - site.*-wan.*
   - node_type: l2leaf
     match_hostnames:
-      - leaf.*-site3
+      - site3-leaf.*
   - node_type: l3leaf
     match_hostnames:
-      - leaf.*-site.*
-      - border.*-site.*
+      - site.*-border.*
+      - site.*-leaf.*
   # Transport routers # (1)!
   - node_type: spine
     match_hostnames:
@@ -380,7 +381,7 @@ wan_router:
       wan_ha:
         enabled: true
       nodes:
-        - name: wan1-site1
+        - name: site1-wan1
           id: 3
           l3_interfaces:
             - name: Ethernet3  # (1)
@@ -389,7 +390,7 @@ wan_router:
               peer_ip: 172.18.10.1
               ip_address: 172.18.10.2/24
               wan_carrier: ACME-MPLS-INC
-              wan_circuit_id: mpls-wan1-site1
+              wan_circuit_id: mpls-site1-wan1
             - name: Ethernet42 # (2)
               ip_address: 100.64.10.2/24
 ```
@@ -581,4 +582,4 @@ For any question reach out to AVD maintainer over [Github discussions](https://g
 - AVD version
 - Python version
 - EOS version in your lab (if relevant)
-- whether you are using CVaaS or CV on prem (and in this case the version)
+- Whether you are using CVaaS or CV on prem (and in this case the version)

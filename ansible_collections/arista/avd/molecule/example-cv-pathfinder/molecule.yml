@@ -27,5 +27,7 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/cv-pathfinder/inventory.yml
+    - --vault-password-file
+    - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/cv-pathfinder/.vault
 verifier:
   name: ansible

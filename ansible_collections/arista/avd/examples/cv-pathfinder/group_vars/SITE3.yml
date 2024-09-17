@@ -3,7 +3,7 @@
 
 l2leaf:
   nodes:
-    - name: leaf1-site3
+    - name: site3-leaf1
       mgmt_ip: "{{ ansible_host }}/24"
       id: 12
 
@@ -17,12 +17,12 @@ wan_router:
     uplink_type: lan
     bgp_as: 65000
   nodes:
-    - name: wan1-site3
+    - name: site3-wan1
       cv_pathfinder_region: REGION2
       cv_pathfinder_site: SITE3
       id: 11
       mgmt_ip: "{{ ansible_host }}/24"
-      uplink_switches: [leaf1-site3]
+      uplink_switches: [site3-leaf1]
       l3_interfaces:
         - name: Ethernet4
           peer_interface: Ethernet8
@@ -30,4 +30,4 @@ wan_router:
           ip_address: 100.64.30.2/24
           profile: INTERNET-WAN-INTERFACE
           wan_carrier: REGION2-INTERNET-CORP
-          wan_circuit_id: inet-wan1-site3
+          wan_circuit_id: inet-site3-wan1

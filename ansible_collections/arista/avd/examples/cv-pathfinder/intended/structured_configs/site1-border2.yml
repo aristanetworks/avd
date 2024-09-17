@@ -1,8 +1,8 @@
-hostname: border1-site1
+hostname: site1-border2
 is_deployed: true
 router_bgp:
   as: '65101'
-  router_id: 192.168.255.5
+  router_id: 192.168.255.6
   bgp:
     default:
       ipv4_unicast: false
@@ -14,7 +14,7 @@ router_bgp:
     type: ipv4
     remote_as: '65101'
     next_hop_self: true
-    description: border2-site1
+    description: site1-border1
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
@@ -38,39 +38,39 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   neighbors:
-  - ip_address: 10.255.251.9
+  - ip_address: 10.255.251.8
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: border2-site1
-    description: border2-site1
-  - ip_address: 10.0.1.9
+    peer: site1-border1
+    description: site1-border1
+  - ip_address: 10.0.1.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: wan1-site1
-    description: wan1-site1_Ethernet1
-  - ip_address: 10.0.1.13
+    peer: site1-wan1
+    description: site1-wan1_Ethernet2
+  - ip_address: 10.0.1.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: wan2-site1
-    description: wan2-site1_Ethernet1
+    peer: site1-wan2
+    description: site1-wan2_Ethernet2
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   vrfs:
   - name: BLUE
-    router_id: 192.168.255.5
+    router_id: 192.168.255.6
     neighbors:
-    - ip_address: 10.0.1.9
+    - ip_address: 10.0.1.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: wan1-site1_Ethernet1.100_vrf_BLUE
-    - ip_address: 10.0.1.13
+      description: site1-wan1_Ethernet2.100_vrf_BLUE
+    - ip_address: 10.0.1.15
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: wan2-site1_Ethernet1.100_vrf_BLUE
-    - ip_address: 10.255.251.9
+      description: site1-wan2_Ethernet2.100_vrf_BLUE
+    - ip_address: 10.255.251.8
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: border2-site1
-    rd: 192.168.255.5:100
+      description: site1-border1
+    rd: 192.168.255.6:100
     route_targets:
       import:
       - address_family: evpn
@@ -83,20 +83,20 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: RED
-    router_id: 192.168.255.5
+    router_id: 192.168.255.6
     neighbors:
-    - ip_address: 10.0.1.9
+    - ip_address: 10.0.1.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: wan1-site1_Ethernet1.101_vrf_RED
-    - ip_address: 10.0.1.13
+      description: site1-wan1_Ethernet2.101_vrf_RED
+    - ip_address: 10.0.1.15
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: wan2-site1_Ethernet1.101_vrf_RED
-    - ip_address: 10.255.251.9
+      description: site1-wan2_Ethernet2.101_vrf_RED
+    - ip_address: 10.255.251.8
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: border2-site1
-    rd: 192.168.255.5:101
+      description: site1-border1
+    rd: 192.168.255.6:101
     route_targets:
       import:
       - address_family: evpn
@@ -115,7 +115,7 @@ router_bgp:
   vlans:
   - id: 666
     tenant: WAN-EXAMPLE-TENANT
-    rd: 192.168.255.5:10666
+    rd: 192.168.255.6:10666
     route_targets:
       both:
       - 10666:10666
@@ -123,7 +123,7 @@ router_bgp:
     - learned
   - id: 42
     tenant: WAN-EXAMPLE-TENANT
-    rd: 192.168.255.5:10042
+    rd: 192.168.255.6:10042
     route_targets:
       both:
       - 10042:10042
@@ -182,7 +182,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.17.14/24
+  ip_address: 192.168.17.15/24
   gateway: 192.168.17.1
   type: oob
   lldp:
@@ -234,18 +234,18 @@ vlan_interfaces:
   description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9214
-  ip_address: 10.255.251.8/31
+  ip_address: 10.255.251.9/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   no_autostate: true
   mtu: 9214
-  ip_address: 10.255.252.8/31
+  ip_address: 10.255.252.9/31
 - name: Vlan666
   tenant: WAN-EXAMPLE-TENANT
   description: BLUE-TEST
   shutdown: false
-  ip_address: 10.66.1.1/24
+  ip_address: 10.66.11.1/24
   vrf: BLUE
 - name: Vlan3099
   tenant: WAN-EXAMPLE-TENANT
@@ -254,12 +254,12 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf BLUE'
   vrf: BLUE
   mtu: 9214
-  ip_address: 10.255.251.8/31
+  ip_address: 10.255.251.9/31
 - name: Vlan42
   tenant: WAN-EXAMPLE-TENANT
   description: RED-TEST
   shutdown: false
-  ip_address: 10.42.1.1/24
+  ip_address: 10.42.11.1/24
   vrf: RED
 - name: Vlan3100
   tenant: WAN-EXAMPLE-TENANT
@@ -268,10 +268,10 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf RED'
   vrf: RED
   mtu: 9214
-  ip_address: 10.255.251.8/31
+  ip_address: 10.255.251.9/31
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_border2-site1_Po5
+  description: MLAG_PEER_site1-border1_Po5
   type: switched
   shutdown: false
   mode: trunk
@@ -280,103 +280,103 @@ port_channel_interfaces:
   - MLAG
 ethernet_interfaces:
 - name: Ethernet5
-  peer: border2-site1
+  peer: site1-border1
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_border2-site1_Ethernet5
+  description: MLAG_PEER_site1-border1_Ethernet5
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
 - name: Ethernet6
-  peer: border2-site1
+  peer: site1-border1
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_border2-site1_Ethernet6
+  description: MLAG_PEER_site1-border1_Ethernet6
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
 - name: Ethernet3
-  peer: wan1-site1
-  peer_interface: Ethernet1
+  peer: site1-wan1
+  peer_interface: Ethernet2
   peer_type: wan_router
-  description: P2P_LINK_TO_WAN1-SITE1_Ethernet1
+  description: P2P_LINK_TO_SITE1-WAN1_Ethernet2
   shutdown: false
   mtu: 9214
   type: routed
   flow_tracker:
     sampled: FLOW-TRACKER
-  ip_address: 10.0.1.8/31
+  ip_address: 10.0.1.10/31
 - name: Ethernet3.100
-  peer: wan1-site1
-  peer_interface: Ethernet1.100
+  peer: site1-wan1
+  peer_interface: Ethernet2.100
   peer_type: wan_router
   vrf: BLUE
-  description: P2P_LINK_TO_WAN1-SITE1_Ethernet1.100_vrf_BLUE
+  description: P2P_LINK_TO_SITE1-WAN1_Ethernet2.100_vrf_BLUE
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
   flow_tracker:
     sampled: FLOW-TRACKER
   mtu: 9214
-  ip_address: 10.0.1.8/31
+  ip_address: 10.0.1.10/31
 - name: Ethernet3.101
-  peer: wan1-site1
-  peer_interface: Ethernet1.101
+  peer: site1-wan1
+  peer_interface: Ethernet2.101
   peer_type: wan_router
   vrf: RED
-  description: P2P_LINK_TO_WAN1-SITE1_Ethernet1.101_vrf_RED
+  description: P2P_LINK_TO_SITE1-WAN1_Ethernet2.101_vrf_RED
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 101
   flow_tracker:
     sampled: FLOW-TRACKER
   mtu: 9214
-  ip_address: 10.0.1.8/31
+  ip_address: 10.0.1.10/31
 - name: Ethernet4
-  peer: wan2-site1
-  peer_interface: Ethernet1
+  peer: site1-wan2
+  peer_interface: Ethernet2
   peer_type: wan_router
-  description: P2P_LINK_TO_WAN2-SITE1_Ethernet1
+  description: P2P_LINK_TO_SITE1-WAN2_Ethernet2
   shutdown: false
   mtu: 9214
   type: routed
   flow_tracker:
     sampled: FLOW-TRACKER
-  ip_address: 10.0.1.12/31
+  ip_address: 10.0.1.14/31
 - name: Ethernet4.100
-  peer: wan2-site1
-  peer_interface: Ethernet1.100
+  peer: site1-wan2
+  peer_interface: Ethernet2.100
   peer_type: wan_router
   vrf: BLUE
-  description: P2P_LINK_TO_WAN2-SITE1_Ethernet1.100_vrf_BLUE
+  description: P2P_LINK_TO_SITE1-WAN2_Ethernet2.100_vrf_BLUE
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
   flow_tracker:
     sampled: FLOW-TRACKER
   mtu: 9214
-  ip_address: 10.0.1.12/31
+  ip_address: 10.0.1.14/31
 - name: Ethernet4.101
-  peer: wan2-site1
-  peer_interface: Ethernet1.101
+  peer: site1-wan2
+  peer_interface: Ethernet2.101
   peer_type: wan_router
   vrf: RED
-  description: P2P_LINK_TO_WAN2-SITE1_Ethernet1.101_vrf_RED
+  description: P2P_LINK_TO_SITE1-WAN2_Ethernet2.101_vrf_RED
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 101
   flow_tracker:
     sampled: FLOW-TRACKER
   mtu: 9214
-  ip_address: 10.0.1.12/31
+  ip_address: 10.0.1.14/31
 mlag_configuration:
   domain_id: SITE1
   local_interface: Vlan4094
-  peer_address: 10.255.252.9
+  peer_address: 10.255.252.8
   peer_link: Port-Channel5
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
@@ -396,11 +396,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.5/32
+  ip_address: 192.168.255.6/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.42.5/32
 prefix_lists:
@@ -419,7 +419,7 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   vxlan1:
-    description: border1-site1_VTEP
+    description: site1-border2_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1

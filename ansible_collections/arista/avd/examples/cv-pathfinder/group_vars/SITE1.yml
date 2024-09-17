@@ -17,10 +17,10 @@ l3leaf:
     - group: SITE1
       bgp_as: 65101
       nodes:
-        - name: border1-site1
+        - name: site1-border1
           mgmt_ip: "{{ ansible_host }}/24"
           id: 5
-        - name: border2-site1
+        - name: site1-border2
           mgmt_ip: "{{ ansible_host }}/24"
           id: 6
 
@@ -32,7 +32,7 @@ wan_router:
     filter:
       always_include_vrfs_in_tenants: [all]
     uplink_interfaces: [Ethernet1, Ethernet2]
-    uplink_switches: [border1-site1, border2-site1]
+    uplink_switches: [site1-border1, site1-border2]
     uplink_type: p2p-vrfs # (1)
     bgp_as: 65000
   node_groups:
@@ -46,7 +46,7 @@ wan_router:
         # Can disable ipsec on WAN HA tunnel using this knob
         # ipsec: false
       nodes:
-        - name: wan1-site1
+        - name: site1-wan1
           id: 3
           mgmt_ip: "{{ ansible_host }}/24"
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
@@ -57,15 +57,15 @@ wan_router:
               peer_ip: 172.18.10.1
               ip_address: 172.18.10.2/24
               wan_carrier: ACME-MPLS-INC
-              wan_circuit_id: mpls-wan1-site1
+              wan_circuit_id: mpls-site1-wan1
             - name: Ethernet4
               peer_interface: Ethernet5
               peer_ip: 100.64.10.1
               ip_address: 100.64.10.2/24
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION1-INTERNET-CORP
-              wan_circuit_id: inet-wan1-site1
-        - name: wan2-site1
+              wan_circuit_id: inet-site1-wan1
+        - name: site1-wan2
           id: 4
           mgmt_ip: "{{ ansible_host }}/24"
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
@@ -76,11 +76,11 @@ wan_router:
               peer_ip: 172.18.11.1
               ip_address: 172.18.11.2/24
               wan_carrier: ACME-MPLS-INC
-              wan_circuit_id: mpls-wan2-site1
+              wan_circuit_id: mpls-site1-wan2
             - name: Ethernet4
               peer_interface: Ethernet6
               peer_ip: 100.64.11.1
               ip_address: 100.64.11.2/24
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION1-INTERNET-CORP
-              wan_circuit_id: inet-wan2-site1
+              wan_circuit_id: inet-site1-wan2

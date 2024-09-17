@@ -371,7 +371,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.2/32 | - | 9214 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.2/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
 
 #### DPS Interfaces Device Configuration
 
@@ -379,7 +379,7 @@ ip security
 !
 interface Dps1
    description DPS Interface
-   mtu 9214
+   mtu 9194
    flow tracker hardware FLOW-TRACKER
    ip address 192.168.42.2/32
 ```
@@ -428,20 +428,20 @@ interface Ethernet2
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 192.168.255.2/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.2/32
 ```

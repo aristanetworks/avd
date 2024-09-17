@@ -250,9 +250,9 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | pf1-Ethernet1 | - | 172.18.100.1/24 | default | - | False | - | - |
 | Ethernet2 | pf2-Ethernet1 | - | 172.18.200.1/24 | default | - | False | - | - |
-| Ethernet5 | wan1-site1-Ethernet3 | - | 172.18.10.1/24 | default | - | False | - | - |
-| Ethernet6 | wan2-site1-Ethernet3 | - | 172.18.11.1/24 | default | - | False | - | - |
-| Ethernet7 | wan1-site2-Ethernet3 | - | 172.18.20.1/24 | default | - | False | - | - |
+| Ethernet5 | site1-wan1-Ethernet3 | - | 172.18.10.1/24 | default | - | False | - | - |
+| Ethernet6 | site1-wan2-Ethernet3 | - | 172.18.11.1/24 | default | - | False | - | - |
+| Ethernet7 | site2-wan1-Ethernet3 | - | 172.18.20.1/24 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -271,19 +271,19 @@ interface Ethernet2
    ip address 172.18.200.1/24
 !
 interface Ethernet5
-   description wan1-site1-Ethernet3
+   description site1-wan1-Ethernet3
    no shutdown
    no switchport
    ip address 172.18.10.1/24
 !
 interface Ethernet6
-   description wan2-site1-Ethernet3
+   description site1-wan2-Ethernet3
    no shutdown
    no switchport
    ip address 172.18.11.1/24
 !
 interface Ethernet7
-   description wan1-site2-Ethernet3
+   description site2-wan1-Ethernet3
    no shutdown
    no switchport
    ip address 172.18.20.1/24
@@ -297,20 +297,20 @@ interface Ethernet7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.31.255.22/32 |
+| Loopback0 | ROUTER_ID | default | 172.31.255.22/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.31.255.22/32
 ```

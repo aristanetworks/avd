@@ -1,4 +1,4 @@
-# wan2-site1
+# site1-wan2
 
 ## Table of Contents
 
@@ -397,7 +397,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.4/32 | - | 9214 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.4/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
 
 #### DPS Interfaces Device Configuration
 
@@ -405,7 +405,7 @@ ip security
 !
 interface Dps1
    description DPS Interface
-   mtu 9214
+   mtu 9194
    flow tracker hardware FLOW-TRACKER
    ip address 192.168.42.4/32
 ```
@@ -425,30 +425,30 @@ interface Dps1
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet1.100 | P2P_LINK_TO_BORDER1-SITE1_Ethernet4.100_vrf_BLUE | - | 100 | - |
-| Ethernet1.101 | P2P_LINK_TO_BORDER1-SITE1_Ethernet4.101_vrf_RED | - | 101 | - |
-| Ethernet2.100 | P2P_LINK_TO_BORDER2-SITE1_Ethernet4.100_vrf_BLUE | - | 100 | - |
-| Ethernet2.101 | P2P_LINK_TO_BORDER2-SITE1_Ethernet4.101_vrf_RED | - | 101 | - |
+| Ethernet1.100 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.100_vrf_BLUE | - | 100 | - |
+| Ethernet1.101 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.101_vrf_RED | - | 101 | - |
+| Ethernet2.100 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.100_vrf_BLUE | - | 100 | - |
+| Ethernet2.101 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.101_vrf_RED | - | 101 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_BORDER1-SITE1_Ethernet4 | - | 10.0.1.13/31 | default | 9214 | False | - | - |
-| Ethernet1.100 | P2P_LINK_TO_BORDER1-SITE1_Ethernet4.100_vrf_BLUE | - | 10.0.1.13/31 | BLUE | 9214 | False | - | - |
-| Ethernet1.101 | P2P_LINK_TO_BORDER1-SITE1_Ethernet4.101_vrf_RED | - | 10.0.1.13/31 | RED | 9214 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_BORDER2-SITE1_Ethernet4 | - | 10.0.1.15/31 | default | 9214 | False | - | - |
-| Ethernet2.100 | P2P_LINK_TO_BORDER2-SITE1_Ethernet4.100_vrf_BLUE | - | 10.0.1.15/31 | BLUE | 9214 | False | - | - |
-| Ethernet2.101 | P2P_LINK_TO_BORDER2-SITE1_Ethernet4.101_vrf_RED | - | 10.0.1.15/31 | RED | 9214 | False | - | - |
-| Ethernet3 | ACME-MPLS-INC_mpls-wan2-site1_mpls-cloud_Ethernet6 | - | 172.18.11.2/24 | default | - | False | - | - |
-| Ethernet4 | REGION1-INTERNET-CORP_inet-wan2-site1_inet-cloud_Ethernet6 | - | 100.64.11.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
+| Ethernet1 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4 | - | 10.0.1.13/31 | default | 9214 | False | - | - |
+| Ethernet1.100 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.100_vrf_BLUE | - | 10.0.1.13/31 | BLUE | 9214 | False | - | - |
+| Ethernet1.101 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.101_vrf_RED | - | 10.0.1.13/31 | RED | 9214 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4 | - | 10.0.1.15/31 | default | 9214 | False | - | - |
+| Ethernet2.100 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.100_vrf_BLUE | - | 10.0.1.15/31 | BLUE | 9214 | False | - | - |
+| Ethernet2.101 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.101_vrf_RED | - | 10.0.1.15/31 | RED | 9214 | False | - | - |
+| Ethernet3 | ACME-MPLS-INC_mpls-site1-wan2_mpls-cloud_Ethernet6 | - | 172.18.11.2/24 | default | - | False | - | - |
+| Ethernet4 | REGION1-INTERNET-CORP_inet-site1-wan2_inet-cloud_Ethernet6 | - | 100.64.11.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_BORDER1-SITE1_Ethernet4
+   description P2P_LINK_TO_SITE1-BORDER1_Ethernet4
    no shutdown
    mtu 9214
    no switchport
@@ -456,7 +456,7 @@ interface Ethernet1
    ip address 10.0.1.13/31
 !
 interface Ethernet1.100
-   description P2P_LINK_TO_BORDER1-SITE1_Ethernet4.100_vrf_BLUE
+   description P2P_LINK_TO_SITE1-BORDER1_Ethernet4.100_vrf_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -465,7 +465,7 @@ interface Ethernet1.100
    ip address 10.0.1.13/31
 !
 interface Ethernet1.101
-   description P2P_LINK_TO_BORDER1-SITE1_Ethernet4.101_vrf_RED
+   description P2P_LINK_TO_SITE1-BORDER1_Ethernet4.101_vrf_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -474,7 +474,7 @@ interface Ethernet1.101
    ip address 10.0.1.13/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_BORDER2-SITE1_Ethernet4
+   description P2P_LINK_TO_SITE1-BORDER2_Ethernet4
    no shutdown
    mtu 9214
    no switchport
@@ -482,7 +482,7 @@ interface Ethernet2
    ip address 10.0.1.15/31
 !
 interface Ethernet2.100
-   description P2P_LINK_TO_BORDER2-SITE1_Ethernet4.100_vrf_BLUE
+   description P2P_LINK_TO_SITE1-BORDER2_Ethernet4.100_vrf_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -491,7 +491,7 @@ interface Ethernet2.100
    ip address 10.0.1.15/31
 !
 interface Ethernet2.101
-   description P2P_LINK_TO_BORDER2-SITE1_Ethernet4.101_vrf_RED
+   description P2P_LINK_TO_SITE1-BORDER2_Ethernet4.101_vrf_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -500,14 +500,14 @@ interface Ethernet2.101
    ip address 10.0.1.15/31
 !
 interface Ethernet3
-   description ACME-MPLS-INC_mpls-wan2-site1_mpls-cloud_Ethernet6
+   description ACME-MPLS-INC_mpls-site1-wan2_mpls-cloud_Ethernet6
    no shutdown
    no switchport
    flow tracker hardware FLOW-TRACKER
    ip address 172.18.11.2/24
 !
 interface Ethernet4
-   description REGION1-INTERNET-CORP_inet-wan2-site1_inet-cloud_Ethernet6
+   description REGION1-INTERNET-CORP_inet-site1-wan2_inet-cloud_Ethernet6
    no shutdown
    no switchport
    flow tracker hardware FLOW-TRACKER
@@ -523,20 +523,20 @@ interface Ethernet4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 192.168.255.4/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.4/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.4/32
 ```
@@ -563,7 +563,7 @@ interface Loopback0
 ```eos
 !
 interface Vxlan1
-   description wan2-site1_VTEP
+   description site1-wan2_VTEP
    vxlan source-interface Dps1
    vxlan udp-port 4789
    vxlan vrf BLUE vni 100
@@ -943,16 +943,16 @@ router bgp 65000
    neighbor WAN-OVERLAY-PEERS maximum-routes 0
    neighbor 10.0.1.12 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.1.12 remote-as 65101
-   neighbor 10.0.1.12 description border1-site1_Ethernet4
+   neighbor 10.0.1.12 description site1-border1_Ethernet4
    neighbor 10.0.1.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.1.14 remote-as 65101
-   neighbor 10.0.1.14 description border2-site1_Ethernet4
+   neighbor 10.0.1.14 description site1-border2_Ethernet4
    neighbor 192.168.42.1 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.1 description pf1
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.2 description pf2
    neighbor 192.168.42.3 remote-as 65000
-   neighbor 192.168.42.3 description wan1-site1
+   neighbor 192.168.42.3 description site1-wan1
    neighbor 192.168.42.3 route-reflector-client
    neighbor 192.168.42.3 update-source Dps1
    neighbor 192.168.42.3 route-map RM-WAN-HA-PEER-IN in
@@ -990,10 +990,10 @@ router bgp 65000
       router-id 192.168.255.4
       neighbor 10.0.1.12 remote-as 65101
       neighbor 10.0.1.12 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.12 description border1-site1_Ethernet4.100_vrf_BLUE
+      neighbor 10.0.1.12 description site1-border1_Ethernet4.100_vrf_BLUE
       neighbor 10.0.1.14 remote-as 65101
       neighbor 10.0.1.14 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.14 description border2-site1_Ethernet4.100_vrf_BLUE
+      neighbor 10.0.1.14 description site1-border2_Ethernet4.100_vrf_BLUE
       redistribute connected
    !
    vrf default
@@ -1009,10 +1009,10 @@ router bgp 65000
       router-id 192.168.255.4
       neighbor 10.0.1.12 remote-as 65101
       neighbor 10.0.1.12 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.12 description border1-site1_Ethernet4.101_vrf_RED
+      neighbor 10.0.1.12 description site1-border1_Ethernet4.101_vrf_RED
       neighbor 10.0.1.14 remote-as 65101
       neighbor 10.0.1.14 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.14 description border2-site1_Ethernet4.101_vrf_RED
+      neighbor 10.0.1.14 description site1-border2_Ethernet4.101_vrf_RED
       redistribute connected
 ```
 
@@ -1433,7 +1433,7 @@ application traffic recognition
 
 | Router IP | Name | IPv4 address(es) |
 | --------- | ---- | ---------------- |
-| 192.168.42.3 | wan1-site1 | 10.0.1.9<br>10.0.1.11 |
+| 192.168.42.3 | site1-wan1 | 10.0.1.9<br>10.0.1.11 |
 
 ##### Path Group MPLS
 
@@ -1507,7 +1507,7 @@ router path-selection
       local interface Ethernet2
       !
       peer static router-ip 192.168.42.3
-         name wan1-site1
+         name site1-wan1
          ipv4 address 10.0.1.9
          ipv4 address 10.0.1.11
    !

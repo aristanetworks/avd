@@ -1,4 +1,4 @@
-hostname: leaf1-site3
+hostname: site3-leaf1
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -66,10 +66,10 @@ ntp:
     preferred: true
 ethernet_interfaces:
 - name: Ethernet1
-  peer: wan1-site3
+  peer: site3-wan1
   peer_interface: Ethernet1
   peer_type: wan_router
-  description: WAN1-SITE3_Ethernet1
+  description: SITE3-WAN1_Ethernet1
   shutdown: false
   type: switched
   vlans: 42,666

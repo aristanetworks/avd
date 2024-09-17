@@ -1,4 +1,4 @@
-# wan1-site1
+# site3-wan1
 
 ## Table of Contents
 
@@ -49,7 +49,6 @@
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
   - [IP Extended Community Lists](#ip-extended-community-lists)
-  - [AS Path Lists](#as-path-lists)
 - [ACL](#acl)
   - [IP Access-lists](#ip-access-lists)
 - [VRF Instances](#vrf-instances)
@@ -92,7 +91,7 @@ agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.17.12/24 | 192.168.17.1 |
+| Management1 | oob_management | oob | MGMT | 192.168.17.20/24 | 192.168.17.1 |
 
 ##### IPv6
 
@@ -108,7 +107,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 192.168.17.12/24
+   ip address 192.168.17.20/24
    no lldp transmit
    no lldp receive
 ```
@@ -285,7 +284,7 @@ daemon TerminAttr
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-| FLOW-TRACKER | 70000 | 5000 | 1 | Dps1<br>Ethernet1<br>Ethernet1.100<br>Ethernet1.101<br>Ethernet2<br>Ethernet2.100<br>Ethernet2.101<br>Ethernet3<br>Ethernet4 |
+| FLOW-TRACKER | 70000 | 5000 | 1 | Dps1<br>Ethernet1.666<br>Ethernet1.42<br>Ethernet4 |
 
 ##### Exporters Summary
 
@@ -326,8 +325,7 @@ spanning-tree mode none
 
 | Policy name | IKE lifetime | Encryption | DH group | Local ID |
 | ----------- | ------------ | ---------- | -------- | -------- |
-| CP-IKE-POLICY | - | - | - | 192.168.42.3 |
-| DP-IKE-POLICY | - | - | - | 192.168.42.3 |
+| CP-IKE-POLICY | - | - | - | 192.168.42.11 |
 
 ### Security Association policies
 
@@ -341,7 +339,7 @@ spanning-tree mode none
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | CP-PROFILE | CP-IKE-POLICY | CP-SA-POLICY | start | - | - | - | transport | - |
-| DP-PROFILE | DP-IKE-POLICY | DP-SA-POLICY | start | - | - | - | transport | - |
+| DP-PROFILE | - | DP-SA-POLICY | start | - | - | - | transport | - |
 
 ### Key controller
 
@@ -356,10 +354,7 @@ spanning-tree mode none
 ip security
    !
    ike policy CP-IKE-POLICY
-      local-id 192.168.42.3
-   !
-   ike policy DP-IKE-POLICY
-      local-id 192.168.42.3
+      local-id 192.168.42.11
    !
    sa policy CP-SA-POLICY
       esp encryption aes256gcm128
@@ -378,7 +373,6 @@ ip security
       mode transport
    !
    profile DP-PROFILE
-      ike-policy DP-IKE-POLICY
       sa-policy DP-SA-POLICY
       connection start
       shared-key 7 <removed>
@@ -397,7 +391,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.3/32 | - | 9214 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.11/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
 
 #### DPS Interfaces Device Configuration
 
@@ -405,9 +399,9 @@ ip security
 !
 interface Dps1
    description DPS Interface
-   mtu 9214
+   mtu 9194
    flow tracker hardware FLOW-TRACKER
-   ip address 192.168.42.3/32
+   ip address 192.168.42.11/32
 ```
 
 ### Ethernet Interfaces
@@ -425,93 +419,49 @@ interface Dps1
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet1.100 | P2P_LINK_TO_BORDER1-SITE1_Ethernet3.100_vrf_BLUE | - | 100 | - |
-| Ethernet1.101 | P2P_LINK_TO_BORDER1-SITE1_Ethernet3.101_vrf_RED | - | 101 | - |
-| Ethernet2.100 | P2P_LINK_TO_BORDER2-SITE1_Ethernet3.100_vrf_BLUE | - | 100 | - |
-| Ethernet2.101 | P2P_LINK_TO_BORDER2-SITE1_Ethernet3.101_vrf_RED | - | 101 | - |
+| Ethernet1.42 | RED-TEST | - | 42 | - |
+| Ethernet1.666 | BLUE-TEST | - | 666 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_BORDER1-SITE1_Ethernet3 | - | 10.0.1.9/31 | default | 9214 | False | - | - |
-| Ethernet1.100 | P2P_LINK_TO_BORDER1-SITE1_Ethernet3.100_vrf_BLUE | - | 10.0.1.9/31 | BLUE | 9214 | False | - | - |
-| Ethernet1.101 | P2P_LINK_TO_BORDER1-SITE1_Ethernet3.101_vrf_RED | - | 10.0.1.9/31 | RED | 9214 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_BORDER2-SITE1_Ethernet3 | - | 10.0.1.11/31 | default | 9214 | False | - | - |
-| Ethernet2.100 | P2P_LINK_TO_BORDER2-SITE1_Ethernet3.100_vrf_BLUE | - | 10.0.1.11/31 | BLUE | 9214 | False | - | - |
-| Ethernet2.101 | P2P_LINK_TO_BORDER2-SITE1_Ethernet3.101_vrf_RED | - | 10.0.1.11/31 | RED | 9214 | False | - | - |
-| Ethernet3 | ACME-MPLS-INC_mpls-wan1-site1_mpls-cloud_Ethernet5 | - | 172.18.10.2/24 | default | - | False | - | - |
-| Ethernet4 | REGION1-INTERNET-CORP_inet-wan1-site1_inet-cloud_Ethernet5 | - | 100.64.10.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
+| Ethernet1.42 | RED-TEST | - | 10.42.3.1/24 | RED | - | False | - | - |
+| Ethernet1.666 | BLUE-TEST | - | 10.66.3.1/24 | BLUE | - | False | - | - |
+| Ethernet4 | REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Ethernet8 | - | 100.64.30.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_BORDER1-SITE1_Ethernet3
+   description SITE3-LEAF1_Ethernet1
    no shutdown
    mtu 9214
    no switchport
-   flow tracker hardware FLOW-TRACKER
-   ip address 10.0.1.9/31
 !
-interface Ethernet1.100
-   description P2P_LINK_TO_BORDER1-SITE1_Ethernet3.100_vrf_BLUE
+interface Ethernet1.42
+   description RED-TEST
    no shutdown
-   mtu 9214
-   encapsulation dot1q vlan 100
-   flow tracker hardware FLOW-TRACKER
-   vrf BLUE
-   ip address 10.0.1.9/31
-!
-interface Ethernet1.101
-   description P2P_LINK_TO_BORDER1-SITE1_Ethernet3.101_vrf_RED
-   no shutdown
-   mtu 9214
-   encapsulation dot1q vlan 101
+   encapsulation dot1q vlan 42
    flow tracker hardware FLOW-TRACKER
    vrf RED
-   ip address 10.0.1.9/31
+   ip address 10.42.3.1/24
 !
-interface Ethernet2
-   description P2P_LINK_TO_BORDER2-SITE1_Ethernet3
+interface Ethernet1.666
+   description BLUE-TEST
    no shutdown
-   mtu 9214
-   no switchport
-   flow tracker hardware FLOW-TRACKER
-   ip address 10.0.1.11/31
-!
-interface Ethernet2.100
-   description P2P_LINK_TO_BORDER2-SITE1_Ethernet3.100_vrf_BLUE
-   no shutdown
-   mtu 9214
-   encapsulation dot1q vlan 100
+   encapsulation dot1q vlan 666
    flow tracker hardware FLOW-TRACKER
    vrf BLUE
-   ip address 10.0.1.11/31
-!
-interface Ethernet2.101
-   description P2P_LINK_TO_BORDER2-SITE1_Ethernet3.101_vrf_RED
-   no shutdown
-   mtu 9214
-   encapsulation dot1q vlan 101
-   flow tracker hardware FLOW-TRACKER
-   vrf RED
-   ip address 10.0.1.11/31
-!
-interface Ethernet3
-   description ACME-MPLS-INC_mpls-wan1-site1_mpls-cloud_Ethernet5
-   no shutdown
-   no switchport
-   flow tracker hardware FLOW-TRACKER
-   ip address 172.18.10.2/24
+   ip address 10.66.3.1/24
 !
 interface Ethernet4
-   description REGION1-INTERNET-CORP_inet-wan1-site1_inet-cloud_Ethernet5
+   description REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Ethernet8
    no shutdown
    no switchport
    flow tracker hardware FLOW-TRACKER
-   ip address 100.64.10.2/24
+   ip address 100.64.30.2/24
    ip access-group ACL-INTERNET-IN_Ethernet4 in
 ```
 
@@ -523,22 +473,22 @@ interface Ethernet4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 192.168.255.3/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.11/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
-   ip address 192.168.255.3/32
+   ip address 192.168.255.11/32
 ```
 
 ### VXLAN Interface
@@ -563,7 +513,7 @@ interface Loopback0
 ```eos
 !
 interface Vxlan1
-   description wan1-site1_VTEP
+   description site3-wan1_VTEP
    vxlan source-interface Dps1
    vxlan udp-port 4789
    vxlan vrf BLUE vni 100
@@ -621,29 +571,27 @@ ip routing vrf RED
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
-| default | 172.18.0.0/16 | 172.18.10.1 | - | 1 | - | - | - |
-| default | 0.0.0.0/0 | 100.64.10.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 100.64.30.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.17.1
-ip route 172.18.0.0/16 172.18.10.1
-ip route 0.0.0.0/0 100.64.10.1
+ip route 0.0.0.0/0 100.64.30.1
 ```
 
 ### Router Adaptive Virtual Topology
 
 #### Router Adaptive Virtual Topology Summary
 
-Topology role: transit region
+Topology role: edge
 
 | Hierarchy | Name | ID |
 | --------- | ---- | -- |
-| Region | REGION1 | 1 |
-| Zone | REGION1-ZONE | 1 |
-| Site | SITE1 | 101 |
+| Region | REGION2 | 2 |
+| Zone | REGION2-ZONE | 1 |
+| Site | SITE3 | 203 |
 
 #### AVT Profiles
 
@@ -654,7 +602,6 @@ Topology role: transit region
 | BLUE-POLICY-VOICE | LB-BLUE-POLICY-VOICE | - |
 | DEFAULT-POLICY-CONTROL-PLANE | LB-DEFAULT-POLICY-CONTROL-PLANE | - |
 | DEFAULT-POLICY-DEFAULT | LB-DEFAULT-POLICY-DEFAULT | - |
-| RED-POLICY-CRITICAL-SECRET-DATA | LB-RED-POLICY-CRITICAL-SECRET-DATA | - |
 | RED-POLICY-NORMAL-DATA | LB-RED-POLICY-NORMAL-DATA | - |
 | RED-POLICY-NOT-SO-IMPORTANT-DATA | LB-RED-POLICY-NOT-SO-IMPORTANT-DATA | - |
 
@@ -679,7 +626,6 @@ Topology role: transit region
 
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
-| CRITICAL-SECRET-DATA | RED-POLICY-CRITICAL-SECRET-DATA | - | - |
 | NORMAL-DATA | RED-POLICY-NORMAL-DATA | - | - |
 | NOT-SO-IMPORTANT-DATA | RED-POLICY-NOT-SO-IMPORTANT-DATA | - | - |
 
@@ -716,7 +662,6 @@ Topology role: transit region
 
 | AVT Profile | AVT ID |
 | ----------- | ------ |
-| RED-POLICY-CRITICAL-SECRET-DATA | 2 |
 | RED-POLICY-NORMAL-DATA | 3 |
 | RED-POLICY-NOT-SO-IMPORTANT-DATA | 4 |
 
@@ -725,10 +670,10 @@ Topology role: transit region
 ```eos
 !
 router adaptive-virtual-topology
-   topology role transit region
-   region REGION1 id 1
-   zone REGION1-ZONE id 1
-   site SITE1 id 101
+   topology role edge
+   region REGION2 id 2
+   zone REGION2-ZONE id 1
+   site SITE3 id 203
    !
    policy BLUE-POLICY
       !
@@ -751,9 +696,6 @@ router adaptive-virtual-topology
    !
    policy RED-POLICY
       !
-      match application-profile CRITICAL-SECRET-DATA
-         avt profile RED-POLICY-CRITICAL-SECRET-DATA
-      !
       match application-profile NORMAL-DATA
          avt profile RED-POLICY-NORMAL-DATA
       !
@@ -775,9 +717,6 @@ router adaptive-virtual-topology
    profile DEFAULT-POLICY-DEFAULT
       path-selection load-balance LB-DEFAULT-POLICY-DEFAULT
    !
-   profile RED-POLICY-CRITICAL-SECRET-DATA
-      path-selection load-balance LB-RED-POLICY-CRITICAL-SECRET-DATA
-   !
    profile RED-POLICY-NORMAL-DATA
       path-selection load-balance LB-RED-POLICY-NORMAL-DATA
    !
@@ -797,7 +736,6 @@ router adaptive-virtual-topology
    !
    vrf RED
       avt policy RED-POLICY
-      avt profile RED-POLICY-CRITICAL-SECRET-DATA id 2
       avt profile RED-POLICY-NORMAL-DATA id 3
       avt profile RED-POLICY-NOT-SO-IMPORTANT-DATA id 4
 ```
@@ -821,7 +759,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000 | 192.168.255.3 |
+| 65000 | 192.168.255.11 |
 
 | BGP Tuning |
 | ---------- |
@@ -829,15 +767,6 @@ ASN Notation: asplain
 | maximum-paths 16 |
 
 #### Router BGP Peer Groups
-
-##### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Allowas-in | Allowed, allowed 1 times |
-| Send community | all |
-| Maximum routes | 12000 |
 
 ##### WAN-OVERLAY-PEERS
 
@@ -856,15 +785,8 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 10.0.1.8 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.0.1.10 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 192.168.42.1 | Inherited from peer group WAN-OVERLAY-PEERS | default | - | Inherited from peer group WAN-OVERLAY-PEERS | Inherited from peer group WAN-OVERLAY-PEERS | - | Inherited from peer group WAN-OVERLAY-PEERS(interval: 1000, min_rx: 1000, multiplier: 10) | - | - | - | Inherited from peer group WAN-OVERLAY-PEERS |
 | 192.168.42.2 | Inherited from peer group WAN-OVERLAY-PEERS | default | - | Inherited from peer group WAN-OVERLAY-PEERS | Inherited from peer group WAN-OVERLAY-PEERS | - | Inherited from peer group WAN-OVERLAY-PEERS(interval: 1000, min_rx: 1000, multiplier: 10) | - | - | - | Inherited from peer group WAN-OVERLAY-PEERS |
-| 192.168.42.4 | 65000 | default | - | all | - | - | - | - | True | - | - |
-| 10.0.1.8 | 65101 | BLUE | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.0.1.10 | 65101 | BLUE | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.0.1.8 | 65101 | RED | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.0.1.10 | 65101 | RED | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -873,12 +795,6 @@ ASN Notation: asplain
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | WAN-OVERLAY-PEERS | True | default |
-
-##### EVPN DCI Gateway Summary
-
-| Settings | Value |
-| -------- | ----- |
-| L3 Gateway Configured | True |
 
 #### Router BGP IPv4 SR-TE Address Family
 
@@ -914,24 +830,18 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| BLUE | 192.168.255.3:100 | connected |
-| default | 192.168.255.3:1 | - |
-| RED | 192.168.255.3:101 | connected |
+| BLUE | 192.168.255.11:100 | connected |
+| default | 192.168.255.11:1 | - |
+| RED | 192.168.255.11:101 | connected |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65000
-   router-id 192.168.255.3
+   router-id 192.168.255.11
    maximum-paths 16
    no bgp default ipv4-unicast
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS allowas-in 1
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-IN in
-   neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
    neighbor WAN-OVERLAY-PEERS peer group
    neighbor WAN-OVERLAY-PEERS remote-as 65000
    neighbor WAN-OVERLAY-PEERS update-source Dps1
@@ -941,34 +851,18 @@ router bgp 65000
    neighbor WAN-OVERLAY-PEERS password 7 <removed>
    neighbor WAN-OVERLAY-PEERS send-community
    neighbor WAN-OVERLAY-PEERS maximum-routes 0
-   neighbor 10.0.1.8 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.0.1.8 remote-as 65101
-   neighbor 10.0.1.8 description border1-site1_Ethernet3
-   neighbor 10.0.1.10 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.0.1.10 remote-as 65101
-   neighbor 10.0.1.10 description border2-site1_Ethernet3
    neighbor 192.168.42.1 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.1 description pf1
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.2 description pf2
-   neighbor 192.168.42.4 remote-as 65000
-   neighbor 192.168.42.4 description wan2-site1
-   neighbor 192.168.42.4 route-reflector-client
-   neighbor 192.168.42.4 update-source Dps1
-   neighbor 192.168.42.4 route-map RM-WAN-HA-PEER-IN in
-   neighbor 192.168.42.4 route-map RM-WAN-HA-PEER-OUT out
-   neighbor 192.168.42.4 send-community
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
       neighbor WAN-OVERLAY-PEERS activate
-      neighbor 192.168.42.4 activate
-      neighbor default next-hop-self received-evpn-routes route-type ip-prefix
    !
    address-family ipv4
-      neighbor IPv4-UNDERLAY-PEERS activate
       no neighbor WAN-OVERLAY-PEERS activate
    !
    address-family ipv4 sr-te
@@ -984,35 +878,23 @@ router bgp 65000
       neighbor WAN-OVERLAY-PEERS activate
    !
    vrf BLUE
-      rd 192.168.255.3:100
+      rd 192.168.255.11:100
       route-target import evpn 100:100
       route-target export evpn 100:100
-      router-id 192.168.255.3
-      neighbor 10.0.1.8 remote-as 65101
-      neighbor 10.0.1.8 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.8 description border1-site1_Ethernet3.100_vrf_BLUE
-      neighbor 10.0.1.10 remote-as 65101
-      neighbor 10.0.1.10 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.10 description border2-site1_Ethernet3.100_vrf_BLUE
+      router-id 192.168.255.11
       redistribute connected
    !
    vrf default
-      rd 192.168.255.3:1
+      rd 192.168.255.11:1
       route-target import evpn 1:1
       route-target export evpn 1:1
       route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
    !
    vrf RED
-      rd 192.168.255.3:101
+      rd 192.168.255.11:101
       route-target import evpn 101:101
       route-target export evpn 101:101
-      router-id 192.168.255.3
-      neighbor 10.0.1.8 remote-as 65101
-      neighbor 10.0.1.8 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.8 description border1-site1_Ethernet3.101_vrf_RED
-      neighbor 10.0.1.10 remote-as 65101
-      neighbor 10.0.1.10 peer group IPv4-UNDERLAY-PEERS
-      neighbor 10.0.1.10 description border2-site1_Ethernet3.101_vrf_RED
+      router-id 192.168.255.11
       redistribute connected
 ```
 
@@ -1046,61 +928,23 @@ router bfd
 | -------- | ------ |
 | 10 | permit 192.168.255.0/24 eq 32 |
 
-##### PL-WAN-HA-PEER-PREFIXES
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 10.0.1.12/31 |
-| 20 | permit 10.0.1.14/31 |
-
-##### PL-WAN-HA-PREFIXES
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 10.0.1.8/31 |
-| 20 | permit 10.0.1.10/31 |
-
 #### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
-!
-ip prefix-list PL-WAN-HA-PEER-PREFIXES
-   seq 10 permit 10.0.1.12/31
-   seq 20 permit 10.0.1.14/31
-!
-ip prefix-list PL-WAN-HA-PREFIXES
-   seq 10 permit 10.0.1.8/31
-   seq 20 permit 10.0.1.10/31
 ```
 
 ### Route-maps
 
 #### Route-maps Summary
 
-##### RM-BGP-UNDERLAY-PEERS-IN
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-WAN-HA-PEER-PREFIXES | - | - | - |
-| 20 | deny | as-path ASPATH-WAN | - | - | - |
-| 40 | permit | - | extcommunity soo 192.168.255.3:101 additive | - | - |
-
-##### RM-BGP-UNDERLAY-PEERS-OUT
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | tag 50<br>route-type internal | metric 50 | - | - |
-| 20 | permit | - | - | - | - |
-
 ##### RM-CONN-2-BGP
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | extcommunity soo 192.168.255.3:101 additive | - | - |
-| 50 | permit | ip address prefix-list PL-WAN-HA-PREFIXES | - | - | - |
+| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | extcommunity soo 192.168.255.11:203 additive | - | - |
 
 ##### RM-EVPN-EXPORT-VRF-DEFAULT
 
@@ -1119,51 +963,15 @@ ip prefix-list PL-WAN-HA-PREFIXES
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | - | extcommunity soo 192.168.255.3:101 additive | - | - |
-
-##### RM-WAN-HA-PEER-IN
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | - | tag 50 | - | - |
-
-##### RM-WAN-HA-PEER-OUT
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | route-type internal | local-preference 50 | - | - |
-| 20 | permit | - | local-preference 75 | - | - |
+| 10 | permit | - | extcommunity soo 192.168.255.11:203 additive | - | - |
 
 #### Route-maps Device Configuration
 
 ```eos
 !
-route-map RM-BGP-UNDERLAY-PEERS-IN permit 10
-   description Allow WAN HA peer interface prefixes
-   match ip address prefix-list PL-WAN-HA-PEER-PREFIXES
-!
-route-map RM-BGP-UNDERLAY-PEERS-IN deny 20
-   description Deny other routes from the HA peer
-   match as-path ASPATH-WAN
-!
-route-map RM-BGP-UNDERLAY-PEERS-IN permit 40
-   description Mark prefixes originated from the LAN
-   set extcommunity soo 192.168.255.3:101 additive
-!
-route-map RM-BGP-UNDERLAY-PEERS-OUT permit 10
-   description Make routes learned from WAN HA peer less preferred on LAN routers
-   match route-type internal
-   match tag 50
-   set metric 50
-!
-route-map RM-BGP-UNDERLAY-PEERS-OUT permit 20
-!
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   set extcommunity soo 192.168.255.3:101 additive
-!
-route-map RM-CONN-2-BGP permit 50
-   match ip address prefix-list PL-WAN-HA-PREFIXES
+   set extcommunity soo 192.168.255.11:203 additive
 !
 route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
    match extcommunity ECL-EVPN-SOO
@@ -1174,20 +982,7 @@ route-map RM-EVPN-SOO-IN deny 10
 route-map RM-EVPN-SOO-IN permit 20
 !
 route-map RM-EVPN-SOO-OUT permit 10
-   set extcommunity soo 192.168.255.3:101 additive
-!
-route-map RM-WAN-HA-PEER-IN permit 10
-   description Set tag 50 on routes received from HA peer over EVPN
-   set tag 50
-!
-route-map RM-WAN-HA-PEER-OUT permit 10
-   description Make EVPN routes learned from WAN less preferred on HA peer
-   match route-type internal
-   set local-preference 50
-!
-route-map RM-WAN-HA-PEER-OUT permit 20
-   description Make locally injected routes less preferred on HA peer
-   set local-preference 75
+   set extcommunity soo 192.168.255.11:203 additive
 ```
 
 ### IP Extended Community Lists
@@ -1196,28 +991,13 @@ route-map RM-WAN-HA-PEER-OUT permit 20
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
-| ECL-EVPN-SOO | permit | soo 192.168.255.3:101 |
+| ECL-EVPN-SOO | permit | soo 192.168.255.11:203 |
 
 #### IP Extended Community Lists Device Configuration
 
 ```eos
 !
-ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.3:101
-```
-
-### AS Path Lists
-
-#### AS Path Lists Summary
-
-| List Name | Type | Match | Origin |
-| --------- | ---- | ----- | ------ |
-| ASPATH-WAN | permit | 65000 | any |
-
-#### AS Path Lists Device Configuration
-
-```eos
-!
-ip as-path access-list ASPATH-WAN permit 65000 any
+ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.11:203
 ```
 
 ## ACL
@@ -1230,8 +1010,8 @@ ip as-path access-list ASPATH-WAN permit 65000 any
 !
 ip access-list ACL-INTERNET-IN_Ethernet4
    1 remark Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface
-   10 permit udp any host 100.64.10.2 eq isakmp non500-isakmp
-   30 permit icmp any host 100.64.10.2
+   10 permit udp any host 100.64.30.2 eq isakmp non500-isakmp
+   30 permit icmp any host 100.64.30.2
    deny ip any any
 ```
 
@@ -1265,7 +1045,6 @@ vrf instance RED
 | Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set | DSCP |
 | ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ | ---- |
 | APP-CONTROL-PLANE | - | PFX-PATHFINDERS | - | - | - | - | - | - | - |
-| CRITICAL-SECRET-DATA-APP | - | - | - | - | - | - | - | - | 46 |
 | NORMAL-DATA-APP | - | - | - | - | - | - | - | - | af23 |
 | NOT-SO-IMPORTANT-DATA-APP | - | - | - | - | - | - | - | - | 0 |
 | VIDEO-APP | - | - | tcp, udp | - | - | VIDEO-PORTS | - | VIDEO-PORTS | - |
@@ -1278,12 +1057,6 @@ vrf instance RED
 | Type | Name | Service |
 | ---- | ---- | ------- |
 | application | APP-CONTROL-PLANE | - |
-
-#### Application Profile Name CRITICAL-SECRET-DATA
-
-| Type | Name | Service |
-| ---- | ---- | ------- |
-| application | CRITICAL-SECRET-DATA-APP | - |
 
 #### Application Profile Name NORMAL-DATA
 
@@ -1333,9 +1106,6 @@ application traffic recognition
    application ipv4 APP-CONTROL-PLANE
       destination prefix field-set PFX-PATHFINDERS
    !
-   application ipv4 CRITICAL-SECRET-DATA-APP
-      dscp 46
-   !
    application ipv4 NORMAL-DATA-APP
       dscp af23
    !
@@ -1351,9 +1121,6 @@ application traffic recognition
    !
    application-profile APP-PROFILE-CONTROL-PLANE
       application APP-CONTROL-PLANE
-   !
-   application-profile CRITICAL-SECRET-DATA
-      application CRITICAL-SECRET-DATA-APP
    !
    application-profile NORMAL-DATA
       application NORMAL-DATA-APP
@@ -1414,66 +1181,17 @@ application traffic recognition
 | 192.168.42.1 | pf1 | 100.64.100.2 |
 | 192.168.42.2 | pf2 | 100.64.200.2 |
 
-##### Path Group LAN_HA
-
-| Setting | Value |
-| ------  | ----- |
-| Path Group ID | 65535 |
-| IPSec profile | DP-PROFILE |
-| Flow assignment | LAN |
-
-###### Local Interfaces
-
-| Interface name | Public address | STUN server profile(s) |
-| -------------- | -------------- | ---------------------- |
-| Ethernet1 | - |  |
-| Ethernet2 | - |  |
-
-###### Static Peers
-
-| Router IP | Name | IPv4 address(es) |
-| --------- | ---- | ---------------- |
-| 192.168.42.4 | wan2-site1 | 10.0.1.13<br>10.0.1.15 |
-
-##### Path Group MPLS
-
-| Setting | Value |
-| ------  | ----- |
-| Path Group ID | 101 |
-| IPSec profile | CP-PROFILE |
-
-###### Local Interfaces
-
-| Interface name | Public address | STUN server profile(s) |
-| -------------- | -------------- | ---------------------- |
-| Ethernet3 | - | MPLS-pf1-Ethernet1<br>MPLS-pf2-Ethernet1 |
-
-###### Dynamic Peers Settings
-
-| Setting | Value |
-| ------  | ----- |
-| IP Local | - |
-| IPSec | - |
-
-###### Static Peers
-
-| Router IP | Name | IPv4 address(es) |
-| --------- | ---- | ---------------- |
-| 192.168.42.1 | pf1 | 172.18.100.2 |
-| 192.168.42.2 | pf2 | 172.18.200.2 |
-
 #### Load-balance Policies
 
 | Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
-| LB-BLUE-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (1) | False |
-| LB-BLUE-POLICY-VIDEO | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (2) | False |
-| LB-BLUE-POLICY-VOICE | - | - | - | LAN_HA (1)<br>MPLS (1)<br>INTERNET (2) | False |
-| LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (1) | False |
-| LB-DEFAULT-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (1) | False |
-| LB-RED-POLICY-CRITICAL-SECRET-DATA | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
-| LB-RED-POLICY-NORMAL-DATA | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (2) | False |
-| LB-RED-POLICY-NOT-SO-IMPORTANT-DATA | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
+| LB-BLUE-POLICY-DEFAULT | - | - | - | INTERNET (1) | False |
+| LB-BLUE-POLICY-VIDEO | - | - | - | INTERNET (1) | False |
+| LB-BLUE-POLICY-VOICE | - | - | - | INTERNET (2) | False |
+| LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | INTERNET (1) | False |
+| LB-DEFAULT-POLICY-DEFAULT | - | - | - | INTERNET (1) | False |
+| LB-RED-POLICY-NORMAL-DATA | - | - | - | INTERNET (1) | False |
+| LB-RED-POLICY-NOT-SO-IMPORTANT-DATA | - | - | - | INTERNET (1) | False |
 
 #### Router Path-selection Device Configuration
 
@@ -1498,72 +1216,26 @@ router path-selection
          name pf2
          ipv4 address 100.64.200.2
    !
-   path-group LAN_HA id 65535
-      ipsec profile DP-PROFILE
-      flow assignment lan
-      !
-      local interface Ethernet1
-      !
-      local interface Ethernet2
-      !
-      peer static router-ip 192.168.42.4
-         name wan2-site1
-         ipv4 address 10.0.1.13
-         ipv4 address 10.0.1.15
-   !
-   path-group MPLS id 101
-      ipsec profile CP-PROFILE
-      !
-      local interface Ethernet3
-         stun server-profile MPLS-pf1-Ethernet1 MPLS-pf2-Ethernet1
-      !
-      peer dynamic
-      !
-      peer static router-ip 192.168.42.1
-         name pf1
-         ipv4 address 172.18.100.2
-      !
-      peer static router-ip 192.168.42.2
-         name pf2
-         ipv4 address 172.18.200.2
-   !
    load-balance policy LB-BLUE-POLICY-DEFAULT
       path-group INTERNET
-      path-group LAN_HA
-      path-group MPLS
    !
    load-balance policy LB-BLUE-POLICY-VIDEO
       path-group INTERNET
-      path-group LAN_HA
-      path-group MPLS priority 2
    !
    load-balance policy LB-BLUE-POLICY-VOICE
-      path-group LAN_HA
-      path-group MPLS
       path-group INTERNET priority 2
    !
    load-balance policy LB-DEFAULT-POLICY-CONTROL-PLANE
       path-group INTERNET
-      path-group LAN_HA
-      path-group MPLS
    !
    load-balance policy LB-DEFAULT-POLICY-DEFAULT
       path-group INTERNET
-      path-group LAN_HA
-      path-group MPLS
-   !
-   load-balance policy LB-RED-POLICY-CRITICAL-SECRET-DATA
-      path-group LAN_HA
-      path-group MPLS
    !
    load-balance policy LB-RED-POLICY-NORMAL-DATA
       path-group INTERNET
-      path-group LAN_HA
-      path-group MPLS priority 2
    !
    load-balance policy LB-RED-POLICY-NOT-SO-IMPORTANT-DATA
       path-group INTERNET
-      path-group LAN_HA
 ```
 
 ## STUN
@@ -1576,8 +1248,6 @@ router path-selection
 | -------------- | ---------- | ----------- | ---- |
 | INTERNET-pf1-Ethernet2 | 100.64.100.2 | STUN-DTLS | 3478 |
 | INTERNET-pf2-Ethernet2 | 100.64.200.2 | STUN-DTLS | 3478 |
-| MPLS-pf1-Ethernet1 | 172.18.100.2 | STUN-DTLS | 3478 |
-| MPLS-pf2-Ethernet1 | 172.18.200.2 | STUN-DTLS | 3478 |
 
 ### STUN Device Configuration
 
@@ -1590,11 +1260,5 @@ stun
          ssl profile STUN-DTLS
       server-profile INTERNET-pf2-Ethernet2
          ip address 100.64.200.2
-         ssl profile STUN-DTLS
-      server-profile MPLS-pf1-Ethernet1
-         ip address 172.18.100.2
-         ssl profile STUN-DTLS
-      server-profile MPLS-pf2-Ethernet1
-         ip address 172.18.200.2
          ssl profile STUN-DTLS
 ```

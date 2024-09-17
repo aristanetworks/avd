@@ -16,29 +16,29 @@ all:
               ansible_host: 192.168.17.11
         SITE1:
           hosts:
-            wan1-site1:
+            site1-wan1:
               ansible_host: 192.168.17.12
-            wan2-site1:
+            site1-wan2:
               ansible_host: 192.168.17.13
-            border1-site1:
+            site1-border1:
               ansible_host: 192.168.17.14
-            border2-site1:
+            site1-border2:
               ansible_host: 192.168.17.15
         SITE2:
           hosts:
-            wan1-site2:
+            site2-wan1:
               ansible_host: 192.168.17.16
-            wan2-site2:
+            site2-wan2:
               ansible_host: 192.168.17.17
-            leaf1-site2:
+            site2-leaf1:
               ansible_host: 192.168.17.18
-            leaf2-site2:
+            site2-leaf2:
               ansible_host: 192.168.17.19
         SITE3:
           hosts:
-            wan1-site3:
+            site3-wan1:
               ansible_host: 192.168.17.20
-            leaf1-site3:
+            site3-leaf1:
               ansible_host: 192.168.17.21
         TRANSPORTS:
           hosts:

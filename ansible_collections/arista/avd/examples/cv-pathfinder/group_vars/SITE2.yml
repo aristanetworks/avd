@@ -17,10 +17,10 @@ l3leaf:
     - group: SITE2
       bgp_as: 65102
       nodes:
-        - name: leaf1-site2
+        - name: site2-leaf1
           id: 9
           mgmt_ip: "{{ ansible_host }}/24"
-        - name: leaf2-site2
+        - name: site2-leaf2
           id: 10
           mgmt_ip: "{{ ansible_host }}/24"
 
@@ -49,10 +49,10 @@ wan_router:
         # Can disable ipsec on WAN HA tunnel using this knob
         # ipsec: false
       nodes:
-        - name: wan1-site2
+        - name: site2-wan1
           id: 7
           mgmt_ip: "{{ ansible_host }}/24"
-          uplink_switches: [leaf1-site2]
+          uplink_switches: [site2-leaf1]
           l3_interfaces:
             - name: Ethernet3
               profile: MPLS-WAN-INTERFACE
@@ -60,11 +60,11 @@ wan_router:
               peer_ip: 172.18.20.1
               ip_address: 172.18.20.2/24
               wan_carrier: ACME-MPLS-INC
-              wan_circuit_id: mpls-wan1-site2
-        - name: wan2-site2
+              wan_circuit_id: mpls-site2-wan1
+        - name: site2-wan2
           id: 8
           mgmt_ip: "{{ ansible_host }}/24"
-          uplink_switches: [leaf2-site2]
+          uplink_switches: [site2-leaf2]
           l3_interfaces:
             - name: Ethernet4
               peer_interface: Ethernet7
@@ -72,4 +72,4 @@ wan_router:
               ip_address: 100.64.21.2/24
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION2-INTERNET-CORP
-              wan_circuit_id: inet-wan2-site2
+              wan_circuit_id: inet-site2-wan2

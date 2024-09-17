@@ -120,22 +120,22 @@ ethernet_interfaces:
   ip_address: 172.18.10.1/24
   shutdown: false
   type: routed
-  description: wan1-site1-Ethernet3
+  description: site1-wan1-Ethernet3
 - name: Ethernet6
   peer_type: l3_interface
   ip_address: 172.18.11.1/24
   shutdown: false
   type: routed
-  description: wan2-site1-Ethernet3
+  description: site1-wan2-Ethernet3
 - name: Ethernet7
   peer_type: l3_interface
   ip_address: 172.18.20.1/24
   shutdown: false
   type: routed
-  description: wan1-site2-Ethernet3
+  description: site2-wan1-Ethernet3
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.31.255.22/32
 prefix_lists:
