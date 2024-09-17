@@ -491,8 +491,8 @@ interface Port-Channel16
    switchport
    switchport trunk allowed vlan 110,201
    switchport trunk native vlan 10
-   switchport dot1q vlan tag disallowed
    switchport mode trunk
+   switchport dot1q vlan tag disallowed
    switchport vlan translation out 23 dot1q-tunnel 22
    snmp trap link-change
    mlag 16
@@ -556,13 +556,15 @@ interface Port-Channel100
    switchport trunk native vlan tag
    switchport phone vlan 110
    switchport phone trunk tagged
-   switchport vlan translation in required
-   switchport dot1q vlan tag required
    switchport mode dot1q-tunnel
-   switchport dot1q ethertype 1536
-   switchport vlan forwarding accept all
    switchport trunk group g1
    switchport trunk group g2
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 20-30
+   switchport vlan translation in required
+   switchport dot1q vlan tag required
+   switchport dot1q ethertype 1536
+   switchport vlan forwarding accept all
    switchport source-interface tx multicast
    switchport vlan translation 12 20
    switchport vlan translation 23 inner 74 42
@@ -574,8 +576,6 @@ interface Port-Channel100
    switchport vlan translation out 34 50
    switchport vlan translation out 10 45 inner 34
    switchport vlan translation out 45 dot1q-tunnel all
-   switchport trunk private-vlan secondary
-   switchport pvlan mapping 20-30
    switchport port-security
    switchport port-security mac-address maximum disabled
    switchport backup-link Port-channel51
@@ -613,8 +613,8 @@ interface Port-Channel102
    description PVLAN Promiscuous Trunk - vlan translation out
    switchport
    switchport trunk allowed vlan 110-112
-   switchport vlan translation out required
    switchport mode trunk
+   switchport vlan translation out required
    switchport vlan translation out 111-112 110
 !
 interface Port-Channel103

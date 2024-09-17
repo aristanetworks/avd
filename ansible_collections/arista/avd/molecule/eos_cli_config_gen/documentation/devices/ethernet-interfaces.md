@@ -392,16 +392,12 @@ interface Ethernet1
    bgp session tracker ST1
    switchport access vlan 200
    switchport trunk native vlan tag
-   switchport trunk allowed vlan 110-111,210-211
    switchport phone vlan 110
    switchport phone trunk tagged
    switchport vlan translation in required
    switchport dot1q vlan tag required
-   switchport mode dot1q-tunnel
    switchport dot1q ethertype 1536
    switchport vlan forwarding accept all
-   switchport trunk group g1
-   switchport trunk group g2
    switchport source-interface tx
    switchport vlan translation 12 20
    switchport vlan translation 24 inner 78 network 46
@@ -413,6 +409,10 @@ interface Ethernet1
    switchport vlan translation out 34 50
    switchport vlan translation out 10 45 inner 34
    switchport vlan translation out 45 dot1q-tunnel all
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode dot1q-tunnel
+   switchport trunk group g1
+   switchport trunk group g2
    no switchport
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
@@ -451,8 +451,8 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
-   switchport trunk allowed vlan 110-111,210-211
    switchport dot1q vlan tag disallowed
+   switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
    tcp mss ceiling ipv4 70 ingress
@@ -473,8 +473,8 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    switchport trunk native vlan 5
-   switchport mode trunk
    switchport vlan translation out 23 dot1q-tunnel 50
+   switchport mode trunk
    no switchport
    no snmp trap link-change
    ip address 172.31.128.1/31
@@ -656,10 +656,10 @@ interface Ethernet15
 !
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
-   switchport trunk allowed vlan 110-112
    switchport vlan translation out required
-   switchport mode trunk
    switchport vlan translation out 111-112 110
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
    switchport
 !
 interface Ethernet17
