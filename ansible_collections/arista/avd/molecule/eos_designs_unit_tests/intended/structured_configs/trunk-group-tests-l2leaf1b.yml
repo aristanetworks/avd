@@ -28,7 +28,7 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
 - id: 100
@@ -85,7 +85,7 @@ vlans:
   - CUSTOM_UPLINK_TG_NAME
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214

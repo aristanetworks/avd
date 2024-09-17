@@ -131,12 +131,12 @@ spanning_tree:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -149,12 +149,12 @@ vlans:
   tenant: CUSTOM_TEMPLATES_TENANT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 10.255.251.11/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214

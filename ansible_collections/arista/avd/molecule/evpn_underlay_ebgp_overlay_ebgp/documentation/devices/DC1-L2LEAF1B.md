@@ -277,7 +277,7 @@ vlan internal order ascending range 1006 1199
 | 160 | Tenant_A_VMOTION | - |
 | 161 | Tenant_A_NFS | - |
 | 162 | Tenant_A_FTP | - |
-| 4091 | MLAG_PEER | MLAG |
+| 4091 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -320,7 +320,7 @@ vlan 162
    name Tenant_A_FTP
 !
 vlan 4091
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -403,7 +403,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4091 | MLAG_PEER | default | 1500 | False |
+| Vlan4091 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -416,7 +416,7 @@ interface Port-Channel3
 ```eos
 !
 interface Vlan4091
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
