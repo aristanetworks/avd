@@ -16419,7 +16419,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -17803,24 +17803,28 @@ keys:
                 description: Segment size.
           ipv4_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
                   - int
           ipv6_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
