@@ -511,16 +511,20 @@ class WanMixin:
 
     @cached_property
     def use_uplinks_for_wan_ha(self: SharedUtils) -> bool:
-        """Return true or false."""
+        """Indicates whether the device is using its uplinks for WAN HA or direct HA.
+
+        Returns:
+            bool: True if uplinks are used for HA, False otherwise
+
+        Raises:
+            AristaAvdError: when the list of configured interfaces is a mix of uplinks and none uplinks.
+        """
         interfaces = set(self.configured_wan_ha_interfaces)
         uplink_interfaces = set(self.vrf_default_uplink_interfaces)
 
         if interfaces.issubset(uplink_interfaces):
             return True
         if not interfaces.intersection(uplink_interfaces):
-            if len(interfaces) > 1 and self.use_port_channel_for_direct_ha is False:
-                msg = "AVD does not support multiple HA interfaces when not using uplinks nor port-channel."
-                raise AristaAvdError(msg)
             return False
         msg = "Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks."
         raise AristaAvdError(msg)
@@ -540,6 +544,10 @@ class WanMixin:
 
     @cached_property
     def wan_ha_port_channel_id(self: SharedUtils) -> int:
+        """Port-channel ID to use for direct WAN HA port-channel.
+
+        If not provided, computed from the list of configured members.
+        """
         if self.use_uplinks_for_wan_ha:
             msg = "Using Port-Channel when using uplinks as HA is not supported."
             raise AristaAvdError(msg)
@@ -548,7 +556,26 @@ class WanMixin:
 
     @cached_property
     def use_port_channel_for_direct_ha(self: SharedUtils) -> bool:
-        return (not self.use_uplinks_for_wan_ha) and get(self.switch_data_combined, "wan_ha.use_port_channel_for_direct_ha", True)
+        """Indicate if port-channel should be used for direct HA.
+
+        Returns:
+            bool: False is use_uplinks_for_wan_ha is True, otherwise the value of `wan_ha.use_port_channel_for_direct_ha`
+                  which defaults to True.
+
+        Raises:
+            AristaAvdError: When `wan_ha.use_port_channel_for_direct_ha` is False and there are multiple configured interfaces.
+        """
+        if self.use_uplinks_for_wan_ha:
+            return False
+
+        use_port_channel = get(self.switch_data_combined, "wan_ha.use_port_channel_for_direct_ha", True)
+        interfaces = set(self.configured_wan_ha_interfaces)
+
+        if len(interfaces) > 1 and use_port_channel is False:
+            msg = "AVD does not support multiple HA interfaces when not using uplinks nor port-channel."
+            raise AristaAvdError(msg)
+
+        return use_port_channel
 
     @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:

@@ -1,8 +1,8 @@
-hostname: cv-pathfinder-edge3A
+hostname: cv-pathfinder-edge4A
 is_deployed: true
 router_bgp:
   as: '65000'
-  router_id: 192.168.42.6
+  router_id: 192.168.42.8
   bgp:
     default:
       ipv4_unicast: false
@@ -49,7 +49,7 @@ router_bgp:
       next_hop_self_received_evpn_routes:
         enable: true
     neighbors:
-    - ip_address: 192.168.142.7
+    - ip_address: 192.168.142.9
       activate: true
   address_family_ipv4_sr_te:
     peer_groups:
@@ -76,9 +76,9 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
-  - ip_address: 192.168.142.7
-    peer: cv-pathfinder-edge3B
-    description: cv-pathfinder-edge3B
+  - ip_address: 192.168.142.9
+    peer: cv-pathfinder-edge4B
+    description: cv-pathfinder-edge4B
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -87,7 +87,7 @@ router_bgp:
     route_map_out: RM-WAN-HA-PEER-OUT
   vrfs:
   - name: default
-    rd: 192.168.42.6:1
+    rd: 192.168.42.8:1
     route_targets:
       import:
       - address_family: evpn
@@ -99,7 +99,7 @@ router_bgp:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: IT
-    rd: 192.168.42.6:1000
+    rd: 192.168.42.8:1000
     route_targets:
       import:
       - address_family: evpn
@@ -109,11 +109,11 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1000:1000
-    router_id: 192.168.42.6
+    router_id: 192.168.42.8
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
-    rd: 192.168.42.6:142
+    rd: 192.168.42.8:142
     route_targets:
       import:
       - address_family: evpn
@@ -123,7 +123,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 142:142
-    router_id: 192.168.42.6
+    router_id: 192.168.42.8
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
@@ -150,28 +150,57 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- name: Ethernet1
+- name: Ethernet1.42
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
-  description: ATT_404-01
+  type: l3dot1q
+  description: Comcast
+  encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
-- name: Ethernet52
+- name: Ethernet1
   type: routed
   peer_type: l3_interface
-  peer: cv-pathfinder-edge3B
   shutdown: false
-  description: WAN_HA_cv-pathfinder-edge3B_Ethernet52
+- name: Ethernet42
+  peer_type: wan_ha_peer
+  peer_interface: Ethernet42
+  peer: cv-pathfinder-edge4B
+  description: WAN_HA_cv-pathfinder-edge4B_Ethernet42
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 666
+    mode: active
+  mtu: 9194
+- name: Ethernet43
+  peer_type: wan_ha_peer
+  peer_interface: Ethernet43
+  peer: cv-pathfinder-edge4B
+  description: WAN_HA_cv-pathfinder-edge4B_Ethernet43
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 666
+    mode: active
+  mtu: 9194
+port_channel_interfaces:
+- name: Port-Channel666
+  type: routed
+  peer_type: l3_interface
+  peer_interface: Port-Channel666
+  peer: cv-pathfinder-edge4B
+  shutdown: false
+  description: WAN_HA_cv-pathfinder-edge4B_Port-Channel666
   ip_address: 10.10.10.0/31
   flow_tracker:
     hardware: FLOW-TRACKER
-  mtu: 9100
+  mtu: 9194
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.42.6/32
+  ip_address: 192.168.42.8/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -185,14 +214,14 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.42.6:404 additive
+    - extcommunity soo 192.168.42.8:405 additive
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.42.6:404 additive
+    - extcommunity soo 192.168.42.8:405 additive
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
@@ -218,7 +247,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.42.6:404 additive
+    - extcommunity soo 192.168.42.8:405 additive
 - name: RM-WAN-HA-PEER-IN
   sequence_numbers:
   - sequence: 10
@@ -255,13 +284,11 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.42.6:404
+    extcommunities: soo 192.168.42.8:405
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.142.6
   - name: CP-IKE-POLICY
-    local_id: 192.168.142.6
+    local_id: 192.168.142.8
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -273,7 +300,6 @@ ip_security:
     pfs_dh_group: 14
   profiles:
   - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
     sa_policy: DP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890666
@@ -305,7 +331,7 @@ management_security:
       - aristaDeviceCertProvisionerDefaultRootCA.crt
     tls_versions: '1.2'
 router_adaptive_virtual_topology:
-  topology_role: edge
+  topology_role: transit region
   region:
     name: AVD_Land_West
     id: 42
@@ -313,8 +339,8 @@ router_adaptive_virtual_topology:
     name: AVD_Land_West-ZONE
     id: 1
   site:
-    name: Site404
-    id: 404
+    name: Site405
+    id: 405
   profiles:
   - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
     load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
@@ -395,7 +421,7 @@ router_path_selection:
   - name: INET
     id: 101
     local_interfaces:
-    - name: Ethernet1
+    - name: Ethernet1.42
       stun:
         server_profiles:
         - INET-cv-pathfinder-pathfinder-Ethernet1
@@ -413,13 +439,12 @@ router_path_selection:
     id: 65535
     flow_assignment: lan
     local_interfaces:
-    - name: Ethernet52
+    - name: Port-Channel666
     static_peers:
-    - router_ip: 192.168.142.7
-      name: cv-pathfinder-edge3B
+    - router_ip: 192.168.142.9
+      name: cv-pathfinder-edge4B
       ipv4_addresses:
       - 10.10.10.1
-    ipsec_profile: DP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
@@ -530,12 +555,12 @@ dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
-  ip_address: 192.168.142.6/32
+  ip_address: 192.168.142.8/32
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
   vxlan1:
-    description: cv-pathfinder-edge3A_VTEP
+    description: cv-pathfinder-edge4A_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
@@ -564,37 +589,42 @@ metadata:
   cv_tags:
     device_tags:
     - name: Role
-      value: edge
+      value: transit region
     - name: Region
       value: AVD_Land_West
     - name: Zone
       value: AVD_Land_West-ZONE
     - name: Site
-      value: Site404
+      value: Site405
     interface_tags:
-    - interface: Ethernet1
+    - interface: Ethernet1.42
       tags:
       - name: Type
         value: wan
       - name: Carrier
-        value: ATT
-      - name: Circuit
-        value: 404-01
-    - interface: Ethernet52
+        value: Comcast
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet42
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet43
       tags:
       - name: Type
         value: lan
   cv_pathfinder:
-    role: edge
+    role: transit region
     ssl_profile: profileA
-    vtep_ip: 192.168.142.6
+    vtep_ip: 192.168.142.8
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE
-    site: Site404
+    site: Site405
     interfaces:
-    - name: Ethernet1
-      carrier: ATT
-      circuit_id: 404-01
+    - name: Ethernet1.42
+      carrier: Comcast
       pathgroup: INET
     pathfinders:
     - vtep_ip: 192.168.144.1

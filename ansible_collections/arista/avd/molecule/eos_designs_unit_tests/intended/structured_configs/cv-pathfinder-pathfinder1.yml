@@ -589,6 +589,10 @@ metadata:
           id: 404
           location:
             address: Not Found
+        - name: Site405
+          id: 405
+          location:
+            address: Method not allowed
         - name: Site422
           id: 422
           location:

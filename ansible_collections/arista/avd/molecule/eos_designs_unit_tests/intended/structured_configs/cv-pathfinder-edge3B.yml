@@ -157,24 +157,11 @@ ethernet_interfaces:
   type: routed
   description: Colt_10423
 - name: Ethernet52
-  peer_type: wan_ha_peer
-  peer_interface: Ethernet52
-  peer: cv-pathfinder-edge3A
-  description: WAN_HA_cv-pathfinder-edge3A_Ethernet52
-  type: port-channel-member
-  shutdown: false
-  channel_group:
-    id: 52
-    mode: active
-  mtu: 9100
-port_channel_interfaces:
-- name: Port-Channel52
   type: routed
   peer_type: l3_interface
-  peer_interface: Port-Channel52
   peer: cv-pathfinder-edge3A
   shutdown: false
-  description: WAN_HA_cv-pathfinder-edge3A_Port-Channel52
+  description: WAN_HA_cv-pathfinder-edge3A_Ethernet52
   ip_address: 10.10.10.1/31
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -426,7 +413,7 @@ router_path_selection:
     id: 65535
     flow_assignment: lan
     local_interfaces:
-    - name: Port-Channel52
+    - name: Ethernet52
     static_peers:
     - router_ip: 192.168.142.6
       name: cv-pathfinder-edge3A
