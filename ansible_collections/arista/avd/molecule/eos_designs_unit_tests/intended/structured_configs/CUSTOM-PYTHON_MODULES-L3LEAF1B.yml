@@ -149,12 +149,12 @@ vlans:
   tenant: CUSTOM_PYTHON_MODULES_TENANT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_L3
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9214
   ip_address: 10.255.251.11/31
 - name: Vlan4094
-  description: MLAG
+  description: MLAG_PEER
   shutdown: false
   no_autostate: true
   mtu: 9214
