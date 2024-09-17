@@ -283,7 +283,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_PEER_DC1-LEAF2B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet6 | MLAG_PEER_DC1-LEAF2B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | * | *- | *- | 7 |
+| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *none | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
@@ -382,7 +382,7 @@ interface Ethernet7
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
-| Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk |  | - | - | - | - | 7 | - |
+| Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk | none | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

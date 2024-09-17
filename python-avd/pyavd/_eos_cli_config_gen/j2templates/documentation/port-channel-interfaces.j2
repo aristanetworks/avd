@@ -36,7 +36,11 @@
 {%                 if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
 {%                     do switchport_vlans.extend(port_channel_interface.switchport.trunk.allowed_vlan | arista.avd.range_expand | map('int')) %}
 {%                 endif %}
-{%                 set switchport_vlans = switchport_vlans | arista.avd.list_compress %}
+{%                 if switchport_vlans %}
+{%                     set switchport_vlans = switchport_vlans | arista.avd.list_compress %}
+{%                 elif port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined("none") %}
+{%                     set switchport_vlans = port_channel_interface.switchport.trunk.allowed_vlan %}
+{%                 endif %}
 {%             endif %}
 {%             if port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
 {%                 set native_vlan = "tag" %}

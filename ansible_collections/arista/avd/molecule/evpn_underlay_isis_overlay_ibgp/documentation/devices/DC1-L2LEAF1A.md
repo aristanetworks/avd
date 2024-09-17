@@ -214,8 +214,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-LEAF2A_Ethernet7 | *trunk | * | *- | *- | 1 |
-| Ethernet2 | DC1-LEAF2B_Ethernet7 | *trunk | * | *- | *- | 1 |
+| Ethernet1 | DC1-LEAF2A_Ethernet7 | *trunk | *none | *- | *- | 1 |
+| Ethernet2 | DC1-LEAF2B_Ethernet7 | *trunk | *none | *- | *- | 1 |
 
 *Inherited from Port-Channel Interface
 
@@ -242,7 +242,7 @@ interface Ethernet2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_LEAF2_Po7 | trunk |  | - | - | - | - | - | - |
+| Port-Channel1 | DC1_LEAF2_Po7 | trunk | none | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
