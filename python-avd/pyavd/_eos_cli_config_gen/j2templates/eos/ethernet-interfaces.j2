@@ -215,13 +215,13 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.access_vlan is arista.avd.defined %}
    switchport access vlan {{ ethernet_interface.switchport.access_vlan }}
 {%     endif %}
-{%     if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
-   switchport trunk allowed vlan {{ ethernet_interface.switchport.trunk.allowed_vlan }}
-{%     endif %}
 {%     if ethernet_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
    switchport trunk native vlan tag
 {%     elif ethernet_interface.switchport.trunk.native_vlan is arista.avd.defined %}
    switchport trunk native vlan {{ ethernet_interface.switchport.trunk.native_vlan }}
+{%     endif %}
+{%     if ethernet_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+   switchport trunk allowed vlan {{ ethernet_interface.switchport.trunk.allowed_vlan }}
 {%     endif %}
 {%     if ethernet_interface.switchport.phone.vlan is arista.avd.defined %}
    switchport phone vlan {{ ethernet_interface.switchport.phone.vlan }}
