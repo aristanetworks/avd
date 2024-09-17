@@ -29,5 +29,5 @@ servers:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Port-channel Interfaces defined under
-  connected_endpoints. {'name': 'Port-Channel42', 'description': 'server1_Description2'} conflicts with
-  {'name': 'Port-Channel42', 'description': 'server1_Description1'}.
+  connected_endpoints. {'name': 'Port-Channel42', 'description': 'SERVER_server1_Description2'} conflicts with
+  {'name': 'Port-Channel42', 'description': 'SERVER_server1_Description1'}.
