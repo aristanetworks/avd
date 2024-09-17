@@ -121,9 +121,9 @@ interface Ethernet3
 !
 interface Port-Channel3
    description L2-PORT
+   switchport
    switchport trunk allowed vlan 1-5
    switchport mode trunk
-   switchport
 ```
 
 ## MACsec
