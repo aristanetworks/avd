@@ -297,6 +297,10 @@ wan_router:
         # Test wan_ha mtu
         mtu: 9100
         ha_ipv4_pool: 10.10.10.0/24
+        # Check flow tracking on port-channel
+        flow_tracking:
+          enabled: true
+        # use_port_channel_for_direct_ha: false
       nodes:
         - name: cv-pathfinder-edge3A
           id: 6

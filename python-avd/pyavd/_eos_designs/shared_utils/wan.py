@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from re import findall
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
@@ -360,18 +361,13 @@ class WanMixin:
                         f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdMissingVariableError(msg)
                 if wan_path_groups is None:
                     msg = (
                         f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
                         " or something is wrong with the peer facts."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
-
+                    raise AristaAvdMissingVariableError(msg)
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 vtep_ip = get(wan_rs_dict, "vtep_ip", required=True)
@@ -522,8 +518,8 @@ class WanMixin:
         if interfaces.issubset(uplink_interfaces):
             return True
         if not interfaces.intersection(uplink_interfaces):
-            if len(interfaces) > 1:
-                msg = "AVD does not support multiple HA interfaces when not using uplinks."
+            if len(interfaces) > 1 and self.use_port_channel_for_direct_ha is False:
+                msg = "AVD does not support multiple HA interfaces when not using uplinks nor port-channel."
                 raise AristaAvdError(msg)
             return False
         msg = "Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks."
@@ -541,6 +537,18 @@ class WanMixin:
             return natural_sort(set(self.configured_wan_ha_interfaces)) or self.vrf_default_uplink_interfaces
         # Using node values
         return natural_sort(set(self.configured_wan_ha_interfaces), "name")
+
+    @cached_property
+    def wan_ha_port_channel_id(self: SharedUtils) -> int:
+        if self.use_uplinks_for_wan_ha:
+            msg = "Using Port-Channel when using uplinks as HA is not supported."
+            raise AristaAvdError(msg)
+        default_wan_ha_port_channel_id = int("".join(findall(r"\d", self.wan_ha_interfaces[0])))
+        return get(self.switch_data_combined, "wan_ha.port_channel_id", default_wan_ha_port_channel_id)
+
+    @cached_property
+    def use_port_channel_for_direct_ha(self: SharedUtils) -> bool:
+        return (not self.use_uplinks_for_wan_ha) and get(self.switch_data_combined, "wan_ha.use_port_channel_for_direct_ha", True)
 
     @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
@@ -567,7 +575,7 @@ class WanMixin:
                     prefix_length = uplink["prefix_length"]
                     ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
-            # Only one supported HA interface today when not using uplinks
+            # Only one supported HA as a Port-channel interface when not using uplinks
             ip_addresses.append(self.get_wan_ha_ip_address(local=False))
         return ip_addresses
 

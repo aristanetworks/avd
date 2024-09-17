@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._utils import get, short_esi_to_route_target
+from pyavd._utils import append_if_not_duplicate, get, short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
@@ -103,7 +103,40 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
             port_channel_interfaces.append(port_channel_interface)
 
+        # WAN HA interface for direct connection
+        if (port_channel_interface := self._get_direct_ha_port_channel_interface()) is not None:
+            append_if_not_duplicate(
+                list_of_dicts=port_channel_interfaces,
+                primary_key="name",
+                new_dict=port_channel_interface,
+                context="Port-Channel interface for WAN direct HA.",
+                context_keys=["name", "peer", "peer_interface"],
+            )
+
         if port_channel_interfaces:
             return port_channel_interfaces
 
         return None
+
+    def _get_direct_ha_port_channel_interface(self: AvdStructuredConfigUnderlay) -> dict | None:
+        """Return a dict containing the port-channel interface for direct HA."""
+        if not self.shared_utils.use_port_channel_for_direct_ha:
+            return None
+
+        direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(get(self.shared_utils.switch_data_combined, "wan_ha"), "direct_wan_ha_links")
+
+        port_channel_name = f"Port-Channel{self.shared_utils.wan_ha_port_channel_id}"
+
+        return {
+            "name": port_channel_name,
+            "type": "routed",
+            "peer_type": "l3_interface",
+            # TODO: if different interfaces used across nodes it will fail just like for mlag.
+            "peer_interface": port_channel_name,
+            "peer": self.shared_utils.wan_ha_peer,
+            "shutdown": False,
+            "description": "DIRECT LAN HA LINK",
+            "ip_address": self.shared_utils.wan_ha_ip_addresses[0],
+            "flow_tracker": direct_wan_ha_links_flow_tracker,
+            "mtu": self.shared_utils.configured_wan_ha_mtu,
+        }

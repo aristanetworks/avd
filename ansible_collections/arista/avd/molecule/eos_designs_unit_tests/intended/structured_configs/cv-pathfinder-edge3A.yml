@@ -158,13 +158,27 @@ ethernet_interfaces:
   description: ATT_404-01
   dhcp_client_accept_default_route: true
 - name: Ethernet52
+  peer_type: wan_ha_peer
+  peer_interface: Ethernet52
+  peer: cv-pathfinder-edge3B
+  description: 'TODO: DIRECT LAN HA LINK MEMBER'
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 52
+    mode: active
+  mtu: 9100
+port_channel_interfaces:
+- name: Port-Channel52
   type: routed
   peer_type: l3_interface
+  peer_interface: Port-Channel52
   peer: cv-pathfinder-edge3B
   shutdown: false
   description: DIRECT LAN HA LINK
   ip_address: 10.10.10.0/31
-  flow_tracker: null
+  flow_tracker:
+    hardware: FLOW-TRACKER
   mtu: 9100
 loopback_interfaces:
 - name: Loopback0
