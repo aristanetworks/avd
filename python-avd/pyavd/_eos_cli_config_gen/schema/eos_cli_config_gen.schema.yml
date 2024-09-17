@@ -8005,6 +8005,8 @@ keys:
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
   monitor_session_default_encapsulation_gre:
+    documentation_options:
+      table: monitor-sessions
     type: dict
     keys:
       payload:
@@ -8099,6 +8101,8 @@ keys:
               convert_types:
               - str
   monitor_telemetry_influx:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       vrf:
@@ -8173,6 +8177,8 @@ keys:
               required: true
               description: Value of the global tag pair.
   monitor_telemetry_postcard_policy:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       disabled:
@@ -11553,11 +11559,7 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: 'A sequence of application profiles mapped to some virtual topologies.
-
-
-          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index>
-          in the list.'
+        description: A sequence of application profiles mapped to some virtual topologies.
         items:
           type: dict
           keys:
@@ -16393,7 +16395,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -17777,24 +17779,28 @@ keys:
                 description: Segment size.
           ipv4_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
                   - int
           ipv6_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
