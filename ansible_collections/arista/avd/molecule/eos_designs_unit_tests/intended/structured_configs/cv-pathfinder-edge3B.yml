@@ -426,7 +426,7 @@ router_path_selection:
     id: 65535
     flow_assignment: lan
     local_interfaces:
-    - name: Ethernet52
+    - name: Port-Channel52
     static_peers:
     - router_ip: 192.168.142.6
       name: cv-pathfinder-edge3A
