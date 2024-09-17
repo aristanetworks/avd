@@ -24,8 +24,12 @@
 {%             for destination in monitor_session.destinations | arista.avd.natural_sort %}
 monitor session {{ monitor_session.name }} destination {{ destination }}
 {%             endfor %}
-{%             if monitor_session.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
-monitor session {{ monitor_session.name }} encapsulation gre metadata tx
+{%             if monitor_session.truncate.enabled is arista.avd.defined(true) %}
+{%                 set truncate_cli = "monitor session " ~ monitor_session.name ~ " truncate" %}
+{%                 if monitor_session.truncate.size is arista.avd.defined %}
+{%                     set truncate_cli = truncate_cli ~ " size " ~ monitor_session.truncate.size %}
+{%                 endif %}
+{{ truncate_cli }}
 {%             endif %}
 {%             if monitor_session.header_remove_size is arista.avd.defined %}
 monitor session {{ monitor_session.name }} header remove size {{ monitor_session.header_remove_size }}
@@ -42,12 +46,8 @@ monitor session {{ monitor_session.name }} rate-limit per-egress-chip {{ monitor
 {%             if monitor_session.sample is arista.avd.defined %}
 monitor session {{ monitor_session.name }} sample {{ monitor_session.sample }}
 {%             endif %}
-{%             if monitor_session.truncate.enabled is arista.avd.defined(true) %}
-{%                 set truncate_cli = "monitor session " ~ monitor_session.name ~ " truncate" %}
-{%                 if monitor_session.truncate.size is arista.avd.defined %}
-{%                     set truncate_cli = truncate_cli ~ " size " ~ monitor_session.truncate.size %}
-{%                 endif %}
-{{ truncate_cli }}
+{%             if monitor_session.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
+monitor session {{ monitor_session.name }} encapsulation gre metadata tx
 {%             endif %}
 {%         endif %}
 {%     endfor %}
