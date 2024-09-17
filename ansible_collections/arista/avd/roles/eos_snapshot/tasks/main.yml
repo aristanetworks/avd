@@ -15,7 +15,7 @@
 
 - name: Create required output directories if not present
   delegate_to: localhost
-  when: avd_create_directories | default(true)
+  when: avd_create_directories | arista.avd.default(true)
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -30,7 +30,7 @@
     path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
     state: directory
     mode: "0o775"
-  when: avd_create_directories | default(true) and
+  when: avd_create_directories | arista.avd.default(true) and
         (('text' in output_format) or ('markdown' in output_format))
 
 - name: Run show commands on remote EOS devices with text output

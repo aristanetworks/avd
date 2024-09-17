@@ -26,7 +26,7 @@
 # If state=present launch creation/update process
 # If state=absent launch deletion process
 - name: Start creation/update process.
-  when: avd_eos_config_deploy_cvp_provision | default(true)
+  when: avd_eos_config_deploy_cvp_provision | arista.avd.default(true)
   ansible.builtin.include_tasks: "{{ cv_collection }}/{{ state }}.yml"
 
 #################################################

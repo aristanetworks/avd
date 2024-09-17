@@ -14,7 +14,7 @@
   register: avd_requirements
 
 - name: Create required output directories if not present
-  when: avd_create_directories | default(true)
+  when: avd_create_directories | arista.avd.default(true)
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -35,7 +35,7 @@
   run_once: true
 
 - name: Generate YAML file with hostvars (only for debugging)
-  when: avd_eos_designs_debug | default(false)
+  when: avd_eos_designs_debug | arista.avd.default(false)
   ansible.builtin.template:
     src: debug/generate-debug-vars.j2
     dest: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
@@ -44,7 +44,7 @@
   changed_when: false
 
 - name: Generate device configuration in structured format
-  when: avd_eos_designs_structured_config | default(true)
+  when: avd_eos_designs_structured_config | arista.avd.default(true)
   arista.avd.eos_designs_structured_config:
     eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
@@ -75,7 +75,7 @@
   run_once: true
 
 - name: Remove avd_switch_facts
-  when: avd_eos_designs_unset_facts | default(true)
+  when: avd_eos_designs_unset_facts | arista.avd.default(true)
   arista.avd.set_vars:
     avd_switch_facts: null
     avd_overlay_peers: null

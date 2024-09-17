@@ -17,7 +17,7 @@
     - cvp_configlets_status.taskIds is arista.avd.defined
     - cvp_configlets_status.taskIds | length > 0
     - execute_tasks | bool
-      or avd_eos_config_deploy_cvp_execute_configlet_tasks | default(false)
+      or avd_eos_config_deploy_cvp_execute_configlet_tasks | arista.avd.default(false)
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
   arista.cvp.cv_container_v3:
@@ -33,7 +33,7 @@
     - cvp_container_results.taskIds is arista.avd.defined
     - cvp_container_results.taskIds | length > 0
     - execute_tasks | bool
-      or avd_eos_config_deploy_cvp_execute_container_tasks | default(false)
+      or avd_eos_config_deploy_cvp_execute_container_tasks | arista.avd.default(false)
 
 - name: "Configure devices on {{ inventory_hostname }}"
   arista.cvp.cv_device_v3:
@@ -51,4 +51,4 @@
     - cvp_devices_results.taskIds is arista.avd.defined
     - cvp_devices_results.taskIds | length > 0
     - execute_tasks | bool
-      or avd_eos_config_deploy_cvp_execute_device_tasks | default(false)
+      or avd_eos_config_deploy_cvp_execute_device_tasks | arista.avd.default(false)

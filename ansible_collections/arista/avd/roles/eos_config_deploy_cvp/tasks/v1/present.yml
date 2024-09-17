@@ -11,7 +11,7 @@
   arista.cvp.cv_task:
     tasks: "{{ cvp_facts.ansible_facts.tasks }}"  # noqa: args[module]
   when: execute_tasks|bool
-        or avd_eos_config_deploy_cvp_execute_existing_tasks | default(false)
+        or avd_eos_config_deploy_cvp_execute_existing_tasks | arista.avd.default(false)
 
 - name: "Create configlets on CVP {{ inventory_hostname }}."
   arista.cvp.cv_configlet:
@@ -27,7 +27,7 @@
   when:
     - cvp_configlets_status.data.tasks | length > 0
     - execute_tasks|bool
-      or avd_eos_config_deploy_cvp_execute_configlet_task | default(false)
+      or avd_eos_config_deploy_cvp_execute_configlet_task | arista.avd.default(false)
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
   arista.cvp.cv_container:
@@ -41,7 +41,7 @@
     wait: 720
   when:
     - execute_tasks|bool
-      or avd_eos_config_deploy_cvp_execute_container_tasks | default(false)
+      or avd_eos_config_deploy_cvp_execute_container_tasks | arista.avd.default(false)
 
 - name: "Refreshing facts from CVP {{ inventory_hostname }}."
   arista.cvp.cv_facts:
@@ -63,4 +63,4 @@
     wait: 720
   when:
     - execute_tasks|bool
-      or avd_eos_config_deploy_cvp_execute_device_tasks | default(false)
+      or avd_eos_config_deploy_cvp_execute_device_tasks | arista.avd.default(false)

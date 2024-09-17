@@ -14,7 +14,7 @@
   register: avd_requirements
 
 - name: Create required output directories if not present
-  when: avd_create_directories | default(true)
+  when: avd_create_directories | arista.avd.default(true)
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory

@@ -5,7 +5,7 @@
 # tasks file for dhcp_provisioner
 
 - name: Create required output directories if not present
-  when: avd_create_directories | default(true)
+  when: avd_create_directories | arista.avd.default(true)
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -30,5 +30,5 @@
   run_once: true
 
 - name: Start creation/update process.
-  when: avd_dhcp_provisioner_provision | default(true)
+  when: avd_dhcp_provisioner_provision | arista.avd.default(true)
   ansible.builtin.include_tasks: "./{{ ztp_mode }}.yml"
