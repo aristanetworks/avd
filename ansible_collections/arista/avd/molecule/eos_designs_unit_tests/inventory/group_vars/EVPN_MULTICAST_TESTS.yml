@@ -375,6 +375,7 @@ tenants:
           loopback_ip_range: 10.255.41.0/24
         evpn_l3_multicast:
           enabled: true
+          evpn_underlay_l3_multicast_group: 232.0.64.2
         vrf_vni: 41
         svis:
           # Expected results:

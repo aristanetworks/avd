@@ -221,6 +221,7 @@ class FilteredTenantsMixin:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
                 if self.evpn_multicast:
                     vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
+                    vrf["_evpn_l3_multicast_group_ip"] = default(get(vrf, "evpn_l3_multicast.evpn_underlay_l3_multicast_group"), None)
 
                     rps = []
                     for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):

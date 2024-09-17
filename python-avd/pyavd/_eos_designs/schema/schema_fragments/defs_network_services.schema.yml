@@ -513,6 +513,11 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                  evpn_underlay_l3_multicast_group:
+                    type: str
+                    description: |-
+                      IPv4 address of evpn underlay l3 multicast group.
+                      To override multicast range set using the formula < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_id - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
                   evpn_peg:
                     type: list
                     description: For each group of nodes, allow configuration of EVPN PEG features.

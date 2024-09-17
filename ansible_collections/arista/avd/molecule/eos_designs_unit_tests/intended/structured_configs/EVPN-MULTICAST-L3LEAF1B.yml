@@ -1669,7 +1669,7 @@ vxlan_interface:
         vni: 42
       - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         vni: 41
-        multicast_group: 232.0.64.40
+        multicast_group: 232.0.64.2
       - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         vni: 55
         multicast_group: 232.0.96.54
