@@ -310,7 +310,14 @@ class EthernetInterfacesMixin(UtilsMixin):
         direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(get(self.shared_utils.switch_data_combined, "wan_ha"), "direct_wan_ha_links")
 
         for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
-            # TODO: update description and move it to the description module
+            description = self.shared_utils.interface_descriptions.wan_ha_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=interface,
+                    peer=self.shared_utils.wan_ha_peer,
+                    peer_interface=interface,
+                ),
+            )
             if self.shared_utils.use_port_channel_for_direct_ha:
                 direct_wan_ha_interfaces.append(
                     {
@@ -318,7 +325,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "peer_type": "wan_ha_peer",
                         "peer_interface": interface,
                         "peer": self.shared_utils.wan_ha_peer,
-                        "description": "TODO: DIRECT LAN HA LINK MEMBER",
+                        "description": description,
                         "type": "port-channel-member",
                         "shutdown": False,
                         "channel_group": {
@@ -339,7 +346,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "peer_type": "l3_interface",
                         "peer": self.shared_utils.wan_ha_peer,
                         "shutdown": False,
-                        "description": "DIRECT LAN HA LINK",
+                        "description": description,
                         "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
                         "flow_tracker": direct_wan_ha_links_flow_tracker,
                         "mtu": self.shared_utils.configured_wan_ha_mtu,

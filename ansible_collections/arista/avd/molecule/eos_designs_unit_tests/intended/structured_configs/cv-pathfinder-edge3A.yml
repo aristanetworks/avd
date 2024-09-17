@@ -161,7 +161,7 @@ ethernet_interfaces:
   peer_type: wan_ha_peer
   peer_interface: Ethernet52
   peer: cv-pathfinder-edge3B
-  description: 'TODO: DIRECT LAN HA LINK MEMBER'
+  description: WAN_HA_cv-pathfinder-edge3B_Ethernet52
   type: port-channel-member
   shutdown: false
   channel_group:
@@ -175,7 +175,7 @@ port_channel_interfaces:
   peer_interface: Port-Channel52
   peer: cv-pathfinder-edge3B
   shutdown: false
-  description: DIRECT LAN HA LINK
+  description: WAN_HA_cv-pathfinder-edge3B_Port-Channel52
   ip_address: 10.10.10.0/31
   flow_tracker:
     hardware: FLOW-TRACKER

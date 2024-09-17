@@ -126,6 +126,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
         direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(get(self.shared_utils.switch_data_combined, "wan_ha"), "direct_wan_ha_links")
 
         port_channel_name = f"Port-Channel{self.shared_utils.wan_ha_port_channel_id}"
+        description = self.shared_utils.interface_descriptions.wan_ha_port_channel_interface(
+            InterfaceDescriptionData(
+                shared_utils=self.shared_utils,
+                interface=port_channel_name,
+                peer=self.shared_utils.wan_ha_peer,
+                peer_interface=port_channel_name,
+            ),
+        )
 
         return {
             "name": port_channel_name,
@@ -135,7 +143,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "peer_interface": port_channel_name,
             "peer": self.shared_utils.wan_ha_peer,
             "shutdown": False,
-            "description": "DIRECT LAN HA LINK",
+            "description": description,
             "ip_address": self.shared_utils.wan_ha_ip_addresses[0],
             "flow_tracker": direct_wan_ha_links_flow_tracker,
             "mtu": self.shared_utils.configured_wan_ha_mtu,

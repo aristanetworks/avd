@@ -115,7 +115,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         if self.shared_utils.use_port_channel_for_direct_ha is True:
             local_interfaces = [{"name": f"Port-Channel{self.shared_utils.wan_ha_port_channel_id}"}]
         else:
-            local_interfaces = ([{"name": interface} for interface in self.shared_utils.wan_ha_interfaces],)
+            local_interfaces = [{"name": interface} for interface in self.shared_utils.wan_ha_interfaces]
 
         # not a pathfinder device
         ha_path_group.update(
