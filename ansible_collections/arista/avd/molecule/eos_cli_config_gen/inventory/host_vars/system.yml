@@ -11,6 +11,14 @@ system:
         vrf: red_1
       - acl_name: "acl4_3"
         vrf: default
+      - acl_name: "acl4_4"
+        vrf: red_2
+        ingress_default: true
+      - acl_name: "acl4_5"
+        vrf: red_3
+        ingress_default: false
+      - acl_name: "ingress"
+        vrf: red_4
     ipv6_access_groups:
       - acl_name: "acl6_1"
       - acl_name: "acl6_2"
@@ -19,6 +27,10 @@ system:
         vrf: blue_1
       - acl_name: "acl6_3"
         vrf: default
+      - acl_name: "acl6_4"
+        ingress_default: true
+      - acl_name: "ingress"
+        vrf: blue_2
   l1:
     unsupported_speed_action: warn
     unsupported_error_correction_action: error

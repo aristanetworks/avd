@@ -20162,6 +20162,10 @@ keys:
                   type: str
                   convert_types:
                   - int
+                  description: '''vrf'' and ''ingress_default'' are mutual exclusive.'
+                ingress_default:
+                  type: bool
+                  description: '''vrf'' and ''ingress_default'' are mutual exclusive.'
           ipv6_access_groups:
             type: list
             unique_keys:
@@ -20176,6 +20180,10 @@ keys:
                   type: str
                   convert_types:
                   - int
+                  description: '''vrf'' and ''ingress_default'' are mutual exclusive.'
+                ingress_default:
+                  type: bool
+                  description: '''vrf'' and ''ingress_default'' are mutual exclusive.'
       l1:
         type: dict
         keys:
