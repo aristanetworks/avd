@@ -51,20 +51,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 172.16.100.102/24 | 172.16.100.1 |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.102/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management0
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.100.102/24
@@ -428,20 +428,20 @@ interface Port-Channel551
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 172.16.1.2/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.1.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 172.16.1.2/32
    ip ospf area 0.0.0.0

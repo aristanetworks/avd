@@ -115,7 +115,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.103/24
@@ -248,7 +248,7 @@ ethernet_interfaces:
     key: kguPGHyy/wCN0mKibi4dLRL4PmsrU4UP
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.3/32
   ospf_area: 0.0.0.0

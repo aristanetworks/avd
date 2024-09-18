@@ -173,7 +173,7 @@ anta.tests.interfaces:
     - name: Loopback0
       status: up
     result_overwrite:
-      custom_field: Interface Loopback0 - Router_ID = 'up'
+      custom_field: Interface Loopback0 - ROUTER_ID = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Dps1

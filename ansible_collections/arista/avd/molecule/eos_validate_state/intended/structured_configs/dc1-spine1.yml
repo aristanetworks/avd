@@ -177,7 +177,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.11/24
@@ -245,7 +245,7 @@ ethernet_interfaces:
   ip_address: 10.33.255.20/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.0.1/32
 prefix_lists:

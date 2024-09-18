@@ -19,7 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_address_families</samp>](## "custom_node_type_keys.[].default_overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_node_type_keys.[].default_overlay_address_families.[]") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "custom_node_type_keys.[].default_evpn_encapsulation") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>mpls</code><br>- <code>vxlan</code> | Set the default evpn encapsulation.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "custom_node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "custom_node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_flow_tracker_type</samp>](## "custom_node_type_keys.[].default_flow_tracker_type") | String |  | `sampled` | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the default flow tracker type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "custom_node_type_keys.[].mlag_support") | Boolean |  | `False` |  | Can this node type support mlag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "custom_node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
@@ -54,8 +54,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_interfaces</samp>](## "custom_node_type_keys.[].interface_descriptions.mlag_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_ethernet_interfaces</samp>](## "custom_node_type_keys.[].interface_descriptions.connected_endpoints_ethernet_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "custom_node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "custom_node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_loopback_interface</samp>](## "custom_node_type_keys.[].interface_descriptions.router_id_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "custom_node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "custom_node_type_keys.[].interface_descriptions.overlay_loopback_interface") <span style="color:red">deprecated</span> | String |  |  |  | Path to Custom J2 template.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>router_id_loopback_interface</samp> instead.</span> |
     | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  | Define Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`node_type_keys` should be defined in top level group_var for the fabric.<br><br>The default values will be overridden if this key is defined.<br>If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.<br>If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries,<br>custom entries will replace the equivalent default entry. |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "node_type_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
@@ -68,7 +69,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_address_families</samp>](## "node_type_keys.[].default_overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "node_type_keys.[].default_overlay_address_families.[]") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "node_type_keys.[].default_evpn_encapsulation") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>mpls</code><br>- <code>vxlan</code> | Set the default evpn encapsulation.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_flow_tracker_type</samp>](## "node_type_keys.[].default_flow_tracker_type") | String |  | `sampled` | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the default flow tracker type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "node_type_keys.[].mlag_support") | Boolean |  | `False` |  | Can this node type support mlag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
@@ -103,8 +104,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.mlag_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_ethernet_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.router_id_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") <span style="color:red">deprecated</span> | String |  |  |  | Path to Custom J2 template.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>router_id_loopback_interface</samp> instead.</span> |
 
 === "YAML"
 
@@ -151,7 +153,7 @@
         # Set the default WAN role.
         #
         # This is used both for AutoVPN and Pathfinder designs.
-        # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+        # That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
         # `server` indicates that the router is a route-reflector.
         #
         # Only supported if `overlay_routing_protocol` is set to `ibgp`.
@@ -275,10 +277,16 @@
           connected_endpoints_port_channel_interfaces: <str>
 
           # Path to Custom J2 template.
-          overlay_loopback_interface: <str>
+          router_id_loopback_interface: <str>
 
           # Path to Custom J2 template.
           vtep_loopback_interface: <str>
+
+          # Path to Custom J2 template.
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>router_id_loopback_interface</samp> instead.
+          overlay_loopback_interface: <str>
 
     # Define Node Type Keys, to specify the properties of each node type in the fabric.
     # This allows for complete customization of the fabric layout and functionality.
@@ -325,7 +333,7 @@
         # Set the default WAN role.
         #
         # This is used both for AutoVPN and Pathfinder designs.
-        # That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+        # That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
         # `server` indicates that the router is a route-reflector.
         #
         # Only supported if `overlay_routing_protocol` is set to `ibgp`.
@@ -449,8 +457,14 @@
           connected_endpoints_port_channel_interfaces: <str>
 
           # Path to Custom J2 template.
-          overlay_loopback_interface: <str>
+          router_id_loopback_interface: <str>
 
           # Path to Custom J2 template.
           vtep_loopback_interface: <str>
+
+          # Path to Custom J2 template.
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>router_id_loopback_interface</samp> instead.
+          overlay_loopback_interface: <str>
     ```

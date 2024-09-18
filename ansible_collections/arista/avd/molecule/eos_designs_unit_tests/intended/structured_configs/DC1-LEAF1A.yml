@@ -261,7 +261,7 @@ vrfs:
   ipv6_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
@@ -377,11 +377,11 @@ ethernet_interfaces:
     trunk: tagged
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.42/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.43.43/32
 - name: Loopback100

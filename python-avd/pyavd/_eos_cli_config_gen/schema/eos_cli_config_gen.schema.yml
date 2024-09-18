@@ -1556,6 +1556,26 @@ keys:
             max: 300
             convert_types:
             - str
+      radius_av_pair_username_format:
+        type: dict
+        description: RADIUS AV-pair username settings.
+        keys:
+          delimiter:
+            type: str
+            description: Delimiter to use in MAC address string.
+            required: true
+            valid_values:
+            - colon
+            - hyphen
+            - none
+            - period
+          mac_string_case:
+            type: str
+            description: MAC address string in lowercase/uppercase.
+            required: true
+            valid_values:
+            - lowercase
+            - uppercase
       radius_av_pair:
         type: dict
         keys:
@@ -3039,6 +3059,9 @@ keys:
                   type: bool
                 host_mode_common:
                   type: bool
+            mac_based_access_list:
+              type: bool
+              description: Operate interface in per-mac access-list mode.
             timeout:
               type: dict
               keys:
@@ -3096,6 +3119,30 @@ keys:
                       max: 65535
                       convert_types:
                       - str
+            aaa:
+              type: dict
+              keys:
+                unresponsive:
+                  type: dict
+                  description: Configure AAA timeout options.
+                  keys:
+                    eap_response:
+                      type: str
+                      description: EAP response to send. EOS default is `success`.
+                      valid_values:
+                      - success
+                      - disabled
+                    action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action
+                      keys:
+                        traffic_allow_access_list:
+                          type: str
+                          description: Name of standard access-list to apply when
+                            AAA times out.
+                    phone_action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
         service_profile:
           type: str
           description: QOS profile.
@@ -7958,6 +8005,8 @@ keys:
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
   monitor_session_default_encapsulation_gre:
+    documentation_options:
+      table: monitor-sessions
     type: dict
     keys:
       payload:
@@ -8052,6 +8101,8 @@ keys:
               convert_types:
               - str
   monitor_telemetry_influx:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       vrf:
@@ -8126,6 +8177,8 @@ keys:
               required: true
               description: Value of the global tag pair.
   monitor_telemetry_postcard_policy:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       disabled:
@@ -11506,11 +11559,7 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: 'A sequence of application profiles mapped to some virtual topologies.
-
-
-          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index>
-          in the list.'
+        description: A sequence of application profiles mapped to some virtual topologies.
         items:
           type: dict
           keys:
@@ -16346,7 +16395,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -17730,24 +17779,28 @@ keys:
                 description: Segment size.
           ipv4_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
                   - int
           ipv6_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:

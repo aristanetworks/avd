@@ -61,20 +61,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.102/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.102/24 | 172.16.1.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.1.102/24
@@ -419,8 +419,8 @@ interface Port-Channel8
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.255.0.4/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.255.1.3/32 |
+| Loopback0 | ROUTER_ID | default | 10.255.0.4/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 10.255.1.3/32 |
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | 10.255.10.4/32 |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | 10.255.11.4/32 |
 
@@ -428,8 +428,8 @@ interface Port-Channel8
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | - |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | - |
 
@@ -438,12 +438,12 @@ interface Port-Channel8
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 10.255.0.4/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 10.255.1.3/32
 !

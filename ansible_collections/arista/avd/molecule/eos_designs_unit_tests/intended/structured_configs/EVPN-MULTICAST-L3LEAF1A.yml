@@ -688,7 +688,7 @@ vrfs:
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
@@ -1351,6 +1351,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.55.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   pim:
@@ -1360,6 +1362,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.60.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   pim:
@@ -1369,6 +1373,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.52.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
@@ -1378,6 +1384,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
@@ -1406,11 +1414,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.3/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.3/32
 - name: Loopback33
@@ -1745,5 +1753,12 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 232.0.136.0/21
+sflow:
+  run: true
+  vrfs:
+  - name: sflow_vrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
 metadata:
   platform: vEOS-LAB

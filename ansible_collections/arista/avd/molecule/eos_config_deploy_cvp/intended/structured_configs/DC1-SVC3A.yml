@@ -429,7 +429,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.108/24
@@ -901,11 +901,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.8/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.8/32
 - name: Loopback100

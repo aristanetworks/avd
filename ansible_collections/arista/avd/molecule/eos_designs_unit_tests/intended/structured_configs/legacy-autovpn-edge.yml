@@ -1,4 +1,4 @@
-hostname: autovpn-edge-no-default-policy
+hostname: legacy-autovpn-edge
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -47,10 +47,14 @@ router_bgp:
         send:
           any: true
   neighbors:
-  - ip_address: 2.2.2.2
+  - ip_address: 192.168.131.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: autovpn-rr3
-    description: autovpn-rr3
+    peer: legacy-autovpn-rr1
+    description: legacy-autovpn-rr1
+  - ip_address: 192.168.131.2
+    peer_group: WAN-OVERLAY-PEERS
+    peer: legacy-autovpn-rr2
+    description: legacy-autovpn-rr2
   vrfs:
   - name: default
     rd: 192.168.30.1:1
@@ -64,20 +68,6 @@ router_bgp:
         route_targets:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: IT
-    rd: 192.168.30.1:100
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-      export:
-      - address_family: evpn
-        route_targets:
-        - 100:100
-    router_id: 192.168.30.1
-    redistribute_routes:
-    - source_protocol: connected
   - name: PROD
     rd: 192.168.30.1:42
     route_targets:
@@ -123,9 +113,15 @@ ethernet_interfaces:
   type: routed
   description: Comcast_666
   dhcp_client_accept_default_route: true
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 10.14.14.14/31
+  shutdown: false
+  type: routed
+  description: MPLS-SP-1_Cat6
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.30.1/32
 prefix_lists:
@@ -175,7 +171,7 @@ ip_extcommunity_lists:
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
-    local_id: 192.168.255.1
+    local_id: 192.168.130.1
   sa_policies:
   - name: AUTOVPN-SA
   profiles:
@@ -191,16 +187,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: AUTOVPN
-management_security:
-  ssl_profiles:
-  - name: STUN-DTLS
-    certificate:
-      file: STUN-DTLS.crt
-      key: STUN-DTLS.key
-    trust_certificate:
-      certificates:
-      - aristaDeviceCertProvisionerDefaultRootCA.crt
-    tls_versions: '1.2'
 router_bfd:
   multihop:
     interval: 300
@@ -216,48 +202,83 @@ router_path_selection:
     - name: Ethernet1
       stun:
         server_profiles:
-        - INET-autovpn-rr3-Ethernet1
+        - INET-legacy-autovpn-rr1-Ethernet1
+        - INET-legacy-autovpn-rr2-Ethernet1
     dynamic_peers:
       enabled: true
     static_peers:
-    - router_ip: 2.2.2.2
-      name: autovpn-rr3
+    - router_ip: 192.168.131.1
+      name: legacy-autovpn-rr1
       ipv4_addresses:
       - 10.7.7.7
+    - router_ip: 192.168.131.2
+      name: legacy-autovpn-rr2
+      ipv4_addresses:
+      - 10.8.8.8
     ipsec_profile: AUTOVPN
+  - name: MPLS
+    id: 100
+    local_interfaces:
+    - name: Ethernet2
+    dynamic_peers:
+      enabled: true
+      ipsec: false
   load_balance_policies:
-  - name: LB-DEFAULT-POLICY-DEFAULT
+  - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
-  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+      priority: 42
+    - name: MPLS
+  - name: LB-DEFAULT-AUTOVPN-POLICY-IT
+    path_groups:
+    - name: MPLS
+    - name: INET
+      priority: 2
+  - name: LB-PROD-AUTOVPN-POLICY-VOICE
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AUTOVPN-POLICY-VIDEO
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AUTOVPN-POLICY-DEFAULT
     path_groups:
     - name: INET
   policies:
-  - name: DEFAULT-POLICY
-    default_match:
-      load_balance: LB-DEFAULT-POLICY-DEFAULT
-  - name: DEFAULT-POLICY-WITH-CP
+  - name: DEFAULT-AUTOVPN-POLICY-WITH-CP
     rules:
     - id: 10
       application_profile: APP-PROFILE-CONTROL-PLANE
-      load_balance: LB-DEFAULT-POLICY-CONTROL-PLANE
+      load_balance: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
+    - id: 20
+      application_profile: IT
+      load_balance: LB-DEFAULT-AUTOVPN-POLICY-IT
+  - name: PROD-AUTOVPN-POLICY
+    rules:
+    - id: 10
+      application_profile: VOICE
+      load_balance: LB-PROD-AUTOVPN-POLICY-VOICE
+    - id: 20
+      application_profile: VIDEO
+      load_balance: LB-PROD-AUTOVPN-POLICY-VIDEO
     default_match:
-      load_balance: LB-DEFAULT-POLICY-DEFAULT
+      load_balance: LB-PROD-AUTOVPN-POLICY-DEFAULT
   vrfs:
-  - name: PROD
-    path_selection_policy: DEFAULT-POLICY
-  - name: IT
-    path_selection_policy: DEFAULT-POLICY
   - name: default
-    path_selection_policy: DEFAULT-POLICY-WITH-CP
+    path_selection_policy: DEFAULT-AUTOVPN-POLICY-WITH-CP
+  - name: PROD
+    path_selection_policy: PROD-AUTOVPN-POLICY
 stun:
   client:
     server_profiles:
-    - name: INET-autovpn-rr3-Ethernet1
+    - name: INET-legacy-autovpn-rr1-Ethernet1
       ip_address: 10.7.7.7
-      ssl_profile: STUN-DTLS
+    - name: INET-legacy-autovpn-rr2-Ethernet1
+      ip_address: 10.8.8.8
 application_traffic_recognition:
   application_profiles:
+  - name: IT
+  - name: VOICE
+  - name: VIDEO
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -269,25 +290,24 @@ application_traffic_recognition:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
       prefix_values:
-      - 2.2.2.2/32
+      - 192.168.131.1/32
+      - 192.168.131.2/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
-  ip_address: 192.168.255.1/32
+  mtu: 9194
+  ip_address: 192.168.130.1/32
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
   vxlan1:
-    description: autovpn-edge-no-default-policy_VTEP
+    description: legacy-autovpn-edge_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
       vrfs:
       - name: default
         vni: 1
-      - name: IT
-        vni: 100
       - name: PROD
         vni: 42
 flow_tracking:

@@ -50,20 +50,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.102/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.102/24 | 172.16.1.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.1.102/24
@@ -264,13 +264,13 @@ interface Ethernet4.20
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | MPLS_Overlay_peering | default | 10.255.1.2/32 |
+| Loopback0 | ROUTER_ID | default | 10.255.1.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | MPLS_Overlay_peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 ##### ISIS
 
@@ -283,7 +283,7 @@ interface Ethernet4.20
 ```eos
 !
 interface Loopback0
-   description MPLS_Overlay_peering
+   description ROUTER_ID
    no shutdown
    ip address 10.255.1.2/32
    isis enable CORE

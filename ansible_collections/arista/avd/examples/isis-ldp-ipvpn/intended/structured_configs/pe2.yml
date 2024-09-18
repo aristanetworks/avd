@@ -120,7 +120,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.102/24
@@ -132,7 +132,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.1.2/32
   mpls:

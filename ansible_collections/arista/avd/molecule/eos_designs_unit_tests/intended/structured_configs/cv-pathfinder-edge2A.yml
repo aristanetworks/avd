@@ -300,7 +300,7 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.2/32
 as_path:
@@ -489,6 +489,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-PROD-AVT-POLICY-VOICE
   - name: PROD-AVT-POLICY-VIDEO
     load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-MPLS-ONLY
+    load_balance_policy: LB-PROD-AVT-POLICY-MPLS-ONLY
   - name: PROD-AVT-POLICY-DEFAULT
     load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-DEFAULT
@@ -510,6 +512,8 @@ router_adaptive_virtual_topology:
       id: 2
     - name: PROD-AVT-POLICY-VIDEO
       id: 4
+    - name: PROD-AVT-POLICY-MPLS-ONLY
+      id: 5
     - name: PROD-AVT-POLICY-DEFAULT
       id: 1
   - name: IT
@@ -539,6 +543,8 @@ router_adaptive_virtual_topology:
       avt_profile: PROD-AVT-POLICY-VOICE
     - application_profile: VIDEO
       avt_profile: PROD-AVT-POLICY-VIDEO
+    - application_profile: MPLS-ONLY
+      avt_profile: PROD-AVT-POLICY-MPLS-ONLY
     - application_profile: default
       avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY
@@ -616,6 +622,9 @@ router_path_selection:
       priority: 2
     - name: LAN_HA
     loss_rate: '42.0'
+  - name: LB-PROD-AVT-POLICY-MPLS-ONLY
+    path_groups:
+    - name: LAN_HA
   - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
@@ -648,6 +657,7 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
+  - name: MPLS-ONLY
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -699,7 +709,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.2/32
   flow_tracker:
     hardware: FLOW-TRACKER
