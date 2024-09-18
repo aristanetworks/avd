@@ -403,6 +403,10 @@ ip_security:
     encryption: aes256
     dh_group: 24
   sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
       encryption: aes256gcm128
@@ -422,7 +426,16 @@ ip_security:
       integrity: sha256
       encryption: aes256
   profiles:
-  - name: ONE-PROFILE-TO-CONTROL-THEM-ALL
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890666
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
     connection: start
@@ -451,7 +464,7 @@ ip_security:
       action: clear
     connection: start
   key_controller:
-    profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
+    profile: DP-PROFILE
 management_security:
   ssl_profiles:
   - name: profileA
@@ -564,7 +577,7 @@ router_path_selection:
     - name: Ethernet1/49.3
     dynamic_peers:
       enabled: true
-    ipsec_profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
+    ipsec_profile: CP-PROFILE
     keepalive:
       auto: true
   - name: AWS
@@ -573,7 +586,7 @@ router_path_selection:
     - name: Ethernet2
     dynamic_peers:
       enabled: true
-    ipsec_profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
+    ipsec_profile: CP-PROFILE
   - name: INET
     id: 101
     local_interfaces:
@@ -593,7 +606,7 @@ router_path_selection:
       name: cv-pathfinder-pathfinder2
       ipv4_addresses:
       - 10.9.9.6
-    ipsec_profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
+    ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
