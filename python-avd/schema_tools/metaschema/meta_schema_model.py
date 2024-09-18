@@ -244,7 +244,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     """List of valid values"""
     dynamic_valid_values: list[str] | None = None
     """
-    Path to variable under the parent dictionary containing valid values.
+    List of path to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
     If an element of the variable path is a list, every list item will be unpacked.
     Note that this is building the schema from values in the _data_ being validated!
@@ -341,7 +341,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     """List of valid values"""
     dynamic_valid_values: list[str] | None = None
     """
-    Path to variable under the parent dictionary containing valid values.
+    List of paths to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
     If an element of the variable path is a list, every list item will be unpacked.
     Note that this is building the schema from values in the _data_ being validated!
