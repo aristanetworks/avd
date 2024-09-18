@@ -126,6 +126,7 @@ router path-selection
 {%         endif %}
 {%         for rule in policy.rules | arista.avd.natural_sort('id') %}
 {%             if rule.application_profile is arista.avd.defined %}
+      !
       {{ rule.id }} application-profile {{ rule.application_profile }}
 {%                 if rule.load_balance is arista.avd.defined %}
          load-balance {{ rule.load_balance }}
