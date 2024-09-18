@@ -3922,7 +3922,9 @@ keys:
     documentation_options:
       table: type-setting
     type: str
-    dynamic_valid_values: node_type_keys.type
+    dynamic_valid_values:
+    - custom_node_type_keys.type
+    - node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
@@ -4737,43 +4739,11 @@ dynamic_keys:
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
-    default:
-    - key: servers
-      type: server
-      description: Server
-    - key: firewalls
-      type: firewall
-      description: Firewall
-    - key: routers
-      type: router
-      description: Router
-    - key: load_balancers
-      type: load_balancer
-      description: Load Balancer
-    - key: storage_arrays
-      type: storage_array
-      description: Storage Array
-    - key: cpes
-      type: cpe
-      description: CPE
-    - key: workstations
-      type: workstation
-      description: Workstation
-    - key: access_points
-      type: access_point
-      description: Access Point
-    - key: phones
-      type: phone
-      description: Phone
-    - key: printers
-      type: printer
-      description: Printer
-    - key: cameras
-      type: camera
-      description: Camera
-    - key: generic_devices
-      type: generic_device
-      description: Generic Device
+  custom_node_type_keys.key:
+    $ref: eos_designs#/$defs/node_type
+    type: dict
+    documentation_options:
+      hide_keys: true
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list
@@ -5446,9 +5416,6 @@ $defs:
       are connecting.
 
       `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
-
-      The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and
-      `storage_arrays`.
 
       '
     items:
