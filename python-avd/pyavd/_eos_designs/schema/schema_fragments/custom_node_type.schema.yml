@@ -6,9 +6,8 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 dynamic_keys:
-  "connected_endpoints_keys.key":
-    $ref: "eos_designs#/$defs/connected_endpoints"
-    type: list
-    display_name: Connected Endpoints
+  "custom_node_type_keys.key":
+    $ref: "eos_designs#/$defs/node_type"
+    type: dict
     documentation_options:
-      table: connected-endpoints
+      hide_keys: true
