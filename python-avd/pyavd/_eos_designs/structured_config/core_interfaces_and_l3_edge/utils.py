@@ -310,8 +310,6 @@ class UtilsMixin:
         Return partial structured_config for one p2p_link.
 
         Covers config for ethernet interfaces that are port-channel members.
-
-        TODO: Change description for members to be the physical peer interface instead of port-channel
         """
         peer = p2p_link["data"]["peer"]
         peer_interface = member["peer_interface"]
