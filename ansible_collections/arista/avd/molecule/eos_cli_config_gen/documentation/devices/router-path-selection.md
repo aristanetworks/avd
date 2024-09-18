@@ -249,7 +249,6 @@ router path-selection
          load-balance LB-P-2
    !
    policy DPS-P-3
-      !
       42 application-profile AP-2
       !
       66 application-profile AP-1
