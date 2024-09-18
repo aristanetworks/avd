@@ -62,5 +62,3 @@
   check_mode: false
   when:
     - validation_report_csv | bool or validation_report_md | bool
-  tags:
-    - reports
