@@ -498,6 +498,15 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Ethernet15 - Test_type_routed = 'up'"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5 = 'up'"
   },
   {
@@ -589,6 +598,15 @@
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Port-Channel14 - Test_phone = 'up'"
+  },
+  {
+    "name": "dc2-leaf3a.arista.com",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the status of the provided interfaces.",
+    "custom_field": "Interface Port-Channel15 - Test_type_routed = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",

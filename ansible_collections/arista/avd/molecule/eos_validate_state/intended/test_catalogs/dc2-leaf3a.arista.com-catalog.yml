@@ -345,6 +345,12 @@ anta.tests.interfaces:
       custom_field: Interface Ethernet14 - Test_phone = 'up'
 - VerifyInterfacesStatus:
     interfaces:
+    - name: Ethernet15
+      status: up
+    result_overwrite:
+      custom_field: Interface Ethernet15 - Test_type_routed = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
     - name: Port-Channel3
       status: up
     result_overwrite:
@@ -375,6 +381,12 @@ anta.tests.interfaces:
       status: up
     result_overwrite:
       custom_field: Interface Port-Channel14 - Test_phone = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - name: Port-Channel15
+      status: up
+    result_overwrite:
+      custom_field: Interface Port-Channel15 - Test_type_routed = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan4093

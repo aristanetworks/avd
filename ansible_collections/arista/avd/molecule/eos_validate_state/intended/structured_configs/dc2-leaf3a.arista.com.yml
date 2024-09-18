@@ -342,6 +342,12 @@ port_channel_interfaces:
   phone:
     vlan: 20
     trunk: tagged
+- name: Port-Channel15
+  description: Test_type_routed
+  type: routed
+  ip_address: 1.1.1.1/24
+  peer: dc2-leaf3-fw1
+  peer_interface: e2
 ethernet_interfaces:
 - name: Ethernet3
   peer: dc2-leaf3b.arista.com
@@ -410,6 +416,12 @@ ethernet_interfaces:
   phone:
     vlan: 20
     trunk: tagged
+- name: Ethernet15
+  description: Test_type_routed
+  type: routed
+  ip_address: 1.1.1.1/24
+  peer: dc2-leaf3-fw1
+  peer_interface: e2
 mlag_configuration:
   domain_id: DC2_L3_LEAF3
   local_interface: Vlan4094

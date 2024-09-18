@@ -38,6 +38,13 @@ custom_structured_configuration_ethernet_interfaces:
       vlan: 20
       trunk: tagged
 
+  - name: Ethernet15
+    description: Test_type_routed
+    type: routed
+    ip_address: 1.1.1.1/24
+    peer: dc2-leaf3-fw1
+    peer_interface: e2
+
 custom_structured_configuration_port_channel_interfaces:
   - name: Port-Channel11
     description: dc2-leaf3-fw1_PortChannel
@@ -72,3 +79,10 @@ custom_structured_configuration_port_channel_interfaces:
     phone:
       vlan: 20
       trunk: tagged
+
+  - name: Port-Channel15
+    description: Test_type_routed
+    type: routed
+    ip_address: 1.1.1.1/24
+    peer: dc2-leaf3-fw1
+    peer_interface: e2
