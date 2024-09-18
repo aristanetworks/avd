@@ -8,10 +8,10 @@
 {%     for handler in event_handlers | arista.avd.natural_sort('name') %}
 !
 event-handler {{ handler.name }}
-{%         if handler.actions.log is arista.avd.defined(true) and not handler.actions.bash_command is  arista.avd.defined %}
+{%         if handler.actions.log is arista.avd.defined(true) and not handler.actions.bash_command is  arista.avd.defined and handler.name != "trigger-on-boot" %}
    action log
 {%         endif %}
-{%         if handler.actions.increment_device_health_metric is arista.avd.defined %}
+{%         if handler.actions.increment_device_health_metric is arista.avd.defined and handler.name != "on-boot" %}
    action increment device-health metric {{ handler.actions.increment_device_health_metric }}
 {%         endif %}
 {%         if handler.trigger is arista.avd.defined %}
@@ -36,14 +36,7 @@ event-handler {{ handler.name }}
    {{ trigger_cli }} {{ on_maintenance_cli }} {{ handler.trigger_on_maintenance.action }}
 {%                     endif %}
 {%                 endif %}
-{%             endif %}
-{%             if handler.actions.log is arista.avd.defined(true) and not handler.actions.bash_command is  arista.avd.defined %}
-   action log
-{%             endif %}
-{%             if handler.actions.increment_device_health_metric is arista.avd.defined %}
-   action increment device-health metric {{ handler.actions.increment_device_health_metric }}
-{%             endif %}
-{%             if handler.trigger is arista.avd.defined("on-counters") and handler.trigger is arista.avd.defined %}
+{%             elif handler.trigger is arista.avd.defined("on-counters") %}
    trigger on-counters
 {%                 if handler.trigger_on_counters.poll_interval is arista.avd.defined %}
       poll interval {{ handler.trigger_on_counters.poll_interval }}
@@ -80,9 +73,7 @@ event-handler {{ handler.name }}
    {{ trigger_on_intf_cli }}
 {%                 endif %}
 {%             else %}
-{%                 if not handler.trigger is arista.avd.defined("on-maintenance") %}
    trigger {{ handler.trigger }}
-{%                 endif %}
 {%             endif %}
 {%         endif %}
 {%         if handler.actions.bash_command is arista.avd.defined %}
@@ -96,6 +87,9 @@ event-handler {{ handler.name }}
 {%             else %}
    action bash {{ bash_command }}
 {%             endif %}
+{%         endif %}
+{%         if handler.actions.increment_device_health_metric is arista.avd.defined and handler.name == "trigger-on-boot" %}
+   action increment device-health metric {{ handler.actions.increment_device_health_metric }}
 {%         endif %}
 {%         if handler.delay is arista.avd.defined %}
    delay {{ handler.delay }}

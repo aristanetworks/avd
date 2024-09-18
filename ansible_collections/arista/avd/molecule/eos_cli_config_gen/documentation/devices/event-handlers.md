@@ -71,7 +71,6 @@ event-handler CONFIG_VERSIONING
 !
 event-handler trigger-on-boot
    action increment device-health metric Metric1
-   action increment device-health metric Metric1
    trigger on-boot
    action bash
       if [ 15 -gt 10 ]
@@ -79,9 +78,9 @@ event-handler trigger-on-boot
         echo "a is greater than 10"
       fi
       EOF
+   action increment device-health metric Metric1
 !
 event-handler trigger-on-counters
-   action log
    action log
    trigger on-counters
       poll interval 10
@@ -102,7 +101,6 @@ event-handler trigger-on-intf
 event-handler trigger-on-intf2
 !
 event-handler trigger-on-logging
-   action increment device-health metric Metric2
    action increment device-health metric Metric2
    trigger on-logging
       poll interval 10
