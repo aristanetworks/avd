@@ -179,19 +179,22 @@ class VxlanInterfaceMixin(UtilsMixin):
                 vrf_data = {"name": vrf_name, "vni": vni}
 
                 if get(vrf, "_evpn_l3_multicast_enabled"):
-                    underlay_l3_multicast_group_ipv4_pool = get(
-                        tenant,
-                        "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool",
-                        required=True,
-                        org_key=f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant['name']}",
-                    )
-                    underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
-                    vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
-                        underlay_l3_multicast_group_ipv4_pool,
-                        vni,
-                        vrf_id,
-                        underlay_l3_mcast_group_ipv4_pool_offset,
-                    )
+                    if vrf_multicast_group := get(vrf, "_evpn_l3_multicast_group_ip"):
+                        vrf_data["multicast_group"] = vrf_multicast_group
+                    else:
+                        underlay_l3_multicast_group_ipv4_pool = get(
+                            tenant,
+                            "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool",
+                            required=True,
+                            org_key=f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant['name']}",
+                        )
+                        underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
+                        vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
+                            underlay_l3_multicast_group_ipv4_pool,
+                            vni,
+                            vrf_id,
+                            underlay_l3_mcast_group_ipv4_pool_offset,
+                        )
 
                 # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
                 # This is necessary to find duplicate VNIs across multiple object types.
