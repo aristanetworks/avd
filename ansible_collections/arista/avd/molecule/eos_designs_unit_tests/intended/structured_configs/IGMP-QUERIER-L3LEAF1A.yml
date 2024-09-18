@@ -250,7 +250,7 @@ vrfs:
   description: IGMP_QUERIER_TEST_3
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.101/24
