@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get_ip_from_ip_prefix
+from pyavd._utils import get_ip_from_ip_prefix, Undefined
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -26,7 +26,7 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
-            if not p2p_link.include_in_underlay_protocol:
+            if not p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 continue
 
             if p2p_link_data["bgp_as"] is None or p2p_link_data["peer_bgp_as"] is None:
@@ -40,7 +40,7 @@ class RouterBgpMixin(Protocol):
                     remote_as=p2p_link_data["peer_bgp_as"],
                     peer=p2p_link_data["peer"],
                     description=p2p_link_data["peer"],
-                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
                 )
                 continue
 
@@ -54,7 +54,7 @@ class RouterBgpMixin(Protocol):
                 remote_as=p2p_link_data["peer_bgp_as"],
                 peer=p2p_link_data["peer"],
                 description=p2p_link_data["peer"],
-                peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
                 bfd=p2p_link.bfd,
                 local_as=p2p_link_data["bgp_as"] if p2p_link_data["bgp_as"] != self.shared_utils.bgp_as else None,
             )
