@@ -169,7 +169,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                             "native_vlan": adapter.get("native_vlan"),
                         },
                         "phone": self._get_adapter_phone(adapter, connected_endpoint),
-                        "access_vlan": adapter.get("vlans") if adapter.get("mode") == "access" else None,
+                        "access_vlan": adapter.get("vlans") if adapter.get("mode") in ["access", "dot1q-tunnel"] else None,
                     },
                     "l2_mtu": adapter.get("l2_mtu"),
                     "l2_mru": adapter.get("l2_mru"),
