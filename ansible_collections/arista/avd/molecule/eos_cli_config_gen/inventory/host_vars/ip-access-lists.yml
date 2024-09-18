@@ -35,6 +35,10 @@ ip_access_lists:
         destination: any
         destination_ports_match: range
         destination_ports: [10, 20]
+      # verify issue 4423 where a protocol is missing
+      - sequence: 60
+        source: any
+        destination: any
       - sequence: 4294967295
         action: deny
         protocol: ip
