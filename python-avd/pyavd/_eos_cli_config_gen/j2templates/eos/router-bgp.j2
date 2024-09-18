@@ -1202,7 +1202,7 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs is arista.avd.defined %}
 {%             set v4_bgp_lu_resolution_ribs = [] %}
 {%             for rib in router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs %}
-{%                 if rib.rib_type is arista.avd.defined("tunnel-rib colored") %}
+{%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
 {%                     do v4_bgp_lu_resolution_ribs.append("tunnel-rib colored system-colored-tunnel-rib") %}
 {%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") and rib.rib_name is arista.avd.defined() %}
 {%                     do v4_bgp_lu_resolution_ribs.append("tunnel-rib " ~ rib.rib_name) %}
