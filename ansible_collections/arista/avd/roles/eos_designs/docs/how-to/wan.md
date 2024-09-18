@@ -690,13 +690,31 @@ reused when adding LAN protocols to help understand the changes.
 
 #### LAN HA common configuration
 
-EOS (and hence AVD) supports maximum 2 routers for HA. To establish LAN HA the requirements are the following:
+EOS (and hence AVD) supports maximum 2 routers for HA. To be considered as HA nodes, they need to belond to the same node_group as below:
+
+```yaml
+wan_router:
+  node_groups:
+    - group: Site42
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site42
+      wan_ha: enabled
+      nodes:
+        - name: node1
+          id: 1
+          [...]
+        - name: node2
+          id: 1
+          [...]
+```
+
+To establish LAN HA the requirements are the following:
 
 - The HA tunnels can be established only in the default VRF (EOS limitation)
 - The HA interfaces must be able to establish IPSec tunnels between each other. This implies that if the interfaces are on different subnet, the LAN must be able to route traffic between each interface.
 - EVPN Gateway is used to exchange the routes between the HA peers configured as follow - the advantage is that it caters for all VRFs and the default VRF export route-map is still valid.
 
-By default, AVD uses the uplinks as the HA links. It is possible to override this by setting a single interface to be used as the *Direct HA link*:
+By default, AVD uses the uplinks as the HA links. It is possible to override this by setting a list of interfaces to be used as the *Direct HA links*:
 
 ```yaml
 wan_router:
@@ -710,12 +728,16 @@ wan_router:
         ha_ipv4_pool: 10.10.10.0/24 # (2)!
 ```
 
-1. Select the interface for HA, it can either be a way to select ONE interface for Direct HA, or to filter some of the uplink HA interfaces.
+1. Select the interface for HA, it can either be a way to select one or more interface(s) for Direct HA, or to filter some of the uplink HA interfaces.
 2. Prefix to use to allocate the IP address for the direct HA link.
 
 !!! warning
 
-    Only one interface can be used for Direct HA today in AVD.
+    For direct HA, AVD will configure a port-channel by default.
+    If only one interface is used for Direct HA, it is possible to disable the
+    port-channel creation using `wan_ha.use_port_channel_for_direct_ha: False`.
+
+    It is *not* possible to use multiple direct HA links while disabling the port-channel.
 
 From a configuration standpoint:
 
