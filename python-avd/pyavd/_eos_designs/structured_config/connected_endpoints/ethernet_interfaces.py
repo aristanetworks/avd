@@ -96,7 +96,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "native_vlan_tag": adapter.get("native_vlan_tag"),
                         "native_vlan": adapter.get("native_vlan"),
                     },
-                    "access_vlan": adapter.get("vlans") if adapter.get("mode", "access") in ["access", "dot1q-tunnel"] else None,
+                    "access_vlan": adapter.get("vlans") if adapter.get("mode") in ["access", "dot1q-tunnel"] else None,
                     "phone": self._get_adapter_phone(adapter, connected_endpoint),
                 },
                 "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
