@@ -5783,7 +5783,7 @@ $defs:
             Multicast group binding for VRF is created only for Multicast traffic.
             BULL traffic will use ingress-replication.\n- Configures binding between
             VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n
-            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni
+            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_id
             - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
             >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8
             Source-Specific Multicast range.\n- If enabled on an SVI using the anycast
@@ -6207,6 +6207,13 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                  evpn_underlay_l3_multicast_group:
+                    type: str
+                    description: 'IPv4 address of evpn underlay l3 multicast group.
+
+                      To override multicast range set using the formula < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool
+                      > + < vrf_id - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
+                      >.'
                   evpn_peg:
                     type: list
                     description: For each group of nodes, allow configuration of EVPN
