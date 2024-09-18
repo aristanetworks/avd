@@ -690,7 +690,7 @@ reused when adding LAN protocols to help understand the changes.
 
 #### LAN HA common configuration
 
-EOS (and hence AVD) supports maximum 2 routers for HA. To be considered as HA nodes, they need to belond to the same node_group as below:
+EOS (and hence AVD) supports maximum 2 routers for HA. To be considered as HA nodes, they need to belong to the same node_group as below:
 
 ```yaml
 wan_router:
