@@ -255,6 +255,7 @@ tenants:
           loopback: 31
           loopback_ip_range: 10.255.1.0/24
         vrf_vni: 31
+        vrf_id: 66
         svis:
           # Expected results:
           #  - VRF L3_MULTICAST_ENABLED_130_131 enabled for Multicast:
@@ -374,6 +375,7 @@ tenants:
           loopback_ip_range: 10.255.41.0/24
         evpn_l3_multicast:
           enabled: true
+          evpn_underlay_l3_multicast_group: 232.0.64.2
         vrf_vni: 41
         svis:
           # Expected results:
