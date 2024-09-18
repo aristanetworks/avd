@@ -7,6 +7,11 @@ from pyavd._utils import get
 
 
 def get_instance_with_defaults(instance: dict, dynamic_key_path: str, schema: dict) -> dict | ChainMap:
+    """
+    Returns the instance including any default value of the given dynamic key path.
+
+    If the dynamic key path is already in the instance, the instance is returned as-is.
+    """
     dynamic_root_key = dynamic_key_path.split(".", maxsplit=1)[0]
 
     if dynamic_root_key in instance:
