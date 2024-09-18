@@ -31,7 +31,6 @@ No connected endpoint configured!
 {%             set profile = connected_endpoint.profile | arista.avd.default("-") %}
 {%             set description = connected_endpoint.description | arista.avd.default("-") %}
 {%             set shutdown = connected_endpoint.shutdown | arista.avd.default("-") %}
-{%             set type = connected_endpoint.type | arista.avd.default("-") %}
 {%             set mode = connected_endpoint.mode | arista.avd.default("-") %}
 {%             set vlans = connected_endpoint.vlans | arista.avd.default("-") %}
 | {{ connected_endpoint.peer }} | {{ port }} | {{ connected_endpoint.fabric_switch }} | {{ fabric_port }} | {{ description }} | {{ shutdown }} | {{ mode }} | {{ vlans }} | {{ profile }} |

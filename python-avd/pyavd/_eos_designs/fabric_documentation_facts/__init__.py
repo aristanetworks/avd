@@ -112,7 +112,7 @@ class FabricDocumentationFacts(AvdFacts):
                 else:
                     peer_ip_address = None
 
-                routed = get(ethernet_interface, "switchport.enabled") is not None and not get(ethernet_interface, "switchport.enabled")
+                routed = get(ethernet_interface, "switchport.enabled") is False
 
                 data = (
                     self.avd_switch_facts[hostname]["type"],  # type
@@ -225,7 +225,7 @@ class FabricDocumentationFacts(AvdFacts):
         """Helper function to count the number of addresses that fall within the given IP pool."""
         return len([True for address in addresses if address.subnet_of(pool)])
 
-    def get_interface_vlans(self, interface: dict) -> list:
+    def get_interface_vlans(self, interface: dict) -> list | None:
         """Helper function to retrieve VLANs for an interface."""
         interface_vlans = []
         if (access_vlan := get(interface, "switchport.access_vlan")) is not None:
