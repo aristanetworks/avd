@@ -41,7 +41,7 @@ router_bgp:
       send:
         limit: 10
     next_hop_mpls_resolution_ribs:
-      - rib_type: "tunnel-rib colored"
+      - rib_type: "tunnel-rib-colored"
       - rib_type: "tunnel-rib"
         rib_name: "test-rib"
       - rib_type: "system-connected"
