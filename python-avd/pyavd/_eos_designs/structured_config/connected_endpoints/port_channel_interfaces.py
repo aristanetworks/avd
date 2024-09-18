@@ -156,31 +156,27 @@ class PortChannelInterfacesMixin(UtilsMixin):
         if get(adapter, "port_channel.subinterfaces"):
             port_channel_interface.update({"switchport": {"enabled": False}})
         else:
-            port_channel_interface.update({"switchport": {"enabled": True}})
-
-        # Only switches interfaces
-        if port_channel_interface["switchport"]["enabled"]:
+            # switchport
             port_channel_interface.update(
                 {
+                    "switchport": {
+                        "enabled": True,
+                        "mode": adapter.get("mode"),
+                        "trunk": {
+                            "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
+                            "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                            "native_vlan_tag": adapter.get("native_vlan_tag"),
+                            "native_vlan": adapter.get("native_vlan"),
+                        },
+                        "phone": self._get_adapter_phone(adapter, connected_endpoint),
+                        "access_vlan": adapter.get("vlans") if adapter.get("mode", "access") == "access" else None,
+                    },
                     "l2_mtu": adapter.get("l2_mtu"),
                     "l2_mru": adapter.get("l2_mru"),
                     "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                     "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                     "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
                     "storm_control": self._get_adapter_storm_control(adapter),
-                },
-            )
-            port_channel_interface["switchport"].update(
-                {
-                    "mode": adapter.get("mode"),
-                    "trunk": {
-                        "allowed_vlan": adapter.get("vlans") if adapter.get("mode") == "trunk" else None,
-                        "groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-                        "native_vlan_tag": adapter.get("native_vlan_tag"),
-                        "native_vlan": adapter.get("native_vlan"),
-                    },
-                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
-                    "access_vlan": adapter.get("vlans") if adapter.get("mode") == "access" else None,
                 },
             )
 
