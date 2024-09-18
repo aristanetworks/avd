@@ -25,10 +25,6 @@ ip access-list {{ acl.name }}
 {#         Build ACL entry: #}
 {#             - init ACL entry string #}
 {%             set acl_entry = namespace(string='') %}
-{#             - add sequence number if defined and space #}
-{%             if acle.sequence is arista.avd.defined %}
-{%                 set acl_entry.string = acl_entry.string ~ acle.sequence ~ ' ' %}
-{%             endif %}
 {#             - add action or remark #}
 {#             if remark is defined, add remark + text only #}
 {%             if acle.remark is arista.avd.defined %}
@@ -130,7 +126,14 @@ ip access-list {{ acl.name }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}
+{#             - only render if the string is not empty #}
+{%             if acl_entry.string != "" %}
+{#                 - prepend sequence number if defined and space #}
+{%                if acle.sequence is arista.avd.defined %}
+{%                    set acl_entry.string = acle.sequence ~ ' ' ~ acl_entry.string %}
+{%                endif %}
    {{ acl_entry.string }}
+{%             endif %}
 {#         END ACL_ENTRY CYCLE: walk over the list of ACL entries #}
 {%         endfor %}
 {#     END ACL CYCLE: end walk over the list of defined ACLs #}
