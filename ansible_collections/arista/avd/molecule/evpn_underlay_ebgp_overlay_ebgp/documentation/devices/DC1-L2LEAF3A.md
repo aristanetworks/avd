@@ -402,6 +402,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 

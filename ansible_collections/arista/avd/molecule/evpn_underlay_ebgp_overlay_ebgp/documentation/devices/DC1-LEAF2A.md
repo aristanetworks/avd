@@ -1153,8 +1153,9 @@ router bfd
 ```eos
 !
 queue-monitor length
-queue-monitor length log 5
 queue-monitor length notifying
+!
+queue-monitor length log 5
 ```
 
 ## Multicast

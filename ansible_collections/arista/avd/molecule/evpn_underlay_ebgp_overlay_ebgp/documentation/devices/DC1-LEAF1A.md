@@ -773,6 +773,7 @@ router bfd
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 
