@@ -492,7 +492,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lfib_backup_ip_forwarding</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].lfib_backup_ip_forwarding") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution_ribs</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 3 | Specify the RIBs used to resolve next-hops. The order of this list determines the order of RIB lookups. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;rib_type</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs.[].rib_type") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib-colored</code><br>- <code>tunnel-rib</code> | Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;rib_type</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs.[].rib_type") | String | Required |  | Valid Values:<br>- <code>system-connected</code><br>- <code>tunnel-rib colored</code><br>- <code>tunnel-rib</code> | Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib_name</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs.[].rib_name") | String |  |  |  | The name of the tunnel-rib to use when using 'tunnel-rib' type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_source_protocols</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocols") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 2 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;protocol</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocols.[].protocol") | String | Required, Unique |  | Valid Values:<br>- <code>isis segment-routing</code><br>- <code>ldp</code> |  |
@@ -1978,7 +1978,7 @@
         next_hop_resolution_ribs: # 1-3 items
 
             # Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use.
-          - rib_type: <str; "system-connected" | "tunnel-rib-colored" | "tunnel-rib"; required>
+          - rib_type: <str; "system-connected" | "tunnel-rib colored" | "tunnel-rib"; required>
 
             # The name of the tunnel-rib to use when using 'tunnel-rib' type.
             rib_name: <str>

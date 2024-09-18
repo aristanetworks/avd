@@ -15,6 +15,11 @@ router_bgp:
           action: deny
           include_community_list: true
       next_hop_unchanged: true
+    next_hop_resolution_ribs:
+      - rib_type: "tunnel-rib colored"
+      - rib_type: "tunnel-rib"
+        rib_name: "test-rib"
+      - rib_type: "system-connected"
     label_local_termination: implicit-null
     networks:
       - prefix: 203.0.113.0/25

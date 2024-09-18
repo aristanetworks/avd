@@ -98,6 +98,7 @@ router bgp 65101
       network 203.0.113.0/25 route-map RM-TEST
       network 203.0.113.128/25
       label local-termination implicit-null
+      next-hop resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       tunnel source-protocol isis segment-routing
       tunnel source-protocol ldp rcf TEST(ARGS)
       aigp-session confederation
