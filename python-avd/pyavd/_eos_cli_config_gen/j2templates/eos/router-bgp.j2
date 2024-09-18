@@ -648,7 +648,7 @@ router bgp {{ router_bgp.as }}
 {%             set evpn_mpls_resolution_ribs = [] %}
 {%             for rib in router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs %}
 {%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
-{%                     do evpn_mpls_resolution_ribs.append("tunnel-rib-colored system-colored-tunnel-rib") %}
+{%                     do evpn_mpls_resolution_ribs.append("tunnel-rib colored system-colored-tunnel-rib") %}
 {%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") and rib.rib_name is arista.avd.defined() %}
 {%                     do evpn_mpls_resolution_ribs.append("tunnel-rib " ~ rib.rib_name) %}
 {%                 elif rib.rib_type is arista.avd.defined %}
