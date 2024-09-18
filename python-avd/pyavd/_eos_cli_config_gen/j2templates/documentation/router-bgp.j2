@@ -530,8 +530,8 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 {%             set rib_position = ["Primary", "Secondary", "Tertiary" ] %}
 {%             for rib in router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs %}
-{%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
-{%                     set evpn_mpls_resolution_rib = "tunnel-rib-colored system-colored-tunnel-rib" %}
+{%                 if rib.rib_type is arista.avd.defined("tunnel-rib colored") %}
+{%                     set evpn_mpls_resolution_rib = "tunnel-rib colored system-colored-tunnel-rib" %}
 {%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") and rib.rib_name is arista.avd.defined %}
 {%                     set evpn_mpls_resolution_rib = "tunnel-rib " ~ rib.rib_name %}
 {%                 elif rib.rib_type is arista.avd.defined %}
