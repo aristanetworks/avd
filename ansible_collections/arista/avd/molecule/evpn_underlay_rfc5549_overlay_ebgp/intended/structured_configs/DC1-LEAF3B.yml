@@ -106,6 +106,7 @@ router_bgp:
     router_id: 192.168.255.13
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3011
       peer_group: MLAG_PEER
@@ -125,6 +126,7 @@ router_bgp:
     router_id: 192.168.255.13
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3012
       peer_group: MLAG_PEER
@@ -144,6 +146,7 @@ router_bgp:
     router_id: 192.168.255.13
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3009
       peer_group: MLAG_PEER
@@ -163,6 +166,7 @@ router_bgp:
     router_id: 192.168.255.13
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3010
       peer_group: MLAG_PEER
@@ -182,6 +186,7 @@ router_bgp:
     router_id: 192.168.255.13
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3019
       peer_group: MLAG_PEER
@@ -201,6 +206,7 @@ router_bgp:
     router_id: 192.168.255.13
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan2
       peer_group: MLAG_PEER

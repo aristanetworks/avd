@@ -801,7 +801,7 @@ router bgp 65104
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.10 description DC1-BL1A
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.11:21
@@ -811,7 +811,7 @@ router bgp 65104
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.10 description DC1-BL1A
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.11:31
@@ -821,7 +821,7 @@ router bgp 65104
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.10 description DC1-BL1A
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -870,6 +870,12 @@ router bfd
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.255.251.10/31 |
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -877,6 +883,9 @@ router bfd
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 10.255.251.10/31
 ```
 
 ### Route-maps
@@ -888,6 +897,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -901,6 +917,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
