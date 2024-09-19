@@ -33,6 +33,10 @@ keys:
             valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
             description: |
               Buffer logging severity level.
+      repeat_messages:
+        type: bool
+        description: |
+          Summarize concurrent repeat messages
       trap:
         type: str
         valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]

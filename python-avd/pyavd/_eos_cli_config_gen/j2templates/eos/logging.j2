@@ -6,6 +6,9 @@
 {# eos - logging #}
 {% if logging is arista.avd.defined %}
 !
+{%     if logging.repeat_messages is arista.avd.defined(false) %}
+no logging repeat-messages
+{%     endif %}
 {%     if logging.buffered.level is arista.avd.defined('disabled') %}
 no logging buffered
 {%     elif logging.buffered.size is arista.avd.defined or logging.buffered.level is arista.avd.defined %}
