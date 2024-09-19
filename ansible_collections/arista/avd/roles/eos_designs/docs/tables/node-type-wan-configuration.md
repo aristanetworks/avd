@@ -22,7 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node ID.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.defaults.wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.defaults.wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use when using multiple interfaces for direct HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.defaults.wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.defaults.wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced recently in EOS and may not be supported on your version. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node ID.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use when using multiple interfaces for direct HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced recently in EOS and may not be supported on your version. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -62,7 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node ID.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use when using multiple interfaces for direct HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced recently in EOS and may not be supported on your version. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -82,7 +82,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_cidr | IP address pool used for WAN HA connectivity.<br>IP is derived from the node ID.<br>Not used for uplink interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use when using multiple interfaces for direct HA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced recently in EOS and may not be supported on your version. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -161,6 +161,7 @@
           port_channel_id: <int>
 
           # Enable or disable using a port-channel interface for direct HA when there is only one interface.
+          # This feature was introduced recently in EOS and may not be supported on your version.
           use_port_channel_for_direct_ha: <bool; default=True>
 
           # Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
@@ -251,6 +252,7 @@
                 port_channel_id: <int>
 
                 # Enable or disable using a port-channel interface for direct HA when there is only one interface.
+                # This feature was introduced recently in EOS and may not be supported on your version.
                 use_port_channel_for_direct_ha: <bool; default=True>
 
                 # Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
@@ -328,6 +330,7 @@
             port_channel_id: <int>
 
             # Enable or disable using a port-channel interface for direct HA when there is only one interface.
+            # This feature was introduced recently in EOS and may not be supported on your version.
             use_port_channel_for_direct_ha: <bool; default=True>
 
             # Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
@@ -411,6 +414,7 @@
             port_channel_id: <int>
 
             # Enable or disable using a port-channel interface for direct HA when there is only one interface.
+            # This feature was introduced recently in EOS and may not be supported on your version.
             use_port_channel_for_direct_ha: <bool; default=True>
 
             # Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting.
