@@ -160,16 +160,8 @@ interface {{ port_channel_interface.name }}
       {{ encapsulation_cli }}
 {%         endif %}
 {%     endif %}
-{%     if port_channel_interface.switchport.enabled is arista.avd.defined(true) %}
-   switchport
-{%     elif port_channel_interface.switchport.enabled is arista.avd.defined(false) %}
-   no switchport
-{%     endif %}
 {%     if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
    switchport access vlan {{ port_channel_interface.switchport.access_vlan }}
-{%     endif %}
-{%     if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
-   switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlan }}
 {%     endif %}
 {%     if port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
    switchport trunk native vlan tag
@@ -182,18 +174,6 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.phone.trunk is arista.avd.defined %}
    switchport phone trunk {{ port_channel_interface.switchport.phone.trunk }}
 {%     endif %}
-{%     if port_channel_interface.switchport.mode is arista.avd.defined %}
-   switchport mode {{ port_channel_interface.switchport.mode }}
-{%     endif %}
-{%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort %}
-   switchport trunk group {{ trunk_group }}
-{%     endfor %}
-{%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
-   switchport trunk private-vlan secondary
-{%     endif %}
-{%     if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined %}
-   switchport pvlan mapping {{ port_channel_interface.switchport.pvlan_mapping }}
-{%     endif %}
 {%     if port_channel_interface.switchport.vlan_translations.in_required is arista.avd.defined(true) %}
    switchport vlan translation in required
 {%     endif %}
@@ -203,11 +183,25 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ port_channel_interface.switchport.dot1q.vlan_tag }}
 {%     endif %}
+{%     if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
+   switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlan }}
+{%     endif %}
+{%     if port_channel_interface.switchport.mode is arista.avd.defined %}
+   switchport mode {{ port_channel_interface.switchport.mode }}
+{%     endif %}
 {%     if port_channel_interface.switchport.dot1q.ethertype is arista.avd.defined %}
    switchport dot1q ethertype {{ port_channel_interface.switchport.dot1q.ethertype }}
 {%     endif %}
 {%     if port_channel_interface.switchport.vlan_forwarding_accept_all is arista.avd.defined(true) %}
    switchport vlan forwarding accept all
+{%     endif %}
+{%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort %}
+   switchport trunk group {{ trunk_group }}
+{%     endfor %}
+{%     if port_channel_interface.switchport.enabled is arista.avd.defined(true) %}
+   switchport
+{%     elif port_channel_interface.switchport.enabled is arista.avd.defined(false) %}
+   no switchport
 {%     endif %}
 {%     if port_channel_interface.switchport.source_interface is arista.avd.defined %}
    switchport source-interface {{ port_channel_interface.switchport.source_interface }}
@@ -251,6 +245,12 @@ interface {{ port_channel_interface.name }}
    {{ vlan_translation_out_cli }}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
+   switchport trunk private-vlan secondary
+{%     endif %}
+{%     if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined %}
+   switchport pvlan mapping {{ port_channel_interface.switchport.pvlan_mapping }}
 {%     endif %}
 {%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
