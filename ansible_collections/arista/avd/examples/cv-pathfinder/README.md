@@ -12,22 +12,22 @@ title: AVD example for CV Pathfinder
 
 ## Introduction
 
-This example is meant to show how to use the CV Pathfinder models in AVD in a basic way.
+This example goes over how to use the CV Pathfinder models in AVD in an introductory way.
 
 !!! important
     - CVaaS is required to run this example. Without it, only configuration generation is possible.
     - Minimum EOS version 4.32.2F is required to run this example.
     - The devices must be able to reach CVaaS via their Management Interface
 
-The goal is to present the basic configuration blocks required to deploy CV Pathfinder and so does not cover all CV Pathfinder features.  In particular, it does not cover:
+This example aims to present the basic configuration blocks required to deploy CV Pathfinder but does not cover all CV Pathfinder features. In particular, it does not cover:
 
 - Internet Exits
 - WAN routers behind NAT
 - Multiple inventories
 
-More information on how these features are supported in AVD can be found in the [WAN how-to document](../../roles/eos_designs/docs/how-to/wan.md).
+The [WAN how-to](../../roles/eos_designs/docs/how-to/wan.md) document provides more information on how these features are supported in AVD.
 
-This example will show how to
+This example will go over the following:
 
 - Build the intended configurations and documentation
 - Deploy the configuration via CloudVision as a Service (CVaaS)
@@ -36,10 +36,12 @@ This example will show how to
 
 Requirements to use this example:
 
-- Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
+- Follow the [installation guide](../../docs/installation/collection-installation.md) for AVD
 - Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
 
-`ansible-playbook arista.avd.install_examples`
+```shell
+ansible-playbook arista.avd.install_examples
+```
 
 This will show the following:
 
@@ -80,11 +82,11 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The target topology is composed of two Pathfinder nodes and 3 sites distributed in two regions.
+The target topology comprises two Pathfinder nodes and three sites distributed in two regions.
 
 The drawing below shows the physical topology used in this example.
 
-![Figure: Arisat CV Pathfinder topology](images/wan-example-topo.png)
+![Figure: Arista CV Pathfinder topology](images/wan-example-topo.png)
 
 - The example considers two path groups: `MPLS` and `INTERNET`
 - Pathfinders `pf1` and `pf2` are connected to both to the `INTERNET` and the `MPLS` path groups.
@@ -127,7 +129,7 @@ Subnet: `192.168.17.0/24`
 | mpls-cloud       | 192.168.17.30 |
 | inet-cloud       | 192.168.17.31 |
 
-### Other subnets IP allocation
+### Other subnet IP allocations
 
 |  Description                                | Subnet            |
 |---------------------------------------------|-------------------|
@@ -151,7 +153,7 @@ Subnet: `192.168.17.0/24`
 
 For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is allocated `.1` and the site / pf router is allocated `.2`.
 
-### VRFs SVIs used on border routers and leafs for testing
+### VRFs/SVIs used on border routers and leafs for testing
 
 | Site | Router | VRF | IP address |
 | ---- | ------ | --- | ---------- |
@@ -193,25 +195,21 @@ In this example, we consider that no DNS entry is available to reach the devices
     - Additionally follow the [guide](../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) to create the `cv_token`
     - the `cv_token` should then be loaded as an ENV variable `CV_TOKEN` using `export CV_TOKEN=<token>` for the `deploy.yml` playbook to work toward CVaaS.
 
-=== "inventory.yml"
+```yaml title="inventory.yml"
+--8<--
+examples/cv-pathfinder/inventory.yml
+--8<--
+```
 
-    ```yaml
-    --8<--
-    examples/cv-pathfinder/inventory.yml
-    --8<--
-    ```
-
-This example demonstrate the usage of ansible Vault to keep variables secure.
-`ansible.cfg` is configured to use a given file `.vault` as the vault password
+This example demonstrates the use of Ansible Vault to keep variables secure.
+`ansible.cfg` is configured to use a given file (`.vault`) as the vault password
 when required to decrypt files or inline variables.
 
-=== "ansible.cfg"
-
-    ```yaml
-    --8<--
-    examples/cv-pathfinder/ansible.cfg
-    --8<--
-    ```
+```yaml title="ansible.cfg"
+--8<--
+examples/cv-pathfinder/ansible.cfg
+--8<--
+```
 
 !!! danger
     The `.vault` file is included in the example in order to be able to run it.
@@ -226,9 +224,14 @@ As discussed in the single DC example, basic connectivity between the Ansible ho
 - An IP enabled interface - in this example, the dedicated out-of-band management interface is used.
 - A username and password with the proper access privileges.
 
+```eos title="site1-border1-basic-configuration.txt"
+--8<--
+examples/cv-pathfinder/switch-basic-configurations/site1-border1-basic-configuration.txt
+--8<--
+```
+
 !!! note
-    - TODO: add the configs
-    - The folder `cv-pathfinder/switch-basic-configurations/` contains a file per device for the initial configurations.
+    The folder `cv-pathfinder/switch-basic-configurations/` contains a file per device for the initial configurations.
 
 ## Defining device types
 
@@ -258,28 +261,28 @@ default_node_types:
 
 1. Using node type `spine` for transport routers.
 
-Pathfinder nodes are using the node_type `wan_rr`, all WAN routers (edge and transit) are using the node_type `wan_router`.
+Pathfinder nodes use the node_type `wan_rr`, and all WAN routers (edge and transit) use the node_type `wan_router`.
 
 ## Global settings for WAN
 
-The following table list the `eos_designs` top level keys used for WAN and how they should be set:
+The following table lists the `eos_designs` top-level keys used for WAN and how they should be set:
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
 | `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
-| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `cv_pathfinder_regions` | ✅ | Defines the Region/Zone/Site hierarchy, not required for AutoVPN. |
 | `wan_route_servers` | ✘ | Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
-| `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
-| `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
-| `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
-| `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
-| `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
-| `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
-| `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
+| `wan_ipsec_profiles` | ✅ | Defines the shared key for the Control Plane and Data Plane IPSec profiles. |
+| `wan_stun_dtls_disable` | ✅ | Disable dTLS for STUN, for instance, for the lab. (**NOT** recommended in production). |
+| `wan_carriers` | ✅ | Defines the list of carriers in the network; each carrier is assigned to a path-group. |
+| `wan_path_groups` | ✅ | Defines the list of path-groups in the network. |
+| `wan_virtual_topologies` | ✅ | Defines the Policies and the VRF to policy mappings. |
+| `tenants` | ✅ | The default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
+| `application_classification` | ✅ | Defines the specific traffic classification required for the WAN, if any. |
 | `ipv4_acls` | ✘ | List of IPv4 access-lists to be assigned to WAN interfaces. |
-| `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` | ✘ | Must be set for the pathfinders for the connectivity to work. Sets the ranges of IP addresses from which to expect BGP peerings for the WAN. Include the VTEP ranges for all WAN routers connecting to this patfinder. |
+| `bgp_peer_groups.wan_overlay_peers.listen_range_prefixes` | ✘ | Must be set for the pathfinders for the connectivity to work. Sets the ranges of IP addresses from which to expect BGP peerings for the WAN. Include the VTEP ranges for all WAN routers connecting to this pathfinder. |
 
-In this example, the settings are set under the group `WAN`. To help logically separating the variables in meaningful categories, the group variables for `WAN` are created in several YAML files under `ansible-avd-examples/cv-pathfinder/group_vars/WAN/`:
+In this example, the settings are set under the group `WAN`. To help logically separate the variables in meaningful categories, the group variables for `WAN` are created in several YAML files under `ansible-avd-examples/cv-pathfinder/group_vars/WAN/`:
 
 ```shell
 cv-pathfinder/group_vars/WAN
@@ -291,13 +294,13 @@ cv-pathfinder/group_vars/WAN
 
 ### Management
 
-The `management.yml` file contains configuration for:
+The `management.yml` file contains the configuration for:
 
 - the management gateway
 - NTP
-- Terminattr to configure connection to CVaaS.
+- Terminattr to configure the connection to CVaaS.
 - local users (arista/arista and cvpadmin/cvpadmin)
-- `ipv4_acls`: a list of ACL used for Internet facing WAN interfaces
+- `ipv4_acls`: a list of ACLs used for Internet-facing WAN interfaces
 - DNS
 - AAA
 - Disabling LLDP on management interface - Only needed for lab environments.
@@ -310,7 +313,7 @@ examples/cv-pathfinder/group_vars/WAN//management.yml
 
 ### CV Pathinfder settings
 
-The `ansible-avd-examples/cv-pathfinder/group_vars/WAN/cv_pathfinder_settings.yml` file defines the global WAN settings for all the host of the `WAN` group in the inventory.
+The `ansible-avd-examples/cv-pathfinder/group_vars/WAN/cv_pathfinder_settings.yml` file defines the global WAN settings for all the hosts of the `WAN` group in the inventory.
 
 ```yaml title="group_vars/WAN/cv_pathfinder_settings.yml"
 --8<--
