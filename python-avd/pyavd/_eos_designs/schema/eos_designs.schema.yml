@@ -1410,13 +1410,13 @@ keys:
       mlag_interfaces:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
+      l3_interfaces:
+        description: Enable sFlow on all l3 interfaces.
+        type: bool
   flow_tracking_settings:
     documentation_options:
       table: management-flow-tracking-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Define the flow tracking parameters for this topology.'
+    description: Define the flow tracking parameters for this topology.
     type: dict
     keys:
       sampled:
@@ -1969,7 +1969,7 @@ keys:
     description: 'Management interface description.
 
       '
-    default: oob_management
+    default: OOB_MANAGEMENT
   mgmt_interface_vrf:
     documentation_options:
       table: management-interface-settings
@@ -2222,7 +2222,7 @@ keys:
 
             This is used both for AutoVPN and Pathfinder designs.
 
-            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+            That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
             `server` indicates that the router is a route-reflector.
 
@@ -2836,7 +2836,10 @@ keys:
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
-    description: Point to Point Links MTU.
+    description: 'Point to Point Links MTU.
+
+      Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
+      -> 9214'
     type: int
     convert_types:
     - str
@@ -2911,6 +2914,20 @@ keys:
           description: 'Default interface MTU configured on EOS under "interface defaults".
 
             Takes precedence over the root key "default_interface_mtu".
+
+            '
+          min: 68
+          max: 65535
+        p2p_uplinks_mtu:
+          type: int
+          convert_types:
+          - str
+          description: 'Set MTU on point to point uplink interfaces.
+
+            Takes precedence over the root key "p2p_uplinks_mtu".
+
+            <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
+            -> 9214.
 
             '
           min: 68
@@ -3143,6 +3160,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       management_interface: Management1/1
+      p2p_uplinks_mtu: 9194
     - platforms:
       - AWE-7220R
       feature_support:
@@ -3152,6 +3170,7 @@ keys:
         queue_monitor_length_notify: false
         poe: true
       management_interface: Management1
+      p2p_uplinks_mtu: 9194
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -3903,7 +3922,9 @@ keys:
     documentation_options:
       table: type-setting
     type: str
-    dynamic_valid_values: node_type_keys.type
+    dynamic_valid_values:
+    - custom_node_type_keys.type
+    - node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
@@ -4192,6 +4213,12 @@ keys:
     description: 'Generate AVD configurations directly from a given CloudVision topology.
 
       See `cv_topology` for details.'
+  vtep_loopback_description:
+    documentation_options:
+      table: overlay-settings
+    description: Customize the description on the VTEP interface, typically Loopback1.
+    type: str
+    default: VXLAN_TUNNEL_SOURCE
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings
@@ -4288,11 +4315,12 @@ keys:
   wan_mode:
     documentation_options:
       table: wan-settings
-    description: Select if the WAN should be run using CV Pathfinder or AutoVPN only.
+    description: Select if the WAN should be run using CV Pathfinder or Legacy AutoVPN
+      only.
     type: str
     default: cv-pathfinder
     valid_values:
-    - autovpn
+    - legacy-autovpn
     - cv-pathfinder
   wan_path_groups:
     documentation_options:
@@ -4392,10 +4420,10 @@ keys:
               convert_types:
               - str
   wan_route_servers:
-    description: 'List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the
-      Pathfinders
+    description: 'List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or
+      the Pathfinders
 
-      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+      when using `wan_mode: cv-pathfinder`, to which the device should connect to.
 
       This is also used to establish iBGP sessions between WAN route servers.
 
@@ -4556,10 +4584,10 @@ keys:
               or destined to the WAN route servers.'
       policies:
         type: list
-        description: "List of virtual toplogies policies.\n\nFor AutoVPN, each item
-          in the list creates:\n  * one policy with:\n      * one `match` entry per
-          `application_virtual_topologies` item\n        they are indexed using `10
-          * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
+        description: "List of virtual toplogies policies.\n\nFor Legacy AutoVPN, each
+          item in the list creates:\n  * one policy with:\n      * one `match` entry
+          per `application_virtual_topologies` item\n        they are indexed using
+          `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
           \ * one load-balance policy per `application_virtual_topologies` and one
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
@@ -4711,43 +4739,11 @@ dynamic_keys:
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
-    default:
-    - key: servers
-      type: server
-      description: Server
-    - key: firewalls
-      type: firewall
-      description: Firewall
-    - key: routers
-      type: router
-      description: Router
-    - key: load_balancers
-      type: load_balancer
-      description: Load Balancer
-    - key: storage_arrays
-      type: storage_array
-      description: Storage Array
-    - key: cpes
-      type: cpe
-      description: CPE
-    - key: workstations
-      type: workstation
-      description: Workstation
-    - key: access_points
-      type: access_point
-      description: Access Point
-    - key: phones
-      type: phone
-      description: Phone
-    - key: printers
-      type: printer
-      description: Printer
-    - key: cameras
-      type: camera
-      description: Camera
-    - key: generic_devices
-      type: generic_device
-      description: Generic Device
+  custom_node_type_keys.key:
+    $ref: eos_designs#/$defs/node_type
+    type: dict
+    documentation_options:
+      hide_keys: true
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list
@@ -5421,9 +5417,6 @@ $defs:
 
       `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
 
-      The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and
-      `storage_arrays`.
-
       '
     items:
       type: dict
@@ -5790,7 +5783,7 @@ $defs:
             Multicast group binding for VRF is created only for Multicast traffic.
             BULL traffic will use ingress-replication.\n- Configures binding between
             VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n
-            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni
+            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_id
             - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
             >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8
             Source-Specific Multicast range.\n- If enabled on an SVI using the anycast
@@ -6214,6 +6207,13 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                  evpn_underlay_l3_multicast_group:
+                    type: str
+                    description: 'IPv4 address of evpn underlay l3 multicast group.
+
+                      To override multicast range set using the formula < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool
+                      > + < vrf_id - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
+                      >.'
                   evpn_peg:
                     type: list
                     description: For each group of nodes, allow configuration of EVPN
@@ -8765,7 +8765,7 @@ $defs:
 
               This is used both for AutoVPN and Pathfinder designs.
 
-              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+              That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
               `server` indicates that the router is a route-reflector.
 
@@ -8831,6 +8831,14 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              mtu:
+                type: int
+                convert_types:
+                - str
+                description: Set MTU on WAN HA interfaces.
+                min: 68
+                max: 65535
+                default: 9194
               ha_interfaces:
                 description: "Local WAN HA interfaces\nOverwrite the default behavior
                   which is to pick all the `uplink_interfaces`.\nCan be used to filter

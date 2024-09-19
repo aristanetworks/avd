@@ -90,7 +90,7 @@ vrfs:
   description: TEST
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.101/24
@@ -106,7 +106,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.0.0.1/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 10.10.0.1/32
 prefix_lists:

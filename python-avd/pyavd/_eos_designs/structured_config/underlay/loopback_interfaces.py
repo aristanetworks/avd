@@ -77,7 +77,11 @@ class LoopbackInterfacesMixin(UtilsMixin):
             vtep_loopback = {
                 "name": self.shared_utils.vtep_loopback,
                 "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
-                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=self.shared_utils.vtep_loopback,
+                        description=get(self._hostvars, "vtep_loopback_description", default="VXLAN_TUNNEL_SOURCE"),
+                    )
                 ),
                 "shutdown": False,
                 "ip_address": f"{self.shared_utils.vtep_ip}/32",

@@ -33,20 +33,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -1193,6 +1193,29 @@ interface Ethernet69
    description IP NAT service-profile
    switchport
    ip nat service-profile TEST-NAT-PROFILE
+!
+interface Ethernet70
+   description dot1x_aaa_unresponsive
+   no shutdown
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
+!
+interface Ethernet71
+   description dot1x_aaa_unresponsive1
+   no shutdown
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
+!
+interface Ethernet72
+   description dot1x_aaa_unresponsive2
+   no shutdown
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
 ```
 
 ## BFD
@@ -1247,6 +1270,9 @@ interface Ethernet69
 | Ethernet43 | - | - | - | - | - | - | - | - |
 | Ethernet44 | - | - | - | - | - | - | - | - |
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
+| Ethernet70 | - | - | - | - | - | - | - | - |
+| Ethernet71 | - | - | - | - | - | - | - | - |
+| Ethernet72 | - | - | - | - | - | - | - | - |
 
 ## Power Over Ethernet (PoE)
 

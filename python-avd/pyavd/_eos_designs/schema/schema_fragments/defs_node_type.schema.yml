@@ -1253,7 +1253,7 @@ $defs:
               Override the default WAN role.
 
               This is used both for AutoVPN and Pathfinder designs.
-              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+              That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
               `server` indicates that the router is a route-reflector.
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.
@@ -1307,6 +1307,14 @@ $defs:
                 type: bool
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is enabled.
+              mtu:
+                type: int
+                convert_types:
+                  - str
+                description: Set MTU on WAN HA interfaces.
+                min: 68
+                max: 65535
+                default: 9194
               ha_interfaces:
                 description: |-
                   Local WAN HA interfaces

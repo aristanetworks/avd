@@ -204,16 +204,16 @@ router_bgp:
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.4:31
+    rd: 192.168.255.4:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     evpn_multicast: true
     router_id: 192.168.255.4
     redistribute_routes:
@@ -497,10 +497,10 @@ router_bgp:
     - learned
     vlan: 330-331
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.4:31
+    rd: 192.168.255.4:66
     route_targets:
       both:
-      - '31:31'
+      - 66:66
     redistribute_routes:
     - learned
     - igmp
@@ -688,7 +688,7 @@ vrfs:
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.106/24
@@ -818,7 +818,7 @@ vlans:
 - id: 137
   name: L3_L2_MULTICAST_ENABLED_137
   tenant: Tenant_C
-- id: 3030
+- id: 3065
   name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_130_131
   trunk_groups:
   - LEAF_PEER_L3
@@ -1120,7 +1120,7 @@ vlan_interfaces:
       sparse_mode: true
       local_interface: Loopback31
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
-- name: Vlan3030
+- name: Vlan3065
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
@@ -1351,6 +1351,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.55.2/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   pim:
@@ -1360,6 +1362,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.60.2/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   pim:
@@ -1369,6 +1373,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.52.2/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
@@ -1378,6 +1384,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.2/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
@@ -1410,7 +1418,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.255.4/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.3/32
 - name: Loopback33
@@ -1653,7 +1661,7 @@ vxlan_interface:
         vni: 33
       - name: TEN_C_L3_MULTICAST_ENABLED_130_131
         vni: 31
-        multicast_group: 232.0.32.31
+        multicast_group: 232.0.32.66
       - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         vni: 32
         multicast_group: 232.0.32.32
@@ -1661,7 +1669,7 @@ vxlan_interface:
         vni: 42
       - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         vni: 41
-        multicast_group: 232.0.64.40
+        multicast_group: 232.0.64.2
       - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         vni: 55
         multicast_group: 232.0.96.54
@@ -1745,5 +1753,12 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 232.0.136.0/21
+sflow:
+  run: true
+  vrfs:
+  - name: sflow_vrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
 metadata:
   platform: vEOS-LAB

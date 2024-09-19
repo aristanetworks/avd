@@ -147,16 +147,16 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.8:31
+    rd: 192.168.255.8:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
@@ -632,7 +632,7 @@ vrfs:
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.108/24
@@ -661,7 +661,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.255.8/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.8/32
 - name: Loopback33
