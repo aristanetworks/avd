@@ -171,7 +171,8 @@ class AvdInterfaceDescriptions(AvdFacts):
         Build a connected endpoint Ethernet interface description.
 
         If a jinja template is configured, use it.
-        If not, use the adapter.description as a format string template.
+        If not, use the adapter.description as a format string template if set.
+        Finally fall back to default templates depending on this being a network_port or not.
 
         Available data:
             - peer
@@ -215,11 +216,13 @@ class AvdInterfaceDescriptions(AvdFacts):
         Build a connected endpoint Port-channel description.
 
         If a jinja template is configured, use it.
-        If not, return the <adapter.description>_<port_channel_description> or
-        default to <PEER>_<adapter_port_channel_description>
+        If not, use the port_channel.description as a format string template if set.
+        Finally fall back to default templates depending on this being a network_port or not.
 
         Available data:
             - peer
+            - peer_interface
+            - peer_type
             - description
             - port_channel_id
             - port_channel_description
