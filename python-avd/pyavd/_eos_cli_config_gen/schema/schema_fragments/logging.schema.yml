@@ -141,7 +141,7 @@ keys:
                   - str
                 min: 1
                 max: 65535
-                description: Logging interval in seconds
+                description: Logging interval in seconds.
           link_status:
             type: dict
             keys:
