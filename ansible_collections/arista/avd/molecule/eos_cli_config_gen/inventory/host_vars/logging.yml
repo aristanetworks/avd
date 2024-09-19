@@ -4,6 +4,7 @@ logging:
   buffered:
     size: 1000000
     level: warnings
+  repeat_messages: false
   trap: disabled
   synchronous:
     level:
@@ -67,6 +68,10 @@ logging:
             - 100
             - 200
   event:
+    congestion_drops:
+      interval: 10
+    link_status:
+      global: true
     storm_control:
       discards:
         global: true
