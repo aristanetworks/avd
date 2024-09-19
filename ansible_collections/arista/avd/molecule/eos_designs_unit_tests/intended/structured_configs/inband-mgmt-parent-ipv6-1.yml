@@ -259,6 +259,7 @@ ethernet_interfaces:
     id: 26
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 106
 - name: Ethernet27
@@ -271,6 +272,7 @@ ethernet_interfaces:
     id: 27
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 107
 mlag_configuration:

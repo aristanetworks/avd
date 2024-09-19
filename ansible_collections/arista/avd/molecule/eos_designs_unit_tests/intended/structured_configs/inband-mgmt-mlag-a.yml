@@ -75,6 +75,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet12
@@ -87,6 +88,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet13
@@ -99,6 +101,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet14
@@ -111,6 +114,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet15
@@ -123,6 +127,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet16
@@ -135,6 +140,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet17
@@ -147,6 +153,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet18
@@ -159,6 +166,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet19
@@ -171,6 +179,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet20
@@ -183,6 +192,7 @@ ethernet_interfaces:
     id: 11
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet1

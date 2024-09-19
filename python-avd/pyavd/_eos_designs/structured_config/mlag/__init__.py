@@ -214,7 +214,9 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
             if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
-                ethernet_interface.update({"switchport": {"mode": "access", "access_vlan": self.shared_utils.get_mlag_peer_fact("inband_ztp_vlan")}})
+                ethernet_interface.update(
+                    {"switchport": {"enabled": True, "mode": "access", "access_vlan": self.shared_utils.get_mlag_peer_fact("inband_ztp_vlan")}}
+                )
             ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
         return ethernet_interfaces

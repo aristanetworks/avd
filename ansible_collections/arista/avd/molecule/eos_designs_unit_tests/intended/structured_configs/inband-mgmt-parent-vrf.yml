@@ -85,6 +85,7 @@ ethernet_interfaces:
     id: 21
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet22
@@ -97,6 +98,7 @@ ethernet_interfaces:
     id: 22
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 102
 - name: Ethernet23
@@ -118,6 +120,7 @@ ethernet_interfaces:
     id: 101
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 - name: Ethernet102
@@ -130,6 +133,7 @@ ethernet_interfaces:
     id: 101
     mode: active
   switchport:
+    enabled: true
     mode: access
     access_vlan: 101
 port_channel_interfaces:
