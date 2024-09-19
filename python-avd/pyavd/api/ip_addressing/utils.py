@@ -193,3 +193,7 @@ class UtilsMixin:
             return (uplink_pool, uplink_offset)
 
         return (downlink_pool, downlink_offset)
+
+    @cached_property
+    def _fabric_ip_addressing_wan_ha_ipv4_prefix_length(self: AvdIpAddressing) -> int:
+        return self.shared_utils.fabric_ip_addressing_wan_ha_ipv4_prefix_length

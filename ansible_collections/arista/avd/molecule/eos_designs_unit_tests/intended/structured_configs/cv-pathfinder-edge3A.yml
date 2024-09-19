@@ -163,7 +163,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-edge3B
   shutdown: false
   description: DIRECT LAN HA LINK
-  ip_address: 10.10.10.0/31
+  ip_address: 10.10.10.1/24
   flow_tracker: null
   mtu: 9100
 loopback_interfaces:
@@ -417,7 +417,7 @@ router_path_selection:
     - router_ip: 192.168.142.7
       name: cv-pathfinder-edge3B
       ipv4_addresses:
-      - 10.10.10.1
+      - 10.10.10.2
     ipsec_profile: DP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE

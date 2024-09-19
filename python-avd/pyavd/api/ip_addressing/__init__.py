@@ -331,3 +331,24 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """Return IP address to be used for EVPN underlay L2 multicast group."""
         offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
         return get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
+
+    def get_wan_ha_ip_address(self, local: bool) -> str | None:
+        """
+        Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
+
+        local: When true, request the first IP address else request the remote peer IP.
+        """
+        wan_ha_ipv4_pool = self.shared_utils.wan_ha_ipv4_pool
+        prefixlen = self._fabric_ip_addressing_wan_ha_ipv4_prefix_length
+
+        first_ip_address = get_ip_from_pool(wan_ha_ipv4_pool, prefixlen, 0, 0)
+        second_ip_address = get_ip_from_pool(wan_ha_ipv4_pool, prefixlen, 0, 1)
+
+        if self.shared_utils.is_first_ha_peer:
+            local_ip, remote_ip = first_ip_address, second_ip_address
+        else:
+            local_ip, remote_ip = second_ip_address, first_ip_address
+
+        ip_address = local_ip if local else remote_ip
+
+        return f"{ip_address}/{prefixlen}"
