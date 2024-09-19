@@ -13,9 +13,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "system.control_plane.tcp_mss.ipv4") | Integer |  |  |  | Segment size. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "system.control_plane.tcp_mss.ipv6") | Integer |  |  |  | Segment size. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_access_groups</samp>](## "system.control_plane.ipv4_access_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;acl_name</samp>](## "system.control_plane.ipv4_access_groups.[].acl_name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv4_access_groups.[].vrf") | String |  |  |  | 'vrf' and 'ingress_default' are mutual exclusive. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_default</samp>](## "system.control_plane.ipv4_access_groups.[].ingress_default") | Boolean |  |  |  | 'vrf' and 'ingress_default' are mutual exclusive. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;acl_name</samp>](## "system.control_plane.ipv4_access_groups.[].acl_name") | String | Required |  |  | Access list name.<br>String "ingress" could be access list name as well. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv4_access_groups.[].vrf") | String |  |  |  | Keys `vrf` and `ingress_default` are mutual exclusive. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_default</samp>](## "system.control_plane.ipv4_access_groups.[].ingress_default") | Boolean |  |  |  | Keys `vrf` and `ingress_default` are mutual exclusive. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_groups</samp>](## "system.control_plane.ipv6_access_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;acl_name</samp>](## "system.control_plane.ipv6_access_groups.[].acl_name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv6_access_groups.[].vrf") | String |  |  |  | 'vrf' and 'ingress_default' are mutual exclusive. |
@@ -37,12 +37,15 @@
           # Segment size.
           ipv6: <int>
         ipv4_access_groups:
+
+            # Access list name.
+            # String "ingress" could be access list name as well.
           - acl_name: <str; required>
 
-            # 'vrf' and 'ingress_default' are mutual exclusive.
+            # Keys `vrf` and `ingress_default` are mutual exclusive.
             vrf: <str>
 
-            # 'vrf' and 'ingress_default' are mutual exclusive.
+            # Keys `vrf` and `ingress_default` are mutual exclusive.
             ingress_default: <bool>
         ipv6_access_groups:
           - acl_name: <str; required>
