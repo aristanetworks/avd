@@ -698,7 +698,8 @@ wan_router:
     - group: Site42
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site42
-      wan_ha: enabled
+      wan_ha:
+      enabled: true
       nodes:
         - name: node1
           id: 1
@@ -811,6 +812,14 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
 <div style="text-align:center">
   <img src="../../../../media/wan_ebgp_lan_ha_direct.png" alt="WAN eBGP LAN with Direct HA link"/>
 </div>
+
+!!! warning
+
+    For direct HA, AVD will configure a port-channel by default.
+    If only one interface is used for Direct HA, it is possible to disable the
+    port-channel creation using `wan_ha.use_port_channel_for_direct_ha: False`.
+
+    It is *not* possible to use multiple direct HA links while disabling the port-channel.
 
 #### OSPF LAN (NOT SUPPORTED)
 
