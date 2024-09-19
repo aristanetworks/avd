@@ -1027,6 +1027,8 @@ keys:
                 valid_values:
                   - "vxlan"
                   - "mpls"
+                  - "path-selection"
+                description: Default transport encapsulation for neighbor.
               next_hop_self_source_interface:
                 description: Source interface name.
                 type: str
@@ -1088,6 +1090,13 @@ keys:
                         Example: MyFunction(myarg).
                     route_map:
                       type: str
+                encapsulation:
+                  type: str
+                  valid_values:
+                    - "vxlan"
+                    - "mpls"
+                    - "path-selection"
+                  description: Default transport encapsulation for neighbor.
           peer_groups:
             type: list
             primary_key: name
@@ -1134,6 +1143,8 @@ keys:
                   valid_values:
                     - "vxlan"
                     - "mpls"
+                    - "path-selection"
+                  description: Default transport encapsulation for neighbor.
                 additional_paths:
                   type: dict
                   keys:
