@@ -4257,6 +4257,15 @@ keys:
 
             WAN interfaces require an inbound access-list to be set unless the carrier
             is "trusted".'
+  wan_encapsulation:
+    documentation_options:
+      table: wan-settings
+    description: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
+    type: str
+    default: path-selection
+    valid_values:
+    - vxlan
+    - path-selection
   wan_ha:
     documentation_options:
       table: wan-settings

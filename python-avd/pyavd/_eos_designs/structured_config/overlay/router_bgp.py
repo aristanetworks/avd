@@ -216,9 +216,16 @@ class RouterBgpMixin(UtilsMixin):
         if self.shared_utils.overlay_evpn_vxlan is True:
             if self.shared_utils.is_wan_router:
                 overlay_peer_group_name = self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"]
+                peer_groups.append(
+                    {
+                        "name": overlay_peer_group_name,
+                        "activate": True,
+                        "encapsulation": self.shared_utils.wan_encapsulation,
+                    }
+                )
             else:
                 overlay_peer_group_name = self.shared_utils.bgp_peer_groups["evpn_overlay_peers"]["name"]
-            peer_groups.append({"name": overlay_peer_group_name, "activate": True})
+                peer_groups.append({"name": overlay_peer_group_name, "activate": True})
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if self.shared_utils.evpn_gateway_vxlan_l2 is True or self.shared_utils.evpn_gateway_vxlan_l3 is True:
@@ -264,7 +271,13 @@ class RouterBgpMixin(UtilsMixin):
                 )
 
             if self._is_wan_server_with_peers:
-                peer_groups.append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": True})
+                peer_groups.append(
+                    {
+                        "name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"],
+                        "activate": True,
+                        "encapsulation": self.shared_utils.wan_encapsulation,
+                    }
+                )
 
         if peer_groups:
             address_family_evpn["peer_groups"] = peer_groups
@@ -296,7 +309,13 @@ class RouterBgpMixin(UtilsMixin):
                     "enable": True,
                 },
             }
-            address_family_evpn["neighbors"] = [{"ip_address": self._wan_ha_peer_vtep_ip(), "activate": True}]
+            address_family_evpn["neighbors"] = [
+                {
+                    "ip_address": self._wan_ha_peer_vtep_ip(),
+                    "activate": True,
+                    "encapsulation": self.shared_utils.wan_encapsulation,
+                }
+            ]
 
         return address_family_evpn or None
 
