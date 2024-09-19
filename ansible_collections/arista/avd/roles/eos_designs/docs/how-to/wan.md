@@ -735,8 +735,9 @@ wan_router:
 !!! warning
 
     For direct HA, AVD will configure a port-channel by default.
-    If only one interface is used for Direct HA, it is possible to disable the
-    port-channel creation using `wan_ha.use_port_channel_for_direct_ha: False`.
+    <span style="color:red">This feature was introduced recently in EOS and may not be supported on your version.</span>
+
+    If it is the case, only one interface can be used for Direct HA, and the port-channel creation can be disabled using `wan_ha.use_port_channel_for_direct_ha: false`.
 
     It is *not* possible to use multiple direct HA links while disabling the port-channel.
 
@@ -816,8 +817,9 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
 !!! warning
 
     For direct HA, AVD will configure a port-channel by default.
-    If only one interface is used for Direct HA, it is possible to disable the
-    port-channel creation using `wan_ha.use_port_channel_for_direct_ha: False`.
+    <span style="color:red">This feature was introduced recently in EOS and may not be supported on your version.</span>
+
+    If it is the case, only one interface can be used for Direct HA, and the port-channel creation can be disabled using `wan_ha.use_port_channel_for_direct_ha: false`.
 
     It is *not* possible to use multiple direct HA links while disabling the port-channel.
 

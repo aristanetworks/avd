@@ -1352,6 +1352,7 @@ $defs:
                 default: true
                 description: |-
                   Enable or disable using a port-channel interface for direct HA when there is only one interface.
+                  This feature was introduced recently in EOS and may not be supported on your version.
               flow_tracking:
                 type: dict
                 $ref: "eos_designs#/$defs/flow_tracking_link"
