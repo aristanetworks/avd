@@ -109,6 +109,7 @@ router_bgp:
       redistribute_internal: false
       additional_paths:
         receive: true
+        install: true
         send: ecmp
         send_ecmp_limit: 20
     peer_groups:
@@ -161,6 +162,7 @@ router_bgp:
       redistribute_internal: true
       additional_paths:
         receive: true
+        install_ecmp_primary: true
         send: any
     peer_groups:
       - name: baz

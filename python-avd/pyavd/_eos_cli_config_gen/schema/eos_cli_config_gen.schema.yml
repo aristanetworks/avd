@@ -13399,13 +13399,6 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  keys:
-                    install:
-                      type: bool
-                      description: Install BGP backup path.
-                    install_ecmp_primary:
-                      type: bool
-                      description: Allow additional path with ECMP primary path.
           neighbors:
             type: list
             primary_key: ip_address

@@ -237,6 +237,9 @@ router bgp 65101
    redistribute static rcf Router_BGP_Static()
    !
    address-family ipv4
+      bgp additional-paths receive
+      bgp additional-paths install
+      bgp additional-path send ecmp
       neighbor foo additional-paths receive
       neighbor foo prefix-list PL-BAR-v4-IN in
       neighbor foo prefix-list PL-BAR-v4-OUT out
@@ -244,6 +247,7 @@ router bgp 65101
       neighbor foo additional-path send ecmp limit 20
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
+      neighbor 192.0.2.1 additional-paths receive
       neighbor 192.0.2.1 additional-path send limit 20
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
@@ -251,7 +255,6 @@ router bgp 65101
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
       no bgp redistribute-internal
-      bgp additional-path send ecmp
       redistribute bgp leaked
       redistribute connected include leaked rcf Address_Family_IPV4_Connected()
       redistribute dynamic route-map Address_Family_IPV4_Dynamic_RM
@@ -261,6 +264,9 @@ router bgp 65101
       redistribute static rcf Address_Family_IPV4_Static()
    !
    address-family ipv6
+      bgp additional-paths receive
+      bgp additional-paths install ecmp-primary
+      bgp additional-path send any
       neighbor baz additional-paths receive
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
@@ -273,7 +279,6 @@ router bgp 65101
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
       bgp redistribute-internal
-      bgp additional-path send any
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
       redistribute ospfv3 match external include leaked
