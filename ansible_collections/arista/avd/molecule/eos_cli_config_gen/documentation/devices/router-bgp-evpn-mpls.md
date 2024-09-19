@@ -87,7 +87,7 @@ ASN Notation: asplain
 
 #### Router BGP EVPN Address Family
 
-- Next-hop MPLS resolution Primary-RIB : tunnel-rib-colored system-colored-tunnel-rib
+- Next-hop MPLS resolution Primary-RIB : tunnel-rib colored system-colored-tunnel-rib
 - Next-hop MPLS resolution Secondary-RIB : tunnel-rib test-rib
 - Next-hop MPLS resolution Tertiary-RIB : system-connected
 - Layer-2 In-place FEC update tracking timeout: 100 seconds
@@ -133,7 +133,7 @@ router bgp 65101
    address-family evpn
       bgp additional-paths send limit 10
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
-      next-hop mpls resolution ribs tunnel-rib-colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
+      next-hop mpls resolution ribs tunnel-rib colored system-colored-tunnel-rib tunnel-rib test-rib system-connected
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor 192.168.255.3 activate
       neighbor 192.168.255.4 rcf in Address_Family_EVPN_In()

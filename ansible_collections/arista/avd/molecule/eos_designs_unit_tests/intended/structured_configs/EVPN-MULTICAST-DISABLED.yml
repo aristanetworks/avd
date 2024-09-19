@@ -147,16 +147,16 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.8:31
+    rd: 192.168.255.8:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     router_id: 192.168.255.8
     redistribute_routes:
     - source_protocol: connected
