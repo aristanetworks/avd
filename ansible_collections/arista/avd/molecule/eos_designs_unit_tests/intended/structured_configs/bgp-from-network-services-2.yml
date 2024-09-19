@@ -51,7 +51,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
 - name: Ethernet10

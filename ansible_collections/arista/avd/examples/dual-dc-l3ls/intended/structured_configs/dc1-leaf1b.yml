@@ -216,7 +216,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -231,7 +231,7 @@ vlans:
 - id: 3009
   name: MLAG_iBGP_VRF10
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TENANT1
 - id: 21
   name: VRF11_VLAN21
@@ -242,7 +242,7 @@ vlans:
 - id: 3010
   name: MLAG_iBGP_VRF11
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TENANT1
 - id: 3401
   name: L2_VLAN3401
@@ -309,7 +309,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel8
   description: DC1-LEAF1C_Po1

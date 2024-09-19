@@ -134,7 +134,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel1
   description: BGP-LEAF1_Po1

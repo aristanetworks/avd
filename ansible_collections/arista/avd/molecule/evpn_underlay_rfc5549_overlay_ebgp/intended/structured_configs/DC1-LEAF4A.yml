@@ -374,7 +374,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -389,7 +389,7 @@ vlans:
 - id: 3011
   name: MLAG_iBGP_Tenant_A_APP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
@@ -400,7 +400,7 @@ vlans:
 - id: 3012
   name: MLAG_iBGP_Tenant_A_DB_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
@@ -411,7 +411,7 @@ vlans:
 - id: 3009
   name: MLAG_iBGP_Tenant_A_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
@@ -422,7 +422,7 @@ vlans:
 - id: 3010
   name: MLAG_iBGP_Tenant_A_WEB_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
@@ -439,7 +439,7 @@ vlans:
 - id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
@@ -450,7 +450,7 @@ vlans:
 - id: 2
   name: MLAG_iBGP_Tenant_C_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_C
 vlan_interfaces:
 - name: Vlan4093
@@ -627,7 +627,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
 - name: Ethernet5

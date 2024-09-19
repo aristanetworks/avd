@@ -135,7 +135,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel7
   description: DC1_L2LEAF2_Po1

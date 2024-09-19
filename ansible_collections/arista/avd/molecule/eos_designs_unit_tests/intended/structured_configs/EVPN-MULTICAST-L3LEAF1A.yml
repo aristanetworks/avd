@@ -705,7 +705,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -720,7 +720,7 @@ vlans:
 - id: 3012
   name: MLAG_iBGP_MULTICAST_DISABLED_310_311
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 110
   name: MULTICAST_ENABLED_110
@@ -731,7 +731,7 @@ vlans:
 - id: 3010
   name: MLAG_iBGP_MULTICAST_ENABLED_110_111
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 210
   name: MULTICAST_ENABLED_210
@@ -742,7 +742,7 @@ vlans:
 - id: 3011
   name: MLAG_iBGP_MULTICAST_ENABLED_210_DISABLED_211
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 256
   name: MULTICAST_DISABLED_256
@@ -762,7 +762,7 @@ vlans:
 - id: 3022
   name: MLAG_iBGP_MULTICAST_DISABLED_5_6
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_B
 - id: 1
   name: MULTICAST_ENABLED_1
@@ -773,7 +773,7 @@ vlans:
 - id: 3020
   name: MLAG_iBGP_MULTICAST_ENABLED_1_2
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_B
 - id: 3
   name: MULTICAST_ENABLED_3
@@ -784,7 +784,7 @@ vlans:
 - id: 3021
   name: MLAG_iBGP_MULTICAST_ENABLED_3_DISABLED_4
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_B
 - id: 7
   name: MULTICAST_DISABLED_7
@@ -804,7 +804,7 @@ vlans:
 - id: 3032
   name: MLAG_iBGP_TEN_C_L3_MULTICAST_DISABLED_330_331
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_C
 - id: 130
   name: L3_MULTICAST_ENABLED_130
@@ -821,7 +821,7 @@ vlans:
 - id: 3065
   name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_130_131
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
@@ -832,7 +832,7 @@ vlans:
 - id: 3031
   name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_C
 - id: 240
   name: L3_MULTICAST_DISABLED_240
@@ -843,7 +843,7 @@ vlans:
 - id: 3041
   name: MLAG_iBGP_TEN_D_L3_MULTICAST_DISABLED_240_241
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_D
 - id: 140
   name: L3_MULTICAST_ENABLED_140
@@ -854,7 +854,7 @@ vlans:
 - id: 3040
   name: MLAG_iBGP_TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_D
 - id: 550
   name: L3_MULTICAST_ENABLED_550
@@ -862,7 +862,7 @@ vlans:
 - id: 3054
   name: MLAG_iBGP_TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_E
 - id: 260
   name: L3_MULTICAST_ENABLED_260
@@ -870,7 +870,7 @@ vlans:
 - id: 3059
   name: MLAG_iBGP_TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_E
 - id: 250
   name: L3_MULTICAST_ENABLED_250
@@ -878,7 +878,7 @@ vlans:
 - id: 3051
   name: MLAG_iBGP_TEN_E_L3_MULTICAST_TRANSIT
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_E
 - id: 150
   name: L3_MULTICAST_ENABLED_150
@@ -886,7 +886,7 @@ vlans:
 - id: 3050
   name: MLAG_iBGP_TEN_E_PEG_L3_MULTICAST_ENABLED
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_E
 - id: 251
   name: MULTICAST_DISABLED_251
@@ -1295,7 +1295,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel6
   description: EVPN-MULTICAST-L2LEAF1A_Po1

@@ -104,7 +104,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -116,7 +116,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_INBANDMGMT
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: INBAND_MGMT_TESTS
 - id: 104
   tenant: system
@@ -177,7 +177,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel24
   description: INBAND-MGMT-DUALSTACK-SUBNETS_Po1

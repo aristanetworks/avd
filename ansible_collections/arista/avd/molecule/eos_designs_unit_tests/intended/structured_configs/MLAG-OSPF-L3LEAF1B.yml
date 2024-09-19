@@ -142,8 +142,8 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
+  - LEAF_PEER_L3
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG-OSPF-L3LEAF1A

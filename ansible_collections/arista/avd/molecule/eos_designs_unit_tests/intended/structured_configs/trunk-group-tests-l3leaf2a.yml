@@ -123,7 +123,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -148,7 +148,7 @@ vlans:
 - id: 3199
   name: MLAG_iBGP_TG_200
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TRUNK_GROUP_TESTS
 vlan_interfaces:
 - name: Vlan4093
@@ -186,7 +186,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel1
   description: TRUNK-GROUP-TESTS-L2LEAF4_Po1

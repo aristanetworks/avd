@@ -181,7 +181,7 @@ vlans:
 - id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 vlan_interfaces:
 - name: Vlan4094
@@ -215,7 +215,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel7
   description: DC1_L2LEAF2_Po1

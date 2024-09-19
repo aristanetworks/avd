@@ -259,11 +259,11 @@ vlan internal order ascending range 1006 1199
 | 12 | VRF10_VLAN12 | - |
 | 21 | VRF11_VLAN21 | - |
 | 22 | VRF11_VLAN22 | - |
-| 3009 | MLAG_iBGP_VRF10 | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_VRF11 | LEAF_PEER_L3 |
+| 3009 | MLAG_iBGP_VRF10 | MLAG |
+| 3010 | MLAG_iBGP_VRF11 | MLAG |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
+| 4093 | LEAF_PEER_L3 | MLAG |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -284,11 +284,11 @@ vlan 22
 !
 vlan 3009
    name MLAG_iBGP_VRF10
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3010
    name MLAG_iBGP_VRF11
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3401
    name L2_VLAN3401
@@ -298,7 +298,7 @@ vlan 3402
 !
 vlan 4093
    name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4094
    name MLAG_PEER
@@ -315,8 +315,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc1-leaf2b_Ethernet3 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
-| Ethernet4 | MLAG_PEER_dc1-leaf2b_Ethernet4 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
+| Ethernet3 | MLAG_PEER_dc1-leaf2b_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_PEER_dc1-leaf2b_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet5 | dc1-leaf2-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC1-LEAF2C_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
@@ -376,7 +376,7 @@ interface Ethernet8
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc1-leaf2b_Po3 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_dc1-leaf2b_Po3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | dc1-leaf2-server1_PortChannel dc1-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC1-LEAF2C_Po1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
@@ -389,7 +389,6 @@ interface Port-Channel3
    no shutdown
    switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
 !
 interface Port-Channel5

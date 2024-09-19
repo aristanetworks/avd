@@ -446,7 +446,6 @@ port_channel_interfaces:
   mode: trunk
   service_profile: QOS-PROFILE
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 - name: Port-Channel3
   description: RACK2_MLAG_Po1

@@ -77,7 +77,7 @@ vlans:
 - id: 3099
   name: MLAG_iBGP_default
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST
 vlan_interfaces:
 - name: Vlan4094
@@ -101,7 +101,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
 - name: Ethernet10

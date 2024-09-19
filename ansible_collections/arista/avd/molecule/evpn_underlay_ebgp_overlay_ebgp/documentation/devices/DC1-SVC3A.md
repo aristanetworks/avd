@@ -280,7 +280,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 2 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3 |
+| 2 | MLAG_iBGP_Tenant_C_OP_Zone | MLAG |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
@@ -302,14 +302,14 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
-| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
-| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | LEAF_PEER_L3 |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3 |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3 |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3 |
+| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | MLAG |
+| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | MLAG |
+| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | MLAG |
+| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | MLAG |
+| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | MLAG |
+| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
+| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | MLAG |
 | 4092 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -318,7 +318,7 @@ vlan internal order ascending range 1006 1199
 !
 vlan 2
    name MLAG_iBGP_Tenant_C_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 110
    name Tenant_A_OP_Zone_1
@@ -385,35 +385,35 @@ vlan 350
 !
 vlan 3009
    name MLAG_iBGP_Tenant_A_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3010
    name MLAG_iBGP_Tenant_A_WEB_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3011
    name MLAG_iBGP_Tenant_A_APP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3012
    name MLAG_iBGP_Tenant_A_DB_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3013
    name MLAG_iBGP_Tenant_A_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3019
    name MLAG_iBGP_Tenant_B_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3020
    name MLAG_iBGP_Tenant_B_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3030
    name MLAG_iBGP_Tenant_C_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4092
    name MLAG_PEER
@@ -430,8 +430,8 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
@@ -631,7 +631,7 @@ interface Ethernet44
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
 | Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
@@ -658,7 +658,6 @@ interface Port-Channel5
    no shutdown
    switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
 !
 interface Port-Channel7

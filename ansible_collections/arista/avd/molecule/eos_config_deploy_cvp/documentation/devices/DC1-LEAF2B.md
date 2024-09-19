@@ -269,13 +269,13 @@ vlan internal order ascending range 1006 1199
 | 211 | Tenant_B_OP_Zone_2 | - |
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
-| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
-| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3 |
-| 3029 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3 |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
+| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | MLAG |
+| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | MLAG |
+| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | MLAG |
+| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | MLAG |
+| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
+| 3029 | MLAG_iBGP_Tenant_C_OP_Zone | MLAG |
+| 4093 | LEAF_PEER_L3 | MLAG |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -320,31 +320,31 @@ vlan 311
 !
 vlan 3009
    name MLAG_iBGP_Tenant_A_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3010
    name MLAG_iBGP_Tenant_A_WEB_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3011
    name MLAG_iBGP_Tenant_A_APP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3012
    name MLAG_iBGP_Tenant_A_DB_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3019
    name MLAG_iBGP_Tenant_B_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3029
    name MLAG_iBGP_Tenant_C_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4093
    name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4094
    name MLAG_PEER
@@ -361,8 +361,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131 | *- | *- | 7 |
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 
@@ -438,7 +438,7 @@ interface Ethernet10
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk | 110-111,120-121,130-131 | - | - | - | - | 7 | - |
 | Port-Channel10 | server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | 10 | - |
 
@@ -451,7 +451,6 @@ interface Port-Channel5
    no shutdown
    switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
 !
 interface Port-Channel7

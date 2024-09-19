@@ -405,8 +405,8 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   trunk_groups:
-  - CUSTOM_LEAF_PEER_L3_TG_NAME
   - CUSTOM_MLAG_TG_NAME
+  - CUSTOM_LEAF_PEER_L3_TG_NAME
 - name: Port-Channel1
   description: TRUNK_GROUP_TESTS_L2LEAF1_Po1
   type: switched
