@@ -605,7 +605,7 @@ interface Ethernet8
    no lldp transmit
    no lldp receive
    isis authentication mode md5 rx-disabled
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Ethernet8.101
    description to WAN-ISP-01 Ethernet2.101 - VRF-C1
@@ -614,7 +614,7 @@ interface Ethernet8.101
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
    isis authentication mode md5
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Ethernet9
    description interface_with_mpls_enabled
@@ -625,7 +625,7 @@ interface Ethernet9
    multicast ipv6 static
    mpls ip
    isis authentication mode sha key-id 2 rx-disabled
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Ethernet10
    description interface_with_mpls_disabled
@@ -634,7 +634,7 @@ interface Ethernet10
    no mpls ldp interface
    no mpls ip
    isis authentication mode sha key-id 2
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Ethernet11
    description interface_in_mode_access_accepting_tagged_LACP
@@ -664,8 +664,8 @@ interface Ethernet13
    switchport
    isis authentication mode md5 rx-disabled level-1
    isis authentication mode text rx-disabled level-2
-   isis authentication key 0 password level-1
-   isis authentication key 0 password level-2
+   isis authentication key 0 <removed> level-1
+   isis authentication key 0 <removed> level-2
 !
 interface Ethernet14
    description SRV-POD02_Eth1
@@ -675,8 +675,8 @@ interface Ethernet14
    switchport
    isis authentication mode md5 level-1
    isis authentication mode sha key-id 10 level-2
-   isis authentication key 0 password level-1
-   isis authentication key 0 password level-2
+   isis authentication key 0 <removed> level-1
+   isis authentication key 0 <removed> level-2
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
@@ -723,12 +723,12 @@ interface Ethernet19
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
-   isis authentication key-id 2 algorithm sha-512 key 0 password
-   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
-   isis authentication key-id 1 algorithm sha-1 key 0 password level-1
-   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
-   isis authentication key-id 1 algorithm sha-1 key 0 password level-2
-   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
+   isis authentication key-id 2 algorithm sha-512 key 0 <removed>
+   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 <removed>
+   isis authentication key-id 1 algorithm sha-1 key 0 <removed> level-1
+   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 <removed> level-1
+   isis authentication key-id 1 algorithm sha-1 key 0 <removed> level-2
+   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 <removed> level-2
 !
 interface Ethernet20
    description Port patched through patch-panel to pseudowire
@@ -737,7 +737,7 @@ interface Ethernet20
    no lldp receive
    isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
    isis authentication mode md5 level-2
-   isis authentication key 0 password level-2
+   isis authentication key 0 <removed> level-2
 !
 interface Ethernet21
    description 200MBit/s shape
@@ -745,14 +745,14 @@ interface Ethernet21
    no qos trust
    shape rate 200000 kbps
    isis authentication mode md5 rx-disabled level-1
-   isis authentication key 0 password level-1
+   isis authentication key 0 <removed> level-1
 !
 interface Ethernet22
    description 10% shape
    switchport
    shape rate 10 percent
    isis authentication mode sha key-id 100 level-2
-   isis authentication key 0 password level-2
+   isis authentication key 0 <removed> level-2
 !
 interface Ethernet23
    description Error-correction encoding

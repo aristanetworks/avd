@@ -1027,9 +1027,9 @@ interface {{ ethernet_interface.name }}
 {%             for auth_key in ethernet_interface.isis_authentication.both.key_ids | arista.avd.natural_sort("id") %}
 {%                 do both_key_ids.append(auth_key.id) %}
 {%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
-   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%                 else %}
-   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }}
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -1037,9 +1037,9 @@ interface {{ ethernet_interface.name }}
 {%             for auth_key in ethernet_interface.isis_authentication.level_1.key_ids | arista.avd.natural_sort("id") %}
 {%                 if auth_key.id not in both_key_ids %}
 {%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
-   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-1
 {%                     else %}
-   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-1
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-1
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
@@ -1048,21 +1048,21 @@ interface {{ ethernet_interface.name }}
 {%             for auth_key in ethernet_interface.isis_authentication.level_2.key_ids | arista.avd.natural_sort("id") %}
 {%                 if auth_key.id not in both_key_ids %}
 {%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
-   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-2
 {%                     else %}
-   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-2
+   isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-2
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if ethernet_interface.isis_authentication.both.key_type is arista.avd.defined and ethernet_interface.isis_authentication.both.key is arista.avd.defined %}
-   isis authentication key {{ ethernet_interface.isis_authentication.both.key_type }} {{ ethernet_interface.isis_authentication.both.key }}
+   isis authentication key {{ ethernet_interface.isis_authentication.both.key_type }} {{ ethernet_interface.isis_authentication.both.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         else %}
 {%             if ethernet_interface.isis_authentication.level_1.key_type is arista.avd.defined and ethernet_interface.isis_authentication.level_1.key is arista.avd.defined %}
-   isis authentication key {{ ethernet_interface.isis_authentication.level_1.key_type }} {{ ethernet_interface.isis_authentication.level_1.key }} level-1
+   isis authentication key {{ ethernet_interface.isis_authentication.level_1.key_type }} {{ ethernet_interface.isis_authentication.level_1.key | arista.avd.hide_passwords(hide_passwords) }} level-1
 {%             endif %}
 {%             if ethernet_interface.isis_authentication.level_2.key_type is arista.avd.defined and ethernet_interface.isis_authentication.level_2.key is arista.avd.defined %}
-   isis authentication key {{ ethernet_interface.isis_authentication.level_2.key_type }} {{ ethernet_interface.isis_authentication.level_2.key }} level-2
+   isis authentication key {{ ethernet_interface.isis_authentication.level_2.key_type }} {{ ethernet_interface.isis_authentication.level_2.key | arista.avd.hide_passwords(hide_passwords) }} level-2
 {%             endif %}
 {%         endif %}
 {%     endif %}
