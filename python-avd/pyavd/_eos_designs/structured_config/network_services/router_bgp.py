@@ -168,9 +168,9 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_vrf_redistribute_connected = get(vrf, "redistribute_connected", default=True)
                 if vrf_name != "default":
                     # Non-default VRF
-                    bgp_vrf |= {"router_id": self.shared_utils.router_id,}
+                    bgp_vrf |= {"router_id": self.shared_utils.router_id}
                     if bgp_vrf_redistribute_connected is True:
-                        bgp_vrf |= {"redistribute_routes": [{"source_protocol": "connected"}],}
+                        bgp_vrf |= {"redistribute_routes": [{"source_protocol": "connected"}]}
                     # Redistribution of static routes for VRF default are handled elsewhere
                     # since there is a choice between redistributing to underlay or overlay.
                     if (bgp_vrf_redistribute_static := vrf.get("redistribute_static")) is True or (
