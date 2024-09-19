@@ -36,6 +36,12 @@ no logging monitor
 {%     elif logging.monitor is arista.avd.defined %}
 logging monitor {{ logging.monitor }}
 {%     endif %}
+{%     if logging.event.congestion_drops.interval is arista.avd.defined %}
+logging event congestion-drops interval {{ logging.event.congestion_drops.interval }}
+{%     endif %}
+{%     if logging.event.link_status.global is arista.avd.defined(true) %}
+logging event link-status global
+{%     endif %}
 {%     if logging.event.storm_control.discards.global is arista.avd.defined(true) %}
 logging event storm-control discards global
 {%     endif %}

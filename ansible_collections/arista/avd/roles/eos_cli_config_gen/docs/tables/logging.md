@@ -38,6 +38,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging.policy.match.match_lists.[].name") | String | Required, Unique |  |  | Match list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "logging.policy.match.match_lists.[].action") | String |  |  | Valid Values:<br>- <code>discard</code> |  |
     | [<samp>&nbsp;&nbsp;event</samp>](## "logging.event") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;congestion_drops</samp>](## "logging.event.congestion_drops") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "logging.event.congestion_drops.interval") | Integer |  |  | Min: 1<br>Max: 65535 | Logging interval in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_status</samp>](## "logging.event.link_status") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global</samp>](## "logging.event.link_status.global") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "logging.event.storm_control") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;discards</samp>](## "logging.event.storm_control.discards") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global</samp>](## "logging.event.storm_control.discards.global") | Boolean |  |  |  |  |
@@ -110,6 +114,12 @@
             - name: <str; required; unique>
               action: <str; "discard">
       event:
+        congestion_drops:
+
+          # Logging interval in seconds
+          interval: <int; 1-65535>
+        link_status:
+          global: <bool>
         storm_control:
           discards:
             global: <bool>
