@@ -595,7 +595,7 @@ class WanMixin:
                     ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
-            ip_addresses.append(self.ip_addressing.get_wan_ha_ip_local())
+            ip_addresses.append(self.ip_addressing.wan_ha_ip_local())
         return ip_addresses
 
     @cached_property
