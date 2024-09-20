@@ -9,8 +9,7 @@ keys:
   wan_encapsulation:
     documentation_options:
       table: wan-settings
-    description: |-
-      Select the encapsulation to use for EVPN peerings for WAN BGP peers.
+    description: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
     type: str
     default: path-selection
     valid_values:
