@@ -1028,7 +1028,7 @@ keys:
                   - "vxlan"
                   - "mpls"
                   - "path-selection"
-                description: Default transport encapsulation for neighbor.
+                description: Transport encapsulation for neighbor.
               next_hop_self_source_interface:
                 description: Source interface name.
                 type: str
