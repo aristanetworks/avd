@@ -378,6 +378,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -400,6 +401,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -468,6 +470,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -482,6 +485,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -806,7 +810,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].next_hop.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originate</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].next_hop.address_family_ipv6.originate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -843,7 +846,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
@@ -1684,6 +1686,9 @@
             # Outbound prefix-list name.
             prefix_list_out: <str>
             additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
               receive: <bool>
 
               # Select an option to send multiple paths for same prefix through bgp updates.
@@ -1729,6 +1734,9 @@
               always: <bool>
               route_map: <str>
             additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
               receive: <bool>
 
               # Select an option to send multiple paths for same prefix through bgp updates.
@@ -1883,6 +1891,9 @@
             # Outbound prefix-list name.
             prefix_list_out: <str>
             additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
               receive: <bool>
 
               # Select an option to send multiple paths for same prefix through bgp updates.
@@ -1921,6 +1932,9 @@
             # Outbound prefix-list name.
             prefix_list_out: <str>
             additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
               receive: <bool>
 
               # Select an option to send multiple paths for same prefix through bgp updates.
@@ -2563,9 +2577,6 @@
                     enabled: <bool; required>
                     originate: <bool>
                 additional_paths:
-
-                  # Apply the configurations only to the routes matching the prefix list.
-                  prefix_list: <str>
                   receive: <bool>
 
                   # Select an option to send multiple paths for same prefix through bgp updates.
@@ -2652,9 +2663,6 @@
                 # Outbound prefix-list name.
                 prefix_list_out: <str>
                 additional_paths:
-
-                  # Apply the configurations only to the routes matching the prefix list.
-                  prefix_list: <str>
                   receive: <bool>
 
                   # Select an option to send multiple paths for same prefix through bgp updates.

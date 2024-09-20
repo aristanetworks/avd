@@ -20,6 +20,13 @@ router_bgp:
     peer_groups:
       - name: FOOBAR
         activate: true
+        additional_paths: 
+          receive: true
+    neighbors:
+      - ip_address: 10.1.1.1
+        activate: true
+        additional_paths:
+          receive: true
   address_family_ipv6_multicast:
     bgp:
       additional_paths:
@@ -27,6 +34,8 @@ router_bgp:
     peer_groups:
       - name: FOOBAR
         activate: false
+        additional_paths:
+          receive: true
     redistribute_routes:
       - source_protocol: ospfv3
         ospf_route_type: external
@@ -73,8 +82,8 @@ router_bgp:
             route_map_in: FOO
             route_map_out: BAR
             additional_paths:
+              receive: true
               send: any
-              prefix_list: PL2
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
@@ -106,7 +115,7 @@ router_bgp:
             route_map_out: BAR
             additional_paths:
               send: any
-              prefix_list: PL1
+              receive: true
           - ip_address: aa::2
             activate: true
             rcf_in: VRF_AFIPV6_RCF_IN()

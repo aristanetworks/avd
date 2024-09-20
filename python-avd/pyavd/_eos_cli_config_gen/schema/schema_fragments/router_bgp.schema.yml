@@ -1340,6 +1340,10 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching the prefix list.
                 next_hop:
                   type: dict
                   keys:
@@ -1400,6 +1404,10 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching the prefix list.
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -1640,6 +1648,10 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching the prefix list.
           neighbors:
             type: list
             primary_key: ip_address
@@ -1675,6 +1687,10 @@ keys:
                 additional_paths:
                   type: dict
                   $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching the prefix list.
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -2804,10 +2820,6 @@ keys:
                       additional_paths:
                         type: dict
                         $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
-                        keys:
-                          prefix_list:
-                            type: str
-                            description: Apply the configurations only to the routes matching the prefix list.
                 networks:
                   type: list
                   primary_key: prefix
@@ -2930,10 +2942,6 @@ keys:
                       additional_paths:
                         type: dict
                         $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
-                        keys:
-                          prefix_list:
-                            type: str
-                            description: Apply the configurations only to the routes matching the prefix list.
                 networks:
                   type: list
                   primary_key: prefix

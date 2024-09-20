@@ -123,6 +123,7 @@ router_bgp:
           receive: true
           send: ecmp
           send_ecmp_limit: 20
+          prefix_list: PL1
     neighbors:
       - ip_address: 192.0.2.1
         prefix_list_in: PL-FOO-v4-IN
@@ -131,6 +132,7 @@ router_bgp:
           receive: true
           send: limit
           send_limit: 20
+          prefix_list: PL1
       - ip_address: 10.2.3.8
         rcf_in: Address_Family_IPV4_In()
       - ip_address: 10.2.3.9
@@ -172,6 +174,7 @@ router_bgp:
           receive: true
           send: ecmp
           send_ecmp_limit: 20
+          prefix_list: PL2
     neighbors:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
@@ -180,6 +183,7 @@ router_bgp:
           receive: true
           send: ecmp
           send_ecmp_limit: 20
+          prefix_list: PL2
       - ip_address: 2001:db8::2
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()
