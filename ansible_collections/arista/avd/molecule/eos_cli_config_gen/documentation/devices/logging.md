@@ -91,7 +91,6 @@ no logging repeat-messages
 logging buffered 1000000 warnings
 no logging trap
 logging console errors
-logging event congestion-drops interval 10
 logging event link-status global
 logging event storm-control discards global
 logging event storm-control discards interval 10
