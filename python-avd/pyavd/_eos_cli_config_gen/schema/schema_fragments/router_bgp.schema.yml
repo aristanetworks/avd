@@ -1144,7 +1144,7 @@ keys:
                     - "vxlan"
                     - "mpls"
                     - "path-selection"
-                  description: Default transport encapsulation for neighbor.
+                  description: Transport encapsulation for neighbor.
                 additional_paths:
                   type: dict
                   keys:
