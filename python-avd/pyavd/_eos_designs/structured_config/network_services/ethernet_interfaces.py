@@ -77,6 +77,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
                             }
 
+                            if self.shared_utils.fabric_sflow_l3_interfaces is not None:
+                                interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_l3_interfaces}
+
                             if self._l3_interface_acls is not None:
                                 interface.update(
                                     {
@@ -134,10 +137,17 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                             if get(l3_interface, "pim.enabled"):
                                 if not vrf.get("_evpn_l3_multicast_enabled"):
-                                    msg = (
-                                        f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires evpn_l3_multicast:"
-                                        f" enabled: true under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
-                                    )
+                                    # Possibly the key was not set because `evpn_multicast` is not set to `true`.
+                                    if not self.shared_utils.evpn_multicast:
+                                        msg = (
+                                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
+                                            "'evpn_multicast: true' at the fabric level"
+                                        )
+                                    else:
+                                        msg = (
+                                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
+                                            f"'evpn_l3_multicast.enabled: true' under VRF '{vrf['name']}' or Tenant '{tenant['name']}'"
+                                        )
                                     raise AristaAvdError(
                                         msg,
                                     )

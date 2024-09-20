@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -53,20 +55,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.107/24
@@ -97,6 +99,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Spanning Tree
 
@@ -167,17 +175,17 @@ vlan 2020
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet8 |  CPE_TENANT_A_SITE2_eth0 | trunk | 10 | - | - | - |
+| Ethernet8 | CPE_TENANT_A_SITE2_eth0 | trunk | 10 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | - | 10 |
-| Ethernet6.100 | TENANT_B_SITE_3_OSPF | - | 100 |
-| Ethernet6.101 | TENANT_B_SITE_5 | - | 101 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | - | 10 | - |
+| Ethernet6.100 | TENANT_B_SITE_3_OSPF | - | 100 | - |
+| Ethernet6.101 | TENANT_B_SITE_5 | - | 101 | - |
 
 ##### IPv4
 
@@ -333,13 +341,13 @@ interface Ethernet14
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel4.1000 | - | - | False | 1000 | - | - | True | - | - | - |
-| Port-Channel4.1001 | - | - | False | 1001 | - | - | True | - | - | - |
-| Port-Channel4.1002 | - | - | False | 1002 | - | - | True | - | - | - |
-| Port-Channel4.1003 | - | - | False | 1003 | - | - | True | - | - | - |
-| Port-Channel4.1004 | - | - | False | 1004 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel4.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
+| Port-Channel4.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
+| Port-Channel4.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
+| Port-Channel4.1003 | - | - | dot1q | - | 1003 | - | - | client | - | - | - | - |
+| Port-Channel4.1004 | - | - | dot1q | - | 1004 | - | - | client | - | - | - | - |
 
 ##### IPv4
 
@@ -437,13 +445,13 @@ interface Port-Channel220
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | MPLS_Overlay_peering | default | 100.70.0.7/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.7/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | MPLS_Overlay_peering | default | 2000:1234:ffff:ffff::7/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::7/128 |
 
 ##### ISIS
 
@@ -456,7 +464,7 @@ interface Port-Channel220
 ```eos
 !
 interface Loopback0
-   description MPLS_Overlay_peering
+   description ROUTER_ID
    no shutdown
    ip address 100.70.0.7/32
    ipv6 address 2000:1234:ffff:ffff::7/128
@@ -610,7 +618,7 @@ router ospf 99 vrf TENANT_B_WAN
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.0000.0001.0007.00 |
+| Net-ID | 49.0001.1000.7000.0007.00 |
 | Type | level-1-2 |
 | Router-ID | 100.70.0.7 |
 | Log Adjacency Changes | True |
@@ -653,7 +661,7 @@ router ospf 99 vrf TENANT_B_WAN
 ```eos
 !
 router isis CORE
-   net 49.0001.0000.0001.0007.00
+   net 49.0001.1000.7000.0007.00
    is-type level-1-2
    router-id ipv4 100.70.0.7
    log-adjacency-changes

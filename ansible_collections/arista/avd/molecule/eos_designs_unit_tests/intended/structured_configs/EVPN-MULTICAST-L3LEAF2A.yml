@@ -49,7 +49,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: MULTICAST_DISABLED_310_311
-    router_id: 192.168.255.5
     rd: 192.168.255.5:13
     route_targets:
       import:
@@ -60,10 +59,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '13:13'
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: MULTICAST_ENABLED_110_111
-    router_id: 192.168.255.5
     rd: 192.168.255.5:11
     route_targets:
       import:
@@ -74,10 +73,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: MULTICAST_ENABLED_210_DISABLED_211
-    router_id: 192.168.255.5
     rd: 192.168.255.5:12
     route_targets:
       import:
@@ -88,10 +87,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '12:12'
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: MULTICAST_DISABLED_5_6
-    router_id: 192.168.255.5
     rd: 192.168.255.5:23
     route_targets:
       import:
@@ -102,10 +101,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '23:23'
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: MULTICAST_ENABLED_1_2
-    router_id: 192.168.255.5
     rd: 192.168.255.5:21
     route_targets:
       import:
@@ -116,10 +115,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: MULTICAST_ENABLED_3_DISABLED_4
-    router_id: 192.168.255.5
     rd: 192.168.255.5:22
     route_targets:
       import:
@@ -130,10 +129,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '22:22'
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_C_L3_MULTICAST_DISABLED_330_331
-    router_id: 192.168.255.5
     rd: 192.168.255.5:33
     route_targets:
       import:
@@ -145,25 +144,25 @@ router_bgp:
         route_targets:
         - '33:33'
     evpn_multicast: false
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    router_id: 192.168.255.5
-    rd: 192.168.255.5:31
+    rd: 192.168.255.5:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-    router_id: 192.168.255.5
     rd: 192.168.255.5:32
     route_targets:
       import:
@@ -175,10 +174,10 @@ router_bgp:
         route_targets:
         - '32:32'
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_D_L3_MULTICAST_DISABLED_240_241
-    router_id: 192.168.255.5
     rd: 192.168.255.5:42
     route_targets:
       import:
@@ -190,10 +189,10 @@ router_bgp:
         route_targets:
         - '42:42'
     evpn_multicast: false
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-    router_id: 192.168.255.5
     rd: 192.168.255.5:41
     route_targets:
       import:
@@ -205,10 +204,10 @@ router_bgp:
         route_targets:
         - '41:41'
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-    router_id: 192.168.255.5
     rd: 192.168.255.5:55
     route_targets:
       import:
@@ -220,10 +219,10 @@ router_bgp:
         route_targets:
         - '55:55'
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-    router_id: 192.168.255.5
     rd: 192.168.255.5:60
     route_targets:
       import:
@@ -235,10 +234,10 @@ router_bgp:
         route_targets:
         - 60:60
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_E_L3_MULTICAST_TRANSIT
-    router_id: 192.168.255.5
     rd: 192.168.255.5:52
     route_targets:
       import:
@@ -250,10 +249,10 @@ router_bgp:
         route_targets:
         - '52:52'
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
-    router_id: 192.168.255.5
     rd: 192.168.255.5:51
     route_targets:
       import:
@@ -265,6 +264,7 @@ router_bgp:
         route_targets:
         - '51:51'
     evpn_multicast: true
+    router_id: 192.168.255.5
     redistribute_routes:
     - source_protocol: connected
   vlans:
@@ -454,6 +454,23 @@ router_bgp:
       - 10131:10131
     redistribute_routes:
     - learned
+  - id: 136
+    tenant: Tenant_C
+    rd: 192.168.255.5:10136
+    route_targets:
+      both:
+      - 10136:10136
+    redistribute_routes:
+    - learned
+    - igmp
+  - id: 137
+    tenant: Tenant_C
+    rd: 192.168.255.5:10137
+    route_targets:
+      both:
+      - 10137:10137
+    redistribute_routes:
+    - learned
   - id: 230
     tenant: Tenant_C
     rd: 192.168.255.5:10230
@@ -588,6 +605,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -653,7 +676,7 @@ vrfs:
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.107/24
@@ -681,11 +704,11 @@ ethernet_interfaces:
       sparse_mode: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.5/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.5/32
 - name: Loopback33
@@ -819,6 +842,12 @@ vlans:
 - id: 131
   name: L3_MULTICAST_ENABLED_131
   tenant: Tenant_C
+- id: 136
+  name: L3_L2_MULTICAST_ENABLED_136
+  tenant: Tenant_C
+- id: 137
+  name: L3_L2_MULTICAST_ENABLED_137
+  tenant: Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
   tenant: Tenant_C
@@ -909,6 +938,14 @@ ip_igmp_snooping:
       enabled: true
       address: 2.2.2.2
       version: 1
+  - id: 136
+    querier:
+      enabled: true
+      address: 192.168.255.5
+  - id: 137
+    querier:
+      enabled: true
+      address: 192.168.255.5
   - id: 230
     querier:
       enabled: true
@@ -1054,6 +1091,24 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.1.14.1
   ip_igmp: true
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan136
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_136
+  shutdown: false
+  ip_igmp: true
+  pim:
+    ipv4:
+      local_interface: Loopback31
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan137
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_137
+  shutdown: false
+  ip_igmp: true
+  pim:
+    ipv4:
+      local_interface: Loopback31
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
 - name: Vlan230
   tenant: Tenant_C
@@ -1220,6 +1275,12 @@ vxlan_interface:
         vni: 10130
       - id: 131
         vni: 10131
+      - id: 136
+        vni: 10136
+        multicast_group: 236.0.0.135
+      - id: 137
+        vni: 10137
+        multicast_group: 236.0.0.136
       - id: 230
         vni: 10230
       - id: 231
@@ -1262,7 +1323,7 @@ vxlan_interface:
         vni: 33
       - name: TEN_C_L3_MULTICAST_ENABLED_130_131
         vni: 31
-        multicast_group: 232.0.32.31
+        multicast_group: 232.0.32.66
       - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         vni: 32
         multicast_group: 232.0.32.32
@@ -1270,7 +1331,7 @@ vxlan_interface:
         vni: 42
       - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         vni: 41
-        multicast_group: 232.0.64.40
+        multicast_group: 232.0.64.2
       - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         vni: 55
         multicast_group: 232.0.96.54

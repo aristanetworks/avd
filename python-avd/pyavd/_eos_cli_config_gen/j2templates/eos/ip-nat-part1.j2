@@ -37,7 +37,7 @@ ip nat kernel buffer size {{ ip_nat.kernel_buffer_size }}
 !
 {%         set nat_profile_def = "ip nat profile " ~ profile.name %}
 {%         if profile.vrf is arista.avd.defined %}
-{%             set nat_profile_def = nat_profile_def ~ " vrf " ~ profile.name %}
+{%             set nat_profile_def = nat_profile_def ~ " vrf " ~ profile.vrf %}
 {%         endif %}
 {{ nat_profile_def }}
 {%         set interface_ip_nat = profile %}

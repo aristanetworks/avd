@@ -6,6 +6,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -42,12 +48,14 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: none
+  mlag: 27
 - name: Port-Channel41
   description: SL-LEAF2_Po41
   type: switched
   shutdown: false
   mode: trunk
   vlans: none
+  mlag: 41
 ethernet_interfaces:
 - name: Ethernet25
   peer: SL-LEAF0A

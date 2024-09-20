@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -39,20 +41,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.101/24 | 172.31.0.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.101/24 | 172.31.0.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.101/24
@@ -83,6 +85,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Internal VLAN Allocation Policy
 
@@ -130,7 +138,7 @@ vlan 4092
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | ISIS-LEAF1_Ethernet1 | *trunk | *110,4092 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 110 | - | - | - |
+| Ethernet10 | Endpoint | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -181,13 +189,13 @@ interface Port-Channel1
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 192.168.255.1/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.1/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 ##### ISIS
 
@@ -200,7 +208,7 @@ interface Port-Channel1
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.1/32
    isis enable EVPN_UNDERLAY
@@ -315,7 +323,7 @@ ip route 10.1.0.0/16 10.1.100.100
 | Settings | Value |
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
-| Net-ID | 49.0001.0001.0000.0001.00 |
+| Net-ID | 49.0001.1921.6825.5001.00 |
 | Type | level-2 |
 | Router-ID | 192.168.255.1 |
 | Log Adjacency Changes | True |
@@ -345,7 +353,7 @@ ip route 10.1.0.0/16 10.1.100.100
 ```eos
 !
 router isis EVPN_UNDERLAY
-   net 49.0001.0001.0000.0001.00
+   net 49.0001.1921.6825.5001.00
    is-type level-2
    redistribute connected
    redistribute static

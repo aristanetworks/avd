@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - monitor sessions #}
-{% if monitor_sessions is arista.avd.defined %}
+{% if monitor_sessions is arista.avd.defined or monitor_session_default_encapsulation_gre is arista.avd.defined %}
 
 ### Monitor Sessions
 
@@ -54,10 +54,19 @@
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+{%     if monitor_session_default_encapsulation_gre.payload is arista.avd.defined %}
+
+##### Monitor Session Default Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Encapsulation GRE Payload | {{ monitor_session_default_encapsulation_gre.payload }} |
+{%     endif %}
 
 #### Monitor Sessions Device Configuration
 
 ```eos
 {%     include 'eos/monitor-sessions.j2' %}
+{%     include 'eos/monitor-session-default-encapsulation-gre.j2' %}
 ```
 {% endif %}

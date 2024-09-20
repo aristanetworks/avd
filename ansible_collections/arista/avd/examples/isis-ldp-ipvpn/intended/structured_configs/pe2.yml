@@ -22,8 +22,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-  address_family_evpn:
-    peer_groups: []
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
@@ -45,7 +43,6 @@ router_bgp:
     description: rr2
   vrfs:
   - name: C1_VRF1
-    router_id: 10.255.1.2
     rd: 10.255.1.2:10
     route_targets:
       import:
@@ -56,11 +53,11 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '10:10'
+    router_id: 10.255.1.2
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
   - name: C2_VRF1
-    router_id: 10.255.1.2
     rd: 10.255.1.2:20
     route_targets:
       import:
@@ -71,6 +68,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '20:20'
+    router_id: 10.255.1.2
     redistribute_routes:
     - source_protocol: connected
     address_family_ipv4:
@@ -94,6 +92,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -116,7 +120,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.102/24
@@ -128,7 +132,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.1.2/32
   mpls:
@@ -139,7 +143,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0001.0002.00
+  net: 49.0001.0102.5500.1002.00
   router_id: 10.255.1.2
   is_type: level-2
   address_family_ipv4:
@@ -235,6 +239,7 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet4.10
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 metadata:
   platform: vEOS-lab

@@ -27,6 +27,7 @@ from pyavd._cv.api.arista.tag.v2 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -129,7 +130,7 @@ class TagMixin:
         workspace_id: str,
         tags: list[tuple[str, str]],
         element_type: Literal["device", "interface"],
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagKey]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
@@ -174,7 +175,7 @@ class TagMixin:
         element_type: Literal["device", "interface"] | None = None,
         creator_type: Literal["user", "system", "external"] | None = None,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignment]:
         """
         Get Tags using arista.tag.v2.TagAssignmentServiceStub.GetAll arista.tag.v2.TagAssignmentConfigServiceStub.GetAll APIs.
@@ -243,7 +244,7 @@ class TagMixin:
         workspace_id: str,
         tag_assignments: list[tuple[str, str, str, str | None]],
         element_type: Literal["device", "interface"],
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignment]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.

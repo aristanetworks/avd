@@ -80,7 +80,7 @@
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 
 ### VTEP Loopback Node allocation
 
@@ -94,7 +94,6 @@
 | Key | Type | Description |
 | --- | ---- | ----------- |
 | firewalls | firewall | - |
-| routers | router | - |
 | servers | server | - |
 
 ### Firewalls
@@ -117,8 +116,8 @@
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
-| PP-DEFAULTS | - |
 | PP-BLUE | PP-DEFAULTS |
+| PP-DEFAULTS | - |
+| PP-FIREWALL | - |
 | PP-GREEN | PP-DEFAULTS |
 | PP-ORANGE | PP-DEFAULTS |
-| PP-FIREWALL | - |

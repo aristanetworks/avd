@@ -185,6 +185,9 @@ class UtilsMixin:
             "flow_tracker": self.shared_utils.get_flow_tracker(l3_interface, "l3_interfaces"),
         }
 
+        if self.shared_utils.fabric_sflow_l3_interfaces is not None:
+            interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_l3_interfaces}
+
         if iface_type == "l3dot1q":
             interface["encapsulation_dot1q_vlan"] = int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))
 

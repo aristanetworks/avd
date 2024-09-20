@@ -56,7 +56,6 @@ router_bgp:
     description: SITE2-RR1
   vrfs:
   - name: TENANT_B_INTRA
-    router_id: 100.70.0.7
     rd: 100.70.0.7:19
     route_targets:
       import:
@@ -67,11 +66,11 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65000:19'
+    router_id: 100.70.0.7
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
   - name: TENANT_B_WAN
-    router_id: 100.70.0.7
     rd: 100.70.0.7:20
     route_targets:
       import:
@@ -88,6 +87,7 @@ router_bgp:
       - address_family: vpn-ipv6
         route_targets:
         - '65000:20'
+    router_id: 100.70.0.7
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
@@ -173,6 +173,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -189,7 +195,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.107/24
@@ -202,7 +208,7 @@ management_api_http:
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.7/32
   ipv6_address: 2000:1234:ffff:ffff::7/128
@@ -217,7 +223,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0001.0007.00
+  net: 49.0001.1000.7000.0007.00
   router_id: 100.70.0.7
   is_type: level-1-2
   address_family_ipv4:
@@ -581,6 +587,7 @@ router_ospf:
     - Ethernet6.100
     max_lsa: 10000
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 metadata:
   platform: 7280SR3

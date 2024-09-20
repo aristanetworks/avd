@@ -22,6 +22,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceStreamRequest,
 )
 
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
@@ -50,7 +51,7 @@ class WorkspaceMixin:
         self: CVClient,
         workspace_id: str,
         time: datetime | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Workspace:
         """
         Get Workspace using arista.workspace.v1.WorkspaceService.GetOne API.
@@ -83,7 +84,7 @@ class WorkspaceMixin:
         workspace_id: str,
         display_name: str | None = None,
         description: str | None = None,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> WorkspaceConfig:
         """
         Create Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
@@ -111,7 +112,7 @@ class WorkspaceMixin:
     async def abandon_workspace(
         self: CVClient,
         workspace_id: str,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> WorkspaceConfig:
         """
         Abandon Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
@@ -139,7 +140,7 @@ class WorkspaceMixin:
     async def build_workspace(
         self: CVClient,
         workspace_id: str,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> WorkspaceConfig:
         """
         Request a build of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
@@ -167,7 +168,7 @@ class WorkspaceMixin:
     async def delete_workspace(
         self: CVClient,
         workspace_id: str,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> WorkspaceKey:
         """
         Delete Workspace using arista.workspace.v1.WorkspaceConfigService.Delete API.
@@ -188,7 +189,7 @@ class WorkspaceMixin:
         self: CVClient,
         workspace_id: str,
         force: bool = False,
-        timeout: float = 10.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> WorkspaceConfig:
         """
         Request submission of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.

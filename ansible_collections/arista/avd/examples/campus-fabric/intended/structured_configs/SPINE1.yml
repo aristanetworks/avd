@@ -11,6 +11,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 8.8.4.4
   vrf: MGMT
@@ -32,7 +38,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management0
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.100.101/24
@@ -309,7 +315,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.1.1/32
   ospf_area: 0.0.0.0
@@ -324,7 +330,8 @@ router_ospf:
     - Ethernet52/1
     bfd_enable: false
     redistribute:
-      connected: {}
+      connected:
+        enabled: true
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

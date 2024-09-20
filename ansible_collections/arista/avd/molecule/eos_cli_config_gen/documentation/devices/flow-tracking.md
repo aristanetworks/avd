@@ -21,20 +21,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -168,9 +168,9 @@ interface Dps1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet40 |  - | access | - | - | - | - |
-| Ethernet41 |  - | access | - | - | - | - |
-| Ethernet42 |  - | access | - | - | - | - |
+| Ethernet40 | - | - | - | - | - | - |
+| Ethernet41 | - | - | - | - | - | - |
+| Ethernet42 | - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -201,7 +201,7 @@ interface Ethernet42
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel42 | - | access | - | - | - | - | - | - | - |
+| Port-Channel42 | - | - | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -1,5 +1,5 @@
 ---
-wan_mode: autovpn
+wan_mode: legacy-autovpn
 type: wan_router
 fabric_name: FABRIC_WAN_ROLE_OVERLAY_ROUTING_PROTOCOL
 

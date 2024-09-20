@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+## Connected Endpoints
+{% if all_connected_endpoints | length == 0 %}
+
+No connected endpoint configured!
+{% else %}
+
+### Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+{%     for connected_endpoints_key in all_connected_endpoints_keys %}
+{%         set key = connected_endpoints_key.key %}
+{%         set type = connected_endpoints_key.type %}
+{%         set description = connected_endpoints_key.description | arista.avd.default("-") %}
+| {{ key }} | {{ type }} | {{ description }} |
+{%     endfor %}
+{%     for key in all_connected_endpoints %}
+
+### {{ key | replace("_", " ") | capitalize }}
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+{%         for connected_endpoint in all_connected_endpoints[key] %}
+{%             set port = connected_endpoint.peer_interface %}
+{%             set fabric_port = connected_endpoint.fabric_port %}
+{%             set profile = connected_endpoint.profile | arista.avd.default("-") %}
+{%             set description = connected_endpoint.description | arista.avd.default("-") %}
+{%             set shutdown = connected_endpoint.shutdown | arista.avd.default("-") %}
+{%             set type = connected_endpoint.type | arista.avd.default("-") %}
+{%             set mode = connected_endpoint.mode | arista.avd.default("-") %}
+{%             set vlans = connected_endpoint.vlans | arista.avd.default("-") %}
+| {{ connected_endpoint.peer }} | {{ port }} | {{ connected_endpoint.fabric_switch }} | {{ fabric_port }} | {{ description }} | {{ shutdown }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ profile }} |
+{%         endfor %}
+{%     endfor %}
+{% endif %}
+{% if all_port_profiles | length > 0 %}
+
+### Port Profiles
+
+| Profile Name | Parent Profile |
+| ------------ | -------------- |
+{%     for profile in all_port_profiles %}
+{%         set parent = profile.parent_profile | arista.avd.default("-") %}
+| {{ profile.profile }} | {{ parent }} |
+{%     endfor %}
+{% endif %}

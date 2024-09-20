@@ -63,7 +63,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: MULTICAST_DISABLED_310_311
-    router_id: 192.168.255.3
     rd: 192.168.255.3:13
     route_targets:
       import:
@@ -74,15 +73,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '13:13'
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_110_111
-    router_id: 192.168.255.3
     rd: 192.168.255.3:11
     route_targets:
       import:
@@ -93,15 +93,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_210_DISABLED_211
-    router_id: 192.168.255.3
     rd: 192.168.255.3:12
     route_targets:
       import:
@@ -112,15 +113,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '12:12'
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: MULTICAST_DISABLED_5_6
-    router_id: 192.168.255.3
     rd: 192.168.255.3:23
     route_targets:
       import:
@@ -131,15 +133,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '23:23'
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_1_2
-    router_id: 192.168.255.3
     rd: 192.168.255.3:21
     route_targets:
       import:
@@ -150,15 +153,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_3_DISABLED_4
-    router_id: 192.168.255.3
     rd: 192.168.255.3:22
     route_targets:
       import:
@@ -169,15 +173,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '22:22'
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_DISABLED_330_331
-    router_id: 192.168.255.3
     rd: 192.168.255.3:33
     route_targets:
       import:
@@ -189,35 +194,37 @@ router_bgp:
         route_targets:
         - '33:33'
     evpn_multicast: false
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    router_id: 192.168.255.3
-    rd: 192.168.255.3:31
+    rd: 192.168.255.3:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     evpn_multicast: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-    router_id: 192.168.255.3
     rd: 192.168.255.3:32
     route_targets:
       import:
@@ -229,15 +236,16 @@ router_bgp:
         route_targets:
         - '32:32'
     evpn_multicast: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_D_L3_MULTICAST_DISABLED_240_241
-    router_id: 192.168.255.3
     rd: 192.168.255.3:42
     route_targets:
       import:
@@ -249,15 +257,16 @@ router_bgp:
         route_targets:
         - '42:42'
     evpn_multicast: false
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-    router_id: 192.168.255.3
     rd: 192.168.255.3:41
     route_targets:
       import:
@@ -269,15 +278,16 @@ router_bgp:
         route_targets:
         - '41:41'
     evpn_multicast: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-    router_id: 192.168.255.3
     rd: 192.168.255.3:55
     route_targets:
       import:
@@ -289,15 +299,16 @@ router_bgp:
         route_targets:
         - '55:55'
     evpn_multicast: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-    router_id: 192.168.255.3
     rd: 192.168.255.3:60
     route_targets:
       import:
@@ -312,15 +323,16 @@ router_bgp:
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_TRANSIT
-    router_id: 192.168.255.3
     rd: 192.168.255.3:52
     route_targets:
       import:
@@ -335,15 +347,16 @@ router_bgp:
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
-    router_id: 192.168.255.3
     rd: 192.168.255.3:51
     route_targets:
       import:
@@ -355,11 +368,13 @@ router_bgp:
         route_targets:
         - '51:51'
     evpn_multicast: true
+    router_id: 192.168.255.3
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
     updates:
       wait_install: true
   vlan_aware_bundles:
@@ -482,13 +497,14 @@ router_bgp:
     - learned
     vlan: 330-331
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.3:31
+    rd: 192.168.255.3:66
     route_targets:
       both:
-      - '31:31'
+      - 66:66
     redistribute_routes:
     - learned
-    vlan: 130-131
+    - igmp
+    vlan: 130-131,136-137
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
     rd: 192.168.255.3:32
     route_targets:
@@ -601,6 +617,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -666,7 +688,7 @@ vrfs:
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
@@ -790,7 +812,13 @@ vlans:
 - id: 131
   name: L3_MULTICAST_ENABLED_131
   tenant: Tenant_C
-- id: 3030
+- id: 136
+  name: L3_L2_MULTICAST_ENABLED_136
+  tenant: Tenant_C
+- id: 137
+  name: L3_L2_MULTICAST_ENABLED_137
+  tenant: Tenant_C
+- id: 3065
   name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_130_131
   trunk_groups:
   - LEAF_PEER_L3
@@ -1074,7 +1102,25 @@ vlan_interfaces:
     ipv4:
       sparse_mode: true
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
-- name: Vlan3030
+- name: Vlan136
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_136
+  shutdown: false
+  pim:
+    ipv4:
+      sparse_mode: true
+      local_interface: Loopback31
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan137
+  tenant: Tenant_C
+  description: L3_L2_MULTICAST_ENABLED_137
+  shutdown: false
+  pim:
+    ipv4:
+      sparse_mode: true
+      local_interface: Loopback31
+  vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
+- name: Vlan3065
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
@@ -1256,7 +1302,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+  vlans: 1-9,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
   mlag: 6
 ethernet_interfaces:
 - name: Ethernet3
@@ -1305,6 +1351,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.55.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   pim:
@@ -1314,6 +1362,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.60.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   pim:
@@ -1323,6 +1373,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.52.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
@@ -1332,6 +1384,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.1.51.0/31
   shutdown: false
+  sflow:
+    enable: true
   type: routed
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
@@ -1360,11 +1414,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.3/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.3/32
 - name: Loopback33
@@ -1478,6 +1532,14 @@ ip_igmp_snooping:
       enabled: true
       address: 2.2.2.2
       version: 1
+  - id: 136
+    querier:
+      enabled: true
+      address: 192.168.255.3
+  - id: 137
+    querier:
+      enabled: true
+      address: 192.168.255.3
   - id: 230
     querier:
       enabled: true
@@ -1551,6 +1613,12 @@ vxlan_interface:
         vni: 10130
       - id: 131
         vni: 10131
+      - id: 136
+        vni: 10136
+        multicast_group: 236.0.0.135
+      - id: 137
+        vni: 10137
+        multicast_group: 236.0.0.136
       - id: 230
         vni: 10230
       - id: 231
@@ -1593,7 +1661,7 @@ vxlan_interface:
         vni: 33
       - name: TEN_C_L3_MULTICAST_ENABLED_130_131
         vni: 31
-        multicast_group: 232.0.32.31
+        multicast_group: 232.0.32.66
       - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         vni: 32
         multicast_group: 232.0.32.32
@@ -1601,7 +1669,7 @@ vxlan_interface:
         vni: 42
       - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         vni: 41
-        multicast_group: 232.0.64.40
+        multicast_group: 232.0.64.2
       - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         vni: 55
         multicast_group: 232.0.96.54
@@ -1685,5 +1753,12 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 232.0.136.0/21
+sflow:
+  run: true
+  vrfs:
+  - name: sflow_vrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
 metadata:
   platform: vEOS-LAB

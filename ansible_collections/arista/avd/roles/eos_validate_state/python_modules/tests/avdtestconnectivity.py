@@ -126,16 +126,12 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         anta_tests = []
 
         # Skip the test if the host is not a VTEP (no VXLAN interface)
-        if get(self.structured_config, "vxlan_interface") is None:
+        if not self.is_vtep():
             LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
             return None
 
         # TODO: For now, we exclude WAN VTEPs from testing
-        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
-        if "Dps" in default(
-            get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface"),
-            get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"),
-        ):
+        if self.is_wan_vtep():
             LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
@@ -156,6 +152,52 @@ class AvdTestLoopback0Reachability(AvdTestBase):
                         "result_overwrite": {"custom_field": custom_field},
                     },
                 },
+            )
+
+        return {self.anta_module: anta_tests} if anta_tests else None
+
+
+class AvdTestDpsReachability(AvdTestBase):
+    """AvdTestDpsReachability class for DPS reachability tests."""
+
+    anta_module = "anta.tests.connectivity"
+
+    @cached_property
+    def test_definition(self) -> dict | None:
+        """
+        Generates the proper ANTA test definition for all DPS reachability tests.
+
+        Returns:
+            dict | None: ANTA test definition if there are tests to run, otherwise None.
+        """
+        anta_tests = []
+
+        # Skip the test if the host is not a WAN VTEP
+        if not self.is_wan_vtep():
+            LOGGER.info("Host is not a WAN VTEP. %s is skipped.", self.__class__.__name__)
+            return None
+
+        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+        dps_source_interface = default(
+            get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface"),
+            get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"),
+        )
+        dps_ip = self.get_interface_ip("dps_interfaces", dps_source_interface)
+        if not dps_ip:
+            return None
+        src_ip = str(ip_interface(dps_ip).ip)
+        for dst_node, dst_ip in self.dps_mapping:
+            if not self.is_peer_available(dst_node):
+                continue
+
+            custom_field = f"Source: {dps_source_interface} (IP: {src_ip}) - Destination: {dst_node} {dps_source_interface} (IP: {dst_ip})"
+            anta_tests.append(
+                {
+                    "VerifyReachability": {
+                        "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                        "result_overwrite": {"custom_field": custom_field},
+                    }
+                }
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None

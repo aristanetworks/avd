@@ -138,6 +138,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     interface=port_channel_interface_name,
                     peer=peer,
                     description=adapter_description,
+                    port_channel_id=channel_group_id,
                     port_channel_description=adapter_port_channel_description,
                 ),
             ),

@@ -115,7 +115,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
-    router_id: 192.168.255.14
     rd: 192.168.254.14:15
     route_targets:
       import:
@@ -126,10 +125,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65104:15'
+    router_id: 192.168.255.14
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_WAN_Zone
-    router_id: 192.168.255.14
     rd: 192.168.254.14:14
     route_targets:
       import:
@@ -148,6 +147,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - 65000:123
+    router_id: 192.168.255.14
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
@@ -208,7 +208,6 @@ router_bgp:
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
-    router_id: 192.168.255.14
     rd: 192.168.254.14:20
     route_targets:
       import:
@@ -219,10 +218,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65104:20'
+    router_id: 192.168.255.14
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_B_WAN_Zone
-    router_id: 192.168.255.14
     rd: 192.168.254.14:21
     route_targets:
       import:
@@ -233,10 +232,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65104:21'
+    router_id: 192.168.255.14
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_C_WAN_Zone
-    router_id: 192.168.255.14
     rd: 192.168.254.14:31
     route_targets:
       import:
@@ -247,6 +246,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65104:31'
+    router_id: 192.168.255.14
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:
@@ -316,6 +316,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 event_handlers:
 - name: evpn-blacklist-recovery
   actions:
@@ -378,7 +384,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management99
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.110/24
@@ -524,18 +530,19 @@ ethernet_interfaces:
   description: My test
   ip_address: 10.3.2.1/21
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   mtu: 1500
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
 loopback_interfaces:
 - name: Loopback0
-  description: MY_OVERLAY_LOOPBACK
+  description: MY_ROUTER_ID_LOOPBACK
   shutdown: false
   ip_address: 192.168.255.14/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.14/32
   ip_address_secondaries:
@@ -656,8 +663,10 @@ router_ospf:
     - Vlan150
     max_lsa: 15000
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
       connected:
+        enabled: true
         route_map: RM_TEST
 vxlan_interface:
   vxlan1:

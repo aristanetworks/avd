@@ -132,7 +132,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: Common_VRF
-    router_id: 172.16.110.5
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under BGP for VRF Common_VRF
@@ -150,10 +149,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1025:1025
+    router_id: 172.16.110.5
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_dc1_pod1_only
-    router_id: 172.16.110.5
     rd: 172.16.110.5:1102
     route_targets:
       import:
@@ -164,10 +163,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1102:1102
+    router_id: 172.16.110.5
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_from_overlapping_pool
-    router_id: 172.16.110.5
     rd: 172.16.110.5:1100
     route_targets:
       import:
@@ -178,10 +177,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1100:1100
+    router_id: 172.16.110.5
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_from_pod_pools
-    router_id: 172.16.110.5
     rd: 172.16.110.5:1101
     route_targets:
       import:
@@ -192,6 +191,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1101:1101
+    router_id: 172.16.110.5
     redistribute_routes:
     - source_protocol: connected
   vlans:
@@ -308,6 +308,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -337,7 +343,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.1.9/16
@@ -752,11 +758,11 @@ route_maps:
     type: permit
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.110.5/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 172.18.110.4/32
 - name: Loopback102

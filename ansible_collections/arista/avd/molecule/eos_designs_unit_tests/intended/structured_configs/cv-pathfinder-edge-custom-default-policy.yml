@@ -76,7 +76,6 @@ router_bgp:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: PROD
-    router_id: 192.168.42.1
     rd: 192.168.42.1:42
     route_targets:
       import:
@@ -87,10 +86,16 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '42:42'
+    router_id: 192.168.42.1
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -126,7 +131,7 @@ ethernet_interfaces:
   description: Comcast-5G_AF830
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 prefix_lists:
@@ -364,7 +369,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.255.1/32
   flow_tracker:
     hardware: custom_flow_track_name

@@ -10,6 +10,10 @@ keys:
     type: list
     primary_key: name
     display_name: Community Lists (legacy model)
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      new_key: ip_community_lists
     items:
       type: dict
       keys:

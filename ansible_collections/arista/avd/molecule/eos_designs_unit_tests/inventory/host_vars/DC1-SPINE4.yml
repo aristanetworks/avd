@@ -1,0 +1,21 @@
+---
+# If the device is set to "is_deployed: false" at the host_vars level, then do not shutdown interfaces towards undeployed peers.
+shutdown_interfaces_towards_undeployed_peers: false
+
+# If the device is set to "is_deployed: false" at the host_vars level, then do not shutdown bgp towards undeployed peers.
+shutdown_bgp_towards_undeployed_peers: false
+
+# Testing the suggested method to roll back the change of default platform settings for R3 series.
+custom_platform_settings:
+  - platforms:
+      - 7280R3
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms:
+      - 7500R3
+      - 7800R3
+    management_interface: Management0
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
