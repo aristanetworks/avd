@@ -1876,7 +1876,13 @@ keys:
       of the final EOS configuration.
   eos_cli_config_gen_configuration:
     type: dict
+    documentation_options:
+      table: role-settings
     keys:
+      enable:
+        type: bool
+        description: Generate device EOS configurations.
+        default: true
       hide_passwords:
         type: bool
         description: 'Replace the input data using the `hide_passwords` filter in
@@ -1886,7 +1892,13 @@ keys:
         default: false
   eos_cli_config_gen_documentation:
     type: dict
+    documentation_options:
+      table: role-settings
     keys:
+      enable:
+        type: bool
+        description: Generate device Markdown documentation.
+        default: true
       hide_passwords:
         type: bool
         description: 'Replace the input data using the `hide_passwords` filter in
@@ -4398,7 +4410,7 @@ keys:
           default: false
   generate_default_config:
     type: bool
-    default: true
+    default: false
     description: 'The `generate_default_config` knob allows to omit default EOS configuration.
 
       This can be useful when leveraging `eos_cli_config_gen` to generate configlets
@@ -4411,7 +4423,8 @@ keys:
 
       - RANCID Content Type
 
-      - Hostname
+      - Hostname (even if `hostname` variable is not set. Then the hostname is picked
+      up from `inventory_hostname`)
 
       - Default configuration for `aaa`
 
@@ -4422,9 +4435,20 @@ keys:
       - End of configuration delimiter
 
       '
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      url: https://avd.arista.com/devel/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated
   generate_device_documentation:
     type: bool
+    documentation_options:
+      table: role-settings
     default: true
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: eos_cli_config_gen_documentation.enable
   hardware:
     type: dict
     keys:
