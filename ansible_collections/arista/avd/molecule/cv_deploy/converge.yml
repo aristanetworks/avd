@@ -163,7 +163,6 @@
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        # cv_devices: [ avd-ci-leaf1, avd-ci-leaf2, avd-ci-leaf3, avd-ci-leaf4, avd-ci-spine1, avd-ci-spine2, avd-ci-core1 ]
         cv_devices: [ avd-ci-leaf2, avd-ci-core1 ]
         cv_submit_workspace_force: false
       ignore_errors: yes
@@ -199,7 +198,6 @@
         name: arista.avd.cv_deploy
       vars:
         cv_devices: [ avd-ci-leaf1, avd-ci-core1 ]
-        # cv_devices: [ avd-ci-core1 ]
         cv_submit_workspace_force: true
 
     - name: 'Display CVP result'
