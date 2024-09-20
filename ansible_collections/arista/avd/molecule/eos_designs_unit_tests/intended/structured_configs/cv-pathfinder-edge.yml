@@ -192,7 +192,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.1/31
 - name: Ethernet52.1000
   peer: site-ha-disabled-leaf
@@ -233,7 +234,8 @@ ethernet_interfaces:
   peer_interface: Ethernet42
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_666_peer3_Ethernet42
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -242,7 +244,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10555
   ip_nat:
     service_profile: NAT-IE-DIRECT
@@ -250,7 +253,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.15.5.6/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10555
   ip_nat:
     service_profile: NAT-IE-DIRECT
@@ -258,7 +262,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast-5G_AF830
 loopback_interfaces:
 - name: Loopback0

@@ -86,31 +86,39 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel47
   description: MLAG_PEER_SPINE2_Po47
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel1
   description: RACK1_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,20
   shutdown: false
-  mode: trunk
-  vlans: 10,20
   mlag: 1
 - name: Port-Channel3
   description: RACK2_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,30
   shutdown: false
-  mode: trunk
-  vlans: 10,30
   mlag: 3
 - name: Port-Channel5
   description: FIREWALL
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 10,20,30
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,20,30
   mlag: 5
 ethernet_interfaces:
 - name: Ethernet47
@@ -118,7 +126,6 @@ ethernet_interfaces:
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet47
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -128,7 +135,6 @@ ethernet_interfaces:
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet48
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -139,7 +145,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: LEAF1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -149,7 +154,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: LEAF2_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -159,7 +163,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: LEAF3_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -169,7 +172,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: LEAF4_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -180,7 +182,6 @@ ethernet_interfaces:
   port_profile: PP-FIREWALL
   description: FIREWALL_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 5
     mode: active

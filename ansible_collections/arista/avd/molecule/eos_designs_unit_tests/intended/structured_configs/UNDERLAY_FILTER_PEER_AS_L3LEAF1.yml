@@ -63,7 +63,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 192.168.0.1/31
 - name: Ethernet2
   peer: UNDERLAY_FILTER_PEER_AS_SPINE2
@@ -72,7 +73,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 192.168.0.3/31
 loopback_interfaces:
 - name: Loopback0

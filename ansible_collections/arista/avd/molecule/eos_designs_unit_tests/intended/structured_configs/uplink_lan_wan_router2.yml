@@ -112,7 +112,8 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK_LAN_L2LEAF_Ethernet2
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   mtu: 9218
 - name: Ethernet2.10
   peer: uplink_lan_l2leaf
@@ -147,7 +148,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.9.9.1/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast_999
 loopback_interfaces:
 - name: Loopback0
