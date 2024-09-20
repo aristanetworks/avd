@@ -346,8 +346,8 @@ port_channel_interfaces:
   description: Test_type_routed
   type: routed
   ip_address: 1.1.1.1/24
-  peer: dc2-leaf3-fw1
-  peer_interface: e2
+  peer: dc2-leaf2b
+  peer_interface: Ethernet2
 ethernet_interfaces:
 - name: Ethernet3
   peer: dc2-leaf3b.arista.com
@@ -420,8 +420,9 @@ ethernet_interfaces:
   description: Test_type_routed
   type: routed
   ip_address: 1.1.1.1/24
-  peer: dc2-leaf3-fw1
-  peer_interface: e2
+  peer: dc2-leaf2b
+  peer_interface: Ethernet2
+  shutdown: false
 mlag_configuration:
   domain_id: DC2_L3_LEAF3
   local_interface: Vlan4094
