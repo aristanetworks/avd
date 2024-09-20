@@ -170,7 +170,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+      allowed_vlan: 110-112,120-122,130-131,140-141,150,160-161,210-211,250,310-311,350
   shutdown: false
   mlag: 1001
 ethernet_interfaces:
