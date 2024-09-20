@@ -13,6 +13,7 @@
 
 Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%         if router_adaptive_virtual_topology.gateway_vxlan is arista.avd.defined(true) %}
+
 VXLAN gateway: Enabled
 {%         endif %}
 {%     endif %}
