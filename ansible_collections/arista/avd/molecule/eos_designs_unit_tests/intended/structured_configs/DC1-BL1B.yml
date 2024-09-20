@@ -436,7 +436,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.193/31
 - name: Ethernet2
   peer: DC1-SPINE2
@@ -446,7 +447,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.195/31
 - name: Ethernet3
   peer: DC1-SPINE3
@@ -456,7 +458,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.197/31
 - name: Ethernet4
   peer: DC1-SPINE4
@@ -466,7 +469,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.199/31
 - name: Ethernet8
   peer_type: l3_interface
@@ -474,7 +478,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet9
   peer_type: l3_interface
@@ -482,7 +487,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet10
   peer_type: l3_interface
@@ -490,7 +496,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test-DC1-BL1B
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet11
   peer_type: l3_interface
@@ -498,7 +505,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: DC1-BL1B descriptions preferred over single description
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet12
   peer_type: l3_interface
@@ -508,7 +516,8 @@ ethernet_interfaces:
   description: test l3 interfaces acls
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet13.10
   peer_type: l3_interface
@@ -527,10 +536,12 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: test
-  type: routed
+  switchport:
+    enabled: false
   vrf: Tenant_A_WAN_Zone
 - name: Ethernet13
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 - name: Ethernet4000

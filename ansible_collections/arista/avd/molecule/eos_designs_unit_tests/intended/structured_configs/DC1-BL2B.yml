@@ -391,7 +391,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.1/31
 - name: Ethernet2
   peer: DC1-SPINE2
@@ -401,7 +402,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.3/31
 - name: Ethernet3
   peer: DC1-SPINE3
@@ -411,7 +413,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.5/31
 - name: Ethernet4
   peer: DC1-SPINE4
@@ -421,7 +424,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.7/31
 loopback_interfaces:
 - name: Loopback0

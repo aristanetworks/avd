@@ -131,19 +131,20 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Eth1
   peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
@@ -153,7 +154,6 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1

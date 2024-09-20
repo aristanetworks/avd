@@ -120,7 +120,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.0/31
@@ -131,7 +132,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF2_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.4/31
@@ -142,7 +144,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF3_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.16/31
@@ -153,7 +156,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-LEAF4_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.254.2.20/31
@@ -162,7 +166,8 @@ ethernet_interfaces:
   peer_interface: Ethernet9
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet9
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   flow_tracker:
@@ -172,7 +177,8 @@ ethernet_interfaces:
   peer_interface: Ethernet10
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet10
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   flow_tracker:
@@ -182,7 +188,8 @@ ethernet_interfaces:
   peer_interface: Ethernet11
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet11
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
 - name: Ethernet12
@@ -190,7 +197,8 @@ ethernet_interfaces:
   peer_interface: Ethernet12
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet12
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   flow_tracker:
@@ -200,7 +208,8 @@ ethernet_interfaces:
   peer_interface: Ethernet13
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet13
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   flow_tracker:
@@ -210,7 +219,8 @@ ethernet_interfaces:
   peer_interface: Ethernet14
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet14
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   flow_tracker:
@@ -220,7 +230,8 @@ ethernet_interfaces:
   peer_interface: Ethernet15
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet15
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
 - name: Ethernet16
@@ -228,7 +239,8 @@ ethernet_interfaces:
   peer_interface: Ethernet16
   peer_type: spine
   description: P2P_LINK_TO_flow-tracking-tests-spine2_Ethernet16
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   flow_tracker:
