@@ -55,18 +55,19 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC2-POD1-LEAF2A_Ethernet3
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC2-POD1-LEAF2A_Po3
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  vlans: '4092'
 ip_igmp_snooping:
   globally_enabled: true
 vlans:

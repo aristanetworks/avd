@@ -190,7 +190,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE_Ethernet52
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.0/31
 - name: Ethernet1.1000
   peer: cv-pathfinder-edge
@@ -232,7 +233,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_CV-PATHFINDER-EDGE1_Ethernet52
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.2/31
 - name: Ethernet2.1000
   peer: cv-pathfinder-edge1

@@ -267,17 +267,18 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: IGMP-QUERIER-L2LEAF1A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: IGMP-QUERIER-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-3,11-12,21-23,101-103,111-113,121-123
   shutdown: false
-  mode: trunk
-  vlans: 1-3,11-12,21-23,101-103,111-113,121-123
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -373,7 +374,6 @@ ip_igmp_snooping:
   - id: 3
     querier:
       enabled: false
-      address: 192.168.255.1
   - id: 101
     querier:
       enabled: true
@@ -386,7 +386,6 @@ ip_igmp_snooping:
   - id: 103
     querier:
       enabled: false
-      address: 192.168.255.1
   - id: 11
     querier:
       enabled: true
@@ -410,8 +409,6 @@ ip_igmp_snooping:
   - id: 113
     querier:
       enabled: false
-      address: 1.1.1.1
-      version: 3
   - id: 21
     querier:
       enabled: true
@@ -438,7 +435,6 @@ ip_igmp_snooping:
   - id: 123
     querier:
       enabled: false
-      address: 192.168.255.1
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan1

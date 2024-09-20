@@ -165,9 +165,9 @@ interface Ethernet1
 interface Port-Channel1
    description ISIS-SPINE1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110,4092
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

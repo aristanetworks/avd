@@ -112,7 +112,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.5/31
@@ -123,7 +124,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.7/31
@@ -133,18 +135,19 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC2-POD1-L2LEAF2A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  vlans: '4092'
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
