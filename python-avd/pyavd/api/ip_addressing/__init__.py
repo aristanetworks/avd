@@ -333,9 +333,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         return get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
     def wan_ha_ip_local(self) -> str:
-        """
-        Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
-        """
+        """Render ipv4 address for wan_ha_ip_address using dynamically loaded python module. """
         wan_ha_ipv4_pool = self.shared_utils.wan_ha_ipv4_pool
         prefixlen = self._fabric_ip_addressing_wan_ha_ipv4_prefix_length
 
@@ -347,9 +345,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         return f"{ip_address}/{prefixlen}"
 
     def wan_ha_ip_remote(self) -> str:
-        """
-        Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
-        """
+        """Render ipv4 address for wan_ha_ip_address using dynamically loaded python module. """
         wan_ha_ipv4_pool = self.shared_utils.wan_ha_ipv4_pool
         prefixlen = self._fabric_ip_addressing_wan_ha_ipv4_prefix_length
 
