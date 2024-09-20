@@ -104,19 +104,20 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_bgp-peer-groups-2_Po3
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet3
   peer: bgp-peer-groups-2
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-peer-groups-2_Ethernet3
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3

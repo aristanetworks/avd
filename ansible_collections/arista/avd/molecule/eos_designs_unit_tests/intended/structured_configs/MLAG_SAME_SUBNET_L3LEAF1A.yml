@@ -162,19 +162,20 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1B_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG_SAME_SUBNET_L3LEAF1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1B_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -184,7 +185,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1B_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5

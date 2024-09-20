@@ -570,25 +570,25 @@ interface Ethernet16
 interface Port-Channel5
    description MLAG_PEER_DC1-SVC3A_Po5
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 !
 interface Port-Channel7
    description DC1_L2LEAF2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
+   switchport
    mlag 7
 !
 interface Port-Channel14
    description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    mlag 14
    spanning-tree portfast
    spanning-tree bpdufilter enable
@@ -600,9 +600,9 @@ interface Port-Channel14
 interface Port-Channel15
    description server08_no_profile_port_channel_server08_no_profile_port_channel
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    mlag 15
    spanning-tree portfast
    spanning-tree bpdufilter enable

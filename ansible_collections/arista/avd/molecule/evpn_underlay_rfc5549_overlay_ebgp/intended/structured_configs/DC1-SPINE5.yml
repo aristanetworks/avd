@@ -156,7 +156,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3A_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet2
   peer: DC1-LEAF3B
@@ -165,7 +166,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet3
   peer: DC1-LEAF3A
@@ -174,7 +176,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet4
   peer: DC1-LEAF3B
@@ -183,7 +186,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 loopback_interfaces:
 - name: Loopback0
