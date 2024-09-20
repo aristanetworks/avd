@@ -1846,6 +1846,11 @@ router bgp {{ router_bgp.as }}
       network {{ network.prefix }}
 {%             endif %}
 {%         endfor %}
+{%         if vrf.bgp.additional_paths.install is arista.avd.defined(true) %}
+      bgp additional-paths install
+{%         elif vrf.bgp.additional_paths.install_ecmp_primary is arista.avd.defined(true) %}
+      bgp additional-paths install ecmp-primary
+{%         endif %}
 {%         if vrf.bgp.redistribute_internal is arista.avd.defined(true) %}
       bgp redistribute-internal
 {%         elif vrf.bgp.redistribute_internal is arista.avd.defined(false) %}

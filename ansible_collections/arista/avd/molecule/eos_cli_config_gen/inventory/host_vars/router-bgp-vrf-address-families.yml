@@ -20,7 +20,7 @@ router_bgp:
     peer_groups:
       - name: FOOBAR
         activate: true
-        additional_paths: 
+        additional_paths:
           receive: true
     neighbors:
       - ip_address: 10.1.1.1
