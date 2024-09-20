@@ -6079,9 +6079,7 @@ keys:
         - alerts
         - emergencies
         - disabled
-        description: 'Console logging severity level.
-
-          '
+        description: Console logging severity level.
       monitor:
         type: str
         valid_values:
@@ -6094,9 +6092,7 @@ keys:
         - alerts
         - emergencies
         - disabled
-        description: 'Monitor logging severity level.
-
-          '
+        description: Monitor logging severity level.
       buffered:
         type: dict
         keys:
@@ -6118,14 +6114,10 @@ keys:
             - notifications
             - warnings
             - disabled
-            description: 'Buffer logging severity level.
-
-              '
+            description: Buffer logging severity level.
       repeat_messages:
         type: bool
-        description: 'Summarize concurrent repeat messages
-
-          '
+        description: Summarize concurrent repeat messages.
       trap:
         type: str
         valid_values:
@@ -6139,9 +6131,7 @@ keys:
         - system
         - warnings
         - disabled
-        description: 'Trap logging severity level.
-
-          '
+        description: Trap logging severity level.
       synchronous:
         type: dict
         keys:
@@ -6158,9 +6148,7 @@ keys:
             - notifications
             - warnings
             - disabled
-            description: 'Synchronous logging severity level.
-
-              '
+            description: Synchronous logging severity level.
             default: critical
       format:
         type: dict
@@ -6184,14 +6172,10 @@ keys:
               line. (default EOS CLI behaviour).
           sequence_numbers:
             type: bool
-            description: 'Add sequence numbers to log messages.
-
-              '
+            description: Add sequence numbers to log messages.
           rfc5424:
             type: bool
-            description: 'Forward logs in RFC5424 format.
-
-              '
+            description: Forward logs in RFC5424 format.
       facility:
         type: str
         valid_values:
