@@ -159,8 +159,7 @@ ethernet_interfaces:
   description: ATT_404-01
   dhcp_client_accept_default_route: true
 - name: Ethernet52
-  switchport:
-    enabled: false
+  type: routed
   peer_type: l3_interface
   peer: cv-pathfinder-edge3B
   shutdown: false

@@ -159,7 +159,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 42
   dhcp_client_accept_default_route: true
 - name: Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 - name: Ethernet42
