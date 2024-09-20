@@ -82,6 +82,9 @@ router_bgp:
         activate: true
         default_route:
           enabled: true
+        additional_paths:
+          receive: true
+          send: any
       - ip_address: 10.100.100.2
         activate: true
         default_route:
