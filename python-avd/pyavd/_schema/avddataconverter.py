@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Any
 from pyavd._errors import AvdDeprecationWarning
 from pyavd._utils import get_all
 
+from .utils import get_instance_with_defaults
+
 SCHEMA_TO_PY_TYPE_MAP = {
     "str": str,
     "int": int,
@@ -92,7 +94,8 @@ class AvdDataConverter:
         # Resolve "keys" from schema "dynamic_keys" by looking for the dynamic key in data.
         keys = {}
         for dynamic_key, childschema in dynamic_keys.items():
-            resolved_keys = get_all(data, dynamic_key)
+            data_with_defaults = get_instance_with_defaults(data, dynamic_key, schema)
+            resolved_keys = get_all(data_with_defaults, dynamic_key)
             for resolved_key in resolved_keys:
                 keys.setdefault(resolved_key, childschema)
 

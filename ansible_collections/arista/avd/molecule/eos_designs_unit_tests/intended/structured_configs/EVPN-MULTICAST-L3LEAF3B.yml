@@ -148,16 +148,16 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.7:31
+    rd: 192.168.255.7:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     evpn_multicast: true
     router_id: 192.168.255.7
     redistribute_routes:
@@ -1361,7 +1361,7 @@ vxlan_interface:
         vni: 33
       - name: TEN_C_L3_MULTICAST_ENABLED_130_131
         vni: 31
-        multicast_group: 232.0.32.31
+        multicast_group: 232.0.32.66
       - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         vni: 32
         multicast_group: 232.0.32.32
@@ -1369,7 +1369,7 @@ vxlan_interface:
         vni: 42
       - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         vni: 41
-        multicast_group: 232.0.64.40
+        multicast_group: 232.0.64.2
       - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         vni: 55
         multicast_group: 232.0.96.54

@@ -2639,7 +2639,8 @@ keys:
     documentation_options:
       table: type-setting
     type: str
-    dynamic_valid_values: node_type_keys.type
+    dynamic_valid_values:
+    - node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 

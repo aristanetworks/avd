@@ -52,9 +52,11 @@ interface Management1
 | -------- | --- | ------------|
 | IPv4 | default | acl4_1 |
 | IPv4 | red | acl4_2 |
+| IPv4 | red_1 | acl4_2 |
 | IPv4 | default | acl4_3 |
 | IPv6 | default | acl6_1 |
 | IPv6 | blue | acl6_2 |
+| IPv6 | blue_1 | acl6_2 |
 | IPv6 | default | acl6_3 |
 
 #### System Control-Plane Device Configuration
@@ -65,9 +67,11 @@ system control-plane
    tcp mss ceiling ipv4 1344 ipv6 1366
    ip access-group acl4_1 in
    ip access-group acl4_2 vrf red in
+   ip access-group acl4_2 vrf red_1 in
    ip access-group acl4_3 vrf default in
    ipv6 access-group acl6_1 in
    ipv6 access-group acl6_2 vrf blue in
+   ipv6 access-group acl6_2 vrf blue_1 in
    ipv6 access-group acl6_3 vrf default in
 ```
 
