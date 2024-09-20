@@ -68,8 +68,8 @@ router_bgp:
       activate: true
       encapsulation: path-selection
     - name: WAN-OVERLAY-PEERS
-      encapsulation: path-selection
       activate: true
+      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4_sr_te:

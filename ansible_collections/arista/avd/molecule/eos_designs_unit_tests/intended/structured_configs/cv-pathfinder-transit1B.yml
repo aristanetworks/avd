@@ -152,10 +152,10 @@ router_bgp:
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
+      activate: true
       encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
-      activate: true
     neighbor_default:
       next_hop_self_received_evpn_routes:
         enable: true

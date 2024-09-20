@@ -224,10 +224,13 @@ class RouterBgpMixin(UtilsMixin):
         overlay_peer_group = {}
         if self.shared_utils.overlay_evpn_vxlan is True:
             if self.shared_utils.is_wan_router:
-                overlay_peer_group["name"] = self._get_peer_group_name("wan_overlay_peers")
-                overlay_peer_group["encapsulation"] = self.shared_utils.wan_encapsulation
+                overlay_peer_group = {
+                    "name": self._get_peer_group_name("wan_overlay_peers"),
+                    "activate": True,
+                    "encapsulation": self.shared_utils.wan_encapsulation,
+                }
             else:
-                overlay_peer_group["name"] = self._get_peer_group_name("evpn_overlay_peers")
+                overlay_peer_group = {"name": self._get_peer_group_name("evpn_overlay_peers"), "activate": True}
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if self.shared_utils.evpn_gateway_vxlan_l2 is True or self.shared_utils.evpn_gateway_vxlan_l3 is True:
@@ -250,7 +253,7 @@ class RouterBgpMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol == "ibgp":
             # TODO: - assess this condition - both can't be true at the same time.
             if self.shared_utils.overlay_evpn_mpls is True and self.shared_utils.overlay_evpn_vxlan is not True:
-                overlay_peer_group["name"] = self._get_peer_group_name("mpls_overlay_peers")
+                overlay_peer_group = {"name": self._get_peer_group_name("mpls_overlay_peers"), "activate": True}
                 address_family_evpn["neighbor_default"] = {"encapsulation": "mpls"}
                 if self.shared_utils.overlay_ler is True:
                     address_family_evpn["neighbor_default"]["next_hop_self_source_interface"] = "Loopback0"
@@ -276,7 +279,6 @@ class RouterBgpMixin(UtilsMixin):
                 )
 
         if overlay_peer_group:
-            overlay_peer_group["activate"] = True
             peer_groups.append(overlay_peer_group)
 
         if peer_groups:

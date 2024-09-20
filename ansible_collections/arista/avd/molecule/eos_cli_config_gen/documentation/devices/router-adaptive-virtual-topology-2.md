@@ -42,6 +42,7 @@ interface Management1
 #### Router Adaptive Virtual Topology Summary
 
 Topology role: edge
+
 VXLAN gateway: Enabled
 
 #### Router Adaptive Virtual Topology Configuration
