@@ -39,7 +39,7 @@ management api gnmi
 {%             if not first_line == True %}
    !
 {%             endif %}
-{%             for transport in management_api_gnmi.transport.grpc_tunnels %}
+{%             for transport in management_api_gnmi.transport.grpc_tunnels | arista.avd.natural_sort("name") %}
 {%                 if not loop.first %}
    !
 {%                 endif %}
