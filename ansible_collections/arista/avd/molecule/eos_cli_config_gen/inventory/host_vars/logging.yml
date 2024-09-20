@@ -68,10 +68,8 @@ logging:
             - 100
             - 200
   event:
-    congestion_drops:
-      interval: 10
-    link_status:
-      global: true
+    congestion_drops_interval: 10
+    global_link_status: true
     storm_control:
       discards:
         global: true

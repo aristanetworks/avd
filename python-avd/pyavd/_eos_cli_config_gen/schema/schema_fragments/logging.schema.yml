@@ -132,21 +132,15 @@ keys:
       event:
         type: dict
         keys:
-          congestion_drops:
-            type: dict
-            keys:
-              interval:
-                type: int
-                convert_types:
-                  - str
-                min: 1
-                max: 65535
-                description: Logging interval in seconds.
-          link_status:
-            type: dict
-            keys:
-              global:
-                type: bool
+          congestion_drops_interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 65535
+            description: Logging interval in seconds.
+          global_link_status:
+            type: bool
           storm_control:
             type: dict
             keys:
