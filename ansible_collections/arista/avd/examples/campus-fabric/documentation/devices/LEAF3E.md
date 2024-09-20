@@ -2399,9 +2399,9 @@ interface Ethernet97/2
 interface Port-Channel971
    description IDF3_AGG_Po981
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

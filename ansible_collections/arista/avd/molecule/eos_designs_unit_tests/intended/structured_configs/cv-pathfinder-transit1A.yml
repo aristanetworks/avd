@@ -221,7 +221,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.1/31
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf1
@@ -274,11 +275,13 @@ ethernet_interfaces:
   ip_nat:
     service_profile: NAT-IE-DIRECT
 - name: Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 - name: Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 loopback_interfaces:
