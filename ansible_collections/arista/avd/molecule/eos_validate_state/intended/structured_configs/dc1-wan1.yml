@@ -148,7 +148,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.15/24
@@ -167,7 +167,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.1/31
 - name: Ethernet2
   peer: dc1-leaf1b
@@ -176,23 +177,26 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.3/31
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.3.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: mpls-sp-1_DC1-MPLS-3
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.3.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: isp-1_DC1-INET-3
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.2.1/32
 as_path:
@@ -498,7 +502,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 10.255.1.1/32
   flow_tracker:
     sampled: FLOW-TRACKER

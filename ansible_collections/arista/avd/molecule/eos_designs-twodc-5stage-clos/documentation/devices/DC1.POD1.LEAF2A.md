@@ -412,42 +412,45 @@ interface Ethernet19
 interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk
+   switchport
    mlag 3
    service-profile QOS-PROFILE
 !
 interface Port-Channel5
    description MLAG_PEER_DC1-POD1-LEAF2B_Po5
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
    service-profile QOS-PROFILE
 !
 interface Port-Channel16
    description server-1_PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 16
    service-profile bar
 !
 interface Port-Channel17
    description Set using structured_config on server adapter port-channel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 17
    service-profile foo
 !
 interface Port-Channel18
    description server-1_PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 18
    service-profile foo
    comment
@@ -458,8 +461,9 @@ interface Port-Channel18
 interface Port-Channel19
    description server-1_PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 19
    service-profile foo
    comment
@@ -476,8 +480,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.4/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.4/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.110.4/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.4/32 |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.4/32 |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.101.4/32 |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.4/32 |
@@ -486,8 +490,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | - |
@@ -497,12 +501,12 @@ interface Port-Channel19
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.110.4/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 172.18.110.4/32
 !

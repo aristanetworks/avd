@@ -66,20 +66,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.107/24
@@ -488,33 +488,34 @@ interface Ethernet12
 interface Port-Channel5
    description MLAG_PEER_DC1-LEAF2A_Po5
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 !
 interface Port-Channel7
    description DC1-L2LEAF1A_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
+   switchport
    mlag 7
 !
 interface Port-Channel10
    description server01_MLAG_PortChanne1
    no shutdown
-   switchport
    switchport trunk allowed vlan 210-211
    switchport mode trunk
+   switchport
    mlag 10
 !
 interface Port-Channel11
    description server01_MTU_PROFILE_MLAG_PortChanne1
    no shutdown
    mtu 1600
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 11
 !
 interface Port-Channel12
@@ -533,16 +534,16 @@ interface Port-Channel12
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.7/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.6/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.7/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.6/32 |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.7/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
 
 #### Loopback Interfaces Device Configuration
@@ -550,12 +551,12 @@ interface Port-Channel12
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.7/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 192.168.254.6/32
 !

@@ -20,7 +20,7 @@ dot1x dynamic-authorization
 {%     endif %}
 {%     if dot1x.mac_based_authentication is arista.avd.defined or dot1x.radius_av_pair is arista.avd.defined or
          dot1x.aaa.unresponsive is arista.avd.defined or dot1x.captive_portal is arista.avd.defined
-         or dot1x.supplicant is arista.avd.defined %}
+         or dot1x.supplicant is arista.avd.defined  or dot1x.radius_av_pair_username_format is arista.avd.defined %}
 dot1x
 {%         for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
    supplicant profile {{ profile.name }}
@@ -98,6 +98,9 @@ dot1x
 {%             if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%             endif %}
+{%         endif %}
+{%         if dot1x.radius_av_pair_username_format.delimiter is arista.avd.defined and dot1x.radius_av_pair_username_format.mac_string_case is arista.avd.defined %}
+   mac-based-auth radius av-pair user-name delimiter {{ dot1x.radius_av_pair_username_format.delimiter }} {{ dot1x.radius_av_pair_username_format.mac_string_case }}
 {%         endif %}
 {%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
    supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds

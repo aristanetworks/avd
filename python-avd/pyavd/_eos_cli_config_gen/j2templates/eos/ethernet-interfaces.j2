@@ -369,6 +369,59 @@ interface {{ ethernet_interface.name }}
    dot1x authentication failure action traffic drop
 {%             endif %}
 {%         endif %}
+{%         if ethernet_interface.dot1x.aaa.unresponsive is arista.avd.defined %}
+{%             set aaa_config = "dot1x aaa unresponsive" %}
+{%             set actions = ethernet_interface.dot1x.aaa.unresponsive %}
+{%             for action in actions | sort(reverse=True) %}
+{%                 if action == "phone_action" %}
+{%                     set aaa_action_config = aaa_config ~ " phone action" %}
+{%                 elif action == "action" %}
+{%                     set aaa_action_config = aaa_config ~ " action" %}
+{%                 endif %}
+{%                 if aaa_action_config is arista.avd.defined %}
+{%                     if actions[action].apply_cached_results is arista.avd.defined(true) %}
+{%                         set action_apply_config = "apply cached-results" %}
+{%                         if actions[action].cached_results_timeout.time_duration is arista.avd.defined and actions[action].cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{%                             set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config ~ " timeout " ~ actions[action].cached_results_timeout.time_duration ~ " " ~ actions[action].cached_results_timeout.time_duration_unit %}
+{%                         endif %}
+{%                     endif %}
+{%                     if actions[action].traffic_allow is arista.avd.defined(true) %}
+{%                         if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                             set aaa_action_config = aaa_action_config ~ " else traffic allow" %}
+{%                         else %}
+{%                             set aaa_action_config = aaa_action_config ~ " traffic allow" %}
+{%                         endif %}
+{%                     else %}
+{%                         if actions[action].traffic_allow_vlan is arista.avd.defined and actions[action].traffic_allow_access_list is arista.avd.defined %}
+{%                             if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                                 set aaa_action_config = aaa_action_config ~ " else traffic allow vlan " ~ actions[action].traffic_allow_vlan ~ " access-list " ~ actions[action].traffic_allow_access_list %}
+{%                             else %}
+{%                                 set aaa_action_config = aaa_action_config ~ " traffic allow vlan " ~ actions[action].traffic_allow_vlan ~ " access-list " ~ actions[action].traffic_allow_access_list %}
+{%                             endif %}
+{%                         else %}
+{%                             if actions[action].traffic_allow_vlan is arista.avd.defined %}
+{%                                 if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                                     set aaa_action_config = aaa_action_config ~ " else traffic allow vlan " ~ actions[action].traffic_allow_vlan %}
+{%                                 else %}
+{%                                     set aaa_action_config = aaa_action_config ~ " traffic allow vlan " ~ actions[action].traffic_allow_vlan %}
+{%                                 endif %}
+{%                             endif %}
+{%                             if actions[action].traffic_allow_access_list is arista.avd.defined %}
+{%                                 if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                                     set aaa_action_config = aaa_action_config ~ " else traffic allow access list " ~ actions[action].traffic_allow_access_list %}
+{%                                 else %}
+{%                                     set aaa_action_config = aaa_action_config ~ " traffic allow access list " ~ actions[action].traffic_allow_access_list %}
+{%                                 endif %}
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+   {{ aaa_action_config }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.dot1x.aaa.unresponsive.eap_response is arista.avd.defined %}
+   {{ aaa_config }} eap response {{ ethernet_interface.dot1x.aaa.unresponsive.eap_response }}
+{%         endif %}
 {%         if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
    dot1x reauthentication
 {%         endif %}
@@ -390,6 +443,9 @@ interface {{ ethernet_interface.name }}
 {%                 endif %}
    {{ host_mode_cli }}
 {%             endif %}
+{%         endif %}
+{%         if ethernet_interface.dot1x.mac_based_access_list is arista.avd.defined(true) %}
+   dot1x mac based access-list
 {%         endif %}
 {%         if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) %}
 {%             if ethernet_interface.dot1x.mac_based_authentication.host_mode_common is arista.avd.defined(true) %}

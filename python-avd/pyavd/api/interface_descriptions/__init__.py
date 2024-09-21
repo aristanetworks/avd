@@ -10,6 +10,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
+from pyavd._utils import default
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtils
@@ -236,45 +237,29 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := self.shared_utils.interface_descriptions_templates.get("overlay_loopback_interface"):
-            return self._template(template_path, overlay_loopback_description=data.description)
+        if template_path := default(
+            self.shared_utils.interface_descriptions_templates.get("router_id_loopback_interface"),
+            self.shared_utils.interface_descriptions_templates.get("overlay_loopback_interface"),
+        ):
+            return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
 
-        if data.description is not None:
-            return data.description
+        return data.description
 
-        if data.mpls_overlay_role in ["server", "client"]:
-            return "MPLS_Overlay_peering"
-
-        if data.mpls_lsr is True:
-            return "LSR_Router_ID"
-
-        if self.shared_utils.is_wan_router:
-            return "Router_ID"
-
-        # Covers L2LS
-        if data.overlay_routing_protocol == "none":
-            return "Router_ID"
-
-        # Note that the current code will render this for HER and others
-        return "EVPN_Overlay_Peering"
-
-    def vtep_loopback_interface(
-        self,
-        data: InterfaceDescriptionData,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
-    ) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build VTEP loopback interface description.
 
         Available data:
+            - description
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
             - type
         """
         if template_path := self.shared_utils.interface_descriptions_templates.get("vtep_loopback_interface"):
-            return self._template(template_path)
+            return self._template(template_path, vtep_loopback_description=data.description)
 
-        return "VTEP_VXLAN_Tunnel_Source"
+        return data.description
 
 
 class InterfaceDescriptionData:

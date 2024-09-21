@@ -58,7 +58,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 10.1.1.1/24
@@ -97,19 +97,20 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel10
   description: MLAG_PEER_bgp-from-network-services-2_Po10
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet10
   peer: bgp-from-network-services-2
   peer_interface: Ethernet10
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-from-network-services-2_Ethernet10
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 10
@@ -118,7 +119,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.10.1.1/30
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
 mlag_configuration:
   domain_id: GROUP1
   local_interface: Vlan4094
@@ -128,7 +130,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.0.255.1/32
 ip_igmp_snooping:

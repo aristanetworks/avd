@@ -238,26 +238,26 @@ interface Ethernet5
 interface Port-Channel1
    description BGP-LEAF1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 1,100,200,4092
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel2
    description BGP-LEAF2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
    mlag 2
 !
 interface Port-Channel3
    description MLAG_PEER_BGP-SPINE2_Po3
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 ```
 
 ### Loopback Interfaces
@@ -268,20 +268,20 @@ interface Port-Channel3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 192.168.255.1/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.1/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.1/32
 ```

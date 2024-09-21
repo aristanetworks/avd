@@ -193,7 +193,7 @@ class MiscMixin:
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
         if not self.platform_settings_feature_support_per_interface_mtu:
             return None
-        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        p2p_uplinks_mtu = default(self.platform_settings_p2p_uplinks_mtu, get(self.hostvars, "p2p_uplinks_mtu", default=9214))
         return get(self.switch_data_combined, "uplink_mtu", default=p2p_uplinks_mtu)
 
     @cached_property
@@ -338,6 +338,10 @@ class MiscMixin:
     @cached_property
     def fabric_sflow_mlag_interfaces(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.mlag_interfaces")
+
+    @cached_property
+    def fabric_sflow_l3_interfaces(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.l3_interfaces")
 
     @cached_property
     def default_interface_mtu(self: SharedUtils) -> int | None:
