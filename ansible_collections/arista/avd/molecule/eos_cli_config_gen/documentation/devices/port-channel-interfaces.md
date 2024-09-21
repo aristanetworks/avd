@@ -403,7 +403,7 @@ interface Port-Channel3
    shape rate 200000 kbps
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2 rx-disabled
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
@@ -443,8 +443,8 @@ interface Port-Channel8
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 level-1
    isis authentication mode md5 level-2
-   isis authentication key 0 password level-1
-   isis authentication key 0 password1 level-2
+   isis authentication key 0 <removed> level-1
+   isis authentication key 0 <removed> level-2
 !
 interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
@@ -471,7 +471,7 @@ interface Port-Channel10
    shape rate 50 percent
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Port-Channel12
    description interface_in_mode_access_with_voice
@@ -493,13 +493,13 @@ interface Port-Channel13
       designated-forwarder election hold-time 10
       designated-forwarder election candidate reachability required
       route-target import 00:00:01:02:03:04
-   isis authentication key-id 2 algorithm sha-512 key 0 password
-   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
-   isis authentication key-id 1 algorithm sha-1 key 0 password level-1
-   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
-   isis authentication key-id 5 algorithm sha-1 key 0 password3 level-1
-   isis authentication key-id 1 algorithm sha-1 key 0 password level-2
-   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
+   isis authentication key-id 2 algorithm sha-512 key 0 <removed>
+   isis authentication key-id 3 algorithm sha-512 rfc-5310 key 0 <removed>
+   isis authentication key-id 1 algorithm sha-1 key 0 <removed> level-1
+   isis authentication key-id 4 algorithm sha-1 rfc-5310 key 0 <removed> level-1
+   isis authentication key-id 5 algorithm sha-1 key 0 <removed> level-1
+   isis authentication key-id 1 algorithm sha-1 key 0 <removed> level-2
+   isis authentication key-id 5 algorithm sha-1 rfc-5310 key 0 <removed> level-2
 !
 interface Port-Channel14
    description EVPN-MPLS multihoming
@@ -519,7 +519,7 @@ interface Port-Channel15
    spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
    isis authentication mode md5 rx-disabled
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Port-Channel16
    description DC1_L2LEAF4_Po1
@@ -537,7 +537,7 @@ interface Port-Channel16
    switchport backup-link Port-Channel100.102 prefer vlan 20
    isis enable EVPN_UNDERLAY
    isis authentication mode md5
-   isis authentication key 0 password
+   isis authentication key 0 <removed>
 !
 interface Port-Channel17
    description PBR Description
@@ -632,8 +632,8 @@ interface Port-Channel100
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 rx-disabled level-1
    isis authentication mode text rx-disabled level-2
-   isis authentication key 0 password level-1
-   isis authentication key 0 password level-2
+   isis authentication key 0 <removed> level-1
+   isis authentication key 0 <removed> level-2
 !
 interface Port-Channel100.101
    description IFL for TENANT01
