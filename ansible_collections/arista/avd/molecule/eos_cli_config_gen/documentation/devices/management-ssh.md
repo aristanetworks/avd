@@ -89,8 +89,8 @@ management ssh
    authentication empty-passwords permit
    client-alive interval 666
    client-alive count-max 42
-   log-level debug
    no shutdown
+   log-level debug
    !
    vrf mgt
       no shutdown

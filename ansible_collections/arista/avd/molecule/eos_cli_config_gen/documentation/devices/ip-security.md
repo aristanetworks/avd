@@ -84,7 +84,6 @@ interface Management1
 ```eos
 !
 ip security
-   !
    ike policy IKE-1
       ike-lifetime 24
       encryption aes256

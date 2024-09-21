@@ -129,6 +129,7 @@ management security
    password minimum length 17
    password encryption-key common
    password encryption reversible aes-256-gcm
+   !
    password policy AVD_POLICY
       minimum digits 1
       minimum length 2

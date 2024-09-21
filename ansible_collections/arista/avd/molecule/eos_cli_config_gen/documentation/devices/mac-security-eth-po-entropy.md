@@ -203,9 +203,11 @@ mac security
       traffic unprotected allow
       sci
       l2-protocol lldp bypass unauthorized
+   !
    profile A2
       key 1234b 7 <removed>
       traffic unprotected allow active-sak
+   !
    profile A3
       cipher aes256-gcm-xpn
       key ab 7 <removed>
