@@ -8,6 +8,8 @@
 !
 {%     if logging.repeat_messages is arista.avd.defined(false) %}
 no logging repeat-messages
+{%     elif logging.repeat_messages is arista.avd.defined(true) %}
+logging repeat-messages
 {%     endif %}
 {%     if logging.buffered.level is arista.avd.defined('disabled') %}
 no logging buffered
@@ -38,7 +40,7 @@ logging monitor {{ logging.monitor }}
 {%     endif %}
 {%     if logging.event.global_link_status is arista.avd.defined(false) %}
 no logging event link-status global
-{%     elif logging.event.global_link_status is arista.avd.defined %}
+{%     elif logging.event.global_link_status is arista.avd.defined(true) %}
 logging event link-status global
 {%     endif %}
 {%     if logging.event.storm_control.discards.global is arista.avd.defined(true) %}
