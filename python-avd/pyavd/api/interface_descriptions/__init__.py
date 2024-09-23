@@ -262,11 +262,33 @@ class AvdInterfaceDescriptions(AvdFacts):
         return data.description
 
     def wan_ha_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
-        """Build WAN HA ethernet interface description."""
+        """
+        Build WAN HA ethernet interface description.
+
+        Available data:
+            - interface
+            - peer
+            - peer_interface
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
         return f"WAN_HA_{data.peer}_{data.peer_interface}"
 
     def wan_ha_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
-        """Build WAN HA port-channel interface description."""
+        """
+        Build WAN HA port-channel interface description.
+
+        Available data:
+            - interface
+            - peer
+            - peer_interface
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
         return f"WAN_HA_{data.peer}_{data.peer_interface}"
 
 
