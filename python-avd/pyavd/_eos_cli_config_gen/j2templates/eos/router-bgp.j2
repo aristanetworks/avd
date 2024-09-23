@@ -997,9 +997,9 @@ router bgp {{ router_bgp.as }}
 {%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
 {%                     do v4_bgp_lu_resolution_ribs.append("tunnel-rib colored system-colored-tunnel-rib") %}
 {%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") %}
-{%.                    if rib.rib_name is arista.avd.defined %}
+{%                     if rib.rib_name is arista.avd.defined %}
 {%                         do v4_bgp_lu_resolution_ribs.append("tunnel-rib " ~ rib.rib_name) %}
-{%.                    endif %}
+{%                     endif %}
 {%                 elif rib.rib_type is arista.avd.defined %}
 {%                     do v4_bgp_lu_resolution_ribs.append(rib.rib_type) %}
 {%                 endif %}
