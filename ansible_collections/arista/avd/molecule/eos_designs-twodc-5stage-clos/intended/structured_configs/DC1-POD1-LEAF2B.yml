@@ -486,7 +486,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
   service_profile: QOS-PROFILE

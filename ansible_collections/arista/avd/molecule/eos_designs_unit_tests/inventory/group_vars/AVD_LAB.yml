@@ -1,5 +1,10 @@
 # Nashua EVE-NG LAB shared attributes
 
+# Overwriting the default names match the <5.0 description styling
+trunk_groups:
+  mlag_l3:
+    name: LEAF_PEER_L3
+
 # local users
 local_users:
   - name: admin
