@@ -1125,6 +1125,18 @@ Both data models support variable inheritance from profiles defined under [`port
 roles/eos_designs/docs/tables/connected-endpoints.md
 --8<--
 
+### Connected endpoints default description or description template settings
+
+Connected endpoints support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-connected-endpoints-description.md
+--8<--
+
+--8<--
+roles/eos_designs/docs/tables/default-connected-endpoints-port-channel-description.md
+--8<--
+
 ### Network ports settings
 
 The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
@@ -1271,18 +1283,6 @@ The keys can be customized to provide a better better organization or grouping o
 
 --8<--
 roles/eos_designs/docs/tables/connected-endpoints-keys.md
---8<--
-
-### Connected endpoints default description or description template settings
-
-Connected endpoints support the customization of generated descriptions with a static value or template.
-
---8<--
-roles/eos_designs/docs/tables/default-connected-endpoints-description.md
---8<--
-
---8<--
-roles/eos_designs/docs/tables/default-connected-endpoints-port-channel-description.md
 --8<--
 
 ## Network Services
