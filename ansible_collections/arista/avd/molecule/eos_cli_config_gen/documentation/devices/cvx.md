@@ -59,9 +59,11 @@ cvx
    no shutdown
    peer host 1.1.1.1
    peer host 2.2.2.2
+   !
    service mcs
       redis password 7 <removed>
       no shutdown
+   !
    service vxlan
       no shutdown
       vtep mac-learning control-plane

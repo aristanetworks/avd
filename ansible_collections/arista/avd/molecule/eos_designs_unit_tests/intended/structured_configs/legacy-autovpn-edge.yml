@@ -110,14 +110,16 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast_666
   dhcp_client_accept_default_route: true
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 10.14.14.14/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: MPLS-SP-1_Cat6
 loopback_interfaces:
 - name: Loopback0
