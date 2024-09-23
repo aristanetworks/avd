@@ -4,6 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# eos - hardware #}
+{% if hardware.port_groups is arista.avd.defined %}
+!
+{%     for port_group in hardware.port_groups %}
+{%         if port_group.select is arista.avd.defined %}
+hardware port-group {{ port_group.port_group }} select {{ port_group.select }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
 {% if hardware.access_list.mechanism is arista.avd.defined %}
 !
 hardware access-list mechanism {{ hardware.access_list.mechanism }}
