@@ -991,6 +991,23 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.next_hop_unchanged is arista.avd.defined(true) %}
       bgp next-hop-unchanged
 {%         endif %}
+{%         if router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs is arista.avd.defined %}
+{%             set v4_bgp_lu_resolution_ribs = [] %}
+{%             for rib in router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs %}
+{%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
+{%                     do v4_bgp_lu_resolution_ribs.append("tunnel-rib colored system-colored-tunnel-rib") %}
+{%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") %}
+{%.                    if rib.rib_name is arista.avd.defined %}
+{%                         do v4_bgp_lu_resolution_ribs.append("tunnel-rib " ~ rib.rib_name) %}
+{%.                    endif %}
+{%                 elif rib.rib_type is arista.avd.defined %}
+{%                     do v4_bgp_lu_resolution_ribs.append(rib.rib_type) %}
+{%                 endif %}
+{%             endfor %}
+{%             if v4_bgp_lu_resolution_ribs %}
+      next-hop resolution ribs {{ v4_bgp_lu_resolution_ribs | join(" ") }}
+{%             endif %}
+{%         endif %}
 {%         for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort('name') %}
 {%             if peer.activate is arista.avd.defined(true) %}
       neighbor {{ peer.name }} activate
@@ -1198,21 +1215,6 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbor_default.next_hop_self is arista.avd.defined(true) %}
       neighbor default next-hop-self
-{%         endif %}
-{%         if router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs is arista.avd.defined %}
-{%             set v4_bgp_lu_resolution_ribs = [] %}
-{%             for rib in router_bgp.address_family_ipv4_labeled_unicast.next_hop_resolution_ribs %}
-{%                 if rib.rib_type is arista.avd.defined("tunnel-rib-colored") %}
-{%                     do v4_bgp_lu_resolution_ribs.append("tunnel-rib colored system-colored-tunnel-rib") %}
-{%                 elif rib.rib_type is arista.avd.defined("tunnel-rib") and rib.rib_name is arista.avd.defined() %}
-{%                     do v4_bgp_lu_resolution_ribs.append("tunnel-rib " ~ rib.rib_name) %}
-{%                 elif rib.rib_type is arista.avd.defined %}
-{%                     do v4_bgp_lu_resolution_ribs.append(rib.rib_type) %}
-{%                 endif %}
-{%             endfor %}
-{%             if v4_bgp_lu_resolution_ribs %}
-      next-hop resolution ribs {{ v4_bgp_lu_resolution_ribs | join(" ") }}
-{%             endif %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocols is arista.avd.defined %}
 {%             for tunnel_source_protocol in router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocols %}
