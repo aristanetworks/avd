@@ -437,9 +437,9 @@ interface Ethernet6
 interface Port-Channel5
    description MLAG_PEER_DC1-LEAF4B_Po5
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### Loopback Interfaces

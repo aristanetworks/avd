@@ -282,9 +282,9 @@ interface Ethernet7
 interface Port-Channel3
    description DC2-POD1-L2LEAF1A_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 4092
    switchport mode trunk
+   switchport
    service-profile QOS-PROFILE
 ```
 

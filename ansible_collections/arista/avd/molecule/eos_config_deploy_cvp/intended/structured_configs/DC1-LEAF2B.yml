@@ -602,24 +602,30 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-LEAF2A_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel7
   description: DC1-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-111,120-121,130-131
   shutdown: false
-  mode: trunk
-  vlans: 110-111,120-121,130-131
   mlag: 7
 - name: Port-Channel10
   description: server01_MLAG_PortChanne1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 210-211
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 210-211
   mlag: 10
 ethernet_interfaces:
 - name: Ethernet5
@@ -627,7 +633,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-LEAF2A_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -637,7 +642,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-LEAF2A_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -649,7 +653,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.17/31
 - name: Ethernet2
   peer: DC1-SPINE2
@@ -658,7 +663,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.19/31
 - name: Ethernet3
   peer: DC1-SPINE3
@@ -667,7 +673,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.21/31
 - name: Ethernet4
   peer: DC1-SPINE4
@@ -676,7 +683,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.23/31
 - name: Ethernet7
   peer: DC1-L2LEAF1A
@@ -684,7 +692,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF1A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -695,7 +702,6 @@ ethernet_interfaces:
   port_profile: TENANT_B
   description: server01_MLAG_Eth3
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 10
     mode: active

@@ -112,18 +112,19 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1A_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG_ODD_ID_L3LEAF1A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1A_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -133,7 +134,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1A_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -145,7 +145,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P2P-UPLINKS-IPV4-PREFIX-LENGTH_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.254.255.253/30
 mlag_configuration:
   domain_id: MLAG_ODD_ID_L3LEAF1

@@ -146,7 +146,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.8.8.8/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Orange_888
 loopback_interfaces:
 - name: Loopback0

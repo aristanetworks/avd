@@ -441,39 +441,44 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  trunk_groups:
-  - MLAG
 - name: Port-Channel3
   description: RACK2_MLAG_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-113,1100-1102,2500,2600-2601,4085
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  vlans: 110-113,1100-1102,2500,2600-2601,4085
   mlag: 3
 - name: Port-Channel16
   description: server-1_PortChannel
-  type: switched
   shutdown: false
   service_profile: bar
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 16
 - name: Port-Channel17
   description: Set using structured_config on server adapter port-channel
-  type: switched
   shutdown: false
   service_profile: foo
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 17
 - name: Port-Channel18
   description: server-1_PortChannel
-  type: switched
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -483,12 +488,13 @@ port_channel_interfaces:
     EOF
 
     '
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 18
 - name: Port-Channel19
   description: server-1_PortChannel
-  type: switched
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -498,8 +504,10 @@ port_channel_interfaces:
     EOF
 
     '
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 19
 ethernet_interfaces:
 - name: Ethernet5
@@ -507,7 +515,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -517,7 +524,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -531,7 +537,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.110.9/31
@@ -544,7 +551,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.110.11/31
@@ -554,7 +562,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -564,7 +571,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2B_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -577,7 +583,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.110.13/31
@@ -590,7 +597,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.110.15/31
@@ -599,7 +607,8 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 100.100.100.101/24
 - name: Ethernet16
@@ -616,7 +625,6 @@ ethernet_interfaces:
     EOF
 
     '
-  type: port-channel-member
   channel_group:
     id: 16
     mode: active
@@ -634,7 +642,6 @@ ethernet_interfaces:
     EOF
 
     '
-  type: port-channel-member
   channel_group:
     id: 17
     mode: active
@@ -652,7 +659,6 @@ ethernet_interfaces:
     EOF
 
     '
-  type: port-channel-member
   channel_group:
     id: 18
     mode: active
@@ -670,7 +676,6 @@ ethernet_interfaces:
     EOF
 
     '
-  type: port-channel-member
   channel_group:
     id: 19
     mode: active

@@ -844,38 +844,46 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel2000
   description: MLAG_PEER_DC1-SVC3B_Po2000
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
+      allowed_vlan: 1-4094
   shutdown: false
-  vlans: 1-4094
-  mode: trunk
-  trunk_groups:
-  - MLAG
-  - LEAF_PEER_L3
 - name: Port-Channel1007
   description: DC1_L2LEAF2_Po1001
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
   shutdown: false
-  mode: trunk
-  vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
   mlag: 1007
 - name: Port-Channel10
   description: server03_ESI_PortChanne1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 110-111,210-211
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-111,210-211
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0101
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
 - name: Port-Channel14
   description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
-  type: switched
   shutdown: false
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   l2_mtu: 8000
   l2_mru: 9000
-  vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   spanning_tree_bpduguard: enabled
@@ -895,10 +903,12 @@ port_channel_interfaces:
   mlag: 14
 - name: Port-Channel15
   description: server08_no_profile_port_channel_server08_no_profile_port_channel
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: disabled
@@ -918,10 +928,12 @@ port_channel_interfaces:
   mlag: 15
 - name: Port-Channel17
   description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: disabled
@@ -943,11 +955,13 @@ port_channel_interfaces:
   lacp_fallback_timeout: 90
 - name: Port-Channel18
   description: server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
-  type: switched
   shutdown: false
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   l2_mtu: 8000
-  vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'True'
@@ -969,11 +983,13 @@ port_channel_interfaces:
   lacp_fallback_timeout: 10
 - name: Port-Channel19
   description: server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
-  type: switched
   shutdown: false
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   l2_mtu: 8000
-  vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'True'
@@ -995,69 +1011,81 @@ port_channel_interfaces:
   lacp_fallback_timeout: 10
 - name: Port-Channel22
   description: server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 22
 - name: Port-Channel23
   description: server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel
-  type: switched
   shutdown: true
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 23
 - name: Port-Channel24
   description: server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces
-  type: switched
   shutdown: true
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 24
 - name: Port-Channel27
   description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 27
 - name: Port-Channel42
   description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 42
 - name: Port-Channel1291
   description: server22_port_channel_with_custom_id_server22_port_channel_with_custom_id
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
   mlag: 1291
 - name: Port-Channel31
   description: server24_port_channel_lacp_timer_profile_server24_port_channel_with_lacp_timer
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   mlag: 31
 - name: Port-Channel32
   description: server25_port_channel_lacp_timer_server25_port_channel_with_lacp_timer
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   mlag: 32
 - name: Port-Channel33
   description: server26_port_channel_lacp_timer_profile_server26_port_channel_with_lacp_timer
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   mlag: 33
 - name: Port-Channel34
   description: server27_port_channel_lacp_timer_server27_port_channel_with_lacp_timer
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   mlag: 34
 ethernet_interfaces:
 - name: Ethernet53/1
@@ -1065,7 +1093,6 @@ ethernet_interfaces:
   peer_interface: Ethernet53/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet53/1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 2000
@@ -1076,7 +1103,6 @@ ethernet_interfaces:
   peer_interface: Ethernet54/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet54/1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 2000
@@ -1089,7 +1115,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF2A_Ethernet1
   speed: 100g-2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1007
     mode: active
@@ -1100,7 +1125,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF2B_Ethernet1
   speed: 100g-2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1007
     mode: active
@@ -1112,7 +1136,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.97/31
 - name: Ethernet50/1
   peer: DC1-SPINE2
@@ -1122,7 +1147,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.99/31
 - name: Ethernet51/1
   peer: DC1-SPINE3
@@ -1132,7 +1158,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.101/31
 - name: Ethernet52/1
   peer: DC1-SPINE4
@@ -1142,7 +1169,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.103/31
 - name: Ethernet10
   peer: server03_ESI
@@ -1151,7 +1179,6 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: server03_ESI_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -1162,11 +1189,13 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth1
   shutdown: false
-  type: switched
   l2_mtu: 8000
   l2_mru: 9000
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: disabled
   spanning_tree_bpduguard: disabled
@@ -1189,9 +1218,11 @@ ethernet_interfaces:
   peer_type: server
   description: server05_no_profile_Eth1
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: disabled
@@ -1215,11 +1246,12 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth1
   shutdown: false
-  type: switched
   l2_mtu: 8000
   l2_mru: 9000
-  mode: access
-  vlans: '210'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '210'
   spanning_tree_portfast: network
   spanning_tree_bpdufilter: disabled
   spanning_tree_bpduguard: 'True'
@@ -1243,7 +1275,6 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -1253,7 +1284,6 @@ ethernet_interfaces:
   peer_type: server
   description: server08_no_profile_port_channel_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -1264,11 +1294,12 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth1
   shutdown: false
-  type: switched
   l2_mtu: 8000
   l2_mru: 9000
-  mode: access
-  vlans: '210'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '210'
   spanning_tree_portfast: network
   spanning_tree_bpdufilter: disabled
   spanning_tree_bpduguard: 'True'
@@ -1291,7 +1322,6 @@ ethernet_interfaces:
   peer_type: server
   description: server10_no_profile_port_channel_lacp_fallback_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 17
     mode: passive
@@ -1303,7 +1333,6 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
   description: server11_inherit_profile_port_channel_lacp_fallback_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 18
     mode: active
@@ -1315,7 +1344,6 @@ ethernet_interfaces:
   port_profile: NESTED_PORT_PROFILE
   description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 19
     mode: active
@@ -1327,9 +1355,10 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server13_disabled_interfaces_Eth1
   shutdown: true
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 - name: Ethernet21
   peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth1
@@ -1337,9 +1366,10 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server14_explicitly_enabled_interfaces_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 - name: Ethernet22
   peer: server15_port_channel_with_disabled_phy_interfaces
   peer_interface: Eth1
@@ -1347,7 +1377,6 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server15_port_channel_with_disabled_phy_interfaces_Eth1
   shutdown: true
-  type: port-channel-member
   channel_group:
     id: 22
     mode: active
@@ -1358,7 +1387,6 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server16_port_channel_with_disabled_port_channel_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 23
     mode: active
@@ -1369,7 +1397,6 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1
   shutdown: true
-  type: port-channel-member
   channel_group:
     id: 24
     mode: active
@@ -1380,9 +1407,10 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server18_monitoring_session_source_phys_interfaces_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 - name: Ethernet27
   peer: server18_monitoring_session_source_po
   peer_interface: Eth3
@@ -1390,7 +1418,6 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server18_monitoring_session_source_po_Eth3
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 27
     mode: active
@@ -1401,23 +1428,26 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server18_monitoring_session_source_phys_interface_Eth5
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 - name: Ethernet26
   peer: server19_monitoring_session_destination_phys
   peer_interface: Eth1
   peer_type: server
   description: server19_monitoring_session_destination_phys_Eth1
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
 - name: Ethernet40
   peer: server20_monitoring_session_destination_phys
   peer_interface: Eth1
   peer_type: server
   description: server20_monitoring_session_destination_phys_Eth1
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
 - name: Ethernet42
   peer: server21_monitoring_session_destination_po
   peer_interface: Eth1
@@ -1425,7 +1455,6 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server21_monitoring_session_destination_po_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -1436,7 +1465,6 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server22_port_channel_with_custom_id_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1291
     mode: active
@@ -1447,9 +1475,9 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server23_phone_int_1
   shutdown: false
-  type: switched
-  mode: trunk phone
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: trunk phone
 - name: Ethernet31
   peer: server24_port_channel_lacp_timer_profile
   peer_interface: Eth1
@@ -1457,7 +1485,6 @@ ethernet_interfaces:
   port_profile: PORT_CHANNEL_LACP_TIMER
   description: server24_port_channel_lacp_timer_profile_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 31
     mode: active
@@ -1470,7 +1497,6 @@ ethernet_interfaces:
   peer_type: server
   description: server25_port_channel_lacp_timer_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 32
     mode: active
@@ -1484,7 +1510,6 @@ ethernet_interfaces:
   port_profile: PORT_CHANNEL_LACP_TIMER_NORMAL
   description: server26_port_channel_lacp_timer_profile_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 33
     mode: active
@@ -1497,7 +1522,6 @@ ethernet_interfaces:
   peer_type: server
   description: server27_port_channel_lacp_timer_Eth1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 34
     mode: active

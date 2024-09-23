@@ -173,26 +173,32 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Po11
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel24
   description: INBAND-MGMT-DUALSTACK-SUBNETS_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '104'
   shutdown: false
-  mode: trunk
-  vlans: '104'
   mlag: 24
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 30
 - name: Port-Channel25
   description: INBAND-MGMT-DUALSTACK-IPS_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '105'
   shutdown: false
-  mode: trunk
-  vlans: '105'
   mlag: 25
   lacp_fallback_mode: individual
   lacp_fallback_timeout: 30
@@ -202,7 +208,6 @@ ethernet_interfaces:
   peer_interface: Ethernet11
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet11
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -212,7 +217,6 @@ ethernet_interfaces:
   peer_interface: Ethernet12
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet12
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -222,7 +226,6 @@ ethernet_interfaces:
   peer_interface: Ethernet13
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet13
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -232,7 +235,6 @@ ethernet_interfaces:
   peer_interface: Ethernet14
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet14
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -242,7 +244,6 @@ ethernet_interfaces:
   peer_interface: Ethernet15
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet15
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -252,7 +253,6 @@ ethernet_interfaces:
   peer_interface: Ethernet16
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet16
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -262,7 +262,6 @@ ethernet_interfaces:
   peer_interface: Ethernet17
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet17
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -272,7 +271,6 @@ ethernet_interfaces:
   peer_interface: Ethernet18
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet18
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -282,7 +280,6 @@ ethernet_interfaces:
   peer_interface: Ethernet19
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet19
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -292,7 +289,6 @@ ethernet_interfaces:
   peer_interface: Ethernet20
   peer_type: mlag_peer
   description: MLAG_PEER_inband-mgmt-parent-dualstack2_Ethernet20
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -303,24 +299,26 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-DUALSTACK-SUBNETS_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 24
     mode: active
-  mode: access
-  vlans: 104
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 104
 - name: Ethernet25
   peer: inband-mgmt-dualstack-ips
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: INBAND-MGMT-DUALSTACK-IPS_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 25
     mode: active
-  mode: access
-  vlans: 105
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 105
 mlag_configuration:
   domain_id: inband-mgmt-parents-dualstack
   local_interface: Vlan4094

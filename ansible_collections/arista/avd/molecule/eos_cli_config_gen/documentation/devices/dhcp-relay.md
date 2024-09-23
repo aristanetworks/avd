@@ -53,8 +53,8 @@ interface Management1
 ```eos
 !
 dhcp relay
-   server dhcp-relay-server1
-   server dhcp-relay-server2
    tunnel requests disabled
    mlag peer-link requests disabled
+   server dhcp-relay-server1
+   server dhcp-relay-server2
 ```

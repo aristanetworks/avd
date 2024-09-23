@@ -43,6 +43,25 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_eos_designs_debug:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: Dump all vars and facts per device after generating `avd_switch_facts`.
+  avd_eos_designs_structured_config:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: Generate structured configuration per device.
+  avd_eos_designs_unset_facts:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: Unset `avd_switch_facts` to gain a small performance improvement
+      since Ansible needs to handle fewer variables.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -1031,7 +1050,7 @@ keys:
               default: true
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-settings
+      table: role-settings
     description: 'Control fabric documentation generation.
 
       '
@@ -1051,12 +1070,12 @@ keys:
       topology_csv:
         description: Generate Topology CSV with all interfaces towards other devices.
         type: bool
-        default: true
+        default: false
       p2p_links_csv:
         description: Generate P2P links CSV with all routed point-to-point links between
           devices.
         type: bool
-        default: true
+        default: false
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     documentation_options:
