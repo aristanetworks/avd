@@ -159,9 +159,9 @@ interface Ethernet11
 interface Port-Channel1
    description L2ONLY_SPINES_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

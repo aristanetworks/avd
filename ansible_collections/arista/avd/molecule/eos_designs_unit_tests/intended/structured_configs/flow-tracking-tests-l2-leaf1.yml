@@ -40,7 +40,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: FLOW-TRACKING-TESTS-LEAF3_Ethernet31
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -50,19 +49,20 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: FLOW-TRACKING-TESTS-LEAF4_Ethernet31
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: FLOW-TRACKING-TESTS-LEAF-MLAG_Po31
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   flow_tracker:
     sampled: FLOW-TRACKER
-  vlans: 11,4092
 vlans:
 - id: 11
   name: VLAN11

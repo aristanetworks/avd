@@ -65,7 +65,8 @@ ethernet_interfaces:
   peer: Someotherdevice
   ip_address: 10.20.30.40/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Test interface
 loopback_interfaces:
 - name: Loopback0
