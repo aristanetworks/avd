@@ -141,7 +141,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
@@ -157,7 +158,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.14/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
@@ -173,7 +175,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.22/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
@@ -189,7 +192,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SVC3A_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.30/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
@@ -205,7 +209,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SVC3B_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.38/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
@@ -221,7 +226,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-BL1A_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.46/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
@@ -237,7 +243,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-BL1B_Ethernet4
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.54/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0

@@ -143,7 +143,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.0/31
   pim:
     ipv4:
@@ -155,7 +156,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1B_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.2/31
   pim:
     ipv4:
@@ -167,7 +169,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF2A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.4/31
   pim:
     ipv4:
@@ -179,7 +182,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.6/31
   pim:
     ipv4:
@@ -191,7 +195,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3B_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.8/31
   pim:
     ipv4:
@@ -203,7 +208,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-DISABLED_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.10/31
   pim:
     ipv4:

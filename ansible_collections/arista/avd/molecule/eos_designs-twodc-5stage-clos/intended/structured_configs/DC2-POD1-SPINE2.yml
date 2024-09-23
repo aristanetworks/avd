@@ -104,7 +104,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.21.3/31
@@ -115,7 +116,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.21.67/31
@@ -126,7 +128,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.2/31
@@ -137,7 +140,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.6/31
@@ -146,7 +150,8 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 200.200.200.201/24
   ptp:
