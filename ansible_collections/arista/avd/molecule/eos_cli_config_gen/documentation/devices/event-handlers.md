@@ -80,11 +80,11 @@ event-handler trigger-on-boot
    action increment device-health metric Metric1
 !
 event-handler trigger-on-counters
+   action log
    trigger on-counters
       poll interval 10
       condition ( Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
       granularity per-source
-   action log
 !
 event-handler trigger-on-counters2
    trigger on-counters
@@ -100,10 +100,10 @@ event-handler trigger-on-intf
 event-handler trigger-on-intf2
 !
 event-handler trigger-on-logging
+   action increment device-health metric Metric2
    trigger on-logging
       poll interval 10
       regex ab*
-   action increment device-health metric Metric2
 !
 event-handler trigger-on-logging2
    trigger on-logging
