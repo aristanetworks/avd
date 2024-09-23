@@ -139,7 +139,7 @@
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 | 10.255.1.0/27 | 32 | 4 | 12.5 % |
 | 10.255.129.0/27 | 32 | 4 | 12.5 % |
 

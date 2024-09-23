@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
@@ -57,20 +58,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.108/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.108/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.108/24
@@ -160,6 +161,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -279,8 +284,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *210 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *210 | *- | *- | 7 |
 
@@ -288,12 +293,12 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet4 | routed | - | 172.31.255.25/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet4 | routed | - | 172.31.255.27/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet4 | routed | - | 172.31.255.29/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet4 | routed | - | 172.31.255.31/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet4 | - | 172.31.255.25/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet4 | - | 172.31.255.27/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet4 | - | 172.31.255.29/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet4 | - | 172.31.255.31/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -370,10 +375,10 @@ interface Ethernet8
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 210 | - | - | - | - | 7 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 210 | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -382,17 +387,17 @@ interface Ethernet8
 interface Port-Channel5
    description MLAG_PEER_DC1-SVC3B_Po5
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 !
 interface Port-Channel7
    description DC1_L2LEAF2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 210
    switchport mode trunk
+   switchport
    mlag 7
 ```
 
@@ -404,28 +409,28 @@ interface Port-Channel7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.8/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.8/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.8/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.8/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.8/32
    ip ospf area 0.0.0.0
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 192.168.254.8/32
    ip ospf area 0.0.0.0
@@ -750,6 +755,7 @@ router bgp 65103
       router-id 192.168.255.8
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
 ```
 

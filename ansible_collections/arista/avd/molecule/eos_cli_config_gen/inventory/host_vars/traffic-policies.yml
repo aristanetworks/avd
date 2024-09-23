@@ -137,14 +137,16 @@ traffic_policies:
 
 ethernet_interfaces:
   - name: Ethernet1
-    type: routed
+    switchport:
+      enabled: false
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY
 
 port_channel_interfaces:
   - name: Port-Channel2
-    type: routed
+    switchport:
+      enabled: false
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY

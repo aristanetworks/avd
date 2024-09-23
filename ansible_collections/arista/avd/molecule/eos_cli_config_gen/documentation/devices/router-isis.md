@@ -22,20 +22,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.254.11/24 | 10.73.254.253 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.254.11/24 | 10.73.254.253 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.254.11/24
 ```
@@ -55,13 +55,13 @@ interface Management1
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | - | - | - |
-| Ethernet4 | - | *routed | 4 | *10.9.2.3/31 | **default | **- | **- | **- | **- |
-| Ethernet5 | - | *routed | 5 | *10.9.2.5/31 | **default | **- | **- | **- | **- |
-| Ethernet6 | - | *routed | 6 | *10.9.2.7/31 | **default | **- | **- | **- | **- |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | - | 172.31.255.3/31 | default | 1500 | - | - | - |
+| Ethernet4 | - | 4 | *10.9.2.3/31 | **default | **- | **- | **- | **- |
+| Ethernet5 | - | 5 | *10.9.2.5/31 | **default | **- | **- | **- | **- |
+| Ethernet6 | - | 6 | *10.9.2.7/31 | **default | **- | **- | **- | **- |
 
 *Inherited from Port-Channel Interface
 
@@ -120,16 +120,16 @@ interface Ethernet6
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
-| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel4 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
-| Port-Channel5 | - | routed | - | 10.9.2.5/31 | default | - | - | - | - |
-| Port-Channel6 | - | routed | - | 10.9.2.7/31 | default | - | - | - | - |
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel4 | - | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel5 | - | - | 10.9.2.5/31 | default | - | - | - | - |
+| Port-Channel6 | - | - | 10.9.2.7/31 | default | - | - | - | - |
 
 ##### ISIS
 
@@ -240,9 +240,9 @@ interface Loopback2
 
 ##### ISIS
 
-| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode |
-| --------- | ------------- | -------- | ----------- | ---- |
-| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point |
+| Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
+| --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
+| Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - |
 
 #### VLAN Interfaces Device Configuration
 

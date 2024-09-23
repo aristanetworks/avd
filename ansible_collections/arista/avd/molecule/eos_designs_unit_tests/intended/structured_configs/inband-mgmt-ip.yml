@@ -6,6 +6,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -21,7 +27,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT_Ethernet23
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -31,17 +36,18 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT-VRF_Ethernet23
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po23
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '103'
   shutdown: false
-  mode: trunk
-  vlans: '103'
 vlans:
 - id: 103
   name: MYVLANNAME

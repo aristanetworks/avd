@@ -3,7 +3,7 @@ fabric_name: SINGLE_LINK_TO_MLAG_PAIR
 
 type: l2leaf
 
-mlag_on_orphan_port_channel_downlink: false
+mlag_on_orphan_port_channel_downlink: true
 
 l2leaf:
   defaults:

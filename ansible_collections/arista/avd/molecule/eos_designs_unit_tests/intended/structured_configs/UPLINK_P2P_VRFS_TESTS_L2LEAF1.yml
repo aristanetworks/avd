@@ -6,6 +6,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -20,7 +26,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet51
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -30,22 +35,23 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet52
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 - name: Ethernet10
   peer_type: network_port
   shutdown: false
-  type: switched
-  vlans: '66'
+  switchport:
+    enabled: true
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK_P2P_VRFS_TESTS_LEAF1_Po51
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '66'
   shutdown: false
-  mode: trunk
-  vlans: '66'
 vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION

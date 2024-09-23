@@ -111,6 +111,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -137,7 +143,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet5
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.1/31
 - name: Ethernet2
   peer: DC1-POD1-SPINE1
@@ -146,7 +153,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.3/31
 - name: Ethernet3
   peer: DC1-POD1-LEAF1A
@@ -155,11 +163,12 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet4
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.5/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.10.1/32
 prefix_lists:

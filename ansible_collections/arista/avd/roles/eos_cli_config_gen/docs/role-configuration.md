@@ -65,38 +65,30 @@ roles/eos_cli_config_gen/docs/tables/role-input-validation.md
 roles/eos_cli_config_gen/docs/tables/custom-templates.md
 --8<--
 
-### eos_cli_config_gen configuration
+## Generation of device configuration and documentation
+
+The following settings can be leveraged to control generation of device configuration and documentation.
 
 --8<--
-roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-configuration.md
---8<--
-
-### eos_cli_config_gen documentation
-
---8<--
-roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-documentation.md
+roles/eos_cli_config_gen/docs/tables/role-settings.md
 --8<--
 
 ### Generate default config
 
-The `generate_default_config` knob allows to omit default EOS configuration.
-This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+The `generate_default_config` setting controls the generation of some default EOS configurations.
 
-The following commands will be omitted when `generate_default_config` is set to `false`:
+This is historic behavior which has been disabled by default in AVD 5.0.0 and will be removed in AVD 6.0.0.
+Instead it is recommended to build structured config according to the intended output configurations.
+
+The following commands will be generated when `generate_default_config` is set to `true`:
 
 - RANCID Content Type
-- Hostname
-- Default configuration for `aaa`
-- Default configuration for `enable password`
+- Hostname (even if `hostname` variable is not set. Then the hostname is picked up from `inventory_hostname`)
+- Default configuration `no aaa root`
+- Default configuration `no enable password`
 - Transceiver qsfp default mode
 - End of configuration delimiter
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/generate-default-config.md
---8<--
-
-### Generate device documentation
-
---8<--
-roles/eos_cli_config_gen/docs/tables/generate-device-documentation.md
 --8<--

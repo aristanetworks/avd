@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -64,20 +65,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.108/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.108/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.108/24
@@ -167,6 +168,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -425,34 +430,34 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
 | Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
-| Ethernet11 |  CUSTOM_server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet12 |  CUSTOM_server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet13 |  CUSTOM_server06_override_profile_Eth1 | access | 210 | - | - | - |
+| Ethernet11 | CUSTOM_server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | CUSTOM_server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | CUSTOM_server06_override_profile_Eth1 | access | 210 | - | - | - |
 | Ethernet14 | CUSTOM_server07_inherit_all_from_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 14 |
 | Ethernet15 | CUSTOM_server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 |  CUSTOM_server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
+| Ethernet16 | CUSTOM_server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
 | Ethernet17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 17 |
 | Ethernet18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
 | Ethernet19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 19 |
-| Ethernet20 |  CUSTOM_server13_disabled_interfaces_Eth1 | access | 110 | - | - | - |
-| Ethernet21 |  CUSTOM_server14_explicitly_enabled_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet20 | CUSTOM_server13_disabled_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_server14_explicitly_enabled_interfaces_Eth1 | access | 110 | - | - | - |
 | Ethernet22 | CUSTOM_server15_port_channel_disabled_interfaces_Eth1 | *access | *110 | *- | *- | 22 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet4 | routed | - | 172.31.255.49/31 | default | 1500 | False | - | - |
-| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet4 | routed | - | 172.31.255.51/31 | default | 1500 | False | - | - |
-| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet4 | routed | - | 172.31.255.53/31 | default | 1500 | False | - | - |
-| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet4 | routed | - | 172.31.255.55/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet4 | - | 172.31.255.49/31 | default | 1500 | False | - | - |
+| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet4 | - | 172.31.255.51/31 | default | 1500 | False | - | - |
+| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet4 | - | 172.31.255.53/31 | default | 1500 | False | - | - |
+| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet4 | - | 172.31.255.55/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -624,17 +629,17 @@ interface Ethernet44
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
-| Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
-| Port-Channel15 | CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
-| Port-Channel17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
-| Port-Channel18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
-| Port-Channel19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
-| Port-Channel22 | CUSTOM_server15_port_channel_disabled_interfaces_ | switched | access | 110 | - | - | - | - | 22 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
+| Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Port-Channel17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | trunk | 1-4094 | - | - | 90 | static | 17 | - |
+| Port-Channel18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | 10 | static | 18 | - |
+| Port-Channel19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | 10 | static | 19 | - |
+| Port-Channel22 | CUSTOM_server15_port_channel_disabled_interfaces_ | access | 110 | - | - | - | - | 22 | - |
 
 ##### EVPN Multihoming
 
@@ -651,25 +656,25 @@ interface Ethernet44
 interface Port-Channel5
    description CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 !
 interface Port-Channel7
    description CUSTOM_DC1_L2LEAF2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
+   switchport
    mlag 7
 !
 interface Port-Channel10
    description CUSTOM_server03_ESI_PortChanne1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:1234:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -678,9 +683,9 @@ interface Port-Channel10
 interface Port-Channel14
    description CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    l2 mtu 8000
    mlag 14
    spanning-tree portfast
@@ -693,9 +698,9 @@ interface Port-Channel14
 interface Port-Channel15
    description CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    mlag 15
    spanning-tree portfast
    spanning-tree bpdufilter enable
@@ -707,9 +712,9 @@ interface Port-Channel15
 interface Port-Channel17
    description CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    port-channel lacp fallback timeout 90
    port-channel lacp fallback static
    mlag 17
@@ -723,9 +728,9 @@ interface Port-Channel17
 interface Port-Channel18
    description CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
@@ -740,9 +745,9 @@ interface Port-Channel18
 interface Port-Channel19
    description CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
-   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   switchport
    l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
@@ -757,8 +762,9 @@ interface Port-Channel19
 interface Port-Channel22
    description CUSTOM_server15_port_channel_disabled_interfaces_
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 22
 ```
 
@@ -1496,6 +1502,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1505,6 +1512,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1514,6 +1522,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1525,6 +1534,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
       redistribute static
    !
@@ -1535,6 +1545,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1544,6 +1555,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1553,6 +1565,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1562,6 +1575,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1571,6 +1585,7 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
+      neighbor 10.255.252.7 description DC1-SVC3B
       redistribute connected
 ```
 

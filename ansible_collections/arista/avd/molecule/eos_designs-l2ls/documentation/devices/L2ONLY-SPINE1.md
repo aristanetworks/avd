@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -58,6 +60,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## MLAG
 
@@ -147,8 +155,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2ONLY-LEAF1_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | L2ONLY-LEAF2_Ethernet1 | *trunk | *100,4092 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_L2ONLY-SPINE2_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_L2ONLY-SPINE2_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_L2ONLY-SPINE2_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_PEER_L2ONLY-SPINE2_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -183,11 +191,11 @@ interface Ethernet4
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2ONLY-LEAF1_Po1 | switched | trunk | 100,4092 | - | - | - | - | 1 | - |
-| Port-Channel2 | L2ONLY-LEAF2_Po1 | switched | trunk | 100,4092 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_L2ONLY-SPINE2_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2ONLY-LEAF1_Po1 | trunk | 100,4092 | - | - | - | - | 1 | - |
+| Port-Channel2 | L2ONLY-LEAF2_Po1 | trunk | 100,4092 | - | - | - | - | 2 | - |
+| Port-Channel3 | MLAG_PEER_L2ONLY-SPINE2_Po3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -196,25 +204,25 @@ interface Ethernet4
 interface Port-Channel1
    description L2ONLY-LEAF1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel2
    description L2ONLY-LEAF2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
    mlag 2
 !
 interface Port-Channel3
    description MLAG_PEER_L2ONLY-SPINE2_Po3
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces

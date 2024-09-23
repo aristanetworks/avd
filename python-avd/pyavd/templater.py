@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
 
-from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH, JINJA2_TEMPLATE_PATHS, RUNNING_FROM_SRC
+from .constants import JINJA2_EXTENSIONS, RUNNING_FROM_SRC
 
 if TYPE_CHECKING:
     import os
@@ -42,15 +42,14 @@ class Undefined(StrictUndefined):
 
 
 class Templar:
-    def __init__(self, searchpaths: list[str] | None = None) -> None:
+    def __init__(self, precompiled_templates_path: str, searchpaths: list[str] | None = None) -> None:
         if not RUNNING_FROM_SRC:
-            self.loader = ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH)
+            self.loader = ModuleLoader(precompiled_templates_path)
         else:
             searchpaths = searchpaths or []
-            searchpaths.extend(JINJA2_TEMPLATE_PATHS)
             self.loader = ChoiceLoader(
                 [
-                    ModuleLoader(JINJA2_PRECOMPILED_TEMPLATE_PATH),
+                    ModuleLoader(precompiled_templates_path),
                     FileSystemLoader(searchpaths),
                 ],
             )
@@ -113,7 +112,7 @@ class Templar:
     def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
-    def compile_templates_in_paths(self, searchpaths: list[str]) -> None:
+    def compile_templates_in_paths(self, precompiled_templates_path: str, searchpaths: list[str]) -> None:
         """
         Compile the Jinja2 templates in the path.
 
@@ -128,7 +127,7 @@ class Templar:
         self.environment.compile_templates(
             zip=None,
             log_function=print,
-            target=JINJA2_PRECOMPILED_TEMPLATE_PATH,
+            target=precompiled_templates_path,
             ignore_errors=False,
         )
         self.environment.loader = self.loader

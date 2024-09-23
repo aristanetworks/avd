@@ -10,6 +10,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 8.8.4.4
   vrf: MGMT
@@ -35,7 +41,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management0
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.100.108/24
@@ -77,17 +83,21 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel47
   description: MLAG_PEER_LEAF3_Po47
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel1
   description: SPINES_Po3
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,30
   shutdown: false
-  mode: trunk
-  vlans: 10,30
   mlag: 1
 ethernet_interfaces:
 - name: Ethernet47
@@ -95,7 +105,6 @@ ethernet_interfaces:
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF3_Ethernet47
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -105,7 +114,6 @@ ethernet_interfaces:
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF3_Ethernet48
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -116,7 +124,6 @@ ethernet_interfaces:
   peer_type: l2spine
   description: SPINE1_Ethernet4
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -126,7 +133,6 @@ ethernet_interfaces:
   peer_type: l2spine
   description: SPINE2_Ethernet4
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -137,9 +143,10 @@ ethernet_interfaces:
   port_profile: PP-ORANGE
   description: Host2_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '30'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '30'
   spanning_tree_portfast: edge
 mlag_configuration:
   domain_id: RACK2

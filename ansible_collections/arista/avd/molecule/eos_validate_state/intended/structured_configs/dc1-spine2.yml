@@ -65,6 +65,7 @@ router_bgp:
     remote_as: '65102'
     peer: dc1-leaf2b
     description: dc1-leaf2b_Ethernet2
+    shutdown: true
   - ip_address: 10.33.255.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65133'
@@ -95,6 +96,7 @@ router_bgp:
     peer: dc1-leaf2b
     description: dc1-leaf2b
     remote_as: '65102'
+    shutdown: true
   - ip_address: 10.33.0.5
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc1-svc-leaf1a
@@ -135,6 +137,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -151,7 +159,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.12/24
@@ -170,7 +178,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.2/31
 - name: Ethernet2
   peer: dc1-leaf1b
@@ -179,7 +188,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.6/31
 - name: Ethernet3
   peer: dc1-leaf2a
@@ -188,7 +198,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.10/31
 - name: Ethernet4
   peer: dc1-leaf2b
@@ -197,7 +208,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
   shutdown: true
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.14/31
 - name: Ethernet5
   peer: dc1-svc-leaf1a
@@ -206,7 +218,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SVC-LEAF1A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.33.255.18/31
 - name: Ethernet6
   peer: dc1-svc-leaf1b
@@ -215,11 +228,12 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SVC-LEAF1B_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.33.255.22/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.0.2/32
 prefix_lists:

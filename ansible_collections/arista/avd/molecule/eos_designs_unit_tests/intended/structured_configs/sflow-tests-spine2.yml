@@ -48,6 +48,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 vrfs:
@@ -55,7 +61,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.21/24
@@ -67,7 +73,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.0.2/32
 prefix_lists:
@@ -93,7 +99,8 @@ ethernet_interfaces:
   peer_interface: Ethernet9
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet9
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   sflow:
@@ -103,7 +110,8 @@ ethernet_interfaces:
   peer_interface: Ethernet10
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet10
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   sflow:
@@ -113,7 +121,8 @@ ethernet_interfaces:
   peer_interface: Ethernet11
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet11
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   sflow:
@@ -123,7 +132,8 @@ ethernet_interfaces:
   peer_interface: Ethernet12
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet12
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   sflow:
@@ -133,7 +143,8 @@ ethernet_interfaces:
   peer_interface: Ethernet13
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet13
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   sflow:
@@ -143,7 +154,8 @@ ethernet_interfaces:
   peer_interface: Ethernet14
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet14
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   sflow:

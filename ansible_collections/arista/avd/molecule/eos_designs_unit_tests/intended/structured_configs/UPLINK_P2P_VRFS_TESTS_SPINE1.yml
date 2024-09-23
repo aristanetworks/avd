@@ -50,6 +50,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 vrfs:
@@ -75,7 +81,8 @@ ethernet_interfaces:
   mtu: 9214
   mac_security:
     profile: TEST
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.42.42.8/31
 - name: Ethernet1.42
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
@@ -101,7 +108,7 @@ ethernet_interfaces:
   ip_address: 10.42.42.8/31
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 metadata:

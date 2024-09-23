@@ -1,4 +1,10 @@
 management_ssh:
+  authentication:
+    empty_passwords: permit
+    protocols:
+      - keyboard-interactive
+      - password
+      - public-key
   access_groups:
     - name: ACL-SSH
     - name: ACL-SSH-VRF

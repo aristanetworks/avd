@@ -72,7 +72,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF1
-    router_id: 10.254.1.6
     rd: 10.254.1.6:1
     route_targets:
       import:
@@ -83,11 +82,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 10.254.1.6
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.254.1.104
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: flow-tracking-tests-leaf3
   vlans:
   - id: 11
     tenant: FLOW_TRACKING
@@ -108,6 +109,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -122,7 +129,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.104/24
@@ -192,54 +199,63 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel21
   description: MLAG_PEER_flow-tracking-tests-leaf3_Po21
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Port-Channel31
   description: FLOW-TRACKING-TESTS-L2-LEAF1_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
-  vlans: 11,4092
   mlag: 31
 - name: Port-Channel32
   description: FLOW-TRACKING-TESTS-L2-LEAF2_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
-  vlans: 11,4092
   mlag: 32
 - name: Port-Channel14
   description: port-channel-interface-true
-  type: switched
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER-4
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 14
 - name: Port-Channel15
   description: port-channel-interface-false
-  type: switched
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 15
 - name: Port-Channel16
   description: port-channel-interface-no-definition
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 16
 ethernet_interfaces:
@@ -248,7 +264,6 @@ ethernet_interfaces:
   peer_interface: Ethernet21
   peer_type: mlag_peer
   description: MLAG_PEER_flow-tracking-tests-leaf3_Ethernet21
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 21
@@ -258,7 +273,6 @@ ethernet_interfaces:
   peer_interface: Ethernet22
   peer_type: mlag_peer
   description: MLAG_PEER_flow-tracking-tests-leaf3_Ethernet22
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 21
@@ -270,7 +284,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-SPINE1_Ethernet7
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.21/31
@@ -281,7 +296,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_FLOW-TRACKING-TESTS-SPINE2_Ethernet8
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.23/31
@@ -291,7 +307,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: FLOW-TRACKING-TESTS-L2-LEAF1_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 31
     mode: active
@@ -301,7 +316,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: FLOW-TRACKING-TESTS-L2-LEAF2_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 32
     mode: active
@@ -311,7 +325,6 @@ ethernet_interfaces:
   peer_type: server
   description: port-channel-interface-true_PCI2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 14
     mode: 'on'
@@ -321,7 +334,6 @@ ethernet_interfaces:
   peer_type: server
   description: port-channel-interface-false_PCI12
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -331,7 +343,6 @@ ethernet_interfaces:
   peer_type: server
   description: port-channel-interface-no-definition_PCI14
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 16
     mode: 'on'
@@ -362,11 +373,11 @@ route_maps:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.254.1.6/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 10.254.11.5/32
 prefix_lists:

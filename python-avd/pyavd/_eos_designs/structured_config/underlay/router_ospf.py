@@ -48,7 +48,7 @@ class RouterOspfMixin(UtilsMixin):
 
         if self.shared_utils.overlay_routing_protocol == "none":
             process["redistribute"] = {
-                "connected": {},
+                "connected": {"enabled": True},
             }
 
         # Strip None values from process before adding to list

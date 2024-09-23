@@ -80,7 +80,7 @@
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 
 ### VTEP Loopback Node allocation
 
@@ -94,31 +94,30 @@
 | Key | Type | Description |
 | --- | ---- | ----------- |
 | firewalls | firewall | - |
-| routers | router | - |
 | servers | server | - |
 
 ### Firewalls
 
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
-| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | trunk | - | 10,20,30 | PP-FIREWALL |
+| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | trunk | - | 10,20,30 | PP-FIREWALL |
 
 ### Servers
 
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| Host2 | Eth1 | LEAF4 | Ethernet3 | Host2_Eth1 | False | switched | access | 30 | PP-ORANGE |
-| HostA | Eth1 | LEAF1 | Ethernet3 | HostA_Eth1 | False | switched | access | 10 | PP-BLUE |
-| HostB | Eth1 | LEAF2 | Ethernet3 | HostB_Eth1 | False | switched | access | 20 | PP-GREEN |
-| HostC | Eth1 | LEAF3 | Ethernet3 | HostC_Eth1 | False | switched | access | 10 | PP-BLUE |
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| Host2 | Eth1 | LEAF4 | Ethernet3 | Host2_Eth1 | False | access | 30 | - | PP-ORANGE |
+| HostA | Eth1 | LEAF1 | Ethernet3 | HostA_Eth1 | False | access | 10 | - | PP-BLUE |
+| HostB | Eth1 | LEAF2 | Ethernet3 | HostB_Eth1 | False | access | 20 | - | PP-GREEN |
+| HostC | Eth1 | LEAF3 | Ethernet3 | HostC_Eth1 | False | access | 10 | - | PP-BLUE |
 
 ### Port Profiles
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
-| PP-DEFAULTS | - |
 | PP-BLUE | PP-DEFAULTS |
+| PP-DEFAULTS | - |
+| PP-FIREWALL | - |
 | PP-GREEN | PP-DEFAULTS |
 | PP-ORANGE | PP-DEFAULTS |
-| PP-FIREWALL | - |

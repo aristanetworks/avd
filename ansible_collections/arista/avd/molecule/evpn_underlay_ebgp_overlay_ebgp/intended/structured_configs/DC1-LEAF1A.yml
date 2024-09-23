@@ -87,7 +87,6 @@ router_bgp:
       enabled: false
   vrfs:
   - name: Tenant_A_APP_Zone
-    router_id: 192.168.255.9
     rd: 192.168.255.9:12
     route_targets:
       import:
@@ -98,10 +97,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '12:12'
+    router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
   - name: Tenant_A_WEB_Zone
-    router_id: 192.168.255.9
     rd: 192.168.255.9:11
     route_targets:
       import:
@@ -112,6 +111,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
+    router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:
@@ -152,6 +152,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 queue_monitor_length:
   enabled: true
   log: 5
@@ -186,7 +192,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
@@ -216,7 +222,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.1/31
 - name: Ethernet2
   peer: DC1-SPINE2
@@ -226,7 +233,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.3/31
 - name: Ethernet3
   peer: DC1-SPINE3
@@ -236,7 +244,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.5/31
 - name: Ethernet4
   peer: DC1-SPINE4
@@ -246,7 +255,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.7/31
 - name: Ethernet6
   peer: server02_SINGLE_NODE_TRUNK
@@ -255,10 +265,12 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
   shutdown: false
-  type: switched
   l2_mtu: 8000
-  mode: trunk
-  vlans: 1-4094
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
@@ -282,9 +294,10 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: CUSTOM_server02_SINGLE_NODE_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '110'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '110'
 loopback_interfaces:
 - name: Loopback0
   description: CUSTOM_EVPN_Overlay_Peering_L3LEAF

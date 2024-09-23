@@ -189,4 +189,7 @@ no snmp-server vrf {{ vrf.name }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if snmp_server.ifmib_ifspeed_shape_rate is arista.avd.defined(true) %}
+snmp-server ifmib ifspeed shape-rate
+{%     endif %}
 {% endif %}

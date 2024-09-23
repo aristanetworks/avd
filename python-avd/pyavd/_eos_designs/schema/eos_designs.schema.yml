@@ -43,6 +43,25 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_eos_designs_debug:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: Dump all vars and facts per device after generating `avd_switch_facts`.
+  avd_eos_designs_structured_config:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: Generate structured configuration per device.
+  avd_eos_designs_unset_facts:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: Unset `avd_switch_facts` to gain a small performance improvement
+      since Ansible needs to handle fewer variables.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -474,40 +493,40 @@ keys:
     default:
     - key: servers
       type: server
-      description: Server.
+      description: Server
     - key: firewalls
       type: firewall
-      description: Firewall.
+      description: Firewall
     - key: routers
       type: router
-      description: Router.
+      description: Router
     - key: load_balancers
       type: load_balancer
-      description: Load Balancer.
+      description: Load Balancer
     - key: storage_arrays
       type: storage_array
-      description: Storage Array.
+      description: Storage Array
     - key: cpes
       type: cpe
-      description: CPE.
+      description: CPE
     - key: workstations
       type: workstation
-      description: Workstation.
+      description: Workstation
     - key: access_points
       type: access_point
-      description: Access Point.
+      description: Access Point
     - key: phones
       type: phone
-      description: Phone.
+      description: Phone
     - key: printers
       type: printer
-      description: Printer.
+      description: Printer
     - key: cameras
       type: camera
-      description: Camera.
+      description: Camera
     - key: generic_devices
       type: generic_device
-      description: Generic Device.
+      description: Generic Device
   core_interfaces:
     type: dict
     $ref: eos_designs#/$defs/l3_edge
@@ -1031,16 +1050,30 @@ keys:
               default: true
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-output-settings
+      table: role-settings
     description: 'Control fabric documentation generation.
 
       '
     type: dict
     keys:
+      enable:
+        description: Generate fabric-wide documentation.
+        type: bool
+        default: true
       connected_endpoints:
-        description: 'Generate fabric-wide documentation for connected endpoints.
+        description: 'Include connected endpoints in the fabric-wide documentation.
 
-          '
+          This is `false` by default to avoid cluttering documentation for projects
+          with thousands of endpoints.'
+        type: bool
+        default: false
+      topology_csv:
+        description: Generate Topology CSV with all interfaces towards other devices.
+        type: bool
+        default: false
+      p2p_links_csv:
+        description: Generate P2P links CSV with all routed point-to-point links between
+          devices.
         type: bool
         default: false
   event_handlers:
@@ -1396,13 +1429,13 @@ keys:
       mlag_interfaces:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
+      l3_interfaces:
+        description: Enable sFlow on all l3 interfaces.
+        type: bool
   flow_tracking_settings:
     documentation_options:
       table: management-flow-tracking-settings
-    description: 'PREVIEW: This key is currently not supported
-
-
-      Define the flow tracking parameters for this topology.'
+    description: Define the flow tracking parameters for this topology.
     type: dict
     keys:
       sampled:
@@ -1827,9 +1860,8 @@ keys:
     display_name: ISIS Default IS System-ID format
     description: 'Configures source for the system-id within the ISIS net id.
 
-      By default the `id` and `isis_system_id_prefix` fields configured under the
-      node attributes are used to generate the system-id.
-
+      If this key is set to `node_id`, the fields `id` and `isis_system_id_prefix`
+      configured under the node attributes are used to generate the system-id.
 
       If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
       will be ignored and the loopback address will be used to generate the system-id.'
@@ -1839,7 +1871,7 @@ keys:
     valid_values:
     - node_id
     - underlay_loopback
-    default: node_id
+    default: underlay_loopback
   isis_ti_lfa:
     documentation_options:
       table: isis-settings
@@ -1956,7 +1988,7 @@ keys:
     description: 'Management interface description.
 
       '
-    default: oob_management
+    default: OOB_MANAGEMENT
   mgmt_interface_vrf:
     documentation_options:
       table: management-interface-settings
@@ -2000,14 +2032,12 @@ keys:
     type: bool
     documentation_options:
       table: fabric-settings
-    description: 'If `true` (default) an MLAG ID will always be configured on a Port-Channel
+    description: 'If `true` an MLAG ID will always be configured on a Port-Channel
       downlink even if the downlink is only on one node in the MLAG pair.
 
-      If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed
-      to two MLAG switches.
-
-      Note the default value will change to `false` in AVD version 5.0'
-    default: true
+      If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
+      dual-homed to two MLAG switches.'
+    default: false
   name_servers:
     documentation_options:
       table: management-settings
@@ -2066,18 +2096,17 @@ keys:
     - name: tenants
   new_network_services_bgp_vrf_config:
     type: bool
-    description: 'Set this key to `true` in the node type to generate full BGP configuration
+    default: true
+    description: 'This key was used to generate BGP configuration for network services
+      even when `evpn` is not in the address families for the node as well as the
+      VRF.
 
-      for network services even when `evpn` is not in the address families
-
-      (`evpn` is the default address family for `l3ls-evpn` but not for `l2ls`).
-
-
-      This is `false` by default except if `uplink_type` is set to `p2p-vrfs`, then
-      the default value is `true`.
-
-
-      This may introduce breaking changes to your configuration.'
+      This is now part of the default behavior so this key has been removed.'
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 5.0.0
+      url: https://avd.arista.com/devel/porting-guides/5.x.x.html#new-improved-logic-for-bgp-configuration-of-network-services-vrfs
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
     default: null
@@ -2212,7 +2241,7 @@ keys:
 
             This is used both for AutoVPN and Pathfinder designs.
 
-            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+            That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
             `server` indicates that the router is a route-reflector.
 
@@ -2380,12 +2409,19 @@ keys:
             connected_endpoints_port_channel_interfaces:
               type: str
               description: Path to Custom J2 template.
-            overlay_loopback_interface:
+            router_id_loopback_interface:
               type: str
               description: Path to Custom J2 template.
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+            overlay_loopback_interface:
+              type: str
+              description: Path to Custom J2 template.
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: router_id_loopback_interface
         cv_tags_topology_type:
           documentation_options:
             table: cloudvision-tags
@@ -2527,6 +2563,10 @@ keys:
       table: overlay-settings
     description: Customize the description on overlay interface Loopback0.
     type: str
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      new_key: router_id_loopback_description
   overlay_mlag_rfc5549:
     documentation_options:
       table: overlay-settings
@@ -2577,7 +2617,7 @@ keys:
         description: 'The method for deriving RD Administrator subfield (first part
           of RD):
 
-          - ''overlay_loopback_ip'' means the IP address of Loopback0.
+          - ''router_id'' means the IP address of Loopback0.
 
           - ''vtep_loopback'' means the IP address of the VTEP loopback interface.
 
@@ -2591,8 +2631,11 @@ keys:
 
           - Integer between <0-4294967295>.
 
+          - ''overlay_loopback_ip'' means the IP address of Loopback0. (deprecated
+          - use ''router_id'' instead)
+
           '
-        default: overlay_loopback_ip
+        default: router_id
       admin_subfield_offset:
         type: str
         convert_types:
@@ -2610,7 +2653,7 @@ keys:
         description: 'The method for deriving RD Administrator subfield (first part
           of RD) for VRF services:
 
-          - ''overlay_loopback_ip'' means the IP address of Loopback0.
+          - ''router_id'' means the IP address of Loopback0.
 
           - ''vtep_loopback'' means the IP address of the VTEP loopback interface.
 
@@ -2623,6 +2666,9 @@ keys:
           - Integer between <0-65535>.
 
           - Integer between <0-4294967295>.
+
+          - ''overlay_loopback_ip'' means the IP address of Loopback0. (deprecated
+          - use ''router_id'' instead)
 
 
           ''vrf_admin_subfield'' takes precedence for VRF RDs if set. Otherwise the
@@ -2809,7 +2855,10 @@ keys:
   p2p_uplinks_mtu:
     documentation_options:
       table: fabric-settings
-    description: Point to Point Links MTU.
+    description: 'Point to Point Links MTU.
+
+      Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
+      -> 9214'
     type: int
     convert_types:
     - str
@@ -2884,6 +2933,20 @@ keys:
           description: 'Default interface MTU configured on EOS under "interface defaults".
 
             Takes precedence over the root key "default_interface_mtu".
+
+            '
+          min: 68
+          max: 65535
+        p2p_uplinks_mtu:
+          type: int
+          convert_types:
+          - str
+          description: 'Set MTU on point to point uplink interfaces.
+
+            Takes precedence over the root key "p2p_uplinks_mtu".
+
+            <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
+            -> 9214.
 
             '
           min: 68
@@ -3035,6 +3098,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7500R
       - 7500R2
@@ -3051,6 +3115,7 @@ keys:
       reload_delay:
         mlag: 900
         non_mlag: 1020
+      tcam_profile: vxlan-routing
     - platforms:
       - 7358X4
       management_interface: Management1/1
@@ -3114,6 +3179,7 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       management_interface: Management1/1
+      p2p_uplinks_mtu: 9194
     - platforms:
       - AWE-7220R
       feature_support:
@@ -3123,6 +3189,7 @@ keys:
         queue_monitor_length_notify: false
         poe: true
       management_interface: Management1
+      p2p_uplinks_mtu: 9194
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -3319,6 +3386,12 @@ keys:
         valid_values:
         - sso
         - rpr
+  router_id_loopback_description:
+    documentation_options:
+      table: overlay-settings
+    description: Customize the description on Router ID interface Loopback0.
+    type: str
+    default: ROUTER_ID
   serial_number:
     documentation_options:
       table: system-settings
@@ -3362,6 +3435,8 @@ keys:
               A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
+        required: true
+        min_length: 1
         items:
           type: dict
           keys:
@@ -3414,14 +3489,14 @@ keys:
     documentation_options:
       table: fabric-settings
     type: bool
-    default: false
+    default: true
     description: 'When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers`
       key is set to true, the BGP neighborship is shutdown on the peer.'
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings
     type: bool
-    default: false
+    default: true
     description: '- It is possible to provision configurations for a complete topology
       but flag devices as undeployed using the host level variable `is_deployed: false`.
 
@@ -3866,7 +3941,9 @@ keys:
     documentation_options:
       table: type-setting
     type: str
-    dynamic_valid_values: node_type_keys.type
+    dynamic_valid_values:
+    - custom_node_type_keys.type
+    - node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
@@ -4155,6 +4232,12 @@ keys:
     description: 'Generate AVD configurations directly from a given CloudVision topology.
 
       See `cv_topology` for details.'
+  vtep_loopback_description:
+    documentation_options:
+      table: overlay-settings
+    description: Customize the description on the VTEP interface, typically Loopback1.
+    type: str
+    default: VXLAN_TUNNEL_SOURCE
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings
@@ -4251,11 +4334,12 @@ keys:
   wan_mode:
     documentation_options:
       table: wan-settings
-    description: Select if the WAN should be run using CV Pathfinder or AutoVPN only.
+    description: Select if the WAN should be run using CV Pathfinder or Legacy AutoVPN
+      only.
     type: str
     default: cv-pathfinder
     valid_values:
-    - autovpn
+    - legacy-autovpn
     - cv-pathfinder
   wan_path_groups:
     documentation_options:
@@ -4355,10 +4439,10 @@ keys:
               convert_types:
               - str
   wan_route_servers:
-    description: 'List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the
-      Pathfinders
+    description: 'List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or
+      the Pathfinders
 
-      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+      when using `wan_mode: cv-pathfinder`, to which the device should connect to.
 
       This is also used to establish iBGP sessions between WAN route servers.
 
@@ -4519,10 +4603,10 @@ keys:
               or destined to the WAN route servers.'
       policies:
         type: list
-        description: "List of virtual toplogies policies.\n\nFor AutoVPN, each item
-          in the list creates:\n  * one policy with:\n      * one `match` entry per
-          `application_virtual_topologies` item\n        they are indexed using `10
-          * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
+        description: "List of virtual toplogies policies.\n\nFor Legacy AutoVPN, each
+          item in the list creates:\n  * one policy with:\n      * one `match` entry
+          per `application_virtual_topologies` item\n        they are indexed using
+          `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
           \ * one load-balance policy per `application_virtual_topologies` and one
           for the `default_virtual_topology`.\n  * if the policy is associated with
           the default VRF, a special control-plane rule is injected\n    in the policy
@@ -4674,6 +4758,11 @@ dynamic_keys:
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
+  custom_node_type_keys.key:
+    $ref: eos_designs#/$defs/node_type
+    type: dict
+    documentation_options:
+      hide_keys: true
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list
@@ -5347,9 +5436,6 @@ $defs:
 
       `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
 
-      The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and
-      `storage_arrays`.
-
       '
     items:
       type: dict
@@ -5692,7 +5778,22 @@ $defs:
             fast_leave:
               type: bool
               description: Enable IGMP snooping fast-leave feature for all SVIs and
-                l2vlans within Tenant.
+                l2vlans within the Tenant.
+            always_redistribute_igmp:
+              type: bool
+              description: 'Always configure `redistribute igmp` under BGP for all
+                SVIs within the Tenant if `evpn_l2_multicast` is True.
+
+                By default `redistribute igmp` is only configured when `evpn_l2_multicast`
+                is True and `evpn_l3_multicast` for the VRF is False.
+
+                Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast
+                is enabled will take up additional control-plane and data-plane resources,
+
+                but it is required to support forwarding of TTL=1 multicast traffic
+                within the VLAN.
+
+                This can be overridden per SVI.'
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -5701,7 +5802,7 @@ $defs:
             Multicast group binding for VRF is created only for Multicast traffic.
             BULL traffic will use ingress-replication.\n- Configures binding between
             VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n
-            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni
+            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_id
             - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
             >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8
             Source-Specific Multicast range.\n- If enabled on an SVI using the anycast
@@ -6125,6 +6226,13 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                  evpn_underlay_l3_multicast_group:
+                    type: str
+                    description: 'IPv4 address of evpn underlay l3 multicast group.
+
+                      To override multicast range set using the formula < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool
+                      > + < vrf_id - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
+                      >.'
                   evpn_peg:
                     type: list
                     description: For each group of nodes, allow configuration of EVPN
@@ -6728,6 +6836,21 @@ $defs:
               bgp:
                 type: dict
                 keys:
+                  enabled:
+                    type: bool
+                    description: 'Force (no) configuration of BGP for the VRF.
+
+                      If not set, BGP will be configured when needed according to
+                      the following rules:
+
+                      - If the VRF is part of an overlay (`evpn` or `mpls`), BGP will
+                      be configured for it.
+
+                      - If any BGP peers are configured under the VRF, BGP will be
+                      configured for it. This is useful for L2LS designs with VRFs.
+
+                      - If uplink type is `p2p-vrfs` *and* the vrf is included in
+                      the uplink VRFs, BGP will be configured for it.'
                   raw_eos_cli:
                     type: str
                     description: 'EOS CLI rendered directly on the Router BGP, VRF
@@ -8661,7 +8784,7 @@ $defs:
 
               This is used both for AutoVPN and Pathfinder designs.
 
-              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+              That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
               `server` indicates that the router is a route-reflector.
 
@@ -8727,6 +8850,14 @@ $defs:
                 default: true
                 description: Enable / Disable IPsec over HA path-group when HA is
                   enabled.
+              mtu:
+                type: int
+                convert_types:
+                - str
+                description: Set MTU on WAN HA interfaces.
+                min: 68
+                max: 65535
+                default: 9194
               ha_interfaces:
                 description: "Local WAN HA interfaces\nOverwrite the default behavior
                   which is to pick all the `uplink_interfaces`.\nCan be used to filter
@@ -9453,6 +9584,19 @@ $defs:
         keys:
           enabled:
             type: bool
+          always_redistribute_igmp:
+            type: bool
+            description: 'Always configure `redistribute igmp` under BGP for the VLAN.
+              Overrides the setting of `<network_services_key>.[].evpn_l2_multicast.always_redistribute_igmp`.
+
+              By default `redistribute igmp` is only configured when `evpn_l2_multicast`
+              is True and `evpn_l3_multicast` for the VRF is False.
+
+              Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is
+              enabled will take up additional control-plane and data-plane resources,
+
+              but it is required to support forwarding of TTL=1 multicast traffic
+              within the VLAN.'
       evpn_l3_multicast:
         documentation_options:
           table: network-services-multicast-settings

@@ -62,6 +62,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -87,7 +93,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.109/24
@@ -125,18 +131,22 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-SVC3A_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 - name: Port-Channel7
   description: DC1_L2LEAF2_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
-  vlans: none
   mlag: 7
 ethernet_interfaces:
 - name: Ethernet5
@@ -144,7 +154,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -154,7 +163,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -166,7 +174,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.33/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -180,7 +189,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.35/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -194,7 +204,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.37/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -208,7 +219,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.39/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -221,7 +233,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -231,7 +242,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -244,13 +254,13 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.9/32
   isis_enable: EVPN_UNDERLAY
   isis_passive: true
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.8/32
   isis_enable: EVPN_UNDERLAY
@@ -258,7 +268,7 @@ loopback_interfaces:
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
-  net: 49.0001.0001.0001.0005.00
+  net: 49.0001.1921.6825.5009.00
   router_id: 192.168.255.9
   is_type: level-2
   address_family_ipv4:

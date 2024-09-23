@@ -6,6 +6,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -31,17 +37,21 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel25
   description: MLAG_PEER_SL-LEAF1A_Po25
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel27
   description: SL-LEAF0_Po27
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
-  vlans: none
   mlag: 27
 ethernet_interfaces:
 - name: Ethernet25
@@ -49,7 +59,6 @@ ethernet_interfaces:
   peer_interface: Ethernet25
   peer_type: mlag_peer
   description: MLAG_PEER_SL-LEAF1A_Ethernet25
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 25
@@ -59,7 +68,6 @@ ethernet_interfaces:
   peer_interface: Ethernet26
   peer_type: mlag_peer
   description: MLAG_PEER_SL-LEAF1A_Ethernet26
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 25
@@ -70,7 +78,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SL-LEAF0B_Ethernet28
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 27
     mode: active

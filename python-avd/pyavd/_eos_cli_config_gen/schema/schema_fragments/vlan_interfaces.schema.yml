@@ -432,6 +432,9 @@ keys:
             - str
         isis_network_point_to_point:
           type: bool
+        isis_authentication:
+          type: dict
+          $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication"
         mtu:
           type: int
           convert_types:

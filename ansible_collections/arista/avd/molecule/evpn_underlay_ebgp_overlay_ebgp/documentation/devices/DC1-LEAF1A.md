@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -57,20 +58,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.105/24
@@ -160,6 +161,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -284,19 +289,19 @@ vlan 131
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet6 |  CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet7 |  CUSTOM_server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
+| Ethernet6 | CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet7 | CUSTOM_server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | False | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | 172.31.255.5/31 | default | 1500 | False | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | 172.31.255.7/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | False | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 | - | 172.31.255.3/31 | default | 1500 | False | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 | - | 172.31.255.5/31 | default | 1500 | False | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 | - | 172.31.255.7/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

@@ -11,6 +11,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -27,7 +33,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.13/24
@@ -39,7 +45,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: LSR_Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.0.3/32
   mpls:
@@ -50,7 +56,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0000.0003.00
+  net: 49.0001.0102.5500.0003.00
   router_id: 10.255.0.3
   is_type: level-2
   address_family_ipv4:
@@ -70,7 +76,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: rr
   description: P2P_LINK_TO_rr1_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.13/31
@@ -91,7 +98,8 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: p
   description: P2P_LINK_TO_p4_Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.20/31
@@ -112,7 +120,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: pe
   description: P2P_LINK_TO_pe3_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.23/31

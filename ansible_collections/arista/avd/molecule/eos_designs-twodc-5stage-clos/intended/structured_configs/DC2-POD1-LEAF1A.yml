@@ -95,7 +95,6 @@ router_bgp:
         only: true
   vrfs:
   - name: Common_VRF
-    router_id: 172.16.210.3
     eos_cli: 'comment
 
       Comment created from raw_eos_cli under BGP for VRF Common_VRF
@@ -113,10 +112,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1025:1025
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_dc1_pod1_only
-    router_id: 172.16.210.3
     rd: 172.16.210.3:1102
     route_targets:
       import:
@@ -127,10 +126,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1102:1102
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_from_overlapping_pool
-    router_id: 172.16.210.3
     rd: 172.16.210.3:1100
     route_targets:
       import:
@@ -141,10 +140,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1100:1100
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
   - name: vrf_with_loopbacks_from_pod_pools
-    router_id: 172.16.210.3
     rd: 172.16.210.3:1101
     route_targets:
       import:
@@ -155,6 +154,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1101:1101
+    router_id: 172.16.210.3
     redistribute_routes:
     - source_protocol: connected
 static_routes:
@@ -168,6 +168,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: rstp
   rstp_priority: 4096
@@ -194,7 +200,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.1.22/24
@@ -217,7 +223,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.1/31
@@ -228,7 +235,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.3/31
@@ -238,7 +246,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF1A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -247,7 +254,8 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 100.100.100.201/24
 - name: Ethernet7
@@ -255,7 +263,8 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 11.1.0.39/31
   ptp:
@@ -263,18 +272,20 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC2-POD1-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  vlans: '4092'
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.210.3/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 172.18.210.3/32
 - name: Loopback100
