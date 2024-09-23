@@ -87,9 +87,11 @@ interface Management1
 
 ```eos
 !
+logging repeat-messages
 logging buffered 1000000 warnings
 no logging trap
 logging console errors
+no logging event link-status global
 logging synchronous level critical
 logging host 20.20.20.7
 logging host 50.50.50.7 100 200 protocol tcp
