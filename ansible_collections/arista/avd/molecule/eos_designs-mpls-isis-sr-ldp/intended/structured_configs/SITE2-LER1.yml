@@ -448,7 +448,6 @@ port_channel_interfaces:
       interface: true
       igp_sync: true
 - name: Port-Channel4.1000
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -458,7 +457,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel4.1001
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -468,7 +466,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel4.1002
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -478,7 +475,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel4.1003
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -488,7 +484,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel4.1004
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -498,7 +493,8 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel4
-  type: routed
+  switchport:
+    enabled: false
   peer_type: system
   shutdown: false
 patch_panel:

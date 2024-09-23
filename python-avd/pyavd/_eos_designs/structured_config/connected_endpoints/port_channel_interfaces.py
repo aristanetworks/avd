@@ -214,7 +214,6 @@ class PortChannelInterfacesMixin(UtilsMixin):
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_subinterface_name,
-            "type": "l2dot1q",
             "vlan_id": subinterface.get("vlan_id", subinterface["number"]),
             "encapsulation_vlan": {
                 "client": {

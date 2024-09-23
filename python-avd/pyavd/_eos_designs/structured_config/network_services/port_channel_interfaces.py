@@ -59,7 +59,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         # This is a subinterface so we need to ensure that the parent is created
                         parent_interface = {
                             "name": interface_name,
-                            "switchpot": {"enabled": False},
+                            "switchport": {"enabled": False},
                             "peer_type": "system",
                             "shutdown": False,
                         }
@@ -106,7 +106,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     else:
                         interface = {
                             "name": interface_name,
-                            "switchpot": {"enabled": False},
+                            "switchport": {"enabled": False},
                             "peer_type": "point_to_point_service",
                             "shutdown": False,
                         }

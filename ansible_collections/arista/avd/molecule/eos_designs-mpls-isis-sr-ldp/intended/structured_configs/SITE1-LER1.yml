@@ -381,7 +381,6 @@ vlan_interfaces:
   vrf: TENANT_B_INTRA
 port_channel_interfaces:
 - name: Port-Channel3.1000
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -391,7 +390,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel3.1001
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -401,7 +399,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel3.1002
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -411,7 +408,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel3.1003
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -421,7 +417,6 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel3.1004
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
@@ -431,7 +426,8 @@ port_channel_interfaces:
       protocol: client
   shutdown: false
 - name: Port-Channel3
-  type: routed
+  switchport:
+    enabled: false
   peer_type: system
   shutdown: false
   evpn_ethernet_segment:
@@ -444,7 +440,6 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel8.111
-  type: l2dot1q
   vlan_id: 111
   encapsulation_vlan:
     client:
@@ -453,7 +448,6 @@ port_channel_interfaces:
     network:
       protocol: client
 - name: Port-Channel8.222
-  type: l2dot1q
   vlan_id: 222
   encapsulation_vlan:
     client:
@@ -462,7 +456,6 @@ port_channel_interfaces:
     network:
       protocol: client
 - name: Port-Channel8.333
-  type: l2dot1q
   vlan_id: 434
   encapsulation_vlan:
     client:
