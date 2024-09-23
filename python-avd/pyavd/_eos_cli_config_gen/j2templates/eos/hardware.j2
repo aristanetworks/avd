@@ -4,6 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# eos - hardware #}
+{% if hardware.port_groups is arista.avd.defined %}
+!
+{%     for port_group in hardware.port_groups %}
+{%         if port_group.select is arista.avd.defined %}
+hardware port-group {{ port_group.port_group }} select {{ port_group.select }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
 {% if hardware.access_list.mechanism is arista.avd.defined %}
 !
 hardware access-list mechanism {{ hardware.access_list.mechanism }}
@@ -13,14 +21,6 @@ hardware access-list mechanism {{ hardware.access_list.mechanism }}
 {%     for speed_group in hardware.speed_groups %}
 {%         if speed_group.serdes is arista.avd.defined %}
 hardware speed-group {{ speed_group.speed_group }} serdes {{ speed_group.serdes }}
-{%         endif %}
-{%     endfor %}
-{% endif %}
-{% if hardware.port_groups is arista.avd.defined %}
-!
-{%     for port_group in hardware.port_groups %}
-{%         if port_group.select is arista.avd.defined %}
-hardware port-group {{ port_group.port_group }} select {{ port_group.select }}
 {%         endif %}
 {%     endfor %}
 {% endif %}
