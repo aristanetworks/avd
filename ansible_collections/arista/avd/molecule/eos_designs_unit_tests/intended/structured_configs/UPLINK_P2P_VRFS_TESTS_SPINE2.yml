@@ -91,8 +91,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   mtu: 9214
   ip_address: 10.42.42.10/31
 - name: Ethernet2.42
@@ -102,8 +102,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 42
+  encapsulation_dot1q:
+    vlan: 42
   mtu: 9214
   ip_address: 10.42.42.10/31
 loopback_interfaces:

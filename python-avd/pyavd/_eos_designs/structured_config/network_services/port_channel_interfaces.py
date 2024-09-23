@@ -86,12 +86,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                 "peer_type": "point_to_point_service",
                                 "encapsulation_vlan": {
                                     "client": {
-                                        "dot1q": {
-                                            "vlan": subif["number"],
-                                        },
+                                        "protocol": "dot1q",
+                                        "vlan": subif["number"],
                                     },
                                     "network": {
-                                        "client": True,
+                                        "protocol": "client",
                                     },
                                 },
                                 "shutdown": False,

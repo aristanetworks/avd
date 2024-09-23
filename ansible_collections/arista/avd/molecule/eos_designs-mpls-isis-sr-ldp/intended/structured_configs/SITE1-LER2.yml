@@ -311,8 +311,8 @@ ethernet_interfaces:
   ip_address: 192.168.48.0/31
   shutdown: false
   description: TENANT_B_SITE_3
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   vrf: TENANT_B_WAN
 - name: Ethernet3
   peer_type: point_to_point_service
@@ -415,50 +415,50 @@ port_channel_interfaces:
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1000
+      protocol: dot1q
+      vlan: 1000
     network:
-      client: true
+      protocol: client
   shutdown: false
 - name: Port-Channel3.1001
   type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1001
+      protocol: dot1q
+      vlan: 1001
     network:
-      client: true
+      protocol: client
   shutdown: false
 - name: Port-Channel3.1002
   type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1002
+      protocol: dot1q
+      vlan: 1002
     network:
-      client: true
+      protocol: client
   shutdown: false
 - name: Port-Channel3.1003
   type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1003
+      protocol: dot1q
+      vlan: 1003
     network:
-      client: true
+      protocol: client
   shutdown: false
 - name: Port-Channel3.1004
   type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1004
+      protocol: dot1q
+      vlan: 1004
     network:
-      client: true
+      protocol: client
   shutdown: false
 - name: Port-Channel3
   type: routed
@@ -478,27 +478,27 @@ port_channel_interfaces:
   vlan_id: 111
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 111
+      protocol: dot1q
+      vlan: 111
     network:
-      client: true
+      protocol: client
 - name: Port-Channel8.222
   type: l2dot1q
   vlan_id: 222
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 222
+      protocol: dot1q
+      vlan: 222
     network:
-      client: true
+      protocol: client
 - name: Port-Channel8.333
   type: l2dot1q
   vlan_id: 434
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 333
+      protocol: dot1q
+      vlan: 333
     network:
-      client: true
+      protocol: client
 metadata:
   platform: 7280SR3

@@ -218,12 +218,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "vlan_id": subinterface.get("vlan_id", subinterface["number"]),
             "encapsulation_vlan": {
                 "client": {
-                    "dot1q": {
-                        "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
-                    },
+                    "protocol": "dot1q",
+                    "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
                 },
                 "network": {
-                    "client": True,
+                    "protocol": "client",
                 },
             },
         }
