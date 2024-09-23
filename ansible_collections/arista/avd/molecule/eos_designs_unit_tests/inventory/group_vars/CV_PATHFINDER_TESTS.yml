@@ -24,10 +24,10 @@ cv_pathfinder_regions:
     sites:
       - name: Site404
         id: 404
-        location: Not Found
+        location: Atlantis
       - name: Site405
         id: 405
-        location: Method not allowed
+        location: El Dorado
       - name: Site422
         id: 422
         location: Somewhere

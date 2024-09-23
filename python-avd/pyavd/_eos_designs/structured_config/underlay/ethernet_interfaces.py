@@ -292,7 +292,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 list_of_dicts=ethernet_interfaces,
                 primary_key="name",
                 new_dict=wan_ha_interface,
-                context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} wan_ha_interfaces",
+                context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} wan_ha.ha_interfaces",
                 context_keys=["name", "peer", "peer_interface"],
             )
 
@@ -330,7 +330,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "peer_interface": interface,
                         "peer": self.shared_utils.wan_ha_peer,
                         "description": description,
-                        "type": "port-channel-member",
                         "shutdown": False,
                         "channel_group": {
                             "id": self.shared_utils.wan_ha_port_channel_id,
@@ -346,7 +345,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 direct_wan_ha_interfaces.append(
                     {
                         "name": interface,
-                        "type": "routed",
+                        "switchport": {"enabled": False},
                         "peer_type": "l3_interface",
                         "peer": self.shared_utils.wan_ha_peer,
                         "shutdown": False,

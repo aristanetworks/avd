@@ -141,7 +141,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         return {
             "name": port_channel_name,
-            "type": "routed",
+            "switchport": {"enabled": False},
             "peer_type": "l3_interface",
             # TODO: if different interfaces used across nodes it will fail just like for mlag.
             "peer_interface": port_channel_name,

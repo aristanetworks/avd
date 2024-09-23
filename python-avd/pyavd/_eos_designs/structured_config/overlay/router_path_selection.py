@@ -115,7 +115,6 @@ class RouterPathSelectionMixin(UtilsMixin):
         if self.shared_utils.is_cv_pathfinder_server:
             return ha_path_group
 
-        local_interfaces = []
         if self.shared_utils.use_port_channel_for_direct_ha is True:
             local_interfaces = [{"name": f"Port-Channel{self.shared_utils.wan_ha_port_channel_id}"}]
         else:

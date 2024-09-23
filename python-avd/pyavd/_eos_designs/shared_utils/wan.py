@@ -511,7 +511,8 @@ class WanMixin:
 
     @cached_property
     def use_uplinks_for_wan_ha(self: SharedUtils) -> bool:
-        """Indicates whether the device is using its uplinks for WAN HA or direct HA.
+        """
+        Indicates whether the device is using its uplinks for WAN HA or direct HA.
 
         Returns:
             bool: True if uplinks are used for HA, False otherwise
@@ -544,38 +545,36 @@ class WanMixin:
 
     @cached_property
     def wan_ha_port_channel_id(self: SharedUtils) -> int:
-        """Port-channel ID to use for direct WAN HA port-channel.
+        """
+        Port-channel ID to use for direct WAN HA port-channel.
 
         If not provided, computed from the list of configured members.
         """
-        if self.use_uplinks_for_wan_ha:
-            msg = "Using Port-Channel when using uplinks as HA is not supported."
+        if (configured_id := get(self.switch_data_combined, "wan_ha.port_channel_id")) is not None:
+            return configured_id
+        if not self.wan_ha_interfaces:
+            # This should never happen and is a guard against the function being called from the
+            # wrong place.
+            msg = "Cannot derive the WAN HA port-channel ID without any WAN HA interfaces configured."
             raise AristaAvdError(msg)
-        default_wan_ha_port_channel_id = int("".join(findall(r"\d", self.wan_ha_interfaces[0])))
-        return get(self.switch_data_combined, "wan_ha.port_channel_id", default_wan_ha_port_channel_id)
+        return int("".join(findall(r"\d", self.wan_ha_interfaces[0])))
 
     @cached_property
     def use_port_channel_for_direct_ha(self: SharedUtils) -> bool:
-        """Indicate if port-channel should be used for direct HA.
+        """
+        Indicate if port-channel should be used for direct HA.
 
         Returns:
-            bool: False is use_uplinks_for_wan_ha is True, otherwise the value of `wan_ha.use_port_channel_for_direct_ha`
-                  which defaults to True.
-
-        Raises:
-            AristaAvdError: When `wan_ha.use_port_channel_for_direct_ha` is False and there are multiple configured interfaces.
+            bool: False is use_uplinks_for_wan_ha is True
+                  True if strictly there is more than one configured wan_ha.interfaces
+                  otherwise the value of `wan_ha.use_port_channel_for_direct_ha` which defaults to True.
         """
         if self.use_uplinks_for_wan_ha:
             return False
 
-        use_port_channel = get(self.switch_data_combined, "wan_ha.use_port_channel_for_direct_ha", True)
         interfaces = set(self.configured_wan_ha_interfaces)
 
-        if len(interfaces) > 1 and use_port_channel is False:
-            msg = "AVD does not support multiple HA interfaces when not using uplinks nor port-channel."
-            raise AristaAvdError(msg)
-
-        return use_port_channel
+        return len(interfaces) > 1 or get(self.switch_data_combined, "wan_ha.use_port_channel_for_direct_ha", True)
 
     @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
@@ -584,11 +583,11 @@ class WanMixin:
 
         Used also to generate the prefix list of the PEER HA prefixes.
         """
-        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
         if self.use_uplinks_for_wan_ha:
             peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
             vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+            interfaces = set(self.configured_wan_ha_interfaces)
             for uplink in vrf_default_peer_uplinks:
                 if not interfaces or uplink["interface"] in interfaces:
                     ip_address = get(
@@ -613,10 +612,10 @@ class WanMixin:
 
         Used to generate the prefix list.
         """
-        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
 
         if self.use_uplinks_for_wan_ha:
+            interfaces = set(self.configured_wan_ha_interfaces)
             for uplink in self.vrf_default_uplinks:
                 if not interfaces or uplink["interface"] in interfaces:
                     ip_address = get(
@@ -665,6 +664,7 @@ class WanMixin:
 
     @cached_property
     def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        """Return the DTLS profile name to use for STUN for WAN."""
         if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
             return None
 

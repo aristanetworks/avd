@@ -158,7 +158,8 @@ ethernet_interfaces:
     enabled: false
   description: Colt_10423
 - name: Ethernet52
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   peer: cv-pathfinder-edge3A
   shutdown: false

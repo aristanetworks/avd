@@ -168,7 +168,6 @@ ethernet_interfaces:
   peer_interface: Ethernet42
   peer: cv-pathfinder-edge4A
   description: WAN_HA_cv-pathfinder-edge4A_Ethernet42
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 666
@@ -179,7 +178,6 @@ ethernet_interfaces:
   peer_interface: Ethernet43
   peer: cv-pathfinder-edge4A
   description: WAN_HA_cv-pathfinder-edge4A_Ethernet43
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 666
@@ -187,7 +185,8 @@ ethernet_interfaces:
   mtu: 9194
 port_channel_interfaces:
 - name: Port-Channel666
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   peer_interface: Port-Channel666
   peer: cv-pathfinder-edge4A
