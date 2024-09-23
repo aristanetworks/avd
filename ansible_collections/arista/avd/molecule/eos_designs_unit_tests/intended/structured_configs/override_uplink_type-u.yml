@@ -66,18 +66,19 @@ ethernet_interfaces:
   peer_type: spine
   description: OVERRIDE_UPLINK_TYPE-D_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: OVERRIDE_UPLINK_TYPE-D_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
   spanning_tree_portfast: edge
-  vlans: none
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

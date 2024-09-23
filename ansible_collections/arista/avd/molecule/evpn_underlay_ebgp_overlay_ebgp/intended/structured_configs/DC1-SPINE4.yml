@@ -193,7 +193,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.6/31
 - name: Ethernet2
   peer: DC1-LEAF2A
@@ -203,7 +204,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.22/31
 - name: Ethernet3
   peer: DC1-LEAF2B
@@ -213,7 +215,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.38/31
 - name: Ethernet4
   peer: DC1-SVC3A
@@ -223,7 +226,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.54/31
 - name: Ethernet5
   peer: DC1-SVC3B
@@ -233,7 +237,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.70/31
 - name: Ethernet6
   peer: DC1-BL1A
@@ -243,7 +248,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.86/31
 - name: Ethernet7
   peer: DC1-BL1B
@@ -253,7 +259,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.102/31
 loopback_interfaces:
 - name: Loopback0

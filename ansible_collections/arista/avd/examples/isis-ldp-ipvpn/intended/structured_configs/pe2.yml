@@ -168,7 +168,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_p2_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.4/31
@@ -189,7 +190,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: p
   description: P2P_LINK_TO_p1_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.6/31
@@ -224,7 +226,8 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 20
   vrf: C2_VRF1
 - name: Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 ip_igmp_snooping:

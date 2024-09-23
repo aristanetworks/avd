@@ -204,9 +204,9 @@ interface Ethernet14
 interface Port-Channel1
    description BGP_SPINES_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 1,100,200,4092
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces
