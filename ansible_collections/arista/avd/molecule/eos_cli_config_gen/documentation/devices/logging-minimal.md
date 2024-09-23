@@ -53,8 +53,10 @@ interface Management1
 
 ```eos
 !
+no logging repeat-messages
 logging buffered 64000
 logging console informational
 logging monitor debugging
+logging event link-status global
 logging facility syslog
 ```
