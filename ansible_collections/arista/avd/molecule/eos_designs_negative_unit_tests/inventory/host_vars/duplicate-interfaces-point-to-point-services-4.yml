@@ -49,5 +49,5 @@ tenants:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under point_to_point_services.
-  {'name': 'Ethernet6.1000', 'encapsulation_vlan': {'client': {'protocol': 'dot1q', 'vlan': 1000}, 'network': {'protocol': 'client'}}, 'peer_type': 'point_to_point_service'}
-  conflicts with {'name': 'Ethernet6.1000', 'encapsulation_vlan': None, 'peer_type': 'l3_interface'}.
+  {'name': 'Ethernet6.1000', 'encapsulation_vlan': {'client': {'protocol': 'dot1q', 'vlan': 1000}, 'network': {'protocol': 'client'}},
+  'peer_type': 'point_to_point_service'} conflicts with {'name': 'Ethernet6.1000', 'encapsulation_vlan': None, 'peer_type': 'l3_interface'}.
