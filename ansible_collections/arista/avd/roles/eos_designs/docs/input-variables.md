@@ -1234,6 +1234,18 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
 roles/eos_designs/docs/tables/network-ports.md
 --8<--
 
+### Network ports default description or description template settings
+
+Network ports support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-network-ports-description.md
+--8<--
+
+--8<--
+roles/eos_designs/docs/tables/default-network-ports-port-channel-description.md
+--8<--
+
 ### Port profiles settings
 
 Optional profiles to share common settings for connected_endpoints and/or network_ports.
@@ -1259,6 +1271,18 @@ The keys can be customized to provide a better better organization or grouping o
 
 --8<--
 roles/eos_designs/docs/tables/connected-endpoints-keys.md
+--8<--
+
+### Connected endpoints default description or description template settings
+
+Connected endpoints support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-connected-endpoints-description.md
+--8<--
+
+--8<--
+roles/eos_designs/docs/tables/default-connected-endpoints-port-channel-description.md
 --8<--
 
 ## Network Services
