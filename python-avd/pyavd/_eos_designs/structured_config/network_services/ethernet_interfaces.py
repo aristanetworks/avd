@@ -101,7 +101,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     interface["encapsulation_dot1q_vlan"] = int(subif_id)
 
                             else:
-                                interface["type"] = "routed"
+                                interface.update({"switchport": {"enabled": False}})
 
                             if vrf["name"] != "default":
                                 interface["vrf"] = vrf["name"]
@@ -195,7 +195,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
                                 ethernet_interface = {
                                     "name": interface_name,
-                                    "type": "port-channel-member",
                                     "peer_type": "point_to_point_service",
                                     "shutdown": False,
                                     "channel_group": {
@@ -249,7 +248,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             else:
                                 interface = {
                                     "name": interface_name,
-                                    "type": "routed",
+                                    "switchport": {"enabled": False},
                                     "peer_type": "point_to_point_service",
                                     "shutdown": False,
                                 }
@@ -273,7 +272,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             ethernet_interfaces.extend(
                 {
                     "name": interface_name,
-                    "type": "routed",
+                    "switchport": {"enabled": False},
                     "peer_type": "l3_interface",
                     "shutdown": False,
                 }

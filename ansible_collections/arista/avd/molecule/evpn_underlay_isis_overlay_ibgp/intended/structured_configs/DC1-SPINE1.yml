@@ -135,7 +135,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.0/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -149,7 +150,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.8/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -163,7 +165,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.16/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -177,7 +180,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SVC3A_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.24/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -191,7 +195,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SVC3B_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.32/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -205,7 +210,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-BL1A_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.40/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -219,7 +225,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-BL1B_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.48/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true

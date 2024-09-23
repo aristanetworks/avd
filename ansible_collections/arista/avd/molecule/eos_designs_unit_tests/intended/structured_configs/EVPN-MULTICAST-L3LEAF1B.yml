@@ -204,16 +204,16 @@ router_bgp:
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.4:31
+    rd: 192.168.255.4:66
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
       export:
       - address_family: evpn
         route_targets:
-        - '31:31'
+        - 66:66
     evpn_multicast: true
     router_id: 192.168.255.4
     redistribute_routes:
@@ -497,10 +497,10 @@ router_bgp:
     - learned
     vlan: 330-331
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
-    rd: 192.168.255.4:31
+    rd: 192.168.255.4:66
     route_targets:
       both:
-      - '31:31'
+      - 66:66
     redistribute_routes:
     - learned
     - igmp
@@ -818,7 +818,7 @@ vlans:
 - id: 137
   name: L3_L2_MULTICAST_ENABLED_137
   tenant: Tenant_C
-- id: 3030
+- id: 3065
   name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_130_131
   trunk_groups:
   - LEAF_PEER_L3
@@ -1120,7 +1120,7 @@ vlan_interfaces:
       sparse_mode: true
       local_interface: Loopback31
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
-- name: Vlan3030
+- name: Vlan3065
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
@@ -1291,18 +1291,22 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1A_Po3
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - LEAF_PEER_L3
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 - name: Port-Channel6
   description: EVPN-MULTICAST-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-9,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
   shutdown: false
-  mode: trunk
-  vlans: 1-9,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
   mlag: 6
 ethernet_interfaces:
 - name: Ethernet3
@@ -1310,7 +1314,6 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1A_Ethernet3
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -1320,7 +1323,6 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1A_Ethernet4
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -1332,7 +1334,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.3/31
   pim:
     ipv4:
@@ -1343,7 +1346,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: EVPN-MULTICAST-L2LEAF1A_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 6
     mode: active
@@ -1353,7 +1355,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   pim:
     ipv4:
@@ -1364,7 +1367,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   pim:
     ipv4:
@@ -1375,7 +1379,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
     ipv4:
@@ -1386,7 +1391,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
     ipv4:
@@ -1661,7 +1667,7 @@ vxlan_interface:
         vni: 33
       - name: TEN_C_L3_MULTICAST_ENABLED_130_131
         vni: 31
-        multicast_group: 232.0.32.31
+        multicast_group: 232.0.32.66
       - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         vni: 32
         multicast_group: 232.0.32.32
@@ -1669,7 +1675,7 @@ vxlan_interface:
         vni: 42
       - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         vni: 41
-        multicast_group: 232.0.64.40
+        multicast_group: 232.0.64.2
       - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         vni: 55
         multicast_group: 232.0.96.54
