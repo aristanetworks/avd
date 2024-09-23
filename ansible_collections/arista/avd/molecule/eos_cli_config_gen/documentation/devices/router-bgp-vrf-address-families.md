@@ -102,7 +102,7 @@ router bgp 65001
       bgp additional-paths install
       no bgp redistribute-internal
       bgp additional-paths receive
-      bgp additional-path send any
+      bgp additional-paths send any
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit
