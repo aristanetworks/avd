@@ -45,8 +45,10 @@ CVX is disabled
 !
 cvx
    shutdown
+   !
    service mcs
       shutdown
+   !
    service vxlan
       shutdown
 ```
