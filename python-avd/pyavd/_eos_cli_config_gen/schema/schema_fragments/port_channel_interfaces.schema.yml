@@ -63,6 +63,10 @@ keys:
           type: bool
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
             - routed
             - switched

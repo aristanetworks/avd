@@ -45,20 +45,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.23/24 | 192.168.1.254 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.23/24 | 192.168.1.254 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.1.23/24
@@ -220,9 +220,9 @@ interface Ethernet1
 interface Port-Channel1
    description DC2-POD1-LEAF1A_Po3
    no shutdown
-   switchport
    switchport trunk allowed vlan 4092
    switchport mode trunk
+   switchport
    service-profile QOS-PROFILE
 ```
 

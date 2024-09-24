@@ -102,7 +102,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.119/24
@@ -119,7 +119,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -131,7 +131,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
 vlan_interfaces:
 - name: Vlan4093
@@ -162,19 +162,19 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF2A_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG_SAME_SUBNET_L3LEAF2A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF2A_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -184,7 +184,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF2A_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -212,11 +211,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.35/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.34/32
 prefix_lists:

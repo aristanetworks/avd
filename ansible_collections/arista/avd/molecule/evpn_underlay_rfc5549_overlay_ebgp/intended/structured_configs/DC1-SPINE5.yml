@@ -130,7 +130,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
@@ -156,7 +156,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3A_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet2
   peer: DC1-LEAF3B
@@ -165,7 +166,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet1
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet3
   peer: DC1-LEAF3A
@@ -174,7 +176,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3A_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 - name: Ethernet4
   peer: DC1-LEAF3B
@@ -183,11 +186,12 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet2
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ipv6_enable: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.5/32
   ipv6_address: 2001:1::5/128

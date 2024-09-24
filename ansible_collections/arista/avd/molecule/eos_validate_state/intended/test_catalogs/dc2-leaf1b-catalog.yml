@@ -335,7 +335,7 @@ anta.tests.interfaces:
     - name: Ethernet5
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet5 - dc2-leaf1-server1_PCI2 = 'up'
+      custom_field: Interface Ethernet5 - SERVER_dc2-leaf1-server1_PCI2 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Port-Channel3
@@ -353,8 +353,7 @@ anta.tests.interfaces:
     - name: Port-Channel5
       status: up
     result_overwrite:
-      custom_field: Interface Port-Channel5 - dc2-leaf1-server1_PortChannel dc2-leaf1-server1
-        = 'up'
+      custom_field: Interface Port-Channel5 - PortChannel dc2-leaf1-server1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan4093
@@ -408,13 +407,13 @@ anta.tests.interfaces:
     - name: Loopback0
       status: up
     result_overwrite:
-      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
+      custom_field: Interface Loopback0 - ROUTER_ID = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Loopback1
       status: up
     result_overwrite:
-      custom_field: Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'
+      custom_field: Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Loopback10

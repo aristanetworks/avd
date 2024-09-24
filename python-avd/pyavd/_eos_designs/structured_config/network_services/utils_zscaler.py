@@ -24,7 +24,7 @@ LOGGER = getLogger(__name__)
 
 class UtilsZscalerMixin:
     """
-    Mixin Class with internal functions.
+    Mixin Class with internal functions for Zscaler.
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """

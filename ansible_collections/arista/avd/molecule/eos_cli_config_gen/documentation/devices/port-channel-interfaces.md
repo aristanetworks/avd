@@ -28,20 +28,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -221,6 +221,7 @@ interface Ethernet50
 | Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel13 | EVPN-Vxlan single-active redundancy | - | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
 | Port-Channel14 | EVPN-MPLS multihoming | - | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | trunk | 110,201 | 10 | - | - | - | 16 | - |
@@ -241,6 +242,7 @@ interface Ethernet50
 | Port-Channel115 | native-vlan-tag-precedence | trunk | - | tag | - | - | - | - | - |
 | Port-Channel121 | access_port_with_no_vlans | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | trunk | - | - | - | - | - | - | - |
+| Port-Channel130 | IP NAT Testing | - | - | - | - | - | - | - | - |
 | Port-Channel131 | dot1q-tunnel mode | dot1q-tunnel | 115 | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q

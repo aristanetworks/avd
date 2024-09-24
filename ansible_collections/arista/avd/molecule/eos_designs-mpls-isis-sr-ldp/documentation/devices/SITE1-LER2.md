@@ -54,20 +54,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.106/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.106/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.106/24
@@ -271,7 +271,7 @@ interface Ethernet5.100
    ip address 192.168.48.0/31
 !
 interface Ethernet8
-   description CPE_TENANT_A_SITE1_Ethernet2
+   description CPE_CPE_TENANT_A_SITE1_Ethernet2
    no shutdown
    channel-group 8 mode active
 ```
@@ -344,7 +344,7 @@ interface Port-Channel3.1004
       client dot1q 1004 network client
 !
 interface Port-Channel8
-   description CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+   description CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
 !
@@ -372,13 +372,13 @@ interface Port-Channel8.333
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | MPLS_Overlay_peering | default | 100.70.0.6/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.6/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | MPLS_Overlay_peering | default | 2000:1234:ffff:ffff::6/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::6/128 |
 
 ##### ISIS
 
@@ -391,15 +391,15 @@ interface Port-Channel8.333
 ```eos
 !
 interface Loopback0
-   description MPLS_Overlay_peering
+   description ROUTER_ID
    no shutdown
    ip address 100.70.0.6/32
    ipv6 address 2000:1234:ffff:ffff::6/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 206
    node-segment ipv6 index 206
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces

@@ -10,7 +10,7 @@ keys:
     documentation_options:
       table: fabric-settings
     type: bool
-    default: false
+    default: true
     description: |
       - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.
 

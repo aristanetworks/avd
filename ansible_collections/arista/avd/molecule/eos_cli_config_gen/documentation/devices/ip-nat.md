@@ -21,20 +21,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -148,10 +148,10 @@ NAT profile VRF is: TEST
 
 ```eos
 !
-ip nat translation address selection any
 ip nat translation address selection hash field source-ip
-ip nat translation udp-timeout 3600
+ip nat translation address selection any
 ip nat translation tcp-timeout 7200
+ip nat translation udp-timeout 3600
 ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host

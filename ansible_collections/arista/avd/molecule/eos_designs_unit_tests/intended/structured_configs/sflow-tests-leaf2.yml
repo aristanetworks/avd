@@ -104,7 +104,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.102/24
@@ -122,7 +122,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.5/31
@@ -133,17 +134,18 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet4
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.7/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.254.1.2/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 10.254.11.2/32
 prefix_lists:

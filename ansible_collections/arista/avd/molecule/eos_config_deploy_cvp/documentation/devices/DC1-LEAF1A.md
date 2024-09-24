@@ -54,20 +54,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.105/24
@@ -254,8 +254,8 @@ vlan 131
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet7 | server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
+| Ethernet6 | SERVER_server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet7 | SERVER_server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -301,14 +301,14 @@ interface Ethernet4
    ip address 172.31.255.7/31
 !
 interface Ethernet6
-   description server02_SINGLE_NODE_TRUNK_Eth1
+   description SERVER_server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
 !
 interface Ethernet7
-   description server02_SINGLE_NODE_Eth1
+   description SERVER_server02_SINGLE_NODE_Eth1
    no shutdown
    switchport access vlan 110
    switchport mode access
@@ -323,27 +323,27 @@ interface Ethernet7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.5/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.5/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.5/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.5/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.5/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 192.168.254.5/32
 ```

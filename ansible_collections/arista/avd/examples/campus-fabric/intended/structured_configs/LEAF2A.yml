@@ -38,7 +38,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management0
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.100.105/24
@@ -65,7 +65,6 @@ ethernet_interfaces:
   peer_type: l3spine
   description: SPINE1_Ethernet49/1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -75,19 +74,22 @@ ethernet_interfaces:
   peer_type: l3spine
   description: SPINE2_Ethernet49/1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
 - name: Ethernet3/1
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -117,18 +119,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/2
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -158,18 +161,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/3
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -199,18 +203,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/4
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -240,18 +245,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/5
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -281,18 +287,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/6
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -322,18 +329,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/7
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -363,18 +371,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/8
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -404,18 +413,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/9
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -445,18 +455,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/10
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -486,18 +497,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/11
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -527,18 +539,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/12
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -568,18 +581,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/13
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -609,18 +623,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/14
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -650,18 +665,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/15
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -691,18 +707,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/16
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -732,18 +749,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/17
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -773,18 +791,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/18
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -814,18 +833,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/19
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -855,18 +875,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/20
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -896,18 +917,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/21
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -937,18 +959,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/22
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -978,18 +1001,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/23
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1019,18 +1043,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/24
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1060,18 +1085,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/25
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1101,18 +1127,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/26
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1142,18 +1169,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/27
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1183,18 +1211,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/28
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1224,18 +1253,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/29
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1265,18 +1295,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/30
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1306,18 +1337,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/31
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1347,18 +1379,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/32
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1388,18 +1421,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/33
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1429,18 +1463,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/34
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1470,18 +1505,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/35
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1511,18 +1547,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/36
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1552,18 +1589,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/37
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1593,18 +1631,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/38
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1634,18 +1673,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/39
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1675,18 +1715,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/40
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1716,18 +1757,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/41
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1757,18 +1799,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/42
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1798,18 +1841,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/43
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1839,18 +1883,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/44
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1880,18 +1925,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/45
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1921,18 +1967,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/46
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1962,18 +2009,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/47
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2003,18 +2051,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet3/48
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2044,18 +2093,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/1
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2085,18 +2135,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/2
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2126,18 +2177,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/3
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2167,18 +2219,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/4
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2208,18 +2261,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/5
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2249,18 +2303,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/6
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2290,18 +2345,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/7
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2331,18 +2387,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/8
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2372,18 +2429,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/9
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2413,18 +2471,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/10
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2454,18 +2513,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/11
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2495,18 +2555,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/12
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2536,18 +2597,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/13
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2577,18 +2639,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/14
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2618,18 +2681,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/15
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2659,18 +2723,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/16
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2700,18 +2765,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/17
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2741,18 +2807,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/18
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2782,18 +2849,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/19
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2823,18 +2891,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/20
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2864,18 +2933,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/21
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2905,18 +2975,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/22
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2946,18 +3017,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/23
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2987,18 +3059,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/24
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3028,18 +3101,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/25
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3069,18 +3143,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/26
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3110,18 +3185,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/27
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3151,18 +3227,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/28
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3192,18 +3269,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/29
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3233,18 +3311,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/30
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3274,18 +3353,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/31
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3315,18 +3395,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/32
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3356,18 +3437,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/33
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3397,18 +3479,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/34
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3438,18 +3521,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/35
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3479,18 +3563,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/36
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3520,18 +3605,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/37
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3561,18 +3647,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/38
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3602,18 +3689,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/39
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3643,18 +3731,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/40
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3684,18 +3773,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/41
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3725,18 +3815,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/42
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3766,18 +3857,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/43
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3807,18 +3899,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/44
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3848,18 +3941,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/45
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3889,18 +3983,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/46
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3930,18 +4025,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/47
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3971,18 +4067,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet4/48
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4012,18 +4109,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/1
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4053,18 +4151,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/2
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4094,18 +4193,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/3
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4135,18 +4235,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/4
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4176,18 +4277,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/5
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4217,18 +4319,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/6
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4258,18 +4361,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/7
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4299,18 +4403,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/8
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4340,18 +4445,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/9
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4381,18 +4487,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/10
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4422,18 +4529,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/11
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4463,18 +4571,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/12
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4504,18 +4613,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/13
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4545,18 +4655,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/14
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4586,18 +4697,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/15
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4627,18 +4739,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/16
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4668,18 +4781,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/17
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4709,18 +4823,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/18
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4750,18 +4865,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/19
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4791,18 +4907,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/20
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4832,18 +4949,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/21
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4873,18 +4991,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/22
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4914,18 +5033,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/23
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4955,18 +5075,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/24
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -4996,18 +5117,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/25
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5037,18 +5159,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/26
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5078,18 +5201,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/27
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5119,18 +5243,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/28
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5160,18 +5285,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/29
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5201,18 +5327,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/30
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5242,18 +5369,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/31
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5283,18 +5411,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/32
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5324,18 +5453,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/33
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5365,18 +5495,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/34
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5406,18 +5537,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/35
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5447,18 +5579,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/36
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5488,18 +5621,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/37
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5529,18 +5663,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/38
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5570,18 +5705,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/39
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5611,18 +5747,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/40
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5652,18 +5789,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/41
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5693,18 +5831,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/42
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5734,18 +5873,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/43
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5775,18 +5915,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/44
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5816,18 +5957,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/45
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5857,18 +5999,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/46
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5898,18 +6041,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/47
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5939,18 +6083,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet5/48
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -5980,18 +6125,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/1
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6021,18 +6167,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/2
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6062,18 +6209,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/3
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6103,18 +6251,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/4
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6144,18 +6293,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/5
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6185,18 +6335,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/6
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6226,18 +6377,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/7
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6267,18 +6419,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/8
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6308,18 +6461,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/9
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6349,18 +6503,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/10
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6390,18 +6545,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/11
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6431,18 +6587,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/12
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6472,18 +6629,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/13
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6513,18 +6671,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/14
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6554,18 +6713,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/15
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6595,18 +6755,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/16
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6636,18 +6797,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/17
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6677,18 +6839,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/18
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6718,18 +6881,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/19
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6759,18 +6923,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/20
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6800,18 +6965,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/21
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6841,18 +7007,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/22
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6882,18 +7049,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/23
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6923,18 +7091,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/24
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -6964,18 +7133,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/25
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7005,18 +7175,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/26
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7046,18 +7217,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/27
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7087,18 +7259,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/28
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7128,18 +7301,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/29
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7169,18 +7343,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/30
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7210,18 +7385,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/31
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7251,18 +7427,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/32
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7292,18 +7469,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/33
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7333,18 +7511,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/34
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7374,18 +7553,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/35
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7415,18 +7595,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/36
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7456,18 +7637,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/37
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7497,18 +7679,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/38
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7538,18 +7721,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/39
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7579,18 +7763,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/40
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7620,18 +7805,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/41
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7661,18 +7847,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/42
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7702,18 +7889,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/43
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7743,18 +7931,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/44
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7784,18 +7973,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/45
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7825,18 +8015,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/46
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7866,18 +8057,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/47
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7907,18 +8099,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet6/48
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7948,18 +8141,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/1
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -7989,18 +8183,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/2
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8030,18 +8225,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/3
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8071,18 +8267,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/4
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8112,18 +8309,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/5
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8153,18 +8351,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/6
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8194,18 +8393,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/7
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8235,18 +8435,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/8
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8276,18 +8477,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/9
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8317,18 +8519,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/10
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8358,18 +8561,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/11
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8399,18 +8603,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/12
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8440,18 +8645,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/13
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8481,18 +8687,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/14
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8522,18 +8729,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/15
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8563,18 +8771,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/16
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8604,18 +8813,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/17
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8645,18 +8855,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/18
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8686,18 +8897,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/19
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8727,18 +8939,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/20
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8768,18 +8981,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/21
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8809,18 +9023,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/22
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8850,18 +9065,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/23
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8891,18 +9107,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/24
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8932,18 +9149,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/25
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -8973,18 +9191,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/26
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9014,18 +9233,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/27
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9055,18 +9275,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/28
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9096,18 +9317,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/29
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9137,18 +9359,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/30
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9178,18 +9401,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/31
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9219,18 +9443,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/32
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9260,18 +9485,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/33
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9301,18 +9527,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/34
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9342,18 +9569,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/35
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9383,18 +9611,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/36
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9424,18 +9653,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/37
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9465,18 +9695,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/38
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9506,18 +9737,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/39
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9547,18 +9779,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/40
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9588,18 +9821,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/41
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9629,18 +9863,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/42
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9670,18 +9905,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/43
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9711,18 +9947,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/44
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9752,18 +9989,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/45
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9793,18 +10031,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/46
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9834,18 +10073,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/47
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9875,18 +10115,19 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 - name: Ethernet7/48
-  peer: IDF2 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF2 Standard Port
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 210
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 210
+    phone:
+      trunk: untagged
+      vlan: 220
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -9916,16 +10157,15 @@ ethernet_interfaces:
       action: power-off
     limit:
       class: 4
-  phone:
-    trunk: untagged
-    vlan: 220
 port_channel_interfaces:
 - name: Port-Channel11
   description: SPINES_Po491
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,210,220,230
   shutdown: false
-  mode: trunk
-  vlans: 10,210,220,230
 vlans:
 - id: 210
   name: IDF2-Data

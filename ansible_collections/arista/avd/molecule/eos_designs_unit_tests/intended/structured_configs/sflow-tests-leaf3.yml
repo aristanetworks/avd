@@ -124,7 +124,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.103/24
@@ -139,7 +139,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -151,7 +151,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_VRF1
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: SFLOW
 - id: 4092
   tenant: system
@@ -193,54 +193,61 @@ vlan_interfaces:
   - 10.254.254.1
 port_channel_interfaces:
 - name: Port-Channel11
-  description: port-channel-interface-true
-  type: switched
+  description: SERVER_port-channel-interface-true
+  switchport:
+    enabled: true
+    mode: access
+    trunk:
+      groups:
+      - MLAG
+    access_vlan: '11'
   shutdown: false
-  mode: access
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
   sflow:
     enable: true
-  vlans: '11'
   spanning_tree_portfast: edge
   mlag: 11
 - name: Port-Channel16
   description: SFLOW-TESTS-L2-LEAF1_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   sflow:
     enable: true
-  vlans: 11,4092
   mlag: 16
 - name: Port-Channel17
   description: SFLOW-TESTS-L2-LEAF2_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   sflow:
     enable: true
-  vlans: 11,4092
   mlag: 17
 - name: Port-Channel13
-  description: port-channel-interface-false
-  type: switched
+  description: SERVER_port-channel-interface-false
   shutdown: false
   sflow:
     enable: false
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 13
 - name: Port-Channel15
-  description: port-channel-interface-no-definition
-  type: switched
+  description: SERVER_port-channel-interface-no-definition
   shutdown: false
   sflow:
     enable: true
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   mlag: 15
 ethernet_interfaces:
@@ -248,8 +255,7 @@ ethernet_interfaces:
   peer: port-channel-interface-true
   peer_interface: PCI1
   peer_type: server
-  description: port-channel-interface-true_PCI1
-  type: port-channel-member
+  description: SERVER_port-channel-interface-true_PCI1
   shutdown: false
   channel_group:
     id: 11
@@ -259,7 +265,6 @@ ethernet_interfaces:
   peer_interface: Ethernet12
   peer_type: mlag_peer
   description: MLAG_PEER_sflow-tests-leaf4_Ethernet12
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
@@ -271,7 +276,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet5
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.17/31
@@ -282,7 +288,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet6
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.19/31
@@ -292,7 +299,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SFLOW-TESTS-L2-LEAF1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 16
     mode: active
@@ -302,7 +308,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: SFLOW-TESTS-L2-LEAF2_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 17
     mode: active
@@ -310,9 +315,8 @@ ethernet_interfaces:
   peer: port-channel-interface-false
   peer_interface: PCI11
   peer_type: server
-  description: port-channel-interface-false_PCI11
+  description: SERVER_port-channel-interface-false_PCI11
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 13
     mode: 'on'
@@ -320,9 +324,8 @@ ethernet_interfaces:
   peer: port-channel-interface-no-definition
   peer_interface: PCI13
   peer_type: server
-  description: port-channel-interface-no-definition_PCI13
+  description: SERVER_port-channel-interface-no-definition_PCI13
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -353,11 +356,11 @@ route_maps:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.254.1.5/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 10.254.11.5/32
 prefix_lists:

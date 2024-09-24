@@ -25,20 +25,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -65,6 +65,7 @@ interface Management1
 management security
    entropy source hardware
    password encryption-key common
+   !
    ssl profile SSL_PROFILE
       tls versions 1.1 1.2
       certificate SSL_CERT key SSL_KEY
@@ -202,9 +203,11 @@ mac security
       traffic unprotected allow
       sci
       l2-protocol lldp bypass unauthorized
+   !
    profile A2
       key 1234b 7 <removed>
       traffic unprotected allow active-sak
+   !
    profile A3
       cipher aes256-gcm-xpn
       key ab 7 <removed>

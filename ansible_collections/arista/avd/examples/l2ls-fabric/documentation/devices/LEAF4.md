@@ -49,20 +49,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 172.16.100.108/24 | 172.16.100.1 |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.108/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management0
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.100.108/24
@@ -292,7 +292,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | SPINE1_Ethernet4 | *trunk | *10,30 | *- | *- | 1 |
 | Ethernet2 | SPINE2_Ethernet4 | *trunk | *10,30 | *- | *- | 1 |
-| Ethernet3 | Host2_Eth1 | access | 30 | - | - | - |
+| Ethernet3 | SERVER_Host2_Eth1 | access | 30 | - | - | - |
 | Ethernet47 | MLAG_PEER_LEAF3_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
 | Ethernet48 | MLAG_PEER_LEAF3_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
@@ -313,7 +313,7 @@ interface Ethernet2
    channel-group 1 mode active
 !
 interface Ethernet3
-   description Host2_Eth1
+   description SERVER_Host2_Eth1
    no shutdown
    switchport access vlan 30
    switchport mode access
@@ -349,17 +349,17 @@ interface Ethernet48
 interface Port-Channel1
    description SPINES_Po3
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,30
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel47
    description MLAG_PEER_LEAF3_Po47
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces

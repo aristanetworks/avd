@@ -10,7 +10,8 @@ mpls:
 
 ethernet_interfaces:
   - name: Ethernet1
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 192.168.100.1/31
     mpls:
       ip: true

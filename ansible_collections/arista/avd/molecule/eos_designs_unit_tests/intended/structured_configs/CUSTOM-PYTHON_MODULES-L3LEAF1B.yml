@@ -116,7 +116,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.102/24
@@ -133,7 +133,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -145,7 +145,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST_VRF
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: CUSTOM_PYTHON_MODULES_TENANT
 vlan_interfaces:
 - name: Vlan4093
@@ -178,19 +178,19 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Po3
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet3
   peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -200,7 +200,6 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet4
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -212,7 +211,8 @@ ethernet_interfaces:
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.23/31
 mlag_configuration:
   domain_id: CUSTOM_PYTHON_MODULES_L3LEAF1

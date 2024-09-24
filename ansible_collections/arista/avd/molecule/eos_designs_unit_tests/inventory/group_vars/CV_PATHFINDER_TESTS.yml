@@ -94,6 +94,8 @@ wan_router:
   # Testing HA and disabling HA
   node_groups:
     # SITE_HA_DISABLED
+    # Because HA is disabled, this allow to test that MPLS-ONLY, present on
+    # cv-pathfinder-edge is not configured on cv-pathfinder-edge1
     - group: Site511
       uplink_type: p2p-vrfs
       uplink_switches: [ site-ha-disabled-leaf ]
@@ -204,6 +206,9 @@ wan_router:
                 peer_as: 64520
                 ipv4_prefix_list_out: PL2
     # SITE_HA_ENABLED
+    # Because HA is enabled, this allow to test that MPLS-ONLY, present on
+    # cv-pathfinder-edge2B (because of Colt) is being configured on cv-pathfinder-edge2A
+    # with only LAN_HA path-group.
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site423
@@ -289,6 +294,8 @@ wan_router:
       wan_ha:
         enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ha_interfaces: [Ethernet52]
+        # Test wan_ha mtu
+        mtu: 9100
         ha_ipv4_pool: 10.10.10.0/24
       nodes:
         - name: cv-pathfinder-edge3A
@@ -545,7 +552,8 @@ wan_virtual_topologies:
           internet_exit:
             policy: ZSCALER-EXIT-POLICY-2
           id: 4
-        # This will not be rendered on devices without MPLS
+        # This will not be rendered on devices without MPLS except if their HA
+        # peer have MPLS.
         - application_profile: MPLS-ONLY
           path_groups:
             - names: [MPLS]

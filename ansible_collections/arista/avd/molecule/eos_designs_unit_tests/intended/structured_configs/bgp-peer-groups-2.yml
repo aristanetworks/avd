@@ -117,19 +117,19 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_bgp-peer-groups-1_Po3
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet3
   peer: bgp-peer-groups-1
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-peer-groups-1_Ethernet3
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -157,11 +157,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.112/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.111/32
 prefix_lists:
