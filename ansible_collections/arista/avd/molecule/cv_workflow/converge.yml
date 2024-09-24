@@ -17,7 +17,6 @@
     intended_strict_tags: "{{ lookup('file', structured_config_dir ~ '/strict_tags/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
     intended_value_tags: "{{ lookup('file', structured_config_dir ~ '/change_tags/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
 
-
   tasks:
     - name: Generate random string
       ansible.builtin.set_fact:

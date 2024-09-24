@@ -3,10 +3,6 @@
 
 fabric_name: DC1_FABRIC
 
-# Set Design Type to L2ls
-design:
-  type: l2ls
-
 # Ansible connectivity definitions
 # eAPI connectivity via HTTPS is specified (as opposed to network_cli via SSH)
 ansible_connection: ansible.netcommon.httpapi
@@ -45,7 +41,7 @@ l3spine:
           mgmt_ip: 172.16.100.102/24
 
 # IDF - Leaf Switches
-leaf:
+l2leaf:
   defaults:
     platform: cEOSLab
     mlag_peer_ipv4_pool: 192.168.0.0/24
@@ -126,7 +122,6 @@ leaf:
           id: 10
           mgmt_ip: 172.16.100.110/24
           uplink_switch_interfaces: [Ethernet98/1, Ethernet98/1]
-
 
 #### Override for vEOS/cEOS Lab Caveats ####
 p2p_uplinks_mtu: 1500

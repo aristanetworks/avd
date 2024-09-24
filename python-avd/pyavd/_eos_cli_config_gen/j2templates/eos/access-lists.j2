@@ -1,0 +1,21 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - access lists #}
+{% for access_list in access_lists | arista.avd.natural_sort('name') %}
+!
+ip access-list {{ access_list.name }}
+{%     if access_list.counters_per_entry is arista.avd.defined(true) %}
+   counters per-entry
+{%     endif %}
+{%     for sequence in access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%         if sequence.action is arista.avd.defined %}
+   {{ sequence.sequence }} {{ sequence.action }}
+{%         endif %}
+{%     endfor %}
+{%     if access_list.permit_response_traffic is arista.avd.defined %}
+   permit response traffic {{ access_list.permit_response_traffic }}
+{%     endif %}
+{% endfor %}

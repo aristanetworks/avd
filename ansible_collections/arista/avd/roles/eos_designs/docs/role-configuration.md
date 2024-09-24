@@ -27,17 +27,28 @@ roles/eos_designs/defaults/main/output_directories.yml
 
 ## Input Variables Validation settings
 
+Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
+performs validation of the converted data.
+
+By default any data validation issues will trigger errors - blocking further processing.
+This behavior can be adjusted by setting the variable described below.
+
+!!! danger
+    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
+    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
+
+    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
+
 --8<--
 roles/eos_designs/docs/tables/role-input-validation.md
 --8<--
 
-## Documentation output settings
+## Generation of facts, structured configuration and documentation
 
-The `documentation_output` settings can be leveraged to control documentation generation. This can be useful
-if for instance the project has thousands of endpoints, to be able to disable fabric-wide connected endpoints documentation.
+The following settings can be leveraged to control generation of facts, structured configuration and fabric documentation.
 
 --8<--
-roles/eos_designs/docs/tables/role-documentation-output-settings.md
+roles/eos_designs/docs/tables/role-settings.md
 --8<--
 
 ## Custom Templates

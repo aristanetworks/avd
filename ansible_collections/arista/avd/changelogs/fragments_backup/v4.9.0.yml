@@ -1,0 +1,164 @@
+release_summary: |
+  Release 4.9.0 - See documentation on avd.arista.com for details.
+bugfixes:
+### Breaking Changes
+- |-
+ Fix(eos_designs)!: Remove eBGP LAN outbound route-map for WAN by @gmuloc in https://github.com/aristanetworks/avd/pull/4107
+### Fixed issues in eos_cli_config_gen
+- |-
+ Fix(eos_cli_config_gen): Fix the templates for event-handlers by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4055
+- |-
+ Fix(eos_cli_config_gen): BGP models has supress-map which is not present in EOS commands. by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4054
+- |-
+ Fix(eos_cli_config_gen): Fix MSDP template typo for sa_filter.out_list by @gusmb in https://github.com/aristanetworks/avd/pull/4161
+### Fixed issues in eos_designs
+- |-
+ Fix(eos_designs): Inband mgmt route-map and prefix-list should not be applied without overlay_routing_protocol by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4045
+- |-
+ Fix(eos_designs): core_interfaces generates invalid config if ASN is not defined for the p2p_links/p2p_links_profiles by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4046
+- |-
+ Fix(eos_designs): Address ipv4_acl_in/out not working for WAN l3 subinterfaces by @gmuloc in https://github.com/aristanetworks/avd/pull/4116
+- |-
+ Fix(eos_designs): WAN Exclude interface IP address from direct internet-exit NAT ACL by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/4096
+### Other Fixed issues
+- |-
+ Fix(containers): Add "remoteUser": "avd" to devcontainer by @carlbuchmann in https://github.com/aristanetworks/avd/pull/4043
+- |-
+ Fix(eos_validate_state): Update error message when a device does not have httpapi _sub_plugin by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/4049
+- |-
+ Fix(cv_deploy): Improve SWG API handling for Zscaler internet exit by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4090
+- |-
+ Fix: Adjust inventory group names in molecule tests to follow Ansible guidelines by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/4097
+- |-
+ Fix: Change the required arguments for eos_cli_config_gen action plugin by @gmuloc in https://github.com/aristanetworks/avd/pull/4152
+minor_changes:
+### Documentation
+- |-
+ Doc: Fix mkdocs broken requirement links in roles by @gmuloc in https://github.com/aristanetworks/avd/pull/4039
+- |-
+ Doc: Contribution Guide Updates by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3766
+- |-
+ Doc: Add notes about using cv_deploy for CV Pathfinder by @gmuloc in https://github.com/aristanetworks/avd/pull/4044
+- |-
+ Doc(eos_cli_config_gen): Include docs for router segment-security by @jonxstill in https://github.com/aristanetworks/avd/pull/4059
+- |-
+ Doc: Minor updates to Development Tooling guide. by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4067
+- |-
+ Doc: Update installation guide with PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4076
+- |-
+ Doc: Minor grammar edits. by @blitzeditor in https://github.com/aristanetworks/avd/pull/3362
+- |-
+ Doc: Added the table of WAN validation by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/4125
+- |-
+ Doc: Semantic Versioning by @carlbuchmann in https://github.com/aristanetworks/avd/pull/3417
+- |-
+ Doc: add CVaaS regional URLs to cv_deploy by @noredistribution in https://github.com/aristanetworks/avd/pull/4092
+### New features and enhancements in eos_cli_config_gen
+- |-
+ Feat(eos_cli_config_gen): Add support for Postcard telemetry by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/3642
+- |-
+ Feat(eos_cli_config_gen): Add option for `ospf_type` when redistributing OSPF into BGP by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4029
+- |-
+ Feat(eos_cli_config_gen): Add support for MACsec fallback to unprotected traffic by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4028
+- |-
+ Feat(eos_cli_config_gen): Add Patch-Panel Connector commands by @ccsnw in https://github.com/aristanetworks/avd/pull/4063
+- |-
+ Feat(eos_cli_config_gen): Add support for 'no bgp redistribute-internal' by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4033
+- |-
+ Feat(eos_cli_config_gen): Add support for Router BGP missing-policy for address-family all by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/4034
+- |-
+ Feat(eos_cli_config_gen): Add support for dot1x captive portal and supplicant commands by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4023
+- |-
+ Feat(eos_cli_config_gen): Adding option for arp cache persistent and arp persistent refresh-delay by @bjmeuer in https://github.com/aristanetworks/avd/pull/4109
+- |-
+ Feat(eos_cli_config_gen): Support of static IPv6 neighbor entries by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/4075
+- |-
+ Feat(eos_cli_config_gen): Add support for permit response traffic nat under ip acls by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4128
+- |-
+ Feat(eos_cli_config_gen): Support of BGP default-originate per VRF #3941 by @mmaaloul in https://github.com/aristanetworks/avd/pull/4122
+### New features and enhancements in eos_designs
+- |-
+ Feat(eos_designs): Add support for 'uplink_mtu' under node config by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4040
+- |-
+ Feat(eos_designs): Add platform settings for WAN devices by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/4027
+- |-
+ Feat(eos_designs): Disable per interface MTU for 7010TX by @xaviramon in https://github.com/aristanetworks/avd/pull/4053
+- |-
+ Feat(eos_designs): Allow reuse of cross-device BGP peer ip by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4050
+- |-
+ Feat(eos_designs): Allow 'evpn_vlan_bundle' to be set up at tenant level by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4093
+- |-
+ Feat(eos_designs): Enforce unicity of region IDs and per-region site IDs for CV Pathfinder by @gmuloc in https://github.com/aristanetworks/avd/pull/4121
+- |-
+ Feat(eos_designs): Add support for directly connected WAN HA by @gmuloc in https://github.com/aristanetworks/avd/pull/3720
+- |-
+ Feat(eos_designs): Add support to enable BGP peering with wan provider by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/4079
+### Other new features and enhancements
+- |-
+ Feat(eos_validate_state): Added the validation for IP security connections by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/3911
+- |-
+ Feat(eos_validate_state): Added the validation for STUN client configurations by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/3898
+- |-
+ Feat(containers): switch to pyavd and editable install for container build by @ankudinov in https://github.com/aristanetworks/avd/pull/4087
+- |-
+ Feat(eos_validate_state): Add support for ANTA v1.0.0 by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/4123
+### PyAVD Changes
+- |-
+ Bump(pyavd): Add support for Python 3.9 in PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4051
+### Other Changes
+- |-
+ Refactor(plugins): Move jinja filter code for `arista.avd.default` to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4047
+- |-
+ Refactor(eos_cli_config_gen): Addressed missed comments for patch-panel by @gmuloc in https://github.com/aristanetworks/avd/pull/4078
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.natural_sort to PyAVD by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4068
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.convert_dicts to PyAVD by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4069
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.list_compress to PyAVD by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4099
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.generate_route_target to PyAVD by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4101
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.add_md_toc to PyAVD by @gmuloc in https://github.com/aristanetworks/avd/pull/4104
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.hide_passwords to PyAVD by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4112
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.generate_esi to PyAVD by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4114
+- |-
+ Refactor(eos_designs): Move eos_designs_facts to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4110
+- |-
+ Refactor(eos_designs): Move eos_designs Python modules to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4120
+- |-
+ Refactor(eos_designs): Move eos_designs_shared_utils to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4126
+- |-
+ Refactor(plugins): Move jinja test code for arista.avd.contains to PyAVD by @gmuloc in https://github.com/aristanetworks/avd/pull/4131
+- |-
+ Refactor(eos_cli_config_gen): Move eos_cli_config_gen to pyavd by @gmuloc in https://github.com/aristanetworks/avd/pull/4117
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.is_in_filter to PyAVD by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4133
+- |-
+ Refactor(plugins): Move schema code and schema fragments to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4130
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.snmp_hash to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4136
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.generate_lacp_id to PyAVD by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4139
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.encrypt and arista.avd.decrypt to PyAVD by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/4135
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.status_render to PyAVD by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4142
+- |-
+ Refactor(plugins): Move jinja filter code for arista.avd.range_expand to PyAVD by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4138
+- |-
+ Refactor(plugins): Move internal cv_client code to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4141
+- |-
+ Refactor(plugins): Move jinja test code for arista.avd.defined to PyAVD by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4143
+- |-
+ Refactor(plugins): Move internal AVD code to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4140
+- |-
+ Refactor: Move requirements to PyAVD by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4147
+- |-
+ Refactor(cv_deploy): Optimize creation of configlet containers by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/3950
+- |-
+ Refactor(plugins): Deprecate various unused Ansible plugins by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4166
+- |-
+ Refactor: Deprecate Python3.9 support by @gmuloc in https://github.com/aristanetworks/avd/pull/4177

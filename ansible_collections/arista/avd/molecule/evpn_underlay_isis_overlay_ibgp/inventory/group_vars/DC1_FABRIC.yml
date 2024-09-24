@@ -6,6 +6,7 @@ fabric_name: DC1_FABRIC
 
 # ISIS Parameters when underlay_routing_protocol=ISIS
 underlay_routing_protocol: isis
+underlay_isis_bfd: true
 overlay_routing_protocol: ibgp
 bgp_as: 65000
 isis_area_id: "49.0001"
@@ -105,7 +106,8 @@ l3leaf:
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
-      mlag_peer_l3_vlan: 4094 # Testing reuse of the same vlan for mlag and mlag l3 peering. Observe that isis is configured correctly for the vlan. (interface and no passive)
+      # Testing reuse of the same vlan for mlag and mlag l3 peering. Observe that isis is configured correctly for the vlan. (interface and no passive)
+      mlag_peer_l3_vlan: 4094
       nodes:
         - name: DC1-SVC3A
           id: 4

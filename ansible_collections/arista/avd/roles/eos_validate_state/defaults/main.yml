@@ -1,5 +1,3 @@
-eos_validate_state_validation_mode_loose: true
-
 # Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
 root_dir: "{{ inventory_dir }}"
 
@@ -58,7 +56,3 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
 avd_structured_config_file_format: "yml"
-
-# Variable to enable ANTA eos_validate_state
-# Defaults to false as ANTA is currently preview
-use_anta: false

@@ -48,7 +48,6 @@ l3leaf:
           inband_mgmt_vrf: INBANDMGMT
           id: 6
 
-
 l2leaf:
   defaults:
     inband_ztp: true

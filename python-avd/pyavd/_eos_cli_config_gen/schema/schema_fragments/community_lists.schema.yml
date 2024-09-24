@@ -1,0 +1,28 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  community_lists:
+    type: list
+    primary_key: name
+    display_name: Community Lists (legacy model)
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      new_key: ip_community_lists
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Community-list Name.
+        action:
+          type: str
+          required: true
+          description: |
+            Action as string.
+            Example: "permit GSHUT 65123:123"

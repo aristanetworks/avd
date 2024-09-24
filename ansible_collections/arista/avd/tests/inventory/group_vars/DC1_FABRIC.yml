@@ -79,7 +79,6 @@ l3leaf:
           mgmt_ip: 10.255.0.16/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
 
-
 l2leaf:
   defaults:
     platform: vEOS-LAB

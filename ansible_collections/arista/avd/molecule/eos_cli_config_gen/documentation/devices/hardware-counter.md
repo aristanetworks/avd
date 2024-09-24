@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -54,6 +54,7 @@ interface Management1
 | mpls lfib | - | - | - | - | - | True |
 | route | - | ipv4 | test | - | 192.168.0.0/24 | - |
 | route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
+| segment-security | in | - | - | - | - | - |
 
 #### Hardware Counters Device Configuration
 
@@ -66,4 +67,5 @@ hardware counter feature ip out layer3 units packets
 hardware counter feature mpls lfib units packets
 hardware counter feature route ipv4 vrf test 192.168.0.0/24
 hardware counter feature route ipv6 2001:db8:cafe::/64
+hardware counter feature segment-security in
 ```

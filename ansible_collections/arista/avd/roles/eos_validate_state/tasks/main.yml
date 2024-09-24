@@ -3,9 +3,8 @@
 # that can be found in the LICENSE file.
 ---
 - name: Verify Requirements
-  tags: [always, avd_req]
   delegate_to: localhost
-  when: avd_requirements is not defined
+  when: avd_requirements is not defined and avd_verify_requirements | default(true)
   arista.avd.verify_requirements:
     requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
     avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
@@ -15,10 +14,11 @@
   register: avd_requirements
 
 - name: Create required output directories if not present
+  when: avd_create_directories | arista.avd.default(true)
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0775
+    mode: "0o775"
   loop:
     - "{{ eos_validate_state_dir }}"
     - "{{ output_dir }}"
@@ -28,8 +28,6 @@
   delegate_to: localhost
   run_once: true
   check_mode: false
-  tags:
-    - always
 
 - name: Include device intended structured configuration variables
   ansible.builtin.include_vars: "{{ filename }}"
@@ -37,37 +35,30 @@
   when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-  tags:
-    - always
 
-#########################################
-##  Run eos_validate_state using ANTA  ##
-#########################################
+- name: Run eos_validate_state_runner
+  arista.avd.eos_validate_state_runner:
+    logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
+    skip_tests: "{{ skip_tests | arista.avd.default([]) }}"
+    save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
+    device_catalog_path: "{{ test_catalogs_dir }}/{{ inventory_hostname }}-catalog.yml"
+    test_results_dir: "{{ test_results_dir }}"
+    custom_anta_catalogs_dir: "{{ custom_anta_catalogs_dir }}"
+    # cprofile_file: "anta-{{inventory_hostname}}.prof"
+  register: anta_results
+  check_mode: false
 
-- name: Include ANTA tasks
-  ansible.builtin.include_tasks: "anta_tests.yml"
-  # Ensure that `use_anta` is evaluated as a boolean when using `-e` or `--extra-vars`
-  when: use_anta | bool
-  tags:
-    - always
-
-########################################################
-##  Run eos_validate_state using Ansible assert tests ##
-########################################################
-
-- name: Include Ansible assert tests
-  ansible.builtin.include_tasks: "ansible_tests.yml"
-  when: not use_anta | bool
-  tags:
-    - always
-
-#################################################
-##  Generate reports from Ansible assert tests ##
-#################################################
-
-- name: Include Ansible assert tests report tasks
-  ansible.builtin.include_tasks: "reports.yml"
-  when: not use_anta | bool
-  tags:
-    - always
-    - reports
+- name: Create validation reports
+  arista.avd.eos_validate_state_reports:
+    csv_report_path: "{{ eos_validate_state_csv_report_path }}"
+    md_report_path: "{{ eos_validate_state_md_report_path }}"
+    validation_report_csv: "{{ validation_report_csv }}"
+    validation_report_md: "{{ validation_report_md }}"
+    only_failed_tests: "{{ only_failed_tests }}"
+    test_results_dir: "{{ test_results_dir }}"
+    # cprofile_file: "eos_validate_state_reports.prof"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+  when:
+    - validation_report_csv | bool or validation_report_md | bool

@@ -1,5 +1,7 @@
 ---
 root_dir: '{{ playbook_dir }}'
 
-avd_data_validation_mode: "error"
-avd_data_conversion_mode: "error"
+# Generate CSVs with fabric link info.
+eos_designs_documentation:
+  topology_csv: true
+  p2p_links_csv: true

@@ -66,7 +66,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF1
-    router_id: 10.254.1.1
     rd: 10.254.1.1:1
     route_targets:
       import:
@@ -77,11 +76,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 10.254.1.1
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.254.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: ptp-tests-leaf2
   vlans:
   - id: 11
     tenant: PTP
@@ -102,6 +103,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -116,7 +123,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.101/24
@@ -150,7 +157,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -162,7 +169,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_VRF1
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: PTP
 vlan_interfaces:
 - name: Vlan4093
@@ -193,12 +200,13 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel9
   description: MLAG_PEER_ptp-tests-leaf2_Po9
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
   ptp:
     announce:
       interval: 0
@@ -210,17 +218,21 @@ port_channel_interfaces:
     enable: true
 - name: Port-Channel11
   description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 11
 - name: Port-Channel12
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 12
   ptp:
     announce:
@@ -233,14 +245,15 @@ port_channel_interfaces:
     enable: true
 - name: Port-Channel14
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 14
 - name: Port-Channel6
-  description: Endpoint-with-mpass
-  type: switched
+  description: SERVER_Endpoint-with-mpass
   shutdown: false
   ptp:
     announce:
@@ -253,8 +266,10 @@ port_channel_interfaces:
     enable: true
     role: master
     mpass: true
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   mlag: 6
 ethernet_interfaces:
 - name: Ethernet9
@@ -262,7 +277,6 @@ ethernet_interfaces:
   peer_interface: Ethernet9
   peer_type: mlag_peer
   description: MLAG_PEER_ptp-tests-leaf2_Ethernet9
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 9
@@ -272,7 +286,6 @@ ethernet_interfaces:
   peer_interface: Ethernet10
   peer_type: mlag_peer
   description: MLAG_PEER_ptp-tests-leaf2_Ethernet10
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 9
@@ -284,7 +297,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -302,7 +316,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -319,7 +334,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -329,7 +343,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -339,7 +352,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -348,11 +360,12 @@ ethernet_interfaces:
   peer_interface: eth1
   peer_type: server
   port_profile: PTP-profile-BMCA
-  description: bmca-endpoint_eth1
+  description: SERVER_bmca-endpoint_eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   ptp:
     announce:
       interval: 0
@@ -366,11 +379,12 @@ ethernet_interfaces:
   peer: video-endpoint
   peer_interface: PCI1
   peer_type: server
-  description: video-endpoint_PCI1
+  description: SERVER_video-endpoint_PCI1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   ptp:
     announce:
@@ -386,9 +400,8 @@ ethernet_interfaces:
   peer: Endpoint-with-mpass
   peer_interface: PCI1
   peer_type: server
-  description: Endpoint-with-mpass_PCI1
+  description: SERVER_Endpoint-with-mpass_PCI1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 6
     mode: active
@@ -396,11 +409,12 @@ ethernet_interfaces:
   peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3
   peer_type: server
-  description: Endpoint-with-specific-PTP-profile_eth3
+  description: SERVER_Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   ptp:
     announce:
       interval: -2
@@ -434,11 +448,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.254.1.1/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 10.254.11.1/32
 prefix_lists:
@@ -456,7 +470,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: ptp-tests-leaf1_VTEP
     vxlan:
       udp_port: 4789

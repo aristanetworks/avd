@@ -27,9 +27,5 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/campus-fabric/inventory.yml
-    - --extra-vars
-    - "avd_data_validation_mode=error"
-    - --extra-vars
-    - "avd_data_conversion_mode=error"
 verifier:
   name: ansible

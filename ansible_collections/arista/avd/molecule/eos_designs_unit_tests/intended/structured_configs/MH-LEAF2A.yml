@@ -70,7 +70,6 @@ router_bgp:
         - '21:21'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: Tenant_X_OP_Zone
-    router_id: 192.168.255.35
     rd: 192.168.255.35:20
     route_targets:
       import:
@@ -81,6 +80,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
+    router_id: 192.168.255.35
     redistribute_routes:
     - source_protocol: connected
   vlan_aware_bundles:
@@ -124,6 +124,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -155,7 +161,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.106/24
@@ -195,7 +201,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet21
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   link_tracking_groups:
   - name: Eth-conn-to-router
     direction: upstream
@@ -206,7 +213,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: MH-L2LEAF1A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 2
     mode: active
@@ -217,26 +223,29 @@ ethernet_interfaces:
   port_profile: Tenant_X_LT
   description: ROUTER01_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '310'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '310'
   link_tracking_groups:
   - name: Eth-conn-to-router
     direction: downstream
 port_channel_interfaces:
 - name: Port-Channel2
   description: MH-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '310'
   shutdown: false
-  mode: trunk
-  vlans: '310'
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.35/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.35/32
 - name: Loopback100
@@ -324,7 +333,7 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.1/24
   vrf: Tenant_X_OP_Zone
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: MH-LEAF2A_VTEP
     vxlan:
       udp_port: 4789

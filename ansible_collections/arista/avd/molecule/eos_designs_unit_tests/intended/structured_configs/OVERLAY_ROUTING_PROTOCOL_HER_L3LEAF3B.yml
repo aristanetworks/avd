@@ -45,6 +45,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -62,7 +68,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -77,7 +83,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST
 - id: 2900
   name: L2VLAN_ON_ALL_LEAFS
@@ -125,19 +131,19 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel1
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Eth1
   peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth1
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
@@ -147,7 +153,6 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth2
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
@@ -175,11 +180,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.254.4/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.253.3/32
 prefix_lists:
@@ -192,7 +197,7 @@ prefix_lists:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_VTEP
     vxlan:
       udp_port: 4789

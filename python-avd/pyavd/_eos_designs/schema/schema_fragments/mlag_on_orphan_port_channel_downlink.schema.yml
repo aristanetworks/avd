@@ -1,0 +1,16 @@
+# Copyright (c) 2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mlag_on_orphan_port_channel_downlink:
+    type: bool
+    documentation_options:
+      table: fabric-settings
+    description: |-
+      If `true` an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.
+      If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.
+    default: false

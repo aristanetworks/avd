@@ -80,12 +80,6 @@ roles/eos_cli_config_gen/docs/tables/ip-tacacs-source-interfaces.md
 roles/eos_cli_config_gen/docs/tables/local-users.md
 --8<--
 
-### Radius server
-
---8<--
-roles/eos_cli_config_gen/docs/tables/radius-server.md
---8<--
-
 ### Radius servers
 
 --8<--
@@ -529,12 +523,6 @@ roles/eos_cli_config_gen/docs/tables/management-ssh.md
 roles/eos_cli_config_gen/docs/tables/management-tech-support.md
 --8<--
 
-### Name server
-
---8<--
-roles/eos_cli_config_gen/docs/tables/name-server.md
---8<--
-
 ### NTP
 
 --8<--
@@ -565,6 +553,12 @@ roles/eos_cli_config_gen/docs/tables/virtual-source-nat-vrfs.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/config-comment.md
+--8<--
+
+### Config end
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/config-end.md
 --8<--
 
 ### CVX
@@ -663,6 +657,12 @@ roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
+--8<--
+
+### Monitor telemetry
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/monitor-telemetry.md
 --8<--
 
 ### SFLOW
@@ -821,6 +821,12 @@ roles/eos_cli_config_gen/docs/tables/ip-routing.md
 roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address.md
 --8<--
 
+### IPv6 DHCP relay
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ipv6-dhcp-relay.md
+--8<--
+
 ### IPv6 ICMP redirects
 
 --8<--
@@ -947,6 +953,12 @@ roles/eos_cli_config_gen/docs/tables/vrfs.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-security.md
+--8<--
+
+### Router segment-security
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-segment-security.md
 --8<--
 
 ## Switching

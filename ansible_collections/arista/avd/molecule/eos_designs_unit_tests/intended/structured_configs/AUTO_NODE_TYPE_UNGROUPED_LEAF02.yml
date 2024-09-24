@@ -70,6 +70,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -80,7 +86,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.203.13/24
@@ -98,7 +104,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.5/31
 - name: Ethernet2
   peer: AUTO_NODE_TYPE_SPINE02
@@ -107,15 +114,16 @@ ethernet_interfaces:
   description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.7/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.4/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.4/32
 prefix_lists:
@@ -140,7 +148,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: AUTO_NODE_TYPE_UNGROUPED_LEAF02_VTEP
     vxlan:
       udp_port: 4789

@@ -236,7 +236,7 @@ anta.tests.interfaces:
     - name: Loopback0
       status: up
     result_overwrite:
-      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
+      custom_field: Interface Loopback0 - ROUTER_ID = 'up'
 - VerifyInterfaceUtilization:
     threshold: 70.0
 - VerifyInterfaceErrors: null
@@ -640,6 +640,7 @@ anta.tests.stun:
       source_port: 4500
 anta.tests.system:
 - VerifyNTP: null
+- VerifyReloadCause: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

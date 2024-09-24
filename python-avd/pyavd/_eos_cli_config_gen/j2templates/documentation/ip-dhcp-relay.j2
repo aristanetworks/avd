@@ -1,0 +1,30 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip dhcp relay #}
+{% if ip_dhcp_relay is arista.avd.defined %}
+
+## IP DHCP Relay
+
+### IP DHCP Relay Summary
+{%     if ip_dhcp_relay.information_option is arista.avd.defined(true) %}
+
+IP DHCP Relay Option 82 is enabled.
+{%     endif %}
+{%     if ip_dhcp_relay.always_on is arista.avd.defined(true) %}
+
+DhcpRelay Agent is in always-on mode.
+{%     endif %}
+{%     if ip_dhcp_relay.all_subnets is arista.avd.defined(true) %}
+
+Forwarding requests with secondary IP addresses in the "giaddr" field is allowed.
+{%     endif %}
+
+### IP DHCP Relay Device Configuration
+
+```eos
+{%     include 'eos/ip-dhcp-relay.j2' %}
+```
+{% endif %}

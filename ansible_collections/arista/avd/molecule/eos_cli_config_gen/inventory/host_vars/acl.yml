@@ -10,6 +10,7 @@ access_lists:
         action: "permit ip 192.0.2.0/24 any"
   - name: ACL-02
     counters_per_entry: true
+    permit_response_traffic: nat
     sequence_numbers:
       - sequence: 10
         action: "remark ACL to restrict access RFC1918 addresses"
@@ -26,7 +27,7 @@ access_lists:
         action: "deny ip 10.0.0.0/8 any"
       - sequence: 30
         action: "permit ip 192.0.2.0/24 any"
-  - name: 04  # numeric ACL name
+  - name: 4  # numeric ACL name
     counters_per_entry: false
     sequence_numbers:
       - sequence: 10

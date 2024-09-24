@@ -1,0 +1,10 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - end #}
+{% if config_end is arista.avd.defined(true) or generate_default_config is arista.avd.defined(true) %}
+!
+end
+{% endif %}

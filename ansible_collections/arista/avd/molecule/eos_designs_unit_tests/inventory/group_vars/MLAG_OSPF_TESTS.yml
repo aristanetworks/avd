@@ -1,5 +1,12 @@
 ---
 underlay_routing_protocol: ospf
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      key: arista123arista
+    - id: 2
+      key: please_vault_me
 
 type: l3leaf
 

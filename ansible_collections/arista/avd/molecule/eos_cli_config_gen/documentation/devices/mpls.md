@@ -7,7 +7,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
-- [MPLS](#mpls)
+- [MPLS](#mpls-1)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
 
@@ -21,20 +21,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -54,9 +54,9 @@ interface Management1
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | - | - | 192.168.100.1/31 | default | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -108,6 +108,7 @@ interface Loopback0
 | LDP Router ID | 192.168.1.1 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
+| ICMP Fragmentation-Needed Tunneling Enabled | True |
 
 #### MPLS and LDP Device Configuration
 
@@ -120,6 +121,8 @@ mpls ldp
    router-id 192.168.1.1
    no shutdown
    transport-address interface Loopback0
+!
+mpls icmp fragmentation-needed tunneling
 ```
 
 ### MPLS Interfaces

@@ -1,12 +1,13 @@
 ---
-type: leaf
+type: l2leaf
 
-leaf:
+l2leaf:
   defaults:
     uplink_switches: [ BGP-SPINE1, BGP-SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     filter:
       only_vlans_in_use: true
+    inband_mgmt_subnet: 172.23.254.0/24
   nodes:
     - name: BGP-LEAF1
       id: 1

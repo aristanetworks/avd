@@ -38,19 +38,19 @@ spine:
   platform: vEOS-LAB
   bgp_as: 65001
   nodes:
-    DC1-SPINE1:
+    - name: DC1-SPINE1
       id: 1
       mgmt_ip: 192.168.200.101/24
       mac_address: '0c:1d:c0:1d:62:01'
-    DC1-SPINE2:
+    - name: DC1-SPINE2
       id: 2
       mgmt_ip: 192.168.200.102/24
       mac_address: '50:08:00:06:00:00'
-    DC1-SPINE3:
+    - name: DC1-SPINE3
       id: 3
       mgmt_ip: 192.168.200.103/24
       mac_address: '0c:1d:c0:1d:62:03'
-    DC1-SPINE4:
+    - name: DC1-SPINE4
       id: 4
       mgmt_ip: 192.168.200.104/24
       mac_address: '0c:1d:c0:1d:62:04'
@@ -70,61 +70,61 @@ l3leaf:
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
   node_groups:
-    DC1_LEAF1:
+    - group: DC1_LEAF1
       bgp_as: 65101
       filter:
         tenants: [ all ]
         tags: [ web, app ]
       nodes:
-        DC1-LEAF1A:
+        - name: DC1-LEAF1A
           id: 1
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:11'
           spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
-    DC1_LEAF2:
+    - group: DC1_LEAF2
       bgp_as: 65102
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs ]
       nodes:
-        DC1-LEAF2A:
+        - name: DC1-LEAF2A
           id: 2
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:12'
           spine_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
-        DC1-LEAF2B:
+        - name: DC1-LEAF2B
           id: 3
           mgmt_ip: 192.168.200.107/24
           mac_address: '0c:1d:c0:1d:62:13'
           spine_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
-    DC1_SVC3:
+    - group: DC1_SVC3
       bgp_as: 65103
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
       nodes:
-        DC1-SVC3A:
+        - name: DC1-SVC3A
           id: 4
           mgmt_ip: 192.168.200.108/24
           mac_address: '0c:1d:c0:1d:62:14'
           spine_interfaces: [ Ethernet4, Ethernet4, Ethernet4, Ethernet4 ]
-        DC1-SVC3B:
+        - name: DC1-SVC3B
           id: 5
           mgmt_ip: 192.168.200.109/24
           mac_address: '0c:1d:c0:1d:62:15'
           spine_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
-    DC1_BL1:
+    - group: DC1_BL1
       bgp_as: 65104
       filter:
         tenants: [ all ]
         tags: [ wan ]
       nodes:
-        DC1-BL1A:
+        - name: DC1-BL1A
           id: 6
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:16'
           spine_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
-        DC1-BL1B:
+        - name: DC1-BL1B
           id: 7
           mgmt_ip: 192.168.200.111/24
           spine_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]

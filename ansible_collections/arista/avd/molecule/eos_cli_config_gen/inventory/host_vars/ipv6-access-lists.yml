@@ -21,7 +21,6 @@ ipv6_access_lists:
       - sequence: 10
         action: "permit ipv6 2001:db8::/32 any"
 
-
 ### IPv6 Standard ACLs ###
 ipv6_standard_access_lists:
   - name: TEST4

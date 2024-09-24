@@ -32,17 +32,6 @@ body:
         - eos_config_deploy_eapi
         - eos_snapshot
         - eos_validate_state
-        - yaml_template_to_facts
-        - arista.avd.default
-        - arista.avd.esi_management
-        - arista.avd.is_in_filter
-        - arista.avd.list_compress
-        - arista.avd.markdown_rendering
-        - arista.avd.natural_sort
-        - arista.avd.add_md_toc
-        - arista.avd.configlet_build_config
-        - arista.avd.inventory_to_container
-        - arista.avd.yaml_templates_to_facts
         - new components
         - others
 
@@ -54,7 +43,8 @@ body:
       options:
         - Ansible CLI (with virtual-env or native python)
         - Ansible CLI with AVD Runner
-        - Ansible AWX
+        - Ansible AWX/Tower/AAP
+        - PyAVD
 
   - type: textarea
     id: step-to-reproduce

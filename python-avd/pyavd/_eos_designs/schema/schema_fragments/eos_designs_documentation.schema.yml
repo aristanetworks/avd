@@ -1,0 +1,33 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  eos_designs_documentation:
+    documentation_options:
+      table: role-settings
+    description: |
+      Control fabric documentation generation.
+    type: dict
+    keys:
+      enable:
+        description: Generate fabric-wide documentation.
+        type: bool
+        default: true
+      connected_endpoints:
+        description: |-
+          Include connected endpoints in the fabric-wide documentation.
+          This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints.
+        type: bool
+        default: false
+      topology_csv:
+        description: Generate Topology CSV with all interfaces towards other devices.
+        type: bool
+        default: false
+      p2p_links_csv:
+        description: Generate P2P links CSV with all routed point-to-point links between devices.
+        type: bool
+        default: false

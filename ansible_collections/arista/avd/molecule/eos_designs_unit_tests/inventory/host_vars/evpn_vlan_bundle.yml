@@ -16,7 +16,7 @@ l3leaf:
       id: 3
       bgp_as: 65101
       filter:
-        tags: [fabric, ipmi, storageProd, sit]
+        tags: [fabric, ipmi, storageProd, sit, research]
 
 tenants:
   - name: StorageProd
@@ -109,6 +109,33 @@ tenants:
             enabled: true
             evpn_vlan_bundle: bundle4
             tags: ['sit']
+  # Test evpn_vlan_bundle setting on tenant level.
+  - name: research
+    vlan_aware_bundle_number_base: 400
+    mac_vrf_vni_base: 10000
+    evpn_vlan_bundle: bundle5
+    l2vlans:
+      - id: 110
+        name: research1
+        tags: ['research']
+        # Test override evpn_vlan_bundle setting under tenant.
+        evpn_vlan_bundle: bundle6
+      - id: 120
+        name: research2
+        tags: ['research']
+    vrfs:
+      - name: research1
+        vrf_vni: 654556
+        svis:
+          - id: 1016
+            name: SVI_9
+            enabled: true
+            tags: ['research']
+            evpn_vlan_bundle: bundle6
+          - id: 1017
+            name: SVI_10
+            enabled: true
+            tags: ['research']
 
 evpn_vlan_bundles:
   - name: bundle1
@@ -128,3 +155,11 @@ evpn_vlan_bundles:
     id: 4
     rt_override: 444
     rd_override: 1.1.1.1:444
+  - name: bundle5
+    id: 5
+    rt_override: 555
+    rd_override: 1.1.1.1:555
+  - name: bundle6
+    id: 6
+    rt_override: 666
+    rd_override: 1.1.1.1:666

@@ -1,86 +1,130 @@
 "role: build_output_folders":
-  - ansible_collections/arista/avd/roles/build_output_folders/*
-  - ansible_collections/arista/avd/roles/build_output_folders/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/build_output_folders/*
+          - ansible_collections/arista/avd/roles/build_output_folders/**/*
 
 "role: cvp_configlet_upload":
-  - ansible_collections/arista/avd/roles/cvp_configlet_upload/*
-  - ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/cvp_configlet_upload/*
+          - ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*
 
 "role: eos_cli_config_gen":
-  - ansible_collections/arista/avd/roles/eos_cli_config_gen/*
-  - ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/eos_cli_config_gen/*
+          - ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*
 
 "role: eos_config_deploy_cvp":
-  - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*
-  - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*
+          - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*
 
 "role: eos_config_deploy_eapi":
-  - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/*
-  - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/*
+          - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*
 
 "role: eos_designs":
-  - ansible_collections/arista/avd/roles/eos_designs/*
-  - ansible_collections/arista/avd/roles/eos_designs/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/eos_designs/*
+          - ansible_collections/arista/avd/roles/eos_designs/**/*
 
 "role: eos_validate_state":
-  - ansible_collections/arista/avd/roles/eos_validate_state/*
-  - ansible_collections/arista/avd/roles/eos_validate_state/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/eos_validate_state/*
+          - ansible_collections/arista/avd/roles/eos_validate_state/**/*
 
 "role: eos_snapshot":
-  - ansible_collections/arista/avd/roles/eos_snapshot/*
-  - ansible_collections/arista/avd/roles/eos_snapshot/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/eos_snapshot/*
+          - ansible_collections/arista/avd/roles/eos_snapshot/**/*
 
 "role: dhcp_provisioner":
-  - ansible_collections/arista/avd/roles/dhcp_provisioner/*
-  - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/roles/dhcp_provisioner/*
+          - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
 
 "filter: natural_sort":
-  - ansible_collections/arista/avd/plugins/filter/natural_sort.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/filter/natural_sort.py
 
 "filter: is_in_filter":
-  - ansible_collections/arista/avd/plugins/filter/is_in_filter.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/filter/is_in_filter.py
 
 "filter: list_compress":
-  - ansible_collections/arista/avd/plugins/filter/list_compress.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/filter/list_compress.py
 
 "filter: defined":
-  - ansible_collections/arista/avd/plugins/filter/defined.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/filter/defined.py
 
 "module: configlet_build_config":
-  - ansible_collections/arista/avd/plugins/modules/configlet_build_config.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/modules/configlet_build_config.py
 
 "module: inventory_to_container":
-  - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
 
 "type: Python filters":
-  - ansible_collections/arista/avd/plugins/filter/*.py
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/filter/*.py
 
 "type: Ansible roles":
-  - ansible_collections/arista/avd/plugins/roles/**/*.yml
-  - ansible_collections/arista/avd/plugins/roles/**/*.j2
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/plugins/roles/**/*.yml
+          - ansible_collections/arista/avd/plugins/roles/**/*.j2
 
 "state: Documentation role Updated":
-  - 'ansible_collections/arista/avd/roles/**/*.md'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'ansible_collections/arista/avd/roles/**/*.md'
 
 "type: documentation":
-  - README.md
-  - contributing.md
-  - ansible_collections/arista/avd/*.md
-  - ansible_collections/arista/avd/docs/*
-  - ansible_collections/arista/avd/docs/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - README.md
+          - contributing.md
+          - ansible_collections/arista/avd/*.md
+          - ansible_collections/arista/avd/docs/*
+          - ansible_collections/arista/avd/docs/**/*
 
 "type: code quality":
-  - .github/labeler.yml
-  - .github/*
-  - .github/**/*
-  - development/docker-compose.yml
-  - development/Makefile
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/labeler.yml
+          - .github/*
+          - .github/**/*
+          - development/docker-compose.yml
+          - development/Makefile
 
 "type: dependencies":
-  - development/requirements-dev.txt
-  - development/requirements.txt
-  - ansible_collections/arista/avd/docs/requirements.txt
+  - changed-files:
+      - any-glob-to-any-file:
+          - development/requirements-dev.txt
+          - development/requirements.txt
+          - ansible_collections/arista/avd/docs/requirements.txt
 
 "state: CI Updated":
-  - ansible_collections/arista/avd/molecule/*
-  - ansible_collections/arista/avd/molecule/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - ansible_collections/arista/avd/molecule/*
+          - ansible_collections/arista/avd/molecule/**/*

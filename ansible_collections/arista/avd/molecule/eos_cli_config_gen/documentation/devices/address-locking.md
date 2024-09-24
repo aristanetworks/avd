@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Address Locking](#address-locking)
+- [Address Locking](#address-locking-1)
   - [Address Locking Summary](#address-locking-summary)
   - [DHCP Servers](#dhcp-servers)
   - [Leases](#leases)
@@ -23,20 +23,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -101,9 +101,9 @@ address locking
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  Address Locking Interface Testing 1 | access | - | - | - | - |
-| Ethernet2 |  Address Locking Interface Testing 2 | access | - | - | - | - |
-| Ethernet3 |  Address Locking Interface Testing 3 | access | - | - | - | - |
+| Ethernet1 | Address Locking Interface Testing 1 | - | - | - | - | - |
+| Ethernet2 | Address Locking Interface Testing 2 | - | - | - | - | - |
+| Ethernet3 | Address Locking Interface Testing 3 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 

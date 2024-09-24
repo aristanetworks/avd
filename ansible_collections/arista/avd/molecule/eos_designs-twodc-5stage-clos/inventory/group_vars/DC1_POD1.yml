@@ -71,7 +71,7 @@ l3leaf:
       filter:
         tenants: []
         tags: []
-        always_include_vrfs_in_tenants: ["all"] #Testing that we respect the empty tenants list, so no VRFs will be configured.
+        always_include_vrfs_in_tenants: ["all"] # Testing that we respect the empty tenants list, so no VRFs will be configured.
       # Below will not have any effect since it is overridden on the node level. So just a negative test.
       raw_eos_cli: |
         interface Loopback1001
@@ -96,7 +96,7 @@ l3leaf:
         [DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A]
       # mlag_interfaces: [Ethernet5, Ethernet6] Test with "use_cv_topology"
       mlag_dual_primary_detection: true
-      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
+      mlag_peer_l3_vlan: 4094 # Using 4094 for both mlag peer and l3 peerings.
       spanning_tree_mode: mstp
       spanning_tree_priority: 4096
       raw_eos_cli: |

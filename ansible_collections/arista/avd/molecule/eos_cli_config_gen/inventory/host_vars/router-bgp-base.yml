@@ -28,6 +28,7 @@ router_bgp:
       always: true
     bestpath:
       d_path: true
+    redistribute_internal: false
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24
@@ -52,6 +53,14 @@ router_bgp:
         enabled: true
         default: 100G
       ttl_maximum_hops: 1
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+        direction_out:
+          action: permit
+          include_community_list: true
     - name: test-link-bandwidth2
       link_bandwidth:
         enabled: true
@@ -67,8 +76,6 @@ router_bgp:
     - prefix: 2.2.1.0/24
     - prefix: 1.12.1.0/24
       as_set: true
-      advertise_map: ADV-MAP
-      supress_map: SUP-MAP
       summary_only: true
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
@@ -76,16 +83,30 @@ router_bgp:
   redistribute_routes:
     - source_protocol: ospf
       include_leaked: true
+    - source_protocol: ospf
+      ospf_route_type: internal
+    - source_protocol: ospf
+      ospf_route_type: external
+    - source_protocol: ospf
+      ospf_route_type: nssa-external 1
+      route_map: RM-REDISTRIBUTE-OSPF-NSSA-1
+      include_leaked: true
     - source_protocol: bgp
       route_map: RM-REDISTRIBUTE-BGP
       # this should not do anything as leaked is generated when source protocol is bgp
       include_leaked: true
+    - source_protocol: connected
+      rcf: Router_BGP_Connected()
+    - source_protocol: static
+      rcf: Router_BGP_Static()
   address_family_ipv4:
     networks:
       - prefix: 10.0.0.0/8
       - prefix: 172.16.0.0/12
       - prefix: 192.168.0.0/16
         route_map: RM-FOO-MATCH
+    bgp:
+      redistribute_internal: false
     peer_groups:
       - name: foo
         prefix_list_in: PL-BAR-v4-IN
@@ -97,11 +118,35 @@ router_bgp:
       - ip_address: 192.0.2.1
         prefix_list_in: PL-FOO-v4-IN
         prefix_list_out: PL-FOO-v4-OUT
+      - ip_address: 10.2.3.8
+        rcf_in: Address_Family_IPV4_In()
+      - ip_address: 10.2.3.9
+        rcf_out: Address_Family_IPV4_Out()
+    redistribute_routes:
+      - source_protocol: ospf
+        include_leaked: true
+        ospf_route_type: internal
+      - source_protocol: ospf
+        ospf_route_type: external
+        route_map: RM-REDISTRIBUTE-OSPF-EXTERNAL
+        include_leaked: true
+      - source_protocol: ospf
+        ospf_route_type: nssa-external
+      - source_protocol: connected
+        include_leaked: true
+        rcf: Address_Family_IPV4_Connected()
+      - source_protocol: bgp
+      - source_protocol: static
+        rcf: Address_Family_IPV4_Static()
+      - source_protocol: dynamic
+        route_map: Address_Family_IPV4_Dynamic_RM
   address_family_ipv6:
     networks:
       - prefix: 2001:db8:100::/40
       - prefix: 2001:db8:200::/40
         route_map: RM-BAR-MATCH
+    bgp:
+      redistribute_internal: true
     peer_groups:
       - name: baz
         prefix_list_in: PL-BAR-v6-IN
@@ -110,15 +155,27 @@ router_bgp:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
+      - ip_address: 2001:db8::2
+        rcf_in: Address_Family_IPV6_In()
+        rcf_out: Address_Family_IPV6_Out()
     redistribute_routes:
+      - source_protocol: ospfv3
+        include_leaked: true
+        ospf_route_type: external
+      - source_protocol: ospfv3
+        ospf_route_type: internal
+        route_map: RM-REDISTRIBUTE-OSPF-INTERNAL
+        include_leaked: true
+      - source_protocol: ospfv3
+        ospf_route_type: nssa-external 1
       - source_protocol: static
         route_map: RM-IPV6-STATIC-TO-BGP
-      - source_protocol: ospf
-        include_leaked: true
       - source_protocol: bgp
         route_map: RM-REDISTRIBUTE-BGP
         # this should not do anything as leaked is generated when source protocol is bgp
         include_leaked: true
+      - source_protocol: connected
+        rcf: Address_Family_IPV6_Connected()
   neighbors:
     - ip_address: 192.0.3.1
       remote_as: 65432
@@ -157,6 +214,14 @@ router_bgp:
         all: true
       # Testing bfd false OUTSIDE a peer group that should NOT render
       bfd: false
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+        direction_out:
+          action: permit
+          include_community_list: true
     - ip_address: 192.0.3.3
       remote_as: 65434
       send_community: standard
@@ -165,6 +230,12 @@ router_bgp:
         all: false
       # Test no config generation
       default_originate:
+      missing_policy:
+        direction_in:
+          action: deny
+          include_prefix_list: true
+          include_community_list: true
+          include_sub_route_map: true
     - ip_address: 192.0.3.4
       remote_as: 65435
       send_community: large

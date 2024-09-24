@@ -2,7 +2,6 @@
 # changed post merge
 name: "Label for Release Notes"
 
-
 on:
   pull_request_target:
     types:

@@ -1,0 +1,53 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  l3_edge:
+    type: dict
+    keys:
+      p2p_links_ip_pools:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: P2P pool name.
+            ipv4_pool:
+              type: str
+              description: IPv4 address/Mask.
+            prefix_size:
+              type: int
+              convert_types:
+                - str
+              description: Subnet mask size.
+              default: 31
+              min: 8
+              max: 31
+      p2p_links_profiles:
+        type: list
+        primary_key: name
+        $ref: "eos_designs#/$defs/p2p_links"
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile.
+      p2p_links:
+        type: list
+        $ref: "eos_designs#/$defs/p2p_links"
+        items:
+          type: dict
+          keys:
+            nodes:
+              type: list
+              required: true
+            profile:
+              type: str
+              description: P2P profile name. Profile defined under p2p_profiles.

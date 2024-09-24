@@ -1,11 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .avd_schema_tools import AvdSchemaTools
-from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID
-from .validation_result import ValidationResult
+from __future__ import annotations
 
-eos_cli_config_gen_schema_tools = None
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .validation_result import ValidationResult
 
 
 def validate_structured_config(structured_config: dict) -> ValidationResult:
@@ -20,12 +21,12 @@ def validate_structured_config(structured_config: dict) -> ValidationResult:
     Returns:
         Validation result object with any validation errors or deprecation warnings.
     """
+    # pylint: disable=import-outside-toplevel
+    from .avd_schema_tools import EosCliConfigGenAvdSchemaTools
 
-    # Initialize a global instance of eos_cli_config_gen_schema_tools
-    global eos_cli_config_gen_schema_tools
-    if eos_cli_config_gen_schema_tools is None:
-        eos_cli_config_gen_schema_tools = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
+    # pylint: enable=import-outside-toplevel
 
+    eos_cli_config_gen_schema_tools = EosCliConfigGenAvdSchemaTools()
     # Inplace conversion of data
     deprecation_warnings = eos_cli_config_gen_schema_tools.convert_data(structured_config)
 

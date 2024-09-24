@@ -2,26 +2,24 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pyavd import validate_structured_config
+from pyavd._errors import AvdValidationError
 from pyavd.avd_schema_tools import AvdSchemaTools
-from pyavd.vendor.errors import AvdValidationError
 
-SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema.resolved_schema
+SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
 
 
-def test_validate_structured_config_with_valid_data(hostname: str, structured_configs: dict):
-    """
-    Test validate_structured_config
-    """
+def test_validate_structured_config_with_valid_data(hostname: str, structured_configs: dict) -> None:
+    """Test validate_structured_config."""
     structured_config = structured_configs[hostname]
     validation_result = validate_structured_config(structured_config)
-    assert hostname and validation_result.validation_errors == []
-    assert hostname and validation_result.failed is False
+    assert hostname
+    assert validation_result.validation_errors == []
+    assert hostname
+    assert validation_result.failed is False
 
 
-def test_validate_structured_config_with_invalid_data(hostname: str, structured_configs: dict):
-    """
-    Test validate_structured_config
-    """
+def test_validate_structured_config_with_invalid_data(hostname: str, structured_configs: dict) -> None:
+    """Test validate_structured_config."""
     structured_config = structured_configs[hostname]
 
     updated = False

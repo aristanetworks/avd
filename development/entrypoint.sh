@@ -14,4 +14,4 @@ pip install -r ansible_collections/arista/avd/docs/requirements.txt --upgrade
 
 # Start mkdocs
 echo "Starting mkdocs"
-mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml
+mkdocs serve --no-livereload --dev-addr=127.0.0.1:8000 -f mkdocs.yml

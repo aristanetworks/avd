@@ -93,7 +93,6 @@ l3leaf:
             - Ethernet4
             - Ethernet4
 
-
 # L2 Leaf switch group
 l2leaf:
   defaults:

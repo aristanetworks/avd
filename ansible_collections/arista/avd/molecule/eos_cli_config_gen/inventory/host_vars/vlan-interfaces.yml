@@ -19,7 +19,25 @@ vlan_interfaces:
     ip_address_virtual: 10.2.2.1/24
     no_autostate: true
     isis_enable: "EVPN_UNDERLAY"
+    isis_bfd: true
     ip_verify_unicast_source_reachable_via: rx
+    # Test isis authentication both md5 rx
+    isis_authentication:
+      both:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
+      level_2:
+        key_type: 0
+        key: password
+        mode: text
+        rx_disabled: true
 
   - name: Vlan81
     description: IPv6 Virtual Address
@@ -38,6 +56,13 @@ vlan_interfaces:
     ip_address_virtual_secondaries:
       - 10.11.83.1/24
       - 10.11.84.1/24
+    # Test isis auth both md5
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      both:
+        key_type: 0
+        key: password
+        mode: md5
 
   - name: Vlan84
     description: SVI Description
@@ -47,6 +72,16 @@ vlan_interfaces:
       - 10.11.84.254/24
     arp_gratuitous_accept: true
     arp_monitor_mac_address: true
+    isis_enable: "EVPN_UNDERLAY"
+    # Test isis auth both sha rx
+    isis_authentication:
+      both:
+        key_type: 0
+        key: password
+        mode: sha
+        sha:
+          key_id: 2
+        rx_disabled: true
 
   - name: Vlan85
     description: SVI Description
@@ -57,6 +92,15 @@ vlan_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+    # Test isis auth both sha
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      both:
+        key_type: 0
+        key: password
+        mode: sha
+        sha:
+          key_id: 2
 
   - name: Vlan86
     description: SVI Description
@@ -64,6 +108,15 @@ vlan_interfaces:
     ip_attached_host_route_export:
       enabled: true
       distance: 10
+    # Test isis auth both shared secret rx
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      both:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-1
+        rx_disabled: true
 
   - name: Vlan87
     description: SVI Description
@@ -71,11 +124,32 @@ vlan_interfaces:
     ip_address: 10.10.87.1/24
     access_group_in: ACL_IN
     access_group_out: ACL_OUT
+    # Test isis auth both shared secret
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      both:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-1
 
   - name: Vlan88
     description: SVI Description
     shutdown: true
     ip_address_virtual: 10.10.87.1/23
+    # Test isis auth both l1l2 md5 text rx
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+        rx_disabled: true
+      level_2:
+        key_type: 0
+        key: password
+        mode: text
+        rx_disabled: true
 
   - name: Vlan91
     description: PBR Description
@@ -83,18 +157,57 @@ vlan_interfaces:
     service_policy:
       pbr:
         input: MyServicePolicy
+    # Test isis auth l1l2 md5 text
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      level_1:
+        key_type: 0
+        key: password
+        mode: md5
+      level_2:
+        key_type: 0
+        key: password
+        mode: text
 
   - name: Vlan90
     description: SVI Description
     ip_address: 10.10.83.1/24
     ip_attached_host_route_export:
       enabled: true
+    # Test isis auth l1l2 shared secret
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      level_1:
+        mode: shared-secret
+        shared_secret:
+          profile: profile2
+          algorithm: sha-1
+      level_2:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
 
   - name: Vlan92
     description: SVI Description
     ip_address: 10.10.92.1/24
     ip_proxy_arp: true
     ip_directed_broadcast: true
+    # Test isis auth l1l2 shared secret rx
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      level_1:
+        mode: shared-secret
+        shared_secret:
+          profile: profile2
+          algorithm: sha-1
+        rx_disabled: true
+      level_2:
+        mode: shared-secret
+        shared_secret:
+          profile: profile1
+          algorithm: sha-256
+        rx_disabled: true
 
 # MCAST Configuration
 
@@ -112,6 +225,19 @@ vlan_interfaces:
         hello:
           count: 3.5
           interval: 10
+    # Test isis auth l1l2 sha rx
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      level_1:
+        mode: sha
+        sha:
+          key_id: 5
+        rx_disabled: true
+      level_2:
+        mode: sha
+        sha:
+          key_id: 10
+        rx_disabled: true
 
 # Helpers on SVI
 
@@ -160,6 +286,13 @@ vlan_interfaces:
         source_interface: Loopback0
       - ip_helper: 10.10.64.150
         source_interface: Loopback0
+    # Test isis auth l1l2 sha
+    isis_enable: "EVPN_UNDERLAY"
+    isis_authentication:
+      level_1:
+        mode: sha
+        sha:
+          key_id: 5
 
   - name: Vlan43
     description: SVI Description
@@ -170,6 +303,55 @@ vlan_interfaces:
         vrf: TEST
         local_interface: Loopback44
         link_address: a0::4
+    isis_authentication:
+      both:
+        key_ids:
+          - id: 2
+            algorithm: sha-512
+            key_type: 0
+            key: password
+            rfc_5310: false
+          - id: 3
+            algorithm: sha-512
+            key_type: 0
+            key: password1
+            rfc_5310: true
+      level_1:
+        key_ids:
+          - id: 1
+            algorithm: sha-1
+            key_type: 0
+            key: password
+            rfc_5310: false
+          - id: 4
+            algorithm: sha-1
+            key_type: 0
+            key: password
+            rfc_5310: true
+          - id: 3
+            algorithm: sha-1
+            key_type: 0
+            key: password3
+          - id: 5
+            algorithm: sha-1
+            key_type: 0
+            key: password3
+      level_2:
+        key_ids:
+          - id: 1
+            algorithm: sha-1
+            key_type: 0
+            key: password
+            rfc_5310: false
+          - id: 5
+            algorithm: sha-1
+            key_type: 0
+            key: password
+            rfc_5310: true
+          - id: 3
+            algorithm: sha-1
+            key_type: 0
+            key: password2
 
   - name: Vlan44
     description: SVI Description
@@ -200,6 +382,12 @@ vlan_interfaces:
         static:
           - original_ip: 3.0.0.1
             translated_ip: 4.0.0.1
+    isis_authentication:
+      level_2:
+        key_type: 0
+        key: password
+        mode: text
+        rx_disabled: true
 
 # IPv6 SVI configuration
 
@@ -348,7 +536,7 @@ vlan_interfaces:
     arp_aging_timeout: 180
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_address: 2001:db8:667::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -367,7 +555,7 @@ vlan_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          address: 2001:db8:667::1
 
   - name: Vlan333
     description: Multiple VRIDs and tracking
@@ -375,7 +563,7 @@ vlan_interfaces:
     arp_aging_timeout: 180
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_address: 2001:db8:333::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -399,7 +587,7 @@ vlan_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          address: 2001:db8:333::1
         tracked_object:
           - name: ID2-TrackedObjectDecrement
             decrement: 10
@@ -418,7 +606,7 @@ vlan_interfaces:
   - name: Vlan334
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00:1::1/64
+    ipv6_address: 2001:db8:334::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 19
@@ -426,7 +614,7 @@ vlan_interfaces:
   - name: Vlan335
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00:2::1/64
+    ipv6_address: 2001:db8:335::1/64
     ipv6_attached_host_route_export:
       enabled: true
       prefix_length: 64
@@ -434,8 +622,28 @@ vlan_interfaces:
   - name: Vlan336
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2a00:3::1/64
+    ipv6_address: 2001:db8:336::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 18
       prefix_length: 64
+
+  - name: Vlan337
+    description: v4 dhcp relay all-subnets
+    ip_address: 10.0.2.2/25
+    ip_dhcp_relay_all_subnets: true
+
+  - name: Vlan338
+    description: v6 dhcp relay all-subnets
+    ipv6_address: 2001:db8:338::1/64
+    ipv6_dhcp_relay_all_subnets: true
+
+  - name: Vlan339
+    description: v6 nd options
+    ipv6_enable: true
+    ipv6_address: 2001:db8:339::1/64
+    ipv6_nd_other_config_flag: true
+    ipv6_nd_cache:
+      dynamic_capacity: 900
+      expire: 250
+      refresh_always: true

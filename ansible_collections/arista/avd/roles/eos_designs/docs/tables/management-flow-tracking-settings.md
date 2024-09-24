@@ -26,13 +26,16 @@
     | [<samp>&nbsp;&nbsp;mlag_interfaces</samp>](## "fabric_flow_tracking.mlag_interfaces") | Dictionary |  |  |  | Enable flow-tracking on all MLAG peer interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "fabric_flow_tracking.mlag_interfaces.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "fabric_flow_tracking.mlag_interfaces.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
-    | [<samp>&nbsp;&nbsp;l3_interfaces</samp>](## "fabric_flow_tracking.l3_interfaces") | Dictionary |  |  |  | Enable flow-tracking on all node.l3_interfaces. |
+    | [<samp>&nbsp;&nbsp;l3_interfaces</samp>](## "fabric_flow_tracking.l3_interfaces") | Dictionary |  |  |  | Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "fabric_flow_tracking.l3_interfaces.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "fabric_flow_tracking.l3_interfaces.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;dps_interfaces</samp>](## "fabric_flow_tracking.dps_interfaces") | Dictionary |  |  |  | Enable flow-tracking on all dps_interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "fabric_flow_tracking.dps_interfaces.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "fabric_flow_tracking.dps_interfaces.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
-    | [<samp>flow_tracking_settings</samp>](## "flow_tracking_settings") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define the flow tracking parameters for this topology. |
+    | [<samp>&nbsp;&nbsp;direct_wan_ha_links</samp>](## "fabric_flow_tracking.direct_wan_ha_links") | Dictionary |  |  |  | Enable flow-tracking on all direct WAN HA links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "fabric_flow_tracking.direct_wan_ha_links.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "fabric_flow_tracking.direct_wan_ha_links.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
+    | [<samp>flow_tracking_settings</samp>](## "flow_tracking_settings") | Dictionary |  |  |  | Define the flow tracking parameters for this topology. |
     | [<samp>&nbsp;&nbsp;sampled</samp>](## "flow_tracking_settings.sampled") | Dictionary |  |  |  | The options relevant only for flow tracker type sampled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "flow_tracking_settings.sampled.encapsulation") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6</samp>](## "flow_tracking_settings.sampled.encapsulation.ipv4_ipv6") | Boolean |  |  |  |  |
@@ -114,7 +117,7 @@
         # Flow tracker name as defined in flow_tracking_settings.
         name: <str>
 
-      # Enable flow-tracking on all node.l3_interfaces.
+      # Enable flow-tracking on all node.l3_interfaces and network-services tenants.vrfs.l3_interfaces.
       l3_interfaces:
         enabled: <bool>
 
@@ -128,8 +131,13 @@
         # Flow tracker name as defined in flow_tracking_settings.
         name: <str>
 
-    # PREVIEW: This key is currently not supported
-    #
+      # Enable flow-tracking on all direct WAN HA links.
+      direct_wan_ha_links:
+        enabled: <bool>
+
+        # Flow tracker name as defined in flow_tracking_settings.
+        name: <str>
+
     # Define the flow tracking parameters for this topology.
     flow_tracking_settings:
 

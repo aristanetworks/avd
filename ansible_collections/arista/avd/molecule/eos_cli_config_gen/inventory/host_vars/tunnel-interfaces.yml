@@ -5,6 +5,7 @@ tunnel_interfaces:
     description: test ipv4 only
     shutdown: false
     vrf: Tunnel-VRF
+    underlay_vrf: Underlay-VRF
     mtu: 1500
     ip_address: 42.42.42.42/24
     access_group_in: test-in

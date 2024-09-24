@@ -1,5 +1,8 @@
 # test arp
 arp:
+  persistent:
+    enabled: true
+    refresh_delay: 700
   aging:
     timeout_default: 300
   static_entries:

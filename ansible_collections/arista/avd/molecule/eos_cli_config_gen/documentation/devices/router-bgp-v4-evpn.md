@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -291,8 +291,14 @@ router bgp 65101
          neighbor 10.2.3.6 next-hop address-family ipv6
          neighbor 10.2.3.7 next-hop address-family ipv6 originate
          no neighbor 10.2.3.8 next-hop address-family ipv6
+         neighbor 10.2.3.9 activate
+         neighbor 10.2.3.9 rcf in VRF_AFIPV4_RCF_IN()
+         neighbor 10.2.3.10 activate
+         neighbor 10.2.3.10 rcf out VRF_AFIPV4_RCF_OUT()
          network 10.0.0.0/8
          network 100.64.0.0/10 route-map RM-10.2.3.4
+         redistribute connected rcf VRF_AFIPV4_RCF_CONNECTED()
+         redistribute static route-map VRF_AFIPV4_RM_STATIC
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12

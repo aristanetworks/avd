@@ -53,7 +53,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: TEST
-    router_id: 192.168.255.32
     rd: 192.168.255.32:1
     route_targets:
       import:
@@ -64,11 +63,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.32
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.10.224.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: MLAG_SAME_SUBNET_L3LEAF1B
     updates:
       wait_install: true
   vlans:
@@ -87,6 +88,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -95,7 +102,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.116/24
@@ -112,7 +119,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -124,7 +131,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
 vlan_interfaces:
 - name: Vlan4093
@@ -155,19 +162,19 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1B_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG_SAME_SUBNET_L3LEAF1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1B_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -177,7 +184,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1B_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -205,11 +211,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.32/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.32/32
 prefix_lists:
@@ -228,7 +234,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: MLAG_SAME_SUBNET_L3LEAF1A_VTEP
     vxlan:
       udp_port: 4789

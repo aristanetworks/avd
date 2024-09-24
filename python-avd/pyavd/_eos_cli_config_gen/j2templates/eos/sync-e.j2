@@ -1,0 +1,11 @@
+{#
+ Copyright (c) 2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - sync-e #}
+{% if sync_e.network_option is arista.avd.defined %}
+!
+sync-e
+   network option {{ sync_e.network_option }}
+{% endif %}

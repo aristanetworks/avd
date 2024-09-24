@@ -17,17 +17,23 @@ address_locking:
 
 ethernet_interfaces:
   - name: Ethernet1
+    switchport:
+      enabled: true
     description: Address Locking Interface Testing 1
     address_locking:
       ipv4: true
 
   - name: Ethernet2
+    switchport:
+      enabled: true
     description: Address Locking Interface Testing 2
     address_locking:
       ipv4: true
       ipv6: true
 
   - name: Ethernet3
+    switchport:
+      enabled: true
     description: Address Locking Interface Testing 3
     address_locking:
       ipv4: false

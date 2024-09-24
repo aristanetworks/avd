@@ -1,10 +1,11 @@
 ---
-type: leaf
+type: l2leaf
 
-leaf:
+l2leaf:
   defaults:
     uplink_switches: [ L2ONLY-SPINE1, L2ONLY-SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    inband_mgmt_subnet: 172.23.254.0/24
   nodes:
     - name: L2ONLY-LEAF1
       id: 1

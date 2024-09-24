@@ -28,7 +28,10 @@ driver:
   name: docker
 platforms:
 # TODO - Fix Failures in Centos images
-# fatal: [centos8-systemd]: FAILED! => {"changed": false, "cmd": "/bin/systemctl", "msg": "Failed to connect to bus: No such file or directory", "rc": 1, "stderr": "Failed to connect to bus: No such file or directory\n", "stderr_lines": ["Failed to connect to bus: No such file or directory"], "stdout": "", "stdout_lines": []}
+# fatal: [centos8-systemd]: FAILED! => {"changed": false, "cmd": "/bin/systemctl",
+# "msg": "Failed to connect to bus: No such file or directory", "rc": 1, "stderr":
+# "Failed to connect to bus: No such file or directory\n", "stderr_lines":
+# ["Failed to connect to bus: No such file or directory"], "stdout": "", "stdout_lines": []}
 # fatal: [centos7-systemd]: FAILED! => {"changed": false, "msg": "Service is in unknown state", "status": {}}
   # - name: centos7-systemd
   #   image: centos:7

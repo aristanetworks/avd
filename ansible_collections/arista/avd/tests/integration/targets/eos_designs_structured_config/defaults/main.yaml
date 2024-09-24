@@ -4,8 +4,6 @@ collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collec
 expected_output_dir: "{{ collection_path }}/inventory/eos_designs_structured_config/expected_output"
 actual_output_dir: "{{ collection_path }}/output"
 
-avd_data_validation_mode: error
-avd_data_conversion_mode: error
 fabric_name: integration_tests
 type: l2leaf
 l2leaf:

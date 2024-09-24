@@ -4,13 +4,24 @@
 #
 # range_expand filter
 #
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 from ansible.errors import AnsibleFilterError
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import range_expand as range_expand_util
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse, wrap_filter
+
+PLUGIN_NAME = "arista.avd.range_expand"
+
+try:
+    from pyavd.j2filters import range_expand
+except ImportError as e:
+    range_expand = RaiseOnUse(
+        AnsibleFilterError(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        ),
+    )
+
 
 DOCUMENTATION = r"""
 ---
@@ -71,9 +82,6 @@ EXAMPLES = r"""
 
 - "{{ 'Et1-2/3-4/5-6' | range_expand }}"
 # -> ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"]
-
-- "{{ 'eth{7,9,11-13}/1,21/1,26/1' | range_expand }}"
-# -> ["eth7/1", "eth9/1", "eth11/1", "eth12/1", "eth13/1", "eth21/1", "eth26/1"]
 """
 
 RETURN = r"""
@@ -85,15 +93,8 @@ _value:
 """
 
 
-def range_expand(range_to_expand):
-    try:
-        return range_expand_util(range_to_expand)
-    except Exception as e:
-        raise AnsibleFilterError(f"Error during expansion of range '{range_to_expand}': {str(e)}") from e
-
-
-class FilterModule(object):
-    def filters(self):
+class FilterModule:
+    def filters(self) -> dict:
         return {
-            "range_expand": range_expand,
+            "range_expand": wrap_filter(PLUGIN_NAME)(range_expand),
         }

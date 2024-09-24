@@ -1,0 +1,88 @@
+release_summary: |
+  Release 4.10.0 - See documentation on avd.arista.com for details.
+bugfixes:
+### Fixed issues in eos_cli_config_gen
+- |-
+ Fix(eos_cli_config_gen): Fixing the wrong CLI generated for radius-server dynamic-authorizaton by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4224
+- |-
+ Fix(eos_cli_config_gen): Restoring consistent schema validation behavior by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4261
+- |-
+ Fix(eos_cli_config_gen): Add a pseudo task to handle tags on import role by @gmuloc in https://github.com/aristanetworks/avd/pull/4258
+### Other Fixed issues
+- |-
+ Fix(plugins): Fix deprecation warning after reformatting by @gmuloc in https://github.com/aristanetworks/avd/pull/4183
+- |-
+ Fix(eos_validate_state): Sanitize markdown output on markdown validation report  by @nathanmusser in https://github.com/aristanetworks/avd/pull/4212
+- |-
+ Fix(plugins): Prevent deprecation warnings when deprecated filters are not used by @gmuloc in https://github.com/aristanetworks/avd/pull/4199
+- |-
+ Fix: Incorrect default value for 720XP for trident_forwarding_table_partition by @carlbuchmann in https://github.com/aristanetworks/avd/pull/4215
+- |-
+ Fix: Typo in requirements.txt for PyAVD dev0 version by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4248
+minor_changes:
+### Documentation
+- |-
+ Doc: Deprecate the eos_designs and eos_cli_config_gen jsonschema.json… by @gmuloc in https://github.com/aristanetworks/avd/pull/4195
+- |-
+ Doc: AVD with Ansible Automation Platform Guide by @JulioPDX in https://github.com/aristanetworks/avd/pull/3910
+- |-
+ Doc(eos_designs): Remove lookup plugin reference for Zscaler IE by @gmuloc in https://github.com/aristanetworks/avd/pull/4234
+- |-
+ Doc: Fix incorrect keys specified in default_mgmt_method by @carlbuchmann in https://github.com/aristanetworks/avd/pull/4206
+- |-
+ Doc(eos_designs): Replace wrong key referred in documentation `mlag_l3_peer_vlan` with `mlag_peer_l3_vlan` by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4251
+- |-
+ Doc(eos_designs): Update documentation to customize WAN flow tracking. by @gmuloc in https://github.com/aristanetworks/avd/pull/4253
+- |-
+ Doc(eos_designs): Add warning about WAN BGP peer groups password by @gmuloc in https://github.com/aristanetworks/avd/pull/4265
+### New features and enhancements in eos_cli_config_gen
+- |-
+ Feat(eos_cli_config_gen): Add TLS options for radius_server by @nnbruce in https://github.com/aristanetworks/avd/pull/4194
+- |-
+ Feat(eos_cli_config_gen): Add support for tunnel-interface underlay vrf by @nathanmusser in https://github.com/aristanetworks/avd/pull/4211
+- |-
+ Feat(eos_cli_config_gen): Add support to configure PEG DR election algorithm by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4095
+- |-
+ Feat(eos_cli_config_gen): Add MPLS Tunnel Support for Traceroute and PMTU Discovery by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4219
+- |-
+ Feat(eos_cli_config_gen): SyncE support by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/4255
+- |-
+ Feat(eos_cli_config_gen): Add dscp support for application traffic recognition IPv4 by @gmuloc in https://github.com/aristanetworks/avd/pull/4241
+- |-
+ Feat(eos_cli_config_gen): Add ptp profiles for ITU-T G8275 support by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/4230
+- |-
+ Feat(eos_cli_config_gen): Enhance DHCP server data model (lease time, reservations, eos_cli) by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4252
+### New features and enhancements in eos_designs
+- |-
+ Feat(eos_designs): Add option for ip igmp snooping fast-leave by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/4180
+- |-
+ Feat(eos_designs): Add `ptp_settings` to replace `ptp` key in eos_designs by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4155
+- |-
+ Feat(eos_designs): Enhance custom IP addressing and descriptions for p2p-vrfs by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4259
+- |-
+ Feat(eos_designs): MLAG secondary should use short-esi from MLAG primary by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/4172
+- |-
+ Feat(eos_designs): Add keys to set loopback0 and vtep_loopback directly by @gmuloc in https://github.com/aristanetworks/avd/pull/4168
+- |-
+ Feat(eos_designs): Add support to add access-groups on l3-interfaces through network-services by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/4163
+- |-
+ Feat(eos_designs): Underlay OSPF authentication by @jonxstill in https://github.com/aristanetworks/avd/pull/4169
+### Other new features and enhancements
+- |-
+ Feat(cv_deploy): Add CV Pathfinder AVT hop count to metadata studio by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4071
+- |-
+ Feat(cv_deploy): Add application data to CV Pathfinder metadata by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4247
+### PyAVD Changes
+- |-
+ Refactor(pyavd): Suppress warnings for cryptography >=43.0.0 by @gmuloc in https://github.com/aristanetworks/avd/pull/4235
+- |-
+ Refactor(pyavd): Clean unused code requiring referencing library by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4269
+### Other Changes
+- |-
+ Bump: Update version 4.10.0-dev0 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/4184
+- |-
+ Refactor(eos_validate_state): Add warning for ansible test mode by @gmuloc in https://github.com/aristanetworks/avd/pull/4173
+- |-
+ Refactor(eos_designs,eos_cli_config_gen): Deprecate type conversion from dict-of-dicts to list-of-dicts by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/4237
+- |-
+ Refactor(eos_cli_config_gen): Add primary key for connectivity monitor hosts by @gmuloc in https://github.com/aristanetworks/avd/pull/4264

@@ -4,7 +4,8 @@ my_dci_ethernet_interfaces:
     description: My test
     ip_address: 10.1.2.3/12
     shutdown: false
-    type: routed
+    switchport:
+      enabled: false
     mtu: 1500
     peer: MY-own-peer
     peer_interface: Ethernet123
@@ -22,7 +23,6 @@ my_special_dci_ethernet_interfaces:
     description: My second test
 
 overlay_rd_type:
-#   # admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
   admin_subfield: vtep_loopback
 
 overlay_rt_type:

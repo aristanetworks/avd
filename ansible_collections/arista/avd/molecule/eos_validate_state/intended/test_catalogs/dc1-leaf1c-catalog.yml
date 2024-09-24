@@ -278,7 +278,7 @@ anta.tests.interfaces:
     - name: Ethernet5
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet5 - dc1-leaf1-server1_iLO = 'up'
+      custom_field: Interface Ethernet5 - SERVER_dc1-leaf1-server1_iLO = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Port-Channel1
@@ -430,6 +430,7 @@ anta.tests.stun:
       source_port: 4500
 anta.tests.system:
 - VerifyNTP: null
+- VerifyReloadCause: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

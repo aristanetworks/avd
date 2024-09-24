@@ -1,14 +1,12 @@
 type: l2leaf
 
-# Custom node types with AVD 3.x syntax using a dict of dicts
 node_type_keys:
-
-  spine:
+  - key: spine
     type: spine
     default_evpn_role: server
     default_ptp_priority1: 20
 
-  l3leaf:
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client
@@ -19,7 +17,7 @@ node_type_keys:
       l3: true
     vtep: true
 
-  l2leaf:
+  - key: l2leaf
     type: l2leaf
     connected_endpoints: true
     mlag_support: true
@@ -28,7 +26,7 @@ node_type_keys:
     underlay_router: false
     uplink_type: port-channel
 
-  custom_l2leaf:
+  - key: custom_l2leaf
     type: custom_l2leaf
     connected_endpoints: true
     mlag_support: true
@@ -37,14 +35,14 @@ node_type_keys:
     underlay_router: false
     uplink_type: port-channel
 
-  super_spine:
+  - key: super_spine
     type: super-spine
 
-  overlay_controller:
+  - key: overlay_controller
     type: overlay-controller
     default_evpn_role: server
 
-  wan_router:
+  - key: wan_router
     type: wan_router
     default_evpn_role: client
     default_wan_role: client
@@ -54,7 +52,7 @@ node_type_keys:
       l3: true
     vtep: true
 
-  wan_rr:
+  - key: wan_rr
     type: wan_rr
     default_evpn_role: server
     default_wan_role: server

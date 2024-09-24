@@ -137,7 +137,7 @@
             svis:
 
                 # SVI interface id and VLAN id.
-              - id: <int; 1-4096; required; unique>
+              - id: <int; 1-4096; required>
 
                 # Define node specific configuration, such as unique IP addresses.
                 # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.

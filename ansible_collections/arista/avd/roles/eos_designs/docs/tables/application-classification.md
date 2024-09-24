@@ -27,6 +27,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_classification.applications.ipv4_applications.[].name") | String | Required, Unique |  |  | Application name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src_prefix_set_name</samp>](## "application_classification.applications.ipv4_applications.[].src_prefix_set_name") | String |  |  |  | Source prefix set name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_prefix_set_name</samp>](## "application_classification.applications.ipv4_applications.[].dest_prefix_set_name") | String |  |  |  | Destination prefix set name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_ranges</samp>](## "application_classification.applications.ipv4_applications.[].dscp_ranges") | List, items: String |  |  |  | Accept DSCP value(s) or range(s).<br>DSCP values can be between 0 and 63.<br>Other valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.<br>Note: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_classification.applications.ipv4_applications.[].dscp_ranges.[]") | String |  |  | Pattern: `^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)$` | DSCP value or range syntax. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "application_classification.applications.ipv4_applications.[].protocols") | List, items: String |  |  |  | List of protocols to consider for this application.<br>To use port field-sets (source, destination or both), the list<br>must contain only one or two protocols, either `tcp` or `udp`.<br>When using both protocols, one line is rendered for each in the configuration,<br>hence the field-sets must have the same value for `tcp_src_port_set_name` and<br>`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`<br>if set in order to generate valid configuration in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_classification.applications.ipv4_applications.[].protocols.[]") | String |  |  | Valid Values:<br>- <code>ahp</code><br>- <code>esp</code><br>- <code>icmp</code><br>- <code>igmp</code><br>- <code>ospf</code><br>- <code>pim</code><br>- <code>rsvp</code><br>- <code>tcp</code><br>- <code>udp</code><br>- <code>vrrp</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_ranges</samp>](## "application_classification.applications.ipv4_applications.[].protocol_ranges") | List, items: String |  |  |  | Accept protocol value(s) or range(s).<br>Protocol values can be between 1 and 255. |
@@ -114,6 +116,15 @@
 
             # Destination prefix set name.
             dest_prefix_set_name: <str>
+
+            # Accept DSCP value(s) or range(s).
+            # DSCP values can be between 0 and 63.
+            # Other valid values are cs0 to cs7, af11-13, af21-23, af31-33, af41-af43 and ef.
+            # Note: The values are not sorted so the list items need to be supplied in the right order to match the CLI if required.
+            dscp_ranges:
+
+                # DSCP value or range syntax.
+              - <str>
 
             # List of protocols to consider for this application.
             # To use port field-sets (source, destination or both), the list

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [Monitor Sessions](#monitor-sessions)
+  - [Monitor Sessions](#monitor-sessions-1)
 
 ## Management
 
@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -80,6 +80,20 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
+##### myMonitoringSession3
+
+####### myMonitoringSession3 Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet20 | both | ip | ipv4ACL | 10 |
+
+####### myMonitoringSession3 Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | - |
+
 #### Monitor Sessions Device Configuration
 
 ```eos
@@ -99,4 +113,5 @@ monitor session myMonitoringSession2 destination Ethernet50
 monitor session myMonitoringSession2 encapsulation gre metadata tx
 monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 sample 50
+monitor session myMonitoringSession3 source Ethernet20 both ip access-group ipv4ACL priority 10
 ```

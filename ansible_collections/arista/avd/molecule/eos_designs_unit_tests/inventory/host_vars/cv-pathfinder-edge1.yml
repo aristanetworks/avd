@@ -1,0 +1,47 @@
+---
+# Used when manually testing zscaler integration to cloudvision builtin to eos_designs.
+# Make sure to set the cv_token var on the molecule command line like:
+# molecule converge -s eos_designs_unit_tests -- --limit cv-pathfinder-edge1 -e cv_token=$CV_TOKEN -v
+
+# Testing multiple pathinfders on one device
+wan_route_servers:
+  - hostname: cv-pathfinder-pathfinder1
+  - hostname: cv-pathfinder-pathfinder2
+
+# Testing overriding internet exit acls using custom rules with substitution
+ipv4_acls:
+  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
+  - name: ACL-NAT-IE-ZSCALER
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ip
+        source: any
+        destination: 10.0.0.0/24
+      - sequence: 20
+        action: deny
+        protocol: ip
+        source: any
+        destination: any
+  - name: ACL-NAT-IE-DIRECT
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ip
+        source: any
+        destination: 5.0.0.0/24
+      - sequence: 20
+        action: permit
+        protocol: ip
+        source: any
+        destination: any

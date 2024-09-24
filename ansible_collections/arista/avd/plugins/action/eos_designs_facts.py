@@ -1,25 +1,36 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 import cProfile
 import pstats
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
 
+PLUGIN_NAME = "arista.avd.eos_designs_facts"
+
+try:
+    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.shared_utils import SharedUtils
+    from pyavd._errors import AristaAvdMissingVariableError
+except ImportError as e:
+    EosDesignsFacts = SharedUtils = RaiseOnUse(
+        AnsibleActionFail(
+            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
+            orig_exc=e,
+        ),
+    )
+
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> None:
         if task_vars is None:
             task_vars = {}
 
@@ -32,7 +43,6 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         self.template_output = self._task.args.get("template_output", False)
-        self._conversion_mode = self._task.args.get("conversion_mode")
         self._validation_mode = self._task.args.get("validation_mode")
 
         groups = task_vars.get("groups", {})
@@ -42,12 +52,13 @@ class ActionModule(ActionBase):
 
         # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
-            raise AnsibleActionFail(
+            msg = (
                 "Invalid/missing 'fabric_name' variable. "
                 "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
                 f"play_hosts: {ansible_play_hosts_all}"
             )
+            raise AnsibleActionFail(msg)
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
@@ -94,6 +105,7 @@ class ActionModule(ActionBase):
     def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict) -> dict:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
+
         Initialize all instances of EosDesignsFacts and insert various references into the variable space.
         Returns dict with avd_switch_facts_instances.
 
@@ -108,7 +120,7 @@ class ActionModule(ActionBase):
             failure : bool
             msg : str
 
-        Returns
+        Returns:
         -------
         dict
             hostname1 : dict
@@ -122,42 +134,33 @@ class ActionModule(ActionBase):
             hostname="",
             ansible_display=display,
             schema_id="eos_designs",
-            conversion_mode=self._conversion_mode,
             validation_mode=self._validation_mode,
             plugin_name="arista.avd.eos_designs",
         )
 
         avd_switch_facts = {}
-        data_conversions = 0
         data_validation_errors = 0
         for host in fabric_hosts:
             # Fetch all templated Ansible vars for this host
             host_hostvars = dict(hostvars.get(host))
 
-            # Initialize SharedUtils class to be passed to EosDesignsFacts below.
-            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar)
-
-            # Insert dynamic keys into the input data if not set.
-            # These keys are required by the schema, but the default values are set inside shared_utils.
-            host_hostvars.setdefault("node_type_keys", shared_utils.node_type_keys)
-            host_hostvars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
-            host_hostvars.setdefault("network_services_keys", shared_utils.network_services_keys)
-
             # Set correct hostname in schema tools and perform conversion and validation
             avdschematools.hostname = host
             host_result = avdschematools.convert_and_validate_data(host_hostvars, return_counters=True)
 
-            data_conversions += host_result["conversions"]
             data_validation_errors += host_result["validation_errors"]
 
             if host_result.get("failed"):
-                # Quickly continue if data conversion/validation failed
+                # Quickly continue if data validation failed
                 result["failed"] = True
                 continue
 
             # Add reference to dict "avd_switch_facts".
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars["avd_switch_facts"] = avd_switch_facts
+
+            # Initialize SharedUtils class to be passed to EosDesignsFacts below.
+            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar, schema=avdschematools.avdschema)
 
             # Create an instance of EosDesignsFacts and insert into common avd_switch_facts dict
             avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, shared_utils=shared_utils)}
@@ -167,19 +170,19 @@ class ActionModule(ActionBase):
             host_hostvars["switch"] = avd_switch_facts[host]["switch"]
 
         # Build result message
-        result["msg"] = avdschematools.build_result_message(conversions=data_conversions, validation_errors=data_validation_errors)
+        result["msg"] = avdschematools.build_result_message(validation_errors=data_validation_errors)
 
         return avd_switch_facts
 
-    def render_avd_switch_facts(self, avd_switch_facts_instances: dict):
+    def render_avd_switch_facts(self, avd_switch_facts_instances: dict) -> dict:
         """
-        Run the render method on each EosDesignsFacts object
+        Run the render method on each EosDesignsFacts object.
 
         Parameters
         ----------
         avd_switch_facts_instances : dict of EosDesignsFacts
 
-        Returns
+        Returns:
         -------
         dict
             hostname1 : dict
@@ -192,7 +195,8 @@ class ActionModule(ActionBase):
             try:
                 rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
             except AristaAvdMissingVariableError as e:
-                raise AnsibleActionFail(f"{e} is required but was not found for host '{host}'") from e
+                msg = f"{e} is required but was not found for host '{host}'"
+                raise AnsibleActionFail(msg) from e
 
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.

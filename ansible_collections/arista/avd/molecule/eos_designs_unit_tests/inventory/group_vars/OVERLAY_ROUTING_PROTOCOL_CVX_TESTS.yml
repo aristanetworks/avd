@@ -7,7 +7,6 @@ default_node_types:
       - OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF.*
     node_type: l3leaf
 
-
 dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
 
 overlay_routing_protocol: CVX

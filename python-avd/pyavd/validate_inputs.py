@@ -1,12 +1,12 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from .avd_schema_tools import AvdSchemaTools
-from .constants import EOS_DESIGNS_SCHEMA_ID
-from .validation_result import ValidationResult
-from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
+from __future__ import annotations
 
-eos_designs_schema_tools = None
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .validation_result import ValidationResult
 
 
 def validate_inputs(inputs: dict) -> ValidationResult:
@@ -21,20 +21,12 @@ def validate_inputs(inputs: dict) -> ValidationResult:
     Returns:
         Validation result object with any validation errors or deprecation warnings.
     """
+    # pylint: disable=import-outside-toplevel
+    from .avd_schema_tools import EosDesignsAvdSchemaTools
 
-    # Initialize a global instance of eos_designs_schema_tools
-    global eos_designs_schema_tools
-    if eos_designs_schema_tools is None:
-        eos_designs_schema_tools = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID)
+    # pylint: enable=import-outside-toplevel
 
-    # Initialize SharedUtils class to fetch default variables below.
-    shared_utils = SharedUtils(hostvars=inputs, templar=None)
-
-    # Insert dynamic keys into the input data if not set.
-    # These keys are required by the schema, but the default values are set inside shared_utils.
-    inputs.setdefault("node_type_keys", shared_utils.node_type_keys)
-    inputs.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
-    inputs.setdefault("network_services_keys", shared_utils.network_services_keys)
+    eos_designs_schema_tools = EosDesignsAvdSchemaTools()
 
     # Inplace conversion of data
     deprecation_warnings = eos_designs_schema_tools.convert_data(inputs)

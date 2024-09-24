@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP NAT](#ip-nat)
+- [IP NAT](#ip-nat-1)
   - [NAT Profiles](#nat-profiles)
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
@@ -21,20 +21,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -148,10 +148,10 @@ NAT profile VRF is: TEST
 
 ```eos
 !
-ip nat translation address selection any
 ip nat translation address selection hash field source-ip
-ip nat translation udp-timeout 3600
+ip nat translation address selection any
 ip nat translation tcp-timeout 7200
+ip nat translation udp-timeout 3600
 ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host
@@ -195,7 +195,7 @@ ip nat profile NAT-PROFILE-NO-VRF-2
    ip nat destination dynamic access-list ACL5 pool POOL5 priority 4294967295 comment Priority high end
    ip nat destination dynamic access-list ACL6 pool POOL6 comment Priority default
 !
-ip nat profile NAT-PROFILE-TEST-VRF vrf NAT-PROFILE-TEST-VRF
+ip nat profile NAT-PROFILE-TEST-VRF vrf TEST
 !
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254

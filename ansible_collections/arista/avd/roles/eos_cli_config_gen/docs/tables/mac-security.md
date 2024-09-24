@@ -29,6 +29,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "mac_security.profiles.[].l2_protocols.ethernet_flow_control.mode") | String | Required |  | Valid Values:<br>- <code>encrypt</code><br>- <code>bypass</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "mac_security.profiles.[].l2_protocols.lldp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "mac_security.profiles.[].l2_protocols.lldp.mode") | String | Required |  | Valid Values:<br>- <code>bypass</code><br>- <code>bypass unauthorized</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_unprotected</samp>](## "mac_security.profiles.[].traffic_unprotected") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "mac_security.profiles.[].traffic_unprotected.action") | String | Required |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> | Allow/drop the transmit/receive of unprotected traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_active_sak</samp>](## "mac_security.profiles.[].traffic_unprotected.allow_active_sak") | Boolean |  |  |  | Allow transmit/receive of encrypted traffic using operational SAK and block otherwise. |
 
 === "YAML"
 
@@ -59,4 +62,11 @@
               mode: <str; "encrypt" | "bypass"; required>
             lldp:
               mode: <str; "bypass" | "bypass unauthorized"; required>
+          traffic_unprotected:
+
+            # Allow/drop the transmit/receive of unprotected traffic.
+            action: <str; "allow" | "drop"; required>
+
+            # Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.
+            allow_active_sak: <bool>
     ```

@@ -10,6 +10,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 8.8.4.4
   vrf: MGMT
@@ -35,7 +41,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management0
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.100.106/24
@@ -77,17 +83,21 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel47
   description: MLAG_PEER_LEAF1_Po47
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel1
   description: SPINES_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,20
   shutdown: false
-  mode: trunk
-  vlans: 10,20
   mlag: 1
 ethernet_interfaces:
 - name: Ethernet47
@@ -95,7 +105,6 @@ ethernet_interfaces:
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1_Ethernet47
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -105,7 +114,6 @@ ethernet_interfaces:
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1_Ethernet48
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -113,20 +121,18 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: SPINE1
   peer_interface: Ethernet2
-  peer_type: spine
+  peer_type: l2spine
   description: SPINE1_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 - name: Ethernet2
   peer: SPINE2
   peer_interface: Ethernet2
-  peer_type: spine
+  peer_type: l2spine
   description: SPINE2_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -135,11 +141,12 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: PP-GREEN
-  description: HostB_Eth1
+  description: SERVER_HostB_Eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '20'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '20'
   spanning_tree_portfast: edge
 mlag_configuration:
   domain_id: RACK1

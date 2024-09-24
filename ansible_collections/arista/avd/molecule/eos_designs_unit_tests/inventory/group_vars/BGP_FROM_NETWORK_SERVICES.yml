@@ -1,0 +1,53 @@
+---
+# bgp-from-network-services-1 should get BGP configured for VRF default since there are BGP peers for the device under the VRF.
+# Notice that the node type l3spine does not have a default overlay or underlay routing protocol, so they will not contribute BGP.
+
+# bgp-from-network-services-2 will *NOT* get BGP configured because of a bug. See issue #3804
+
+type: l3spine
+
+l3spine:
+  defaults:
+    bgp_as: 65001
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 192.0.255.0/24
+    uplink_ipv4_pool: 10.255.1.0/24
+    mlag_interfaces: [Ethernet10]
+    mlag_peer_ipv4_pool: "10.10.10.0/24"
+    mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
+  node_groups:
+    - group: GROUP1
+      nodes:
+        - name: bgp-from-network-services-1
+          id: 1
+          mgmt_ip: 10.1.1.1/24
+        - name: bgp-from-network-services-2
+          id: 2
+          mgmt_ip: 10.1.1.2/24
+
+tenants:
+  - name: TEST
+    vrfs:
+      - name: default
+        vrf_id: 100
+        address_families: []
+        static_routes:
+          - destination_address_prefix: 0.0.0.0
+            gateway: 10.10.1.1
+            nodes: [bgp-from-network-services-1]
+        l3_interfaces:
+          - interfaces:
+              - Ethernet47
+            ip_addresses:
+              - 10.10.1.1/30
+            nodes:
+              - bgp-from-network-services-1
+        bgp_peers:
+          - ip_address: 10.10.1.2
+            peer_group: MYPEERGROUP
+            nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+        bgp_peer_groups:
+          - name: MYPEERGROUP
+            remote_as: 65991
+            next_hop_self: true
+            bfd: true

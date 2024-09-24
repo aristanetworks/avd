@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -117,7 +117,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static<br>isis |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
 
 #### Router BGP Device Configuration
@@ -182,11 +182,15 @@ router bgp 65101
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
       route-target import evpn 11:11
+      route-target import evpn rcf RT_IMPORT_AF_RCF()
       route-target export evpn 11:11
+      route-target export evpn rcf RT_EXPORT_AF_RCF()
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 rib-in pre-policy retain
       redistribute connected
+      redistribute isis route-map Router_BGP_Isis
+      redistribute static rcf Router_BGP_Static()
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12

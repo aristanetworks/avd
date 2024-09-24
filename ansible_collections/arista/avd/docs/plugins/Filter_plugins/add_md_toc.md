@@ -42,14 +42,13 @@ The below requirements are needed on the host that executes this module.
 ---
 tasks:
 - name: Generate fabric documentation
-  tags: [build, provision, documentation]
   run_once: true
   delegate_to: localhost
   check_mode: no
   copy:
     content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
     dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-    mode: 0664
+    mode: "0o664"
 ```
 
 ## Return Values

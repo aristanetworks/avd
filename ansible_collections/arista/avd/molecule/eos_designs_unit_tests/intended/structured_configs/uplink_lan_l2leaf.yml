@@ -6,6 +6,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -20,10 +26,12 @@ ethernet_interfaces:
   peer_type: wan_router
   description: UPLINK_LAN_WAN_ROUTER1_Ethernet2
   shutdown: false
-  type: switched
-  vlans: 10,100
-  mode: trunk
-  native_vlan: 10
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,100
+      native_vlan: 10
   spanning_tree_portfast: edge
   flow_tracker:
     sampled: FLOW-TRACKER
@@ -33,9 +41,11 @@ ethernet_interfaces:
   peer_type: wan_router
   description: UPLINK_LAN_WAN_ROUTER2_Ethernet2
   shutdown: false
-  type: switched
-  vlans: 10,100
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,100
   spanning_tree_portfast: edge
   flow_tracker:
     sampled: FLOW-TRACKER

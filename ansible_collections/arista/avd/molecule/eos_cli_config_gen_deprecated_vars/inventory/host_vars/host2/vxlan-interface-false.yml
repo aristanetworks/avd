@@ -1,0 +1,12 @@
+### VxLAN interface ###
+## Test values that are set to false and generate configuration e.g -> "no vxlan qos ecn propagation"
+
+vxlan_interface:
+  # Testing Vxlan1 as key
+  # Vxlan1 key is deprecated in 5.0.0. To be removed in 6.0.0
+  Vxlan1:
+    vxlan:
+      qos:
+        dscp_propagation_encapsulation: false
+        map_dscp_to_traffic_class_decapsulation: false
+        ecn_propagation: false

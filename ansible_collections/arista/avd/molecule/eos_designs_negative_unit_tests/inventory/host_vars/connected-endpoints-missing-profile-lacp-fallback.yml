@@ -18,4 +18,6 @@ servers:
           lacp_fallback:
             mode: individual
 
-expected_error_message: "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for the connected endpoint with the name 'INDIVIDUAL_1'."
+expected_error_message: >-
+  A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined.
+  Profile definition is missing for the connected endpoint with the name 'INDIVIDUAL_1'.

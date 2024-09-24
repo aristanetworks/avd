@@ -1,0 +1,24 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - policy map copp #}
+{% if policy_maps.copp_system_policy.classes is arista.avd.defined %}
+!
+policy-map type copp copp-system-policy
+{%     for class in policy_maps.copp_system_policy.classes %}
+   class {{ class.name }}
+{%         if class.rate_unit is arista.avd.defined %}
+{%             if class.shape is arista.avd.defined %}
+      shape {{ class.rate_unit }} {{ class.shape }}
+{%             endif %}
+{%             if class.bandwidth is arista.avd.defined %}
+      bandwidth {{ class.rate_unit }} {{ class.bandwidth }}
+{%             endif %}
+{%         endif %}
+{%         if not loop.last %}
+   !
+{%         endif %}
+{%     endfor %}
+{% endif %}

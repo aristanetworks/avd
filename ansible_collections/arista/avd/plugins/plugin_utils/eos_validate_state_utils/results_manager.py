@@ -139,7 +139,7 @@ class ResultsManager:
     def total_tests(self) -> int:
         """Calculates the total number of tests processed.
 
-        Returns
+        Returns:
         -------
             int: The total number of tests.
         """
@@ -149,7 +149,7 @@ class ResultsManager:
     def sorted_category_stats(self) -> dict:
         """A property that returns the category_stats dictionary sorted by key name.
 
-        Returns
+        Returns:
         -------
             dict: The sorted category_stats dictionary.
         """
