@@ -145,7 +145,12 @@ class AvdStructuredConfigMlag(AvdFacts):
         port_channel_interface = {
             "name": port_channel_interface_name,
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
-                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name),
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=port_channel_interface_name,
+                    peer_interface=f"Port-Channel{self.shared_utils.mlag_peer_port_channel_id}",
+                    # The description class has @property methods for other mlag related facts.
+                ),
             ),
             "switchport": {
                 "enabled": True,
@@ -191,7 +196,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             return None
 
         ethernet_interfaces = []
-        for mlag_interface in mlag_interfaces:
+        for index, mlag_interface in enumerate(mlag_interfaces):
             ethernet_interface = {
                 "name": mlag_interface,
                 "peer": self.shared_utils.mlag_peer,
@@ -201,7 +206,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=mlag_interface,
-                        peer_interface=mlag_interface,
+                        peer_interface=self.shared_utils.mlag_peer_interfaces[index],
+                        # The description class has @property methods for other mlag related facts.
                     ),
                 ),
                 "shutdown": False,

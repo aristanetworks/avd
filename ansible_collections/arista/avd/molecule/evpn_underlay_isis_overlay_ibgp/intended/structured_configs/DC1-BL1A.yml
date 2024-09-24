@@ -140,7 +140,7 @@ vlan_interfaces:
   ip_address: 10.255.252.10/31
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1-BL1B_Po5
+  description: MLAG_DC1-BL1B_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
@@ -153,7 +153,7 @@ ethernet_interfaces:
   peer: DC1-BL1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-BL1B_Ethernet5
+  description: MLAG_DC1-BL1B_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -162,7 +162,7 @@ ethernet_interfaces:
   peer: DC1-BL1B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-BL1B_Ethernet6
+  description: MLAG_DC1-BL1B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
