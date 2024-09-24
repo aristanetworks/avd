@@ -2305,7 +2305,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -2318,22 +2318,22 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: Client VLAN ID. Not applicable for `encapsulation==untagged/unmatched`.
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: Client Outer VLAN ID. Not applicable for `encapsulation==untagged/unmatched`.
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                inner_protocol:
+                  description: Client Inner VLAN ID. Not applicable for `encapsulation==untagged/unmatched`.
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -2375,7 +2375,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
 
@@ -2394,22 +2394,22 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: Network VLAN ID. Not applicable for `encapsulation==untagged/client`.
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: Network outer VLAN ID. Not applicable for `encapsulation==untagged/client`.
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner_protocol:
+                  description: Network inner VLAN ID. Not applicable for `encapsulation==untagged/client`.
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -9192,7 +9192,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -9205,22 +9205,22 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: Client VLAN ID. Not applicable for `encapsulation==untagged/unmatched`.
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: Client Outer VLAN ID. Not applicable for `encapsulation==untagged/unmatched`.
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                inner_protocol:
+                  description: Client Inner VLAN ID. Not applicable for `encapsulation==untagged/unmatched`.
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -9262,7 +9262,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
 
@@ -9281,22 +9281,22 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: Network VLAN ID. Not applicable for `encapsulation==untagged/client`.
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: Network outer VLAN ID. Not applicable for `encapsulation==untagged/client`.
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner_protocol:
+                  description: Network inner VLAN ID. Not applicable for `encapsulation==untagged/client`.
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
