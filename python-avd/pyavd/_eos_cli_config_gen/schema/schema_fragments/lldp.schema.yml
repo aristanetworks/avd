@@ -1,0 +1,49 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  lldp:
+    type: dict
+    keys:
+      timer:
+        type: int
+      timer_reinitialization:
+        type: str
+      holdtime:
+        type: int
+      management_address:
+        type: str
+      vrf:
+        type: str
+        convert_types:
+          - int
+      receive_packet_tagged_drop:
+        type: str
+      tlvs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              valid_values:
+                - "link-aggregation"
+                - "management-address"
+                - "max-frame-size"
+                - "med"
+                - "port-description"
+                - "port-vlan"
+                - "power-via-mdi"
+                - "system-capabilities"
+                - "system-description"
+                - "system-name"
+                - "vlan-name"
+            transmit:
+              type: bool
+      run:
+        type: bool

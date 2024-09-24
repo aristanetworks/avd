@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import Any
+
 try:
     from yaml import CSafeDumper as YamlDumper
 except ImportError:
@@ -11,7 +13,7 @@ except ImportError:
 
 # https://ttl255.com/yaml-anchors-and-aliases-and-how-to-disable-them/
 class NoAliasDumper(YamlDumper):
-    def ignore_aliases(self, data):
+    def ignore_aliases(self, _data: Any) -> bool:
         return True
 
 

@@ -12,12 +12,18 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.202/24
@@ -34,7 +40,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: SFLOW-TESTS-LEAF3_Ethernet17
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -44,19 +49,20 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: SFLOW-TESTS-LEAF4_Ethernet17
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: SFLOW-TESTS-LEAF-MLAG_Po17
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
   shutdown: false
-  mode: trunk
   sflow:
     enable: true
-  vlans: 11,4092
 vlans:
 - id: 11
   name: VLAN11
@@ -75,6 +81,7 @@ vlan_interfaces:
   type: inband_mgmt
 sflow:
   run: true
+  sample: 10
   destinations:
   - destination: 10.10.10.10
   - destination: 10.10.10.11

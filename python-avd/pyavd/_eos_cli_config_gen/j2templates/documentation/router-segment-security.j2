@@ -1,0 +1,78 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router segment-security #}
+{% if router_segment_security is arista.avd.defined %}
+
+## Group-Based Multi-domain Segmentation Services (MSS-Group)
+{%     if router_segment_security.enabled is arista.avd.defined(true) %}
+
+MSS-G is enabled.
+{%     else %}
+
+MSS-G is disabled.
+{%     endif %}
+{%     if router_segment_security.policies is arista.avd.defined %}
+
+### Segmentation Policies
+{%         for policy in router_segment_security.policies | arista.avd.natural_sort('name') %}
+{%             if policy.name is arista.avd.defined %}
+
+#### {{ policy.name }}
+
+| Sequence Number | Application Name | Action | Next-Hop | Log | Stateless |
+| --------------- | ---------------- | ------ | -------- | --- | --------- |
+{%                 for entry in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+| {{ entry.sequence | arista.avd.default('-') }} | {{ entry.application | arista.avd.default('-') }} | {{ entry.action | arista.avd.default('-') }} | {{ entry.next_hop | arista.avd.default('-') }} | {{ entry.log | arista.avd.default('-') }} | {{ entry.stateless | arista.avd.default('-') }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_segment_security.vrfs is arista.avd.defined %}
+
+### Segment Definitions
+{%         for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
+
+#### VRF {{ vrf.name }} Segmentation
+{%             for segment in vrf.segments | arista.avd.natural_sort('name') %}
+
+##### Segment {{ segment.name }} Definitions
+
+| Interface | Match-List Name | Covered Prefix-List Name | Address Family |
+| --------- |---------------- | ------------------------ | -------------- |
+{%                 if segment.definition.interfaces is arista.avd.defined %}
+{%                     for interface in segment.definition.interfaces | arista.avd.natural_sort %}
+| {{ interface }} | - | - | - |
+{%                     endfor %}
+{%                 endif %}
+{%                 if segment.definition.match_lists is arista.avd.defined %}
+{%                     for match_list in segment.definition.match_lists %}
+| - | {{ match_list.prefix | arista.avd.default('-') }} | {{ match_list.covered_prefix_list | arista.avd.default('-') }} | {{ match_list.address_family }} |
+{%                     endfor %}
+{%                 endif %}
+
+##### Segment {{ segment.name }} Policies
+
+| Source Segment | Policy Applied |
+| -------------- | -------------- |
+{%                 for policy in segment.policies | arista.avd.natural_sort('from') %}
+{%                     if policy.from is arista.avd.defined and policy.policy is arista.avd.defined %}
+| {{ policy.from }} | {{ policy.policy }} |
+{%                     endif %}
+{%                 endfor %}
+{%                 if segment.fallback_policy is arista.avd.defined %}
+
+Configured Fallback Policy: {{ segment.fallback_policy }}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+### Router MSS-G Device Configuration
+
+```eos
+{%     include 'eos/router-segment-security.j2' %}
+```
+{% endif %}

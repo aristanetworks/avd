@@ -1,0 +1,36 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ipv6 neighbors #}
+{% if ipv6_neighbor is arista.avd.defined %}
+
+### IPv6 Neighbors
+{%     if ipv6_neighbor.persistent.enabled is arista.avd.defined(true) %}
+{%         set persistent_doc = "IPv6 neighbor cache persistency is enabled." %}
+{%         if ipv6_neighbor.persistent.refresh_delay is arista.avd.defined %}
+{%             set persistent_doc = persistent_doc ~ " The refresh-delay is " ~ ipv6_neighbor.persistent.refresh_delay ~ " seconds after reboot." %}
+{%         endif %}
+
+{{ persistent_doc }}
+{%     endif %}
+{%     if ipv6_neighbor.static_entries is arista.avd.defined %}
+
+#### IPv6 Static Neighbors
+
+| VRF | IPv6 Address | Exit Interface | MAC Address |
+| --- | ------------ | -------------- | ----------- |
+{%         for neighbor in ipv6_neighbor.static_entries %}
+{%             if neighbor.ipv6_address is arista.avd.defined and neighbor.interface is arista.avd.defined and neighbor.mac_address is arista.avd.defined %}
+| {{ neighbor.vrf | arista.avd.default("-") }} | {{ neighbor.ipv6_address }} | {{ neighbor.interface }} | {{ neighbor.mac_address }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+#### IPv6 Neighbor Configuration
+
+```eos
+{%     include 'eos/ipv6-neighbors.j2' %}
+```
+{% endif %}

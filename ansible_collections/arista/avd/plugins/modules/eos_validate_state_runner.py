@@ -2,11 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-# NOTE: This is supposed to be deprecated as per
-# https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html#ansible-metadata-block
-# But our doc Jinja2 template renders it as preview which is what we want
-ANSIBLE_METADATA = {"metadata_version": "1.0", "status": ["preview"]}
-
 DOCUMENTATION = r"""
 ---
 module: eos_validate_state_runner
@@ -48,7 +43,7 @@ options:
     description:
     - The directory where custom ANTA test catalogs are stored.
     - Files must be named after the device hostname or the Ansible group name and have a `.yml` or `.yaml` extension.
-  skipped_tests:
+  skip_tests:
     description:
       - A list of dictionaries specifying categories and, optionally, tests to skip.
       - Each dictionary must have a key `category` and can optionally include a `tests` key.
@@ -65,7 +60,7 @@ options:
           - An optional list of specific tests in the category to skip (e.g., `VerifyRoutingProtocolModel` in `AvdTestBGP`).
           - If not specified, all tests in the category are considered.
           - For a complete list of available tests,
-            see [link to the test list](https://avd.sh/en/stable/roles/eos_validate_state/ANTA-Preview.html#test-categories).
+            see [link to the test list](https://avd.arista.com/stable/roles/eos_validate_state/anta_integration.html#test-categories).
   cprofile_file:
     description:
       - The filename for storing cProfile data, useful for debugging performance issues.
@@ -73,7 +68,7 @@ options:
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
-    link: https://anta.ninja
+    link: https://anta.arista.com
 notes:
   - Enabling the cProfile feature for performance profiling may impact the plugin's performance, especially in production environments.
   - The plugin manages the creation of JSON files, which are used for storing test results.
@@ -92,7 +87,7 @@ EXAMPLES = r"""
     device_catalog_path: "/my_avd_project/intended/test_catalogs/{{ inventory_hostname }}-catalog.yml"
     test_results_dir: "/my_avd_project/reports/test_results"
     custom_anta_catalogs_dir: "/my_avd_project/custom_anta_catalogs"
-    skipped_tests:
+    skip_tests:
       - category: AvdTestHardware
       - category: AvdTestBGP
         tests:

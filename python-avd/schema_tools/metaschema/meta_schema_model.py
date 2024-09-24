@@ -6,13 +6,17 @@ from __future__ import annotations
 from abc import ABC
 from enum import Enum
 from functools import cached_property
-from typing import Annotated, Any, ClassVar, Generator, List, Literal
+from typing import TYPE_CHECKING, Annotated, Any, ClassVar, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, constr
 
-from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
-from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
+from schema_tools.generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
+from schema_tools.generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
+
 from .resolvemodel import merge_schema_from_ref
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 """
 This module provides Pydantic models (classes) representing the meta-schema of the AVD Schema.
@@ -24,7 +28,7 @@ Each variable in the schema is called a field, and for each type of field we hav
 - AvdSchemaList
 - AvdSchemaDict
 
-The alias "AvdSchemaField" is a union of of all the models above, and can be used as easy type hint for any field type.
+The alias "AvdSchemaField" is a union of all the models above, and can be used as an easy type hint for any field type.
 
 All the type-specific Pydantic models inherit the common base class "AvdSchemaBaseModel", and have local overrides
 as needed. For example, only "AvdSchemaList" and "AvdSchemaDict" need to parse child fields.
@@ -35,10 +39,6 @@ The overall schema is covered by the class "AristaAvdSchema" which inherits from
 
 KEY_PATTERN = r"^[a-z][a-z0-9_]*$"
 """Common pattern to match legal key strings"""
-DYNAMIC_KEY_PATTERN = r"^[a-z][a-z0-9_.]*$"
-"""Common pattern to match legal dynamic key strings"""
-KEY_PATTERN_WITH_UPPERCASE = r"^[a-zA-Z][a-zA-Z0-9_]*$"
-"""This is a temporary pattern allowing uppercase keys too"""
 
 
 class AvdSchemaBaseModel(BaseModel, ABC):
@@ -53,7 +53,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
     # Common nested models used by common fields
     class Deprecation(BaseModel):
-        """Deprecation settings"""
+        """Deprecation settings."""
 
         warning: bool = True
         """Emit deprecation warning if key is set."""
@@ -69,7 +69,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """URL detailing the deprecation and migration guidelines."""
 
     class DocumentationOptions(BaseModel):
-        """Schema field options used for controlling documentation generation"""
+        """Schema field options used for controlling documentation generation."""
 
         # Pydantic config option to forbid keys in the inputs that are not covered by the model
         model_config = ConfigDict(extra="forbid")
@@ -89,7 +89,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     display_name: str | None = Field(None, pattern=r"^[^\n]+$")
     """Free text display name for forms and documentation (single line)"""
     description: Annotated[str, constr(min_length=1)] | None = None
-    """Free text description for forms and documentation (multi line)"""
+    """Free text description for forms and documentation (multi-line)"""
     required: bool | None = None
     """Key is required"""
     deprecation: Deprecation | None = None
@@ -124,15 +124,15 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     # Signal to __init__ if the $ref in the schema should be resolved before initializing the pydantic model.
     _resolve_schema: ClassVar[bool] = True
 
-    def __init__(self, resolve_schema: bool | None = None, **data):
+    def __init__(self, resolve_schema: bool | None = None, **data: dict) -> None:
         """
-        Overrides BaseModel.__init__(**data).
+        Overrides BaseModel.__init__.
+
         Takes a kwarg "resolve_schema" which controls if all subclasses of AvdSchemaBaseModel should expand any $ref in the input schema.
 
         The $ref expansion _only_ covers this field.
         Any $ref on child fields are expanded as they are initialized by Pydantic since they are based on this base class.
         """
-
         # Setting the resolve_schema attribute on the class, so all sub-classes will inherit this automatically.
         if resolve_schema is not None:
             AvdSchemaBaseModel._resolve_schema = resolve_schema
@@ -176,7 +176,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         # This should never happen, since only the root key should be without a parent_schema.
         if len(self._path) != 1:
-            raise ValueError("Something went wrong in _table", self._path)
+            msg = "Something went wrong in _table"
+            raise ValueError(msg, self._path)
 
         # This is a root key the default table is the key with hyphens and removing <,>
         return self._key.replace("<", "").replace(">", "").replace("_", "-")
@@ -185,19 +186,20 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     def _path(self) -> list[str]:
         """
         Returns the variable path for this field to be used in schema docs.
+
         Like "rootkey.subkey.[].mykey".
         """
-
         # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
-            return self._parent_schema._path + ["[]"]
+            return [*self._parent_schema._path, "[]"]
 
         # Add the key to the parent path
-        return self._parent_schema._path + [self._key]
+        return [*self._parent_schema._path, self._key]
 
     def _generate_table_rows(self, target_table: str | None = None) -> Generator[TableRow]:
         """
         Yields "TableRow"s to be used in schema docs.
+
         The function is called recursively inside the YamlLineGen classes for parsing children.
         """
         # Using the Type of table row generator set in the subclass attribute _table_row_generator
@@ -206,6 +208,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     def _generate_yaml_lines(self, target_table: str | None = None) -> Generator[YamlLine]:
         """
         Yields "YamlLine"s to be used in schema docs.
+
         The function is called recursively inside the YamlLineGen classes for parsing children.
         """
         # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
@@ -229,7 +232,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
 
     # AvdSchema field properties
     type: Literal["int"]
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """List of types to auto-convert from. For 'int' auto-conversion is supported from 'bool', 'str' and 'float'"""
     default: int | None = None
     """Default value"""
@@ -237,11 +240,11 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     """Minimum value"""
     max: int | None = None
     """Maximum value"""
-    valid_values: List[int] | None = None
+    valid_values: list[int] | None = None
     """List of valid values"""
-    dynamic_valid_values: str | None = None
+    dynamic_valid_values: list[str] | None = None
     """
-    Path to variable under the parent dictionary containing valid values.
+    List of path to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
     If an element of the variable path is a list, every list item will be unpacked.
     Note that this is building the schema from values in the _data_ being validated!
@@ -268,15 +271,15 @@ class AvdSchemaBool(AvdSchemaBaseModel):
 
     # AvdSchema field properties
     type: Literal["bool"]
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """List of types to auto-convert from. For 'bool' auto-conversion is supported from 'int' and 'str'"""
     default: bool | None = None
     """Default value"""
-    valid_values: List[bool] | None = None
+    valid_values: list[bool] | None = None
     """List of valid values"""
-    dynamic_valid_values: str | None = None
+    dynamic_valid_values: list[str] | None = None
     """
-    Path to variable under the parent dictionary containing valid values.
+    List of paths to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
     If an element of the variable path is a list, every list item will be unpacked.
     Note that this is building the schema from values in the _data_ being validated!
@@ -311,14 +314,14 @@ class AvdSchemaStr(AvdSchemaBaseModel):
         cidr = "cidr"
         mac = "mac"
 
-        def __str__(self):
+        def __str__(self) -> str:
             return self.value
 
     # AvdSchema field properties
     type: Literal["str"]
     convert_to_lower_case: bool | None = False
     """Convert string value to lower case before performing validation"""
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """List of types to auto-convert from.\n\nFor 'str' auto-conversion is supported from 'bool' and 'int'"""
     default: str | None = None
     """Default value"""
@@ -334,11 +337,11 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     The regular expression should be valid according to the ECMA 262 dialect.
     Remember to use double escapes.
     """
-    valid_values: List[str] | None = None
+    valid_values: list[str] | None = None
     """List of valid values"""
-    dynamic_valid_values: str | None = None
+    dynamic_valid_values: list[str] | None = None
     """
-    Path to variable under the parent dictionary containing valid values.
+    List of paths to variable under the parent dictionary containing valid values.
     Variable path use dot-notation and variable path must be relative to the parent dictionary.
     If an element of the variable path is a list, every list item will be unpacked.
     Note that this is building the schema from values in the _data_ being validated!
@@ -366,13 +369,13 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
     # AvdSchema field properties
     type: Literal["list"]
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """
     List of types to auto-convert from.
     For 'list of dicts' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema.
     For other list item types conversion from dict will use the keys as list items.
     """
-    default: List | None = None
+    default: list | None = None
     """Default value"""
     items: Annotated[AvdSchemaField, Field(discriminator="type")] | None = None
     """Schema for list items"""
@@ -385,8 +388,6 @@ class AvdSchemaList(AvdSchemaBaseModel):
     Name of a primary key in a list of dictionaries.
     The configured key is implicitly required and must have unique values between the list elements.
     """
-    secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
-    """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
     unique_keys: list[str] | None = None
     """
     Name of a key in a list of dictionaries.
@@ -422,7 +423,8 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
     def model_post_init(self, __context: Any) -> None:
         """
-        Overrides BaseModel.model_post_init().
+        Overrides BaseModel.model_post_init.
+
         Runs after this model including all child models have been initialized.
 
         Sets Internal attributes on child schema (if set):
@@ -465,7 +467,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     """
 
     class DocumentationOptions(AvdSchemaBaseModel.DocumentationOptions):
-        """Extra schema field options used for controlling documentation generation for dicts"""
+        """Extra schema field options used for controlling documentation generation for dicts."""
 
         hide_keys: bool | None = None
         # """
@@ -478,14 +480,13 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     default: dict[str, Any] | None = None
     """Default value"""
 
-    # TODO: Change pattern to KEY_PATTERN once we have removed all upper case keys from the schema
-    keys: dict[constr(pattern=KEY_PATTERN_WITH_UPPERCASE), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
+    keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.
     `keyname` must use snake_case.
     `schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema.
     """
-    dynamic_keys: dict[constr(pattern=DYNAMIC_KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
+    dynamic_keys: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.
     `variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.
@@ -501,7 +502,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     """Schema name used when exporting to JSON schema"""
     field_id: str | None = Field(None, alias="$id")
     """Schema ID used when exporting to JSON schema"""
-    field_defs: dict[constr(pattern=KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")
+    field_defs: dict[str, Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")
     """Storage for reusable schema fragments"""
 
     # Type of schema docs generators to use for this schema field.
@@ -531,7 +532,8 @@ class AvdSchemaDict(AvdSchemaBaseModel):
 
     def model_post_init(self, __context: Any) -> None:
         """
-        Overrides BaseModel.model_post_init().
+        Overrides BaseModel.model_post_init.
+
         Runs after this model including all child models have been initialized.
 
         Set Internal attributes on child schemas:

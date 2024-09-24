@@ -111,6 +111,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -140,7 +146,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.110.1/31
@@ -153,7 +160,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.110.3/31
@@ -163,7 +171,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF1A_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -174,23 +181,26 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-RS1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.4/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC1-POD1-L2LEAF1A_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4085'
   shutdown: false
-  mode: trunk
   service_profile: QOS-PROFILE
-  vlans: '4085'
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.110.3/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 172.18.110.3/32
 router_bfd:
@@ -235,7 +245,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: DC1-POD1-LEAF1A_VTEP
     vxlan:
       udp_port: 4789

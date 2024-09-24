@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Mapping
+from typing import TYPE_CHECKING
 
 from .mixins import DeviceUtilsMixin, ValidationMixin
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
     from .config_manager import ConfigManager
 
 LOGGER = logging.getLogger(__name__)
@@ -51,6 +53,11 @@ class AvdTestBase(DeviceUtilsMixin, ValidationMixin):
         """Return the vtep_mapping from the ConfigManager instance."""
         return self.config_manager.vtep_mapping
 
+    @property
+    def dps_mapping(self) -> list[tuple[str, str]]:
+        """Return the dps_mapping from the ConfigManager instance."""
+        return self.config_manager.dps_mapping
+
     def render(self) -> dict:
         """Return the test_definition of the class.
 
@@ -58,7 +65,7 @@ class AvdTestBase(DeviceUtilsMixin, ValidationMixin):
         If `test_definition` is not set or returns a falsy value (e.g., None),
         an empty dictionary will be returned instead.
 
-        Returns
+        Returns:
         -------
             dict: The test definition if available and valid; otherwise, an empty dictionary.
         """

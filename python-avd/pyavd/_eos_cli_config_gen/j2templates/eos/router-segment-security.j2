@@ -1,0 +1,75 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router segment-security #}
+{% if router_segment_security is arista.avd.defined %}
+!
+router segment-security
+{%     if router_segment_security.enabled is arista.avd.defined(true) %}
+   no shutdown
+   !
+{%     endif %}
+{%     for policy in router_segment_security.policies | arista.avd.natural_sort('name') %}
+   policy {{ policy.name }}
+{%         for sequence in policy.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             if sequence.sequence is arista.avd.defined and sequence.action is arista.avd.defined and sequence.application is arista.avd.defined %}
+{%                 set eos_cli = sequence.action %}
+{%                 if sequence.action == "redirect" %}
+{%                     if sequence.next_hop is arista.avd.defined %}
+{%                         set eos_cli = eos_cli ~ " next-hop " ~ sequence.next_hop %}
+{%                     else %}
+{%                         continue %}
+{%                     endif %}
+{%                 endif %}
+{%                 if sequence.stateless | arista.avd.default(true) %}
+{%                     set eos_cli = eos_cli ~ " stateless" %}
+{%                 endif %}
+{%                 if sequence.log is arista.avd.defined(true) %}
+{%                     set eos_cli = eos_cli ~ " log" %}
+{%                 endif %}
+      {{ sequence.sequence }} application {{ sequence.application }} action {{ eos_cli }}
+{%             endif %}
+{%         endfor %}
+   !
+{%     endfor %}
+{%     for vrf in router_segment_security.vrfs | arista.avd.natural_sort('name') %}
+   vrf {{ vrf.name }}
+{%         for segment in vrf.segments | arista.avd.natural_sort('name') %}
+      segment {{ segment.name }}
+         definition
+{%             for interface in segment.definition.interfaces | arista.avd.natural_sort %}
+            match interface {{ interface }}
+{%             endfor %}
+{%             if segment.definition.match_lists is arista.avd.defined %}
+{%                 for match_list in segment.definition.match_lists %}
+{%                     if match_list.address_family is arista.avd.defined and (match_list.prefix is arista.avd.defined or match_list.covered_prefix_list is arista.avd.defined ) %}
+{%                         if match_list.prefix is arista.avd.defined %}
+{%                             set host_cli = "match prefix-" ~ match_list.address_family ~ " " ~ match_list.prefix %}
+{%                         elif match_list.covered_prefix_list is arista.avd.defined %}
+{%                             set host_cli = "match covered prefix-list " ~ match_list.address_family ~ " " ~ match_list.covered_prefix_list %}
+{%                         endif %}
+            {{ host_cli }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%             if segment.policies is arista.avd.defined %}
+         !
+         policies
+{%                 for policy in segment.policies | arista.avd.natural_sort('from') %}
+{%                     if policy.from is arista.avd.defined and policy.policy is arista.avd.defined %}
+            from {{ policy.from }} policy {{ policy.policy }}
+{%                     endif %}
+{%                 endfor %}
+{%                 if segment.fallback_policy is arista.avd.defined %}
+            fallback policy {{ segment.fallback_policy }}
+{%                 endif %}
+{%             endif %}
+{%             if not loop.last %}
+      !
+{%             endif %}
+{%         endfor %}
+   !
+{%     endfor %}
+{% endif %}

@@ -19,20 +19,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -58,6 +58,10 @@ dns domain test.local
 | 10.10.129.10 | - | 0 |
 | 10.10.128.10 | mgmt | - |
 | 10.10.128.10 | TEST | 3 |
+| 2001:db8::1 | - | - |
+| 2001:db8::2 | - | 0 |
+| 2001:db8::1 | mgmt | - |
+| 2001:db8::2 | TEST | 3 |
 
 #### IP Name Servers Device Configuration
 
@@ -66,6 +70,10 @@ ip name-server 10.10.128.10
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server 10.10.129.10 priority 0
+ip name-server 2001:db8::1
+ip name-server vrf mgmt 2001:db8::1
+ip name-server 2001:db8::2 priority 0
+ip name-server vrf TEST 2001:db8::2 priority 3
 ```
 
 ### Domain Lookup
@@ -100,6 +108,8 @@ ip domain lookup vrf mgt source-interface Management0
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
 | 10.10.111.1 | mgt | True | - | - | - | - | - | - | - |
 | 10.10.111.2 | mgt | - | - | - | - | - | - | - | - |
+| 2001:db8::3 | mgt | - | - | - | - | - | - | - | - |
+| 2001:db8::4 | mgt | - | - | - | - | - | - | - | - |
 
 ##### NTP Authentication
 
@@ -125,4 +135,6 @@ ntp authenticate servers
 ntp local-interface vrf mgt Management0
 ntp server vrf mgt 10.10.111.1 prefer
 ntp server vrf mgt 10.10.111.2
+ntp server vrf mgt 2001:db8::3
+ntp server vrf mgt 2001:db8::4
 ```

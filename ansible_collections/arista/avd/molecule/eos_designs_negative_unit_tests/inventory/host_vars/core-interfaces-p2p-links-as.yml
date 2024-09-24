@@ -1,0 +1,32 @@
+# Testing "core_interfaces.p2p_links.[].as" not defined
+
+# Fabric node type keys
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+bgp_as: 65000
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+  nodes:
+    - name: core-interfaces-p2p-links-as
+      id: 1
+
+core_interfaces:
+  p2p_links_profiles:
+    - name: isis_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+  p2p_links:
+    - nodes: [ core-interfaces-p2p-links-as, peer1 ]
+      id: 10
+      interfaces: [ Ethernet1, Ethernet1 ]
+      include_in_underlay_protocol: true
+      underlay_multicast: true
+
+expected_error_message: "core_interfaces.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as"

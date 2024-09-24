@@ -1,0 +1,87 @@
+---
+# Testing cv-pathfinder
+wan_mode: cv-pathfinder
+# Have all the router in the examples use eBGP as underlay routing protocol -
+# the default is "none" for WAN routers"
+underlay_routing_protocol: ebgp
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+
+ipv4_prefix_list_catalog:
+  - name: ALLOW-DEFAULT
+    sequence_numbers:
+      - sequence: 10
+        action: permit 0.0.0.0/0
+  - name: PL2
+    sequence_numbers:
+      - sequence: 10
+        action: permit 5.0.0.0/0
+      - sequence: 20
+        action: deny 10.00.0.0/24
+
+default_node_types:
+  - node_type: wan_router
+    match_hostnames:
+      - missing-prefix-list-in-cv-pathfinder
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    bgp_as: 65000
+  # Testing HA and disabling HA
+  node_groups:
+    # SITE_HA_DISABLED
+    - group: Site511
+      uplink_type: p2p-vrfs
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      wan_ha:
+        enabled: False
+      nodes:
+        - name: missing-prefix-list-in-cv-pathfinder
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: Comcast
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+              flow_tracking:
+                enabled: true
+              peer_ip: 172.16.9.4
+              bgp:
+                peer_as: 64520
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+
+expected_error_message: "BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for l3_interfaces[Ethernet1]"

@@ -60,10 +60,20 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
 - ip_address: 8.8.8.8
+  vrf: MGMT
+- ip_address: 2001:db8::1
+  vrf: MGMT
+- ip_address: 2001:db8::2
   vrf: MGMT
 local_users:
 - name: admin
@@ -84,7 +94,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.115/24
@@ -103,6 +113,8 @@ ntp:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
+  - name: 2001:db8::3
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1B
@@ -118,27 +130,28 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.10.255.7/31
   no_autostate: true
   mtu: 1500
+  ip_address: 10.10.255.7/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Po5
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+      - LEAF_PEER_L3
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG-OSPF-L3LEAF1A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet5
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -148,7 +161,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet6
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -160,10 +172,19 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet220
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.10.101.9/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: qO39Oo+xVTO7l/La1StOQcW1t7hpfAAH
+  - id: 2
+    hash_algorithm: sha512
+    key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094
@@ -173,12 +194,12 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.37/32
   ospf_area: 0.0.0.0
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.36/32
   ospf_area: 0.0.0.0
@@ -200,7 +221,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: MLAG-OSPF-L3LEAF1B_VTEP
     vxlan:
       udp_port: 4789

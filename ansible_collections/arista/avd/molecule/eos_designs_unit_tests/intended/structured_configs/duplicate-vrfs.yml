@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF1
-    router_id: 192.168.255.101
     rd: 192.168.255.101:1
     route_targets:
       import:
@@ -49,6 +48,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.101
     redistribute_routes:
     - source_protocol: connected
   vlans:
@@ -75,6 +75,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -87,11 +93,11 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.101/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
 prefix_lists:
@@ -137,7 +143,7 @@ vlan_interfaces:
   ip_address_virtual: 10.0.200.1/24
   vrf: VRF1
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: duplicate-vrfs_VTEP
     vxlan:
       udp_port: 4789

@@ -2,9 +2,6 @@
 # Shared attributes
 root_dir: '{{ playbook_dir }}'
 
-design:
-  type: "mpls"
-
 fabric_name: MPLS_CORE
 
 underlay_ipv6: true
@@ -38,10 +35,9 @@ bgp_peer_groups:
   rr_overlay_peers:
     password: "04FdfTXWrEfpDTUc3mlSjg=="
 
-
 # RD/RT Format
 overlay_rd_type:
-  admin_subfield: overlay_loopback
+  admin_subfield: router_id
 overlay_rt_type:
   admin_subfield: 65000
 

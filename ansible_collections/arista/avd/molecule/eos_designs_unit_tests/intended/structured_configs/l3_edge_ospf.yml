@@ -7,6 +7,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 vrfs:
@@ -18,7 +24,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 1.2.3.1/32
   ospf_area: 0.0.0.0
@@ -39,7 +45,8 @@ ethernet_interfaces:
   peer_interface: ethernet1
   peer_type: other
   description: P2P_LINK_TO_peer1_ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 2000
   service_profile: TEST-QOS-PROFILE
@@ -54,7 +61,8 @@ ethernet_interfaces:
   peer_interface: ethernet2
   peer_type: other
   description: P2P_LINK_TO_peer2_ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.2/31
@@ -65,7 +73,8 @@ ethernet_interfaces:
   peer_interface: ethernet3
   peer_type: other
   description: P2P_LINK_TO_peer3_ethernet3
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.4/31
@@ -76,7 +85,8 @@ ethernet_interfaces:
   peer_interface: ethernet4
   peer_type: other
   description: P2P_LINK_TO_peer4_ethernet4
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.6/31

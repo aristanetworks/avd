@@ -1,0 +1,27 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  port_profiles:
+    type: list
+    primary_key: profile
+    description: |
+      Optional profiles to share common settings for connected_endpoints and/or network_ports.
+      Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
+    items:
+      type: dict
+      $ref: "eos_designs#/$defs/adapter_config"
+      # These keys will take precedence over $ref
+      keys:
+        profile:
+          type: str
+          description: Port profile name.
+        parent_profile:
+          type: str
+          description: |
+            Parent profile is optional.
+            Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).

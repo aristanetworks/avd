@@ -2,7 +2,7 @@
 ## Test values that are set to false and generate configuration e.g -> "no vxlan qos ecn propagation"
 
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     vxlan:
       qos:
         dscp_propagation_encapsulation: false

@@ -1,3 +1,5 @@
+---
+
 port_profiles:
   - profile: TENANT_A_B
     mode: trunk
@@ -23,7 +25,7 @@ port_profiles:
     phone_trunk_mode: untagged
 
   - profile: ALL_WITH_SECURITY
-    parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
+    parent_profile: NON_EXISTING_PROFILE # Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: disabled
@@ -67,7 +69,7 @@ port_profiles:
         level: 2
         unit: percent
     port_channel:
-      description: ALL_WITH_SECURITY_PORT_CHANNEL
+      endpoint_port_channel: ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
 
   - profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
@@ -91,7 +93,7 @@ port_profiles:
         level: 2
         unit: percent
     port_channel:
-      description: ALL_WITH_SECURITY_PORT_CHANNEL
+      endpoint_port_channel: ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
       lacp_fallback:
         mode: static
@@ -101,7 +103,7 @@ port_profiles:
     mode: trunk
     vlans: "1-4094"
     port_channel:
-      description: PORT_CHANNEL_LACP_MODE
+      endpoint_port_channel: PORT_CHANNEL_LACP_MODE
       mode: active
       lacp_timer:
         mode: fast
@@ -111,7 +113,7 @@ port_profiles:
     mode: trunk
     vlans: "1-4094"
     port_channel:
-      description: PORT_CHANNEL_LACP_MODE_NORMAL
+      endpoint_port_channel: PORT_CHANNEL_LACP_MODE_NORMAL
       mode: active
       lacp_timer:
         mode: normal
@@ -120,7 +122,7 @@ port_profiles:
   - profile: NESTED_PORT_PROFILE
     parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     port_channel:
-      description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+      endpoint_port_channel: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
 
   - profile: DOT1X_PORT_PROFILE
@@ -151,7 +153,7 @@ servers:
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_B
         port_channel:
-          description: PortChanne1
+          endpoint_port_channel: PortChanne1
           mode: active
         spanning_tree_bpdufilter: disabled
         spanning_tree_bpduguard: disabled
@@ -164,7 +166,7 @@ servers:
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_A_MTU
         port_channel:
-          description: PortChanne1
+          endpoint_port_channel: PortChanne1
           mode: active
         spanning_tree_bpdufilter: enabled
         spanning_tree_bpduguard: enabled
@@ -177,7 +179,7 @@ servers:
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         mtu: 1601
         port_channel:
-          description: PortChanne1
+          endpoint_port_channel: PortChanne1
           mode: active
         spanning_tree_bpdufilter: true
         spanning_tree_bpduguard: true
@@ -210,7 +212,21 @@ servers:
         ethernet_segment:
           short_esi: '0303:0202:0101'
         port_channel:
-          description: PortChanne1
+          endpoint_port_channel: PortChanne1
+          mode: active
+
+  # Test short_esi on non-vtep device.
+  - name: server03_ESI_L2LEAF
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ DC1-L2LEAF1A, DC1-L2LEAF1B ]
+        profile: TENANT_A_B
+        ethernet_segment:
+          short_esi: '0303:0202:0101'
+        port_channel:
+          endpoint_port_channel: PortChanne1
           mode: active
 
   - name: server04_inherit_all_from_profile
@@ -305,7 +321,7 @@ servers:
             level: 2
             unit: percent
         port_channel:
-          description: server08_no_profile_port_channel
+          endpoint_port_channel: server08_no_profile_port_channel
           mode: 'on'
 
   - name: server09_override_profile_no_port_channel
@@ -333,7 +349,7 @@ servers:
           unknown_unicast:
             level: 2
             unit: percent
-        port_channel: null   #Setting to null, to override port-channel inherited from profile
+        port_channel: null   # Setting to null, to override port-channel inherited from profile
 
   - name: server10_no_profile_port_channel_lacp_fallback
     rack: RackC
@@ -360,7 +376,7 @@ servers:
             level: 2
             unit: percent
         port_channel:
-          description: server10_no_profile_port_channel_lacp_fallback
+          endpoint_port_channel: server10_no_profile_port_channel_lacp_fallback
           mode: passive
           lacp_fallback:
             mode: static
@@ -408,7 +424,7 @@ servers:
         profile: TENANT_A
         enabled: false
         port_channel:
-          description: server15_port_channel_with_disabled_phy_interfaces
+          endpoint_port_channel: server15_port_channel_with_disabled_phy_interfaces
           mode: active
           enabled: true
 
@@ -420,7 +436,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
         port_channel:
-          description: server16_port_channel_with_disabled_port_channel
+          endpoint_port_channel: server16_port_channel_with_disabled_port_channel
           mode: active
           enabled: false
 
@@ -433,7 +449,7 @@ servers:
         profile: TENANT_A
         enabled: false
         port_channel:
-          description: server17_port_channel_with_disabled_phy_and_po_interfaces
+          endpoint_port_channel: server17_port_channel_with_disabled_phy_and_po_interfaces
           mode: active
           enabled: false
 
@@ -467,7 +483,7 @@ servers:
         profile: TENANT_A
         enabled: true
         port_channel:
-          description: server18_monitoring_session_source_po
+          endpoint_port_channel: server18_monitoring_session_source_po
           mode: active
           enabled: true
         monitor_sessions:
@@ -551,7 +567,7 @@ servers:
         profile: TENANT_A
         enabled: true
         port_channel:
-          description: server21_monitoring_session_destination_po
+          endpoint_port_channel: server21_monitoring_session_destination_po
           mode: active
           enabled: true
         monitor_sessions:
@@ -566,7 +582,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
         port_channel:
-          description: server22_port_channel_with_custom_id
+          endpoint_port_channel: server22_port_channel_with_custom_id
           mode: active
           enabled: true
           channel_id: 1291
@@ -589,7 +605,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: PORT_CHANNEL_LACP_TIMER
         port_channel:
-          description: server24_port_channel_with_lacp_timer
+          endpoint_port_channel: server24_port_channel_with_lacp_timer
 
   - name: server25_port_channel_lacp_timer
     rack: RackC
@@ -598,7 +614,7 @@ servers:
         switch_ports: [ Ethernet32, Ethernet32 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         port_channel:
-          description: server25_port_channel_with_lacp_timer
+          endpoint_port_channel: server25_port_channel_with_lacp_timer
           mode: active
           enabled: true
           lacp_timer:
@@ -613,7 +629,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: PORT_CHANNEL_LACP_TIMER_NORMAL
         port_channel:
-          description: server26_port_channel_with_lacp_timer
+          endpoint_port_channel: server26_port_channel_with_lacp_timer
 
   - name: server27_port_channel_lacp_timer
     rack: RackC
@@ -622,7 +638,7 @@ servers:
         switch_ports: [ Ethernet34, Ethernet34 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         port_channel:
-          description: server27_port_channel_with_lacp_timer
+          endpoint_port_channel: server27_port_channel_with_lacp_timer
           mode: active
           enabled: true
           lacp_timer:
@@ -658,7 +674,7 @@ phones:
         profile: PHONE_WITH_PC
         port_channel:
           mode: active
-          description: Port-Channel to Phone
+          description: "{endpoint} Port-Channel to {endpoint_type}"
 
 firewalls:
   - name: FIREWALL01
@@ -669,7 +685,7 @@ firewalls:
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_A_B
         port_channel:
-          description: PortChanne1
+          endpoint_port_channel: PortChanne1
           mode: active
 
 routers:

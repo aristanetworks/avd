@@ -43,8 +43,7 @@ The module is used in `arista.avd.eos_designs` to set facts for devices, which a
 
 ```yaml
   template_output: <true | false | default -> false>
-  conversion_mode: <"warning" | "info" | "debug" | "quiet" | "disabled" | default -> "debug">
-  validation_mode: <"error" | "warning" | "info" | "debug" | "disabled" | default -> "warning">
+  validation_mode: <"error" | "warning" | default -> "error">
   cprofile_file: <Filename for storing cprofile data used to debug performance issues>
 ```
 
@@ -135,7 +134,7 @@ The base class has a few important methods:
 - `get(key, default=None)` returns the value of the requested "key" (`cached_property`) if the "key" is in the list returned by `keys()`.
   Otherwise the default value is returned.
 
-See the source code [here](../../plugins/plugin_utils/avdfacts.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/avdfacts.py)
 
 ### get_structured_config
 
@@ -148,7 +147,7 @@ TODO
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/eos_designs_facts)
 
 ```mermaid
 classDiagram
@@ -179,7 +178,7 @@ classDiagram
 
 ### SharedUtils
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/shared_utils)
 
 ```mermaid
 classDiagram
@@ -230,18 +229,7 @@ which at the time where `eos_designs_structured_config` run, is a nested `dict`.
 
 Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into manageable files.
 
-Source code:
-
-- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
-  (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
-- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
-- [AvdStructuredConfigCoreInterfacesAndL3Edge](../../roles/eos_designs/python_modules/core_interfaces_and_l3_edge/__init__.py)
-- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
-- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
-- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
-- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
-- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
-- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/__init__.py)
+See the source code [here](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/structured_config)
 
 ```mermaid
 classDiagram
@@ -382,10 +370,6 @@ outside of that, so any inline Jinja2 could not use these values.
 | switch.type | fabric-topology.j2 |
 | switch.mpls_overlay_role |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
 | switch.mpls_lsr |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
-| switch.mlag_peer | interface_descriptions/mlag/ethernet-interfaces.j2 |
-| switch.mlag_interfaces | interface_descriptions/mlag/port-channel-interfaces.j2 |
-| switch.mlag_peer | interface_descriptions/mlag/port-channel-interfaces.j2 |
-| switch.mlag_port_channel_id | interface_descriptions/mlag/port-channel-interfaces.j2 |
 | switch.uplink_ipv4_pool | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
 | switch.id | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
 | switch.max_parallel_uplinks | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |

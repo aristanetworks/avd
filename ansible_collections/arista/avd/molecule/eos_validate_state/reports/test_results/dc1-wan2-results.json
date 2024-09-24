@@ -80,6 +80,15 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP EVPN Peer: dc1-wan1 (IP: 10.255.1.1)"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 SR-TE Peer: dc1-leaf1a (IP: 10.255.255.10)"
   },
   {
@@ -178,6 +187,24 @@
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet2 - Remote: dc1-leaf1b Ethernet7"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan1 Dps1 (IP: 10.255.1.1)"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReachability",
+    "categories": [
+      "connectivity"
+    ],
+    "description": "Test the network reachability to one or many destination IP(s).",
+    "custom_field": "Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan2 Dps1 (IP: 10.255.1.2)"
   },
   {
     "name": "dc1-wan2",
@@ -372,7 +399,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Loopback0 - Router_ID = 'up'"
+    "custom_field": "Interface Loopback0 - ROUTER_ID = 'up'"
   },
   {
     "name": "dc1-wan2",
@@ -531,6 +558,33 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.1.1 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.255.10 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifySpecificIPSecConn",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies IPv4 security connections for a peer.",
+    "custom_field": "IPv4 Peer: 10.255.255.20 VRF: default"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifySSHIPv4Acl",
     "categories": [
       "security"
@@ -643,6 +697,24 @@
   },
   {
     "name": "dc1-wan2",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
+    "custom_field": "Source IPv4 Address: 100.64.4.2 Source Port: 4500"
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyStunClient",
+    "categories": [
+      "stun"
+    ],
+    "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided.",
+    "custom_field": "Source IPv4 Address: 172.18.4.2 Source Port: 4500"
+  },
+  {
+    "name": "dc1-wan2",
     "test": "VerifyAgentLogs",
     "categories": [
       "system"
@@ -696,6 +768,14 @@
       "system"
     ],
     "description": "Verifies if NTP is synchronised."
+  },
+  {
+    "name": "dc1-wan2",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "system"
+    ],
+    "description": "Verifies the last reload cause of the device."
   },
   {
     "name": "dc1-wan2",

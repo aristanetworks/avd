@@ -59,6 +59,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -74,7 +80,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.2.1/31
 - name: Ethernet2
   peer: downlink-pools-spine2
@@ -83,15 +90,16 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet4
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.2.3/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.1.20/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.2.20/32
 prefix_lists:
@@ -116,7 +124,7 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: downlink-pools-l3leaf2_VTEP
     vxlan:
       udp_port: 4789

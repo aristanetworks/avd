@@ -8,15 +8,13 @@ from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestP2PIPReachability(AvdTestBase):
-    """
-    AvdTestP2PIPReachability class for P2P IP reachability tests.
-    """
+    """AvdTestP2PIPReachability class for P2P IP reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -38,7 +36,7 @@ class AvdTestP2PIPReachability(AvdTestBase):
 
         for idx, interface in enumerate(ethernet_interfaces):
             self.update_interface_shutdown(interface)
-            if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
+            if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
 
             if not self.is_peer_available(peer := interface["peer"]):
@@ -57,17 +55,15 @@ class AvdTestP2PIPReachability(AvdTestBase):
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestInbandReachability(AvdTestBase):
-    """
-    AvdTestInbandReachability class for inband management reachability tests.
-    """
+    """AvdTestInbandReachability class for inband management reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -106,17 +102,15 @@ class AvdTestInbandReachability(AvdTestBase):
                         "VerifyReachability": {
                             "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": vrf, "repeat": 1}],
                             "result_overwrite": {"custom_field": custom_field},
-                        }
-                    }
+                        },
+                    },
                 )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestLoopback0Reachability(AvdTestBase):
-    """
-    AvdTestLoopback0Reachability class for Loopback0 reachability tests.
-    """
+    """AvdTestLoopback0Reachability class for Loopback0 reachability tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -132,12 +126,12 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         anta_tests = []
 
         # Skip the test if the host is not a VTEP (no VXLAN interface)
-        if get(self.structured_config, "vxlan_interface") is None:
+        if not self.is_vtep():
             LOGGER.info("Host is not a VTEP since it doesn't have a VXLAN interface. %s is skipped.", self.__class__.__name__)
             return None
 
         # TODO: For now, we exclude WAN VTEPs from testing
-        if "Dps" in get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"):
+        if self.is_wan_vtep():
             LOGGER.info("Host is a VTEP with a DPS source interface for VXLAN. For now, WAN VTEPs are excluded. %s is skipped.", self.__class__.__name__)
             return None
 
@@ -156,6 +150,52 @@ class AvdTestLoopback0Reachability(AvdTestBase):
                     "VerifyReachability": {
                         "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
                         "result_overwrite": {"custom_field": custom_field},
+                    },
+                },
+            )
+
+        return {self.anta_module: anta_tests} if anta_tests else None
+
+
+class AvdTestDpsReachability(AvdTestBase):
+    """AvdTestDpsReachability class for DPS reachability tests."""
+
+    anta_module = "anta.tests.connectivity"
+
+    @cached_property
+    def test_definition(self) -> dict | None:
+        """
+        Generates the proper ANTA test definition for all DPS reachability tests.
+
+        Returns:
+            dict | None: ANTA test definition if there are tests to run, otherwise None.
+        """
+        anta_tests = []
+
+        # Skip the test if the host is not a WAN VTEP
+        if not self.is_wan_vtep():
+            LOGGER.info("Host is not a WAN VTEP. %s is skipped.", self.__class__.__name__)
+            return None
+
+        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
+        dps_source_interface = default(
+            get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface"),
+            get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"),
+        )
+        dps_ip = self.get_interface_ip("dps_interfaces", dps_source_interface)
+        if not dps_ip:
+            return None
+        src_ip = str(ip_interface(dps_ip).ip)
+        for dst_node, dst_ip in self.dps_mapping:
+            if not self.is_peer_available(dst_node):
+                continue
+
+            custom_field = f"Source: {dps_source_interface} (IP: {src_ip}) - Destination: {dst_node} {dps_source_interface} (IP: {dst_ip})"
+            anta_tests.append(
+                {
+                    "VerifyReachability": {
+                        "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                        "result_overwrite": {"custom_field": custom_field},
                     }
                 }
             )
@@ -164,9 +204,7 @@ class AvdTestLoopback0Reachability(AvdTestBase):
 
 
 class AvdTestLLDPTopology(AvdTestBase):
-    """
-    AvdTestLLDPTopology class for the LLDP topology tests.
-    """
+    """AvdTestLLDPTopology class for the LLDP topology tests."""
 
     anta_module = "anta.tests.connectivity"
 
@@ -212,11 +250,11 @@ class AvdTestLLDPTopology(AvdTestBase):
                                 "port": str(interface["name"]),
                                 "neighbor_device": str(peer),
                                 "neighbor_port": str(interface["peer_interface"]),
-                            }
+                            },
                         ],
                         "result_overwrite": {"custom_field": custom_field},
-                    }
-                }
+                    },
+                },
             )
 
         return {self.anta_module: anta_tests} if anta_tests else None

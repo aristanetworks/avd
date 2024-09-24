@@ -57,6 +57,15 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder
+  - ip_address: 192.168.142.2
+    peer: cv-pathfinder-edge2A
+    description: cv-pathfinder-edge2A
+    remote_as: '65000'
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
   vrfs:
   - name: IT
     router_id: 192.168.42.3
@@ -145,6 +154,12 @@ router_bgp:
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 192.168.142.2
+      activate: true
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -167,6 +182,11 @@ router_bgp:
           any: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -194,7 +214,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.9/31
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf2A
@@ -236,7 +257,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.11/31
 - name: Ethernet53.1000
   peer: site-ha-enabled-leaf2B
@@ -275,11 +297,12 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.15.6.6/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10423
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.3/32
 as_path:
@@ -331,36 +354,22 @@ route_maps:
     match:
     - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
   - sequence: 20
-    type: permit
-    description: Allow prefixes originated from the HA peer
-    match:
-    - extcommunity ECL-EVPN-SOO
-    set:
-    - as-path match all replacement auto auto
-  - sequence: 30
-    type: permit
-    description: Use WAN routes from HA peer as backup
+    type: deny
+    description: Deny other routes from the HA peer
     match:
     - as-path ASPATH-WAN
-    set:
-    - community no-advertise
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Advertise local routes towards LAN
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
   - sequence: 20
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
-    match:
-    - route-type internal
-  - sequence: 30
-    type: permit
-    description: Advertise WAN HA prefixes towards LAN
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -375,6 +384,27 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.42.2:423 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -393,31 +423,15 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.42.2:423
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.142.3
   - name: CP-IKE-POLICY
     local_id: 192.168.142.3
   sa_policies:
-  - name: DP-SA-POLICY
-    esp:
-      encryption: aes256gcm128
-    pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
       encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
-  - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
-    sa_policy: DP-SA-POLICY
-    connection: start
-    shared_key: ABCDEF1234567890666
-    dpd:
-      interval: 10
-      time: 50
-      action: clear
-    mode: transport
-  - name: CP-PROFILE
+  - name: ONE-PROFILE-TO-CONTROL-THEM-ALL
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
     connection: start
@@ -428,7 +442,7 @@ ip_security:
       action: clear
     mode: transport
   key_controller:
-    profile: DP-PROFILE
+    profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
 management_security:
   ssl_profiles:
   - name: profileA
@@ -544,7 +558,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -568,7 +582,7 @@ router_path_selection:
       ipv4_addresses:
       - 172.17.0.5
       - 172.17.0.7
-    ipsec_profile: DP-PROFILE
+    ipsec_profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
@@ -612,7 +626,7 @@ router_traffic_engineering:
 stun:
   client:
     server_profiles:
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: profileA
 application_traffic_recognition:
@@ -623,6 +637,8 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+    application_transports:
+    - rtp
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
@@ -634,6 +650,7 @@ application_traffic_recognition:
   - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-2
+    - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
   applications:
     ipv4_applications:
@@ -647,6 +664,12 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
+    - name: CUSTOM-DSCP-APPLICATION
+      dscp_ranges:
+      - ef
+      - 12-14
+      - cs6
+      - '42'
     - name: APP-CONTROL-PLANE
       dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
@@ -671,12 +694,12 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.3/32
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: cv-pathfinder-edge2B_VTEP
     vxlan:
       udp_port: 4789

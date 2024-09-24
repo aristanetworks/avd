@@ -1,0 +1,38 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+    bgp_as: 42
+  nodes:
+    - name: duplicate-peer-ip-address-network-services
+      id: 42
+
+tenants:
+  - name: Tenant_C
+    mac_vrf_vni_base: 30000
+    evpn_l2_multi_domain: false
+    bgp_peer_groups:
+      - name: Tenant_C_BGP_PEER_GROUP
+        remote_as: "666"
+      - name: Tenant_C_BGP_PEER_GROUP2
+        remote_as: "667"
+    vrfs:
+      - name: Tenant_C_WAN_Zone
+        vrf_vni: 31
+        svis:
+          - id: 350
+            name: Tenant_C_WAN_Zone_1
+            tags: ['wan']
+            enabled: True
+        bgp_peers:
+          - ip_address: 2.2.2.2
+            peer_group: Tenant_C_BGP_PEER_GROUP
+            nodes: [ duplicate-peer-ip-address-network-services ]
+          - ip_address: 2.2.2.2
+            peer_group: Tenant_C_BGP_PEER_GROUP2
+            nodes: [ duplicate-peer-ip-address-network-services ]
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for BGP peer defined under VRFs.
+  {'ip_address': '2.2.2.2', 'peer_group': 'Tenant_C_BGP_PEER_GROUP2'} conflicts with {'ip_address': '2.2.2.2', 'peer_group': 'Tenant_C_BGP_PEER_GROUP'}.

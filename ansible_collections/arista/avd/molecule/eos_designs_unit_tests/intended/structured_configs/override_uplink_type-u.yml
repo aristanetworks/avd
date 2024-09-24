@@ -44,6 +44,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 vrfs:
@@ -60,21 +66,22 @@ ethernet_interfaces:
   peer_type: spine
   description: OVERRIDE_UPLINK_TYPE-D_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: OVERRIDE_UPLINK_TYPE-D_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
   shutdown: false
-  mode: trunk
   spanning_tree_portfast: edge
-  vlans: none
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 prefix_lists:

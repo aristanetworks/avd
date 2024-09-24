@@ -129,7 +129,6 @@
    }
     .md-typeset code {
         padding: 0 .2941176471em;
-        font-size: 80%;
         word-break: break-word;
         background-color: var(--md-code-bg-color);
         border-radius: .1rem;

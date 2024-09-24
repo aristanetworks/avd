@@ -5,8 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Filters](#filters)
-  - [Community-lists](#community-lists)
-  - [IP Community-lists](#ip-community-lists)
+  - [IP Community-lists](#ip-community-lists-1)
 
 ## Management
 
@@ -18,42 +17,25 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
 
 ## Filters
-
-### Community-lists
-
-#### Community-lists Summary
-
-| Name | Action |
-| -------- | ------ |
-| TEST1 | permit 1000:1000 |
-| TEST2 | permit 2000:3000 |
-
-#### Community-lists Device Configuration
-
-```eos
-!
-ip community-list TEST1 permit 1000:1000
-ip community-list TEST2 permit 2000:3000
-```
 
 ### IP Community-lists
 

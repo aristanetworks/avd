@@ -84,6 +84,24 @@ anta.tests.connectivity:
     result_overwrite:
       custom_field: 'Source: P2P Interface Ethernet2 (IP: 10.255.255.7) - Destination:
         dc1-leaf1b Ethernet7 (IP: 10.255.255.6)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.1.1
+      repeat: 1
+      source: 10.255.1.2
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan1 Dps1 (IP:
+        10.255.1.1)'
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.1.2
+      repeat: 1
+      source: 10.255.1.2
+      vrf: default
+    result_overwrite:
+      custom_field: 'Source: Dps1 (IP: 10.255.1.2) - Destination: dc1-wan2 Dps1 (IP:
+        10.255.1.2)'
 anta.tests.field_notices:
 - VerifyFieldNotice44Resolution: null
 - VerifyFieldNotice72Resolution: null
@@ -155,7 +173,7 @@ anta.tests.interfaces:
     - name: Loopback0
       status: up
     result_overwrite:
-      custom_field: Interface Loopback0 - Router_ID = 'up'
+      custom_field: Interface Loopback0 - ROUTER_ID = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Dps1
@@ -192,6 +210,13 @@ anta.tests.routing.bgp:
       - 10.255.255.20
     result_overwrite:
       custom_field: 'BGP EVPN Peer: dc1-leaf1b (IP: 10.255.255.20)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.1.1
+    result_overwrite:
+      custom_field: 'BGP EVPN Peer: dc1-wan1 (IP: 10.255.1.1)'
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: path-selection
@@ -262,6 +287,24 @@ anta.tests.security:
     profile: eAPI_SSL_Profile
     result_overwrite:
       custom_field: 'eAPI HTTPS SSL Profile: eAPI_SSL_Profile'
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.255.10
+      vrf: default
+    result_overwrite:
+      custom_field: 'IPv4 Peer: 10.255.255.10 VRF: default'
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.255.20
+      vrf: default
+    result_overwrite:
+      custom_field: 'IPv4 Peer: 10.255.255.20 VRF: default'
+- VerifySpecificIPSecConn:
+    ip_security_connections:
+    - peer: 10.255.1.1
+      vrf: default
+    result_overwrite:
+      custom_field: 'IPv4 Peer: 10.255.1.1 VRF: default'
 - VerifySSHStatus: null
 - VerifySSHIPv4Acl:
     number: 3
@@ -376,6 +419,18 @@ anta.tests.software:
     - v1.8.0
 anta.tests.stun:
 - VerifyStunClient:
+    result_overwrite:
+      custom_field: 'Source IPv4 Address: 172.18.4.2 Source Port: 4500'
+    stun_clients:
+    - source_address: 172.18.4.2
+      source_port: 4500
+- VerifyStunClient:
+    result_overwrite:
+      custom_field: 'Source IPv4 Address: 100.64.4.2 Source Port: 4500'
+    stun_clients:
+    - source_address: 100.64.4.2
+      source_port: 4500
+- VerifyStunClient:
     stun_clients:
     - public_address: 172.18.3.21
       public_port: 6006
@@ -387,6 +442,7 @@ anta.tests.stun:
       source_port: 4500
 anta.tests.system:
 - VerifyNTP: null
+- VerifyReloadCause: null
 - VerifyUptime:
     minimum: 86400
 - VerifyReloadCause: null

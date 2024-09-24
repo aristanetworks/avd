@@ -29,23 +29,23 @@ router_bgp:
     route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 100.64.48.19
-    remote_as: None
+    remote_as: '65002'
     peer: peer1
     description: peer1
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: None
+    local_as: '65001'
   - ip_address: 100.64.48.21
-    remote_as: None
+    remote_as: '65003'
     peer: peer2
     description: peer2
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: None
+    local_as: '65001'
   - ip_address: 100.64.48.23
-    remote_as: None
+    remote_as: '65004'
     peer: peer3
     description: peer3
     peer_group: IPv4-UNDERLAY-PEERS
-    local_as: None
+    local_as: '65001'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -61,6 +61,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 vrfs:
@@ -72,7 +78,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: LSR_Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.0.0.4/32
   ipv6_address: 2000:1234:ffff:ffff::4/128
@@ -103,7 +109,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: other
   description: P2P_LINK_TO_peer1_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 100.64.48.18/31
@@ -117,7 +124,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: other
   description: P2P_LINK_TO_peer2_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 100.64.48.20/31
@@ -128,7 +136,8 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: other
   description: P2P_LINK_TO_peer3_Ethernet3
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1600
   ip_address: 100.64.48.22/31

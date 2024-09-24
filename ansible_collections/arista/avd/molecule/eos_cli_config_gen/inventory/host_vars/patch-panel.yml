@@ -1,4 +1,12 @@
 patch_panel:
+  connector:
+    interface:
+      patch:
+        bgp_vpws_remote_failure_errdisable: true
+      recovery:
+        review_delay:
+          min: 10
+          max: 900
   patches:
   - name: TEN_B_site2_site5_eline
     connectors:

@@ -1,8 +1,6 @@
 type: l3leaf
 
-# Custom node types with 4.x syntax using a list of dicts
 node_type_keys:
-
   - key: spine
     type: spine
     default_evpn_role: server

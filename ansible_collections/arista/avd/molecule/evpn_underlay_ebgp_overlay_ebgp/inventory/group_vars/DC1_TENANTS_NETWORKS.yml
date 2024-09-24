@@ -27,7 +27,6 @@ svi_profiles:
         source_interface: lo100
         source_vrf: MGMT
 
-
 tenants:
   # Tenant_A Specific Information - VRFs / VLANs
   - name: Tenant_A
@@ -80,8 +79,8 @@ tenants:
             ip_address_virtual: 10.1.22.1/24
             ip_helpers:
               - ip_helper: 1.1.1.1
-                #source_interface: lo100
-                #source_vrf: TEST
+                # source_interface: lo100
+                # source_vrf: TEST
           - id: 123
             name: Tenant_a_WEB_DHCP_source_int_no_vrf
             tags: ['web']
@@ -90,7 +89,7 @@ tenants:
             ip_helpers:
               - ip_helper: 1.1.1.1
                 source_interface: lo100
-                #source_vrf: TEST
+                # source_vrf: TEST
           - id: 124
             name: Tenant_a_WEB_DHCP_vrf_no_source_int
             tags: ['web']
@@ -98,7 +97,7 @@ tenants:
             ip_address_virtual: 10.1.24.1/24
             ip_helpers:
               - ip_helper: 1.1.1.1
-                #source_interface: lo100
+                # source_interface: lo100
                 source_vrf: TEST
       - name: Tenant_A_APP_Zone
         vrf_vni: 12

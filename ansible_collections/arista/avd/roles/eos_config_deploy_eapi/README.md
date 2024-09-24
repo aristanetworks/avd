@@ -53,7 +53,7 @@ roles/eos_config_deploy_eapi/defaults/main.yml
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located here: [avd-requirements](../../docs/installation/collection-installation.md#additional-python-libraries-required)
 
 ## License
 

@@ -27,10 +27,5 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/isis-ldp-ipvpn/inventory.yml
-    - --extra-vars
-    - "avd_data_validation_mode=error"
-    # Running with tags build to avoid deploy_eapi to run.
-    - --tags
-    - build
 verifier:
   name: ansible

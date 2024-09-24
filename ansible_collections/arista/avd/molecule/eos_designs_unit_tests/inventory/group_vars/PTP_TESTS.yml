@@ -35,7 +35,7 @@ l3_edge:
         enabled: true
       include_in_underlay_protocol: false
 
-ptp:
+ptp_settings:
   enabled: true
   # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
   # domain: < 0-255 | default -> 127 >
@@ -85,6 +85,20 @@ servers:
         ptp:
           enabled: true
           endpoint_role: follower
+
+  - name: Endpoint-with-mpass
+    adapters:
+      - endpoint_ports: [ PCI1, PCI2 ]
+        switch_ports: [ Ethernet6, Ethernet6 ]
+        switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
+        vlans: 11
+        mode: access
+        ptp:
+          enabled: true
+          endpoint_role: follower
+        port_channel:
+          mode: "active"
+          ptp_mpass: true
 
   - name: Endpoint-with-specific-PTP-profile
     adapters:

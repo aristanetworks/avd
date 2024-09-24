@@ -10,9 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class AvdTestHardware(AvdTestBase):
-    """
-    AvdTestHardware class for hardware tests.
-    """
+    """AvdTestHardware class for hardware tests."""
 
     anta_module = "anta.tests.hardware"
 
@@ -29,9 +27,9 @@ class AvdTestHardware(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        pwr_supply_states = get(self.structured_config, "validation_role.pwr_supply_states", ["ok"])
-        fan_states = get(self.structured_config, "validation_role.fan_states", ["ok"])
-        xcvr_manufacturers = get(self.structured_config, "validation_role.xcvr_own_manufacturers", ["Arista Networks", "Arastra, Inc."])
+        pwr_supply_states = get(self.structured_config, "accepted_pwr_supply_states", ["ok"])
+        fan_states = get(self.structured_config, "accepted_fan_states", ["ok"])
+        xcvr_manufacturers = get(self.structured_config, "accepted_xcvr_manufacturers", ["Arista Networks", "Arastra, Inc."])
         xcvr_manufacturers.append("Not Present")
 
         anta_tests = [
@@ -39,20 +37,20 @@ class AvdTestHardware(AvdTestBase):
                 "VerifyEnvironmentPower": {
                     "states": pwr_supply_states,
                     "result_overwrite": {"custom_field": f"Accepted States: {self.format_list(pwr_supply_states)}"},
-                }
+                },
             },
             {
                 "VerifyEnvironmentCooling": {
                     "states": fan_states,
                     "result_overwrite": {"custom_field": f"Accepted States: {self.format_list(fan_states)}"},
-                }
+                },
             },
             {"VerifyTemperature": None},
             {
                 "VerifyTransceiversManufacturers": {
                     "manufacturers": xcvr_manufacturers,
                     "result_overwrite": {"custom_field": f"Accepted Manufacturers: {self.format_list(xcvr_manufacturers)}"},
-                }
+                },
             },
         ]
 

@@ -1,0 +1,22 @@
+---
+fabric_ip_addressing:
+l3leaf:
+  defaults:
+    mlag_peer_address_family: ipv6
+    mlag_peer_ipv6_pool: 2001:DB8::/56
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  node_groups:
+    - group: MLAG_IPV6
+      bgp_as: 65001
+      nodes:
+        - name: MLAG_IPV6_L3LEAF1A
+          id: 3
+          mgmt_ip: 192.168.201.116/24
+        - name: MLAG_IPV6_L3LEAF1B
+          id: 4
+          mgmt_ip: 192.168.201.117/24

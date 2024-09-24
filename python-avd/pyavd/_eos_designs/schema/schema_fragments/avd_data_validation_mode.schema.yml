@@ -1,0 +1,20 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  avd_data_validation_mode:
+    documentation_options:
+      table: role-input-validation
+    type: str
+    valid_values: ["error", "warning"]
+    default: "error"
+    description: |
+       Validation Mode for AVD input data validation.
+       Input data validation will validate the input variables according to the schema.
+       During validation, messages will generated with information about the host(s) and key(s) which failed validation.
+       "error" will produce error messages and fail the task.
+       "warning" will produce warning messages.

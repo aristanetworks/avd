@@ -1,0 +1,25 @@
+underlay_routing_protocol: isis
+overlay_routing_protocol: ibgp
+
+bgp_as: 65000
+
+isis_default_is_type: level-2
+isis_default_circuit_type: level-2
+isis_system_id_format: "node_id"
+
+type: "pe"
+
+pe:
+  defaults:
+    virtual_router_mac_address: 00:c1:00:00:00:11
+    node_sid_base: 100
+    is_type: level-2
+    loopback_ipv4_pool: 172.28.4.0/22
+    overlay_address_families: [ "evpn" ]
+  nodes:
+    - name: "isis-system-id-format-missing-node-id"
+      id: 1
+
+expected_error_message: >-
+  'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'.
+  'isis_system_id_prefix' was not set for 'isis-system-id-format-missing-node-id'

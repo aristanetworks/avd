@@ -1,0 +1,27 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ipv6 dhcp relay #}
+{% if ipv6_dhcp_relay is arista.avd.defined() %}
+!
+{%     if ipv6_dhcp_relay.always_on is arista.avd.defined(true) %}
+ipv6 dhcp relay always-on
+{%     endif %}
+{%     if ipv6_dhcp_relay.all_subnets is arista.avd.defined(true) %}
+ipv6 dhcp relay all-subnets default
+{%     endif %}
+{%     if ipv6_dhcp_relay.option is arista.avd.defined() %}
+{%         if ipv6_dhcp_relay.option.link_layer_address is arista.avd.defined(true) %}
+ipv6 dhcp relay option link-layer address
+{%         endif %}
+{%         if ipv6_dhcp_relay.option.remote_id_format is arista.avd.defined() %}
+{%             if ipv6_dhcp_relay.option.remote_id_format == "%m:%i" %}
+ipv6 dhcp relay option remote-id format %m:%i
+{%             elif ipv6_dhcp_relay.option.remote_id_format == "%m:%p" %}
+ipv6 dhcp relay option remote-id format %m:%p
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}

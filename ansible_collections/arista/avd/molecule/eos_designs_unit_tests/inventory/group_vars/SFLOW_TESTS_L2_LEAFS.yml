@@ -4,6 +4,8 @@ type: l2leaf
 default_mgmt_method: inband
 
 sflow_settings:
+  sample:
+    rate: 10
   destinations:
     - destination: 10.10.10.10
       vrf: use_inband_mgmt_vrf

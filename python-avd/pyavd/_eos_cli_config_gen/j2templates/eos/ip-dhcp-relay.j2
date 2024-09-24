@@ -1,0 +1,18 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip dhcp relay #}
+{% if ip_dhcp_relay is arista.avd.defined() %}
+!
+{%     if ip_dhcp_relay.information_option is arista.avd.defined(true) %}
+ip dhcp relay information option
+{%     endif %}
+{%     if ip_dhcp_relay.always_on is arista.avd.defined(true) %}
+ip dhcp relay always-on
+{%     endif %}
+{%     if ip_dhcp_relay.all_subnets is arista.avd.defined(true) %}
+ip dhcp relay all-subnets default
+{%     endif %}
+{% endif %}

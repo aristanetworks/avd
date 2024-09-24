@@ -11,16 +11,22 @@ updates:
       interval: "daily"
     reviewers:
       - "aristanetworks/avd-maintainers"
-    labels:
-      - 'type: dependencies'
     pull-request-branch-name:
       separator: "/"
     commit-message:
       prefix: "Bump(requirements): "
     # Allow up to 10 open pull requests for pip dependencies
     open-pull-requests-limit: 10
+  # This next entry intends to ignore requirements-minimum.txt
+  # Need to check if it works or not.
+  - package-ecosystem: "pip"
+    directory: "/ansible_collections/arista/avd/requirements-minimum.txt"
+    schedule:
+      interval: "monthly"
+    # Allow up to 0 open pull requests for pip dependencies
+    open-pull-requests-limit: 0
     ignore:
-      - dependency-name: "jsonschema"
+      - dependency-name: "*"
   # This second entry for pip covers the requirements file in the ansible collection
   - package-ecosystem: "pip"
     directory: "/ansible_collections/arista/avd/"
@@ -28,16 +34,12 @@ updates:
       interval: "daily"
     reviewers:
       - "aristanetworks/avd-maintainers"
-    labels:
-      - 'type: dependencies'
     pull-request-branch-name:
       separator: "/"
     commit-message:
       prefix: "Bump(requirements): "
     # Allow up to 10 open pull requests for pip dependencies
     open-pull-requests-limit: 10
-    ignore:
-      - dependency-name: "jsonschema"
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -45,8 +47,6 @@ updates:
       interval: "weekly"
     reviewers:
       - "aristanetworks/avd-maintainers"
-    labels:
-      - 'type: dependencies'
     commit-message:
       prefix: "CI: "
     open-pull-requests-limit: 10

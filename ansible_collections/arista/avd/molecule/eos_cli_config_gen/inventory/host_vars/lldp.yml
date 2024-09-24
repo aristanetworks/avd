@@ -14,28 +14,33 @@ lldp:
 ethernet_interfaces:
   - name: Ethernet1
     description: to WAN-ISP1-01 Ethernet2
-    type: routed
+    switchport:
+      enabled: false
     lldp:
       transmit: false
       receive: false
 
   - name: Ethernet2
     description: Switched port with no LLDP rx/tx
-    mode: access
-    vlans: 110
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 110
     lldp:
       transmit: false
       receive: true
 
   - name: Ethernet3
-    type: switched
     description: No special LLDP settings
-    mode: access
-    vlans: 110
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 110
 
   - name: Ethernet4
     description: test
-    type: routed
+    switchport:
+      enabled: false
     lldp:
       transmit: true
       receive: false

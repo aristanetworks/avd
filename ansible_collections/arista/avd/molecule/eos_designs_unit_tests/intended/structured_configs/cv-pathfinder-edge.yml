@@ -47,6 +47,16 @@ router_bgp:
     remote_as: '65199'
     peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet1
+  - ip_address: 172.16.9.4
+    remote_as: '64520'
+    description: ATT_666_peer3_Ethernet42
+    route_map_in: RM-BGP-172.16.9.4-IN
+    route_map_out: RM-BGP-172.16.9.4-OUT
+  - ip_address: 172.16.5.4
+    remote_as: '64520'
+    description: Colt_10555
+    route_map_in: RM-BGP-172.16.5.4-IN
+    route_map_out: RM-BGP-172.16.5.4-OUT
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
@@ -149,6 +159,11 @@ router_bgp:
           any: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -176,7 +191,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.1/31
 - name: Ethernet52.1000
   peer: site-ha-disabled-leaf
@@ -217,7 +233,8 @@ ethernet_interfaces:
   peer_interface: Ethernet42
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_666_peer3_Ethernet42
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -226,30 +243,41 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10555
+  ip_nat:
+    service_profile: NAT-IE-DIRECT
+- name: Ethernet2/1
+  peer_type: l3_interface
+  ip_address: 172.15.5.6/31
+  shutdown: false
+  switchport:
+    enabled: false
+  description: Colt_10555
+  ip_nat:
+    service_profile: NAT-IE-DIRECT
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast-5G_AF830
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: '65000'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
+- name: ALLOW-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 0.0.0.0/0
 - name: PL-STATIC-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -270,18 +298,34 @@ route_maps:
     description: Mark prefixes originated from the LAN
     set:
     - extcommunity soo 192.168.42.1:511 additive
-- name: RM-BGP-UNDERLAY-PEERS-OUT
+- name: RM-BGP-172.16.9.4-IN
   sequence_numbers:
   - sequence: 10
     type: permit
-    description: Advertise local routes towards LAN
     match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
+    - ip address prefix-list ALLOW-DEFAULT
+    set:
+    - community no-advertise additive
+- name: RM-BGP-172.16.9.4-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+- name: RM-BGP-172.16.5.4-IN
+  sequence_numbers:
+  - sequence: 10
     type: permit
-    description: Advertise routes received from WAN iBGP towards LAN
     match:
-    - route-type internal
+    - ip address prefix-list ALLOW-DEFAULT
+    set:
+    - community no-advertise additive
+- name: RM-BGP-172.16.5.4-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+  - sequence: 20
+    type: deny
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -313,9 +357,20 @@ route_maps:
 static_routes:
 - destination_address_prefix: 172.16.0.0/16
   gateway: 172.16.5.4
+- destination_address_prefix: 172.16.0.0/16
+  gateway: 172.16.5.9
 - destination_address_prefix: 66.66.66.0/24
   gateway: 172.17.0.0
   vrf: default
+- destination_address_prefix: 10.37.121.1/32
+  name: IE-ZSCALER-PRI
+  gateway: 172.20.20.21
+- destination_address_prefix: 10.39.77.1/32
+  name: IE-ZSCALER-SEC
+  gateway: 172.20.20.21
+- destination_address_prefix: 10.50.9.1/32
+  name: IE-ZSCALER-TER
+  gateway: 172.20.20.21
 agents:
 - name: KernelFib
   environment_variables:
@@ -379,6 +434,7 @@ ip_security:
       interval: 10
       time: 60
       action: clear
+    connection: start
   key_controller:
     profile: DP-PROFILE
 management_security:
@@ -407,6 +463,7 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
   - name: DEFAULT-AVT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+    internet_exit_policy: DIRECT-EXIT-POLICY-1
   - name: DEFAULT-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD-AVT-POLICY-VOICE
@@ -514,7 +571,11 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
+    - name: Ethernet2/1
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2_2
     dynamic_peers:
       enabled: true
       ipsec: false
@@ -587,7 +648,7 @@ stun:
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
       ssl_profile: profileA
-    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2_2
       ip_address: 172.16.0.1
       ssl_profile: profileA
 application_traffic_recognition:
@@ -598,6 +659,8 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+    application_transports:
+    - rtp
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
@@ -609,6 +672,7 @@ application_traffic_recognition:
   - name: VIDEO1
     applications:
     - name: CUSTOM-APPLICATION-2
+    - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
   applications:
     ipv4_applications:
@@ -622,6 +686,12 @@ application_traffic_recognition:
       - tcp
       tcp_src_port_set_name: TCP-SRC-2
       tcp_dest_port_set_name: TCP-DEST-2
+    - name: CUSTOM-DSCP-APPLICATION
+      dscp_ranges:
+      - ef
+      - 12-14
+      - cs6
+      - '42'
     - name: APP-CONTROL-PLANE
       dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
@@ -644,7 +714,24 @@ application_traffic_recognition:
       prefix_values:
       - 192.168.144.1/32
 ip_access_lists:
-- name: ALLOW-ALL
+- name: ACL-NAT-IE-DIRECT
+  entries:
+  - sequence: 10
+    action: deny
+    protocol: ip
+    source: 172.15.5.5
+    destination: any
+  - sequence: 20
+    action: deny
+    protocol: ip
+    source: 172.15.5.6
+    destination: any
+  - sequence: 30
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+- name: ACL-NAT-IE-ZSCALER
   entries:
   - sequence: 10
     action: permit
@@ -652,36 +739,55 @@ ip_access_lists:
     source: any
     destination: any
 ip_nat:
+  profiles:
+  - name: NAT-IE-DIRECT
+    source:
+      dynamic:
+      - access_list: ACL-NAT-IE-DIRECT
+        nat_type: overload
+  - name: NAT-IE-ZSCALER
+    source:
+      dynamic:
+      - access_list: ACL-NAT-IE-ZSCALER
+        pool_name: PORT-ONLY-POOL
+        nat_type: pool
   pools:
   - name: PORT-ONLY-POOL
     type: port-only
     ranges:
     - first_port: 1500
       last_port: 65535
-  profiles:
-  - name: VRF-AWARE-NAT
-    source:
-      dynamic:
-      - access_list: ALLOW-ALL
-        pool_name: PORT-ONLY-POOL
-        nat_type: pool
 router_service_insertion:
   enabled: true
   connections:
+  - name: IE-Ethernet2
+    monitor_connectivity_host: IE-Ethernet2
+    ethernet_interface:
+      name: Ethernet2
+      next_hop: 172.16.5.4
+  - name: IE-Ethernet2_1
+    monitor_connectivity_host: IE-Ethernet2_1
+    ethernet_interface:
+      name: Ethernet2/1
+      next_hop: 172.16.5.9
   - name: IE-Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
     tunnel_interface:
       primary: Tunnel100
-    monitor_connectivity_host: IE-Tunnel100
   - name: IE-Tunnel101
+    monitor_connectivity_host: IE-Tunnel101
     tunnel_interface:
       primary: Tunnel101
-    monitor_connectivity_host: IE-Tunnel101
   - name: IE-Tunnel102
+    monitor_connectivity_host: IE-Tunnel102
     tunnel_interface:
       primary: Tunnel102
-    monitor_connectivity_host: IE-Tunnel102
 router_internet_exit:
   exit_groups:
+  - name: DIRECT-EXIT-POLICY-1
+    local_connections:
+    - name: IE-Ethernet2
+    - name: IE-Ethernet2_1
   - name: ZSCALER-EXIT-POLICY-1_PRI
     local_connections:
     - name: IE-Tunnel100
@@ -692,6 +798,9 @@ router_internet_exit:
     local_connections:
     - name: IE-Tunnel102
   policies:
+  - name: DIRECT-EXIT-POLICY-1
+    exit_groups:
+    - name: DIRECT-EXIT-POLICY-1
   - name: ZSCALER-EXIT-POLICY-1
     exit_groups:
     - name: ZSCALER-EXIT-POLICY-1_PRI
@@ -701,12 +810,12 @@ router_internet_exit:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.1/32
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: cv-pathfinder-edge_VTEP
     vxlan:
       udp_port: 4789
@@ -724,32 +833,36 @@ tunnel_interfaces:
 - name: Tunnel100
   description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.37.121.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
 - name: Tunnel101
   description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.39.77.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
 - name: Tunnel102
   description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
   mtu: 1394
-  ip_address: unnumbered Ethernet3
+  ip_address: unnumbered Loopback0
   tunnel_mode: ipsec
   source_interface: Ethernet3
   destination: 10.50.9.1
-  ipsec_profile: ZSCALER-IPSEC-PROFILE
-  nat_profile: VRF-AWARE-NAT
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
 monitor_connectivity:
   interface_sets:
+  - name: SET-Ethernet2
+    interfaces: Ethernet2
+  - name: SET-Ethernet2_1
+    interfaces: Ethernet2/1
   - name: SET-Tunnel100
     interfaces: Tunnel100
   - name: SET-Tunnel101
@@ -757,6 +870,16 @@ monitor_connectivity:
   - name: SET-Tunnel102
     interfaces: Tunnel102
   hosts:
+  - name: IE-Ethernet2
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.16.5.4
+    local_interfaces: SET-Ethernet2
+    address_only: false
+  - name: IE-Ethernet2_1
+    description: Internet Exit DIRECT-EXIT-POLICY-1
+    ip: 172.16.5.9
+    local_interfaces: SET-Ethernet2_1
+    address_only: false
   - name: IE-Tunnel100
     description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
     ip: 10.37.121.1
@@ -775,13 +898,14 @@ monitor_connectivity:
     local_interfaces: SET-Tunnel102
     address_only: false
     url: http://gateway.zscalerbeta.net/vpntest
+  shutdown: false
 metadata:
   cv_pathfinder:
     internet_exit_policies:
     - name: ZSCALER-EXIT-POLICY-1
       type: zscaler
-      city: BigCity
-      country: BigCountry
+      city: Santa Clara, CA
+      country: United States
       firewall: false
       ips_control: false
       acceptable_use_policy: false
@@ -808,6 +932,10 @@ metadata:
       circuit_id: '666'
       pathgroup: INET
     - name: Ethernet2
+      carrier: Colt
+      circuit_id: '10555'
+      pathgroup: MPLS
+    - name: Ethernet2/1
       carrier: Colt
       circuit_id: '10555'
       pathgroup: MPLS
@@ -853,6 +981,14 @@ metadata:
       - name: Circuit
         value: '666'
     - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10555'
+    - interface: Ethernet2/1
       tags:
       - name: Type
         value: wan

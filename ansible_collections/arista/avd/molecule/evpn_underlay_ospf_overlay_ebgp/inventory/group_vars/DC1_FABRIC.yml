@@ -24,6 +24,12 @@ underlay_ospf_process_id: 101
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      key: arista123arista
+      hash_algorithm: sha256
 
 # Enable vlan aware bundles
 evpn_vlan_aware_bundles: true
@@ -115,7 +121,8 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
     - group: DC1_SVC3
       bgp_as: 65103
-      mlag_peer_l3_vlan: 4094 # Testing reuse of the same vlan for mlag and mlag l3 peering. Observe that ospf is configured correctly for the vlan. (area and no passive)
+      # Testing reuse of the same vlan for mlag and mlag l3 peering. Observe that ospf is configured correctly for the vlan. (area and no passive)
+      mlag_peer_l3_vlan: 4094
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]

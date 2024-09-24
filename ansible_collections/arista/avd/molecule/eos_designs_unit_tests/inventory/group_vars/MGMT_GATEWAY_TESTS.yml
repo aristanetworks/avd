@@ -1,0 +1,24 @@
+---
+# tests for mgmt_gateway and ipv6_mgmt_gateway inside node_type (l2leaf)
+
+default_node_types:
+  - node_type: l2leaf
+    match_hostnames:
+      - "TEST-MGMT-GATEWAY-IN-NODE-GROUP"
+
+mgmt_gateway: 192.168.201.250
+ipv6_mgmt_gateway: 2000::1
+
+l2leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  node_groups:
+    - group: MGMT_GATEWAY_TESTS
+      nodes:
+        - name: TEST-MGMT-GATEWAY-IN-NODE-GROUP
+          id: 3
+          mgmt_ip: 192.168.201.202/24
+          ipv6_mgmt_ip: 2001:db8::105/64
+      mgmt_gateway: 192.168.201.254
+      ipv6_mgmt_gateway: 2001:db8::2

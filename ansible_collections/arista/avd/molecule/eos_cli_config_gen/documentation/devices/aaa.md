@@ -23,20 +23,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -91,11 +91,11 @@ tacacs-server timeout 10
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | Timeout | Retransmit |
-| --- | -------------- | ------- | ---------- |
-| mgt | 10.10.10.157 | - | - |
-| default | 10.10.10.249 | - | - |
-| default | 10.10.10.158 | - | - |
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
+| mgt | 10.10.10.157 | - | - | - | - |
+| default | 10.10.10.249 | - | - | - | - |
+| default | 10.10.10.158 | - | - | - | - |
 
 #### RADIUS Server Device Configuration
 

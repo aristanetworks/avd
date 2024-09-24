@@ -12,9 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestMLAG(AvdTestBase):
-    """
-    AvdTestMLAG class for MLAG tests.
-    """
+    """AvdTestMLAG class for MLAG tests."""
 
     anta_module = "anta.tests.mlag"
 

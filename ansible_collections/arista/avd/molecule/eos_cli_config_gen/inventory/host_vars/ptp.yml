@@ -16,6 +16,7 @@ ptp:
   mode: boundary
   mode_one_step: true
   forward_unicast: true
+  profile: "g8275.1"
   monitor:
     # enabled: true (default)
     threshold:
@@ -39,19 +40,25 @@ ptp:
 # port-channels
 port_channel_interfaces:
   - name: Port-Channel5
-    type: switched
     description: DC1_L2LEAF1_Po1
-    vlans: 110,201
-    mode: trunk
+    switchport:
+      enabled: true
+      trunk:
+        allowed_vlan: 110,201
+      mode: trunk
     mlag: 5
     ptp:
       enable: true
+      mpass: true
       delay_mechanism: e2e
       sync_message:
         interval: 1
       role: dynamic
       vlan: 2
       transport: layer2
+      profile:
+        g8275_1:
+          destination_mac_address: forwardable
 
 ### interface
 ethernet_interfaces:
@@ -60,9 +67,11 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
-    type: switched
-    mode: trunk
-    vlans: 2,14
+    switchport:
+      enabled: true
+      mode: trunk
+      trunk:
+        allowed_vlan: 2,14
     ptp:
       enable: true
       delay_mechanism: e2e
@@ -77,7 +86,8 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
     mtu: 1500
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 172.31.255.15/31
     ptp:
       enable: true
@@ -90,9 +100,11 @@ ethernet_interfaces:
         interval: 1
       role: dynamic
       transport: ipv4
+      profile:
+        g8275_1:
+          destination_mac_address: non-forwardable
 # port-channel interfaces
   - name: Ethernet5
-    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf

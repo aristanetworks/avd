@@ -61,29 +61,17 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 Install the `pyavd` Python package:
 
 ```sh
-pip3 install pyavd
+pip install pyavd
 ```
 
-Requirements (automatically installed with above command):
-
-```ini
-jinja2>=3.0
-jsonschema>=4.5.1,<4.18
-deepmerge>=1.1.0
-```
+Python dependencies are automatically installed with above command.
 
 ### Optional requirements
 
-For support of `get_device_doc(..., add_md_toc=True)` install with extra `mdtoc`:
+To install Ansible [AVD collection additional Python requirements](installation/collection-installation.md#additional-python-libraries-required) install with extra `ansible`:
 
 ```sh
-pip3 install pyavd[mdtoc]
-```
-
-Optional `md-toc` requirement (automatically installed with above command):
-
-```ini
-md-toc>=8.1.8
+pip install pyavd[ansible]
 ```
 
 ## Reference
@@ -115,6 +103,11 @@ md-toc>=8.1.8
       show_root_toc_entry: false
 
 ::: pyavd.validation_result
+    options:
+      show_root_toc_entry: false
+      paths: ../../../../python-avd
+
+::: pyavd.api.interface_descriptions
     options:
       show_root_toc_entry: false
       paths: ../../../../python-avd

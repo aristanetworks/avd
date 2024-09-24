@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, annotations, division, print_function
-
-__metaclass__ = type
+from __future__ import annotations
 
 import json
 import logging
@@ -11,25 +9,35 @@ from asyncio import gather, run
 from dataclasses import asdict
 from pathlib import Path
 from string import Template
+from typing import Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client import deploy_to_cv
-from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.workflows.models import (
-    CloudVision,
-    CVChangeControl,
-    CVDevice,
-    CVDeviceTag,
-    CVEosConfig,
-    CVInterfaceTag,
-    CVPathfinderMetadata,
-    CVTimeOuts,
-    CVWorkspace,
-)
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
+
+PLUGIN_NAME = "arista.avd.cv_workflow"
+
+try:
+    from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
+    from pyavd._cv.workflows.models import (
+        CloudVision,
+        CVChangeControl,
+        CVDevice,
+        CVDeviceTag,
+        CVEosConfig,
+        CVInterfaceTag,
+        CVPathfinderMetadata,
+        CVTimeOuts,
+        CVWorkspace,
+    )
+    from pyavd._utils import get, strip_empties_from_dict
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
+
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
@@ -66,8 +74,8 @@ ARGUMENT_SPEC = {
     "timeouts": {
         "type": "dict",
         "options": {
-            "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout},
-            "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout},
+            "workspace_build_timeout": {"type": "float", "default": CVTimeOuts.workspace_build_timeout if HAS_PYAVD else 300.0},
+            "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300.0},
         },
     },
     "return_details": {"type": "bool", "required": False, "default": False},
@@ -75,7 +83,7 @@ ARGUMENT_SPEC = {
 
 
 class ActionModule(ActionBase):
-    def run(self, tmp=None, task_vars=None):
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
 
         if task_vars is None:
@@ -84,11 +92,14 @@ class ActionModule(ActionBase):
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
+        if not HAS_PYAVD:
+            msg = "The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
+            raise AnsibleActionFail(msg)
+
         # Setup module logging
         setup_module_logging(result)
 
         # Get task arguments and validate them
-        validated_args = strip_empties_from_dict(self._task.args)
         validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
 
@@ -98,10 +109,8 @@ class ActionModule(ActionBase):
         # Running asyncio coroutine to deploy everything.
         return run(self.deploy(validated_args, result))
 
-    async def deploy(self, validated_args: dict, result: dict):
-        """
-        Prepare data, perform deployment and convert result data.
-        """
+    async def deploy(self, validated_args: dict, result: dict) -> dict:
+        """Prepare data, perform deployment and convert result data."""
         LOGGER.info("deploy: %s", {**validated_args, "cv_token": "<removed>"})
         try:
             # Create CloudVision object
@@ -122,7 +131,7 @@ class ActionModule(ActionBase):
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
                 result.update(
-                    cloudvision=dict(asdict(cloudvision), token="<removed>"),
+                    cloudvision=dict(asdict(cloudvision), token="<removed>"),  # noqa: S106
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
@@ -145,6 +154,9 @@ class ActionModule(ActionBase):
             result_object.errors = [str(error) for error in result_object.errors]
             result_object.warnings = [str(warning) for warning in result_object.warnings]
 
+            # Add warnings caught by the logger
+            result_object.warnings.extend(result.get("warnings", []))
+
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
                 # Result object is converted to JSON compatible dict.
@@ -152,10 +164,10 @@ class ActionModule(ActionBase):
             else:
                 result.update(
                     {
-                        "warnings": result_object.errors,
+                        "warnings": result_object.warnings,
                         "errors": result_object.errors,
                         "failed": result_object.failed,
-                    }
+                    },
                 )
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
@@ -170,9 +182,16 @@ class ActionModule(ActionBase):
         return result
 
     async def build_objects(
-        self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
+        self,
+        device_list: list[str],
+        structured_config_dir: str,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
     ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
+        Build objects.
+
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
@@ -180,7 +199,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
 
         Workflow:
             Per device:
@@ -207,9 +226,16 @@ class ActionModule(ActionBase):
         return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
 
     async def build_object_for_device(
-        self, hostname: str, structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
+        self,
+        hostname: str,
+        structured_config_dir: str,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
     ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
         """
+        Build objects for one device.
+
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
@@ -217,7 +243,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
 
         Workflow:
             Per device:
@@ -229,19 +255,21 @@ class ActionModule(ActionBase):
         TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)
-        with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(mode="r", encoding="UTF-8") as structured_config_stream:
+        with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(  # noqa: ASYNC230
+            mode="r", encoding="UTF-8"
+        ) as structured_config_stream:
             if structured_config_suffix in ["yml", "yaml"]:
                 interesting_keys = ("is_deployed", "serial_number", "metadata")
                 in_interesting_context = False
                 structured_config_lines = []
-                for line in structured_config_stream.readlines():
+                for line in structured_config_stream:
                     if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
                         structured_config_lines.append(line)
                         in_interesting_context = True
                     else:
                         in_interesting_context = False
 
-                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)
+                structured_config = load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
             else:
                 # Load as JSON
                 structured_config = json.load(structured_config_stream)
@@ -261,11 +289,11 @@ class ActionModule(ActionBase):
         eos_config_objects = [CVEosConfig(file=config_file_path, device=device_object, configlet_name=configlet_name)]
 
         # Build device tag objects for this device.
-        # metadata:
-        #   cv_tags:
-        #     device_tags:
-        #     - name: topology_hint_datacenter
-        #       value: DC1
+        # ! metadata:
+        # !   cv_tags:
+        # !     device_tags:
+        # !     - name: topology_hint_datacenter
+        # !       value: DC1
         device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
         device_tag_objects = [
             CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
@@ -274,13 +302,13 @@ class ActionModule(ActionBase):
         ]
 
         # Build interface tag objects for this device.
-        # metadata:
-        #   cv_tags:
-        #     interface_tags:
-        #     - interface: Ethernet3
-        #       tags:
-        #       - name: peer_device_interface
-        #         value: Ethernet3
+        # ! metadata:
+        # !  cv_tags:
+        # !    interface_tags:
+        # !    - interface: Ethernet3
+        # !      tags:
+        # !      - name: peer_device_interface
+        # !        value: Ethernet3
         all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
         interface_tag_objects = [
             CVInterfaceTag(
@@ -306,13 +334,17 @@ class ActionModule(ActionBase):
 
 def setup_module_logging(result: dict) -> None:
     """
-    Add a Handler to copy the logs from the plugin into Ansible output based on their level
+    Add a Handler to copy the logs from the plugin into Ansible output based on their level.
 
     Parameters:
         result: The dictionary used for the ansible module results
     """
     python_to_ansible_handler = PythonToAnsibleHandler(result, display)
-    LOGGER.addHandler(python_to_ansible_handler)
-    # TODO mechanism to manipulate the logger globally for pyavd
-    # Keep debug to be able to see logs with `-v` and `-vvv`
-    LOGGER.setLevel(logging.DEBUG)
+
+    # Modifying the root logger to also cover pyavd.
+    root_logger = logging.getLogger()
+    root_logger.addHandler(python_to_ansible_handler)
+    if display.verbosity >= 3:
+        root_logger.setLevel(logging.DEBUG)
+    elif display.verbosity >= 1:
+        root_logger.setLevel(logging.INFO)

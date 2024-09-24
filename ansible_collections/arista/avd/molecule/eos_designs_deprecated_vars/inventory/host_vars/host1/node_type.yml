@@ -1,3 +1,5 @@
+---
+# Not testing anything, but just a placeholder for future tests.
 type: l3leaf
 l3leaf:
   defaults:
@@ -5,20 +7,14 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     id: 101
     bgp_as: 101
-  # Testing "nodes" as dict of dict
-  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
   nodes:
-    host1:
+    - name: host1
       id: 101
       bgp_as: 101
-  # Testing "node_groups" as dict of dict
-  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
   node_groups:
-    sflow-tests-leaf-mlag:
+    - group: sflow-tests-leaf-mlag
       bgp_as: 65105
-      # Testing "nodes" as dict of dict
-      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
       nodes:
-        host1:
+        - name: host1
           id: 5
           mgmt_ip: 192.168.0.103/24

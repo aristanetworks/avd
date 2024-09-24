@@ -63,7 +63,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: TEST_VRF
-    router_id: 192.168.255.22
     rd: 192.168.255.22:1
     route_targets:
       import:
@@ -74,11 +73,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.22
     redistribute_routes:
     - source_protocol: connected
     neighbors:
     - ip_address: 10.255.240.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: CUSTOM-TEMPLATES-L3LEAF1A
     updates:
       wait_install: true
   vlans:
@@ -101,6 +102,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -109,7 +116,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.102/24
@@ -126,7 +133,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -138,7 +145,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST_VRF
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: CUSTOM_TEMPLATES_TENANT
 vlan_interfaces:
 - name: Vlan4093
@@ -149,9 +156,9 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.255.252.11/31
   no_autostate: true
   mtu: 9214
+  ip_address: 10.255.252.11/31
 - name: Vlan110
   tenant: CUSTOM_TEMPLATES_TENANT
   tags:
@@ -170,25 +177,35 @@ vlan_interfaces:
   ip_address: 10.255.240.11/31
 port_channel_interfaces:
 - name: Port-Channel3
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Po3
-  type: switched
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Eth3_Eth4_Po3
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
+- name: Port-Channel5
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Po5_To_Po1_CUSTOM_TEMPLATES_L2LEAF1
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+  shutdown: false
+  mlag: 5
 - name: Port-Channel12
-  description: TEST_CUSTOM_PREFIX_SERVER-2_portchannel
-  type: switched
+  description: TEST_CUSTOM_PREFIX_SERVER-2_data_portchannel_12
   shutdown: false
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
 ethernet_interfaces:
 - name: Ethernet3
   peer: CUSTOM-TEMPLATES-L3LEAF1A
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet3
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -198,7 +215,6 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet4
-  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -210,15 +226,33 @@ ethernet_interfaces:
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.23/31
+- name: Ethernet5
+  peer: CUSTOM-TEMPLATES-L2LEAF1A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+- name: Ethernet6
+  peer: CUSTOM-TEMPLATES-L2LEAF1B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1B_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
 - name: Ethernet12
   peer: SERVER-2
   peer_interface: Nic1
   peer_type: server
-  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic1
+  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic1_data
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -226,9 +260,8 @@ ethernet_interfaces:
   peer: SERVER-2
   peer_interface: Nic2
   peer_type: server
-  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2
+  description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2_data
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -278,7 +311,7 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: CUSTOM-TEMPLATES-L3LEAF1B_VTEP
     vxlan:
       udp_port: 4789

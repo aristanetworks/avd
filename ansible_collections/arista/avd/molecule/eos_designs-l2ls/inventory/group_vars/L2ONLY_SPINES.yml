@@ -1,7 +1,7 @@
 ---
-type: spine
+type: l2spine
 
-spine:
+l2spine:
   defaults:
     mlag_peer_ipv4_pool: 192.168.254.0/24
     mlag_interfaces: [ Ethernet3, Ethernet4 ]

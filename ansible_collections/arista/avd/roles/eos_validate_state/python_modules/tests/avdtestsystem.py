@@ -9,9 +9,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 
 
 class AvdTestNTP(AvdTestBase):
-    """
-    AvdTestNTP class for NTP tests.
-    """
+    """AvdTestNTP class for NTP tests."""
 
     anta_module = "anta.tests.system"
 
@@ -23,7 +21,6 @@ class AvdTestNTP(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-
         anta_tests = [
             {"VerifyNTP": None},
         ]
@@ -32,9 +29,7 @@ class AvdTestNTP(AvdTestBase):
 
 
 class AvdTestReloadCause(AvdTestBase):
-    """
-    AvdTestReloadCause class for the reload cause of the device.
-    """
+    """AvdTestReloadCause class for the reload cause of the device."""
 
     anta_module = "anta.tests.system"
 
@@ -46,7 +41,6 @@ class AvdTestReloadCause(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-
         anta_tests = [
             {"VerifyReloadCause": None},
         ]

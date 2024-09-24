@@ -1,4 +1,6 @@
 [flake8]
+# Flake8 has been replaced with Ruff.
+# This file should be removed later, but kept here to avoid IDE extensions from messing up the code.
 ignore = E402,W503,W504,E741
 
 # Required for compatibility with Black
@@ -8,4 +10,4 @@ max-line-length = 160
 
 exclude =
   # The cv_client api is generated from proto files, so it should not be linted.
-  ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api
+  python-avd/pyavd/_cv/api

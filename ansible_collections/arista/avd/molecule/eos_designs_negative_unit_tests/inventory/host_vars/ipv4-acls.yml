@@ -14,7 +14,6 @@ spine:
           ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
           # peer_ip: 172.16.0.1/30 Testing not filling in the peer_ip will raise an error.
 
-
 ipv4_acls:
 # ip_access_lists:
   - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN

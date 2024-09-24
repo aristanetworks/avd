@@ -56,6 +56,15 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 |  | Time to wait for Change Control creation before failing. |
 | <samp>return_details</samp> | bool | optional | False |  | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
 
+## Notes
+
+- When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
+  `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
+  To see the full list of regional URLs, please visit the [cv_deploy](../../../roles/cv_deploy/README.md#overview)
+  role documentation.
+- To generate service accounts check [cv_deploy](../../../roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision)
+  role documentation or the CloudVision Help Center.
+
 ## Examples
 
 ```yaml

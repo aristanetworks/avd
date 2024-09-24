@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor telemetry influx #}
+{% if monitor_telemetry_influx is arista.avd.defined %}
+!
+monitor telemetry influx
+{%     for destination in monitor_telemetry_influx.destinations | arista.avd.natural_sort('name') %}
+   destination influxdb {{ destination.name }}
+{%         if destination.url is arista.avd.defined %}
+      url {{ destination.url }}
+{%         endif %}
+{%         if destination.database is arista.avd.defined %}
+      database name {{ destination.database }}
+{%         endif %}
+{%         if destination.data_retention_policy is arista.avd.defined %}
+      retention policy {{ destination.data_retention_policy }}
+{%         endif %}
+{%         if monitor_telemetry_influx.vrf is arista.avd.defined %}
+      vrf {{ monitor_telemetry_influx.vrf }}
+{%         endif %}
+{%         if destination.username is arista.avd.defined and destination.password is arista.avd.defined %}
+      username {{ destination.username }} password {{ destination.password_type | arista.avd.default("7") }} {{ destination.password | arista.avd.hide_passwords(hide_passwords) }}
+{%         endif %}
+{%         if not loop.last or monitor_telemetry_influx.source_sockets is arista.avd.defined %}
+   !
+{%         endif %}
+{%     endfor %}
+{%     for socket in monitor_telemetry_influx.source_sockets | arista.avd.natural_sort('name') %}
+   source socket {{ socket.name }}
+{%         if socket.url is arista.avd.defined %}
+      url {{ socket.url }}
+{%         endif %}
+{%         if socket.connection_limit is arista.avd.defined %}
+      connection limit {{ socket.connection_limit }}
+{%         endif %}
+{%         if not loop.last %}
+   !
+{%         endif %}
+{%     endfor %}
+{%     for tag in monitor_telemetry_influx.tags | arista.avd.natural_sort('name') %}
+{%         if tag.value is arista.avd.defined %}
+   tag global {{ tag.name }} {{ tag.value }}
+{%         endif %}
+{%     endfor %}
+{%     if monitor_telemetry_influx.source_group_standard_disabled is arista.avd.defined(true) %}
+   source group standard disabled
+{%     endif %}
+{% endif %}

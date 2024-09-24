@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [IP NAT](#ip-nat)
+- [IP NAT](#ip-nat-1)
   - [NAT Profiles](#nat-profiles)
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
@@ -21,20 +21,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -84,7 +84,7 @@ interface Management1
 | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
 | - | 1.0.0.2 | 22 | - | 2.0.0.2 | - | - | - | 0 | - |
-| - | 1.0.0.3 | 22 | - | 2.0.0.3 | 23 | - | - | 0 | - |
+| - | 1.0.0.2 | 23 | - | 2.0.0.3 | 23 | - | - | 0 | - |
 | - | 1.0.0.4 | 22 | - | 2.0.0.4 | 23 | udp | - | 0 | - |
 | - | 1.0.0.5 | 22 | - | 2.0.0.5 | 23 | tcp | 1 | 0 | - |
 | - | 1.0.0.6 | 22 | - | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
@@ -148,10 +148,10 @@ NAT profile VRF is: TEST
 
 ```eos
 !
-ip nat translation address selection any
 ip nat translation address selection hash field source-ip
-ip nat translation udp-timeout 3600
+ip nat translation address selection any
 ip nat translation tcp-timeout 7200
+ip nat translation udp-timeout 3600
 ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host
@@ -182,7 +182,7 @@ ip nat profile NAT-PROFILE-NO-VRF-2
    ip nat source dynamic access-list ACL19 pool POOL19 full-cone priority 10 comment Priority_10
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination static 1.0.0.2 22 2.0.0.2
-   ip nat destination static 1.0.0.3 22 2.0.0.3 23
+   ip nat destination static 1.0.0.2 23 2.0.0.3 23
    ip nat destination static 1.0.0.4 22 2.0.0.4 23 protocol udp
    ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
    ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test
@@ -195,7 +195,7 @@ ip nat profile NAT-PROFILE-NO-VRF-2
    ip nat destination dynamic access-list ACL5 pool POOL5 priority 4294967295 comment Priority high end
    ip nat destination dynamic access-list ACL6 pool POOL6 comment Priority default
 !
-ip nat profile NAT-PROFILE-TEST-VRF vrf NAT-PROFILE-TEST-VRF
+ip nat profile NAT-PROFILE-TEST-VRF vrf TEST
 !
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254

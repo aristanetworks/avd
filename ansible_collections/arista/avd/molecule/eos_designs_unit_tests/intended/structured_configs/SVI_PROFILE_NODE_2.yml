@@ -38,7 +38,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: svi_profile_tests_vrf
-    router_id: 192.168.255.1
     rd: 192.168.255.1:1
     route_targets:
       import:
@@ -49,6 +48,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 192.168.255.1
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
@@ -84,6 +84,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -96,11 +102,11 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.1/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.1/32
 prefix_lists:
@@ -200,18 +206,24 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1000
+  no_autostate: true
 - name: Vlan111
   tenant: svi_profile_tests
   description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.11.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1000
+  no_autostate: true
 - name: Vlan112
   tenant: svi_profile_tests
   description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.12.1/24
   vrf: svi_profile_tests_vrf
+  mtu: 1200
+  no_autostate: true
 - name: Vlan113
   tenant: svi_profile_tests
   description: set from svi.structured_config
@@ -336,9 +348,10 @@ router_ospf:
     - Vlan512
     max_lsa: 15000
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 vxlan_interface:
-  Vxlan1:
+  vxlan1:
     description: SVI_PROFILE_NODE_2_VTEP
     vxlan:
       udp_port: 4789

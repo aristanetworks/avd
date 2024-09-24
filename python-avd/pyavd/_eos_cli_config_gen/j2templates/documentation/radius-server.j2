@@ -1,0 +1,53 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - radius servers #}
+{% if radius_server is arista.avd.defined %}
+
+### RADIUS Server
+{%     if radius_server.attribute_32_include_in_access_req is arista.avd.defined %}
+{%         set doc_line = "- Attribute 32 is included in access requests" %}
+{%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined(true) %}
+{%             set doc_line = doc_line ~ " using hostname" %}
+{%         elif radius_server.attribute_32_include_in_access_req.format is arista.avd.defined %}
+{%             set doc_line = doc_line ~ " using format '" ~ radius_server.attribute_32_include_in_access_req.format ~ "'" %}
+{%         endif %}
+
+{{ doc_line }}
+{%     endif %}
+{%     if radius_server.tls_ssl_profile is arista.avd.defined %}
+
+- Global RADIUS TLS SSL profile is {{ radius_server.tls_ssl_profile }}
+{%     endif %}
+{%     if radius_server.dynamic_authorization.port is arista.avd.defined %}
+
+- Dynamic Authorization is enabled on port {{ radius_server.dynamic_authorization.port }}
+{%     endif %}
+{%     if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
+
+- Dynamic Authorization for TLS connections uses SSL profile {{ radius_server.dynamic_authorization.tls_ssl_profile }}
+{%     endif %}
+{%     if radius_server.hosts is arista.avd.defined %}
+
+#### RADIUS Server Hosts
+
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
+{%         for host in radius_server.hosts | arista.avd.default([]) %}
+{%             set vrf = host.vrf | arista.avd.default('default') %}
+{%             set tls = host.tls.enabled | arista.avd.default('-') %}
+{%             set ssl_profile = host.tls.ssl_profile | arista.avd.default('-') %}
+{%             set timeout = host.timeout | arista.avd.default('-') %}
+{%             set retransmit = host.retransmit | arista.avd.default('-') %}
+| {{ vrf }} | {{ host.host }} | {{ tls }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
+{%         endfor %}
+{%     endif %}
+
+#### RADIUS Server Device Configuration
+
+```eos
+{%     include 'eos/radius-server.j2' %}
+```
+{% endif %}
