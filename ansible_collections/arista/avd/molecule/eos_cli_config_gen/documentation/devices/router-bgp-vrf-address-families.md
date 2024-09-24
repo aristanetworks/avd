@@ -100,9 +100,9 @@ router bgp 65001
    !
    vrf VRF01
       bgp additional-paths install
+      bgp additional-paths send any
       no bgp redistribute-internal
       bgp additional-paths receive
-      bgp additional-paths send any
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit
@@ -121,9 +121,9 @@ router bgp 65001
          bgp additional-paths receive
          bgp additional-paths send ecmp limit 4
          neighbor 1.2.3.4 activate
+         neighbor 1.2.3.4 additional-paths receive
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
-         neighbor 1.2.3.4 additional-paths receive
          neighbor 1.2.3.4 additional-paths send any
          network 2.3.4.0/24 route-map BARFOO
          no bgp redistribute-internal
@@ -154,9 +154,9 @@ router bgp 65001
          bgp additional-paths receive
          bgp additional-paths send any
          neighbor aa::1 activate
+         neighbor aa::1 additional-paths receive
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
-         neighbor aa::1 additional-paths receive
          neighbor aa::1 additional-paths send any
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
