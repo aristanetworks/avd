@@ -69,13 +69,13 @@ LLDP is **disabled** globally. Local interface configs will not apply.
 
 ```eos
 !
-no lldp run
 lldp timer 30
 lldp hold-time 90
-lldp management-address 192.168.1.1/24
-lldp management-address vrf Management
 no lldp tlv transmit system-capabilities
 lldp tlv transmit system-description
+no lldp run
+lldp management-address 192.168.1.1/24
+lldp management-address vrf Management
 ```
 
 ## Interfaces

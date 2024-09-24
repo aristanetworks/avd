@@ -231,7 +231,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -246,7 +246,7 @@ vlans:
 - id: 3009
   name: MLAG_iBGP_VRF10
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TENANT1
 - id: 21
   name: VRF11_VLAN21
@@ -257,7 +257,7 @@ vlans:
 - id: 3010
   name: MLAG_iBGP_VRF11
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TENANT1
 - id: 3401
   name: L2_VLAN3401
@@ -338,7 +338,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel8
@@ -351,7 +350,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 8
 - name: Port-Channel5
-  description: dc1-leaf1-server1_PortChannel dc1-leaf1-server1
+  description: PortChannel dc1-leaf1-server1
   shutdown: false
   switchport:
     enabled: true
@@ -433,7 +432,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI1
   peer_type: server
-  description: dc1-leaf1-server1_PCI1
+  description: SERVER_dc1-leaf1-server1_PCI1
   shutdown: false
   channel_group:
     id: 5
@@ -443,7 +442,7 @@ ethernet_interfaces:
   peer_interface: e1
   peer_type: workstation
   port_profile: Workstations
-  description: dc1-leaf1-workstation1_e1
+  description: WORKSTATION_dc1-leaf1-workstation1_e1
   shutdown: false
   validate_state: false
   switchport:
@@ -456,7 +455,7 @@ ethernet_interfaces:
   peer_interface: e1
   peer_type: workstation
   port_profile: Workstations
-  description: dc1-leaf1-workstation2_e1
+  description: WORKSTATION_dc1-leaf1-workstation2_e1
   shutdown: false
   validate_state: false
   switchport:
