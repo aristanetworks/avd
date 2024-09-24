@@ -451,46 +451,46 @@ port_channel_interfaces:
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1000
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1001
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1001
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1002
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1002
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1003
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1003
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1004
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1004
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4
   switchport:

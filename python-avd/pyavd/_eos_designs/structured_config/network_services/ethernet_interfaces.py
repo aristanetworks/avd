@@ -222,11 +222,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "peer_type": "point_to_point_service",
                                         "encapsulation_vlan": {
                                             "client": {
-                                                "protocol": "dot1q",
+                                                "encapsulation": "dot1q",
                                                 "vlan": subif["number"],
                                             },
                                             "network": {
-                                                "protocol": "client",
+                                                "encapsulation": "client",
                                             },
                                         },
                                         "shutdown": False,

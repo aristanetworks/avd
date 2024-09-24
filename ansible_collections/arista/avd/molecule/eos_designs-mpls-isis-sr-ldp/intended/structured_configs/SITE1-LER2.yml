@@ -414,46 +414,46 @@ port_channel_interfaces:
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1000
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel3.1001
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1001
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel3.1002
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1002
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel3.1003
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1003
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel3.1004
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 1004
     network:
-      protocol: client
+      encapsulation: client
   shutdown: false
 - name: Port-Channel3
   switchport:
@@ -473,25 +473,25 @@ port_channel_interfaces:
   vlan_id: 111
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 111
     network:
-      protocol: client
+      encapsulation: client
 - name: Port-Channel8.222
   vlan_id: 222
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 222
     network:
-      protocol: client
+      encapsulation: client
 - name: Port-Channel8.333
   vlan_id: 434
   encapsulation_vlan:
     client:
-      protocol: dot1q
+      encapsulation: dot1q
       vlan: 333
     network:
-      protocol: client
+      encapsulation: client
 metadata:
   platform: 7280SR3
