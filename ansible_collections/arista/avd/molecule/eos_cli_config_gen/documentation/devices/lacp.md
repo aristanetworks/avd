@@ -48,7 +48,7 @@ interface Management1
 
 ```eos
 !
+lacp system-priority 0
 lacp port-id range 1 128
 no lacp rate-limit default
-lacp system-priority 0
 ```
