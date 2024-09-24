@@ -45,7 +45,6 @@ ethernet_interfaces:
     id: 1
     mode: active
 - name: Ethernet10
-  peer: Endpoint
   peer_type: network_port
   description: Endpoint
   shutdown: false
@@ -54,7 +53,6 @@ ethernet_interfaces:
     mode: access
     access_vlan: '100'
 - name: Ethernet11
-  peer: Endpoint
   peer_type: network_port
   description: Endpoint
   shutdown: false

@@ -10,7 +10,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import default
+from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtils
@@ -171,10 +171,12 @@ class AvdInterfaceDescriptions(AvdFacts):
         Build a connected endpoint Ethernet interface description.
 
         If a jinja template is configured, use it.
-        If not, use the adapter.description or default to <PEER>_<PEER_INTERFACE>
+        If not, use the adapter.description as a format string template if set.
+        Finally fall back to default templates depending on this being a network_port or not.
 
         Available data:
             - peer
+            - peer_type
             - peer_interface
             - description
             - mpls_overlay_role
@@ -188,24 +190,39 @@ class AvdInterfaceDescriptions(AvdFacts):
                 peer=data.peer,
                 peer_interface=data.peer_interface,
                 adapter_description=data.description,
+                peer_type=data.peer_type,
             )
 
         if data.description:
-            return data.description
+            description = data.description
+        elif data.peer_type == "network_port":
+            description = self.shared_utils.default_network_ports_description
+        else:
+            description = self.shared_utils.default_connected_endpoints_description
 
-        elements = [data.peer, data.peer_interface]
-        return "_".join([str(element) for element in elements if element is not None])
+        return AvdStringFormatter().format(
+            description,
+            **strip_null_from_data(
+                {
+                    "endpoint": data.peer,
+                    "endpoint_port": data.peer_interface,
+                    "endpoint_type": data.peer_type,
+                }
+            ),
+        )
 
     def connected_endpoints_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build a connected endpoint Port-channel description.
 
         If a jinja template is configured, use it.
-        If not, return the <adapter.description>_<port_channel_description> or
-        default to <PEER>_<adapter_port_channel_description>
+        If not, use the port_channel.description as a format string template if set.
+        Finally fall back to default templates depending on this being a network_port or not.
 
         Available data:
             - peer
+            - peer_interface
+            - peer_type
             - description
             - port_channel_id
             - port_channel_description
@@ -223,8 +240,42 @@ class AvdInterfaceDescriptions(AvdFacts):
                 adapter_description=data.description,
             )
 
-        elements = [data.description or data.peer, data.port_channel_description]
-        return "_".join([str(element) for element in elements if element is not None])
+        if data.port_channel_description:
+            port_channel_description = data.port_channel_description
+        elif data.peer_type == "network_port":
+            port_channel_description = self.shared_utils.default_network_ports_port_channel_description
+        else:
+            port_channel_description = self.shared_utils.default_connected_endpoints_port_channel_description
+
+        # Template the adapter description in case it is being referenced in the port_channel_description
+        adapter_description = (
+            AvdStringFormatter().format(
+                data.description,
+                **strip_null_from_data(
+                    {
+                        "endpoint": data.peer,
+                        "endpoint_port": data.peer_interface,
+                        "endpoint_type": data.peer_type,
+                    }
+                ),
+            )
+            if data.description and "adapter_description" in port_channel_description
+            else data.description
+        )
+
+        return AvdStringFormatter().format(
+            port_channel_description,
+            **strip_null_from_data(
+                {
+                    "endpoint": data.peer,
+                    "endpoint_port_channel": data.peer_interface,
+                    "endpoint_type": data.peer_type,
+                    "port_channel_id": data.port_channel_id,
+                    "adapter_description": adapter_description,
+                    "adapter_description_or_endpoint": adapter_description or data.peer,
+                }
+            ),
+        )
 
     def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """
@@ -318,6 +369,8 @@ class InterfaceDescriptionData:
     """Interface of peer"""
     peer_channel_group_id: int | None
     """Port channel ID of peer"""
+    peer_type: str | None
+    """Type of peer"""
     port_channel_id: int | None
     """Port channel ID"""
     port_channel_description: str | None
@@ -338,6 +391,7 @@ class InterfaceDescriptionData:
         peer: str | None = None,
         peer_interface: str | None = None,
         peer_channel_group_id: int | None = None,
+        peer_type: str | None = None,
         port_channel_id: int | None = None,
         port_channel_description: str | None = None,
         vrf: str | None = None,
@@ -351,6 +405,7 @@ class InterfaceDescriptionData:
         self.peer = peer
         self.peer_interface = peer_interface
         self.peer_channel_group_id = peer_channel_group_id
+        self.peer_type = peer_type
         self.port_channel_id = port_channel_id
         self.port_channel_description = port_channel_description
         self.vrf = vrf

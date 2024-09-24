@@ -363,8 +363,8 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
+      - LEAF_PEER_L3
       allowed_vlan: 1-4094
   shutdown: false
 ethernet_interfaces:

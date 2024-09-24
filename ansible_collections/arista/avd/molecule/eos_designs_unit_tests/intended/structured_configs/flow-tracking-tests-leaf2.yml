@@ -176,7 +176,7 @@ ethernet_interfaces:
   peer: single-interface-true
   peer_interface: eth2
   peer_type: server
-  description: single-interface-true_eth2
+  description: SERVER_single-interface-true_eth2
   shutdown: false
   switchport:
     enabled: true
@@ -186,7 +186,7 @@ ethernet_interfaces:
   peer: single-interface-false
   peer_interface: eth12
   peer_type: server
-  description: single-interface-false_eth12
+  description: SERVER_single-interface-false_eth12
   shutdown: false
   switchport:
     enabled: true
@@ -196,7 +196,7 @@ ethernet_interfaces:
   peer: single-interface-no-definition
   peer_interface: eth13
   peer_type: server
-  description: single-interface-no-definition_eth13
+  description: SERVER_single-interface-no-definition_eth13
   shutdown: false
   switchport:
     enabled: true
@@ -208,7 +208,7 @@ ethernet_interfaces:
   peer: single-interface-true4
   peer_interface: eth1
   peer_type: server
-  description: single-interface-true4_eth1
+  description: SERVER_single-interface-true4_eth1
   shutdown: false
   switchport:
     enabled: true

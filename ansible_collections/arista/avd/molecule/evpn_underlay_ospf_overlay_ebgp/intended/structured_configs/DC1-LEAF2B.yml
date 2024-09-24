@@ -174,7 +174,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -186,7 +186,7 @@ vlans:
 - id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 vlan_interfaces:
 - name: Vlan4093
@@ -226,7 +226,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel7

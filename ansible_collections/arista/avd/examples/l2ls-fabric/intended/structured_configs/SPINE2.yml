@@ -112,7 +112,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 3
 - name: Port-Channel5
-  description: FIREWALL
+  description: FIREWALL_FIREWALL
   shutdown: false
   switchport:
     enabled: true
@@ -180,7 +180,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: firewall
   port_profile: PP-FIREWALL
-  description: FIREWALL_Eth2
+  description: FIREWALL_FIREWALL_Eth2
   shutdown: false
   channel_group:
     id: 5

@@ -111,7 +111,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 1
 - name: Port-Channel13
-  description: server_with_tg_300_portchannel
+  description: portchannel
   shutdown: false
   switchport:
     enabled: true
@@ -162,7 +162,7 @@ ethernet_interfaces:
   peer: server_with_tg_200
   peer_interface: Nic1
   peer_type: server
-  description: server_with_tg_200_Nic1
+  description: SERVER_server_with_tg_200_Nic1
   shutdown: false
   switchport:
     enabled: true
@@ -175,7 +175,7 @@ ethernet_interfaces:
   peer: server_with_tg_300
   peer_interface: Nic4
   peer_type: server
-  description: server_with_tg_300_Nic4
+  description: SERVER_server_with_tg_300_Nic4
   shutdown: false
   channel_group:
     id: 13
