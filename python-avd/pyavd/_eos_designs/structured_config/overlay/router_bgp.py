@@ -210,11 +210,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _get_peer_group_name(self: AvdStructuredConfigOverlay, key: str) -> str:
         """Helper to retrieve the configured peer_group name for the given key."""
-        try:
-            return self.shared_utils.bgp_peer_groups[key]["name"]
-        except KeyError as e:
-            msg = f"`bgp_peer_groups` key {key} does not exist."
-            raise AristaAvdError(msg) from e
+        return self.shared_utils.bgp_peer_groups[key]["name"]
 
     def _address_family_evpn(self: AvdStructuredConfigOverlay) -> dict | None:
         address_family_evpn = {}
