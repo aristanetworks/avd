@@ -497,8 +497,8 @@ ethernet_interfaces:
   description: test l3 interfaces acls
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: Tenant_A_L3_VRF_Zone
 - name: Ethernet7
   peer_type: l3_interface
