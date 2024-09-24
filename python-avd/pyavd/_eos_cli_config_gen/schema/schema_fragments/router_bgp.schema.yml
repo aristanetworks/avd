@@ -1561,7 +1561,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    required: true
+                    description: Generate redistribute ospf with or without mathc internal, include leaked and route map.
                   match_external:
                     description: OSPF routes learned from external sources.
                     type: dict
@@ -1604,7 +1604,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    required: true
+                    description: Generate redistribute ospf with or without mathc internal, include leaked and route map.
                   match_external:
                     description: OSPF routes learned from external sources.
                     type: dict
@@ -1896,7 +1896,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    required: true
+                    description: Generate redistribute ospf with or without mathc internal, include leaked and route map.
                   match_external:
                     description: OSPF routes learned from external sources.
                     type: dict
@@ -3150,7 +3150,7 @@ keys:
                   keys:
                     enabled:
                       type: bool
-                      required: true
+                      description: Generate redistribute ospf with or without mathc internal, include leaked and route map.
                     match_external:
                       description: OSPF routes learned from external sources.
                       type: dict

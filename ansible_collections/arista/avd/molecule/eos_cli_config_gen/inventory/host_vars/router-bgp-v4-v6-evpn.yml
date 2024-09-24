@@ -174,7 +174,6 @@ router_bgp:
             rcf: RT_EXPORT_AF_RCF()
       redistribute:
         ospf:
-          enabled: true
           match_external:
             enabled: true
             include_leaked: true

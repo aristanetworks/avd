@@ -74,7 +74,6 @@ router bgp 65001
    !
    address-family ipv4 multicast
       neighbor FOOBAR activate
-      redistribute isis level-1 include leaked
    !
    address-family ipv6
       no neighbor FOOBAR activate

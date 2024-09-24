@@ -17,11 +17,6 @@ router_bgp:
     peer_groups:
       - name: FOOBAR
         activate: true
-    redistribute:
-      isis:
-        enabled: True
-        isis_level: level-1
-        include_leaked: True
   address_family_ipv6_multicast:
     peer_groups:
       - name: FOOBAR
