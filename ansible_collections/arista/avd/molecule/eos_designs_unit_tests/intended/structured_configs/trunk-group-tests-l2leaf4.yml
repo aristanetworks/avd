@@ -46,7 +46,7 @@ ethernet_interfaces:
   peer: server_with_tg_200
   peer_interface: Nic3
   peer_type: server
-  description: server_with_tg_200_Nic3
+  description: SERVER_server_with_tg_200_Nic3
   shutdown: false
   switchport:
     enabled: true

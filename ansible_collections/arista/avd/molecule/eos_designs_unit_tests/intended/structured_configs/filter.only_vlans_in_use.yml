@@ -37,7 +37,7 @@ ethernet_interfaces:
   peer: testserver
   peer_interface: Nic1
   peer_type: server
-  description: testserver_Nic1
+  description: SERVER_testserver_Nic1
   shutdown: false
   switchport:
     enabled: true

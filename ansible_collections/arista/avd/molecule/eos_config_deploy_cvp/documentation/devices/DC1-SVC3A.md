@@ -392,7 +392,7 @@ vlan 4094
 | Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet10 | server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
+| Ethernet10 | SERVER_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
 
 *Inherited from Port-Channel Interface
 
@@ -458,7 +458,7 @@ interface Ethernet8
    channel-group 7 mode active
 !
 interface Ethernet10
-   description server03_ESI_Eth1
+   description SERVER_server03_ESI_Eth1
    no shutdown
    channel-group 10 mode active
 ```
@@ -473,7 +473,7 @@ interface Ethernet10
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel10 | server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel10 | SERVER_server03_ESI | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 
 ##### EVPN Multihoming
 
@@ -503,7 +503,7 @@ interface Port-Channel7
    mlag 7
 !
 interface Port-Channel10
-   description server03_ESI_PortChanne1
+   description SERVER_server03_ESI
    no shutdown
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk

@@ -784,7 +784,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 7
 - name: Port-Channel10
-  description: server03_ESI_PortChanne1
+  description: SERVER_server03_ESI
   shutdown: false
   switchport:
     enabled: true
@@ -877,7 +877,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A_B
-  description: server03_ESI_Eth1
+  description: SERVER_server03_ESI_Eth1
   shutdown: false
   channel_group:
     id: 10

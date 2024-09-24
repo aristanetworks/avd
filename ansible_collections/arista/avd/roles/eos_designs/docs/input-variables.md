@@ -1007,7 +1007,6 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-LEAF2A, DC1-LEAF2B ]
             profile: DB_Clusters
             port_channel:
-              description: PortChanne1
               mode: active
 
       - name: server03
@@ -1021,7 +1020,6 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-SVC3A, DC1-SVC3B ]
             profile: VM_Servers
             port_channel:
-              description: PortChanne1
               mode: active
     # Firewall
     firewalls:
@@ -1033,7 +1031,7 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-LEAF2A, DC1-LEAF2B ]
             profile: TENANT_A_B
             port_channel:
-              description: PortChanne1
+              endpoint_port_channel: Bond0
               mode: active
 
     # Routers
@@ -1079,7 +1077,7 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-SVC3A, DC1-SVC3B ]
             profile: VM_Servers
             port_channel:
-              description: PortChanne1
+              endpoint_port_channel: Bond0
               mode: active
     ```
 
@@ -1117,7 +1115,7 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-SVC3A, DC1-SVC4A ]
             profile: VM_Servers
             port_channel:
-              description: PortChanne1
+              endpoint_port_channel: Bond0
               mode: active
             ethernet_segment:
               short_esi: 0303:0202:0101
@@ -1125,6 +1123,14 @@ Both data models support variable inheritance from profiles defined under [`port
 
 --8<--
 roles/eos_designs/docs/tables/connected-endpoints.md
+--8<--
+
+### Connected endpoints default description or description template settings
+
+Connected endpoints support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-connected-endpoints-description.md
 --8<--
 
 ### Network ports settings
@@ -1169,14 +1175,14 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
         switch_ports:
           - Ethernet1-2
         profile: pc
-        description: PCs
+        endpoint: PCs
 
       - switches:
           - network-ports-tests-2$
         switch_ports:
           - Ethernet1-2
         profile: ap_with_port_channel
-        description: AP1 with port_channel
+        endpoint: AP1 with port_channel
 
       - switches:
           - network-ports-[est]{5}-.*
@@ -1184,7 +1190,7 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
           - Ethernet3-4
           - Ethernet2/1-48
         profile: pc
-        description: PCs
+        endpoint: PCs
     ```
 
 ??? example "Example using network ports to configure multiple ports in the same port-channel"
@@ -1234,6 +1240,14 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
 
 --8<--
 roles/eos_designs/docs/tables/network-ports.md
+--8<--
+
+### Network ports default description or description template settings
+
+Network ports support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-network-ports-description.md
 --8<--
 
 ### Port profiles settings
