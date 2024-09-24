@@ -12,11 +12,11 @@ ptp clock-identity {{ ptp.clock_identity }}
 {%     if ptp.domain is arista.avd.defined %}
 ptp domain {{ ptp.domain }}
 {%     endif %}
-{%     if ptp.message_type.general.dscp is arista.avd.defined %}
-ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
-{%     endif %}
 {%     if ptp.message_type.event.dscp is arista.avd.defined %}
 ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
+{%     endif %}
+{%     if ptp.message_type.general.dscp is arista.avd.defined %}
+ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
 {%     endif %}
 {%     if ptp.mode is arista.avd.defined %}
 {%         if ptp.mode_one_step is arista.avd.defined(true) and ptp.mode in ["boundary", "e2etransparent"] %}
@@ -24,9 +24,6 @@ ptp mode {{ ptp.mode }} one-step
 {%         else %}
 ptp mode {{ ptp.mode }}
 {%         endif %}
-{%     endif %}
-{%     if ptp.source.ip is arista.avd.defined %}
-ptp source ip {{ ptp.source.ip }}
 {%     endif %}
 {%     if ptp.priority1 is arista.avd.defined %}
 ptp priority1 {{ ptp.priority1 }}
@@ -36,6 +33,9 @@ ptp priority2 {{ ptp.priority2 }}
 {%     endif %}
 {%     if ptp.profile is arista.avd.defined %}
 ptp profile {{ ptp.profile }}
+{%     endif %}
+{%     if ptp.source.ip is arista.avd.defined %}
+ptp source ip {{ ptp.source.ip }}
 {%     endif %}
 {%     if ptp.ttl is arista.avd.defined %}
 ptp ttl {{ ptp.ttl }}

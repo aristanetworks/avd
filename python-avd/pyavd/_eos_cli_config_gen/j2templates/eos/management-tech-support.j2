@@ -19,11 +19,9 @@ management tech-support
       exclude command {{ exclude_cli }}
 {%             endfor %}
 {%         endif %}
-{%         if management_tech_support.policy_show_tech_support.include_commands is arista.avd.defined %}
-{%             for include_command in management_tech_support.policy_show_tech_support.include_commands %}
+{%         for include_command in management_tech_support.policy_show_tech_support.include_commands | arista.avd.natural_sort %}
       include command {{ include_command.command }}
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
    exit
 {%     endif %}
 {% endif %}
