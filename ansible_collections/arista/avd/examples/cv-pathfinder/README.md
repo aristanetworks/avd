@@ -86,7 +86,7 @@ The target topology comprises two Pathfinder nodes and three sites distributed i
 
 The drawing below shows the physical topology used in this example.
 
-![Figure: Arista CV Pathfinder topology](images/wan-example-topo.png)
+![Figure: Arista CV Pathfinder topology](images/wan-example-topo.svg)
 
 - The example considers two path groups: `MPLS` and `INTERNET`
 - Pathfinders `pf1` and `pf2` are connected to both to the `INTERNET` and the `MPLS` path groups.
@@ -175,7 +175,7 @@ For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is alloca
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
-![Figure: Ansible inventory and vars](images/ansible-groups.png)
+![Figure: Ansible inventory and vars](images/ansible-groups.svg)
 
 The following pattern is used:
 
