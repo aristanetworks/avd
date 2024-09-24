@@ -76,7 +76,7 @@ table_files = set(*args.table_files)
 def check_files_in_markdown(table_files: set, md_files: list):
     md_file_set = set()
     for md_file in md_files:
-        with open(md_file, "r") as f:
+        with open(md_file) as f:
             md_lines = f.readlines()
             flag = False
             for line in md_lines:
