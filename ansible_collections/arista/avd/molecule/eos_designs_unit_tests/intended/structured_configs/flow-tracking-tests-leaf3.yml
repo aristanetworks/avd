@@ -229,7 +229,7 @@ port_channel_interfaces:
     hardware: FLOW-TRACKER
   mlag: 32
 - name: Port-Channel14
-  description: port-channel-interface-true
+  description: SERVER_port-channel-interface-true
   shutdown: false
   switchport:
     enabled: true
@@ -238,7 +238,7 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   mlag: 14
 - name: Port-Channel15
-  description: port-channel-interface-false
+  description: SERVER_port-channel-interface-false
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -249,7 +249,7 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   mlag: 15
 - name: Port-Channel16
-  description: port-channel-interface-no-definition
+  description: SERVER_port-channel-interface-no-definition
   shutdown: false
   switchport:
     enabled: true
@@ -322,7 +322,7 @@ ethernet_interfaces:
   peer: port-channel-interface-true
   peer_interface: PCI1
   peer_type: server
-  description: port-channel-interface-true_PCI1
+  description: SERVER_port-channel-interface-true_PCI1
   shutdown: false
   channel_group:
     id: 14
@@ -331,7 +331,7 @@ ethernet_interfaces:
   peer: port-channel-interface-false
   peer_interface: PCI11
   peer_type: server
-  description: port-channel-interface-false_PCI11
+  description: SERVER_port-channel-interface-false_PCI11
   shutdown: false
   channel_group:
     id: 15
@@ -340,7 +340,7 @@ ethernet_interfaces:
   peer: port-channel-interface-no-definition
   peer_interface: PCI13
   peer_type: server
-  description: port-channel-interface-no-definition_PCI13
+  description: SERVER_port-channel-interface-no-definition_PCI13
   shutdown: false
   channel_group:
     id: 16

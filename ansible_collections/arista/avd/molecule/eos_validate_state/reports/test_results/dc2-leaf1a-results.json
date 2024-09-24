@@ -498,7 +498,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet5 - dc2-leaf1-server1_PCI1 = 'up'"
+    "custom_field": "Interface Ethernet5 - SERVER_dc2-leaf1-server1_PCI1 = 'up'"
   },
   {
     "name": "dc2-leaf1a",
@@ -561,7 +561,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Port-Channel5 - dc2-leaf1-server1_PortChannel dc2-leaf1-server1 = 'up'"
+    "custom_field": "Interface Port-Channel5 - PortChannel dc2-leaf1-server1 = 'up'"
   },
   {
     "name": "dc2-leaf1a",

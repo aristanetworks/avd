@@ -237,7 +237,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet5 - dc2-leaf2-server1_iLO = 'up'"
+    "custom_field": "Interface Ethernet5 - SERVER_dc2-leaf2-server1_iLO = 'up'"
   },
   {
     "name": "dc2-leaf2c",

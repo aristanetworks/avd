@@ -619,7 +619,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 7
 - name: Port-Channel10
-  description: server01_MLAG_PortChanne1
+  description: SERVER_server01_MLAG
   shutdown: false
   switchport:
     enabled: true
@@ -700,7 +700,7 @@ ethernet_interfaces:
   peer_interface: Eth3
   peer_type: server
   port_profile: TENANT_B
-  description: server01_MLAG_Eth3
+  description: SERVER_server01_MLAG_Eth3
   shutdown: false
   channel_group:
     id: 10
