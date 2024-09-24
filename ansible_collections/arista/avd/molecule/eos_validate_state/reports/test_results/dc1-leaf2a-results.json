@@ -489,7 +489,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet3 - MLAG_PEER_dc1-leaf2b_Ethernet3 = 'up'"
+    "custom_field": "Interface Ethernet3 - MLAG_dc1-leaf2b_Ethernet3 = 'up'"
   },
   {
     "name": "dc1-leaf2a",
@@ -498,7 +498,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet4 - MLAG_PEER_dc1-leaf2b_Ethernet4 = 'up'"
+    "custom_field": "Interface Ethernet4 - MLAG_dc1-leaf2b_Ethernet4 = 'up'"
   },
   {
     "name": "dc1-leaf2a",
@@ -570,7 +570,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Port-Channel3 - MLAG_PEER_dc1-leaf2b_Po3 = 'up'"
+    "custom_field": "Interface Port-Channel3 - MLAG_dc1-leaf2b_Port-Channel3 = 'up'"
   },
   {
     "name": "dc1-leaf2a",

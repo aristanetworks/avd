@@ -130,7 +130,7 @@ vlan_interfaces:
   ip_address: 192.168.253.5/31
 port_channel_interfaces:
 - name: Port-Channel1
-  description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Po1
+  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -143,7 +143,7 @@ ethernet_interfaces:
   peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
   peer_interface: Eth1
   peer_type: mlag_peer
-  description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth1
+  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth1
   shutdown: false
   channel_group:
     id: 1
@@ -152,7 +152,7 @@ ethernet_interfaces:
   peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
   peer_interface: Eth2
   peer_type: mlag_peer
-  description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth2
+  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth2
   shutdown: false
   channel_group:
     id: 1
