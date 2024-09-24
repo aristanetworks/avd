@@ -168,7 +168,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -180,7 +180,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_VRF1
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: PTP
 vlan_interfaces:
 - name: Vlan4093
@@ -216,7 +216,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
   ptp:
@@ -265,7 +264,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 14
 - name: Port-Channel6
-  description: Endpoint-with-mpass
+  description: SERVER_Endpoint-with-mpass
   shutdown: false
   ptp:
     announce:
@@ -371,7 +370,7 @@ ethernet_interfaces:
   peer: video-endpoint
   peer_interface: PCI2
   peer_type: server
-  description: video-endpoint_PCI2
+  description: SERVER_video-endpoint_PCI2
   shutdown: false
   switchport:
     enabled: true
@@ -392,7 +391,7 @@ ethernet_interfaces:
   peer: Endpoint-with-mpass
   peer_interface: PCI2
   peer_type: server
-  description: Endpoint-with-mpass_PCI2
+  description: SERVER_Endpoint-with-mpass_PCI2
   shutdown: false
   channel_group:
     id: 6

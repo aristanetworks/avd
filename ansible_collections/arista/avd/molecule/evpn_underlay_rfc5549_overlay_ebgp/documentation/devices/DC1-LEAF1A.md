@@ -271,8 +271,8 @@ vlan 131
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet7 | server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
+| Ethernet6 | SERVER_server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet7 | SERVER_server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -318,7 +318,7 @@ interface Ethernet4
    ipv6 enable
 !
 interface Ethernet6
-   description server02_SINGLE_NODE_TRUNK_Eth1
+   description SERVER_server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -331,7 +331,7 @@ interface Ethernet6
    spanning-tree bpdufilter enable
 !
 interface Ethernet7
-   description server02_SINGLE_NODE_Eth1
+   description SERVER_server02_SINGLE_NODE_Eth1
    no shutdown
    switchport access vlan 110
    switchport mode access

@@ -297,7 +297,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
-  description: CPE_TENANT_A_SITE1_Ethernet1
+  description: CPE_CPE_TENANT_A_SITE1_Ethernet1
   shutdown: false
   channel_group:
     id: 8
@@ -439,7 +439,7 @@ port_channel_interfaces:
     route_target: 01:02:00:00:00:34
   lacp_id: 0102.0000.0034
 - name: Port-Channel8
-  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+  description: CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
   shutdown: false
   switchport:
     enabled: false
