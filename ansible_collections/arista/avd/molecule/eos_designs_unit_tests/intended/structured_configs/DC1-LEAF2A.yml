@@ -637,7 +637,6 @@ ethernet_interfaces:
   ospf_area: '0'
   ospf_network_point_to_point: true
 - name: Ethernet24
-  peer: PC
   peer_type: network_port
   port_profile: DOT1X_PORT_PROFILE
   description: PC
@@ -662,7 +661,6 @@ ethernet_interfaces:
       tx_period: 3
     reauthorization_request_limit: 3
 - name: Ethernet25
-  peer: PC
   peer_type: network_port
   port_profile: DOT1X_PORT_PROFILE
   description: PC
@@ -844,7 +842,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 110-111,210-211
 - name: Port-Channel26
-  description: PHONE03_port_channel_Port-Channel to Phone
+  description: PHONE03_port_channel Port-Channel to phone
   shutdown: false
   switchport:
     enabled: true

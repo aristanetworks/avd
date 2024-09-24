@@ -64,7 +64,7 @@ ethernet_interfaces:
   peer: dc1-leaf2-server1
   peer_interface: iLO
   peer_type: server
-  description: dc1-leaf2-server1_iLO
+  description: SERVER_dc1-leaf2-server1_iLO
   shutdown: false
   switchport:
     enabled: true

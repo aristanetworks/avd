@@ -253,7 +253,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 14
 - name: Port-Channel6
-  description: Endpoint-with-mpass
+  description: SERVER_Endpoint-with-mpass
   shutdown: false
   ptp:
     announce:
@@ -360,7 +360,7 @@ ethernet_interfaces:
   peer_interface: eth1
   peer_type: server
   port_profile: PTP-profile-BMCA
-  description: bmca-endpoint_eth1
+  description: SERVER_bmca-endpoint_eth1
   shutdown: false
   switchport:
     enabled: true
@@ -379,7 +379,7 @@ ethernet_interfaces:
   peer: video-endpoint
   peer_interface: PCI1
   peer_type: server
-  description: video-endpoint_PCI1
+  description: SERVER_video-endpoint_PCI1
   shutdown: false
   switchport:
     enabled: true
@@ -400,7 +400,7 @@ ethernet_interfaces:
   peer: Endpoint-with-mpass
   peer_interface: PCI1
   peer_type: server
-  description: Endpoint-with-mpass_PCI1
+  description: SERVER_Endpoint-with-mpass_PCI1
   shutdown: false
   channel_group:
     id: 6
@@ -409,7 +409,7 @@ ethernet_interfaces:
   peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3
   peer_type: server
-  description: Endpoint-with-specific-PTP-profile_eth3
+  description: SERVER_Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
   switchport:
     enabled: true

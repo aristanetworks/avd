@@ -460,7 +460,7 @@ port_channel_interfaces:
   service_profile: QOS-PROFILE
   mlag: 3
 - name: Port-Channel16
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: bar
   switchport:
@@ -478,7 +478,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 17
 - name: Port-Channel18
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -494,7 +494,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 18
 - name: Port-Channel19
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -616,7 +616,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
-  description: server-1_Eth1
+  description: SERVER_server-1_Eth1
   shutdown: false
   eos_cli: 'comment
 
@@ -650,7 +650,7 @@ ethernet_interfaces:
   peer_interface: Eth5
   peer_type: server
   port_profile: NESTED_TENANT_A
-  description: server-1_Eth5
+  description: SERVER_server-1_Eth5
   shutdown: false
   eos_cli: 'comment
 
@@ -667,7 +667,7 @@ ethernet_interfaces:
   peer_interface: Eth7
   peer_type: server
   port_profile: NESTED_TENANT_A
-  description: server-1_Eth7
+  description: SERVER_server-1_Eth7
   shutdown: false
   eos_cli: 'comment
 

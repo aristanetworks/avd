@@ -785,7 +785,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 110-111,210-211
 - name: Port-Channel26
-  description: PHONE03_port_channel_Port-Channel to Phone
+  description: PHONE03_port_channel Port-Channel to phone
   shutdown: false
   switchport:
     enabled: true
