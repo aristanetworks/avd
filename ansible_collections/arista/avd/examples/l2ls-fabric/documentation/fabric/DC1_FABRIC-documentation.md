@@ -100,17 +100,17 @@
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
-| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | trunk | - | 10,20,30 | PP-FIREWALL |
-| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | trunk | - | 10,20,30 | PP-FIREWALL |
+| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_FIREWALL_Eth1 | False | trunk | - | 10,20,30 | PP-FIREWALL |
+| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_FIREWALL_Eth2 | False | trunk | - | 10,20,30 | PP-FIREWALL |
 
 ### Servers
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
-| Host2 | Eth1 | LEAF4 | Ethernet3 | Host2_Eth1 | False | access | 30 | - | PP-ORANGE |
-| HostA | Eth1 | LEAF1 | Ethernet3 | HostA_Eth1 | False | access | 10 | - | PP-BLUE |
-| HostB | Eth1 | LEAF2 | Ethernet3 | HostB_Eth1 | False | access | 20 | - | PP-GREEN |
-| HostC | Eth1 | LEAF3 | Ethernet3 | HostC_Eth1 | False | access | 10 | - | PP-BLUE |
+| Host2 | Eth1 | LEAF4 | Ethernet3 | SERVER_Host2_Eth1 | False | access | 30 | - | PP-ORANGE |
+| HostA | Eth1 | LEAF1 | Ethernet3 | SERVER_HostA_Eth1 | False | access | 10 | - | PP-BLUE |
+| HostB | Eth1 | LEAF2 | Ethernet3 | SERVER_HostB_Eth1 | False | access | 20 | - | PP-GREEN |
+| HostC | Eth1 | LEAF3 | Ethernet3 | SERVER_HostC_Eth1 | False | access | 10 | - | PP-BLUE |
 
 ### Port Profiles
 

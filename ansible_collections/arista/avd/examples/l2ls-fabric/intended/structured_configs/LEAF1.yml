@@ -141,7 +141,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   port_profile: PP-BLUE
-  description: HostA_Eth1
+  description: SERVER_HostA_Eth1
   shutdown: false
   switchport:
     enabled: true

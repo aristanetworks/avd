@@ -47,7 +47,7 @@ class MiscMixin:
     def trunk_groups(self: SharedUtils) -> dict:
         return {
             "mlag": {"name": get(self.hostvars, "trunk_groups.mlag.name", default="MLAG")},
-            "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3")},
+            "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="MLAG")},
             "uplink": {"name": get(self.hostvars, "trunk_groups.uplink.name", default="UPLINK")},
         }
 
