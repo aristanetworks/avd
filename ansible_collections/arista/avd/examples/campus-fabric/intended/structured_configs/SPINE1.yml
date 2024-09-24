@@ -206,7 +206,7 @@ vlan_interfaces:
   - 10.10.10.1
 port_channel_interfaces:
 - name: Port-Channel551
-  description: MLAG_PEER_SPINE2_Po551
+  description: MLAG_SPINE2_Port-Channel551
   switchport:
     enabled: true
     mode: trunk
@@ -246,7 +246,7 @@ ethernet_interfaces:
   peer: SPINE2
   peer_interface: Ethernet55/1
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE2_Ethernet55/1
+  description: MLAG_SPINE2_Ethernet55/1
   shutdown: false
   channel_group:
     id: 551
@@ -255,7 +255,7 @@ ethernet_interfaces:
   peer: SPINE2
   peer_interface: Ethernet56/1
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE2_Ethernet56/1
+  description: MLAG_SPINE2_Ethernet56/1
   shutdown: false
   channel_group:
     id: 551
