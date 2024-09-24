@@ -566,8 +566,20 @@ ansible-playbook playbooks/build.yml
 ansible-playbook playbooks/deploy.yml
 ```
 
-!!! warning
-    TODO: add  playbook output pictures
+```shell
+user@ubuntu:~/cv-pathfinder$ ansible-playbook build.yml
+
+PLAY [Build Configs] ***************************************************************************
+
+TASK [arista.avd.eos_designs : Verify Requirements] ********************************************
+AVD version 5.0.0-dev6
+ok: [pf1 -> localhost]
+
+TASK [arista.avd.eos_designs : Create required output directories if not present] **************
+ok: [pf1 -> localhost] => (item=//home/user/Documents/git_projects/ansible-avd-examples/cv-pathfinder/intended/structured_configs)
+ok: [pf1 -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/cv-pathfinder/documentation/fabric)
+(...)
+```
 
 ## Troubleshooting
 
