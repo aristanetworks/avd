@@ -93,12 +93,12 @@ interface Loopback99
    ip address 192.168.1.1/32 secondary
    ipv6 enable
    ipv6 address 2002::CAFE/64
+   mpls ldp interface
    isis enable ISIS_TEST
    isis bfd
-   isis passive
    isis metric 100
+   isis passive
    isis network point-to-point
-   mpls ldp interface
 !
 interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS

@@ -127,7 +127,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.1/31
 - name: Ethernet2
   peer: DC2-SUPER-SPINE1
@@ -136,7 +137,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.3/31
 loopback_interfaces:
 - name: Loopback0
