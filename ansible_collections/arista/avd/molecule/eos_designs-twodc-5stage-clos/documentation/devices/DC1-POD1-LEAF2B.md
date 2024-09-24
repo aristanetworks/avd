@@ -292,12 +292,12 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
-| Ethernet5 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet16 | server-1_Eth2 | *access | *110 | *- | *- | 16 |
+| Ethernet5 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet16 | SERVER_server-1_Eth2 | *access | *110 | *- | *- | 16 |
 | Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
-| Ethernet18 | server-1_Eth6 | *access | *110 | *- | *- | 18 |
-| Ethernet19 | server-1_Eth8 | *access | *110 | *- | *- | 19 |
+| Ethernet18 | SERVER_server-1_Eth6 | *access | *110 | *- | *- | 18 |
+| Ethernet19 | SERVER_server-1_Eth8 | *access | *110 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -379,7 +379,7 @@ interface Ethernet12
    service-profile QOS-PROFILE
 !
 interface Ethernet16
-   description server-1_Eth2
+   description SERVER_server-1_Eth2
    no shutdown
    channel-group 16 mode active
    comment
@@ -397,7 +397,7 @@ interface Ethernet17
 
 !
 interface Ethernet18
-   description server-1_Eth6
+   description SERVER_server-1_Eth6
    no shutdown
    channel-group 18 mode active
    comment
@@ -406,7 +406,7 @@ interface Ethernet18
 
 !
 interface Ethernet19
-   description server-1_Eth8
+   description SERVER_server-1_Eth8
    no shutdown
    channel-group 19 mode active
    comment
@@ -424,11 +424,11 @@ interface Ethernet19
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | RACK2_MLAG_Po1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
-| Port-Channel5 | MLAG_PEER_DC1.POD1.LEAF2A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
-| Port-Channel16 | server-1_PortChannel | access | 110 | - | - | - | - | 16 | - |
+| Port-Channel5 | MLAG_PEER_DC1.POD1.LEAF2A_Po5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
-| Port-Channel18 | server-1_PortChannel | access | 110 | - | - | - | - | 18 | - |
-| Port-Channel19 | server-1_PortChannel | access | 110 | - | - | - | - | 19 | - |
+| Port-Channel18 | PortChannel | access | 110 | - | - | - | - | 18 | - |
+| Port-Channel19 | PortChannel | access | 110 | - | - | - | - | 19 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -447,13 +447,12 @@ interface Port-Channel5
    description MLAG_PEER_DC1.POD1.LEAF2A_Po5
    no shutdown
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    switchport
    service-profile QOS-PROFILE
 !
 interface Port-Channel16
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
    switchport access vlan 110
    switchport mode access
@@ -471,7 +470,7 @@ interface Port-Channel17
    service-profile foo
 !
 interface Port-Channel18
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
    switchport access vlan 110
    switchport mode access
@@ -484,7 +483,7 @@ interface Port-Channel18
 
 !
 interface Port-Channel19
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
    switchport access vlan 110
    switchport mode access

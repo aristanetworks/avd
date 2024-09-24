@@ -271,7 +271,7 @@ anta.tests.interfaces:
     - name: Ethernet5
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet5 - dc1-leaf2-server1_iLO = 'up'
+      custom_field: Interface Ethernet5 - SERVER_dc1-leaf2-server1_iLO = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Port-Channel1

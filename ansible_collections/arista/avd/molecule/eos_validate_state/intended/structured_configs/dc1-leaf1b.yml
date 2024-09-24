@@ -228,7 +228,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -243,7 +243,7 @@ vlans:
 - id: 3009
   name: MLAG_iBGP_VRF10
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TENANT1
 - id: 21
   name: VRF11_VLAN21
@@ -254,7 +254,7 @@ vlans:
 - id: 3010
   name: MLAG_iBGP_VRF11
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TENANT1
 - id: 3401
   name: L2_VLAN3401
@@ -335,7 +335,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel8
@@ -348,7 +347,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 8
 - name: Port-Channel5
-  description: dc1-leaf1-server1_PortChannel dc1-leaf1-server1
+  description: PortChannel dc1-leaf1-server1
   shutdown: false
   switchport:
     enabled: true
@@ -427,7 +426,6 @@ ethernet_interfaces:
     id: 8
     mode: active
 - name: Ethernet41
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -438,7 +436,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet42
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -449,7 +446,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet43
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -460,7 +456,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet44
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -471,7 +466,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet45
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -482,7 +476,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet46
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -493,7 +486,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet47
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -504,7 +496,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet48
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -515,7 +506,6 @@ ethernet_interfaces:
     access_vlan: '50'
   spanning_tree_portfast: edge
 - name: Ethernet49
-  peer: Cameras
   peer_type: network_port
   description: Cameras
   shutdown: false
@@ -529,7 +519,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI2
   peer_type: server
-  description: dc1-leaf1-server1_PCI2
+  description: SERVER_dc1-leaf1-server1_PCI2
   shutdown: false
   channel_group:
     id: 5
