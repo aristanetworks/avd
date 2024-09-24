@@ -44,7 +44,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
-                "name": network_port.get("description"),
+                "name": network_port.get("endpoint"),
                 "type": "network_port",
             }
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
@@ -141,7 +141,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         if (interface_descriptions := adapter.get("descriptions")) is not None:
             interface_description = interface_descriptions[node_index]
         else:
-            interface_description = adapter.get("description")
+            interface_description = get(adapter, "description")
 
         # Common ethernet_interface settings
         ethernet_interface = {
@@ -156,9 +156,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                     interface=adapter["switch_ports"][node_index],
                     peer=peer,
                     peer_interface=peer_interface,
+                    peer_type=connected_endpoint["type"],
                     description=interface_description,
                 ),
-            ),
+            )
+            or None,
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "validate_state": None if adapter.get("validate_state", True) else False,
