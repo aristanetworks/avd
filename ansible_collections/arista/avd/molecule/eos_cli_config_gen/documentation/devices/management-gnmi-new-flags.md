@@ -55,6 +55,7 @@ management api gnmi
       vrf MGMT
       ip access-group acl1
       notification timestamp send-time
+   !
    transport grpc mytransport
       port 6032
       ip access-group acl1
