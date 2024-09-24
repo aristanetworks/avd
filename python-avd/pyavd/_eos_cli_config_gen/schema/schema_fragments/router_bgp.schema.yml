@@ -1096,7 +1096,7 @@ keys:
                     - "vxlan"
                     - "mpls"
                     - "path-selection"
-                  description: Transport encapsulation for neighbor.
+                  description: Transport encapsulation for the neighbor.
           peer_groups:
             type: list
             primary_key: name
@@ -1144,7 +1144,7 @@ keys:
                     - "vxlan"
                     - "mpls"
                     - "path-selection"
-                  description: Transport encapsulation for neighbor.
+                  description: Transport encapsulation for the peer-group.
                 additional_paths:
                   type: dict
                   keys:
