@@ -169,8 +169,8 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | - |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | - |
 
 #### Router BGP Device Configuration
 

@@ -148,7 +148,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| BLUE-C1 | 1.0.1.1:101 | static<br>ospf |
+| BLUE-C1 | 1.0.1.1:101 | - |
 | RED-C1 | 1.0.1.1:102 | - |
 | YELLOW-C1 | 1.0.1.1:103 | - |
 

@@ -12511,153 +12511,6 @@ keys:
             match_map:
               type: str
               description: Route-map name.
-      redistribute:
-        type: dict
-        keys:
-          attached_host:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-          bgp:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-          connected:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-              rcf:
-                type: str
-              include_leaked:
-                type: bool
-          dynamic:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-              rcf:
-                type: str
-          isis:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              isis_level:
-                type: str
-                valid_values:
-                - level-1
-                - level-2
-                - level-1-2
-              route_map:
-                type: str
-              rcf:
-                type: str
-              include_leaked:
-                type: bool
-          ospf:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              match_external:
-                type: dict
-                keys:
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-              match_internal:
-                type: dict
-                keys:
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-              match_nssa_external:
-                type: dict
-                keys:
-                  nssa_type:
-                    type: int
-                    convert_types:
-                    - str
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-              route_map:
-                type: str
-              include_leaked:
-                type: bool
-          ospfv3:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              match_external:
-                type: dict
-                keys:
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-              match_internal:
-                type: dict
-                keys:
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-              match_nssa_external:
-                type: dict
-                keys:
-                  nssa_type:
-                    type: int
-                    convert_types:
-                    - str
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-              route_map:
-                type: str
-              include_leaked:
-                type: bool
-          rip:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-          static:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-              rcf:
-                type: str
-              include_leaked:
-                type: bool
-          user:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              rcf:
-                type: str
       redistribute_routes:
         type: list
         primary_key: source_protocol
@@ -12703,17 +12556,6 @@ keys:
               description: 'Routes learned by the OSPF protocol.
 
                 The `ospf_route_type` is valid for source_protocols ''ospf'' and ''ospfv3''.
-
-                '
-            isis_level:
-              type: str
-              valid_values:
-              - level-1
-              - level-2
-              - level-1-2
-              description: 'Redistribute IS-IS route level.
-
-                The `isis_level` is valid for source_protocols ''isis''.
 
                 '
       vlan_aware_bundles:
@@ -13423,17 +13265,6 @@ keys:
                     ''ospfv3''.
 
                     '
-                isis_level:
-                  type: str
-                  valid_values:
-                  - level-1
-                  - level-2
-                  - level-1-2
-                  description: 'Redistribute IS-IS route level.
-
-                    The `isis_level` is valid for source_protocols ''isis''.
-
-                    '
       address_family_ipv4_multicast:
         type: dict
         keys:
@@ -13479,6 +13310,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   route_map:
                     type: str
               connected:
@@ -13486,6 +13318,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   route_map:
                     type: str
               isis:
@@ -13493,6 +13326,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   isis_level:
                     type: str
                     description: Redistribute IS-IS route level.
@@ -13518,12 +13352,14 @@ keys:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   match_external:
                     description: OSPF routes learned from external sources.
                     type: dict
                     keys:
                       enabled:
                         type: bool
+                        required: true
                       route_map:
                         type: str
                   match_internal:
@@ -13532,6 +13368,7 @@ keys:
                     keys:
                       enabled:
                         type: bool
+                        required: true
                       route_map:
                         type: str
                   match_nssa_external:
@@ -13540,10 +13377,15 @@ keys:
                     keys:
                       enabled:
                         type: bool
+                        required: true
                       nssa_type:
+                        description: NSSA External Type Number.
                         type: int
                         convert_types:
                         - str
+                        valid_values:
+                        - 1
+                        - 2
                       route_map:
                         type: str
                   route_map:
@@ -13553,12 +13395,14 @@ keys:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   match_external:
                     description: OSPF routes learned from external sources.
                     type: dict
                     keys:
                       enabled:
                         type: bool
+                        required: true
                       route_map:
                         type: str
                   match_internal:
@@ -13567,6 +13411,7 @@ keys:
                     keys:
                       enabled:
                         type: bool
+                        required: true
                       route_map:
                         type: str
                   match_nssa_external:
@@ -13575,10 +13420,15 @@ keys:
                     keys:
                       enabled:
                         type: bool
+                        required: true
                       nssa_type:
+                        description: NSSA External Type Number.
                         type: int
                         convert_types:
                         - str
+                        valid_values:
+                        - 1
+                        - 2
                       route_map:
                         type: str
                   route_map:
@@ -13588,6 +13438,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   route_map:
                     type: str
           redistribute_routes:
@@ -13603,13 +13454,6 @@ keys:
               keys:
                 source_protocol:
                   type: str
-                  valid_values:
-                  - attached-host
-                  - connected
-                  - isis
-                  - ospf
-                  - ospfv3
-                  - static
                 route_map:
                   type: str
                 include_leaked:
@@ -13637,17 +13481,6 @@ keys:
 
                     The `ospf_route_type` is valid for source_protocols ''ospf'' and
                     ''ospfv3''.
-
-                    '
-                isis_level:
-                  type: str
-                  valid_values:
-                  - level-1
-                  - level-2
-                  - level-1-2
-                  description: 'Redistribute IS-IS route level.
-
-                    The `isis_level` is valid for source_protocols ''isis''.
 
                     '
       address_family_ipv4_sr_te:
@@ -13773,25 +13606,196 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+          redistribute:
+            type: dict
+            description: Redistribute routes in to BGP.
+            keys:
+              attached_host:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              dynamic:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  isis_level:
+                    type: str
+                    description: Redistribute IS-IS route level.
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              ospfv3:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  match_external:
+                    description: OSPF routes learned from external sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                      include_leaked:
+                        description: Include following routes while redistributing.
+                        type: bool
+                  match_internal:
+                    description: OSPF routes learned from internal sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                      include_leaked:
+                        description: Include following routes while redistributing.
+                        type: bool
+                  match_nssa_external:
+                    description: OSPF routes learned from external NSSA sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      nssa_type:
+                        description: NSSA External Type Number.
+                        type: int
+                        convert_types:
+                        - str
+                        valid_values:
+                        - 1
+                        - 2
+                      route_map:
+                        type: str
+                      include_leaked:
+                        description: Include following routes while redistributing.
+                        type: bool
+                  route_map:
+                    type: str
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    type: bool
+                    description: Include following routes while redistributing.
+              user:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
           redistribute_routes:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: redistribute
             items:
               type: dict
               keys:
                 source_protocol:
                   type: str
-                  valid_values:
-                  - attached-host
-                  - bgp
-                  - connected
-                  - dhcp
-                  - dynamic
-                  - isis
-                  - ospfv3
-                  - static
-                  - user
                 route_map:
                   type: str
                 include_leaked:
@@ -13818,17 +13822,6 @@ keys:
                   description: 'Routes learned by the OSPF protocol.
 
                     The `ospf_route_type` is valid for source_protocols ''ospfv3''.
-
-                    '
-                isis_level:
-                  type: str
-                  valid_values:
-                  - level-1
-                  - level-2
-                  - level-1-2
-                  description: 'Redistribute IS-IS route level.
-
-                    The `isis_level` is valid for source_protocols ''isis''.
 
                     '
       address_family_ipv6_multicast:
@@ -13937,17 +13930,6 @@ keys:
 
                     The `ospf_route_type` is valid for source_protocols ''ospf'' and
                     ''ospfv3''.
-
-                    '
-                isis_level:
-                  type: str
-                  valid_values:
-                  - level-1
-                  - level-2
-                  - level-1-2
-                  description: 'Redistribute IS-IS route level.
-
-                    The `isis_level` is valid for source_protocols ''isis''.
 
                     '
       address_family_ipv6_sr_te:
@@ -14896,26 +14878,252 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+            redistribute:
+              type: dict
+              description: Redistribute routes in to BGP.
+              keys:
+                attached_host:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                bgp:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                connected:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                dynamic:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                isis:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    isis_level:
+                      type: str
+                      description: Redistribute IS-IS route level.
+                      valid_values:
+                      - level-1
+                      - level-2
+                      - level-1-2
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                ospf:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      description: Generate redistribute ospf with or without mathc
+                        internal, include leaked and route map.
+                    match_external:
+                      description: OSPF routes learned from external sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_internal:
+                      description: OSPF routes learned from internal sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_nssa_external:
+                      description: OSPF routes learned from external NSSA sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        nssa_type:
+                          description: NSSA External Type Number.
+                          type: int
+                          convert_types:
+                          - str
+                          valid_values:
+                          - 1
+                          - 2
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                ospfv3:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    match_external:
+                      description: OSPF routes learned from external sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_internal:
+                      description: OSPF routes learned from internal sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_nssa_external:
+                      description: OSPF routes learned from external NSSA sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        nssa_type:
+                          description: NSSA External Type Number.
+                          type: int
+                          convert_types:
+                          - str
+                          valid_values:
+                          - 1
+                          - 2
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                rip:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                static:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                    include_leaked:
+                      type: bool
+                      description: Include following routes while redistributing.
+                user:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
             redistribute_routes:
               type: list
               primary_key: source_protocol
               allow_duplicate_primary_key: true
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: redistribute
               items:
                 type: dict
                 keys:
                   source_protocol:
                     type: str
-                    valid_values:
-                    - attached-host
-                    - bgp
-                    - connected
-                    - dynamic
-                    - isis
-                    - ospf
-                    - ospfv3
-                    - rip
-                    - static
-                    - user
                   route_map:
                     type: str
                   include_leaked:
@@ -14943,17 +15151,6 @@ keys:
 
                       The `ospf_route_type` is valid for source_protocols ''ospf''
                       and ''ospfv3''.
-
-                      '
-                  isis_level:
-                    type: str
-                    valid_values:
-                    - level-1
-                    - level-2
-                    - level-1-2
-                    description: 'Redistribute IS-IS route level.
-
-                      The `isis_level` is valid for source_protocols ''isis''.
 
                       '
             aggregate_addresses:
@@ -15135,17 +15332,6 @@ keys:
                           and ''ospfv3''.
 
                           '
-                      isis_level:
-                        type: str
-                        valid_values:
-                        - level-1
-                        - level-2
-                        - level-1-2
-                        description: 'Redistribute IS-IS route level.
-
-                          The `isis_level` is valid for source_protocols ''isis''.
-
-                          '
             address_family_ipv6:
               type: dict
               keys:
@@ -15293,17 +15479,6 @@ keys:
                           The `ospf_route_type` is valid for source_protocols ''ospfv3''.
 
                           '
-                      isis_level:
-                        type: str
-                        valid_values:
-                        - level-1
-                        - level-2
-                        - level-1-2
-                        description: 'Redistribute IS-IS route level.
-
-                          The `isis_level` is valid for source_protocols ''isis''.
-
-                          '
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -15402,17 +15577,6 @@ keys:
                           and ''ospfv3''.
 
                           '
-                      isis_level:
-                        type: str
-                        valid_values:
-                        - level-1
-                        - level-2
-                        - level-1-2
-                        description: 'Redistribute IS-IS route level.
-
-                          The `isis_level` is valid for source_protocols ''isis''.
-
-                          '
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -15508,17 +15672,6 @@ keys:
 
                           The `ospf_route_type` is valid for source_protocols ''ospf''
                           and ''ospfv3''.
-
-                          '
-                      isis_level:
-                        type: str
-                        valid_values:
-                        - level-1
-                        - level-2
-                        - level-1-2
-                        description: 'Redistribute IS-IS route level.
-
-                          The `isis_level` is valid for source_protocols ''isis''.
 
                           '
             address_family_flow_spec_ipv4:

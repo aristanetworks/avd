@@ -268,9 +268,8 @@ router bgp 65101
       bgp redistribute-internal
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
-      redistribute isis level-2 rcf Address_Family_IPV6_ISIS()
-      redistribute ospfv3 match external include leaked
       redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
+      redistribute ospfv3 match external include leaked
       redistribute ospfv3 match nssa-external 1
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
    session tracker ST1

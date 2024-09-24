@@ -211,9 +211,11 @@ router_bgp:
             rcf: VRF_AFIPV4_RCF_CONNECTED()
           - source_protocol: static
             route_map: VRF_AFIPV4_RM_STATIC
-      redistribute_routes:
-        - source_protocol: connected
-        - source_protocol: static
+      redistribute:
+        connected:
+          enabled: true
+        static:
+          enabled: true
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       timers: 5 15
@@ -252,7 +254,9 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
           description: Test_Bfd
           bfd: true
-      redistribute_routes:
-        - source_protocol: connected
-        - source_protocol: static
+      redistribute:
+        connected:
+          enabled: true
+        static:
+          enabled: true
           route_map: RM-CONN-2-BGP

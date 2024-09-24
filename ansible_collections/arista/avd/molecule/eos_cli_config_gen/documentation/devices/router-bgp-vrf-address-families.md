@@ -51,9 +51,9 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| VRF01 | - | isis |
-| VRF02 | - | isis |
-| VRF03 | - | dynamic<br>isis |
+| VRF01 | - | - |
+| VRF02 | - | - |
+| VRF03 | - | - |
 
 #### Router BGP Device Configuration
 
@@ -78,7 +78,6 @@ router bgp 65001
    !
    address-family ipv6
       no neighbor FOOBAR activate
-      redistribute isis level-1-2 rcf Address_Family_IPV6_ISIS()
    !
    address-family ipv6 multicast
       no neighbor FOOBAR activate
@@ -89,7 +88,6 @@ router bgp 65001
    !
    vrf VRF01
       no bgp redistribute-internal
-      redistribute isis level-1-2 rcf VRF_RCF_ISIS()
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit
@@ -163,7 +161,6 @@ router bgp 65001
          redistribute static route-map VRF_AFIPV6MULTI_RM_STATIC
    !
    vrf VRF02
-      redistribute isis level-1 rcf VRF_RCF_ISIS()
       !
       address-family ipv4
          bgp additional-paths send backup
@@ -173,7 +170,6 @@ router bgp 65001
    !
    vrf VRF03
       redistribute dynamic rcf VRF_RCF_DYNAMIC()
-      redistribute isis level-2 rcf VRF_RCF_ISIS()
       !
       address-family ipv4
          bgp additional-paths send ecmp

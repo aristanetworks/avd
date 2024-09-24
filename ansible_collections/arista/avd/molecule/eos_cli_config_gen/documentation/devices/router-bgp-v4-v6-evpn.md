@@ -141,7 +141,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>ospfv3<br>connected |
+| Tenant_A | 10.50.64.15:30001 | - |
 | Tenant_B | 10.50.64.15:30002 | - |
 
 #### Router BGP Device Configuration
@@ -241,8 +241,8 @@ router bgp 65100
       neighbor IPV4-UNDERLAY-MLAG activate
       redistribute attached-host
       redistribute isis rcf Router_BGP_Isis()
-      redistribute ospf match external
       redistribute ospf match internal
+      redistribute ospf match external
       redistribute ospf match nssa-external 2
    !
    address-family ipv6
@@ -252,7 +252,6 @@ router bgp 65100
       neighbor IPV6-UNDERLAY-MLAG activate
       neighbor TEST_RCF rcf in Address_Family_IPV6_In()
       neighbor TEST_RCF rcf out Address_Family_IPV6_Out()
-      redistribute isis level-1 rcf Address_Family_IPV6_ISIS()
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
@@ -264,6 +263,7 @@ router bgp 65100
       route-target export evpn 1:30001
       route-target export evpn rcf RT_EXPORT_AF_RCF()
       redistribute connected
+      redistribute ospf
       redistribute ospf match external include leaked
       redistribute ospfv3 match internal
       redistribute ospfv3 match nssa-external
