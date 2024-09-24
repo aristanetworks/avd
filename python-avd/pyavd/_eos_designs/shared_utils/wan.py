@@ -550,14 +550,7 @@ class WanMixin:
 
         If not provided, computed from the list of configured members.
         """
-        if (configured_id := get(self.switch_data_combined, "wan_ha.port_channel_id")) is not None:
-            return configured_id
-        if not self.wan_ha_interfaces:
-            # This should never happen and is a guard against the function being called from the
-            # wrong place.
-            msg = "Cannot derive the WAN HA port-channel ID without any WAN HA interfaces configured."
-            raise AristaAvdError(msg)
-        return int("".join(findall(r"\d", self.wan_ha_interfaces[0])))
+        return get(self.switch_data_combined, "wan_ha.port_channel_id", default=int("".join(findall(r"\d", self.wan_ha_interfaces[0]))))
 
     @cached_property
     def use_port_channel_for_direct_ha(self: SharedUtils) -> bool:

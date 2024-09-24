@@ -302,7 +302,8 @@ class EthernetInterfacesMixin(UtilsMixin):
         return None
 
     def _get_direct_ha_ethernet_interfaces(self: AvdStructuredConfigUnderlay) -> list:
-        """Return a list of ethernet interfaces to be configured for WAN direct HA.
+        """
+        Return a list of ethernet interfaces to be configured for WAN direct HA.
 
         Caters for the scenarii where either a port-channel is used or a single l3_interface.
         """
