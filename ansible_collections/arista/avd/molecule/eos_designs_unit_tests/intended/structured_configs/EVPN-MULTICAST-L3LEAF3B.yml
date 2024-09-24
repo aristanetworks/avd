@@ -724,8 +724,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 - name: Ethernet8
   peer_type: l3_interface
