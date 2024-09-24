@@ -341,7 +341,7 @@ interface Ethernet14
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client encapsulation | Client Inner encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network encapsulation | Network Inner encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
 | --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel4.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel4.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
