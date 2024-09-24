@@ -8,6 +8,8 @@ type: dict
 keys:
   default_network_ports_port_channel_description:
     type: str
+    documentation_options:
+      table: default-network-ports-description
     # TODO: Insert link to format string syntax article.
     description: |-
       Default description or description template to be used on all port-channels defined under `network_ports`.

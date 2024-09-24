@@ -880,6 +880,8 @@ keys:
     type: str
   default_connected_endpoints_description:
     type: str
+    documentation_options:
+      table: default-connected-endpoints-description
     description: "Default description or description template to be used on all ports
       to connected endpoints.\nThis can be a template using the format string syntax.\nThe
       available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
@@ -890,6 +892,8 @@ keys:
     default: '{endpoint_type!u}_{endpoint}{endpoint_port?<_}'
   default_connected_endpoints_port_channel_description:
     type: str
+    documentation_options:
+      table: default-connected-endpoints-description
     description: "Default description or description template to be used on all port-channels
       to connected endpoints.\nThis can be a template using the format string syntax.\nThe
       available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
@@ -989,6 +993,8 @@ keys:
     default: oob
   default_network_ports_description:
     type: str
+    documentation_options:
+      table: default-network-ports-description
     description: "Default description or description template to be used on all ports
       defined under `network_ports`.\nThis can be a template using the format string
       syntax.\nThe available template fields are:\n  - `endpoint_type`: Always set
@@ -997,6 +1003,8 @@ keys:
     default: '{endpoint?}'
   default_network_ports_port_channel_description:
     type: str
+    documentation_options:
+      table: default-network-ports-description
     description: "Default description or description template to be used on all port-channels
       defined under `network_ports`.\nThis can be a template using the format string
       syntax.\nThe available template fields are:\n  - `endpoint_type`: Always set

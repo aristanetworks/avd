@@ -1133,10 +1133,6 @@ Connected endpoints support the customization of generated descriptions with a s
 roles/eos_designs/docs/tables/default-connected-endpoints-description.md
 --8<--
 
---8<--
-roles/eos_designs/docs/tables/default-connected-endpoints-port-channel-description.md
---8<--
-
 ### Network ports settings
 
 The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
@@ -1252,10 +1248,6 @@ Network ports support the customization of generated descriptions with a static 
 
 --8<--
 roles/eos_designs/docs/tables/default-network-ports-description.md
---8<--
-
---8<--
-roles/eos_designs/docs/tables/default-network-ports-port-channel-description.md
 --8<--
 
 ### Port profiles settings
