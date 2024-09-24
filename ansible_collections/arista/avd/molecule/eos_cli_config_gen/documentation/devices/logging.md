@@ -87,13 +87,15 @@ interface Management1
 
 ```eos
 !
+logging event storm-control discards global
+logging event storm-control discards interval 10
+!
+logging event congestion-drops interval 10
+!
 logging repeat-messages
 logging buffered 1000000 warnings
 no logging trap
 logging console errors
-no logging event link-status global
-logging event storm-control discards global
-logging event storm-control discards interval 10
 logging synchronous level critical
 logging host 20.20.20.7
 logging host 50.50.50.7 100 200 protocol tcp
@@ -113,7 +115,10 @@ logging format timestamp traditional year timezone
 logging format rfc5424
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
+!
 logging level AAA warnings
 logging level ACL critical
 logging level BGP 0
+!
+no logging event link-status global
 ```
