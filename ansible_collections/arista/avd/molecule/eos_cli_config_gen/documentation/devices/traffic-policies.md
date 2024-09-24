@@ -91,7 +91,7 @@ interface Port-Channel2
 
 #### L4 Port Field Sets
 
-| Field Set Name | L4 ports |
+| Field Set Name | L4 Ports |
 | -------------- | -------- |
 | SERVICE-DEMO | 10,20,80,440-450 |
 | SERVICE-DEMO2 | - |

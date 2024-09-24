@@ -38,7 +38,7 @@
 
 #### L4 Port Field Sets
 
-| Field Set Name | L4 ports |
+| Field Set Name | L4 Ports |
 | -------------- | -------- |
 {%             for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort('name') %}
 | {{ field_set_port.name }} | {{ field_set_port.port_range | arista.avd.default("-") }} |
