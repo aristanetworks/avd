@@ -38,11 +38,6 @@ no logging monitor
 {%     elif logging.monitor is arista.avd.defined %}
 logging monitor {{ logging.monitor }}
 {%     endif %}
-{%     if logging.event.global_link_status is arista.avd.defined(false) %}
-no logging event link-status global
-{%     elif logging.event.global_link_status is arista.avd.defined(true) %}
-logging event link-status global
-{%     endif %}
 {%     if logging.synchronous.level is arista.avd.defined('disabled') %}
 no logging synchronous
 {%     elif logging.synchronous is arista.avd.defined %}
@@ -106,4 +101,11 @@ logging policy match match-list {{ match_list.name }} {{ match_list.action }}
 logging level {{ level.facility }} {{ level.severity }}
 {%         endif %}
 {%     endfor %}
+{%     if logging.event.global_link_status is arista.avd.defined(false) %}
+!
+no logging event link-status global
+{%     elif logging.event.global_link_status is arista.avd.defined(true) %}
+!
+logging event link-status global
+{%     endif %}
 {% endif %}
