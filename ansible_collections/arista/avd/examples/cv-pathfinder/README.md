@@ -296,10 +296,10 @@ cv-pathfinder/group_vars/WAN
 
 The `management.yml` file contains the configuration for:
 
-- the management gateway
+- The management gateway
 - NTP
 - Terminattr to configure the connection to CVaaS.
-- local users (arista/arista and cvpadmin/cvpadmin)
+- Local users (arista/arista and cvpadmin/cvpadmin)
 - `ipv4_acls`: a list of ACLs used for Internet-facing WAN interfaces
 - DNS
 - AAA
@@ -448,19 +448,19 @@ The following diagrams describe the connectivity of Site 1's physical, LAN, and 
 
 === "Physical"
 
-    ![Figure: Site 1 Physical](images/site1-physical.png){: style="height:700px"}
+    ![Figure: Site 1 Physical](images/site1-physical.svg){: style="height:700px"}
 
 === "LAN"
 
     Site 1 borders are using BGP AS 65101
 
-    ![Figure: Site 1 LAN](images/site1-lan.png){: style="height:700px"}
+    ![Figure: Site 1 LAN](images/site1-lan.svg){: style="height:700px"}
 
 === "HA Tunnels"
 
     By default, AVD uses all uplink interfaces for the LAN_HA path groups. EOS then establishes an IPsec tunnel between all pairs of local and remote connections. In this scenario, four tunnels are created for the LAN_HA path group.
 
-    ![Figure: Site 1 HA Tunnels](images/site1-ha.png){: style="height:700px"}
+    ![Figure: Site 1 HA Tunnels](images/site1-ha.svg){: style="height:700px"}
 
 ```yaml title="group_vars/SITE1.yml"
 --8<--
@@ -477,17 +477,17 @@ The following diagrams describe the Site2 physical, LAN and HA tunnels connectiv
 
 === "Physical"
 
-    ![Figure: Site 2 Physical](images/site2-physical.png){: style="height:700px"}
+    ![Figure: Site 2 Physical](images/site2-physical.svg){: style="height:700px"}
 
 === "LAN"
 
     Site 2 borders are using BGP AS 65101
 
-    ![Figure: Site 2 LAN](images/site2-lan.png){: style="height:700px"}
+    ![Figure: Site 2 LAN](images/site2-lan.svg){: style="height:700px"}
 
 === "HA Tunnels"
 
-    ![Figure: Site 2 HA Tunnels](images/site2-ha.png){: style="height:700px"}
+    ![Figure: Site 2 HA Tunnels](images/site2-ha.svg){: style="height:700px"}
 
 ```yaml title="group_vars/SITE2.yml"
 --8<--
@@ -501,14 +501,11 @@ The following diagrams describe the Site3 physical and LAN connectivity.
 
 === "Physical"
 
-    ![Figure: Site 3 Physical](images/site3-physical.png){: style="height:700px"}
+    ![Figure: Site 3 Physical](images/site3-physical.svg){: style="height:700px"}
 
 === "LAN"
 
-    ![Figure: Site 3 LAN](images/site3-lan.png){: style="height:700px"}
-
-!!! TODO
-    TODO: Add eBGP toward WAN on site3
+    ![Figure: Site 3 LAN](images/site3-lan.svg){: style="height:700px"}
 
 ```yaml title="group_vars/SITE3.yml"
 --8<--
