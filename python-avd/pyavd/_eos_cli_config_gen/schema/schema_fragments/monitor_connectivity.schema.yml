@@ -32,11 +32,9 @@ keys:
       address_only:
         type: bool
         description: |-
-          PREVIEW: This key is in preview.
           When address-only is configured, the source IP of the packet is set to the interface
           IP but the packet may exit the device via a different interface.
           When set to `false`, the probe uses the interface to exit the device.
-          Not supported yet in EOS.
         default: true
       hosts:
         type: list
@@ -56,11 +54,9 @@ keys:
             address_only:
               type: bool
               description: |-
-                PREVIEW: This key is in preview.
                 When address-only is configured, the source IP of the packet is set to the interface
                 IP but the packet may exit the device via a different interface.
                 When set to `false`, the probe uses the interface to exit the device.
-                Not supported yet in EOS.
               default: true
             url:
               type: str
@@ -91,11 +87,9 @@ keys:
             address_only:
               type: bool
               description: |-
-                PREVIEW: This key is in preview.
                 When address-only is configured, the source IP of the packet is set to the interface
                 IP but the packet may exit the device via a different interface.
                 When set to `false`, the probe uses the interface to exit the device.
-                Not supported yet in EOS.
               default: true
             hosts:
               type: list
@@ -115,11 +109,9 @@ keys:
                   address_only:
                     type: bool
                     description: |-
-                      PREVIEW: This key is in preview.
                       When address-only is configured, the source IP of the packet is set to the interface
                       IP but the packet may exit the device via a different interface.
                       When set to `false`, the probe uses the interface to exit the device.
-                      Not supported yet in EOS.
                     default: true
                   url:
                     type: str

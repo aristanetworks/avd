@@ -223,7 +223,7 @@
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 | 172.18.110.0/24 | 256 | 3 | 1.18 % |
 | 172.18.120.0/24 | 256 | 1 | 0.4 % |
 | 172.18.210.0/24 | 256 | 2 | 0.79 % |
@@ -245,31 +245,20 @@
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-| access_points | access_point | Access Point |
-| cameras | camera | Camera |
-| cpes | cpe | CPE |
-| firewalls | firewall | Firewall |
-| generic_devices | generic_device | Generic Device |
-| load_balancers | load_balancer | Load Balancer |
-| phones | phone | Phone |
-| printers | printer | Printer |
-| routers | router | Router |
 | servers | server | Server |
-| storage_arrays | storage_array | Storage Array |
-| workstations | workstation | Workstation |
 
 ### Servers
 
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| server-1 | Eth2 | DC1-POD1-LEAF2B | Ethernet16 | server-1_Eth2 | False | switched | access | 110 | TENANT_A |
-| server-1 | Eth4 | DC1-POD1-LEAF2B | Ethernet17 | Set using structured_config on server adapter | False | switched | access | 110 | TENANT_A |
-| server-1 | Eth6 | DC1-POD1-LEAF2B | Ethernet18 | server-1_Eth6 | False | switched | access | 110 | NESTED_TENANT_A |
-| server-1 | Eth8 | DC1-POD1-LEAF2B | Ethernet19 | server-1_Eth8 | False | switched | access | 110 | NESTED_TENANT_A |
-| server-1 | Eth1 | DC1.POD1.LEAF2A | Ethernet16 | server-1_Eth1 | False | switched | access | 110 | TENANT_A |
-| server-1 | Eth3 | DC1.POD1.LEAF2A | Ethernet17 | Set using structured_config on server adapter | False | switched | access | 110 | TENANT_A |
-| server-1 | Eth5 | DC1.POD1.LEAF2A | Ethernet18 | server-1_Eth5 | False | switched | access | 110 | NESTED_TENANT_A |
-| server-1 | Eth7 | DC1.POD1.LEAF2A | Ethernet19 | server-1_Eth7 | False | switched | access | 110 | NESTED_TENANT_A |
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| server-1 | Eth1 | DC1.POD1.LEAF2A | Ethernet16 | SERVER_server-1_Eth1 | False | access | 110 | - | TENANT_A |
+| server-1 | Eth3 | DC1.POD1.LEAF2A | Ethernet17 | Set using structured_config on server adapter | False | access | 110 | - | TENANT_A |
+| server-1 | Eth5 | DC1.POD1.LEAF2A | Ethernet18 | SERVER_server-1_Eth5 | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | Eth7 | DC1.POD1.LEAF2A | Ethernet19 | SERVER_server-1_Eth7 | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | Eth2 | DC1-POD1-LEAF2B | Ethernet16 | SERVER_server-1_Eth2 | False | access | 110 | - | TENANT_A |
+| server-1 | Eth4 | DC1-POD1-LEAF2B | Ethernet17 | Set using structured_config on server adapter | False | access | 110 | - | TENANT_A |
+| server-1 | Eth6 | DC1-POD1-LEAF2B | Ethernet18 | SERVER_server-1_Eth6 | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | Eth8 | DC1-POD1-LEAF2B | Ethernet19 | SERVER_server-1_Eth8 | False | access | 110 | - | NESTED_TENANT_A |
 
 ### Port Profiles
 

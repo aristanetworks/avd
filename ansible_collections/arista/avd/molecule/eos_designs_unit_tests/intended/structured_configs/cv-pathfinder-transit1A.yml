@@ -136,7 +136,6 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
   - name: TRANSIT
-    router_id: 192.168.43.1
     rd: 192.168.43.1:66
     route_targets:
       import:
@@ -147,6 +146,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 66:66
+    router_id: 192.168.43.1
     redistribute_routes:
     - source_protocol: connected
   address_family_evpn:
@@ -221,7 +221,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.1/31
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf1
@@ -274,16 +275,18 @@ ethernet_interfaces:
   ip_nat:
     service_profile: NAT-IE-DIRECT
 - name: Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 - name: Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.43.1/32
 as_path:
@@ -781,7 +784,7 @@ router_internet_exit:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.143.1/32
   flow_tracker:
     hardware: FLOW-TRACKER

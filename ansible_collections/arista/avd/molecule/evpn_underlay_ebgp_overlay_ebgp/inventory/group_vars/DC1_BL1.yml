@@ -4,7 +4,8 @@ my_dci_ethernet_interfaces:
     description: My test
     ip_address: 10.1.2.3/12
     shutdown: false
-    type: routed
+    switchport:
+      enabled: false
     mtu: 1500
     peer: MY-own-peer
     peer_interface: Ethernet123

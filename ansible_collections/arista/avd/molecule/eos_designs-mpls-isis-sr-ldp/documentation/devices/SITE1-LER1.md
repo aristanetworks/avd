@@ -55,20 +55,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.105/24
@@ -180,9 +180,9 @@ vlan 2020
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10 | - |
 
 ##### IPv4
 
@@ -277,7 +277,7 @@ interface Ethernet6.10
    ip ospf area 0
 !
 interface Ethernet8
-   description CPE_TENANT_A_SITE1_Ethernet1
+   description CPE_CPE_TENANT_A_SITE1_Ethernet1
    no shutdown
    channel-group 8 mode active
 ```
@@ -293,16 +293,16 @@ interface Ethernet8
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel3.1000 | - | - | False | 1000 | - | - | True | - | - | - |
-| Port-Channel3.1001 | - | - | False | 1001 | - | - | True | - | - | - |
-| Port-Channel3.1002 | - | - | False | 1002 | - | - | True | - | - | - |
-| Port-Channel3.1003 | - | - | False | 1003 | - | - | True | - | - | - |
-| Port-Channel3.1004 | - | - | False | 1004 | - | - | True | - | - | - |
-| Port-Channel8.111 | - | 111 | False | 111 | - | - | True | - | - | - |
-| Port-Channel8.222 | - | 222 | False | 222 | - | - | True | - | - | - |
-| Port-Channel8.333 | - | 434 | False | 333 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
+| Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
+| Port-Channel3.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
+| Port-Channel3.1003 | - | - | dot1q | - | 1003 | - | - | client | - | - | - | - |
+| Port-Channel3.1004 | - | - | dot1q | - | 1004 | - | - | client | - | - | - | - |
+| Port-Channel8.111 | - | 111 | dot1q | - | 111 | - | - | client | - | - | - | - |
+| Port-Channel8.222 | - | 222 | dot1q | - | 222 | - | - | client | - | - | - | - |
+| Port-Channel8.333 | - | 434 | dot1q | - | 333 | - | - | client | - | - | - | - |
 
 ##### EVPN Multihoming
 
@@ -350,7 +350,7 @@ interface Port-Channel3.1004
       client dot1q 1004 network client
 !
 interface Port-Channel8
-   description CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+   description CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
 !
@@ -378,13 +378,13 @@ interface Port-Channel8.333
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | LSR_Router_ID | default | 100.70.0.5/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.5/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | LSR_Router_ID | default | 2000:1234:ffff:ffff::5/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::5/128 |
 
 ##### ISIS
 
@@ -397,15 +397,15 @@ interface Port-Channel8.333
 ```eos
 !
 interface Loopback0
-   description LSR_Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 100.70.0.5/32
    ipv6 address 2000:1234:ffff:ffff::5/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 205
    node-segment ipv6 index 205
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces

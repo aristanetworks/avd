@@ -82,7 +82,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.101/24
@@ -100,7 +100,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.0/31
   pim:
     ipv4:
@@ -112,14 +113,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.2/31
   pim:
     ipv4:
       sparse_mode: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.1/32
 prefix_lists:

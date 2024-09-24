@@ -43,13 +43,12 @@ This behavior can be adjusted by setting the variable described below.
 roles/eos_designs/docs/tables/role-input-validation.md
 --8<--
 
-## Documentation output settings
+## Generation of facts, structured configuration and documentation
 
-The `documentation_output` settings can be leveraged to control documentation generation. This can be useful
-if for instance the project has thousands of endpoints, to be able to disable fabric-wide connected endpoints documentation.
+The following settings can be leveraged to control generation of facts, structured configuration and fabric documentation.
 
 --8<--
-roles/eos_designs/docs/tables/role-documentation-output-settings.md
+roles/eos_designs/docs/tables/role-settings.md
 --8<--
 
 ## Custom Templates

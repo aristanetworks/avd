@@ -41,20 +41,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.151/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.151/24 | 172.16.1.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.1.151/24
@@ -192,7 +192,7 @@ vlan 3402
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1-LEAF1A_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
 | Ethernet2 | DC1-LEAF1B_Ethernet8 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 1 |
-| Ethernet5 | dc1-leaf1-server1_iLO | access | 11 | - | - | - |
+| Ethernet5 | SERVER_dc1-leaf1-server1_iLO | access | 11 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -211,7 +211,7 @@ interface Ethernet2
    channel-group 1 mode active
 !
 interface Ethernet5
-   description dc1-leaf1-server1_iLO
+   description SERVER_dc1-leaf1-server1_iLO
    no shutdown
    switchport access vlan 11
    switchport mode access
@@ -236,9 +236,9 @@ interface Ethernet5
 interface Port-Channel1
    description DC1_L3_LEAF1_Po8
    no shutdown
-   switchport
    switchport trunk allowed vlan 11-12,21-22,3401-3402
    switchport mode trunk
+   switchport
 ```
 
 ## Routing

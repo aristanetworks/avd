@@ -5,6 +5,7 @@ from .append_if_not_duplicate import append_if_not_duplicate
 from .batch import batch
 from .compare_dicts import compare_dicts
 from .default import default
+from .format_string import AvdStringFormatter
 from .get import get, get_v2
 from .get_all import get_all, get_all_with_path
 from .get_indices_of_duplicate_items import get_indices_of_duplicate_items
@@ -22,6 +23,7 @@ from .template_var import template_var
 from .unique import unique
 
 __all__ = [
+    "AvdStringFormatter",
     "append_if_not_duplicate",
     "batch",
     "compare_dicts",

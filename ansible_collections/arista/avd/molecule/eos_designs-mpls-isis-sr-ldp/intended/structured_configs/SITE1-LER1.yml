@@ -44,7 +44,6 @@ router_bgp:
     description: SITE2-RR1
   vrfs:
   - name: TENANT_B_INTRA
-    router_id: 100.70.0.5
     rd: 100.70.0.5:19
     route_targets:
       import:
@@ -55,6 +54,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65000:19'
+    router_id: 100.70.0.5
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
@@ -143,7 +143,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
@@ -156,7 +156,7 @@ management_api_http:
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
 - name: Loopback0
-  description: LSR_Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.5/32
   ipv6_address: 2000:1234:ffff:ffff::5/128
@@ -212,7 +212,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE1-LSR1_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1000
@@ -238,7 +239,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: pe
   description: P2P_LINK_TO_SITE1-LER2_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1500
@@ -271,21 +273,20 @@ ethernet_interfaces:
   ospf_network_point_to_point: true
   ospf_cost: 10
 - name: Ethernet6
-  type: routed
+  switchport:
+    enabled: false
   peer_type: point_to_point_service
   shutdown: false
   lldp:
     transmit: false
     receive: false
 - name: Ethernet3
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 3
     mode: active
 - name: Ethernet4
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
@@ -296,9 +297,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
-  description: CPE_TENANT_A_SITE1_Ethernet1
+  description: CPE_CPE_TENANT_A_SITE1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 8
     mode: active
@@ -439,9 +439,10 @@ port_channel_interfaces:
     route_target: 01:02:00:00:00:34
   lacp_id: 0102.0000.0034
 - name: Port-Channel8
-  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
-  type: routed
+  description: CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
   shutdown: false
+  switchport:
+    enabled: false
 - name: Port-Channel8.111
   type: l2dot1q
   vlan_id: 111
@@ -479,6 +480,7 @@ router_ospf:
     - Ethernet6.10
     max_lsa: 10000
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 metadata:
   platform: 7280SR3

@@ -391,13 +391,13 @@ anta.tests.interfaces:
     - name: Loopback0
       status: up
     result_overwrite:
-      custom_field: Interface Loopback0 - EVPN_Overlay_Peering = 'up'
+      custom_field: Interface Loopback0 - ROUTER_ID = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Loopback1
       status: up
     result_overwrite:
-      custom_field: Interface Loopback1 - VTEP_VXLAN_Tunnel_Source = 'up'
+      custom_field: Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Loopback10

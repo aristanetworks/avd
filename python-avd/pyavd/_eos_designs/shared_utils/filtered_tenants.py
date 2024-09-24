@@ -175,13 +175,12 @@ class FilteredTenantsMixin:
         There can be various causes for this:
         - The VRF is part of a tenant set under 'always_include_vrfs_in_tenants'
         - 'always_include_vrfs_in_tenants' is set to ['all']
-        - This is a WAN router and the VRF present on the uplink switch.
-          Note that if the attracted VRF does not have a wan_vni configured, the code for interface vxlan1 will raise an error.
+        - This device is using 'p2p-vrfs' as uplink type and the VRF present on the uplink switch.
         """
         if "all" in self.always_include_vrfs_in_tenants or vrf["tenant"] in self.always_include_vrfs_in_tenants:
             return True
 
-        return self.is_wan_client and vrf["name"] in (self.get_switch_fact("wan_router_uplink_vrfs", required=False) or [])
+        return vrf["name"] in (self.get_switch_fact("uplink_switch_vrfs", required=False) or [])
 
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
@@ -222,6 +221,7 @@ class FilteredTenantsMixin:
                 evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
                 if self.evpn_multicast:
                     vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
+                    vrf["_evpn_l3_multicast_group_ip"] = get(vrf, "evpn_l3_multicast.evpn_underlay_l3_multicast_group")
 
                     rps = []
                     for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
@@ -433,3 +433,39 @@ class FilteredTenantsMixin:
                     ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
                 if ospf_keys:
                     svi_config.update({"ospf_authentication": ospf_authentication, "ospf_message_digest_keys": ospf_keys})
+
+    @cached_property
+    def bgp_in_network_services(self: SharedUtils) -> bool:
+        """
+        True if BGP is needed or forcefully enabled for any VRF under network services.
+
+        Used to enable router_bgp even if there is no overlay or underlay routing protocol.
+        """
+        if not self.network_services_l3:
+            return False
+
+        return any(self.bgp_enabled_for_vrf(vrf) for tenant in self.filtered_tenants for vrf in tenant["vrfs"])
+
+    def bgp_enabled_for_vrf(self: SharedUtils, vrf: dict) -> bool:
+        """
+        True if the given VRF should be included under Router BGP.
+
+        - If bgp.enabled is set to True, we will always configure the VRF.
+        - If bgp.enabled is set to False, we will never configure the VRF.
+
+        Otherwise we will autodetect:
+        - If the VRF is part of an overlay we will configure BGP for it.
+        - If any BGP peers are configured we will configure BGP for it.
+        - If uplink type is p2p_vrfs and the vrf is included in uplink VRFs.
+        """
+        if (bgp_enabled := get(vrf, "bgp.enabled")) is not None:
+            return bgp_enabled
+
+        vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self.overlay_address_families]
+        return any(
+            [
+                vrf_address_families,
+                vrf["bgp_peers"],
+                (self.uplink_type == "p2p-vrfs" and vrf["name"] in (self.get_switch_fact("uplink_switch_vrfs", required=False) or [])),
+            ]
+        )

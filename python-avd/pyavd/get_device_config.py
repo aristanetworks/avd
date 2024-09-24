@@ -15,10 +15,10 @@ def get_device_config(structured_config: dict) -> str:
         Device configuration in EOS CLI format.
     """
     # pylint: disable=import-outside-toplevel
-    from .constants import JINJA2_CONFIG_TEMPLATE
+    from .constants import EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH
     from .templater import Templar
 
     # pylint: enable=import-outside-toplevel
 
-    templar = Templar()
-    return templar.render_template_from_file(JINJA2_CONFIG_TEMPLATE, structured_config)
+    templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH)
+    return templar.render_template_from_file(EOS_CLI_CONFIG_GEN_JINJA2_CONFIG_TEMPLATE, structured_config)
