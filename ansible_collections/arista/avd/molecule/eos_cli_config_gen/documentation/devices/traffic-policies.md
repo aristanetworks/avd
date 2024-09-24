@@ -83,18 +83,18 @@ interface Port-Channel2
 
 #### IPv4 Field Sets
 
-| Field Set Name | Values |
-| -------------- | ------ |
+| Field Set Name | IPv4 Prefixes |
+| -------------- | ------------- |
 | DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
 | DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
 | DEMO-03 | - |
 
 #### L4 Port Field Sets
 
-| Field Set Name | Values |
-| -------------- | ------ |
-| SERVICE-DEMO | 10,20,80,440-450|
-| SERVICE-DEMO2 | -|
+| Field Set Name | L4 ports |
+| -------------- | -------- |
+| SERVICE-DEMO | 10,20,80,440-450 |
+| SERVICE-DEMO2 | - |
 
 #### Traffic Policies
 

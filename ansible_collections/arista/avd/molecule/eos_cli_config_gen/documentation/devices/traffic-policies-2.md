@@ -59,8 +59,8 @@ interface Port-Channel2
 
 #### IPv6 Field Sets
 
-| Field Set Name | Values |
-| -------------- | ------ |
+| Field Set Name | IPv6 Prefixes |
+| -------------- | ------------- |
 | IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 |
 | IPv6-DEMO-2 | - |
 
