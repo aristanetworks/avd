@@ -7,10 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>generate_device_documentation</samp>](## "generate_device_documentation") | Boolean |  | `True` |  |  |
+    | [<samp>&lt;custom_node_type_keys.key&gt;</samp>](## "<custom_node_type_keys.key>") | Dictionary |  |  |  |  |
 
 === "YAML"
 
     ```yaml
-    generate_device_documentation: <bool; default=True>
+    <custom_node_type_keys.key>: <dict>
     ```

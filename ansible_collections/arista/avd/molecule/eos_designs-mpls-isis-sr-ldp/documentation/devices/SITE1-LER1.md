@@ -277,7 +277,7 @@ interface Ethernet6.10
    ip ospf area 0
 !
 interface Ethernet8
-   description CPE_TENANT_A_SITE1_Ethernet1
+   description CPE_CPE_TENANT_A_SITE1_Ethernet1
    no shutdown
    channel-group 8 mode active
 ```
@@ -350,7 +350,7 @@ interface Port-Channel3.1004
       client dot1q 1004 network client
 !
 interface Port-Channel8
-   description CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+   description CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
 !
@@ -401,11 +401,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.5/32
    ipv6 address 2000:1234:ffff:ffff::5/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 205
    node-segment ipv6 index 205
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces

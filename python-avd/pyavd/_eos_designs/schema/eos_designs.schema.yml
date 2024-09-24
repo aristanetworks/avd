@@ -43,6 +43,25 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_eos_designs_debug:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: Dump all vars and facts per device after generating `avd_switch_facts`.
+  avd_eos_designs_structured_config:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: Generate structured configuration per device.
+  avd_eos_designs_unset_facts:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: Unset `avd_switch_facts` to gain a small performance improvement
+      since Ansible needs to handle fewer variables.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -859,6 +878,32 @@ keys:
 
       '
     type: str
+  default_connected_endpoints_description:
+    type: str
+    documentation_options:
+      table: default-connected-endpoints-description
+    description: "Default description or description template to be used on all ports
+      to connected endpoints.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
+      like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
+      \ - `endpoint_port`: The value from `endpoint_ports` for this switch port if
+      set.\n\nBy default the description is templated from the type, name and port
+      of the endpoint if set."
+    default: '{endpoint_type!u}_{endpoint}{endpoint_port?<_}'
+  default_connected_endpoints_port_channel_description:
+    type: str
+    documentation_options:
+      table: default-connected-endpoints-description
+    description: "Default description or description template to be used on all port-channels
+      to connected endpoints.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
+      like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
+      \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
+      \ - `port_channel_id`: The port-channel number for the switch.\n  - `adapter_description`:
+      The adapter's description if set.\n  - `adapter_description_or_endpoint`: Helper
+      alias of the adapter_description or endpoint.\n\nBy default the description
+      is templated from the type, name and port-channel name of the endpoint if set."
+    default: '{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}'
   default_igmp_snooping_enabled:
     documentation_options:
       table: system-settings
@@ -946,6 +991,30 @@ keys:
     - inband
     - none
     default: oob
+  default_network_ports_description:
+    type: str
+    documentation_options:
+      table: default-network-ports-description
+    description: "Default description or description template to be used on all ports
+      defined under `network_ports`.\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `endpoint_type`: Always set
+      to `network_port`.\n  - `endpoint`: The value of the `endpoint` key if set.\n\nBy
+      default the description is templated from the `endpoint` key if set."
+    default: '{endpoint?}'
+  default_network_ports_port_channel_description:
+    type: str
+    documentation_options:
+      table: default-network-ports-description
+    description: "Default description or description template to be used on all port-channels
+      defined under `network_ports`.\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `endpoint_type`: Always set
+      to `network_port`.\n  - `endpoint`: The value of the `endpoint` key if set.\n
+      \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
+      \ - `port_channel_id`: The port-channel number for the switch.\n  - `adapter_description`:
+      The adapter's description if set.\n  - `adapter_description_or_endpoint`: Helper
+      alias of the adapter_description or endpoint.\n\nBy default the description
+      is templated from the `endpoint` key if set."
+    default: '{endpoint?}{endpoint_port_channel?<_}'
   default_node_types:
     type: list
     primary_key: node_type
@@ -1031,7 +1100,7 @@ keys:
               default: true
   eos_designs_documentation:
     documentation_options:
-      table: role-documentation-settings
+      table: role-settings
     description: 'Control fabric documentation generation.
 
       '
@@ -1051,12 +1120,12 @@ keys:
       topology_csv:
         description: Generate Topology CSV with all interfaces towards other devices.
         type: bool
-        default: true
+        default: false
       p2p_links_csv:
         description: Generate P2P links CSV with all routed point-to-point links between
           devices.
         type: bool
-        default: true
+        default: false
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     documentation_options:
@@ -2052,7 +2121,15 @@ keys:
             type: str
         description:
           type: str
-          description: Description to be used on all ports.
+          description: "Description or description template to be used on all ports.\nThis
+            can be a template using the format string syntax.\nThe available template
+            fields are:\n  - `endpoint_type` - always set to `network_port`.\n  -
+            `endpoint` - content of the `endpoint` key if set.\n\nThe default description
+            is set by `default_network_ports_description`.\nBy default the description
+            is templated from the `endpoint` key if set."
+        endpoint:
+          type: str
+          description: Name or description of the endpoints connected to these ports.
   network_services_keys:
     type: list
     primary_key: name
@@ -3907,7 +3984,7 @@ keys:
         keys:
           name:
             type: str
-            default: LEAF_PEER_L3
+            default: MLAG
       uplink:
         type: dict
         description: 'Trunk Group used on L2 Leaf switches when "enable_trunk_groups"
@@ -3922,7 +3999,9 @@ keys:
     documentation_options:
       table: type-setting
     type: str
-    dynamic_valid_values: node_type_keys.type
+    dynamic_valid_values:
+    - custom_node_type_keys.type
+    - node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
       fabric.
 
@@ -4737,43 +4816,11 @@ dynamic_keys:
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
-    default:
-    - key: servers
-      type: server
-      description: Server
-    - key: firewalls
-      type: firewall
-      description: Firewall
-    - key: routers
-      type: router
-      description: Router
-    - key: load_balancers
-      type: load_balancer
-      description: Load Balancer
-    - key: storage_arrays
-      type: storage_array
-      description: Storage Array
-    - key: cpes
-      type: cpe
-      description: CPE
-    - key: workstations
-      type: workstation
-      description: Workstation
-    - key: access_points
-      type: access_point
-      description: Access Point
-    - key: phones
-      type: phone
-      description: Phone
-    - key: printers
-      type: printer
-      description: Printer
-    - key: cameras
-      type: camera
-      description: Camera
-    - key: generic_devices
-      type: generic_device
-      description: Generic Device
+  custom_node_type_keys.key:
+    $ref: eos_designs#/$defs/node_type
+    type: dict
+    documentation_options:
+      hide_keys: true
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list
@@ -4799,11 +4846,14 @@ $defs:
           '
       description:
         type: str
-        description: 'By default the description is built leveraging `<peer>_<peer_interface>`.
-
-          When set this key will override the default value on the physical ports.
-
-          '
+        description: "Description or description template to be used on all ports.\nThis
+          can be a template using the format string syntax.\nThe available template
+          fields are:\n  - `endpoint_type` - the `type` from `connected_endpoints_keys`
+          like `server`, `router` etc.\n  - `endpoint` - The name of the connected
+          endpoint\n  - `endpoint_port` - The value from `endpoint_ports` for this
+          switch port if set.\n\nThe default description is set by `default_connected_endpoints_description`.\nBy
+          default the description is templated from the type, name and port of the
+          endpoint if set."
       profile:
         type: str
         description: Port-profile name to inherit configuration.
@@ -5280,13 +5330,23 @@ $defs:
               '
           description:
             type: str
-            description: 'By default the description is built leveraging `<peer>`
-              name or `adapter.description` when defined.
+            description: "Description or description template to be used on the port-channel
+              interface.\nThis can be a template using the format string syntax.\nThe
+              available template fields are:\n  - `endpoint_type` - the `type` from
+              `connected_endpoints_keys` like `server`, `router` etc.\n  - `endpoint`
+              - The name of the connected endpoint\n  - `endpoint_port_channel` -
+              The value from `endpoint_port_channel` if set.\n  - `port_channel_id`
+              - The port-channel number for the switch.\n  - `adapter_description`
+              - The adapter's description if set.\n  - `adapter_description_or_endpoint`
+              - Helper alias of the adapter_description or endpoint.\n\nThe default
+              description is set by `default_connected_endpoints_port_channel_description`.\nBy
+              default the description is templated from the type, name and port_channel
+              interface of the endpoint if set."
+          endpoint_port_channel:
+            type: str
+            description: 'Name of the port-channel interface on the endpoint.
 
-              When this key is defined, it will append its content to the physical
-              port description.
-
-              '
+              Used for the port-channel description template with the field name `peer_interface`'
           enabled:
             type: bool
             default: true
@@ -5447,9 +5507,6 @@ $defs:
 
       `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
 
-      The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and
-      `storage_arrays`.
-
       '
     items:
       type: dict
@@ -5504,13 +5561,15 @@ $defs:
                   '
                 items:
                   type: str
-                  description: Interface name.
+                  description: Port name on the endpoint.
               descriptions:
                 type: list
-                description: 'Unique description per port. When set, takes priority
-                  over description.
-
-                  '
+                description: "Unique description per port. When set, takes priority
+                  over description.\nThis can be a template using the format string
+                  syntax.\nThe available template fields are:\n  - `endpoint_type`
+                  - the `type` from `connected_endpoints_keys` like `server`, `router`
+                  etc.\n  - `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
+                  - The value from `endpoint_ports` for this switch port if set."
   flow_tracking_link:
     type: dict
     keys:
@@ -5816,7 +5875,7 @@ $defs:
             Multicast group binding for VRF is created only for Multicast traffic.
             BULL traffic will use ingress-replication.\n- Configures binding between
             VXLAN, VLAN, and multicast group IPv4 address using the following formula:\n
-            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni
+            \ < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_id
             - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
             >.\n- The recommendation is to assign a /20 block within the 232.0.0.0/8
             Source-Specific Multicast range.\n- If enabled on an SVI using the anycast
@@ -6240,6 +6299,13 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                  evpn_underlay_l3_multicast_group:
+                    type: str
+                    description: 'IPv4 address of evpn underlay l3 multicast group.
+
+                      To override multicast range set using the formula < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool
+                      > + < vrf_id - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset
+                      >.'
                   evpn_peg:
                     type: list
                     description: For each group of nodes, allow configuration of EVPN

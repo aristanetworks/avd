@@ -122,7 +122,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.1/31
@@ -133,7 +134,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.3/31
@@ -141,33 +143,36 @@ ethernet_interfaces:
   peer: single-interface-true
   peer_interface: eth1
   peer_type: server
-  description: single-interface-true_eth1
+  description: SERVER_single-interface-true_eth1
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   sflow:
     enable: true
 - name: Ethernet12
   peer: single-interface-false
   peer_interface: eth11
   peer_type: server
-  description: single-interface-false_eth11
+  description: SERVER_single-interface-false_eth11
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   sflow:
     enable: false
 - name: Ethernet14
   peer: single-interface-no-definition
   peer_interface: eth12
   peer_type: server
-  description: single-interface-no-definition_eth12
+  description: SERVER_single-interface-no-definition_eth12
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   sflow:
     enable: true
 loopback_interfaces:

@@ -58,19 +58,19 @@ interface Management1
 
 ```eos
 !
+ip ftp client source-interface Ethernet10
 ip ftp client source-interface Loopback0 vrf default
 ip ftp client source-interface Management0 vrf MGMT
-ip ftp client source-interface Ethernet10
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
 ip http client local-interface Ethernet10
 ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
+ip telnet client source-interface Ethernet10
 ip telnet client source-interface Loopback0 vrf default
 ip telnet client source-interface Management0 vrf MGMT
-ip telnet client source-interface Ethernet10
+ip tftp client source-interface Ethernet10
 ip tftp client source-interface Loopback0 vrf default
 ip tftp client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
  ```

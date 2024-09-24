@@ -95,7 +95,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE1_Ethernet5
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.1.5/31
 - name: Ethernet2
   peer: downlink-pools-spine2
@@ -104,7 +105,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet5
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.4.1/31
 - name: Ethernet3
   peer: downlink-pools-spine1
@@ -113,7 +115,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE1_Ethernet15
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.3.1/31
 - name: Ethernet4
   peer: downlink-pools-spine2
@@ -122,7 +125,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet15
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.4.5/31
 loopback_interfaces:
 - name: Loopback0

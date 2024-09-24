@@ -45,9 +45,13 @@ class RouterPathSelectionMixin(UtilsMixin):
 
     @cached_property
     def _dp_ipsec_profile_name(self: AvdStructuredConfigOverlay) -> str:
-        """Returns the IPsec profile name to use for Data-Plane."""
-        # TODO: need to use CP one if 'wan_ipsec_profiles.data_plane' not present
-        return get(self._hostvars, "wan_ipsec_profiles.data_plane.profile_name", default="DP-PROFILE")
+        """Returns the IPsec profile name to use for Data-Plane.
+
+        If no data-plane config is present for IPsec, default to _cp_ipsec_profile_name
+        """
+        if (data_plane := get(self._hostvars, "wan_ipsec_profiles.data_plane")) is not None:
+            return get(data_plane, "profile_name", default="DP-PROFILE")
+        return self._cp_ipsec_profile_name
 
     def _get_path_groups(self: AvdStructuredConfigOverlay) -> list:
         """Generate the required path-groups locally."""

@@ -141,7 +141,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet5
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.9/31
 - name: Ethernet2
   peer: DC1-POD2-SPINE1
@@ -150,7 +151,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.11/31
 - name: Ethernet3
   peer: DC1-POD2-LEAF1A
@@ -159,7 +161,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.13/31
 loopback_interfaces:
 - name: Loopback0
