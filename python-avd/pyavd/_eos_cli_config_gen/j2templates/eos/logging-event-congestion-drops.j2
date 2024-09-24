@@ -5,5 +5,6 @@
 #}
 {# eos - logging event congestion-drops #}
 {% if logging.event.congestion_drops_interval is arista.avd.defined %}
+!
 logging event congestion-drops interval {{ logging.event.congestion_drops_interval }}
 {% endif %}

@@ -395,11 +395,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.6/32
    ipv6 address 2000:1234:ffff:ffff::6/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 206
    node-segment ipv6 index 206
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces
