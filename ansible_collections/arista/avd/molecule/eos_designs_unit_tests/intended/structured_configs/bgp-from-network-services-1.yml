@@ -75,7 +75,7 @@ vlans:
   trunk_groups:
   - MLAG
 - id: 3099
-  name: MLAG_iBGP_default
+  name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   tenant: TEST
@@ -90,7 +90,7 @@ vlan_interfaces:
   tenant: TEST
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf default'
+  description: MLAG_L3_VRF_default
   vrf: default
   mtu: 9214
   ip_address: 10.10.20.0/31

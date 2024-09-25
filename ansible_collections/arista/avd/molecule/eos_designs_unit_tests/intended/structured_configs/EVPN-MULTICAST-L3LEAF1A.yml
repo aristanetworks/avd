@@ -718,7 +718,7 @@ vlans:
   name: MULTICAST_DISABLED_311
   tenant: Tenant_A
 - id: 3012
-  name: MLAG_iBGP_MULTICAST_DISABLED_310_311
+  name: MLAG_L3_VRF_MULTICAST_DISABLED_310_311
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -729,7 +729,7 @@ vlans:
   name: MULTICAST_ENABLED_111
   tenant: Tenant_A
 - id: 3010
-  name: MLAG_iBGP_MULTICAST_ENABLED_110_111
+  name: MLAG_L3_VRF_MULTICAST_ENABLED_110_111
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -740,7 +740,7 @@ vlans:
   name: MULTICAST_DISABLED_211
   tenant: Tenant_A
 - id: 3011
-  name: MLAG_iBGP_MULTICAST_ENABLED_210_DISABLED_211
+  name: MLAG_L3_VRF_MULTICAST_ENABLED_210_DISABLED_211
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -760,7 +760,7 @@ vlans:
   name: MULTICAST_DISABLED_6
   tenant: Tenant_B
 - id: 3022
-  name: MLAG_iBGP_MULTICAST_DISABLED_5_6
+  name: MLAG_L3_VRF_MULTICAST_DISABLED_5_6
   trunk_groups:
   - MLAG
   tenant: Tenant_B
@@ -771,7 +771,7 @@ vlans:
   name: MULTICAST_ENABLED_2
   tenant: Tenant_B
 - id: 3020
-  name: MLAG_iBGP_MULTICAST_ENABLED_1_2
+  name: MLAG_L3_VRF_MULTICAST_ENABLED_1_2
   trunk_groups:
   - MLAG
   tenant: Tenant_B
@@ -782,7 +782,7 @@ vlans:
   name: MULTICAST_DISABLED_4
   tenant: Tenant_B
 - id: 3021
-  name: MLAG_iBGP_MULTICAST_ENABLED_3_DISABLED_4
+  name: MLAG_L3_VRF_MULTICAST_ENABLED_3_DISABLED_4
   trunk_groups:
   - MLAG
   tenant: Tenant_B
@@ -802,7 +802,7 @@ vlans:
   name: L3_MULTICAST_DISABLED_331
   tenant: Tenant_C
 - id: 3032
-  name: MLAG_iBGP_TEN_C_L3_MULTICAST_DISABLED_330_331
+  name: MLAG_L3_VRF_TEN_C_L3_MULTICAST_DISABLED_330_331
   trunk_groups:
   - MLAG
   tenant: Tenant_C
@@ -819,7 +819,7 @@ vlans:
   name: L3_L2_MULTICAST_ENABLED_137
   tenant: Tenant_C
 - id: 3065
-  name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_130_131
+  name: MLAG_L3_VRF_TEN_C_L3_MULTICAST_ENABLED_130_131
   trunk_groups:
   - MLAG
   tenant: Tenant_C
@@ -830,7 +830,7 @@ vlans:
   name: L3_MULTICAST_DISABLED_231
   tenant: Tenant_C
 - id: 3031
-  name: MLAG_iBGP_TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+  name: MLAG_L3_VRF_TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   trunk_groups:
   - MLAG
   tenant: Tenant_C
@@ -841,7 +841,7 @@ vlans:
   name: L3_MULTICAST_DISABLED_241
   tenant: Tenant_D
 - id: 3041
-  name: MLAG_iBGP_TEN_D_L3_MULTICAST_DISABLED_240_241
+  name: MLAG_L3_VRF_TEN_D_L3_MULTICAST_DISABLED_240_241
   trunk_groups:
   - MLAG
   tenant: Tenant_D
@@ -852,7 +852,7 @@ vlans:
   name: L3_MULTICAST_DISABLED_141
   tenant: Tenant_D
 - id: 3040
-  name: MLAG_iBGP_TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+  name: MLAG_L3_VRF_TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   trunk_groups:
   - MLAG
   tenant: Tenant_D
@@ -860,7 +860,7 @@ vlans:
   name: L3_MULTICAST_ENABLED_550
   tenant: Tenant_E
 - id: 3054
-  name: MLAG_iBGP_TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+  name: MLAG_L3_VRF_TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   trunk_groups:
   - MLAG
   tenant: Tenant_E
@@ -868,7 +868,7 @@ vlans:
   name: L3_MULTICAST_ENABLED_260
   tenant: Tenant_E
 - id: 3059
-  name: MLAG_iBGP_TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+  name: MLAG_L3_VRF_TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   trunk_groups:
   - MLAG
   tenant: Tenant_E
@@ -876,7 +876,7 @@ vlans:
   name: L3_MULTICAST_ENABLED_250
   tenant: Tenant_E
 - id: 3051
-  name: MLAG_iBGP_TEN_E_L3_MULTICAST_TRANSIT
+  name: MLAG_L3_VRF_TEN_E_L3_MULTICAST_TRANSIT
   trunk_groups:
   - MLAG
   tenant: Tenant_E
@@ -884,7 +884,7 @@ vlans:
   name: L3_MULTICAST_ENABLED_150
   tenant: Tenant_E
 - id: 3050
-  name: MLAG_iBGP_TEN_E_PEG_L3_MULTICAST_ENABLED
+  name: MLAG_L3_VRF_TEN_E_PEG_L3_MULTICAST_ENABLED
   trunk_groups:
   - MLAG
   tenant: Tenant_E
@@ -929,7 +929,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_DISABLED_310_311'
+  description: MLAG_L3_VRF_MULTICAST_DISABLED_310_311
   vrf: MULTICAST_DISABLED_310_311
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -953,7 +953,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_110_111'
+  description: MLAG_L3_VRF_MULTICAST_ENABLED_110_111
   vrf: MULTICAST_ENABLED_110_111
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -977,7 +977,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_210_DISABLED_211'
+  description: MLAG_L3_VRF_MULTICAST_ENABLED_210_DISABLED_211
   vrf: MULTICAST_ENABLED_210_DISABLED_211
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1001,7 +1001,7 @@ vlan_interfaces:
   tenant: Tenant_B
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_DISABLED_5_6'
+  description: MLAG_L3_VRF_MULTICAST_DISABLED_5_6
   vrf: MULTICAST_DISABLED_5_6
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1025,7 +1025,7 @@ vlan_interfaces:
   tenant: Tenant_B
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_1_2'
+  description: MLAG_L3_VRF_MULTICAST_ENABLED_1_2
   vrf: MULTICAST_ENABLED_1_2
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1049,7 +1049,7 @@ vlan_interfaces:
   tenant: Tenant_B
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_3_DISABLED_4'
+  description: MLAG_L3_VRF_MULTICAST_ENABLED_3_DISABLED_4
   vrf: MULTICAST_ENABLED_3_DISABLED_4
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1073,7 +1073,7 @@ vlan_interfaces:
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_C_L3_MULTICAST_DISABLED_330_331'
+  description: MLAG_L3_VRF_TEN_C_L3_MULTICAST_DISABLED_330_331
   vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1124,7 +1124,7 @@ vlan_interfaces:
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_C_L3_MULTICAST_ENABLED_130_131'
+  description: MLAG_L3_VRF_TEN_C_L3_MULTICAST_ENABLED_130_131
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1152,7 +1152,7 @@ vlan_interfaces:
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231'
+  description: MLAG_L3_VRF_TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1176,7 +1176,7 @@ vlan_interfaces:
   tenant: Tenant_D
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_D_L3_MULTICAST_DISABLED_240_241'
+  description: MLAG_L3_VRF_TEN_D_L3_MULTICAST_DISABLED_240_241
   vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1204,7 +1204,7 @@ vlan_interfaces:
   tenant: Tenant_D
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141'
+  description: MLAG_L3_VRF_TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1224,7 +1224,7 @@ vlan_interfaces:
   tenant: Tenant_E
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE'
+  description: MLAG_L3_VRF_TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1244,7 +1244,7 @@ vlan_interfaces:
   tenant: Tenant_E
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES'
+  description: MLAG_L3_VRF_TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1264,7 +1264,7 @@ vlan_interfaces:
   tenant: Tenant_E
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_L3_MULTICAST_TRANSIT'
+  description: MLAG_L3_VRF_TEN_E_L3_MULTICAST_TRANSIT
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   mtu: 9214
   ip_address: 10.255.251.0/31
@@ -1284,7 +1284,7 @@ vlan_interfaces:
   tenant: Tenant_E
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_PEG_L3_MULTICAST_ENABLED'
+  description: MLAG_L3_VRF_TEN_E_PEG_L3_MULTICAST_ENABLED
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   mtu: 9214
   ip_address: 10.255.251.0/31
