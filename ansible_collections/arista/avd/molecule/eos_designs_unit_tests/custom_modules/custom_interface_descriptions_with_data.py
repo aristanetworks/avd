@@ -82,6 +82,12 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         """
         return f"{self._custom_description_prefix}_MLAG_PEER_{data.mlag_peer}_Po{data.mlag_port_channel_id}"
 
+    def mlag_peer_svi(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
+        return "MLAG_PEER"
+
+    def mlag_peer_l3_svi(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
+        return "MLAG_PEER_L3_PEERING"
+
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Implementation using new data.

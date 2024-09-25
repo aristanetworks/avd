@@ -190,6 +190,54 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
+    def mlag_peer_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - mlag_peer
+            - mlag_peer_vlan
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "mlag_peer_vlan": data.mlag_peer_vlan,
+                }
+            ),
+        )
+
+    def mlag_peer_l3_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - mlag_peer
+            - mlag_peer_l3_vlan
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_l3_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "mlag_peer_l3_vlan": data.mlag_peer_l3_vlan,
+                }
+            ),
+        )
+
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build a connected endpoint Ethernet interface description.
@@ -459,6 +507,14 @@ class InterfaceDescriptionData:
     @property
     def mlag_peer_port_channel_id(self) -> int:
         return self._shared_utils.mlag_peer_port_channel_id
+
+    @property
+    def mlag_peer_vlan(self) -> int:
+        return self._shared_utils.mlag_peer_vlan
+
+    @property
+    def mlag_peer_l3_vlan(self) -> int | None:
+        return self._shared_utils.mlag_peer_l3_vlan
 
     @property
     def mpls_lsr(self) -> bool:

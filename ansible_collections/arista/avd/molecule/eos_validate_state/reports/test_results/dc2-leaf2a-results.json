@@ -678,7 +678,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'"
+    "custom_field": "Interface Vlan4093 - MLAG_L3 = 'up'"
   },
   {
     "name": "dc2-leaf2a",
@@ -687,7 +687,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Vlan4094 - MLAG_PEER = 'up'"
+    "custom_field": "Interface Vlan4094 - MLAG = 'up'"
   },
   {
     "name": "dc2-leaf2a",

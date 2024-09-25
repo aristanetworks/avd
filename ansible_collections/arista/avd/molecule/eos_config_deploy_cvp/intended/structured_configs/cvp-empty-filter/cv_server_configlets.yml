@@ -14,11 +14,11 @@ cvp_configlets:
     350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n   name MLAG_iBGP_Tenant_A_WAN_Zone\n
     \  trunk group MLAG\n!\nvlan 3020\n   name MLAG_iBGP_Tenant_B_WAN_Zone\n   trunk
     group MLAG\n!\nvlan 3030\n   name MLAG_iBGP_Tenant_C_WAN_Zone\n   trunk group
-    MLAG\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group MLAG\n!\nvlan 4094\n
-    \  name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
-    Tenant_A_WAN_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface
-    Port-Channel5\n   description MLAG_DC1-BL1B_Port-Channel5\n   no shutdown\n   switchport
-    mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
+    MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n   name
+    MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf
+    instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n
+    \  description MLAG_DC1-BL1B_Port-Channel5\n   no shutdown\n   switchport mode
+    trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
     \  description P2P_LINK_TO_DC1-SPINE1_Ethernet6\n   no shutdown\n   mtu 1500\n
     \  no switchport\n   ip address 172.31.255.41/31\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_DC1-SPINE2_Ethernet6\n   no shutdown\n   mtu 1500\n   no switchport\n
@@ -43,22 +43,22 @@ cvp_configlets:
     \  mtu 1500\n   vrf Tenant_B_WAN_Zone\n   ip address 10.255.251.10/31\n!\ninterface
     Vlan3030\n   description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone\n   no shutdown\n
     \  mtu 1500\n   vrf Tenant_C_WAN_Zone\n   ip address 10.255.251.10/31\n!\ninterface
-    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
-    address 10.255.251.10/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
-    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.10/31\n!\ninterface
-    Vxlan1\n   description DC1-BL1A_VTEP\n   vxlan source-interface Loopback1\n   vxlan
-    virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port 4789\n
-    \  vxlan vlan 150 vni 10150\n   vxlan vlan 250 vni 20250\n   vxlan vlan 350 vni
-    30350\n   vxlan vrf Tenant_A_WAN_Zone vni 14\n   vxlan vrf Tenant_B_WAN_Zone vni
-    21\n   vxlan vrf Tenant_C_WAN_Zone vni 31\n!\nip virtual-router mac-address 00:dc:00:00:00:0a\n!\nip
-    routing\nno ip routing vrf MGMT\nip routing vrf Tenant_A_WAN_Zone\nip routing
-    vrf Tenant_B_WAN_Zone\nip routing vrf Tenant_C_WAN_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
-    \  seq 10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq
-    32\n!\nmlag configuration\n   domain-id DC1_BL1\n   local-interface Vlan4094\n
-    \  peer-address 10.255.252.11\n   peer-link Port-Channel5\n   reload-delay mlag
-    300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp
-    local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map
-    RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
+    Vlan4093\n   description MLAG_L3\n   no shutdown\n   mtu 1500\n   ip address 10.255.251.10/31\n!\ninterface
+    Vlan4094\n   description MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n
+    \  ip address 10.255.252.10/31\n!\ninterface Vxlan1\n   description DC1-BL1A_VTEP\n
+    \  vxlan source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
+    mlag-system-id\n   vxlan udp-port 4789\n   vxlan vlan 150 vni 10150\n   vxlan
+    vlan 250 vni 20250\n   vxlan vlan 350 vni 30350\n   vxlan vrf Tenant_A_WAN_Zone
+    vni 14\n   vxlan vrf Tenant_B_WAN_Zone vni 21\n   vxlan vrf Tenant_C_WAN_Zone
+    vni 31\n!\nip virtual-router mac-address 00:dc:00:00:00:0a\n!\nip routing\nno
+    ip routing vrf MGMT\nip routing vrf Tenant_A_WAN_Zone\nip routing vrf Tenant_B_WAN_Zone\nip
+    routing vrf Tenant_C_WAN_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq
+    10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag
+    configuration\n   domain-id DC1_BL1\n   local-interface Vlan4094\n   peer-address
+    10.255.252.11\n   peer-link Port-Channel5\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
+    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP
+    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
     RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
     less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
     bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65104\n
@@ -128,11 +128,11 @@ cvp_configlets:
     350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n   name MLAG_iBGP_Tenant_A_WAN_Zone\n
     \  trunk group MLAG\n!\nvlan 3020\n   name MLAG_iBGP_Tenant_B_WAN_Zone\n   trunk
     group MLAG\n!\nvlan 3030\n   name MLAG_iBGP_Tenant_C_WAN_Zone\n   trunk group
-    MLAG\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group MLAG\n!\nvlan 4094\n
-    \  name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
-    Tenant_A_WAN_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface
-    Port-Channel5\n   description MLAG_DC1-BL1A_Port-Channel5\n   no shutdown\n   switchport
-    mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
+    MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n   name
+    MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf
+    instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n
+    \  description MLAG_DC1-BL1A_Port-Channel5\n   no shutdown\n   switchport mode
+    trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
     \  description P2P_LINK_TO_DC1-SPINE1_Ethernet7\n   no shutdown\n   mtu 1500\n
     \  no switchport\n   ip address 172.31.255.49/31\n!\ninterface Ethernet2\n   description
     P2P_LINK_TO_DC1-SPINE2_Ethernet7\n   no shutdown\n   mtu 1500\n   no switchport\n
@@ -157,22 +157,22 @@ cvp_configlets:
     \  mtu 1500\n   vrf Tenant_B_WAN_Zone\n   ip address 10.255.251.11/31\n!\ninterface
     Vlan3030\n   description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone\n   no shutdown\n
     \  mtu 1500\n   vrf Tenant_C_WAN_Zone\n   ip address 10.255.251.11/31\n!\ninterface
-    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
-    address 10.255.251.11/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
-    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.11/31\n!\ninterface
-    Vxlan1\n   description DC1-BL1B_VTEP\n   vxlan source-interface Loopback1\n   vxlan
-    virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port 4789\n
-    \  vxlan vlan 150 vni 10150\n   vxlan vlan 250 vni 20250\n   vxlan vlan 350 vni
-    30350\n   vxlan vrf Tenant_A_WAN_Zone vni 14\n   vxlan vrf Tenant_B_WAN_Zone vni
-    21\n   vxlan vrf Tenant_C_WAN_Zone vni 31\n!\nip virtual-router mac-address 00:dc:00:00:00:0a\n!\nip
-    routing\nno ip routing vrf MGMT\nip routing vrf Tenant_A_WAN_Zone\nip routing
-    vrf Tenant_B_WAN_Zone\nip routing vrf Tenant_C_WAN_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
-    \  seq 10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq
-    32\n!\nmlag configuration\n   domain-id DC1_BL1\n   local-interface Vlan4094\n
-    \  peer-address 10.255.252.10\n   peer-link Port-Channel5\n   reload-delay mlag
-    300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp
-    local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map
-    RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
+    Vlan4093\n   description MLAG_L3\n   no shutdown\n   mtu 1500\n   ip address 10.255.251.11/31\n!\ninterface
+    Vlan4094\n   description MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n
+    \  ip address 10.255.252.11/31\n!\ninterface Vxlan1\n   description DC1-BL1B_VTEP\n
+    \  vxlan source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
+    mlag-system-id\n   vxlan udp-port 4789\n   vxlan vlan 150 vni 10150\n   vxlan
+    vlan 250 vni 20250\n   vxlan vlan 350 vni 30350\n   vxlan vrf Tenant_A_WAN_Zone
+    vni 14\n   vxlan vrf Tenant_B_WAN_Zone vni 21\n   vxlan vrf Tenant_C_WAN_Zone
+    vni 31\n!\nip virtual-router mac-address 00:dc:00:00:00:0a\n!\nip routing\nno
+    ip routing vrf MGMT\nip routing vrf Tenant_A_WAN_Zone\nip routing vrf Tenant_B_WAN_Zone\nip
+    routing vrf Tenant_C_WAN_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq
+    10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag
+    configuration\n   domain-id DC1_BL1\n   local-interface Vlan4094\n   peer-address
+    10.255.252.10\n   peer-link Port-Channel5\n   reload-delay mlag 300\n   reload-delay
+    non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
+    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP
+    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
     RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
     less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
     bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65104\n
@@ -267,9 +267,9 @@ cvp_configlets:
     150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 210\n   name Tenant_B_OP_Zone_1\n!\nvlan
     211\n   name Tenant_B_OP_Zone_2\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n!\nvlan
     310\n   name Tenant_C_OP_Zone_1\n!\nvlan 311\n   name Tenant_C_OP_Zone_2\n!\nvlan
-    350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group
-    MLAG\n!\nvrf instance MGMT\n!\ninterface Port-Channel1\n   description DC1_SVC3_Po7\n
-    \  no shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
+    350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 4094\n   name MLAG\n   trunk group MLAG\n!\nvrf
+    instance MGMT\n!\ninterface Port-Channel1\n   description DC1_SVC3_Po7\n   no
+    shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
     \  switchport mode trunk\n   switchport\n   mlag 1\n!\ninterface Port-Channel3\n
     \  description MLAG_DC1-L2LEAF2B_Port-Channel3\n   no shutdown\n   switchport
     mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
@@ -279,9 +279,9 @@ cvp_configlets:
     \  no shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet4\n   description
     MLAG_DC1-L2LEAF2B_Ethernet4\n   no shutdown\n   channel-group 3 mode active\n!\ninterface
     Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
-    address 192.168.200.113/24\n!\ninterface Vlan4094\n   description MLAG_PEER\n
-    \  no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.16/31\nno
-    ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n   local-interface
+    address 192.168.200.113/24\n!\ninterface Vlan4094\n   description MLAG\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.16/31\nno ip
+    routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n   local-interface
     Vlan4094\n   peer-address 10.255.252.17\n   peer-link Port-Channel3\n   reload-delay
     mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp
     local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nend\n"
@@ -303,9 +303,9 @@ cvp_configlets:
     150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 210\n   name Tenant_B_OP_Zone_1\n!\nvlan
     211\n   name Tenant_B_OP_Zone_2\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n!\nvlan
     310\n   name Tenant_C_OP_Zone_1\n!\nvlan 311\n   name Tenant_C_OP_Zone_2\n!\nvlan
-    350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group
-    MLAG\n!\nvrf instance MGMT\n!\ninterface Port-Channel1\n   description DC1_SVC3_Po7\n
-    \  no shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
+    350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 4094\n   name MLAG\n   trunk group MLAG\n!\nvrf
+    instance MGMT\n!\ninterface Port-Channel1\n   description DC1_SVC3_Po7\n   no
+    shutdown\n   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n
     \  switchport mode trunk\n   switchport\n   mlag 1\n!\ninterface Port-Channel3\n
     \  description MLAG_DC1-L2LEAF2A_Port-Channel3\n   no shutdown\n   switchport
     mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Ethernet1\n
@@ -315,9 +315,9 @@ cvp_configlets:
     \  no shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet4\n   description
     MLAG_DC1-L2LEAF2A_Ethernet4\n   no shutdown\n   channel-group 3 mode active\n!\ninterface
     Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
-    address 192.168.200.114/24\n!\ninterface Vlan4094\n   description MLAG_PEER\n
-    \  no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.17/31\nno
-    ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n   local-interface
+    address 192.168.200.114/24\n!\ninterface Vlan4094\n   description MLAG\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.17/31\nno ip
+    routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n   local-interface
     Vlan4094\n   peer-address 10.255.252.16\n   peer-link Port-Channel3\n   reload-delay
     mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp
     local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nend\n"
@@ -423,9 +423,9 @@ cvp_configlets:
     MLAG_iBGP_Tenant_A_APP_Zone\n   trunk group MLAG\n!\nvlan 3012\n   name MLAG_iBGP_Tenant_A_DB_Zone\n
     \  trunk group MLAG\n!\nvlan 3019\n   name MLAG_iBGP_Tenant_B_OP_Zone\n   trunk
     group MLAG\n!\nvlan 3029\n   name MLAG_iBGP_Tenant_C_OP_Zone\n   trunk group MLAG\n!\nvlan
-    4093\n   name LEAF_PEER_L3\n   trunk group MLAG\n!\nvlan 4094\n   name MLAG_PEER\n
-    \  trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf
-    instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf
+    4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n   name MLAG\n   trunk
+    group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf instance
+    Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf
     instance Tenant_B_OP_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\ninterface Port-Channel5\n
     \  description MLAG_DC1-LEAF2B_Port-Channel5\n   no shutdown\n   switchport mode
     trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Port-Channel7\n
@@ -483,38 +483,38 @@ cvp_configlets:
     \  mtu 1500\n   vrf Tenant_B_OP_Zone\n   ip address 10.255.251.2/31\n!\ninterface
     Vlan3029\n   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone\n   no shutdown\n
     \  mtu 1500\n   vrf Tenant_C_OP_Zone\n   ip address 10.255.251.2/31\n!\ninterface
-    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
-    address 10.255.251.2/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
-    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.2/31\n!\ninterface
-    Vxlan1\n   description DC1-LEAF2A_VTEP\n   vxlan source-interface Loopback1\n
-    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
-    4789\n   vxlan vlan 110 vni 10110\n   vxlan vlan 111 vni 50111\n   vxlan vlan
-    120 vni 10120\n   vxlan vlan 121 vni 10121\n   vxlan vlan 130 vni 10130\n   vxlan
-    vlan 131 vni 10131\n   vxlan vlan 140 vni 10140\n   vxlan vlan 141 vni 10141\n
-    \  vxlan vlan 210 vni 20210\n   vxlan vlan 211 vni 20211\n   vxlan vlan 310 vni
-    30310\n   vxlan vlan 311 vni 30311\n   vxlan vrf Tenant_A_APP_Zone vni 12\n   vxlan
-    vrf Tenant_A_DB_Zone vni 13\n   vxlan vrf Tenant_A_OP_Zone vni 10\n   vxlan vrf
-    Tenant_A_WEB_Zone vni 11\n   vxlan vrf Tenant_B_OP_Zone vni 20\n   vxlan vrf Tenant_C_OP_Zone
-    vni 30\n!\nip virtual-router mac-address 00:dc:00:00:00:0a\n!\nip address virtual
-    source-nat vrf Tenant_A_OP_Zone address 10.255.1.6\n!\nip routing\nno ip routing
-    vrf MGMT\nip routing vrf Tenant_A_APP_Zone\nip routing vrf Tenant_A_DB_Zone\nip
-    routing vrf Tenant_A_OP_Zone\nip routing vrf Tenant_A_WEB_Zone\nip routing vrf
-    Tenant_B_OP_Zone\nip routing vrf Tenant_C_OP_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
-    \  seq 10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq
-    32\n!\nmlag configuration\n   domain-id DC1_LEAF2\n   local-interface Vlan4094\n
-    \  peer-address 10.255.252.3\n   peer-link Port-Channel5\n   reload-delay mlag
-    300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp
-    local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map
-    RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
-    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
-    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n
-    \  router-id 192.168.255.6\n   maximum-paths 4 ecmp 4\n   update wait-install\n
-    \  no bgp default ipv4-unicast\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
-    EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    Vlan4093\n   description MLAG_L3\n   no shutdown\n   mtu 1500\n   ip address 10.255.251.2/31\n!\ninterface
+    Vlan4094\n   description MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n
+    \  ip address 10.255.252.2/31\n!\ninterface Vxlan1\n   description DC1-LEAF2A_VTEP\n
+    \  vxlan source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
+    mlag-system-id\n   vxlan udp-port 4789\n   vxlan vlan 110 vni 10110\n   vxlan
+    vlan 111 vni 50111\n   vxlan vlan 120 vni 10120\n   vxlan vlan 121 vni 10121\n
+    \  vxlan vlan 130 vni 10130\n   vxlan vlan 131 vni 10131\n   vxlan vlan 140 vni
+    10140\n   vxlan vlan 141 vni 10141\n   vxlan vlan 210 vni 20210\n   vxlan vlan
+    211 vni 20211\n   vxlan vlan 310 vni 30310\n   vxlan vlan 311 vni 30311\n   vxlan
+    vrf Tenant_A_APP_Zone vni 12\n   vxlan vrf Tenant_A_DB_Zone vni 13\n   vxlan vrf
+    Tenant_A_OP_Zone vni 10\n   vxlan vrf Tenant_A_WEB_Zone vni 11\n   vxlan vrf Tenant_B_OP_Zone
+    vni 20\n   vxlan vrf Tenant_C_OP_Zone vni 30\n!\nip virtual-router mac-address
+    00:dc:00:00:00:0a\n!\nip address virtual source-nat vrf Tenant_A_OP_Zone address
+    10.255.1.6\n!\nip routing\nno ip routing vrf MGMT\nip routing vrf Tenant_A_APP_Zone\nip
+    routing vrf Tenant_A_DB_Zone\nip routing vrf Tenant_A_OP_Zone\nip routing vrf
+    Tenant_A_WEB_Zone\nip routing vrf Tenant_B_OP_Zone\nip routing vrf Tenant_C_OP_Zone\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24 eq 32\n
+    \  seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag configuration\n   domain-id DC1_LEAF2\n
+    \  local-interface Vlan4094\n   peer-address 10.255.252.3\n   peer-link Port-Channel5\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server vrf MGMT
+    192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n
+    \  description Make routes learned over MLAG Peer-link less preferred on spines
+    to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n   multihop
+    interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n   router-id 192.168.255.6\n
+    \  maximum-paths 4 ecmp 4\n   update wait-install\n   no bgp default ipv4-unicast\n
+    \  distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n
+    \  neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
     peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
     \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
     maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
@@ -599,9 +599,9 @@ cvp_configlets:
     MLAG_iBGP_Tenant_A_APP_Zone\n   trunk group MLAG\n!\nvlan 3012\n   name MLAG_iBGP_Tenant_A_DB_Zone\n
     \  trunk group MLAG\n!\nvlan 3019\n   name MLAG_iBGP_Tenant_B_OP_Zone\n   trunk
     group MLAG\n!\nvlan 3029\n   name MLAG_iBGP_Tenant_C_OP_Zone\n   trunk group MLAG\n!\nvlan
-    4093\n   name LEAF_PEER_L3\n   trunk group MLAG\n!\nvlan 4094\n   name MLAG_PEER\n
-    \  trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf
-    instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf
+    4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n   name MLAG\n   trunk
+    group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf instance
+    Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf
     instance Tenant_B_OP_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\ninterface Port-Channel5\n
     \  description MLAG_DC1-LEAF2A_Port-Channel5\n   no shutdown\n   switchport mode
     trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Port-Channel7\n
@@ -659,38 +659,38 @@ cvp_configlets:
     \  mtu 1500\n   vrf Tenant_B_OP_Zone\n   ip address 10.255.251.3/31\n!\ninterface
     Vlan3029\n   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone\n   no shutdown\n
     \  mtu 1500\n   vrf Tenant_C_OP_Zone\n   ip address 10.255.251.3/31\n!\ninterface
-    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
-    address 10.255.251.3/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
-    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.3/31\n!\ninterface
-    Vxlan1\n   description DC1-LEAF2B_VTEP\n   vxlan source-interface Loopback1\n
-    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
-    4789\n   vxlan vlan 110 vni 10110\n   vxlan vlan 111 vni 50111\n   vxlan vlan
-    120 vni 10120\n   vxlan vlan 121 vni 10121\n   vxlan vlan 130 vni 10130\n   vxlan
-    vlan 131 vni 10131\n   vxlan vlan 140 vni 10140\n   vxlan vlan 141 vni 10141\n
-    \  vxlan vlan 210 vni 20210\n   vxlan vlan 211 vni 20211\n   vxlan vlan 310 vni
-    30310\n   vxlan vlan 311 vni 30311\n   vxlan vrf Tenant_A_APP_Zone vni 12\n   vxlan
-    vrf Tenant_A_DB_Zone vni 13\n   vxlan vrf Tenant_A_OP_Zone vni 10\n   vxlan vrf
-    Tenant_A_WEB_Zone vni 11\n   vxlan vrf Tenant_B_OP_Zone vni 20\n   vxlan vrf Tenant_C_OP_Zone
-    vni 30\n!\nip virtual-router mac-address 00:dc:00:00:00:0a\n!\nip address virtual
-    source-nat vrf Tenant_A_OP_Zone address 10.255.1.7\n!\nip routing\nno ip routing
-    vrf MGMT\nip routing vrf Tenant_A_APP_Zone\nip routing vrf Tenant_A_DB_Zone\nip
-    routing vrf Tenant_A_OP_Zone\nip routing vrf Tenant_A_WEB_Zone\nip routing vrf
-    Tenant_B_OP_Zone\nip routing vrf Tenant_C_OP_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n
-    \  seq 10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq
-    32\n!\nmlag configuration\n   domain-id DC1_LEAF2\n   local-interface Vlan4094\n
-    \  peer-address 10.255.252.2\n   peer-link Port-Channel5\n   reload-delay mlag
-    300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp
-    local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map
-    RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map
-    RM-MLAG-PEER-IN permit 10\n   description Make routes learned over MLAG Peer-link
-    less preferred on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n
-    \  router-id 192.168.255.7\n   maximum-paths 4 ecmp 4\n   update wait-install\n
-    \  no bgp default ipv4-unicast\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor
-    EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor
-    EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS
-    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    Vlan4093\n   description MLAG_L3\n   no shutdown\n   mtu 1500\n   ip address 10.255.251.3/31\n!\ninterface
+    Vlan4094\n   description MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n
+    \  ip address 10.255.252.3/31\n!\ninterface Vxlan1\n   description DC1-LEAF2B_VTEP\n
+    \  vxlan source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
+    mlag-system-id\n   vxlan udp-port 4789\n   vxlan vlan 110 vni 10110\n   vxlan
+    vlan 111 vni 50111\n   vxlan vlan 120 vni 10120\n   vxlan vlan 121 vni 10121\n
+    \  vxlan vlan 130 vni 10130\n   vxlan vlan 131 vni 10131\n   vxlan vlan 140 vni
+    10140\n   vxlan vlan 141 vni 10141\n   vxlan vlan 210 vni 20210\n   vxlan vlan
+    211 vni 20211\n   vxlan vlan 310 vni 30310\n   vxlan vlan 311 vni 30311\n   vxlan
+    vrf Tenant_A_APP_Zone vni 12\n   vxlan vrf Tenant_A_DB_Zone vni 13\n   vxlan vrf
+    Tenant_A_OP_Zone vni 10\n   vxlan vrf Tenant_A_WEB_Zone vni 11\n   vxlan vrf Tenant_B_OP_Zone
+    vni 20\n   vxlan vrf Tenant_C_OP_Zone vni 30\n!\nip virtual-router mac-address
+    00:dc:00:00:00:0a\n!\nip address virtual source-nat vrf Tenant_A_OP_Zone address
+    10.255.1.7\n!\nip routing\nno ip routing vrf MGMT\nip routing vrf Tenant_A_APP_Zone\nip
+    routing vrf Tenant_A_DB_Zone\nip routing vrf Tenant_A_OP_Zone\nip routing vrf
+    Tenant_A_WEB_Zone\nip routing vrf Tenant_B_OP_Zone\nip routing vrf Tenant_C_OP_Zone\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24 eq 32\n
+    \  seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag configuration\n   domain-id DC1_LEAF2\n
+    \  local-interface Vlan4094\n   peer-address 10.255.252.2\n   peer-link Port-Channel5\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server vrf MGMT
+    192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n
+    \  description Make routes learned over MLAG Peer-link less preferred on spines
+    to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n   multihop
+    interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n   router-id 192.168.255.7\n
+    \  maximum-paths 4 ecmp 4\n   update wait-install\n   no bgp default ipv4-unicast\n
+    \  distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n
+    \  neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
     peer group\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n
     \  neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
     maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
@@ -1059,35 +1059,35 @@ cvp_configlets:
     \  name MLAG_iBGP_Tenant_B_OP_Zone\n   trunk group MLAG\n!\nvlan 3020\n   name
     MLAG_iBGP_Tenant_B_WAN_Zone\n   trunk group MLAG\n!\nvlan 3029\n   name MLAG_iBGP_Tenant_C_OP_Zone\n
     \  trunk group MLAG\n!\nvlan 3030\n   name MLAG_iBGP_Tenant_C_WAN_Zone\n   trunk
-    group MLAG\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group MLAG\n!\nvlan 4094\n
-    \  name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
-    Tenant_A_APP_Zone\n!\nvrf instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf
-    instance Tenant_A_WAN_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf instance
-    Tenant_B_OP_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\nvrf
-    instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n   description MLAG_DC1-SVC3B_Port-Channel5\n
-    \  no shutdown\n   switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
-    Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk
-    allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport
-    mode trunk\n   switchport\n   mlag 7\n!\ninterface Port-Channel10\n   description
-    SERVER_server03_ESI\n   no shutdown\n   switchport trunk allowed vlan 110-111,210-211\n
-    \  switchport mode trunk\n   switchport\n   evpn ethernet-segment\n      identifier
-    0000:0000:0303:0202:0101\n      route-target import 03:03:02:02:01:01\n   lacp
-    system-id 0303.0202.0101\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet4\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.25/31\n!\ninterface
-    Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet4\n   no shutdown\n   mtu
-    1500\n   no switchport\n   ip address 172.31.255.27/31\n!\ninterface Ethernet3\n
-    \  description P2P_LINK_TO_DC1-SPINE3_Ethernet4\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.29/31\n!\ninterface Ethernet4\n   description
-    P2P_LINK_TO_DC1-SPINE4_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.31/31\n!\ninterface Ethernet5\n   description MLAG_DC1-SVC3B_Ethernet5\n
-    \  no shutdown\n   channel-group 5 mode active\n!\ninterface Ethernet6\n   description
-    MLAG_DC1-SVC3B_Ethernet6\n   no shutdown\n   channel-group 5 mode active\n!\ninterface
-    Ethernet7\n   description DC1-L2LEAF2A_Ethernet1\n   no shutdown\n   channel-group
-    7 mode active\n!\ninterface Ethernet8\n   description DC1-L2LEAF2B_Ethernet1\n
-    \  no shutdown\n   channel-group 7 mode active\n!\ninterface Ethernet10\n   description
-    SERVER_server03_ESI_Eth1\n   no shutdown\n   channel-group 10 mode active\n!\ninterface
-    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.8/32\n!\ninterface
-    Loopback1\n   description VXLAN_TUNNEL_SOURCE\n   no shutdown\n   ip address 192.168.254.8/32\n!\ninterface
+    group MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n
+    \  name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf
+    instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf
+    instance Tenant_A_WEB_Zone\n!\nvrf instance Tenant_B_OP_Zone\n!\nvrf instance
+    Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface
+    Port-Channel5\n   description MLAG_DC1-SVC3B_Port-Channel5\n   no shutdown\n   switchport
+    mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Port-Channel7\n
+    \  description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk allowed vlan
+    110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport mode
+    trunk\n   switchport\n   mlag 7\n!\ninterface Port-Channel10\n   description SERVER_server03_ESI\n
+    \  no shutdown\n   switchport trunk allowed vlan 110-111,210-211\n   switchport
+    mode trunk\n   switchport\n   evpn ethernet-segment\n      identifier 0000:0000:0303:0202:0101\n
+    \     route-target import 03:03:02:02:01:01\n   lacp system-id 0303.0202.0101\n!\ninterface
+    Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet4\n   no shutdown\n   mtu
+    1500\n   no switchport\n   ip address 172.31.255.25/31\n!\ninterface Ethernet2\n
+    \  description P2P_LINK_TO_DC1-SPINE2_Ethernet4\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.27/31\n!\ninterface Ethernet3\n   description
+    P2P_LINK_TO_DC1-SPINE3_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 172.31.255.29/31\n!\ninterface Ethernet4\n   description P2P_LINK_TO_DC1-SPINE4_Ethernet4\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.31/31\n!\ninterface
+    Ethernet5\n   description MLAG_DC1-SVC3B_Ethernet5\n   no shutdown\n   channel-group
+    5 mode active\n!\ninterface Ethernet6\n   description MLAG_DC1-SVC3B_Ethernet6\n
+    \  no shutdown\n   channel-group 5 mode active\n!\ninterface Ethernet7\n   description
+    DC1-L2LEAF2A_Ethernet1\n   no shutdown\n   channel-group 7 mode active\n!\ninterface
+    Ethernet8\n   description DC1-L2LEAF2B_Ethernet1\n   no shutdown\n   channel-group
+    7 mode active\n!\ninterface Ethernet10\n   description SERVER_server03_ESI_Eth1\n
+    \  no shutdown\n   channel-group 10 mode active\n!\ninterface Loopback0\n   description
+    ROUTER_ID\n   no shutdown\n   ip address 192.168.255.8/32\n!\ninterface Loopback1\n
+    \  description VXLAN_TUNNEL_SOURCE\n   no shutdown\n   ip address 192.168.254.8/32\n!\ninterface
     Loopback100\n   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS\n   no shutdown\n
     \  vrf Tenant_A_OP_Zone\n   ip address 10.255.1.8/32\n!\ninterface Management1\n
     \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 192.168.200.108/24\n!\ninterface
@@ -1133,11 +1133,11 @@ cvp_configlets:
     vrf Tenant_C_OP_Zone\n   no shutdown\n   mtu 1500\n   vrf Tenant_C_OP_Zone\n   ip
     address 10.255.251.6/31\n!\ninterface Vlan3030\n   description MLAG_PEER_L3_iBGP:
     vrf Tenant_C_WAN_Zone\n   no shutdown\n   mtu 1500\n   vrf Tenant_C_WAN_Zone\n
-    \  ip address 10.255.251.6/31\n!\ninterface Vlan4093\n   description MLAG_PEER_L3_PEERING\n
+    \  ip address 10.255.251.6/31\n!\ninterface Vlan4093\n   description MLAG_L3\n
     \  no shutdown\n   mtu 1500\n   ip address 10.255.251.6/31\n!\ninterface Vlan4094\n
-    \  description MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip
-    address 10.255.252.6/31\n!\ninterface Vxlan1\n   description DC1-SVC3A_VTEP\n
-    \  vxlan source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
+    \  description MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address
+    10.255.252.6/31\n!\ninterface Vxlan1\n   description DC1-SVC3A_VTEP\n   vxlan
+    source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
     mlag-system-id\n   vxlan udp-port 4789\n   vxlan vlan 110 vni 10110\n   vxlan
     vlan 111 vni 50111\n   vxlan vlan 120 vni 10120\n   vxlan vlan 121 vni 10121\n
     \  vxlan vlan 130 vni 10130\n   vxlan vlan 131 vni 10131\n   vxlan vlan 140 vni
@@ -1275,16 +1275,16 @@ cvp_configlets:
     \  name MLAG_iBGP_Tenant_B_OP_Zone\n   trunk group MLAG\n!\nvlan 3020\n   name
     MLAG_iBGP_Tenant_B_WAN_Zone\n   trunk group MLAG\n!\nvlan 3029\n   name MLAG_iBGP_Tenant_C_OP_Zone\n
     \  trunk group MLAG\n!\nvlan 3030\n   name MLAG_iBGP_Tenant_C_WAN_Zone\n   trunk
-    group MLAG\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group MLAG\n!\nvlan 4094\n
-    \  name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
-    Tenant_A_APP_Zone\n!\nvrf instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf
-    instance Tenant_A_WAN_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n!\nvrf instance
-    Tenant_B_OP_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\nvrf
-    instance Tenant_C_WAN_Zone\n!\ninterface Port-Channel5\n   description MLAG_DC1-SVC3A_Port-Channel5\n
-    \  no shutdown\n   switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
-    Port-Channel7\n   description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk
-    allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport
-    mode trunk\n   switchport\n   mlag 7\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet5\n
+    group MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n
+    \  name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf
+    instance Tenant_A_DB_Zone\n!\nvrf instance Tenant_A_OP_Zone\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf
+    instance Tenant_A_WEB_Zone\n!\nvrf instance Tenant_B_OP_Zone\n!\nvrf instance
+    Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_OP_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\ninterface
+    Port-Channel5\n   description MLAG_DC1-SVC3A_Port-Channel5\n   no shutdown\n   switchport
+    mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface Port-Channel7\n
+    \  description DC1_L2LEAF2_Po1\n   no shutdown\n   switchport trunk allowed vlan
+    110-111,120-121,130-131,140-141,150,210-211,250,310-311,350\n   switchport mode
+    trunk\n   switchport\n   mlag 7\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-SPINE1_Ethernet5\n
     \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.33/31\n!\ninterface
     Ethernet2\n   description P2P_LINK_TO_DC1-SPINE2_Ethernet5\n   no shutdown\n   mtu
     1500\n   no switchport\n   ip address 172.31.255.35/31\n!\ninterface Ethernet3\n
@@ -1344,11 +1344,11 @@ cvp_configlets:
     vrf Tenant_C_OP_Zone\n   no shutdown\n   mtu 1500\n   vrf Tenant_C_OP_Zone\n   ip
     address 10.255.251.7/31\n!\ninterface Vlan3030\n   description MLAG_PEER_L3_iBGP:
     vrf Tenant_C_WAN_Zone\n   no shutdown\n   mtu 1500\n   vrf Tenant_C_WAN_Zone\n
-    \  ip address 10.255.251.7/31\n!\ninterface Vlan4093\n   description MLAG_PEER_L3_PEERING\n
+    \  ip address 10.255.251.7/31\n!\ninterface Vlan4093\n   description MLAG_L3\n
     \  no shutdown\n   mtu 1500\n   ip address 10.255.251.7/31\n!\ninterface Vlan4094\n
-    \  description MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip
-    address 10.255.252.7/31\n!\ninterface Vxlan1\n   description DC1-SVC3B_VTEP\n
-    \  vxlan source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
+    \  description MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address
+    10.255.252.7/31\n!\ninterface Vxlan1\n   description DC1-SVC3B_VTEP\n   vxlan
+    source-interface Loopback1\n   vxlan virtual-router encapsulation mac-address
     mlag-system-id\n   vxlan udp-port 4789\n   vxlan vlan 110 vni 10110\n   vxlan
     vlan 111 vni 50111\n   vxlan vlan 120 vni 10120\n   vxlan vlan 121 vni 10121\n
     \  vxlan vlan 130 vni 10130\n   vxlan vlan 131 vni 10131\n   vxlan vlan 140 vni

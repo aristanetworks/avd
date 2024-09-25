@@ -253,9 +253,9 @@ STP Root Super: **True**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
 no spanning-tree vlan-id 4092
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 ```
 
@@ -310,7 +310,7 @@ vlan internal order ascending range 1006 1199
 | 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
 | 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | MLAG |
 | 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | MLAG |
-| 4092 | MLAG_PEER | MLAG |
+| 4092 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -416,7 +416,7 @@ vlan 3030
    trunk group MLAG
 !
 vlan 4092
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -841,7 +841,7 @@ interface Loopback100
 | Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
 | Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
 | Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
-| Vlan4092 | MLAG_PEER | default | 1500 | False |
+| Vlan4092 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -1059,7 +1059,7 @@ interface Vlan3030
    ip address 10.255.252.7/31
 !
 interface Vlan4092
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
