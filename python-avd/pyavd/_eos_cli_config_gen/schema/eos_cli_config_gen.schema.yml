@@ -11546,7 +11546,9 @@ keys:
         - transit region
         - transit zone
       gateway_vxlan:
-        description: Enables VXLAN gateway router profile.
+        description: 'Enables VXLAN gateway router profile.
+
+          Only supported when `topology_role` is either `edge` or `transit [region|zone]`.'
         type: bool
       region:
         type: dict

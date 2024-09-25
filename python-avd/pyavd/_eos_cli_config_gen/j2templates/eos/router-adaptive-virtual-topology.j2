@@ -9,7 +9,7 @@
 router adaptive-virtual-topology
 {%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
 {%         set topology_role = "topology role " ~ router_adaptive_virtual_topology.topology_role %}
-{%         if router_adaptive_virtual_topology.gateway_vxlan is arista.avd.defined(true) %}
+{%         if router_adaptive_virtual_topology.gateway_vxlan is arista.avd.defined(true) and router_adaptive_virtual_topology.topology_role in ["edge", "transit zone", "transit region"] %}
 {%             set topology_role = topology_role ~ " gateway vxlan" %}
 {%         endif %}
    {{ topology_role }}
