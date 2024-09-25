@@ -18117,6 +18117,7 @@ keys:
                     valid_values:
                     - ipv4
                     - ipv6
+                    required: true
                   source:
                     type: dict
                     keys:
@@ -18189,6 +18190,10 @@ keys:
                           type: list
                           items:
                             type: str
+                        enforce_gtsm:
+                          type: bool
+                          description: Enforce the GTSM for BGP speakers. Only supported
+                            when protocol is set to 'neighbors'.
                   actions:
                     type: dict
                     keys:

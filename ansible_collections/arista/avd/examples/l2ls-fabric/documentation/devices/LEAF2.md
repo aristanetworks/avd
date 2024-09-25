@@ -293,8 +293,8 @@ vlan 4094
 | Ethernet1 | SPINE1_Ethernet2 | *trunk | *10,20 | *- | *- | 1 |
 | Ethernet2 | SPINE2_Ethernet2 | *trunk | *10,20 | *- | *- | 1 |
 | Ethernet3 | SERVER_HostB_Eth1 | access | 20 | - | - | - |
-| Ethernet47 | MLAG_PEER_LEAF1_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
-| Ethernet48 | MLAG_PEER_LEAF1_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet47 | MLAG_LEAF1_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet48 | MLAG_LEAF1_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -321,12 +321,12 @@ interface Ethernet3
    spanning-tree portfast
 !
 interface Ethernet47
-   description MLAG_PEER_LEAF1_Ethernet47
+   description MLAG_LEAF1_Ethernet47
    no shutdown
    channel-group 47 mode active
 !
 interface Ethernet48
-   description MLAG_PEER_LEAF1_Ethernet48
+   description MLAG_LEAF1_Ethernet48
    no shutdown
    channel-group 47 mode active
 ```
@@ -340,7 +340,7 @@ interface Ethernet48
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | SPINES_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
-| Port-Channel47 | MLAG_PEER_LEAF1_Po47 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel47 | MLAG_LEAF1_Port-Channel47 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -355,7 +355,7 @@ interface Port-Channel1
    mlag 1
 !
 interface Port-Channel47
-   description MLAG_PEER_LEAF1_Po47
+   description MLAG_LEAF1_Port-Channel47
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
