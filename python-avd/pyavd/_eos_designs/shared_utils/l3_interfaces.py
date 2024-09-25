@@ -37,7 +37,7 @@ class L3InterfacesMixin:
             # Nothing to do
             return l3_interface
 
-        profile = get_item(self.l3_interface_profiles, "profile", l3_interface["profile"], default={})
+        profile = get_item(self.l3_interface_profiles, "profile", l3_interface["profile"], required=True)
         merged_dict: dict = merge(profile, l3_interface, list_merge="replace", destructive_merge=False)
         merged_dict.pop("profile", None)
         return merged_dict
