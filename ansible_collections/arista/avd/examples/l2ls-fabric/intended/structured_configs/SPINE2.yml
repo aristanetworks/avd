@@ -85,7 +85,7 @@ vlan_interfaces:
   ip_address: 192.168.0.1/31
 port_channel_interfaces:
 - name: Port-Channel47
-  description: MLAG_PEER_SPINE1_Po47
+  description: MLAG_SPINE1_Port-Channel47
   switchport:
     enabled: true
     mode: trunk
@@ -125,7 +125,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet47
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE1_Ethernet47
+  description: MLAG_SPINE1_Ethernet47
   shutdown: false
   channel_group:
     id: 47
@@ -134,7 +134,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet48
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE1_Ethernet48
+  description: MLAG_SPINE1_Ethernet48
   shutdown: false
   channel_group:
     id: 47

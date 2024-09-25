@@ -210,7 +210,7 @@ vlan_interfaces:
   ip_address: 10.254.1.97/31
 port_channel_interfaces:
 - name: Port-Channel9
-  description: MLAG_PEER_ptp-tests-leaf1_Po9
+  description: MLAG_ptp-tests-leaf1_Port-Channel9
   switchport:
     enabled: true
     mode: trunk
@@ -287,7 +287,7 @@ ethernet_interfaces:
   peer: ptp-tests-leaf1
   peer_interface: Ethernet9
   peer_type: mlag_peer
-  description: MLAG_PEER_ptp-tests-leaf1_Ethernet9
+  description: MLAG_ptp-tests-leaf1_Ethernet9
   shutdown: false
   channel_group:
     id: 9
@@ -296,7 +296,7 @@ ethernet_interfaces:
   peer: ptp-tests-leaf1
   peer_interface: Ethernet10
   peer_type: mlag_peer
-  description: MLAG_PEER_ptp-tests-leaf1_Ethernet10
+  description: MLAG_ptp-tests-leaf1_Ethernet10
   shutdown: false
   channel_group:
     id: 9

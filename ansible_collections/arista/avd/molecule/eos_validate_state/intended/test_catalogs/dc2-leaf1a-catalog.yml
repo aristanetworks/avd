@@ -305,13 +305,13 @@ anta.tests.interfaces:
     - name: Ethernet3
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet3 - MLAG_PEER_dc2-leaf1b_Ethernet3 = 'up'
+      custom_field: Interface Ethernet3 - MLAG_dc2-leaf1b_Ethernet3 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet4
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet4 - MLAG_PEER_dc2-leaf1b_Ethernet4 = 'up'
+      custom_field: Interface Ethernet4 - MLAG_dc2-leaf1b_Ethernet4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet1
@@ -341,7 +341,7 @@ anta.tests.interfaces:
     - name: Port-Channel3
       status: up
     result_overwrite:
-      custom_field: Interface Port-Channel3 - MLAG_PEER_dc2-leaf1b_Po3 = 'up'
+      custom_field: Interface Port-Channel3 - MLAG_dc2-leaf1b_Port-Channel3 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Port-Channel8

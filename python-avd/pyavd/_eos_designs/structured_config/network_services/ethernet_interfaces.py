@@ -93,13 +93,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
                                 subif_parent_interface_names.add(parent_interface_name)
 
-                                interface["type"] = "l3dot1q"
                                 encapsulation_dot1q_vlans = l3_interface.get("encapsulation_dot1q_vlan", [])
                                 if len(encapsulation_dot1q_vlans) > node_index:
-                                    interface["encapsulation_dot1q_vlan"] = encapsulation_dot1q_vlans[node_index]
+                                    interface["encapsulation_dot1q"] = {"vlan": encapsulation_dot1q_vlans[node_index]}
                                 else:
-                                    interface["encapsulation_dot1q_vlan"] = int(subif_id)
-
+                                    interface["encapsulation_dot1q"] = {"vlan": int(subif_id)}
                             else:
                                 interface.update({"switchport": {"enabled": False}})
 
@@ -221,16 +219,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     subif_name = f"{interface_name}.{subif['number']}"
                                     ethernet_interface = {
                                         "name": subif_name,
-                                        "type": "l2dot1q",
                                         "peer_type": "point_to_point_service",
                                         "encapsulation_vlan": {
                                             "client": {
-                                                "dot1q": {
-                                                    "vlan": subif["number"],
-                                                },
+                                                "encapsulation": "dot1q",
+                                                "vlan": subif["number"],
                                             },
                                             "network": {
-                                                "client": True,
+                                                "encapsulation": "client",
                                             },
                                         },
                                         "shutdown": False,

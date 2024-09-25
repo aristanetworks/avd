@@ -36,7 +36,7 @@ vlan_interfaces:
   ip_address: 10.10.255.4/31
 port_channel_interfaces:
 - name: Port-Channel25
-  description: MLAG_PEER_SL-LEAF1B_Po25
+  description: MLAG_SL-LEAF1B_Port-Channel25
   switchport:
     enabled: true
     mode: trunk
@@ -67,7 +67,7 @@ ethernet_interfaces:
   peer: SL-LEAF1B
   peer_interface: Ethernet25
   peer_type: mlag_peer
-  description: MLAG_PEER_SL-LEAF1B_Ethernet25
+  description: MLAG_SL-LEAF1B_Ethernet25
   shutdown: false
   channel_group:
     id: 25
@@ -76,7 +76,7 @@ ethernet_interfaces:
   peer: SL-LEAF1B
   peer_interface: Ethernet26
   peer_type: mlag_peer
-  description: MLAG_PEER_SL-LEAF1B_Ethernet26
+  description: MLAG_SL-LEAF1B_Ethernet26
   shutdown: false
   channel_group:
     id: 25
