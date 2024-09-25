@@ -2115,6 +2115,44 @@ keys:
       If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
       dual-homed to two MLAG switches.'
     default: false
+  mlag_peer_l3_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG L3 peering
+      SVI (Interface Vlan4093 by default).\nThis can be a template using the format
+      string syntax.\nThe available template fields are:\n  - `mlag_peer`: The name
+      of the MLAG peer.\n  - `interface`: The MLAG L3 peering SVI name.\n  - `mlag_peer_l3_vlan`:
+      The MLAG L3 peering VLAN ID."
+    default: MLAG_L3
+  mlag_peer_l3_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_l3_vlan`:
+      The MLAG L3 peering VLAN ID."
+    default: MLAG_L3
+  mlag_peer_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peering SVI
+      (Interface Vlan4094 by default).\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `mlag_peer`: The name of the
+      MLAG peer.\n  - `interface`: The MLAG peering SVI name.\n  - `mlag_peer_vlan`:
+      The MLAG peering VLAN ID."
+    default: MLAG
+  mlag_peer_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG peering VLAN (VLAN 4094
+      by default).\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_vlan`:
+      The MLAG peering VLAN ID."
+    default: MLAG
   mlag_port_channel_description:
     type: str
     documentation_options:
@@ -4374,6 +4412,15 @@ keys:
 
             WAN interfaces require an inbound access-list to be set unless the carrier
             is "trusted".'
+  wan_encapsulation:
+    documentation_options:
+      table: wan-settings
+    description: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
+    type: str
+    default: path-selection
+    valid_values:
+    - path-selection
+    - vxlan
   wan_ha:
     documentation_options:
       table: wan-settings
