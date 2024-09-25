@@ -3,6 +3,11 @@
 router_bgp:
   as: 65101
   router_id: 192.168.255.42
+  bgp:
+    additional_paths:
+      receive: true
+      send:
+        ecmp_limit: 30
   peer_groups:
     - name: PATH-SELECTION-PG-1
       type: ipv4

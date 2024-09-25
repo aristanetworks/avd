@@ -41,6 +41,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.bgp.route_reflector_preserve_attributes.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bestpath</samp>](## "router_bgp.bgp.bestpath") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "router_bgp.bgp.bestpath.d_path") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.bgp.additional_paths") | Dictionary |  |  |  | BGP additional-paths commands. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.bgp.additional_paths.receive") | Boolean |  |  |  | Receive multiple paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.bgp.additional_paths.send") | Dictionary |  |  |  | Send multiple paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.bgp.additional_paths.send.any") | Boolean |  |  |  | Any eligible path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.bgp.additional_paths.send.backup") | Boolean |  |  |  | Best path and installed backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.bgp.additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.bgp.additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.bgp.additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
@@ -932,6 +940,30 @@
           always: <bool>
         bestpath:
           d_path: <bool>
+
+        # BGP additional-paths commands.
+        additional_paths:
+
+          # Receive multiple paths.
+          receive: <bool>
+
+          # Send multiple paths.
+          send:
+
+            # Any eligible path.
+            any: <bool>
+
+            # Best path and installed backup path.
+            backup: <bool>
+
+            # All paths in best path ECMP group.
+            ecmp: <bool>
+
+            # Amount of ECMP paths to send.
+            ecmp_limit: <int; 2-64>
+
+            # Amount of paths to send.
+            limit: <int; 2-64>
 
         # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
         redistribute_internal: <bool>

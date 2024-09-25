@@ -47,6 +47,11 @@ ASN Notation: asplain
 | ------ | --------- |
 | 65101 | 192.168.255.42 |
 
+| BGP Tuning |
+| ---------- |
+| bgp additional-paths receive |
+| bgp additional-paths send ecmp limit 30 |
+
 #### Router BGP Peer Groups
 
 ##### PATH-SELECTION-PG-1
@@ -122,6 +127,8 @@ ASN Notation: asplain
 !
 router bgp 65101
    router-id 192.168.255.42
+   bgp additional-paths receive
+   bgp additional-paths send ecmp limit 30
    neighbor PATH-SELECTION-PG-1 peer group
    neighbor PATH-SELECTION-PG-1 remote-as 65001
    neighbor PATH-SELECTION-PG-2 peer group
