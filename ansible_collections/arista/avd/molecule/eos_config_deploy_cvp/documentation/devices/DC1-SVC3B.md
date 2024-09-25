@@ -388,8 +388,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet5 | MLAG_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 
@@ -437,12 +437,12 @@ interface Ethernet4
    ip address 172.31.255.39/31
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-SVC3A_Ethernet5
+   description MLAG_DC1-SVC3A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-SVC3A_Ethernet6
+   description MLAG_DC1-SVC3A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -465,7 +465,7 @@ interface Ethernet8
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel5 | MLAG_DC1-SVC3A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -473,7 +473,7 @@ interface Ethernet8
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-SVC3A_Po5
+   description MLAG_DC1-SVC3A_Port-Channel5
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
