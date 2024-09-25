@@ -140,7 +140,7 @@ interface {{ vlan_interface.name }}
 {%         set host_proxy_cli =  "ip igmp host-proxy" %}
    {{ host_proxy_cli }}
 {%         if vlan_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
-{%             for proxy_group in vlan_interface.ip_igmp_host_proxy.groups %}
+{%             for proxy_group in vlan_interface.ip_igmp_host_proxy.groups | arista.avd.natural_sort %}
 {%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
 {%                     if proxy_group.include is arista.avd.defined %}
 {%                         for include_source in proxy_group.include %}
