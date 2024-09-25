@@ -107,6 +107,7 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
 | `wan_mode` | ✅ | Two possible modes, `legacy-autovpn` and `cv-pathfinder` (default). |
+| `wan_encapsulation` | ✅ | Two possible encapsulations, `vxlan` and `path-selection` (default). |
 | `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
 | `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
 | `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
@@ -143,6 +144,24 @@ By default the mode is set to `cv-pathfinder` and can be changed using:
 ---
 wan_mode: legacy-autovpn | cv-pathfinder # default: cv-pathfinder
 ```
+
+#### WAN encapsulation
+
+BGP peerings for the WAN can use two different encapsulation for EVPN address family:
+
+- path-selection
+- vxlan
+
+By default the mode is set to `path-selection` and can be changed using:
+
+```yaml
+---
+wan_encapsulaton: vxlan | path-selection # default: path-selection
+```
+
+!!! note
+
+    All routers participating to the WAN _must_ have the same encapsulation defined.
 
 #### WAN node_types
 

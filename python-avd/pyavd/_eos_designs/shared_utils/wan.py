@@ -662,3 +662,7 @@ class WanMixin:
             return None
 
         return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")
+
+    @cached_property
+    def wan_encapsulation(self: SharedUtils) -> str:
+        return get(self.hostvars, "wan_encapsulation", default="path-selection")
