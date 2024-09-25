@@ -440,7 +440,7 @@ vlan_interfaces:
   - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
+  description: MLAG_DC1-POD1-LEAF2B_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
@@ -514,7 +514,7 @@ ethernet_interfaces:
   peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5
+  description: MLAG_DC1-POD1-LEAF2B_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -523,7 +523,7 @@ ethernet_interfaces:
   peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6
+  description: MLAG_DC1-POD1-LEAF2B_Ethernet6
   shutdown: false
   channel_group:
     id: 5

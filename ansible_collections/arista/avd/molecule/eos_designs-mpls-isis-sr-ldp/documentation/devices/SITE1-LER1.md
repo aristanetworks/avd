@@ -293,7 +293,7 @@ interface Ethernet8
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
 | --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
@@ -401,11 +401,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.5/32
    ipv6 address 2000:1234:ffff:ffff::5/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 205
    node-segment ipv6 index 205
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces

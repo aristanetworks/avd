@@ -264,7 +264,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf4
   peer_interface: Ethernet12
   peer_type: mlag_peer
-  description: MLAG_PEER_sflow-tests-leaf4_Ethernet12
+  description: MLAG_sflow-tests-leaf4_Ethernet12
   shutdown: false
   channel_group:
     id: 11
