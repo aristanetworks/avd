@@ -2078,6 +2078,19 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  mlag_member_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peer-link
+      ethernet interfaces.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
+      The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
+      local MLAG port-channel ID.\n  - `mlag_peer_port_channel_id`: The port-channel
+      ID on the MLAG peer.\n\nBy default the description is templated from the name
+      and interface of the MLAG peer."
+    default: MLAG_{mlag_peer}_{peer_interface}
   mlag_on_orphan_port_channel_downlink:
     type: bool
     documentation_options:
@@ -2088,6 +2101,19 @@ keys:
       If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
       dual-homed to two MLAG switches.'
     default: false
+  mlag_port_channel_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peer-link
+      port-channel interfaces.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
+      The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
+      local MLAG port-channel ID.\n  - `mlag_peer_port_channel_id`: The port-channel
+      ID on the MLAG peer.\n\nBy default the description is templated from the name
+      and port-channel interface of the MLAG peer."
+    default: MLAG_{mlag_peer}_{peer_interface}
   name_servers:
     documentation_options:
       table: management-settings

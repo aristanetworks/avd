@@ -254,8 +254,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc2-leaf2b_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
-| Ethernet4 | MLAG_PEER_dc2-leaf2b_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet3 | MLAG_dc2-leaf2b_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_dc2-leaf2b_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet5 | SERVER_dc2-leaf2-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC2-LEAF2C_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
@@ -288,12 +288,12 @@ interface Ethernet2
    ip address 10.255.255.115/31
 !
 interface Ethernet3
-   description MLAG_PEER_dc2-leaf2b_Ethernet3
+   description MLAG_dc2-leaf2b_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_dc2-leaf2b_Ethernet4
+   description MLAG_dc2-leaf2b_Ethernet4
    no shutdown
    channel-group 3 mode active
 !
@@ -323,7 +323,7 @@ interface Ethernet8
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc2-leaf2b_Po3 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel3 | MLAG_dc2-leaf2b_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_dc2-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC2-LEAF2C_Po1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
@@ -332,7 +332,7 @@ interface Ethernet8
 ```eos
 !
 interface Port-Channel3
-   description MLAG_PEER_dc2-leaf2b_Po3
+   description MLAG_dc2-leaf2b_Port-Channel3
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG

@@ -315,8 +315,8 @@ vlan 4094
 | Ethernet49/1 | LEAF2A_Ethernet1/3 | *trunk | *10,210,220,230 | *- | *- | 491 |
 | Ethernet50/1 | LEAF3A_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
 | Ethernet51/1 | LEAF3B_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
-| Ethernet55/1 | MLAG_PEER_SPINE1_Ethernet55/1 | *trunk | *- | *- | *MLAG | 551 |
-| Ethernet56/1 | MLAG_PEER_SPINE1_Ethernet56/1 | *trunk | *- | *- | *MLAG | 551 |
+| Ethernet55/1 | MLAG_SPINE1_Ethernet55/1 | *trunk | *- | *- | *MLAG | 551 |
+| Ethernet56/1 | MLAG_SPINE1_Ethernet56/1 | *trunk | *- | *- | *MLAG | 551 |
 
 *Inherited from Port-Channel Interface
 
@@ -360,12 +360,12 @@ interface Ethernet52/1
    ip ospf area 0.0.0.0
 !
 interface Ethernet55/1
-   description MLAG_PEER_SPINE1_Ethernet55/1
+   description MLAG_SPINE1_Ethernet55/1
    no shutdown
    channel-group 551 mode active
 !
 interface Ethernet56/1
-   description MLAG_PEER_SPINE1_Ethernet56/1
+   description MLAG_SPINE1_Ethernet56/1
    no shutdown
    channel-group 551 mode active
 ```
@@ -381,7 +381,7 @@ interface Ethernet56/1
 | Port-Channel1 | IDF1_Po51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
 | Port-Channel491 | LEAF2A_Po11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | IDF3_AGG_Po971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
-| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel551 | MLAG_SPINE1_Port-Channel551 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -412,7 +412,7 @@ interface Port-Channel501
    mlag 501
 !
 interface Port-Channel551
-   description MLAG_PEER_SPINE1_Po551
+   description MLAG_SPINE1_Port-Channel551
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG

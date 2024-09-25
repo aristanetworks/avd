@@ -219,8 +219,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         # subinterface name
                         "description": description,
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
-                        "type": "l3dot1q",
-                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
+                        "encapsulation_dot1q": {"vlan": subinterface["encapsulation_dot1q_vlan"]},
                         "ipv6_enable": subinterface.get("ipv6_enable"),
                         "sflow": link.get("sflow"),
                         "flow_tracker": link.get("flow_tracker"),

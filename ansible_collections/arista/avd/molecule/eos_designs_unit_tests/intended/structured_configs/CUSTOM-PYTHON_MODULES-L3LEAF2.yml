@@ -116,8 +116,8 @@ ethernet_interfaces:
   vrf: TEST_VRF
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3.1 VRF TEST_VRF
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1
+  encapsulation_dot1q:
+    vlan: 1
   mtu: 9214
   ip_address: 172.16.0.25/31
 loopback_interfaces:

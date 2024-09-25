@@ -198,7 +198,7 @@ vlan_interfaces:
   - 10.254.254.1
 port_channel_interfaces:
 - name: Port-Channel21
-  description: MLAG_PEER_flow-tracking-tests-leaf4_Po21
+  description: MLAG_flow-tracking-tests-leaf4_Port-Channel21
   switchport:
     enabled: true
     mode: trunk
@@ -262,7 +262,7 @@ ethernet_interfaces:
   peer: flow-tracking-tests-leaf4
   peer_interface: Ethernet21
   peer_type: mlag_peer
-  description: MLAG_PEER_flow-tracking-tests-leaf4_Ethernet21
+  description: MLAG_flow-tracking-tests-leaf4_Ethernet21
   shutdown: false
   channel_group:
     id: 21
@@ -271,7 +271,7 @@ ethernet_interfaces:
   peer: flow-tracking-tests-leaf4
   peer_interface: Ethernet22
   peer_type: mlag_peer
-  description: MLAG_PEER_flow-tracking-tests-leaf4_Ethernet22
+  description: MLAG_flow-tracking-tests-leaf4_Ethernet22
   shutdown: false
   channel_group:
     id: 21
