@@ -60,20 +60,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.9/16 | 192.168.1.254 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.9/16 | 192.168.1.254 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.1.9/16
@@ -292,12 +292,12 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
-| Ethernet5 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet16 | server-1_Eth2 | *access | *110 | *- | *- | 16 |
+| Ethernet5 | MLAG_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet16 | SERVER_server-1_Eth2 | *access | *110 | *- | *- | 16 |
 | Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
-| Ethernet18 | server-1_Eth6 | *access | *110 | *- | *- | 18 |
-| Ethernet19 | server-1_Eth8 | *access | *110 | *- | *- | 19 |
+| Ethernet18 | SERVER_server-1_Eth6 | *access | *110 | *- | *- | 18 |
+| Ethernet19 | SERVER_server-1_Eth8 | *access | *110 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -344,12 +344,12 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
+   description MLAG_DC1.POD1.LEAF2A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
+   description MLAG_DC1.POD1.LEAF2A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -379,7 +379,7 @@ interface Ethernet12
    service-profile QOS-PROFILE
 !
 interface Ethernet16
-   description server-1_Eth2
+   description SERVER_server-1_Eth2
    no shutdown
    channel-group 16 mode active
    comment
@@ -397,7 +397,7 @@ interface Ethernet17
 
 !
 interface Ethernet18
-   description server-1_Eth6
+   description SERVER_server-1_Eth6
    no shutdown
    channel-group 18 mode active
    comment
@@ -406,7 +406,7 @@ interface Ethernet18
 
 !
 interface Ethernet19
-   description server-1_Eth8
+   description SERVER_server-1_Eth8
    no shutdown
    channel-group 19 mode active
    comment
@@ -424,11 +424,11 @@ interface Ethernet19
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | RACK2_MLAG_Po1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
-| Port-Channel5 | MLAG_PEER_DC1.POD1.LEAF2A_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel16 | server-1_PortChannel | access | 110 | - | - | - | - | 16 | - |
+| Port-Channel5 | MLAG_DC1.POD1.LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
-| Port-Channel18 | server-1_PortChannel | access | 110 | - | - | - | - | 18 | - |
-| Port-Channel19 | server-1_PortChannel | access | 110 | - | - | - | - | 19 | - |
+| Port-Channel18 | PortChannel | access | 110 | - | - | - | - | 18 | - |
+| Port-Channel19 | PortChannel | access | 110 | - | - | - | - | 19 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -437,42 +437,44 @@ interface Ethernet19
 interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk
+   switchport
    mlag 3
    service-profile QOS-PROFILE
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1.POD1.LEAF2A_Po5
+   description MLAG_DC1.POD1.LEAF2A_Port-Channel5
    no shutdown
-   switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
    service-profile QOS-PROFILE
 !
 interface Port-Channel16
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 16
    service-profile bar
 !
 interface Port-Channel17
    description Set using structured_config on server adapter port-channel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 17
    service-profile foo
 !
 interface Port-Channel18
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 18
    service-profile foo
    comment
@@ -481,10 +483,11 @@ interface Port-Channel18
 
 !
 interface Port-Channel19
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 19
    service-profile foo
    comment
@@ -501,8 +504,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.5/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.4/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.110.5/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.4/32 |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.5/32 |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.101.5/32 |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.5/32 |
@@ -511,8 +514,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | - |
@@ -522,12 +525,12 @@ interface Port-Channel19
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.110.5/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 172.18.110.4/32
 !

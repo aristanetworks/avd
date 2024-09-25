@@ -78,7 +78,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.114/32
   isis_enable: CORE
@@ -88,7 +88,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0002.0106.00
+  net: 49.0001.1921.6825.5114.00
   router_id: 192.168.255.114
   is_type: level-1-2
   address_family_ipv4:

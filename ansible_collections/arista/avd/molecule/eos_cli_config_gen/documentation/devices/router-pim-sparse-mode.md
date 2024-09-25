@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -50,6 +50,7 @@ BFD enabled: True
 | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
 | 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32, 239.12.12.14/32, 239.12.12.16/32, 239.12.12.20/32, 239.12.12.21/32 | RP_ACL, RP_ACL2 | 20 | - | - |
+| 10.238.1.161 | 239.12.12.17/32 | RP_ACL3 | - | - | - |
 
 ##### IP Anycast Information
 
@@ -87,6 +88,8 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.21/32 priority 20
       rp address 10.238.1.161 access-list RP_ACL priority 20
       rp address 10.238.1.161 access-list RP_ACL2 priority 20
+      rp address 10.238.1.161 239.12.12.17/32
+      rp address 10.238.1.161 access-list RP_ACL3
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
       ssm range standard
    !

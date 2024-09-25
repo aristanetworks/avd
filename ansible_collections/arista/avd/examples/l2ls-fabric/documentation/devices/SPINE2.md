@@ -49,20 +49,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 172.16.100.102/24 | 172.16.100.1 |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.102/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management0
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.100.102/24
@@ -298,9 +298,9 @@ vlan 4094
 | Ethernet2 | LEAF2_Ethernet2 | *trunk | *10,20 | *- | *- | 1 |
 | Ethernet3 | LEAF3_Ethernet2 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet4 | LEAF4_Ethernet2 | *trunk | *10,30 | *- | *- | 3 |
-| Ethernet5 | FIREWALL_Eth2 | *trunk | *10,20,30 | *- | *- | 5 |
-| Ethernet47 | MLAG_PEER_SPINE1_Ethernet47 | *trunk | *- | *- | *['MLAG'] | 47 |
-| Ethernet48 | MLAG_PEER_SPINE1_Ethernet48 | *trunk | *- | *- | *['MLAG'] | 47 |
+| Ethernet5 | FIREWALL_FIREWALL_Eth2 | *trunk | *10,20,30 | *- | *- | 5 |
+| Ethernet47 | MLAG_SPINE1_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet48 | MLAG_SPINE1_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -329,17 +329,17 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description FIREWALL_Eth2
+   description FIREWALL_FIREWALL_Eth2
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet47
-   description MLAG_PEER_SPINE1_Ethernet47
+   description MLAG_SPINE1_Ethernet47
    no shutdown
    channel-group 47 mode active
 !
 interface Ethernet48
-   description MLAG_PEER_SPINE1_Ethernet48
+   description MLAG_SPINE1_Ethernet48
    no shutdown
    channel-group 47 mode active
 ```
@@ -354,8 +354,8 @@ interface Ethernet48
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | RACK1_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
 | Port-Channel3 | RACK2_Po1 | trunk | 10,30 | - | - | - | - | 3 | - |
-| Port-Channel5 | FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
-| Port-Channel47 | MLAG_PEER_SPINE1_Po47 | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel5 | FIREWALL_FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
+| Port-Channel47 | MLAG_SPINE1_Port-Channel47 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -364,33 +364,33 @@ interface Ethernet48
 interface Port-Channel1
    description RACK1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,20
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel3
    description RACK2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,30
    switchport mode trunk
+   switchport
    mlag 3
 !
 interface Port-Channel5
-   description FIREWALL
+   description FIREWALL_FIREWALL
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,20,30
    switchport mode trunk
+   switchport
    mlag 5
 !
 interface Port-Channel47
-   description MLAG_PEER_SPINE1_Po47
+   description MLAG_SPINE1_Port-Channel47
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces

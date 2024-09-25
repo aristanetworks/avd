@@ -22,7 +22,7 @@ l3leaf:
 
 #### ---- Test inheritance of svi structured_configuration ----- ###
 # Test logic for network services: vlan-interfaces
-# Structured config is not being merged recursively, but will be taken directly from the most specific level
+# Structured config is merged recursively
 # Precedence order:
 # 1. svi.nodes[inventory_hostname].structured_config
 # 2. svi_profile.nodes[inventory_hostname].structured_config
@@ -35,6 +35,8 @@ svi_profiles:
   - profile: struct_config_parent_profile_1
     structured_config:
       description: "set from structured_config on svi_parent_profile.structured_config"
+      mtu: 1200
+      no_autostate: true
     nodes:
       - node: SVI_PROFILE_NODE_1
         structured_config:
@@ -46,6 +48,7 @@ svi_profiles:
   - profile: struct_config_child_profile_1
     structured_config:
       description: "set from structured_config on svi_profile.structured_config"
+      mtu: 1000
     nodes:
       - node: SVI_PROFILE_NODE_1
         structured_config:
@@ -192,6 +195,8 @@ tenants:
           # Set nodes[inventory_hostname].structured_config on all levels
           # Expected results:
           # - description: "set from structured_config on svi.nodes[inventory_hostname].structured_config"
+          # - mtu: 1000 <- inherited from profile (parent profile has 1200)
+          # - no_autostate: true <- inherited from parent profile
           - id: 110
             name: svi_profile_tests_110_description
             enabled: true
@@ -210,6 +215,8 @@ tenants:
           # Set nodes[inventory_hostname].structured_config on child_profile and parent_profile
           # Expected results:
           # - description: "set from structured_config on svi_profile.nodes[inventory_hostname].structured_config"
+          # - mtu: 1000 <- inherited from profile (parent profile has 1200)
+          # - no_autostate: true <- inherited from parent profile
           - id: 111
             name: svi_profile_tests_111_description
             enabled: true
@@ -221,6 +228,8 @@ tenants:
           # Set nodes[inventory_hostname].structured_config on parent_profile
           # Expected results:
           # - description: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
+          # - mtu: 1200 <- inherited from parent profile
+          # - no_autostate: true <- inherited from parent profile
           - id: 112
             name: svi_profile_tests_112_description
             enabled: true

@@ -74,7 +74,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.116/24
@@ -91,7 +91,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -111,20 +111,20 @@ vlan_interfaces:
   ip_address: 10.10.255.2/31
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1B_Po5
-  type: switched
+  description: MLAG_MLAG_ODD_ID_L3LEAF1B_Port-Channel5
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: MLAG_ODD_ID_L3LEAF1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1B_Ethernet5
-  type: port-channel-member
+  description: MLAG_MLAG_ODD_ID_L3LEAF1B_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -133,8 +133,7 @@ ethernet_interfaces:
   peer: MLAG_ODD_ID_L3LEAF1B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1B_Ethernet6
-  type: port-channel-member
+  description: MLAG_MLAG_ODD_ID_L3LEAF1B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -146,7 +145,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P2P-UPLINKS-IPV4-PREFIX-LENGTH_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.254.255.249/30
 mlag_configuration:
   domain_id: MLAG_ODD_ID_L3LEAF1
@@ -171,11 +171,11 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.35/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.35/32
 prefix_lists:

@@ -76,7 +76,6 @@ router_bgp:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: PROD
-    router_id: 192.168.42.1
     rd: 192.168.42.1:42
     route_targets:
       import:
@@ -87,6 +86,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '42:42'
+    router_id: 192.168.42.1
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
@@ -114,24 +114,27 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_666
   dhcp_client_accept_default_route: true
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10555
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast-5G_AF830
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 prefix_lists:
@@ -369,7 +372,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.255.1/32
   flow_tracker:
     hardware: custom_flow_track_name

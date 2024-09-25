@@ -47,7 +47,7 @@ class MiscMixin:
     def trunk_groups(self: SharedUtils) -> dict:
         return {
             "mlag": {"name": get(self.hostvars, "trunk_groups.mlag.name", default="MLAG")},
-            "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3")},
+            "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="MLAG")},
             "uplink": {"name": get(self.hostvars, "trunk_groups.uplink.name", default="UPLINK")},
         }
 
@@ -193,7 +193,7 @@ class MiscMixin:
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
         if not self.platform_settings_feature_support_per_interface_mtu:
             return None
-        p2p_uplinks_mtu = get(self.hostvars, "p2p_uplinks_mtu", default=9214)
+        p2p_uplinks_mtu = default(self.platform_settings_p2p_uplinks_mtu, get(self.hostvars, "p2p_uplinks_mtu", default=9214))
         return get(self.switch_data_combined, "uplink_mtu", default=p2p_uplinks_mtu)
 
     @cached_property
@@ -202,11 +202,11 @@ class MiscMixin:
 
     @cached_property
     def shutdown_interfaces_towards_undeployed_peers(self: SharedUtils) -> bool:
-        return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
+        return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers", default=True) is True
 
     @cached_property
     def shutdown_bgp_towards_undeployed_peers(self: SharedUtils) -> bool:
-        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers") is True
+        return get(self.hostvars, "shutdown_bgp_towards_undeployed_peers", default=True) is True
 
     @cached_property
     def bfd_multihop(self: SharedUtils) -> dict:
@@ -252,7 +252,8 @@ class MiscMixin:
 
         NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
-        default_network_services_keys = [{"name": "tenants"}]
+        # Reading default value from schema
+        default_network_services_keys = self.schema.get_default_value(["network_services_keys"])
         network_services_keys = get(self.hostvars, "network_services_keys", default=default_network_services_keys)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
@@ -339,6 +340,10 @@ class MiscMixin:
         return get(self.hostvars, "fabric_sflow.mlag_interfaces")
 
     @cached_property
+    def fabric_sflow_l3_interfaces(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.l3_interfaces")
+
+    @cached_property
     def default_interface_mtu(self: SharedUtils) -> int | None:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
         return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)
@@ -354,16 +359,6 @@ class MiscMixin:
     @cached_property
     def evpn_multicast(self: SharedUtils) -> bool:
         return self.get_switch_fact("evpn_multicast", required=False) is True
-
-    @cached_property
-    def new_network_services_bgp_vrf_config(self: SharedUtils) -> bool:
-        """
-        Return whether or not to use the new behavior when generating BGP VRF configuration.
-
-        TODO: Change default to True in all cases in AVD 5.0.0 and remove in AVD 6.0.0
-        """
-        default_value = bool(self.uplink_type == "p2p-vrfs")
-        return get(self.hostvars, "new_network_services_bgp_vrf_config", default=default_value)
 
     @cached_property
     def ipv4_acls(self: SharedUtils) -> dict:

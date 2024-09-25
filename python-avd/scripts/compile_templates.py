@@ -8,8 +8,17 @@ from sys import path
 # Override global path to load pyavd from pwd instead of any installed version.
 path.insert(0, str(Path(__file__).parent.parent))
 
-from pyavd.constants import JINJA2_TEMPLATE_PATHS
+from pyavd.constants import (
+    EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH,
+    EOS_CLI_CONFIG_GEN_JINJA2_TEMPLATE_PATH,
+    EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH,
+    EOS_DESIGNS_JINJA2_TEMPLATE_PATH,
+)
 from pyavd.templater import Templar
 
-templar = Templar()
-templar.compile_templates_in_paths(JINJA2_TEMPLATE_PATHS)
+templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_CLI_CONFIG_GEN_JINJA2_TEMPLATE_PATH])
+templar.compile_templates_in_paths(
+    precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_CLI_CONFIG_GEN_JINJA2_TEMPLATE_PATH]
+)
+templar = Templar(precompiled_templates_path=EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_DESIGNS_JINJA2_TEMPLATE_PATH])
+templar.compile_templates_in_paths(precompiled_templates_path=EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_DESIGNS_JINJA2_TEMPLATE_PATH])

@@ -57,20 +57,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.101/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.101/24 | 172.16.1.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.1.101/24
@@ -198,11 +198,11 @@ vlan internal order ascending range 1006 1199
 | 12 | VRF10_VLAN12 | - |
 | 21 | VRF11_VLAN21 | - |
 | 22 | VRF11_VLAN22 | - |
-| 3009 | MLAG_iBGP_VRF10 | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_VRF11 | LEAF_PEER_L3 |
+| 3009 | MLAG_iBGP_VRF10 | MLAG |
+| 3010 | MLAG_iBGP_VRF11 | MLAG |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
+| 4093 | LEAF_PEER_L3 | MLAG |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -223,11 +223,11 @@ vlan 22
 !
 vlan 3009
    name MLAG_iBGP_VRF10
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3010
    name MLAG_iBGP_VRF11
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3401
    name L2_VLAN3401
@@ -237,7 +237,7 @@ vlan 3402
 !
 vlan 4093
    name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4094
    name MLAG_PEER
@@ -254,9 +254,9 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc1-leaf1b_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_dc1-leaf1b_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet5 | dc1-leaf1-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
+| Ethernet3 | MLAG_dc1-leaf1b_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_dc1-leaf1b_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet5 | SERVER_dc1-leaf1-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC1-LEAF1C_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
 *Inherited from Port-Channel Interface
@@ -287,17 +287,17 @@ interface Ethernet2
    ip address 10.255.255.3/31
 !
 interface Ethernet3
-   description MLAG_PEER_dc1-leaf1b_Ethernet3
+   description MLAG_dc1-leaf1b_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_dc1-leaf1b_Ethernet4
+   description MLAG_dc1-leaf1b_Ethernet4
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet5
-   description dc1-leaf1-server1_PCI1
+   description SERVER_dc1-leaf1-server1_PCI1
    no shutdown
    channel-group 5 mode active
 !
@@ -315,8 +315,8 @@ interface Ethernet8
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc1-leaf1b_Po3 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | dc1-leaf1-server1_PortChannel dc1-leaf1-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
+| Port-Channel3 | MLAG_dc1-leaf1b_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel5 | PortChannel dc1-leaf1-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC1-LEAF1C_Po1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -324,29 +324,28 @@ interface Ethernet8
 ```eos
 !
 interface Port-Channel3
-   description MLAG_PEER_dc1-leaf1b_Po3
+   description MLAG_dc1-leaf1b_Port-Channel3
    no shutdown
-   switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 !
 interface Port-Channel5
-   description dc1-leaf1-server1_PortChannel dc1-leaf1-server1
+   description PortChannel dc1-leaf1-server1
    no shutdown
-   switchport
-   switchport trunk allowed vlan 11-12,21-22
    switchport trunk native vlan 4092
+   switchport trunk allowed vlan 11-12,21-22
    switchport mode trunk
+   switchport
    mlag 5
    spanning-tree portfast
 !
 interface Port-Channel8
    description DC1-LEAF1C_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 11-12,21-22,3401-3402
    switchport mode trunk
+   switchport
    mlag 8
 ```
 
@@ -358,8 +357,8 @@ interface Port-Channel8
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 10.255.0.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 10.255.1.3/32 |
+| Loopback0 | ROUTER_ID | default | 10.255.0.3/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 10.255.1.3/32 |
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | 10.255.10.3/32 |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | 10.255.11.3/32 |
 
@@ -367,8 +366,8 @@ interface Port-Channel8
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | - |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | - |
 
@@ -377,12 +376,12 @@ interface Port-Channel8
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 10.255.0.3/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 10.255.1.3/32
 !
@@ -772,6 +771,7 @@ router bgp 65101
       route-target export evpn 10:10
       router-id 10.255.0.3
       neighbor 10.255.1.97 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.1.97 description dc1-leaf1b
       redistribute connected
    !
    vrf VRF11
@@ -780,6 +780,7 @@ router bgp 65101
       route-target export evpn 11:11
       router-id 10.255.0.3
       neighbor 10.255.1.97 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.1.97 description dc1-leaf1b
       redistribute connected
 ```
 

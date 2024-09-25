@@ -190,7 +190,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.0/31
 - name: Ethernet1.1000
   peer: cv-pathfinder-transit1A
@@ -199,8 +200,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52.1000_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1000
+  encapsulation_dot1q:
+    vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet1.142
@@ -210,8 +211,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52.142_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 142
+  encapsulation_dot1q:
+    vlan: 142
   mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet1.666
@@ -221,8 +222,8 @@ ethernet_interfaces:
   vrf: ATTRACTED-VRF-FROM-UPLINK
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 666
+  encapsulation_dot1q:
+    vlan: 666
   mtu: 9214
   ip_address: 172.17.0.0/31
 - name: Ethernet2
@@ -232,7 +233,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.2/31
 - name: Ethernet2.1000
   peer: cv-pathfinder-transit1B
@@ -241,8 +243,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52.1000_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1000
+  encapsulation_dot1q:
+    vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.2/31
 - name: Ethernet2.142
@@ -252,8 +254,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52.142_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 142
+  encapsulation_dot1q:
+    vlan: 142
   mtu: 9214
   ip_address: 172.17.0.2/31
 - name: Ethernet2.666
@@ -263,17 +265,17 @@ ethernet_interfaces:
   vrf: ATTRACTED-VRF-FROM-UPLINK
   description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 666
+  encapsulation_dot1q:
+    vlan: 666
   mtu: 9214
   ip_address: 172.17.0.2/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.45.1/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.255.1/32
 prefix_lists:

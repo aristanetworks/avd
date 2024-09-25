@@ -22,8 +22,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-  address_family_evpn:
-    peer_groups: []
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
@@ -45,7 +43,6 @@ router_bgp:
     description: rr2
   vrfs:
   - name: C1_VRF1
-    router_id: 10.255.1.3
     rd: 10.255.1.3:10
     route_targets:
       import:
@@ -56,11 +53,11 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '10:10'
+    router_id: 10.255.1.3
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
   - name: C2_VRF1
-    router_id: 10.255.1.3
     rd: 10.255.1.3:20
     route_targets:
       import:
@@ -71,6 +68,7 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '20:20'
+    router_id: 10.255.1.3
     redistribute_routes:
     - source_protocol: connected
     address_family_ipv4:
@@ -122,7 +120,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.103/24
@@ -134,7 +132,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.255.1.3/32
   mpls:
@@ -145,7 +143,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0001.0003.00
+  net: 49.0001.0102.5500.1003.00
   router_id: 10.255.1.3
   is_type: level-2
   address_family_ipv4:
@@ -170,7 +168,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_p3_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.22/31
@@ -191,7 +190,8 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: p
   description: P2P_LINK_TO_p4_Ethernet3
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.24/31
@@ -212,7 +212,8 @@ ethernet_interfaces:
   ip_address: 10.0.1.9/30
   shutdown: false
   description: C1_L3_SERVICE
-  type: routed
+  switchport:
+    enabled: false
   vrf: C1_VRF1
   ospf_area: '0'
   ospf_network_point_to_point: false
@@ -221,7 +222,8 @@ ethernet_interfaces:
   ip_address: 10.1.1.9/30
   shutdown: false
   description: C2_L3_SERVICE
-  type: routed
+  switchport:
+    enabled: false
   vrf: C2_VRF1
 ip_igmp_snooping:
   globally_enabled: true
@@ -235,6 +237,7 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet2
     redistribute:
-      bgp: {}
+      bgp:
+        enabled: true
 metadata:
   platform: vEOS-lab

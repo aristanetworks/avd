@@ -15,5 +15,6 @@ platform_settings:
     structured_config:
       ethernet_interfaces:
         - name: Ethernet12
-          type: switched
+          switchport:
+            enabled: true
           description: Interface Created from platform_settings.structured_config

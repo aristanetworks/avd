@@ -208,7 +208,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return {"peer_groups": peer_groups}
 
-    def _address_family_evpn(self: AvdStructuredConfigOverlay) -> dict:
+    def _address_family_evpn(self: AvdStructuredConfigOverlay) -> dict | None:
         address_family_evpn = {}
 
         peer_groups = []
@@ -247,6 +247,9 @@ class RouterBgpMixin(UtilsMixin):
                 if self.shared_utils.overlay_ler is True:
                     address_family_evpn["neighbor_default"]["next_hop_self_source_interface"] = "Loopback0"
 
+                if self._is_mpls_server is True:
+                    peer_groups.append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
+
             # partly duplicate with ebgp
             if (
                 self.shared_utils.overlay_vtep is True
@@ -260,13 +263,11 @@ class RouterBgpMixin(UtilsMixin):
                     },
                 )
 
-            if self._is_mpls_server is True:
-                peer_groups.append({"name": self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"], "activate": True})
-
             if self._is_wan_server_with_peers:
                 peer_groups.append({"name": self.shared_utils.bgp_peer_groups["wan_rr_overlay_peers"]["name"], "activate": True})
 
-        address_family_evpn["peer_groups"] = peer_groups
+        if peer_groups:
+            address_family_evpn["peer_groups"] = peer_groups
 
         # host flap detection & route pruning
         if self.shared_utils.overlay_vtep is True:
@@ -297,7 +298,7 @@ class RouterBgpMixin(UtilsMixin):
             }
             address_family_evpn["neighbors"] = [{"ip_address": self._wan_ha_peer_vtep_ip(), "activate": True}]
 
-        return address_family_evpn
+        return address_family_evpn or None
 
     def _address_family_ipv4_sr_te(self: AvdStructuredConfigOverlay) -> dict | None:
         """Generate structured config for IPv4 SR-TE address family."""
@@ -392,8 +393,8 @@ class RouterBgpMixin(UtilsMixin):
                     core_peer_group["default_route_target"] = {"only": True}
                 peer_groups.append(core_peer_group)
 
-            # Transposing the Jinja2 logic which is that if the selfevpn_overlay_core peer group is not
-            # configured thenthe default_route_target is applied in the evpn_overlay_peers peer group.
+            # Transposing the Jinja2 logic: if the evpn_overlay_core peer group is not
+            # configured then the default_route_target is applied in the evpn_overlay_peers peer group.
             elif self.shared_utils.evpn_role == "server":
                 evpn_overlay_peers["default_route_target"] = {"only": True}
 

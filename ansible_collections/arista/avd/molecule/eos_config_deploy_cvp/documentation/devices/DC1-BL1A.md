@@ -58,20 +58,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.110/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.110/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.110/24
@@ -257,10 +257,10 @@ vlan internal order ascending range 1006 1199
 | 150 | Tenant_A_WAN_Zone_1 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | LEAF_PEER_L3 |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3 |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3 |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
+| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | MLAG |
+| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | MLAG |
+| 4093 | LEAF_PEER_L3 | MLAG |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -278,19 +278,19 @@ vlan 350
 !
 vlan 3013
    name MLAG_iBGP_Tenant_A_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3020
    name MLAG_iBGP_Tenant_B_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3030
    name MLAG_iBGP_Tenant_C_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4093
    name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4094
    name MLAG_PEER
@@ -307,8 +307,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-BL1B_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-BL1B_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_DC1-BL1B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1-BL1B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -354,12 +354,12 @@ interface Ethernet4
    ip address 172.31.255.47/31
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-BL1B_Ethernet5
+   description MLAG_DC1-BL1B_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-BL1B_Ethernet6
+   description MLAG_DC1-BL1B_Ethernet6
    no shutdown
    channel-group 5 mode active
 ```
@@ -372,19 +372,18 @@ interface Ethernet6
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-BL1B_Po5 | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_DC1-BL1B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-BL1B_Po5
+   description MLAG_DC1-BL1B_Port-Channel5
    no shutdown
-   switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 ```
 
 ### Loopback Interfaces
@@ -395,27 +394,27 @@ interface Port-Channel5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.10/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.10/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.10/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.10/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 192.168.254.10/32
 ```
@@ -801,6 +800,7 @@ router bgp 65104
       router-id 192.168.255.10
       update wait-install
       neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.11 description DC1-BL1B
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -810,6 +810,7 @@ router bgp 65104
       router-id 192.168.255.10
       update wait-install
       neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.11 description DC1-BL1B
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -819,6 +820,7 @@ router bgp 65104
       router-id 192.168.255.10
       update wait-install
       neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.11 description DC1-BL1B
       redistribute connected
 ```
 

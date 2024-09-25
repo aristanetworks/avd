@@ -108,8 +108,8 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2ONLY-SPINE1_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | L2ONLY-SPINE2_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
-| Ethernet10 |  Endpoint | access | 100 | - | - | - |
-| Ethernet11 |  Endpoint | access | 100 | - | - | - |
+| Ethernet10 | Endpoint | access | 100 | - | - | - |
+| Ethernet11 | Endpoint | access | 100 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -159,9 +159,9 @@ interface Ethernet11
 interface Port-Channel1
    description L2ONLY_SPINES_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

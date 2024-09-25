@@ -147,3 +147,4 @@ snmp_server:
       enable: false
     - name: MGMT
       enable: true
+  ifmib_ifspeed_shape_rate: true

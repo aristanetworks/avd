@@ -26,18 +26,19 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-PARENT_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK-NATIVE-VLAN-PARENT_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      native_vlan: 100
+      allowed_vlan: '100'
   shutdown: false
-  mode: trunk
-  native_vlan: 100
-  vlans: '100'
 vlans:
 - id: 100
   name: NETWORK_SERVICES_VLAN

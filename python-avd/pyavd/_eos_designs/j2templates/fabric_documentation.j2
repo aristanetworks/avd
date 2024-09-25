@@ -1,0 +1,97 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+# {{ fabric_name }}
+
+## Table of Contents
+
+<!-- toc -->
+<!-- toc -->
+
+## Fabric Switches and Management IP
+
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+{% for fabric_switch in fabric_switches %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} | {{ fabric_switch.serial_number }} |
+{% endfor %}
+
+> Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
+
+### Fabric Switches with inband Management IP
+
+| POD | Type | Node | Management IP | Inband Interface |
+| --- | ---- | ---- | ------------- | ---------------- |
+{% for fabric_switch in fabric_switches | selectattr("inband_mgmt_ip", "arista.avd.defined") %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.inband_mgmt_ip }} | {{ fabric_switch.inband_mgmt_interface }} |
+{% endfor %}
+
+## Fabric Topology
+
+| Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
+| ---- | ---- | -------------- | --------- | ----------| -------------- |
+{% for topology_link in topology_links %}
+| {{ topology_link.type }} | {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.peer_type }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} |
+{% endfor %}
+
+## Fabric IP Allocation
+
+### Fabric Point-To-Point Links
+
+| Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ---------------- | ------------------- | ------------------ | ------------------ |
+{% for uplink_ipv4_pool in uplink_ipv4_pools %}
+| {{ uplink_ipv4_pool.pool }} | {{ uplink_ipv4_pool.size }} | {{ uplink_ipv4_pool.used }} | {{ uplink_ipv4_pool.used_percent }} % |
+{% endfor %}
+
+### Point-To-Point Links Node Allocation
+
+| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
+| ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+{% for topology_link in topology_links | selectattr("node_ip_address", "arista.avd.defined") %}
+| {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.node_ip_address }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} | {{ topology_link.peer_ip_address }} |
+{% endfor %}
+
+### Loopback Interfaces (BGP EVPN Peering)
+
+| Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------- | ------------------- | ------------------ | ------------------ |
+{% for loopback_ipv4_pool in loopback_ipv4_pools %}
+| {{ loopback_ipv4_pool.pool }} | {{ loopback_ipv4_pool.size }} | {{ loopback_ipv4_pool.used }} | {{ loopback_ipv4_pool.used_percent }} % |
+{% endfor %}
+
+### Loopback0 Interfaces Node Allocation
+
+| POD | Node | Loopback0 |
+| --- | ---- | --------- |
+{% for fabric_switch in fabric_switches | selectattr("loopback0_ip_address", "arista.avd.defined") %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.loopback0_ip_address }} |
+{% endfor %}
+{% if has_isis %}
+
+### ISIS CLNS interfaces
+
+| POD | Node | CLNS Address |
+| --- | ---- | ------------ |
+{%     for fabric_switch in fabric_switches | selectattr("router_isis_net", "arista.avd.defined") %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.router_isis_net }} |
+{%     endfor %}
+{% endif %}
+
+### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+
+| VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------------ | ------------------- | ------------------ | ------------------ |
+{% for vtep_loopback_ipv4_pool in vtep_loopback_ipv4_pools %}
+| {{ vtep_loopback_ipv4_pool.pool }} | {{ vtep_loopback_ipv4_pool.size }} | {{ vtep_loopback_ipv4_pool.used }} | {{ vtep_loopback_ipv4_pool.used_percent }} % |
+{% endfor %}
+
+### VTEP Loopback Node allocation
+
+| POD | Node | Loopback1 |
+| --- | ---- | --------- |
+{% for fabric_switch in fabric_switches | selectattr("vtep_loopback_ip_address", "arista.avd.defined") %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.vtep_loopback_ip_address }} |
+{% endfor %}

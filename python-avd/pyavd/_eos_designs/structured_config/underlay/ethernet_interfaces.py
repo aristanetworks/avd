@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import append_if_not_duplicate, get
+from pyavd._utils import append_if_not_duplicate, get, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import encrypt, natural_sort
 
@@ -58,7 +58,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "mtu": self.shared_utils.p2p_uplinks_mtu,
                         "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                         "mac_security": link.get("mac_security"),
-                        "type": "routed",
+                        "switchport": {"enabled": False},
                         "ipv6_enable": link.get("ipv6_enable"),
                         "link_tracking_groups": link.get("link_tracking_groups"),
                         "sflow": link.get("sflow"),
@@ -160,7 +160,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                     # Render port-channel member
                     ethernet_interface.update(
                         {
-                            "type": "port-channel-member",
                             "channel_group": {
                                 "id": int(channel_group_id),
                                 "mode": "active",
@@ -168,15 +167,19 @@ class EthernetInterfacesMixin(UtilsMixin):
                         },
                     )
                     if get(link, "inband_ztp_vlan"):
-                        ethernet_interface.update({"mode": "access", "vlans": link["inband_ztp_vlan"]})
+                        ethernet_interface.update({"switchport": {"enabled": True, "mode": "access", "access_vlan": link["inband_ztp_vlan"]}})
                 else:
                     # Render trunk interface
                     ethernet_interface.update(
                         {
-                            "type": "switched",
-                            "vlans": link["vlans"],
-                            "mode": "trunk",
-                            "native_vlan": link.get("native_vlan"),
+                            "switchport": {
+                                "enabled": True,
+                                "mode": "trunk",
+                                "trunk": {
+                                    "allowed_vlan": link["vlans"],
+                                    "native_vlan": link.get("native_vlan"),
+                                },
+                            },
                             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                             "link_tracking_groups": link.get("link_tracking_groups"),
                             "spanning_tree_portfast": link.get("spanning_tree_portfast"),
@@ -185,7 +188,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                     )
 
             # Remove None values
-            ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
+            ethernet_interface = strip_null_from_data(ethernet_interface, strip_values_tuple=(None, "", {}))
+
             append_if_not_duplicate(
                 list_of_dicts=ethernet_interfaces,
                 primary_key="name",
@@ -217,8 +221,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         # subinterface name
                         "description": description,
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
-                        "type": "l3dot1q",
-                        "encapsulation_dot1q_vlan": subinterface["encapsulation_dot1q_vlan"],
+                        "encapsulation_dot1q": {"vlan": subinterface["encapsulation_dot1q_vlan"]},
                         "ipv6_enable": subinterface.get("ipv6_enable"),
                         "sflow": link.get("sflow"),
                         "flow_tracker": link.get("flow_tracker"),
@@ -271,7 +274,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             for interface_name in natural_sort(subif_parent_interface_names):
                 parent_interface = {
                     "name": interface_name,
-                    "type": "routed",
+                    "switchport": {"enabled": False},
                     "peer_type": "l3_interface",
                     "shutdown": False,
                 }
@@ -294,13 +297,14 @@ class EthernetInterfacesMixin(UtilsMixin):
             for index, interface in enumerate(get(self.shared_utils.switch_data_combined, "wan_ha.ha_interfaces", required=True)):
                 ha_interface = {
                     "name": interface,
-                    "type": "routed",
+                    "switchport": {"enabled": False},
                     "peer_type": "l3_interface",
                     "peer": self.shared_utils.wan_ha_peer,
                     "shutdown": False,
                     "description": "DIRECT LAN HA LINK",
                     "ip_address": self.shared_utils.wan_ha_ip_addresses[index],
                     "flow_tracker": direct_wan_ha_links_flow_tracker,
+                    "mtu": self.shared_utils.configured_wan_ha_mtu,
                 }
 
                 append_if_not_duplicate(

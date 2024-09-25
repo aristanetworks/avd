@@ -67,20 +67,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.107/24
@@ -359,10 +359,10 @@ vlan 311
 | Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | CUSTOM_server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
-| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
-| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9 | *access | *- | *- | *- | 12 |
+| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *- | *- | *- | *- | 12 |
+| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9 | *- | *- | *- | *- | 12 |
 | Ethernet20 | CUSTOM_FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
-| Ethernet21 |  CUSTOM_ROUTER01_Eth1 | access | 110 | - | - | - |
+| Ethernet21 | CUSTOM_ROUTER01_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -471,7 +471,7 @@ interface Ethernet21
 | Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
 | Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | - | - |
 | Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | - | - |
-| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | access | - | - | - | - | - | - | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | - | - | - | - | - | - | - | - |
 | Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ##### EVPN Multihoming
@@ -490,9 +490,9 @@ interface Ethernet21
 interface Port-Channel7
    description CUSTOM_DC1_L2LEAF1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:1234:0808:0707:0606
       route-target import 08:08:07:07:06:06
@@ -501,9 +501,9 @@ interface Port-Channel7
 interface Port-Channel9
    description CUSTOM_DC1-L2LEAF3A_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:1234:0606:0707:0808
       route-target import 06:06:07:07:08:08
@@ -512,16 +512,17 @@ interface Port-Channel9
 interface Port-Channel10
    description CUSTOM_server01_MLAG_PortChanne1
    no shutdown
-   switchport
    switchport trunk allowed vlan 210-211
    switchport mode trunk
+   switchport
 !
 interface Port-Channel11
    description CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
    no shutdown
    mtu 1600
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
 !
 interface Port-Channel12
    description CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
@@ -532,9 +533,9 @@ interface Port-Channel12
 interface Port-Channel20
    description CUSTOM_FIREWALL01_PortChanne1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
 ```
 
 ### Loopback Interfaces

@@ -155,8 +155,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2ONLY-LEAF1_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | L2ONLY-LEAF2_Ethernet2 | *trunk | *100,4092 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_L2ONLY-SPINE1_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_L2ONLY-SPINE1_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_L2ONLY-SPINE1_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_L2ONLY-SPINE1_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -175,12 +175,12 @@ interface Ethernet2
    channel-group 2 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_L2ONLY-SPINE1_Ethernet3
+   description MLAG_L2ONLY-SPINE1_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_L2ONLY-SPINE1_Ethernet4
+   description MLAG_L2ONLY-SPINE1_Ethernet4
    no shutdown
    channel-group 3 mode active
 ```
@@ -195,7 +195,7 @@ interface Ethernet4
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2ONLY-LEAF1_Po1 | trunk | 100,4092 | - | - | - | - | 1 | - |
 | Port-Channel2 | L2ONLY-LEAF2_Po1 | trunk | 100,4092 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_L2ONLY-SPINE1_Po3 | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_L2ONLY-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -204,25 +204,25 @@ interface Ethernet4
 interface Port-Channel1
    description L2ONLY-LEAF1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel2
    description L2ONLY-LEAF2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
+   switchport
    mlag 2
 !
 interface Port-Channel3
-   description MLAG_PEER_L2ONLY-SPINE1_Po3
+   description MLAG_L2ONLY-SPINE1_Port-Channel3
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces

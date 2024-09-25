@@ -450,7 +450,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         ):
             interface_settings = {
                 "name": mgmt_interface,
-                "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
+                "description": get(self._hostvars, "mgmt_interface_description", default="OOB_MANAGEMENT"),
                 "shutdown": False,
                 "vrf": self.shared_utils.mgmt_interface_vrf,
                 "ip_address": self.shared_utils.mgmt_ip,

@@ -58,7 +58,6 @@ router_bgp:
           any: true
   vrfs:
   - name: VRF1
-    router_id: 192.168.1.2
     rd: 192.168.1.2:123
     route_targets:
       import:
@@ -69,6 +68,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 123:123
+    router_id: 192.168.1.2
     redistribute_routes:
     - source_protocol: connected
   - name: default
@@ -111,19 +111,20 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK_LAN_L2LEAF_Ethernet2
   shutdown: false
-  type: routed
-  mtu: 9214
+  switchport:
+    enabled: false
+  mtu: 9218
 - name: Ethernet2.10
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet2 VLAN 10
   peer_type: l2leaf
   description: VLAN10_NATIVE
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: VRF1
   ip_address: 10.0.10.1/24
-  mtu: 9214
+  mtu: 9218
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet2.100
@@ -132,8 +133,8 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: My vlan 100
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   vrf: VRF1
   ip_address: 10.0.100.1/24
   ipv6_address: cafe::cafe/64
@@ -146,11 +147,12 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.9.9.1/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast_999
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.1.2/32
 prefix_lists:
@@ -308,7 +310,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.2.2/32
   flow_tracker:
     hardware: FLOW-TRACKER
