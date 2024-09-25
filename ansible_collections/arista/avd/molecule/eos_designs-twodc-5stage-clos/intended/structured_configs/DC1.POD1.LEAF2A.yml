@@ -115,10 +115,10 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-CORE
       domain_remote: true
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
     route:
       import_match_failure_action: discard
