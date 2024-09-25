@@ -63,7 +63,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -206,13 +206,12 @@ vlan_interfaces:
   - 10.10.10.1
 port_channel_interfaces:
 - name: Port-Channel551
-  description: MLAG_PEER_SPINE1_Po551
+  description: MLAG_SPINE1_Port-Channel551
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel1
@@ -247,7 +246,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet55/1
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE1_Ethernet55/1
+  description: MLAG_SPINE1_Ethernet55/1
   shutdown: false
   channel_group:
     id: 551
@@ -256,7 +255,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet56/1
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE1_Ethernet56/1
+  description: MLAG_SPINE1_Ethernet56/1
   shutdown: false
   channel_group:
     id: 551

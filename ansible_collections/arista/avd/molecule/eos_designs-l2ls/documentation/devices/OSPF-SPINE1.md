@@ -162,8 +162,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | OSPF-LEAF1_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | OSPF-LEAF2_Ethernet1 | *trunk | *100,4092 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_OSPF-SPINE2_Ethernet3 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
-| Ethernet4 | MLAG_PEER_OSPF-SPINE2_Ethernet4 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 3 |
+| Ethernet3 | MLAG_OSPF-SPINE2_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_OSPF-SPINE2_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -188,12 +188,12 @@ interface Ethernet2
    channel-group 2 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_OSPF-SPINE2_Ethernet3
+   description MLAG_OSPF-SPINE2_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_OSPF-SPINE2_Ethernet4
+   description MLAG_OSPF-SPINE2_Ethernet4
    no shutdown
    channel-group 3 mode active
 !
@@ -217,7 +217,7 @@ interface Ethernet5
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | OSPF-LEAF1_Po1 | trunk | 100,4092 | - | - | - | - | 1 | - |
 | Port-Channel2 | OSPF-LEAF2_Po1 | trunk | 100,4092 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_OSPF-SPINE2_Po3 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel3 | MLAG_OSPF-SPINE2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -240,10 +240,9 @@ interface Port-Channel2
    mlag 2
 !
 interface Port-Channel3
-   description MLAG_PEER_OSPF-SPINE2_Po3
+   description MLAG_OSPF-SPINE2_Port-Channel3
    no shutdown
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    switchport
 ```

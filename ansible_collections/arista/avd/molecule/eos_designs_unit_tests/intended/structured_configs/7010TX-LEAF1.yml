@@ -86,7 +86,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -104,13 +104,12 @@ vlan_interfaces:
   ip_address: 10.10.255.4/31
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_7010TX-LEAF2_Po5
+  description: MLAG_7010TX-LEAF2_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 ethernet_interfaces:
@@ -118,7 +117,7 @@ ethernet_interfaces:
   peer: 7010TX-LEAF2
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_7010TX-LEAF2_Ethernet5
+  description: MLAG_7010TX-LEAF2_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -127,7 +126,7 @@ ethernet_interfaces:
   peer: 7010TX-LEAF2
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_7010TX-LEAF2_Ethernet6
+  description: MLAG_7010TX-LEAF2_Ethernet6
   shutdown: false
   channel_group:
     id: 5

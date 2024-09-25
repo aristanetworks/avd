@@ -2246,7 +2246,8 @@ keys:
             new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:
           description: 'Warning: `encapsulation_dot1q` should not be combined with
-            `ethernet_interfaces[].type == l3dot1q/l2dot1q`.'
+            `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type:
+            l2dot1q`.'
           type: dict
           keys:
             vlan:
@@ -2269,8 +2270,8 @@ keys:
           type: dict
           description: 'This setting can only be applied to sub-interfaces on EOS.
 
-            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type
-            == l3dot1q/l2dot1q`.'
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type:
+            l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.'
           keys:
             client:
               type: dict
@@ -2305,7 +2306,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -2318,22 +2319,25 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: 'Client VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: 'Client Outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                inner_protocol:
+                  description: 'Client Inner VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -2375,7 +2379,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
 
@@ -2394,22 +2398,25 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: 'Network VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: 'Network outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner_protocol:
+                  description: 'Network inner VLAN ID.  Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -4474,6 +4481,19 @@ keys:
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g".
+      port_groups:
+        type: list
+        primary_key: port_group
+        items:
+          type: dict
+          keys:
+            port_group:
+              type: str
+              convert_types:
+              - int
+            select:
+              type: str
+              description: Select Ports to activate
   hardware_counters:
     type: dict
     keys:
@@ -6079,9 +6099,7 @@ keys:
         - alerts
         - emergencies
         - disabled
-        description: 'Console logging severity level.
-
-          '
+        description: Console logging severity level.
       monitor:
         type: str
         valid_values:
@@ -6094,9 +6112,7 @@ keys:
         - alerts
         - emergencies
         - disabled
-        description: 'Monitor logging severity level.
-
-          '
+        description: Monitor logging severity level.
       buffered:
         type: dict
         keys:
@@ -6118,9 +6134,10 @@ keys:
             - notifications
             - warnings
             - disabled
-            description: 'Buffer logging severity level.
-
-              '
+            description: Buffer logging severity level.
+      repeat_messages:
+        type: bool
+        description: Summarize concurrent repeat messages.
       trap:
         type: str
         valid_values:
@@ -6134,9 +6151,7 @@ keys:
         - system
         - warnings
         - disabled
-        description: 'Trap logging severity level.
-
-          '
+        description: Trap logging severity level.
       synchronous:
         type: dict
         keys:
@@ -6153,9 +6168,7 @@ keys:
             - notifications
             - warnings
             - disabled
-            description: 'Synchronous logging severity level.
-
-              '
+            description: Synchronous logging severity level.
             default: critical
       format:
         type: dict
@@ -6179,14 +6192,10 @@ keys:
               line. (default EOS CLI behaviour).
           sequence_numbers:
             type: bool
-            description: 'Add sequence numbers to log messages.
-
-              '
+            description: Add sequence numbers to log messages.
           rfc5424:
             type: bool
-            description: 'Forward logs in RFC5424 format.
-
-              '
+            description: Forward logs in RFC5424 format.
       facility:
         type: str
         valid_values:
@@ -6274,6 +6283,15 @@ keys:
       event:
         type: dict
         keys:
+          congestion_drops_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 65535
+            description: Logging interval in seconds.
+          global_link_status:
+            type: bool
           storm_control:
             type: dict
             keys:
@@ -9117,7 +9135,8 @@ keys:
             new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:
           description: 'Warning: `encapsulation_dot1q` should not be combined with
-            `ethernet_interfaces[].type == l3dot1q/l2dot1q`.'
+            `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type:
+            l2dot1q`.'
           type: dict
           keys:
             vlan:
@@ -9144,8 +9163,8 @@ keys:
         encapsulation_vlan:
           description: 'This setting can only be applied to sub-interfaces on EOS.
 
-            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type
-            == l3dot1q/l2dot1q`.'
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type:
+            l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.'
           type: dict
           keys:
             client:
@@ -9181,7 +9200,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -9194,22 +9213,25 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Client VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: 'Client VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Outer VLAN ID. Not applicable for `protocol==untagged/unmatched`.
+                  description: 'Client Outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Client Inner VLAN ID. Not applicable for `protocol==untagged/unmatched`.
-                inner_protocol:
+                  description: 'Client Inner VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -9251,7 +9273,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                protocol:
+                encapsulation:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
 
@@ -9270,22 +9292,25 @@ keys:
                   - str
                   min: 1
                   max: 4094
-                  description: Network VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: 'Network VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
                 outer_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network outer VLAN ID. Not applicable for `protocol==untagged/client`.
+                  description: 'Network outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
                 inner_vlan:
                   type: int
                   convert_types:
                   - str
                   min: 1
                   max: 4094
-                  description: Network inner VLAN ID. Not applicable for `protocol==untagged/client`.
-                inner_protocol:
+                  description: 'Network inner VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                inner_encapsulation:
                   type: str
                   valid_values:
                   - dot1q
@@ -18092,6 +18117,7 @@ keys:
                     valid_values:
                     - ipv4
                     - ipv6
+                    required: true
                   source:
                     type: dict
                     keys:
@@ -18164,6 +18190,10 @@ keys:
                           type: list
                           items:
                             type: str
+                        enforce_gtsm:
+                          type: bool
+                          description: Enforce the GTSM for BGP speakers. Only supported
+                            when protocol is set to 'neighbors'.
                   actions:
                     type: dict
                     keys:

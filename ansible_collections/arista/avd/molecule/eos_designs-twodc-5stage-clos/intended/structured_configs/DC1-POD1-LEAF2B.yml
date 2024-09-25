@@ -480,13 +480,12 @@ vlan_interfaces:
   - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
+  description: MLAG_DC1.POD1.LEAF2A_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
   service_profile: QOS-PROFILE
@@ -501,7 +500,7 @@ port_channel_interfaces:
   service_profile: QOS-PROFILE
   mlag: 3
 - name: Port-Channel16
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: bar
   switchport:
@@ -519,7 +518,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 17
 - name: Port-Channel18
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -535,7 +534,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 18
 - name: Port-Channel19
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -555,7 +554,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
+  description: MLAG_DC1.POD1.LEAF2A_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -564,7 +563,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
+  description: MLAG_DC1.POD1.LEAF2A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -659,7 +658,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
-  description: server-1_Eth2
+  description: SERVER_server-1_Eth2
   shutdown: false
   eos_cli: 'comment
 
@@ -693,7 +692,7 @@ ethernet_interfaces:
   peer_interface: Eth6
   peer_type: server
   port_profile: NESTED_TENANT_A
-  description: server-1_Eth6
+  description: SERVER_server-1_Eth6
   shutdown: false
   eos_cli: 'comment
 
@@ -710,7 +709,7 @@ ethernet_interfaces:
   peer_interface: Eth8
   peer_type: server
   port_profile: NESTED_TENANT_A
-  description: server-1_Eth8
+  description: SERVER_server-1_Eth8
   shutdown: false
   eos_cli: 'comment
 

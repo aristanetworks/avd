@@ -113,7 +113,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -136,13 +136,12 @@ vlan_interfaces:
   ip_address: 10.255.252.0/31
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF1B_Po3
+  description: MLAG_UNDERLAY-MULTICAST-L3LEAF1B_Port-Channel3
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel6
@@ -158,7 +157,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L3LEAF1B
   peer_interface: Ethernet3
   peer_type: mlag_peer
-  description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet3
+  description: MLAG_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet3
   shutdown: false
   channel_group:
     id: 3
@@ -167,7 +166,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L3LEAF1B
   peer_interface: Ethernet4
   peer_type: mlag_peer
-  description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet4
+  description: MLAG_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet4
   shutdown: false
   channel_group:
     id: 3

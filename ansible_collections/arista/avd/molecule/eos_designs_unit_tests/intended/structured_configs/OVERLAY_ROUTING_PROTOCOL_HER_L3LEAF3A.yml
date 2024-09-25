@@ -68,7 +68,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -83,7 +83,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST
 - id: 2900
   name: L2VLAN_ON_ALL_LEAFS
@@ -130,13 +130,12 @@ vlan_interfaces:
   ip_address: 192.168.253.4/31
 port_channel_interfaces:
 - name: Port-Channel1
-  description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Po1
+  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 ethernet_interfaces:
@@ -144,7 +143,7 @@ ethernet_interfaces:
   peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth1
   peer_type: mlag_peer
-  description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
+  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
   shutdown: false
   channel_group:
     id: 1
@@ -153,7 +152,7 @@ ethernet_interfaces:
   peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth2
   peer_type: mlag_peer
-  description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
+  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
   shutdown: false
   channel_group:
     id: 1

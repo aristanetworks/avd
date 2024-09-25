@@ -49,7 +49,7 @@ vlan_interfaces:
   ip_address: 10.255.252.0/31
 port_channel_interfaces:
 - name: Port-Channel101
-  description: MLAG_PEER_network-ports-tests-2_Po101
+  description: MLAG_network-ports-tests-2_Port-Channel101
   switchport:
     enabled: true
     mode: trunk
@@ -62,7 +62,7 @@ ethernet_interfaces:
   peer: network-ports-tests-2
   peer_interface: Ethernet10/1
   peer_type: mlag_peer
-  description: MLAG_PEER_network-ports-tests-2_Ethernet10/1
+  description: MLAG_network-ports-tests-2_Ethernet10/1
   shutdown: false
   channel_group:
     id: 101
@@ -692,35 +692,32 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet5
-  peer: 'N: blah'
+  peer: blah
   peer_type: network_port
   description: 'N: blah'
   shutdown: false
   switchport:
     enabled: true
 - name: Ethernet6
-  peer: 'N: blah'
+  peer: blah
   peer_type: network_port
   description: 'N: blah'
   shutdown: false
   switchport:
     enabled: true
 - name: Ethernet11
-  peer: Base config which may be overwritten
   peer_type: network_port
   description: Base config which may be overwritten
   shutdown: false
   switchport:
     enabled: true
 - name: Ethernet12
-  peer: Config overwriting base config
   peer_type: network_port
   description: Config overwriting base config
   shutdown: false
   switchport:
     enabled: true
 - name: Ethernet13
-  peer: Base config which may be overwritten
   peer_type: network_port
   description: Base config which may be overwritten
   shutdown: false
@@ -730,7 +727,7 @@ ethernet_interfaces:
   peer: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
   peer_interface: Eth42
   peer_type: server
-  description: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT_Eth42
+  description: SERVER_CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT_Eth42
   shutdown: false
   switchport:
     enabled: true

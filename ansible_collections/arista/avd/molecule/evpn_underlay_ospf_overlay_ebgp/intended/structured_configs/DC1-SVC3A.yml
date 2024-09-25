@@ -181,7 +181,7 @@ vlans:
 - id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 vlan_interfaces:
 - name: Vlan4094
@@ -210,13 +210,12 @@ vlan_interfaces:
   ip_address: 10.255.252.6/31
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1-SVC3B_Po5
+  description: MLAG_DC1-SVC3B_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel7
@@ -233,7 +232,7 @@ ethernet_interfaces:
   peer: DC1-SVC3B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-SVC3B_Ethernet5
+  description: MLAG_DC1-SVC3B_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -242,7 +241,7 @@ ethernet_interfaces:
   peer: DC1-SVC3B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-SVC3B_Ethernet6
+  description: MLAG_DC1-SVC3B_Ethernet6
   shutdown: false
   channel_group:
     id: 5

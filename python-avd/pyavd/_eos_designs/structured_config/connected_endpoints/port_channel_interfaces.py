@@ -80,7 +80,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 continue
 
             connected_endpoint = {
-                "name": network_port.get("description"),
+                "name": network_port.get("endpoint"),
                 "type": "network_port",
             }
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
@@ -124,9 +124,16 @@ class PortChannelInterfacesMixin(UtilsMixin):
         """Return structured_config for one port_channel_interface."""
         peer = connected_endpoint["name"]
         adapter_description = get(adapter, "description")
-        adapter_port_channel_description = get(adapter, "port_channel.description")
+        port_channel_description = get(adapter, "port_channel.description")
         port_channel_mode = get(adapter, "port_channel.mode")
+        peer_interface = get(adapter, "port_channel.endpoint_port_channel")
         node_index = adapter["switches"].index(self.shared_utils.hostname)
+
+        # if 'descriptions' is set, it is preferred
+        if (interface_descriptions := adapter.get("descriptions")) is not None:
+            adapter_description = interface_descriptions[node_index]
+        else:
+            adapter_description = adapter.get("description")
 
         # Common port_channel_interface settings
         port_channel_interface = {
@@ -136,9 +143,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     shared_utils=self.shared_utils,
                     interface=port_channel_interface_name,
                     peer=peer,
+                    peer_interface=peer_interface,
+                    peer_type=connected_endpoint["type"],
                     description=adapter_description,
                     port_channel_id=channel_group_id,
-                    port_channel_description=adapter_port_channel_description,
+                    port_channel_description=port_channel_description,
                 ),
             ),
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
@@ -214,16 +223,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_subinterface_name,
-            "type": "l2dot1q",
             "vlan_id": subinterface.get("vlan_id", subinterface["number"]),
             "encapsulation_vlan": {
                 "client": {
-                    "dot1q": {
-                        "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
-                    },
+                    "encapsulation": "dot1q",
+                    "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
                 },
                 "network": {
-                    "client": True,
+                    "encapsulation": "client",
                 },
             },
         }

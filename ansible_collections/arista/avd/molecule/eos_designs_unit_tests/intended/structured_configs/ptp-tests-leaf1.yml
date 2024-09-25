@@ -157,7 +157,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -169,7 +169,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_VRF1
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: PTP
 vlan_interfaces:
 - name: Vlan4093
@@ -199,13 +199,12 @@ vlan_interfaces:
   ip_address: 10.254.1.96/31
 port_channel_interfaces:
 - name: Port-Channel9
-  description: MLAG_PEER_ptp-tests-leaf2_Po9
+  description: MLAG_ptp-tests-leaf2_Port-Channel9
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
   ptp:
@@ -254,7 +253,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 14
 - name: Port-Channel6
-  description: Endpoint-with-mpass
+  description: SERVER_Endpoint-with-mpass
   shutdown: false
   ptp:
     announce:
@@ -277,7 +276,7 @@ ethernet_interfaces:
   peer: ptp-tests-leaf2
   peer_interface: Ethernet9
   peer_type: mlag_peer
-  description: MLAG_PEER_ptp-tests-leaf2_Ethernet9
+  description: MLAG_ptp-tests-leaf2_Ethernet9
   shutdown: false
   channel_group:
     id: 9
@@ -286,7 +285,7 @@ ethernet_interfaces:
   peer: ptp-tests-leaf2
   peer_interface: Ethernet10
   peer_type: mlag_peer
-  description: MLAG_PEER_ptp-tests-leaf2_Ethernet10
+  description: MLAG_ptp-tests-leaf2_Ethernet10
   shutdown: false
   channel_group:
     id: 9
@@ -361,7 +360,7 @@ ethernet_interfaces:
   peer_interface: eth1
   peer_type: server
   port_profile: PTP-profile-BMCA
-  description: bmca-endpoint_eth1
+  description: SERVER_bmca-endpoint_eth1
   shutdown: false
   switchport:
     enabled: true
@@ -380,7 +379,7 @@ ethernet_interfaces:
   peer: video-endpoint
   peer_interface: PCI1
   peer_type: server
-  description: video-endpoint_PCI1
+  description: SERVER_video-endpoint_PCI1
   shutdown: false
   switchport:
     enabled: true
@@ -401,7 +400,7 @@ ethernet_interfaces:
   peer: Endpoint-with-mpass
   peer_interface: PCI1
   peer_type: server
-  description: Endpoint-with-mpass_PCI1
+  description: SERVER_Endpoint-with-mpass_PCI1
   shutdown: false
   channel_group:
     id: 6
@@ -410,7 +409,7 @@ ethernet_interfaces:
   peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3
   peer_type: server
-  description: Endpoint-with-specific-PTP-profile_eth3
+  description: SERVER_Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
   switchport:
     enabled: true

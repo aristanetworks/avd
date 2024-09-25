@@ -145,7 +145,12 @@ class AvdStructuredConfigMlag(AvdFacts):
         port_channel_interface = {
             "name": port_channel_interface_name,
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
-                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name),
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=port_channel_interface_name,
+                    peer_interface=f"Port-Channel{self.shared_utils.mlag_peer_port_channel_id}",
+                    # The description class has @property methods for other mlag related facts.
+                ),
             ),
             "switchport": {
                 "enabled": True,
@@ -162,12 +167,10 @@ class AvdStructuredConfigMlag(AvdFacts):
         }
 
         if self.shared_utils.mlag_l3 is True and self._trunk_groups_mlag_l3_name != self._trunk_groups_mlag_name:
-            # Add LEAF_PEER_L3 even if we reuse the MLAG trunk group for underlay peering
+            # Add mlag_l3 trunk group even if we reuse the MLAG trunk group for underlay peering
             # since this trunk group is also used for overlay iBGP peerings
             # except in the case where the same trunk group name is defined.
             port_channel_interface["switchport"]["trunk"]["groups"].append(self._trunk_groups_mlag_l3_name)
-            # Retain legacy order
-            port_channel_interface["switchport"]["trunk"]["groups"].reverse()
 
         if (self.shared_utils.fabric_sflow_mlag_interfaces) is not None:
             port_channel_interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_mlag_interfaces}
@@ -193,7 +196,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             return None
 
         ethernet_interfaces = []
-        for mlag_interface in mlag_interfaces:
+        for index, mlag_interface in enumerate(mlag_interfaces):
             ethernet_interface = {
                 "name": mlag_interface,
                 "peer": self.shared_utils.mlag_peer,
@@ -203,7 +206,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=mlag_interface,
-                        peer_interface=mlag_interface,
+                        peer_interface=self.shared_utils.mlag_peer_interfaces[index],
+                        # The description class has @property methods for other mlag related facts.
                     ),
                 ),
                 "shutdown": False,

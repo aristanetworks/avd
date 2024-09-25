@@ -77,7 +77,7 @@ vlans:
 - id: 3099
   name: MLAG_iBGP_default
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST
 vlan_interfaces:
 - name: Vlan4094
@@ -96,13 +96,12 @@ vlan_interfaces:
   ip_address: 10.10.20.0/31
 port_channel_interfaces:
 - name: Port-Channel10
-  description: MLAG_PEER_bgp-from-network-services-2_Po10
+  description: MLAG_bgp-from-network-services-2_Port-Channel10
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 ethernet_interfaces:
@@ -110,7 +109,7 @@ ethernet_interfaces:
   peer: bgp-from-network-services-2
   peer_interface: Ethernet10
   peer_type: mlag_peer
-  description: MLAG_PEER_bgp-from-network-services-2_Ethernet10
+  description: MLAG_bgp-from-network-services-2_Ethernet10
   shutdown: false
   channel_group:
     id: 10

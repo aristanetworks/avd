@@ -274,7 +274,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 2 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3 |
+| 2 | MLAG_iBGP_Tenant_C_OP_Zone | MLAG |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
@@ -292,15 +292,15 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
-| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
-| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | LEAF_PEER_L3 |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3 |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3 |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3 |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
+| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | MLAG |
+| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | MLAG |
+| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | MLAG |
+| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | MLAG |
+| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | MLAG |
+| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
+| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | MLAG |
+| 4093 | LEAF_PEER_L3 | MLAG |
 | 4094 | MLAG_PEER | MLAG |
 
 ### VLANs Device Configuration
@@ -309,7 +309,7 @@ vlan internal order ascending range 1006 1199
 !
 vlan 2
    name MLAG_iBGP_Tenant_C_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 110
    name Tenant_A_OP_Zone_1
@@ -364,39 +364,39 @@ vlan 350
 !
 vlan 3009
    name MLAG_iBGP_Tenant_A_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3010
    name MLAG_iBGP_Tenant_A_WEB_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3011
    name MLAG_iBGP_Tenant_A_APP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3012
    name MLAG_iBGP_Tenant_A_DB_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3013
    name MLAG_iBGP_Tenant_A_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3019
    name MLAG_iBGP_Tenant_B_OP_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3020
    name MLAG_iBGP_Tenant_B_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 3030
    name MLAG_iBGP_Tenant_C_WAN_Zone
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4093
    name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   trunk group MLAG
 !
 vlan 4094
    name MLAG_PEER
@@ -413,16 +413,16 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet5 | MLAG_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet11 | server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet12 | server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet13 | server06_override_profile_Eth2 | access | 210 | - | - | - |
-| Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
-| Ethernet15 | server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 | server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
+| Ethernet11 | SERVER_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | SERVER_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | SERVER_server06_override_profile_Eth2 | access | 210 | - | - | - |
+| Ethernet14 | SERVER_server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
+| Ethernet15 | SERVER_server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
+| Ethernet16 | SERVER_server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -468,12 +468,12 @@ interface Ethernet4
    ipv6 enable
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-SVC3A_Ethernet5
+   description MLAG_DC1-SVC3A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-SVC3A_Ethernet6
+   description MLAG_DC1-SVC3A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -488,7 +488,7 @@ interface Ethernet8
    channel-group 7 mode active
 !
 interface Ethernet11
-   description server04_inherit_all_from_profile_Eth2
+   description SERVER_server04_inherit_all_from_profile_Eth2
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -501,7 +501,7 @@ interface Ethernet11
    spanning-tree bpdufilter enable
 !
 interface Ethernet12
-   description server05_no_profile_Eth2
+   description SERVER_server05_no_profile_Eth2
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -514,7 +514,7 @@ interface Ethernet12
    spanning-tree bpdufilter enable
 !
 interface Ethernet13
-   description server06_override_profile_Eth2
+   description SERVER_server06_override_profile_Eth2
    no shutdown
    switchport access vlan 210
    switchport mode access
@@ -527,17 +527,17 @@ interface Ethernet13
    spanning-tree bpduguard enable
 !
 interface Ethernet14
-   description server07_inherit_all_from_profile_port_channel_Eth2
+   description SERVER_server07_inherit_all_from_profile_port_channel_Eth2
    no shutdown
    channel-group 14 mode active
 !
 interface Ethernet15
-   description server08_no_profile_port_channel_Eth2
+   description SERVER_server08_no_profile_port_channel_Eth2
    no shutdown
    channel-group 15 mode on
 !
 interface Ethernet16
-   description server09_override_profile_no_port_channel_Eth2
+   description SERVER_server09_override_profile_no_port_channel_Eth2
    no shutdown
    switchport access vlan 210
    switchport mode access
@@ -558,20 +558,19 @@ interface Ethernet16
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel5 | MLAG_DC1-SVC3A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
-| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Port-Channel14 | ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-SVC3A_Po5
+   description MLAG_DC1-SVC3A_Port-Channel5
    no shutdown
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    switchport
 !
@@ -584,7 +583,7 @@ interface Port-Channel7
    mlag 7
 !
 interface Port-Channel14
-   description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+   description ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -598,7 +597,7 @@ interface Port-Channel14
    storm-control unknown-unicast level 2
 !
 interface Port-Channel15
-   description server08_no_profile_port_channel_server08_no_profile_port_channel
+   description server08_no_profile_port_channel
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk

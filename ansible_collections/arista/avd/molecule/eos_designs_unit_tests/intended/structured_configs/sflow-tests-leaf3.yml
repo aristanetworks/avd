@@ -139,7 +139,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -151,7 +151,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_VRF1
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: SFLOW
 - id: 4092
   tenant: system
@@ -193,13 +193,12 @@ vlan_interfaces:
   - 10.254.254.1
 port_channel_interfaces:
 - name: Port-Channel11
-  description: port-channel-interface-true
+  description: SERVER_port-channel-interface-true
   switchport:
     enabled: true
     mode: access
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
     access_vlan: '11'
   shutdown: false
@@ -230,7 +229,7 @@ port_channel_interfaces:
     enable: true
   mlag: 17
 - name: Port-Channel13
-  description: port-channel-interface-false
+  description: SERVER_port-channel-interface-false
   shutdown: false
   sflow:
     enable: false
@@ -241,7 +240,7 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   mlag: 13
 - name: Port-Channel15
-  description: port-channel-interface-no-definition
+  description: SERVER_port-channel-interface-no-definition
   shutdown: false
   sflow:
     enable: true
@@ -256,7 +255,7 @@ ethernet_interfaces:
   peer: port-channel-interface-true
   peer_interface: PCI1
   peer_type: server
-  description: port-channel-interface-true_PCI1
+  description: SERVER_port-channel-interface-true_PCI1
   shutdown: false
   channel_group:
     id: 11
@@ -265,7 +264,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf4
   peer_interface: Ethernet12
   peer_type: mlag_peer
-  description: MLAG_PEER_sflow-tests-leaf4_Ethernet12
+  description: MLAG_sflow-tests-leaf4_Ethernet12
   shutdown: false
   channel_group:
     id: 11
@@ -316,7 +315,7 @@ ethernet_interfaces:
   peer: port-channel-interface-false
   peer_interface: PCI11
   peer_type: server
-  description: port-channel-interface-false_PCI11
+  description: SERVER_port-channel-interface-false_PCI11
   shutdown: false
   channel_group:
     id: 13
@@ -325,7 +324,7 @@ ethernet_interfaces:
   peer: port-channel-interface-no-definition
   peer_interface: PCI13
   peer_type: server
-  description: port-channel-interface-no-definition_PCI13
+  description: SERVER_port-channel-interface-no-definition_PCI13
   shutdown: false
   channel_group:
     id: 15

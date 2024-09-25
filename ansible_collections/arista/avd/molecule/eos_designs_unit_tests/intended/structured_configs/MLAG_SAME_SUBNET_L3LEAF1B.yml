@@ -119,7 +119,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -131,7 +131,7 @@ vlans:
 - id: 3000
   name: MLAG_iBGP_TEST
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
 vlan_interfaces:
 - name: Vlan4093
@@ -161,13 +161,12 @@ vlan_interfaces:
   ip_address: 10.10.224.2/30
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1A_Po5
+  description: MLAG_MLAG_SAME_SUBNET_L3LEAF1A_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 ethernet_interfaces:
@@ -175,7 +174,7 @@ ethernet_interfaces:
   peer: MLAG_SAME_SUBNET_L3LEAF1A
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1A_Ethernet5
+  description: MLAG_MLAG_SAME_SUBNET_L3LEAF1A_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -184,7 +183,7 @@ ethernet_interfaces:
   peer: MLAG_SAME_SUBNET_L3LEAF1A
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF1A_Ethernet6
+  description: MLAG_MLAG_SAME_SUBNET_L3LEAF1A_Ethernet6
   shutdown: false
   channel_group:
     id: 5

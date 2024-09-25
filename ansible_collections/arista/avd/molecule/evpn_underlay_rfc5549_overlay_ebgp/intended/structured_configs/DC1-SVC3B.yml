@@ -491,7 +491,7 @@ vlans:
   tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
   name: MLAG_PEER
@@ -506,7 +506,7 @@ vlans:
 - id: 3011
   name: MLAG_iBGP_Tenant_A_APP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
@@ -517,7 +517,7 @@ vlans:
 - id: 3012
   name: MLAG_iBGP_Tenant_A_DB_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
@@ -528,7 +528,7 @@ vlans:
 - id: 3009
   name: MLAG_iBGP_Tenant_A_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
@@ -536,7 +536,7 @@ vlans:
 - id: 3013
   name: MLAG_iBGP_Tenant_A_WAN_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
@@ -547,7 +547,7 @@ vlans:
 - id: 3010
   name: MLAG_iBGP_Tenant_A_WEB_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
@@ -564,7 +564,7 @@ vlans:
 - id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_B
 - id: 250
   name: Tenant_B_WAN_Zone_1
@@ -572,7 +572,7 @@ vlans:
 - id: 3020
   name: MLAG_iBGP_Tenant_B_WAN_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
@@ -583,7 +583,7 @@ vlans:
 - id: 2
   name: MLAG_iBGP_Tenant_C_OP_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_C
 - id: 350
   name: Tenant_C_WAN_Zone_1
@@ -591,7 +591,7 @@ vlans:
 - id: 3030
   name: MLAG_iBGP_Tenant_C_WAN_Zone
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: Tenant_C
 vlan_interfaces:
 - name: Vlan4093
@@ -811,13 +811,12 @@ vlan_interfaces:
   ipv6_enable: true
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1-SVC3A_Po5
+  description: MLAG_DC1-SVC3A_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 - name: Port-Channel7
@@ -830,7 +829,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 7
 - name: Port-Channel14
-  description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+  description: ALL_WITH_SECURITY_PORT_CHANNEL
   shutdown: false
   switchport:
     enabled: true
@@ -855,7 +854,7 @@ port_channel_interfaces:
       unit: percent
   mlag: 14
 - name: Port-Channel15
-  description: server08_no_profile_port_channel_server08_no_profile_port_channel
+  description: server08_no_profile_port_channel
   shutdown: false
   switchport:
     enabled: true
@@ -884,7 +883,7 @@ ethernet_interfaces:
   peer: DC1-SVC3A
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-SVC3A_Ethernet5
+  description: MLAG_DC1-SVC3A_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -893,7 +892,7 @@ ethernet_interfaces:
   peer: DC1-SVC3A
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-SVC3A_Ethernet6
+  description: MLAG_DC1-SVC3A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -961,7 +960,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY
-  description: server04_inherit_all_from_profile_Eth2
+  description: SERVER_server04_inherit_all_from_profile_Eth2
   shutdown: false
   switchport:
     enabled: true
@@ -988,7 +987,7 @@ ethernet_interfaces:
   peer: server05_no_profile
   peer_interface: Eth2
   peer_type: server
-  description: server05_no_profile_Eth2
+  description: SERVER_server05_no_profile_Eth2
   shutdown: false
   switchport:
     enabled: true
@@ -1016,7 +1015,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY
-  description: server06_override_profile_Eth2
+  description: SERVER_server06_override_profile_Eth2
   shutdown: false
   switchport:
     enabled: true
@@ -1043,7 +1042,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-  description: server07_inherit_all_from_profile_port_channel_Eth2
+  description: SERVER_server07_inherit_all_from_profile_port_channel_Eth2
   shutdown: false
   channel_group:
     id: 14
@@ -1052,7 +1051,7 @@ ethernet_interfaces:
   peer: server08_no_profile_port_channel
   peer_interface: Eth2
   peer_type: server
-  description: server08_no_profile_port_channel_Eth2
+  description: SERVER_server08_no_profile_port_channel_Eth2
   shutdown: false
   channel_group:
     id: 15
@@ -1062,7 +1061,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-  description: server09_override_profile_no_port_channel_Eth2
+  description: SERVER_server09_override_profile_no_port_channel_Eth2
   shutdown: false
   switchport:
     enabled: true
