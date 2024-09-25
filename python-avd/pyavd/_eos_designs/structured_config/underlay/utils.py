@@ -173,7 +173,6 @@ class UtilsMixin:
             "peer_interface": l3_interface.get("peer_interface"),
             "ip_address": ip_address,
             "shutdown": not l3_interface.get("enabled", True),
-            "type": "l3dot1q" if "." in interface_name else None,
             "switchport": {"enabled": False if "." not in interface_name else None},
             "description": interface_description,
             "speed": l3_interface.get("speed"),
@@ -188,8 +187,8 @@ class UtilsMixin:
         if self.shared_utils.fabric_sflow_l3_interfaces is not None:
             interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_l3_interfaces}
 
-        if interface["type"] == "l3dot1q":
-            interface["encapsulation_dot1q_vlan"] = int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))
+        if "." in interface_name:
+            interface["encapsulation_dot1q"] = {"vlan": int(get(l3_interface, "encapsulation_dot1q_vlan", default=interface_name.split(".")[-1]))}
 
         if ip_address == "dhcp" and l3_interface.get("dhcp_accept_default_route", True):
             interface["dhcp_client_accept_default_route"] = True
@@ -256,9 +255,8 @@ class UtilsMixin:
             "peer_type": link["peer_type"],
             "description": default(svi.get("description"), svi["name"]),
             "shutdown": not (svi.get("enabled", False)),
-            "type": "l3dot1q" if not is_native else None,
             "switchport": {"enabled": False if is_native else None},
-            "encapsulation_dot1q_vlan": None if is_native else svi_id,
+            "encapsulation_dot1q": {"vlan": None if is_native else svi_id},
             "vrf": vrf["name"] if vrf["name"] != "default" else None,
             "ip_address": svi.get("ip_address"),
             "ipv6_address": svi.get("ipv6_address"),

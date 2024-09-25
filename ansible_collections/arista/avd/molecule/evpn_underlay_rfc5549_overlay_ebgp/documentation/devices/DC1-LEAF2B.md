@@ -294,8 +294,8 @@ vlan internal order ascending range 1006 1199
 | 3011 | MLAG_iBGP_Tenant_A_APP_Zone | MLAG |
 | 3012 | MLAG_iBGP_Tenant_A_DB_Zone | MLAG |
 | 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
-| 4093 | LEAF_PEER_L3 | MLAG |
-| 4094 | MLAG_PEER | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -368,11 +368,11 @@ vlan 3019
    trunk group MLAG
 !
 vlan 4093
-   name LEAF_PEER_L3
+   name MLAG_L3
    trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -386,8 +386,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet5 | MLAG_DC1-LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1-LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
 | Ethernet10 | SERVER_server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | SERVER_server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
@@ -437,12 +437,12 @@ interface Ethernet4
    ipv6 enable
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-LEAF2A_Ethernet5
+   description MLAG_DC1-LEAF2A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-LEAF2A_Ethernet6
+   description MLAG_DC1-LEAF2A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -475,7 +475,7 @@ interface Ethernet12
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel5 | MLAG_DC1-LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | - |
 | Port-Channel10 | PortChanne1 | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | PortChanne1 | access | 110 | - | - | - | - | 11 | - |
@@ -486,7 +486,7 @@ interface Ethernet12
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-LEAF2A_Po5
+   description MLAG_DC1-LEAF2A_Port-Channel5
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
@@ -590,8 +590,8 @@ interface Loopback100
 | Vlan3011 | MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
 | Vlan3012 | MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
 | Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4093 | MLAG_L3 | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -740,13 +740,13 @@ interface Vlan3019
    ip address 10.255.251.3/31
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 1500
    ipv6 enable
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

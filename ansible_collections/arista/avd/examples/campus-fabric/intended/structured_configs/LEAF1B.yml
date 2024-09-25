@@ -62,7 +62,7 @@ ntp:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -79,7 +79,7 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -92,7 +92,7 @@ vlan_interfaces:
   type: inband_mgmt
 port_channel_interfaces:
 - name: Port-Channel53
-  description: MLAG_PEER_LEAF1A_Po53
+  description: MLAG_LEAF1A_Port-Channel53
   switchport:
     enabled: true
     mode: trunk
@@ -114,7 +114,7 @@ ethernet_interfaces:
   peer: LEAF1A
   peer_interface: Ethernet53
   peer_type: mlag_peer
-  description: MLAG_PEER_LEAF1A_Ethernet53
+  description: MLAG_LEAF1A_Ethernet53
   shutdown: false
   channel_group:
     id: 53
@@ -123,7 +123,7 @@ ethernet_interfaces:
   peer: LEAF1A
   peer_interface: Ethernet54
   peer_type: mlag_peer
-  description: MLAG_PEER_LEAF1A_Ethernet54
+  description: MLAG_LEAF1A_Ethernet54
   shutdown: false
   channel_group:
     id: 53

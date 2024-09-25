@@ -643,6 +643,8 @@ router bgp {{ router_bgp.as }}
 {%                 set evpn_neighbor_default_encap_cli = evpn_neighbor_default_encap_cli ~ " next-hop-self source-interface " ~ router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface %}
 {%             endif %}
       {{ evpn_neighbor_default_encap_cli }}
+{%         elif router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined("path-selection") %}
+      neighbor default encapsulation path-selection
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_mpls_resolution_ribs is arista.avd.defined %}
 {%             set evpn_mpls_resolution_ribs = [] %}
@@ -729,6 +731,9 @@ router bgp {{ router_bgp.as }}
 {%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " route-map " ~ neighbor.default_route.route_map %}
 {%                 endif %}
       {{ neighbor_default_route_cli }}
+{%             endif %}
+{%             if neighbor.encapsulation is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} encapsulation {{ neighbor.encapsulation }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}

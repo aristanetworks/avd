@@ -486,7 +486,7 @@ snmp_server:
 vlans:
 - id: 4092
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 130
@@ -599,7 +599,7 @@ vlans:
   tenant: Tenant_C
 vlan_interfaces:
 - name: Vlan4092
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500

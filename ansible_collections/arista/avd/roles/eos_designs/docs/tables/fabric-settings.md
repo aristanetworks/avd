@@ -8,7 +8,13 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
+    | [<samp>mlag_member_description</samp>](## "mlag_member_description") | String |  | `MLAG_{mlag_peer}_{peer_interface}` |  | Description or description template to be used on MLAG peer-link ethernet interfaces.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG port-channel interface.<br>  - `peer_interface`: The port-channel interface on the MLAG peer.<br>  - `mlag_port_channel_id`: The local MLAG port-channel ID.<br>  - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.<br><br>By default the description is templated from the name and interface of the MLAG peer. |
     | [<samp>mlag_on_orphan_port_channel_downlink</samp>](## "mlag_on_orphan_port_channel_downlink") | Boolean |  | `False` |  | If `true` an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.<br>If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches. |
+    | [<samp>mlag_peer_l3_svi_description</samp>](## "mlag_peer_l3_svi_description") | String |  | `MLAG_L3` |  | Description or description template to be used on MLAG L3 peering SVI (Interface Vlan4093 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The MLAG L3 peering SVI name.<br>  - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID. |
+    | [<samp>mlag_peer_l3_vlan_name</samp>](## "mlag_peer_l3_vlan_name") | String |  | `MLAG_L3` |  | Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID. |
+    | [<samp>mlag_peer_svi_description</samp>](## "mlag_peer_svi_description") | String |  | `MLAG` |  | Description or description template to be used on MLAG peering SVI (Interface Vlan4094 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The MLAG peering SVI name.<br>  - `mlag_peer_vlan`: The MLAG peering VLAN ID. |
+    | [<samp>mlag_peer_vlan_name</samp>](## "mlag_peer_vlan_name") | String |  | `MLAG` |  | Name or name template to be used on MLAG peering VLAN (VLAN 4094 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `mlag_peer_vlan`: The MLAG peering VLAN ID. |
+    | [<samp>mlag_port_channel_description</samp>](## "mlag_port_channel_description") | String |  | `MLAG_{mlag_peer}_{peer_interface}` |  | Description or description template to be used on MLAG peer-link port-channel interfaces.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG port-channel interface.<br>  - `peer_interface`: The port-channel interface on the MLAG peer.<br>  - `mlag_port_channel_id`: The local MLAG port-channel ID.<br>  - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.<br><br>By default the description is templated from the name and port-channel interface of the MLAG peer. |
     | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | `False` |  | A vlan can have many trunk_groups assigned.<br>To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,<br>this feature will only configure the vlan trunk groups matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true".<br> |
     | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU.<br>Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214 |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links. |
@@ -51,9 +57,63 @@
     # See "Details on enable_trunk_groups" below before enabling this feature.
     enable_trunk_groups: <bool; default=False>
 
+    # Description or description template to be used on MLAG peer-link ethernet interfaces.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The local MLAG port-channel interface.
+    #   - `peer_interface`: The port-channel interface on the MLAG peer.
+    #   - `mlag_port_channel_id`: The local MLAG port-channel ID.
+    #   - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.
+    #
+    # By default the description is templated from the name and interface of the MLAG peer.
+    mlag_member_description: <str; default="MLAG_{mlag_peer}_{peer_interface}">
+
     # If `true` an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.
     # If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.
     mlag_on_orphan_port_channel_downlink: <bool; default=False>
+
+    # Description or description template to be used on MLAG L3 peering SVI (Interface Vlan4093 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The MLAG L3 peering SVI name.
+    #   - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID.
+    mlag_peer_l3_svi_description: <str; default="MLAG_L3">
+
+    # Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID.
+    mlag_peer_l3_vlan_name: <str; default="MLAG_L3">
+
+    # Description or description template to be used on MLAG peering SVI (Interface Vlan4094 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The MLAG peering SVI name.
+    #   - `mlag_peer_vlan`: The MLAG peering VLAN ID.
+    mlag_peer_svi_description: <str; default="MLAG">
+
+    # Name or name template to be used on MLAG peering VLAN (VLAN 4094 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `mlag_peer_vlan`: The MLAG peering VLAN ID.
+    mlag_peer_vlan_name: <str; default="MLAG">
+
+    # Description or description template to be used on MLAG peer-link port-channel interfaces.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The local MLAG port-channel interface.
+    #   - `peer_interface`: The port-channel interface on the MLAG peer.
+    #   - `mlag_port_channel_id`: The local MLAG port-channel ID.
+    #   - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.
+    #
+    # By default the description is templated from the name and port-channel interface of the MLAG peer.
+    mlag_port_channel_description: <str; default="MLAG_{mlag_peer}_{peer_interface}">
 
     # A vlan can have many trunk_groups assigned.
     # To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,

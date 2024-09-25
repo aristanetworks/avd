@@ -137,12 +137,12 @@ management_api_http:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 11
@@ -158,12 +158,12 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 10.254.1.104/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -264,7 +264,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf4
   peer_interface: Ethernet12
   peer_type: mlag_peer
-  description: MLAG_PEER_sflow-tests-leaf4_Ethernet12
+  description: MLAG_sflow-tests-leaf4_Ethernet12
   shutdown: false
   channel_group:
     id: 11

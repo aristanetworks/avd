@@ -557,6 +557,16 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ peer_group.encapsulation | arista.avd.default("default") }} |
 {%             endfor %}
 {%         endif %}
+{%         if router_bgp.address_family_evpn.neighbors is arista.avd.defined %}
+
+##### EVPN Neighbors
+
+| Neighbor | Activate | Encapsulation |
+| -------- | -------- | ------------- |
+{%             for neighbor in router_bgp.address_family_evpn.neighbors | arista.avd.natural_sort('ip_address') %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ neighbor.encapsulation | arista.avd.default("default") }} |
+{%             endfor %}
+{%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}
 
 ##### EVPN Neighbor Default Encapsulation

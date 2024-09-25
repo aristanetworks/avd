@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import default, get, strip_empties_from_dict
+from pyavd._utils import AvdStringFormatter, default, get, strip_empties_from_dict
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
 
@@ -42,7 +42,9 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "id": self.shared_utils.mlag_peer_l3_vlan,
                     "tenant": "system",
-                    "name": "LEAF_PEER_L3",
+                    "name": AvdStringFormatter().format(
+                        self.shared_utils.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=self.shared_utils.mlag_peer_l3_vlan
+                    ),
                     "trunk_groups": [self._trunk_groups_mlag_l3_name],
                 },
             )
@@ -51,7 +53,9 @@ class AvdStructuredConfigMlag(AvdFacts):
             {
                 "id": self.shared_utils.mlag_peer_vlan,
                 "tenant": "system",
-                "name": "MLAG_PEER",
+                "name": AvdStringFormatter().format(
+                    self.shared_utils.mlag_peer_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_vlan=self.shared_utils.mlag_peer_vlan
+                ),
                 "trunk_groups": [self._trunk_groups_mlag_name],
             },
         )
@@ -69,7 +73,9 @@ class AvdStructuredConfigMlag(AvdFacts):
         main_vlan_interface_name = f"Vlan{self.shared_utils.mlag_peer_vlan}"
         main_vlan_interface = {
             "name": main_vlan_interface_name,
-            "description": "MLAG_PEER",
+            "description": self.shared_utils.interface_descriptions.mlag_peer_svi(
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=main_vlan_interface_name)
+            ),
             "shutdown": False,
             "no_autostate": True,
             "struct_cfg": self.shared_utils.mlag_peer_vlan_structured_config,
@@ -124,7 +130,9 @@ class AvdStructuredConfigMlag(AvdFacts):
         l3_vlan_interface_name = f"Vlan{self.shared_utils.mlag_peer_l3_vlan}"
         l3_vlan_interface = {
             "name": l3_vlan_interface_name,
-            "description": "MLAG_PEER_L3_PEERING",
+            "description": self.shared_utils.interface_descriptions.mlag_peer_l3_svi(
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=l3_vlan_interface_name)
+            ),
             "shutdown": False,
             "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
@@ -145,7 +153,12 @@ class AvdStructuredConfigMlag(AvdFacts):
         port_channel_interface = {
             "name": port_channel_interface_name,
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
-                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name),
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=port_channel_interface_name,
+                    peer_interface=f"Port-Channel{self.shared_utils.mlag_peer_port_channel_id}",
+                    # The description class has @property methods for other mlag related facts.
+                ),
             ),
             "switchport": {
                 "enabled": True,
@@ -191,7 +204,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             return None
 
         ethernet_interfaces = []
-        for mlag_interface in mlag_interfaces:
+        for index, mlag_interface in enumerate(mlag_interfaces):
             ethernet_interface = {
                 "name": mlag_interface,
                 "peer": self.shared_utils.mlag_peer,
@@ -201,7 +214,8 @@ class AvdStructuredConfigMlag(AvdFacts):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=mlag_interface,
-                        peer_interface=mlag_interface,
+                        peer_interface=self.shared_utils.mlag_peer_interfaces[index],
+                        # The description class has @property methods for other mlag related facts.
                     ),
                 ),
                 "shutdown": False,

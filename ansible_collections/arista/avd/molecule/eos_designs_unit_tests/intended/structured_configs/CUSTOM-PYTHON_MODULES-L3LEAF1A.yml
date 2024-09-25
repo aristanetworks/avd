@@ -140,12 +140,12 @@ spanning_tree:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -234,8 +234,8 @@ ethernet_interfaces:
   vrf: TEST_VRF
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1.1 VRF TEST_VRF
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1
+  encapsulation_dot1q:
+    vlan: 1
   mtu: 9214
   ip_address: 172.16.0.24/31
 mlag_configuration:

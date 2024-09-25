@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 from collections import ChainMap
-from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
@@ -119,13 +118,14 @@ class AvdInterfaceDescriptions(AvdFacts):
         Build an MLAG Ethernet interface description.
 
         If a jinja template is configured, use it.
-        If not default to MLAG_PEER_<PEER>_<PEER_INTERFACE>
+        If not, use the default template as a format string template.
 
         Available data:
             - interface
             - peer_interface
             - mlag_peer
-            - peer_interface
+            - mlag_port_channel_id
+            - mlag_peer_port_channel_id
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
@@ -138,19 +138,32 @@ class AvdInterfaceDescriptions(AvdFacts):
                 mlag_peer=data.mlag_peer,
             )
 
-        return f"MLAG_PEER_{data.mlag_peer}_{data.peer_interface}"
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_member_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "peer_interface": data.peer_interface,
+                    "mlag_port_channel_id": data.mlag_port_channel_id,
+                    "mlag_peer_port_channel_id": data.mlag_peer_port_channel_id,
+                }
+            ),
+        )
 
     def mlag_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build an MLAG Port-Channel interface description.
 
         If a jinja template is configured, use it.
-        If not, use MLAG_PEER_<PEER>_Po<MLAG_PORT_CHANNEL_ID>
+        If not, use the default template as a format string template.
 
         Available data:
             - interface
+            - peer_interface
             - mlag_peer
             - mlag_port_channel_id
+            - mlag_peer_port_channel_id
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
@@ -164,7 +177,66 @@ class AvdInterfaceDescriptions(AvdFacts):
                 mlag_port_channel_id=data.mlag_port_channel_id,
             )
 
-        return f"MLAG_PEER_{data.mlag_peer}_Po{data.mlag_port_channel_id}"
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_port_channel_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "peer_interface": data.peer_interface,
+                    "mlag_port_channel_id": data.mlag_port_channel_id,
+                    "mlag_peer_port_channel_id": data.mlag_peer_port_channel_id,
+                }
+            ),
+        )
+
+    def mlag_peer_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - mlag_peer
+            - mlag_peer_vlan
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "mlag_peer_vlan": data.mlag_peer_vlan,
+                }
+            ),
+        )
+
+    def mlag_peer_l3_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - mlag_peer
+            - mlag_peer_l3_vlan
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_l3_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "mlag_peer_l3_vlan": data.mlag_peer_l3_vlan,
+                }
+            ),
+        )
 
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
@@ -382,30 +454,42 @@ class InterfaceDescriptionData:
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
 
-    @cached_property
-    def mpls_overlay_role(self) -> str:
+    @property
+    def mpls_overlay_role(self) -> str | None:
         return self._shared_utils.mpls_overlay_role
 
-    @cached_property
+    @property
     def overlay_routing_protocol(self) -> str:
         return self._shared_utils.overlay_routing_protocol
 
-    @cached_property
+    @property
     def mlag_interfaces(self) -> list:
         return self._shared_utils.mlag_interfaces
 
-    @cached_property
+    @property
     def mlag_peer(self) -> str:
         return self._shared_utils.mlag_peer
 
-    @cached_property
-    def mlag_port_channel_id(self) -> str:
+    @property
+    def mlag_port_channel_id(self) -> int:
         return self._shared_utils.mlag_port_channel_id
 
-    @cached_property
-    def mpls_lsr(self) -> str:
+    @property
+    def mlag_peer_port_channel_id(self) -> int:
+        return self._shared_utils.mlag_peer_port_channel_id
+
+    @property
+    def mlag_peer_vlan(self) -> int:
+        return self._shared_utils.mlag_peer_vlan
+
+    @property
+    def mlag_peer_l3_vlan(self) -> int | None:
+        return self._shared_utils.mlag_peer_l3_vlan
+
+    @property
+    def mpls_lsr(self) -> bool:
         return self._shared_utils.mpls_lsr
 
-    @cached_property
+    @property
     def type(self) -> str:
         return self._shared_utils.type
