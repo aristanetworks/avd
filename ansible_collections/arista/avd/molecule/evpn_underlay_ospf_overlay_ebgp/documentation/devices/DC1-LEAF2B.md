@@ -256,8 +256,8 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 210 | Tenant_B_OP_Zone_1 | - |
 | 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
-| 4093 | LEAF_PEER_L3 | MLAG |
-| 4094 | MLAG_PEER | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -271,11 +271,11 @@ vlan 3019
    trunk group MLAG
 !
 vlan 4093
-   name LEAF_PEER_L3
+   name MLAG_L3
    trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -442,8 +442,8 @@ interface Loopback1
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan210 | Tenant_B_OP_Zone_1 | Tenant_B_OP_Zone | - | False |
 | Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4093 | MLAG_L3 | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -472,7 +472,7 @@ interface Vlan3019
    ip address 10.255.251.3/31
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 1500
    ip address 10.255.251.3/31
@@ -480,7 +480,7 @@ interface Vlan4093
    ip ospf area 0.0.0.0
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

@@ -12,6 +12,10 @@ default_connected_endpoints_description: "{endpoint}{endpoint_port?<_}"
 default_connected_endpoints_port_channel_description: "{adapter_description_or_endpoint}{endpoint_port_channel?<_}"
 mlag_member_description: "MLAG_PEER_{mlag_peer}_{interface}"
 mlag_port_channel_description: "MLAG_PEER_{mlag_peer}_Po{mlag_port_channel_id}"
+mlag_peer_svi_description: "MLAG_PEER"
+mlag_peer_l3_svi_description: "MLAG_PEER_L3_PEERING"
+mlag_peer_vlan_name: "MLAG_PEER"
+mlag_peer_l3_vlan_name: "LEAF_PEER_L3"
 
 # local users
 local_users:

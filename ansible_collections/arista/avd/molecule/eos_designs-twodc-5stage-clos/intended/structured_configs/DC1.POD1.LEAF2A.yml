@@ -321,7 +321,7 @@ snmp_server:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -359,7 +359,7 @@ vlans:
   name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   ip_address: 172.20.110.2/31

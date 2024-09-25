@@ -255,8 +255,8 @@ vlan internal order ascending range 1006 1199
 | 310 | IDF3-Data | - |
 | 320 | IDF3-Voice | - |
 | 330 | IDF3-Guest | - |
-| 4093 | LEAF_PEER_L3 | MLAG |
-| 4094 | MLAG_PEER | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -293,11 +293,11 @@ vlan 330
    name IDF3-Guest
 !
 vlan 4093
-   name LEAF_PEER_L3
+   name MLAG_L3
    trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -462,8 +462,8 @@ interface Loopback0
 | Vlan310 | IDF3-Data | default | - | False |
 | Vlan320 | IDF3-Voice | default | - | False |
 | Vlan330 | IDF3-Guest | default | - | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4093 | MLAG_L3 | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -549,7 +549,7 @@ interface Vlan330
    ip virtual-router address 10.3.30.1
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 1500
    ip address 10.1.1.0/31
@@ -557,7 +557,7 @@ interface Vlan4093
    ip ospf area 0.0.0.0
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
