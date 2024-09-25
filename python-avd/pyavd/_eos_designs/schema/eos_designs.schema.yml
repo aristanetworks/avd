@@ -4367,8 +4367,8 @@ keys:
     type: str
     default: path-selection
     valid_values:
-    - vxlan
     - path-selection
+    - vxlan
   wan_ha:
     documentation_options:
       table: wan-settings
