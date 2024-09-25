@@ -73,6 +73,9 @@ class UtilsMixin:
             adapter_or_network_port_settings: can either be an adapter of a connected endpoint or one item under network_ports.
             context: a context string for error messages.
         """
-        profile_name = adapter_or_network_port_settings.get("profile")
+        if (profile_name := adapter_or_network_port_settings.get("profile")) is None:
+            # No profile to apply
+            return adapter_or_network_port_settings
+
         adapter_profile = self.get_merged_port_profile(profile_name, context)
         return merge(adapter_profile, adapter_or_network_port_settings, list_merge="replace", destructive_merge=False)
