@@ -13,5 +13,5 @@ keys:
     type: str
     default: path-selection
     valid_values:
-      - vxlan
       - path-selection
+      - vxlan
