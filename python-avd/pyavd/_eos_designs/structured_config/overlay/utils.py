@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from pyavd._errors import AristaAvdError
 from pyavd._utils import get, strip_empties_from_dict
 from pyavd.j2filters import natural_sort
 
@@ -43,10 +44,12 @@ class UtilsMixin:
             # These remote gateways can be outside of the inventory or in the inventory
             gw_remote_peer = gw_remote_peer_dict["hostname"]
 
-            gw_info = {
-                "bgp_as": str(_as) if (_as := gw_remote_peer_dict.get("bgp_as")) else None,
-                "ip_address": gw_remote_peer_dict.get("ip_address"),
-            }
+            gw_info = strip_empties_from_dict(
+                {
+                    "bgp_as": str(_as) if (_as := gw_remote_peer_dict.get("bgp_as")) else None,
+                    "ip_address": gw_remote_peer_dict.get("ip_address"),
+                }
+            )
 
             peer_facts = self.shared_utils.get_peer_facts(gw_remote_peer, required=False)
             if peer_facts is None:
@@ -57,6 +60,10 @@ class UtilsMixin:
                 self._append_peer(evpn_gateway_remote_peers, gw_remote_peer, peer_facts)
                 # Apply potential override if present in the input variables
                 evpn_gateway_remote_peers[gw_remote_peer].update(strip_empties_from_dict(gw_info))
+
+            if any(key not in evpn_gateway_remote_peers[gw_remote_peer] for key in ["bgp_as", "ip_address"]):
+                msg = f"The EVPN Gateway remote peer '{gw_remote_peer}' is missing either a `bpg_as` or an `ip_address`."
+                raise AristaAvdError(msg)
 
         return evpn_gateway_remote_peers
 
