@@ -976,7 +976,7 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 10.255.251.3 description DC1-LEAF2B
+   neighbor 10.255.251.3 description DC1-LEAF2B_Vlan4093
    neighbor 172.31.255.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.8 remote-as 65001
    neighbor 172.31.255.8 description DC1-SPINE1_Ethernet2
@@ -991,16 +991,16 @@ router bgp 65102
    neighbor 172.31.255.14 description DC1-SPINE4_Ethernet2
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
@@ -1054,7 +1054,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3011
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1064,7 +1064,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3012
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1074,7 +1074,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3009
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
@@ -1084,7 +1084,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3010
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1094,7 +1094,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3019
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1104,7 +1104,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3029
       redistribute connected
 ```
 

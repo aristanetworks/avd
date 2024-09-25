@@ -48,7 +48,7 @@ router_bgp:
   - ip_address: 10.255.252.7
     peer_group: MLAG-PEERS
     peer: DC1-SVC3B
-    description: DC1-SVC3B
+    description: DC1-SVC3B_Vlan4092
   - ip_address: 172.31.255.48
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
@@ -72,22 +72,22 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE1
-    description: DC1-SPINE1
+    description: DC1-SPINE1_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE2
-    description: DC1-SPINE2
+    description: DC1-SPINE2_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE3
-    description: DC1-SPINE3
+    description: DC1-SPINE3_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE4
-    description: DC1-SPINE4
+    description: DC1-SPINE4_Loopback0
     remote_as: '65001'
   redistribute_routes:
   - source_protocol: connected
@@ -118,7 +118,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3011
     updates:
       wait_install: true
   - name: Tenant_A_DB_Zone
@@ -138,7 +138,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3012
     updates:
       wait_install: true
   - name: Tenant_A_OP_Zone
@@ -158,7 +158,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3009
     updates:
       wait_install: true
   - name: Tenant_A_WAN_Zone
@@ -181,7 +181,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3013
     updates:
       wait_install: true
   - name: Tenant_A_WEB_Zone
@@ -201,7 +201,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3010
     updates:
       wait_install: true
   - name: Tenant_B_OP_Zone
@@ -221,7 +221,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3019
     updates:
       wait_install: true
   - name: Tenant_B_WAN_Zone
@@ -241,7 +241,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3020
     updates:
       wait_install: true
   - name: Tenant_C_OP_Zone
@@ -261,7 +261,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan2
     updates:
       wait_install: true
   - name: Tenant_C_WAN_Zone
@@ -281,7 +281,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
-      description: DC1-SVC3B
+      description: DC1-SVC3B_Vlan3030
     updates:
       wait_install: true
   vlan_aware_bundles:

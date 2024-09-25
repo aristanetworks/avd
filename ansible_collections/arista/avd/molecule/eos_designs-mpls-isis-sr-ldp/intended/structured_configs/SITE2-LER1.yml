@@ -49,11 +49,11 @@ router_bgp:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE1-RR1
-    description: SITE1-RR1
+    description: SITE1-RR1_Loopback0
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE2-RR1
-    description: SITE2-RR1
+    description: SITE2-RR1_Loopback0
   vrfs:
   - name: TENANT_B_INTRA
     rd: 100.70.0.7:19

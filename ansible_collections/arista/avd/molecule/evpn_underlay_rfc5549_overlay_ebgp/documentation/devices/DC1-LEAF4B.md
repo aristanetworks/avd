@@ -976,7 +976,7 @@ router bgp 65107
    neighbor interface Vlan4093 peer-group MLAG_PEER remote-as 65107
    neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.6 remote-as 65001
-   neighbor 192.168.255.6 description DC1-SPINE6
+   neighbor 192.168.255.6 description DC1-SPINE6_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone

@@ -382,7 +382,7 @@ router bgp 65120
    neighbor 172.16.12.66 description DC1-SUPER-SPINE2_Ethernet4
    neighbor 172.16.120.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.3 remote-as 65121
-   neighbor 172.16.120.3 description DC1-POD2-LEAF1A
+   neighbor 172.16.120.3 description DC1-POD2-LEAF1A_Loopback0
    neighbor 172.17.120.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.120.3 remote-as 65121
    neighbor 172.17.120.3 description DC1-POD2-LEAF1A_Ethernet2
