@@ -20,5 +20,5 @@ servers:
         profile: THIS-PROFILE-DOES-NOT-EXIST
 
 expected_error_message: >-
-  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under adapter or network_port 'TEST-ENDPOINT' does
-  not exist in `port_profiles`.
+  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under 'servers[TEST-ENDPOINT].adapters'
+  does not exist in `port_profiles`.
