@@ -248,7 +248,7 @@ vlan internal order ascending range 1006 1199
 | 110 | IDF1-Data | - |
 | 120 | IDF1-Voice | - |
 | 130 | IDF1-Guest | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -267,7 +267,7 @@ vlan 130
    name IDF1-Guest
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -1406,7 +1406,7 @@ interface Port-Channel53
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -1426,7 +1426,7 @@ interface Vlan10
    ip address 10.10.10.6/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

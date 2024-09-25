@@ -263,8 +263,8 @@ vlan internal order ascending range 1006 1199
 | 3010 | MLAG_iBGP_VRF11 | MLAG |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
-| 4093 | LEAF_PEER_L3 | MLAG |
-| 4094 | MLAG_PEER | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -297,11 +297,11 @@ vlan 3402
    name L2_VLAN3402
 !
 vlan 4093
-   name LEAF_PEER_L3
+   name MLAG_L3
    trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -471,8 +471,8 @@ interface Loopback11
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
 | Vlan3009 | MLAG_PEER_L3_iBGP: vrf VRF10 | VRF10 | 1500 | False |
 | Vlan3010 | MLAG_PEER_L3_iBGP: vrf VRF11 | VRF11 | 1500 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4093 | MLAG_L3 | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -530,13 +530,13 @@ interface Vlan3010
    ip address 10.255.1.100/31
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 1500
    ip address 10.255.1.100/31
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

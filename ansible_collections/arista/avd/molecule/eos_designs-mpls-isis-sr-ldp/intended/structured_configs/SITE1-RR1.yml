@@ -37,9 +37,9 @@ router_bgp:
     neighbor_default:
       encapsulation: mpls
     peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
     - name: RR-OVERLAY-PEERS
+      activate: true
+    - name: MPLS-OVERLAY-PEERS
       activate: true
   address_family_ipv4:
     peer_groups:

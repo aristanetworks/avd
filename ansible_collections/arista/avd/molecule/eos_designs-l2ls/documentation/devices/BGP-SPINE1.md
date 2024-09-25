@@ -138,7 +138,7 @@ vlan internal order ascending range 1006 1199
 | 200 | SVI_200 | - |
 | 220 | SVI_220 | - |
 | 4092 | INBAND_MGMT | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -160,7 +160,7 @@ vlan 4092
    name INBAND_MGMT
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -296,7 +296,7 @@ interface Loopback0
 | Vlan200 | SVI_200 | default | - | False |
 | Vlan220 | SVI_220 | default | - | False |
 | Vlan4092 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -342,7 +342,7 @@ interface Vlan4092
    ip virtual-router address 172.23.254.1
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 9214
    no autostate

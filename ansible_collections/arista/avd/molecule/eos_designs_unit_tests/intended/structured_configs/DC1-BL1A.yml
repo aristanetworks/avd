@@ -91,16 +91,21 @@ router_bgp:
     peer: DC1-BL2A
     description: DC1-BL2A
     remote_as: '65106'
+  - ip_address: 192.168.42.42
+    peer_group: EVPN-OVERLAY-CORE
+    peer: DC1-BL2B
+    description: DC1-BL2B
+    remote_as: '65042'
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
         enable: true
         inter_domain: true
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-CORE
       domain_remote: true
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
     evpn_hostflap_detection:
       window: 180
