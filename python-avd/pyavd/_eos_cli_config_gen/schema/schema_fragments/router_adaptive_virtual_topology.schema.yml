@@ -20,7 +20,7 @@ keys:
       gateway_vxlan:
         description: |-
           Enables VXLAN gateway router profile.
-          Only supported when `topology_role` is either `edge` or `transit [region|zone]`.
+          Only applicable for `topology_role: edge`, `topology_role: transit region` or `topology_role: transit zone`.
         type: bool
       region:
         type: dict
