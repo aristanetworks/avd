@@ -27,7 +27,7 @@ router internet-exit
 {# Order of exit-groups MUST be preserved #}
 {%         for exit_group in policy.exit_groups | arista.avd.default([]) %}
 {%             if exit_group.name is arista.avd.defined %}
-       exit-group {{ exit_group.name }}
+      exit-group {{ exit_group.name }}
 {%             endif %}
 {%         endfor %}
 {%         if not loop.last %}
