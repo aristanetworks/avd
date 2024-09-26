@@ -18,7 +18,7 @@ router_bgp:
     type: ipv4
     remote_as: '65103'
     next_hop_self: true
-    description: DC1-SVC3B
+    description: MLAG_PEER_DC1-SVC3B
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     maximum_routes: 12000
     send_community: all
