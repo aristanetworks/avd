@@ -191,15 +191,15 @@ vlan 2020
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | - | 100.64.48.15/31 | default | 9178 | False | - | - |
+| Ethernet1 | P2P_SITE2-LSR1_Ethernet1 | - | 100.64.48.15/31 | default | 9178 | False | - | - |
 | Ethernet6 | TENANT_B_SITE_5_WAN_TEST | - | 123.10.10.2/31 | TENANT_B_WAN | - | False | - | - |
 | Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | - | 123.1.1.2/31 | TENANT_B_INTRA | - | False | - | - |
 | Ethernet6.100 | TENANT_B_SITE_3_OSPF | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
 | Ethernet6.101 | TENANT_B_SITE_5 | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
-| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
-| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
 
 *Inherited from Port-Channel Interface
 
@@ -207,11 +207,11 @@ vlan 2020
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet14 | P2P_LINK_TO_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet1 | P2P_SITE2-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -232,7 +232,7 @@ vlan 2020
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE2-LSR1_Ethernet1
+   description P2P_SITE2-LSR1_Ethernet1
    no shutdown
    mtu 9178
    speed forced 40gfull
@@ -306,25 +306,25 @@ interface Ethernet8
    spanning-tree portfast
 !
 interface Ethernet11
-   description P2P_LINK_TO_SITE2-LSR2_Ethernet12
+   description P2P_SITE2-LSR2_Ethernet12
    no shutdown
    speed forced 40gfull
    channel-group 11 mode active
 !
 interface Ethernet12
-   description P2P_LINK_TO_SITE2-LSR2_Ethernet13
+   description P2P_SITE2-LSR2_Ethernet13
    no shutdown
    speed forced 40gfull
    channel-group 11 mode active
 !
 interface Ethernet13
-   description P2P_LINK_TO_SITE2-LSR2_Ethernet14
+   description P2P_SITE2-LSR2_Ethernet14
    no shutdown
    speed forced 40gfull
    channel-group 220 mode active
 !
 interface Ethernet14
-   description P2P_LINK_TO_SITE2-LSR2_Ethernet15
+   description P2P_SITE2-LSR2_Ethernet15
    no shutdown
    speed forced 40gfull
    channel-group 220 mode active
@@ -353,8 +353,8 @@ interface Ethernet14
 
 | Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | - | 100.64.49.2/30 | default | 9178 | False | - | - |
-| Port-Channel220 | P2P_LINK_TO_SITE2-LSR2_Port-Channel110 | - | 100.64.49.6/30 | default | 9178 | False | - | - |
+| Port-Channel11 | P2P_SITE2-LSR2_Port-Channel12 | - | 100.64.49.2/30 | default | 9178 | False | - | - |
+| Port-Channel220 | P2P_SITE2-LSR2_Port-Channel110 | - | 100.64.49.6/30 | default | 9178 | False | - | - |
 
 ##### ISIS
 
@@ -397,7 +397,7 @@ interface Port-Channel4.1004
       client dot1q 1004 network client
 !
 interface Port-Channel11
-   description P2P_LINK_TO_SITE2-LSR2_Port-Channel12
+   description P2P_SITE2-LSR2_Port-Channel12
    no shutdown
    mtu 9178
    no switchport
@@ -417,7 +417,7 @@ interface Port-Channel11
 
 !
 interface Port-Channel220
-   description P2P_LINK_TO_SITE2-LSR2_Port-Channel110
+   description P2P_SITE2-LSR2_Port-Channel110
    no shutdown
    mtu 9178
    no switchport

@@ -110,7 +110,7 @@ ethernet_interfaces:
   peer: downlink-pools-l3leaf1
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF1_Ethernet1
+  description: P2P_downlink-pools-l3leaf1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -120,7 +120,7 @@ ethernet_interfaces:
   peer: downlink-pools-l3leaf1
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF1_Ethernet2
+  description: P2P_downlink-pools-l3leaf1_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -130,7 +130,7 @@ ethernet_interfaces:
   peer: downlink-pools-l3leaf3
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF3_Ethernet1
+  description: P2P_downlink-pools-l3leaf3_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -140,7 +140,7 @@ ethernet_interfaces:
   peer: downlink-pools-l3leaf4
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF4_Ethernet1
+  description: P2P_downlink-pools-l3leaf4_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -150,7 +150,7 @@ ethernet_interfaces:
   peer: downlink-pools-l3leaf3
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF3_Ethernet3
+  description: P2P_downlink-pools-l3leaf3_Ethernet3
   shutdown: false
   mtu: 9214
   switchport:
@@ -160,7 +160,7 @@ ethernet_interfaces:
   peer: downlink-pools-l3leaf4
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF4_Ethernet3
+  description: P2P_downlink-pools-l3leaf4_Ethernet3
   shutdown: false
   mtu: 9214
   switchport:

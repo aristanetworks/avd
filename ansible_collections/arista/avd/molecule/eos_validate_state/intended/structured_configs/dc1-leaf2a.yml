@@ -432,7 +432,7 @@ ethernet_interfaces:
   peer: dc1-spine1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+  description: P2P_dc1-spine1_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -442,7 +442,7 @@ ethernet_interfaces:
   peer: dc1-spine2
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+  description: P2P_dc1-spine2_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -461,12 +461,12 @@ ethernet_interfaces:
   peer: dc2-leaf2a
   peer_interface: Ethernet6
   peer_type: l3leaf
-  description: P2P_LINK_TO_dc2-leaf2a_Ethernet6
   switchport:
     enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 192.168.100.0/31
+  description: P2P_dc2-leaf2a_Ethernet6
 - name: Ethernet5
   peer: dc1-leaf2-server1
   peer_interface: PCI1

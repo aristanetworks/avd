@@ -305,18 +305,18 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8 | - | 172.17.110.21/31 | default | - | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8 | - | 172.17.110.23/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
+| Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet8 | - | 172.17.110.21/31 | default | - | False | - | - |
+| Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet8 | - | 172.17.110.23/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+   description P2P_DC1-POD1-SPINE1_Ethernet5
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -325,7 +325,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+   description P2P_DC1-POD1-SPINE2_Ethernet5
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -354,14 +354,14 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
+   description P2P_DC2-POD1-LEAF1A_Ethernet7
    no shutdown
    no switchport
    ip address 11.1.0.38/31
    ptp enable
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
+   description P2P_DC1-POD1-SPINE1_Ethernet8
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -370,7 +370,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
+   description P2P_DC1-POD1-SPINE2_Ethernet8
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport

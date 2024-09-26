@@ -47,7 +47,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         peer=link["peer"],
                         peer_channel_group_id=link["peer_channel_group_id"],
                         port_channel_id=link["channel_group_id"],
-                        port_channel_description=link.get("channel_description"),
+                        peer_mlag_group=link.get("peer_mlag_group"),
                     ),
                 ),
                 "switchport": {

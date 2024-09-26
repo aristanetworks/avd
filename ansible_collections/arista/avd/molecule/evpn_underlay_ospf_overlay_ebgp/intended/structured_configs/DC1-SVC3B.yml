@@ -250,7 +250,7 @@ ethernet_interfaces:
   peer: DC1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+  description: P2P_DC1-SPINE1_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:
@@ -267,7 +267,7 @@ ethernet_interfaces:
   peer: DC1-SPINE2
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+  description: P2P_DC1-SPINE2_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:
@@ -284,7 +284,7 @@ ethernet_interfaces:
   peer: DC1-SPINE3
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+  description: P2P_DC1-SPINE3_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:
@@ -301,7 +301,7 @@ ethernet_interfaces:
   peer: DC1-SPINE4
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+  description: P2P_DC1-SPINE4_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:

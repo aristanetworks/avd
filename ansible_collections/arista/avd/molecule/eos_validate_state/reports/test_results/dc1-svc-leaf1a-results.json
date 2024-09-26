@@ -453,7 +453,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet5 = 'up'"
+    "custom_field": "Interface Ethernet1 - P2P_dc1-spine1_Ethernet5 = 'up'"
   },
   {
     "name": "dc1-svc-leaf1a",
@@ -462,7 +462,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet5 = 'up'"
+    "custom_field": "Interface Ethernet2 - P2P_dc1-spine2_Ethernet5 = 'up'"
   },
   {
     "name": "dc1-svc-leaf1a",

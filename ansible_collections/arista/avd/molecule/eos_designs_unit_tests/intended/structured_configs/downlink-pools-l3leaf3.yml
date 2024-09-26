@@ -92,7 +92,7 @@ ethernet_interfaces:
   peer: downlink-pools-spine1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE1_Ethernet5
+  description: P2P_downlink-pools-spine1_Ethernet5
   shutdown: false
   mtu: 9214
   switchport:
@@ -102,7 +102,7 @@ ethernet_interfaces:
   peer: downlink-pools-spine2
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet5
+  description: P2P_downlink-pools-spine2_Ethernet5
   shutdown: false
   mtu: 9214
   switchport:
@@ -112,7 +112,7 @@ ethernet_interfaces:
   peer: downlink-pools-spine1
   peer_interface: Ethernet15
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE1_Ethernet15
+  description: P2P_downlink-pools-spine1_Ethernet15
   shutdown: false
   mtu: 9214
   switchport:
@@ -122,7 +122,7 @@ ethernet_interfaces:
   peer: downlink-pools-spine2
   peer_interface: Ethernet15
   peer_type: spine
-  description: P2P_LINK_TO_DOWNLINK-POOLS-SPINE2_Ethernet15
+  description: P2P_downlink-pools-spine2_Ethernet15
   shutdown: false
   mtu: 9214
   switchport:

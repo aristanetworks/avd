@@ -49,7 +49,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: PTP-TEST-LEAF_Po11
+  description: ptp-test-leaf_Po11
   switchport:
     enabled: true
     mode: trunk

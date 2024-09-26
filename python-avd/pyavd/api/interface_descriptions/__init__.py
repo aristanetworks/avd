@@ -46,6 +46,7 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         Available data:
             - link_type
+            - description
             - peer
             - peer_interface
             - mpls_overlay_role
@@ -66,18 +67,29 @@ class AvdInterfaceDescriptions(AvdFacts):
                 },
             )
 
-        # TODO: should we keep this upper - or use it consistently everywhere
-        link_peer = str(data.peer or "").upper()
-
-        if data.link_type == "underlay_p2p":
-            desc = f"P2P_LINK_TO_{link_peer}_{data.peer_interface}"
+        if data.description is not None:
+            description = data.description
+        elif data.link_type in ("underlay_p2p", "l3_edge", "core_interfaces"):
+            description = self.shared_utils.default_underlay_p2p_ethernet_description
         elif data.link_type == "underlay_l2":
-            desc = f"{link_peer}_{data.peer_interface}"
+            link_peer = str(data.peer or "").upper()
+            description = f"{link_peer}_{data.peer_interface}"
+            return f"{description}_vrf_{data.vrf}" if data.vrf is not None else description
         else:
             elems = [data.wan_carrier, data.wan_circuit_id, data.peer, data.peer_interface]
-            desc = "_".join([elem for elem in elems if elem])
+            description = "_".join([elem for elem in elems if elem])
+            return f"{description}_vrf_{data.vrf}" if data.vrf is not None else description
 
-        return f"{desc}_vrf_{data.vrf}" if data.vrf is not None else desc
+        return AvdStringFormatter().format(
+            description,
+            **strip_null_from_data(
+                {
+                    "peer": data.peer,
+                    "peer_interface": data.peer_interface,
+                    "vrf": data.vrf,
+                }
+            ),
+        )
 
     def underlay_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
@@ -87,7 +99,9 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         Available data:
             - peer
+            - peer_interface
             - peer_channel_group_id
+            - peer_mlag_group
             - port_channel_id
             - port_channel_description
             - mpls_overlay_role
@@ -107,11 +121,28 @@ class AvdInterfaceDescriptions(AvdFacts):
             )
 
         if data.port_channel_description is not None:
-            data.port_channel_description = str(data.port_channel_description).upper()
-            return f"{data.port_channel_description}_Po{data.peer_channel_group_id}"
+            description = data.port_channel_description
+        elif data.link_type in ("l3_edge", "core_interfaces"):
+            description = self.shared_utils.default_underlay_p2p_port_channel_description
+        else:
+            # This is for L2 port-channels
+            data.peer = str(data.peer).upper()
+            description = "{peer_mlag_group_or_peer}_Po{peer_port_channel_id}"
 
-        data.peer = str(data.peer).upper()
-        return f"{data.peer}_Po{data.peer_channel_group_id}"
+        return AvdStringFormatter().format(
+            description,
+            **strip_null_from_data(
+                {
+                    "peer": data.peer,
+                    "interface": data.interface,
+                    "peer_interface": data.peer_interface,
+                    "port_channel_id": data.port_channel_id,
+                    "peer_port_channel_id": data.peer_channel_group_id,
+                    "peer_mlag_group": data.peer_mlag_group,
+                    "peer_mlag_group_or_peer": data.peer_mlag_group or data.peer,
+                }
+            ),
+        )
 
     def mlag_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
@@ -437,6 +468,8 @@ class InterfaceDescriptionData:
     """Interface of peer"""
     peer_channel_group_id: int | None
     """Port channel ID of peer"""
+    peer_mlag_group: str | None
+    """MLAG group of peer"""
     peer_type: str | None
     """Type of peer"""
     port_channel_id: int | None
@@ -461,6 +494,7 @@ class InterfaceDescriptionData:
         peer: str | None = None,
         peer_interface: str | None = None,
         peer_channel_group_id: int | None = None,
+        peer_mlag_group: str | None = None,
         peer_type: str | None = None,
         port_channel_id: int | None = None,
         port_channel_description: str | None = None,
@@ -476,6 +510,7 @@ class InterfaceDescriptionData:
         self.peer = peer
         self.peer_interface = peer_interface
         self.peer_channel_group_id = peer_channel_group_id
+        self.peer_mlag_group = peer_mlag_group
         self.peer_type = peer_type
         self.port_channel_id = port_channel_id
         self.port_channel_description = port_channel_description

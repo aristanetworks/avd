@@ -139,13 +139,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet4 | P2P_LINK_TO_SITE2-LSR1_Ethernet4 | - | 100.64.48.13/31 | default | 9178 | False | - | - |
+| Ethernet4 | P2P_SITE2-LSR1_Ethernet4 | - | 100.64.48.13/31 | default | 9178 | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet4 | P2P_LINK_TO_SITE2-LSR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet4 | P2P_SITE2-LSR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -158,7 +158,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 interface Ethernet4
-   description P2P_LINK_TO_SITE2-LSR1_Ethernet4
+   description P2P_SITE2-LSR1_Ethernet4
    no shutdown
    mtu 9178
    speed forced 40gfull

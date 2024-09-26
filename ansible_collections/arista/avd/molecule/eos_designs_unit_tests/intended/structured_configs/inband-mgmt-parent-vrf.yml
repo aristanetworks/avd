@@ -166,7 +166,7 @@ port_channel_interfaces:
       allowed_vlan: '103'
   shutdown: false
 - name: Port-Channel101
-  description: INBAND-MGMT-MLAG-TEST_Po1
+  description: inband-mgmt-mlag-test_Po1
   switchport:
     enabled: true
     mode: trunk
