@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_ip_from_ip_prefix, get_ip_from_pool, get_item, strip_empties_from_dict
+from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item, strip_empties_from_dict
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -149,9 +149,9 @@ class WanMixin:
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
         """
-        List of path_groups present on this router based on the local carriers.
+        List of path-groups present on this router based on the local carriers.
 
-        Also add for each path_groups the local interfaces in a data structure
+        Also add for each path-groups the local interfaces in a data structure
             interfaces:
               - name: ...
                 public_ip: ...
@@ -181,8 +181,21 @@ class WanMixin:
 
     @cached_property
     def wan_local_path_group_names(self: SharedUtils) -> list:
-        """Return a list of wan_local_path_group names to be used by HA peer and in various places."""
+        """Return a list of wan_local_path_group names."""
         return [path_group["name"] for path_group in self.wan_local_path_groups]
+
+    @cached_property
+    def wan_ha_peer_path_groups(self: SharedUtils) -> list:
+        """List of WAN HA peer path-groups coming from facts."""
+        if not self.is_wan_router or not self.wan_ha:
+            return []
+        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
+        return get(peer_facts, "wan_path_groups", required=True)
+
+    @cached_property
+    def wan_ha_peer_path_group_names(self: SharedUtils) -> list:
+        """Return a list of wan_ha_peer_path_group names."""
+        return [path_group["name"] for path_group in self.wan_ha_peer_path_groups]
 
     @cached_property
     def this_wan_route_server(self: SharedUtils) -> dict:
@@ -555,7 +568,7 @@ class WanMixin:
                     ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
-            ip_addresses.append(self.get_wan_ha_ip_address(local=False))
+            ip_addresses.append(self.ip_addressing.wan_ha_peer_ip())
         return ip_addresses
 
     @cached_property
@@ -582,34 +595,18 @@ class WanMixin:
                     ip_addresses.append(f"{ip_address}/{prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
-            ip_addresses.append(self.get_wan_ha_ip_address(local=True))
+            ip_addresses.append(self.ip_addressing.wan_ha_ip())
         return ip_addresses
 
-    def get_wan_ha_ip_address(self: SharedUtils, local: bool) -> str | None:
-        """
-        Render ipv4 address for wan_ha_ip_address using dynamically loaded python module.
-
-        local: When true, request the first IP address else request the remote peer IP.
-        TODO: Move this to ip_addressing module to allow for custom logic.
-        """
-        wan_ha_ipv4_pool = get(
+    @cached_property
+    def wan_ha_ipv4_pool(self: SharedUtils) -> str:
+        """Return the configured wan_ha.ha_ipv4_pool."""
+        return get(
             self.switch_data_combined,
             "wan_ha.ha_ipv4_pool",
             required=True,
             org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
         )
-
-        first_ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 0)
-        second_ip_address = get_ip_from_pool(wan_ha_ipv4_pool, 31, 0, 1)
-
-        if self.is_first_ha_peer:
-            local_ip, remote_ip = first_ip_address, second_ip_address
-        else:
-            local_ip, remote_ip = second_ip_address, first_ip_address
-
-        ip_address = local_ip if local else remote_ip
-
-        return f"{ip_address}/31"
 
     def generate_lb_policy_name(self: SharedUtils, name: str) -> str:
         """Returns LB-{name}."""
@@ -621,3 +618,7 @@ class WanMixin:
             return None
 
         return get(self.hostvars, "wan_stun_dtls_profile_name", default="STUN-DTLS")
+
+    @cached_property
+    def wan_encapsulation(self: SharedUtils) -> str:
+        return get(self.hostvars, "wan_encapsulation", default="path-selection")

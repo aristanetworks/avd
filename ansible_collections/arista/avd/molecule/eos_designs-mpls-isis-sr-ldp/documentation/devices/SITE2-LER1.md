@@ -55,20 +55,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.107/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.107/24
@@ -175,7 +175,7 @@ vlan 2020
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet8 | CPE_TENANT_A_SITE2_eth0 | trunk | 10 | - | - | - |
+| Ethernet8 | CPE_CPE_TENANT_A_SITE2_eth0 | trunk | 10 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -298,7 +298,7 @@ interface Ethernet7
    no lldp receive
 !
 interface Ethernet8
-   description CPE_TENANT_A_SITE2_eth0
+   description CPE_CPE_TENANT_A_SITE2_eth0
    no shutdown
    switchport trunk allowed vlan 10
    switchport mode trunk
@@ -341,7 +341,7 @@ interface Ethernet14
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
 | --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel4.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel4.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
@@ -468,11 +468,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.7/32
    ipv6 address 2000:1234:ffff:ffff::7/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 207
    node-segment ipv6 index 207
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces

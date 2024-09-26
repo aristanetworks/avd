@@ -47,7 +47,7 @@ class MiscMixin:
     def trunk_groups(self: SharedUtils) -> dict:
         return {
             "mlag": {"name": get(self.hostvars, "trunk_groups.mlag.name", default="MLAG")},
-            "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3")},
+            "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="MLAG")},
             "uplink": {"name": get(self.hostvars, "trunk_groups.uplink.name", default="UPLINK")},
         }
 
@@ -324,6 +324,10 @@ class MiscMixin:
         return get(self.hostvars, "fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length", default=31)
 
     @cached_property
+    def fabric_ip_addressing_wan_ha_ipv4_prefix_length(self: SharedUtils) -> int:
+        return get(self.hostvars, "fabric_ip_addressing.wan_ha.ipv4_prefix_length", default=31)
+
+    @cached_property
     def fabric_sflow_uplinks(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.uplinks")
 
@@ -338,6 +342,10 @@ class MiscMixin:
     @cached_property
     def fabric_sflow_mlag_interfaces(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.mlag_interfaces")
+
+    @cached_property
+    def fabric_sflow_l3_interfaces(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.l3_interfaces")
 
     @cached_property
     def default_interface_mtu(self: SharedUtils) -> int | None:

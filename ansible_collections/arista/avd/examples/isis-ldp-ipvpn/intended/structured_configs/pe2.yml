@@ -120,7 +120,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.102/24
@@ -168,7 +168,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_p2_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.4/31
@@ -189,7 +190,8 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: p
   description: P2P_LINK_TO_p1_Ethernet2
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.255.3.6/31
@@ -210,8 +212,8 @@ ethernet_interfaces:
   ip_address: 10.0.1.2/29
   shutdown: false
   description: C1_L3_SERVICE
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: C1_VRF1
   ospf_area: '0'
   ospf_network_point_to_point: false
@@ -220,11 +222,12 @@ ethernet_interfaces:
   ip_address: 10.1.1.2/29
   shutdown: false
   description: C2_L3_SERVICE
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 20
+  encapsulation_dot1q:
+    vlan: 20
   vrf: C2_VRF1
 - name: Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 ip_igmp_snooping:

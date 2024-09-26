@@ -42,20 +42,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.110/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.110/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.110/24
@@ -161,11 +161,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.10/32
    ipv6 address 2000:1234:ffff:ffff::a/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 210
    node-segment ipv6 index 210
+   isis enable CORE
+   isis passive
 ```
 
 ## Routing

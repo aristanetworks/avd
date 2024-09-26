@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -117,6 +117,24 @@ ASN Notation: asplain
 | ADDITIONAL-PATH-PG-6 | True | default |
 | EVPN-OVERLAY-PEERS | True | vxlan |
 | MLAG-IPv4-UNDERLAY-PEER | False | default |
+| TEST-ENCAPSULATION | True | mpls |
+| TEST-ENCAPSULATION-2 | True | path-selection |
+
+##### EVPN Neighbors
+
+| Neighbor | Activate | Encapsulation |
+| -------- | -------- | ------------- |
+| 10.100.100.1 | True | default |
+| 10.100.100.2 | True | default |
+| 10.100.100.3 | True | default |
+| 10.100.100.4 | True | path-selection |
+| 10.100.100.5 | True | mpls |
+
+##### EVPN Neighbor Default Encapsulation
+
+| Neighbor Default Encapsulation | Next-hop-self Source Interface |
+| ------------------------------ | ------------------------------ |
+| path-selection | - |
 
 ##### EVPN Host Flapping Settings
 
@@ -257,6 +275,7 @@ router bgp 65101
       bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
+      neighbor default encapsulation path-selection
       neighbor ADDITIONAL-PATH-PG-1 activate
       neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
       neighbor ADDITIONAL-PATH-PG-1 additional-paths send any
@@ -275,12 +294,20 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor TEST-ENCAPSULATION activate
+      neighbor TEST-ENCAPSULATION encapsulation mpls
+      neighbor TEST-ENCAPSULATION-2 activate
+      neighbor TEST-ENCAPSULATION-2 encapsulation path-selection
       neighbor 10.100.100.1 activate
       neighbor 10.100.100.1 default-route
       neighbor 10.100.100.2 activate
       neighbor 10.100.100.2 default-route route-map RM_DEFAULT_ROUTE
       neighbor 10.100.100.3 activate
       neighbor 10.100.100.3 default-route rcf RCF_DEFAULT_ROUTE()
+      neighbor 10.100.100.4 activate
+      neighbor 10.100.100.4 encapsulation path-selection
+      neighbor 10.100.100.5 activate
+      neighbor 10.100.100.5 encapsulation mpls
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import ethernet-segment ip mass-withdraw

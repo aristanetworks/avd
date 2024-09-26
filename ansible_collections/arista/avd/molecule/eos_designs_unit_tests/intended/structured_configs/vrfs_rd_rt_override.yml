@@ -114,7 +114,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.10.0.20/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: MY_VTEP_LOOPBACK
   shutdown: false
   ip_address: 10.11.0.20/32
 prefix_lists:
