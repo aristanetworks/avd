@@ -129,7 +129,7 @@ vlans:
   name: VLAN10
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
 - id: 3000
-  name: MLAG_iBGP_TEST
+  name: MLAG_L3_VRF_TEST
   trunk_groups:
   - MLAG
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
@@ -155,7 +155,7 @@ vlan_interfaces:
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEST'
+  description: MLAG_L3_VRF_TEST
   vrf: TEST
   mtu: 9214
   ip_address: 10.10.224.2/30
