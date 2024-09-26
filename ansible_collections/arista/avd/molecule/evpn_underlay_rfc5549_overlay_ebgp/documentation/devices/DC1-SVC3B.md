@@ -274,7 +274,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 2 | MLAG_iBGP_Tenant_C_OP_Zone | MLAG |
+| 2 | MLAG_L3_VRF_Tenant_C_OP_Zone | MLAG |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
@@ -292,14 +292,14 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | MLAG |
-| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | MLAG |
-| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | MLAG |
-| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | MLAG |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | MLAG |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | MLAG |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | MLAG |
+| 3009 | MLAG_L3_VRF_Tenant_A_OP_Zone | MLAG |
+| 3010 | MLAG_L3_VRF_Tenant_A_WEB_Zone | MLAG |
+| 3011 | MLAG_L3_VRF_Tenant_A_APP_Zone | MLAG |
+| 3012 | MLAG_L3_VRF_Tenant_A_DB_Zone | MLAG |
+| 3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | MLAG |
+| 3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | MLAG |
+| 3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | MLAG |
 | 4093 | MLAG_L3 | MLAG |
 | 4094 | MLAG | MLAG |
 
@@ -308,7 +308,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 2
-   name MLAG_iBGP_Tenant_C_OP_Zone
+   name MLAG_L3_VRF_Tenant_C_OP_Zone
    trunk group MLAG
 !
 vlan 110
@@ -363,35 +363,35 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 !
 vlan 3009
-   name MLAG_iBGP_Tenant_A_OP_Zone
+   name MLAG_L3_VRF_Tenant_A_OP_Zone
    trunk group MLAG
 !
 vlan 3010
-   name MLAG_iBGP_Tenant_A_WEB_Zone
+   name MLAG_L3_VRF_Tenant_A_WEB_Zone
    trunk group MLAG
 !
 vlan 3011
-   name MLAG_iBGP_Tenant_A_APP_Zone
+   name MLAG_L3_VRF_Tenant_A_APP_Zone
    trunk group MLAG
 !
 vlan 3012
-   name MLAG_iBGP_Tenant_A_DB_Zone
+   name MLAG_L3_VRF_Tenant_A_DB_Zone
    trunk group MLAG
 !
 vlan 3013
-   name MLAG_iBGP_Tenant_A_WAN_Zone
+   name MLAG_L3_VRF_Tenant_A_WAN_Zone
    trunk group MLAG
 !
 vlan 3019
-   name MLAG_iBGP_Tenant_B_OP_Zone
+   name MLAG_L3_VRF_Tenant_B_OP_Zone
    trunk group MLAG
 !
 vlan 3020
-   name MLAG_iBGP_Tenant_B_WAN_Zone
+   name MLAG_L3_VRF_Tenant_B_WAN_Zone
    trunk group MLAG
 !
 vlan 3030
-   name MLAG_iBGP_Tenant_C_WAN_Zone
+   name MLAG_L3_VRF_Tenant_C_WAN_Zone
    trunk group MLAG
 !
 vlan 4093
@@ -658,7 +658,7 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan2 | MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
+| Vlan2 | MLAG_L3_VRF_Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
 | Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | False |
 | Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | False |
@@ -674,14 +674,14 @@ interface Loopback100
 | Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | False |
 | Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | False |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
-| Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
-| Vlan3010 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone | Tenant_A_WEB_Zone | 1500 | False |
-| Vlan3011 | MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
-| Vlan3012 | MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
-| Vlan3013 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
-| Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
-| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
-| Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
+| Vlan3010 | MLAG_L3_VRF_Tenant_A_WEB_Zone | Tenant_A_WEB_Zone | 1500 | False |
+| Vlan3011 | MLAG_L3_VRF_Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
+| Vlan3012 | MLAG_L3_VRF_Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
+| Vlan3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
+| Vlan3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
+| Vlan3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
+| Vlan3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -721,7 +721,7 @@ interface Loopback100
 ```eos
 !
 interface Vlan2
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
+   description MLAG_L3_VRF_Tenant_C_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_OP_Zone
@@ -821,56 +821,56 @@ interface Vlan350
    ip address virtual 10.3.50.1/24
 !
 interface Vlan3009
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   description MLAG_L3_VRF_Tenant_A_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_OP_Zone
    ipv6 enable
 !
 interface Vlan3010
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
+   description MLAG_L3_VRF_Tenant_A_WEB_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WEB_Zone
    ipv6 enable
 !
 interface Vlan3011
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
+   description MLAG_L3_VRF_Tenant_A_APP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_APP_Zone
    ipv6 enable
 !
 interface Vlan3012
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
+   description MLAG_L3_VRF_Tenant_A_DB_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_DB_Zone
    ipv6 enable
 !
 interface Vlan3013
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
+   description MLAG_L3_VRF_Tenant_A_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WAN_Zone
    ipv6 enable
 !
 interface Vlan3019
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone
+   description MLAG_L3_VRF_Tenant_B_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_OP_Zone
    ipv6 enable
 !
 interface Vlan3020
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
+   description MLAG_L3_VRF_Tenant_B_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_WAN_Zone
    ipv6 enable
 !
 interface Vlan3030
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
+   description MLAG_L3_VRF_Tenant_C_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_WAN_Zone

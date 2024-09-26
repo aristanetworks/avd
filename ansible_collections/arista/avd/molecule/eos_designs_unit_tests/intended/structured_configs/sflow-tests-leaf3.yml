@@ -149,7 +149,7 @@ vlans:
   name: VLAN11
   tenant: SFLOW
 - id: 3000
-  name: MLAG_iBGP_VRF1
+  name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
   tenant: SFLOW
@@ -177,7 +177,7 @@ vlan_interfaces:
   tenant: SFLOW
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF1'
+  description: MLAG_L3_VRF_VRF1
   vrf: VRF1
   mtu: 9214
   ip_address: 10.254.1.104/31

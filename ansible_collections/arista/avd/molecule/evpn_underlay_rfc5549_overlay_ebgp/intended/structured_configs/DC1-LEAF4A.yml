@@ -387,7 +387,7 @@ vlans:
   name: Tenant_A_APP_Zone_2
   tenant: Tenant_A
 - id: 3011
-  name: MLAG_iBGP_Tenant_A_APP_Zone
+  name: MLAG_L3_VRF_Tenant_A_APP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -398,7 +398,7 @@ vlans:
   name: Tenant_A_DB_Zone_2
   tenant: Tenant_A
 - id: 3012
-  name: MLAG_iBGP_Tenant_A_DB_Zone
+  name: MLAG_L3_VRF_Tenant_A_DB_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -409,7 +409,7 @@ vlans:
   name: Tenant_A_OP_Zone_2
   tenant: Tenant_A
 - id: 3009
-  name: MLAG_iBGP_Tenant_A_OP_Zone
+  name: MLAG_L3_VRF_Tenant_A_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -420,7 +420,7 @@ vlans:
   name: Tenant_A_WEBZone_2
   tenant: Tenant_A
 - id: 3010
-  name: MLAG_iBGP_Tenant_A_WEB_Zone
+  name: MLAG_L3_VRF_Tenant_A_WEB_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -437,7 +437,7 @@ vlans:
   name: Tenant_B_OP_Zone_2
   tenant: Tenant_B
 - id: 3019
-  name: MLAG_iBGP_Tenant_B_OP_Zone
+  name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_B
@@ -448,7 +448,7 @@ vlans:
   name: Tenant_C_OP_Zone_2
   tenant: Tenant_C
 - id: 2
-  name: MLAG_iBGP_Tenant_C_OP_Zone
+  name: MLAG_L3_VRF_Tenant_C_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_C
@@ -485,7 +485,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
+  description: MLAG_L3_VRF_Tenant_A_APP_Zone
   vrf: Tenant_A_APP_Zone
   mtu: 1500
   ipv6_enable: true
@@ -510,7 +510,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
+  description: MLAG_L3_VRF_Tenant_A_DB_Zone
   vrf: Tenant_A_DB_Zone
   mtu: 1500
   ipv6_enable: true
@@ -538,7 +538,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_A_OP_Zone
   vrf: Tenant_A_OP_Zone
   mtu: 1500
   ipv6_enable: true
@@ -568,7 +568,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
+  description: MLAG_L3_VRF_Tenant_A_WEB_Zone
   vrf: Tenant_A_WEB_Zone
   mtu: 1500
   ipv6_enable: true
@@ -592,7 +592,7 @@ vlan_interfaces:
   tenant: Tenant_B
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_B_OP_Zone
   vrf: Tenant_B_OP_Zone
   mtu: 1500
   ipv6_enable: true
@@ -616,7 +616,7 @@ vlan_interfaces:
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_C_OP_Zone
   vrf: Tenant_C_OP_Zone
   mtu: 1500
   ipv6_enable: true
