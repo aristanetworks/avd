@@ -77,6 +77,24 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
    bgp bestpath d-path
 {%     endif %}
+{%     if router_bgp.bgp.additional_paths.receive is arista.avd.defined(false) %}
+   no bgp additional-paths receive
+{%     endif %}
+{%     if router_bgp.bgp.additional_paths.send is arista.avd.defined %}
+{%         if router_bgp.bgp.additional_paths.send is arista.avd.defined('disabled') %}
+   no bgp additional-paths send
+{%         elif router_bgp.bgp.additional_paths.send is arista.avd.defined('any') %}
+   bgp additional-paths send any
+{%         elif router_bgp.bgp.additional_paths.send is arista.avd.defined('backup') %}
+   bgp additional-paths send backup
+{%         elif router_bgp.bgp.additional_paths.send_ecmp_limit is arista.avd.defined and router_bgp.bgp.additional_paths.send is arista.avd.defined('ecmp') %}
+   bgp additional-paths send ecmp limit {{ router_bgp.bgp.additional_paths.send_ecmp_limit }}
+{%         elif router_bgp.bgp.additional_paths.send is arista.avd.defined('ecmp') %}
+   bgp additional-paths send ecmp
+{%         elif router_bgp.bgp.additional_paths.send_limit is arista.avd.defined and router_bgp.bgp.additional_paths.send is arista.avd.defined('limit') %}
+   bgp additional-paths send {{ router_bgp.bgp.additional_paths.send_limit }}
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.listen_ranges is arista.avd.defined %}
 {%         for listen_range in router_bgp.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
                and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
