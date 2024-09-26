@@ -19402,8 +19402,7 @@ $defs:
     keys:
       receive:
         type: bool
-        description: By default this is set to `true` and can be turned off using
-          `false`.
+        description: Enable or disable reception of additional-paths.
       send:
         type: str
         description: 'Select an option to send multiple paths for same prefix through

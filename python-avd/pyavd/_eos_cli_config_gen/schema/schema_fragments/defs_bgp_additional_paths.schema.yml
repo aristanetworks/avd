@@ -9,7 +9,7 @@ $defs:
       receive:
         type: bool
         description: |-
-          By default this is set to `true` and can be turned off using `false`.
+          Enable or disable reception of additional-paths.
       send:
         type: str
         description: |-
