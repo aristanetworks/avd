@@ -2134,6 +2134,25 @@ keys:
       are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_l3_vlan`:
       The MLAG L3 peering VLAN ID."
     default: MLAG_L3
+  mlag_peer_l3_vrf_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG L3 peering
+      SVI for VRFs.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `interface`:
+      The MLAG L3 VRF peering SVI name.\n  - `vlan`: The MLAG L3 VRF peering VLAN
+      ID.\n  - `vrf`: The VRF name."
+    default: MLAG_L3_VRF_{vrf}
+  mlag_peer_l3_vrf_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG L3 peering VLAN for VRFs.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `vlan`: The MLAG L3 VRF
+      peering VLAN ID.\n  - `vrf`: The VRF name."
+    default: MLAG_L3_VRF_{vrf}
   mlag_peer_svi_description:
     type: str
     documentation_options:

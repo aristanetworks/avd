@@ -88,6 +88,9 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
     def mlag_peer_l3_svi(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
         return "MLAG_PEER_L3_PEERING"
 
+    def mlag_peer_l3_vrf_svi(self, data: InterfaceDescriptionData) -> str:
+        return f"MLAG_PEER_L3_iBGP: vrf {data.vrf}"
+
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Implementation using new data.

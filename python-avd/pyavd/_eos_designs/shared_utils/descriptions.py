@@ -69,3 +69,13 @@ class DescriptionsMixin:
     def mlag_peer_l3_vlan_name(self: SharedUtils) -> str:
         default_value = self.schema.get_default_value(["mlag_peer_l3_vlan_name"])
         return get(self.hostvars, "mlag_peer_l3_vlan_name", default=default_value)
+
+    @cached_property
+    def mlag_peer_l3_vrf_svi_description(self: SharedUtils) -> str:
+        default_value = self.schema.get_default_value(["mlag_peer_l3_vrf_svi_description"])
+        return get(self.hostvars, "mlag_peer_l3_vrf_svi_description", default=default_value)
+
+    @cached_property
+    def mlag_peer_l3_vrf_vlan_name(self: SharedUtils) -> str:
+        default_value = self.schema.get_default_value(["mlag_peer_l3_vrf_vlan_name"])
+        return get(self.hostvars, "mlag_peer_l3_vrf_vlan_name", default=default_value)
