@@ -288,7 +288,7 @@ router bgp 65101
       neighbor ADDITIONAL-PATH-PG-5 activate
       neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
       neighbor ADDITIONAL-PATH-PG-6 activate
-      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
+      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send
       neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
