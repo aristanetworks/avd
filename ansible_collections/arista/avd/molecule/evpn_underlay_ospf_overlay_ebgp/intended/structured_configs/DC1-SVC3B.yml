@@ -172,20 +172,20 @@ ntp:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 210
   name: Tenant_B_OP_Zone_1
   tenant: Tenant_A
 - id: 3019
-  name: MLAG_iBGP_Tenant_B_OP_Zone
+  name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -204,7 +204,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_B_OP_Zone
   vrf: Tenant_B_OP_Zone
   mtu: 1500
   ip_address: 10.255.252.7/31

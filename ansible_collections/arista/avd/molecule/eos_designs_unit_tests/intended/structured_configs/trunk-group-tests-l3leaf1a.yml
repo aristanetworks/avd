@@ -231,12 +231,12 @@ spanning_tree:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 100
@@ -302,12 +302,12 @@ vlans:
   name: l2vlan399_without_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3099
-  name: MLAG_iBGP_TG_100
+  name: MLAG_L3_VRF_TG_100
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
-  name: MLAG_iBGP_TG_200
+  name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
@@ -319,7 +319,7 @@ vlans:
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
 - id: 3299
-  name: MLAG_iBGP_TG_300
+  name: MLAG_L3_VRF_TG_300
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
@@ -332,12 +332,12 @@ vlans:
   - TG_NOT_MATCHING_ANY_SERVERS
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 10.255.247.0/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -355,7 +355,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_100'
+  description: MLAG_L3_VRF_TG_100
   vrf: TG_100
   mtu: 9214
   ip_address: 10.255.247.0/31
@@ -372,7 +372,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
+  description: MLAG_L3_VRF_TG_200
   vrf: TG_200
   mtu: 9214
   ip_address: 10.255.247.0/31
@@ -406,7 +406,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_300'
+  description: MLAG_L3_VRF_TG_300
   vrf: TG_300
   mtu: 9214
   ip_address: 10.255.247.0/31

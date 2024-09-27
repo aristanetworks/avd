@@ -137,19 +137,19 @@ management_api_http:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 11
   name: VLAN11
   tenant: SFLOW
 - id: 3000
-  name: MLAG_iBGP_VRF1
+  name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
   tenant: SFLOW
@@ -158,12 +158,12 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 10.254.1.104/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -177,7 +177,7 @@ vlan_interfaces:
   tenant: SFLOW
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF1'
+  description: MLAG_L3_VRF_VRF1
   vrf: VRF1
   mtu: 9214
   ip_address: 10.254.1.104/31

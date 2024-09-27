@@ -264,19 +264,19 @@ ntp:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 150
   name: Tenant_A_WAN_Zone_1
   tenant: Tenant_A
 - id: 3013
-  name: MLAG_iBGP_Tenant_A_WAN_Zone
+  name: MLAG_L3_VRF_Tenant_A_WAN_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -284,7 +284,7 @@ vlans:
   name: Tenant_B_WAN_Zone_1
   tenant: Tenant_B
 - id: 3020
-  name: MLAG_iBGP_Tenant_B_WAN_Zone
+  name: MLAG_L3_VRF_Tenant_B_WAN_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_B
@@ -292,18 +292,18 @@ vlans:
   name: Tenant_C_WAN_Zone_1
   tenant: Tenant_C
 - id: 3030
-  name: MLAG_iBGP_Tenant_C_WAN_Zone
+  name: MLAG_L3_VRF_Tenant_C_WAN_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_C
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 1500
   ip_address: 10.255.251.11/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -320,7 +320,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
+  description: MLAG_L3_VRF_Tenant_A_WAN_Zone
   vrf: Tenant_A_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.11/31
@@ -336,7 +336,7 @@ vlan_interfaces:
   tenant: Tenant_B
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
+  description: MLAG_L3_VRF_Tenant_B_WAN_Zone
   vrf: Tenant_B_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.11/31
@@ -352,7 +352,7 @@ vlan_interfaces:
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
+  description: MLAG_L3_VRF_Tenant_C_WAN_Zone
   vrf: Tenant_C_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.11/31

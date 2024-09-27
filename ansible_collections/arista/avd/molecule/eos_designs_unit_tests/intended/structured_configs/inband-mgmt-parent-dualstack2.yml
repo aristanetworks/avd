@@ -102,19 +102,19 @@ spanning_tree:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 105
   name: Inband_management_vlan_ipv6
   tenant: INBAND_MGMT_TESTS
 - id: 3000
-  name: MLAG_iBGP_INBANDMGMT
+  name: MLAG_L3_VRF_INBANDMGMT
   trunk_groups:
   - MLAG
   tenant: INBAND_MGMT_TESTS
@@ -123,12 +123,12 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 100.64.1.5/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -149,7 +149,7 @@ vlan_interfaces:
   tenant: INBAND_MGMT_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf INBANDMGMT'
+  description: MLAG_L3_VRF_INBANDMGMT
   vrf: INBANDMGMT
   mtu: 9214
   ip_address: 100.64.1.5/31

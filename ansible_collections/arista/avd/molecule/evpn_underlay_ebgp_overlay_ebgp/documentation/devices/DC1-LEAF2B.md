@@ -240,8 +240,8 @@ STP Root Super: **True**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 ```
 

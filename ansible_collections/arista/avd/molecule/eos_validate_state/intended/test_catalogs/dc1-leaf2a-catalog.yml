@@ -368,13 +368,13 @@ anta.tests.interfaces:
     - name: Vlan4093
       status: up
     result_overwrite:
-      custom_field: Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'
+      custom_field: Interface Vlan4093 - MLAG_L3 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan4094
       status: up
     result_overwrite:
-      custom_field: Interface Vlan4094 - MLAG_PEER = 'up'
+      custom_field: Interface Vlan4094 - MLAG = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan11
@@ -392,7 +392,7 @@ anta.tests.interfaces:
     - name: Vlan3009
       status: up
     result_overwrite:
-      custom_field: 'Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = ''up'''
+      custom_field: Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan21
@@ -410,7 +410,7 @@ anta.tests.interfaces:
     - name: Vlan3010
       status: up
     result_overwrite:
-      custom_field: 'Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = ''up'''
+      custom_field: Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan4085

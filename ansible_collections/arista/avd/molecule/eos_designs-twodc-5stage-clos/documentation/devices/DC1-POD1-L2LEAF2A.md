@@ -183,7 +183,7 @@ vlan internal order ascending range 1006 1199
 | 2600 | web-l2-vlan-2 | - |
 | 2601 | l2vlan_with_no_vxlan | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -223,7 +223,7 @@ vlan 4085
    name L2LEAF_INBAND_MGMT
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -309,7 +309,7 @@ interface Port-Channel3
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
-| Vlan4094 | MLAG_PEER | default | - | False |
+| Vlan4094 | MLAG | default | - | False |
 
 ##### IPv4
 
@@ -328,7 +328,7 @@ interface Vlan4085
    ip address 172.21.110.5/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    no autostate
    ip address 172.20.110.2/31

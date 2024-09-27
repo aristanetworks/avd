@@ -190,6 +190,80 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
+    def mlag_peer_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - mlag_peer
+            - mlag_peer_vlan
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "mlag_peer_vlan": data.mlag_peer_vlan,
+                }
+            ),
+        )
+
+    def mlag_peer_l3_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - mlag_peer
+            - mlag_peer_l3_vlan
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_l3_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "mlag_peer_l3_vlan": data.mlag_peer_l3_vlan,
+                }
+            ),
+        )
+
+    def mlag_peer_l3_vrf_svi(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build an MLAG Peering SVI description.
+
+        Available data:
+            - interface
+            - vlan
+            - vrf
+            - mlag_peer
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type.
+        """
+        return AvdStringFormatter().format(
+            self.shared_utils.mlag_peer_l3_vrf_svi_description,
+            **strip_null_from_data(
+                {
+                    "mlag_peer": data.mlag_peer,
+                    "interface": data.interface,
+                    "vlan": data.vlan,
+                    "vrf": data.vrf,
+                }
+            ),
+        )
+
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build a connected endpoint Ethernet interface description.
@@ -369,6 +443,8 @@ class InterfaceDescriptionData:
     """Port channel ID"""
     port_channel_description: str | None
     """Set description for port-channel"""
+    vlan: int | None
+    """VLAN ID"""
     vrf: str | None
     """Interface VRF"""
     wan_carrier: str | None
@@ -388,6 +464,7 @@ class InterfaceDescriptionData:
         peer_type: str | None = None,
         port_channel_id: int | None = None,
         port_channel_description: str | None = None,
+        vlan: int | None = None,
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
@@ -402,6 +479,7 @@ class InterfaceDescriptionData:
         self.peer_type = peer_type
         self.port_channel_id = port_channel_id
         self.port_channel_description = port_channel_description
+        self.vlan = vlan
         self.vrf = vrf
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
@@ -429,6 +507,14 @@ class InterfaceDescriptionData:
     @property
     def mlag_peer_port_channel_id(self) -> int:
         return self._shared_utils.mlag_peer_port_channel_id
+
+    @property
+    def mlag_peer_vlan(self) -> int:
+        return self._shared_utils.mlag_peer_vlan
+
+    @property
+    def mlag_peer_l3_vlan(self) -> int | None:
+        return self._shared_utils.mlag_peer_l3_vlan
 
     @property
     def mpls_lsr(self) -> bool:

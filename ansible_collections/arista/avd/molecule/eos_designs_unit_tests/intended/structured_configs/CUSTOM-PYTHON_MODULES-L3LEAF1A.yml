@@ -140,19 +140,19 @@ spanning_tree:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
   name: Tenant_A_OP_Zone_1
   tenant: CUSTOM_PYTHON_MODULES_TENANT
 - id: 3000
-  name: MLAG_iBGP_TEST_VRF
+  name: MLAG_L3_VRF_TEST_VRF
   trunk_groups:
   - MLAG
   tenant: CUSTOM_PYTHON_MODULES_TENANT
