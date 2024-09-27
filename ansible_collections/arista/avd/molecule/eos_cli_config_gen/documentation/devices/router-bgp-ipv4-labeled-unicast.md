@@ -53,7 +53,7 @@ ASN Notation: asplain
 
 | Settings | Value |
 | -------- | ----- |
-| Update - wait-for-convergence | Enabled |
+| Update wait-for-convergence | Enabled |
 | Next-hop Unchanged | True |
 | Label local-termination | implicit-null |
 

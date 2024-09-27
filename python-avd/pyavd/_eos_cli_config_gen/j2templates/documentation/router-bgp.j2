@@ -643,7 +643,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | Settings | Value |
 | -------- | ----- |
 {%         if router_bgp.address_family_ipv4_labeled_unicast.update_wait_for_convergence is arista.avd.defined(true) %}
-| Update - wait-for-convergence | Enabled |
+| Update wait-for-convergence | Enabled |
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.bgp.next_hop_unchanged is arista.avd.defined(true) %}
 | Next-hop Unchanged | True |
