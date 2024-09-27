@@ -39,7 +39,7 @@ class UtilsMixin:
                 filtered_adapters = []
                 for adapter_index, adapter in enumerate(connected_endpoint["adapters"]):
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(
-                        adapter, context=f"{connected_endpoints_key['key']}[{connected_endpoint['name']}].adapters"
+                        adapter, context=f"{connected_endpoints_key['key']}[{connected_endpoint['name']}].adapters[{adapter_index}]"
                     )
 
                     if self.shared_utils.hostname not in adapter_settings.get("switches", []):
@@ -73,8 +73,8 @@ class UtilsMixin:
     def _filtered_network_ports(self: AvdStructuredConfigConnectedEndpoints) -> list:
         """Return list of endpoints defined under "network_ports" which are connected to this switch."""
         filtered_network_ports = []
-        for network_port in get(self._hostvars, "network_ports", default=[]):
-            network_port_settings = self.shared_utils.get_merged_adapter_settings(network_port, context="network_ports")
+        for index, network_port in enumerate(get(self._hostvars, "network_ports", default=[])):
+            network_port_settings = self.shared_utils.get_merged_adapter_settings(network_port, context=f"network_ports[{index}]")
             if not self._match_regexes(network_port_settings.get("switches"), self.shared_utils.hostname):
                 continue
 
