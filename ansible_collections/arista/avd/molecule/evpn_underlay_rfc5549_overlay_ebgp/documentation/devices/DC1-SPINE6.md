@@ -414,10 +414,10 @@ router bgp 65001
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65107
    neighbor 192.168.255.14 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.14 remote-as 65107
-   neighbor 192.168.255.14 description DC1-LEAF4A
+   neighbor 192.168.255.14 description DC1-LEAF4A_Loopback0
    neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.15 remote-as 65107
-   neighbor 192.168.255.15 description DC1-LEAF4B
+   neighbor 192.168.255.15 description DC1-LEAF4B_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

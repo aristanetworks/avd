@@ -2067,6 +2067,27 @@ keys:
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
+  mlag_bgp_peer_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on the MLAG BGP peers
+      including those in VRFs.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG L3 VLAN interface.\n  - `peer_interface`: The
+      MLAG L3 VLAN interface on the MLAG peer.\n  - `vrf`: The name of the VRF. Not
+      available for the underlay peering.\n\nThe default description is built from
+      the name and interface of the MLAG peer and optionally the VRF."
+    default: '{mlag_peer}_{peer_interface}'
+  mlag_bgp_peer_group_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on the MLAG BGP peer-group.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n\nThe default description
+      is the name of the MLAG peers."
+    default: '{mlag_peer}'
   mlag_ibgp_peering_vrfs:
     documentation_options:
       table: network-services-vrfs-settings
@@ -2660,6 +2681,16 @@ keys:
 
       '
     default: false
+  overlay_bgp_peer_description:
+    type: str
+    documentation_options:
+      table: overlay-settings
+    description: "Description or description template to be used on the overlay BGP
+      peers.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `peer`: The name of the BGP peer.\n  - `peer_interface`:
+      The interface on the BGP peer if available.\n\nThe default description is built
+      from the name and interface of the BGP peer."
+    default: '{peer}{peer_interface?<_}'
   overlay_cvx_servers:
     documentation_options:
       table: overlay-settings

@@ -36,11 +36,11 @@ router_bgp:
   - ip_address: 10.255.2.1
     peer_group: MPLS-OVERLAY-PEERS
     peer: rr1
-    description: rr1
+    description: rr1_Loopback0
   - ip_address: 10.255.2.2
     peer_group: MPLS-OVERLAY-PEERS
     peer: rr2
-    description: rr2
+    description: rr2_Loopback0
   vrfs:
   - name: C1_VRF1
     rd: 10.255.1.3:10

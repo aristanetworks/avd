@@ -41,7 +41,7 @@ router_bgp:
   - ip_address: 10.254.1.97
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: ptp-tests-leaf2
-    description: ptp-tests-leaf2
+    description: ptp-tests-leaf2_Vlan4093
   - ip_address: 10.254.2.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
@@ -55,7 +55,7 @@ router_bgp:
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: ptp-tests-spine1
-    description: ptp-tests-spine1
+    description: ptp-tests-spine1_Loopback0
     remote_as: '65200'
   redistribute_routes:
   - source_protocol: connected
@@ -82,7 +82,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.254.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: ptp-tests-leaf2
+      description: ptp-tests-leaf2_Vlan3000
   vlans:
   - id: 11
     tenant: PTP

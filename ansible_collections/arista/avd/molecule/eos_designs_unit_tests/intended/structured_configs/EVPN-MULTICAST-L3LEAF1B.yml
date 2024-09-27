@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.255.251.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: EVPN-MULTICAST-L3LEAF1A
-    description: EVPN-MULTICAST-L3LEAF1A
+    description: EVPN-MULTICAST-L3LEAF1A_Vlan4093
   - ip_address: 172.31.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
@@ -52,7 +52,7 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-SPINE1
-    description: EVPN-MULTICAST-SPINE1
+    description: EVPN-MULTICAST-SPINE1_Loopback0
     remote_as: '65001'
   redistribute_routes:
   - source_protocol: connected
@@ -79,7 +79,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3012
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_110_111
@@ -99,7 +99,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3010
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_210_DISABLED_211
@@ -119,7 +119,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3011
     updates:
       wait_install: true
   - name: MULTICAST_DISABLED_5_6
@@ -139,7 +139,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3022
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_1_2
@@ -159,7 +159,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3020
     updates:
       wait_install: true
   - name: MULTICAST_ENABLED_3_DISABLED_4
@@ -179,7 +179,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3021
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_DISABLED_330_331
@@ -200,7 +200,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3032
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
@@ -221,7 +221,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3065
     updates:
       wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
@@ -242,7 +242,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3031
     updates:
       wait_install: true
   - name: TEN_D_L3_MULTICAST_DISABLED_240_241
@@ -263,7 +263,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3041
     updates:
       wait_install: true
   - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
@@ -284,7 +284,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3040
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
@@ -305,7 +305,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3054
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
@@ -329,7 +329,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3059
     updates:
       wait_install: true
   - name: TEN_E_L3_MULTICAST_TRANSIT
@@ -353,7 +353,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3051
     updates:
       wait_install: true
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
@@ -374,7 +374,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: EVPN-MULTICAST-L3LEAF1A
+      description: EVPN-MULTICAST-L3LEAF1A_Vlan3050
     updates:
       wait_install: true
   vlan_aware_bundles:

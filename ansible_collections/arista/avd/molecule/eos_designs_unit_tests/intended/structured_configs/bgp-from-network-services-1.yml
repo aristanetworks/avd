@@ -27,7 +27,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.20.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: bgp-from-network-services-2
+    description: bgp-from-network-services-2_Vlan3099
   - ip_address: 10.10.1.2
     peer_group: MYPEERGROUP
   address_family_ipv4:
