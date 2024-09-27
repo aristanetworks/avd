@@ -120,7 +120,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
     def _get_port_channel_interface_cfg(
         self: AvdStructuredConfigConnectedEndpoints,
-        adapter: dict,
+        adapter: dict | ChainMap,
         port_channel_interface_name: str,
         channel_group_id: int,
         connected_endpoint: dict,

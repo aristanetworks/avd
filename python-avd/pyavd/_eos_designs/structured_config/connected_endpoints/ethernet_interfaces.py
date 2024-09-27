@@ -84,7 +84,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         return None
 
     def _update_ethernet_interface_cfg(
-        self: AvdStructuredConfigConnectedEndpoints, adapter: dict, ethernet_interface: dict, connected_endpoint: dict, context: str
+        self: AvdStructuredConfigConnectedEndpoints, adapter: dict | ChainMap, ethernet_interface: dict, connected_endpoint: dict, context: str
     ) -> dict:
         ethernet_interface.update(
             {
