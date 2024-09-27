@@ -108,7 +108,7 @@ monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 source Ethernet3, Ethernet5 rx
 monitor session myMonitoringSession2 source Ethernet10-15 rx
 monitor session myMonitoringSession2 source Ethernet12 rx
-monitor session myMonitoringSession2 source Ethernet18 tx mac access-group macACL priority 100
+monitor session myMonitoringSession2 source Ethernet18 tx
 monitor session myMonitoringSession2 destination Cpu
 monitor session myMonitoringSession2 destination Ethernet50
 monitor session myMonitoringSession2 sample 50
