@@ -568,10 +568,10 @@ router bfd
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 10.255.1.3
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces
