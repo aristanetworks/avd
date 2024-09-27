@@ -62,6 +62,10 @@ bgp_peer_groups:
       - 192.168.142.0/24
       - 192.168.143.0/24
 
+fabric_ip_addressing:
+  wan_ha:
+    ipv4_prefix_length: 24
+
 wan_stun_dtls_profile_name: profileA
 
 wan_route_servers:

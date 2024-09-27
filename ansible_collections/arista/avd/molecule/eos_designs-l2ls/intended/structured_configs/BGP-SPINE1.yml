@@ -34,7 +34,7 @@ router_bgp:
   - ip_address: 192.168.254.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: BGP-SPINE2
-    description: BGP-SPINE2
+    description: BGP-SPINE2_Vlan4094
   - ip_address: 192.168.253.5
     remote_as: '65000'
     peer: DUMMY-CORE

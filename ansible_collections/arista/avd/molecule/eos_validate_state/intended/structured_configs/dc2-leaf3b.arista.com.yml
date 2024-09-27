@@ -44,7 +44,7 @@ router_bgp:
   - ip_address: 10.255.129.124
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: dc2-leaf3a.arista.com
-    description: dc2-leaf3a.arista.com
+    description: dc2-leaf3a.arista.com_Vlan4093
   - ip_address: 10.255.255.124
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
@@ -58,12 +58,12 @@ router_bgp:
   - ip_address: 10.255.128.11
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc2-spine1
-    description: dc2-spine1
+    description: dc2-spine1_Loopback0
     remote_as: '65200'
   - ip_address: 10.255.128.12
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc2-spine2
-    description: dc2-spine2
+    description: dc2-spine2_Loopback0
     remote_as: '65200'
   redistribute_routes:
   - source_protocol: connected
@@ -90,7 +90,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.129.124
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: dc2-leaf3a.arista.com
+      description: dc2-leaf3a.arista.com_Vlan3009
   - name: VRF11
     rd: 10.255.128.18:11
     route_targets:
@@ -108,7 +108,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.129.124
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: dc2-leaf3a.arista.com
+      description: dc2-leaf3a.arista.com_Vlan3010
   vlans:
   - id: 11
     tenant: TENANT1
@@ -230,7 +230,7 @@ vlans:
   name: VRF10_VLAN12
   tenant: TENANT1
 - id: 3009
-  name: MLAG_iBGP_VRF10
+  name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
   tenant: TENANT1
@@ -241,7 +241,7 @@ vlans:
   name: VRF11_VLAN22
   tenant: TENANT1
 - id: 3010
-  name: MLAG_iBGP_VRF11
+  name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
   tenant: TENANT1
@@ -279,7 +279,7 @@ vlan_interfaces:
   tenant: TENANT1
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
+  description: MLAG_L3_VRF_VRF10
   vrf: VRF10
   mtu: 1500
   ip_address: 10.255.129.125/31
@@ -299,7 +299,7 @@ vlan_interfaces:
   tenant: TENANT1
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
+  description: MLAG_L3_VRF_VRF11
   vrf: VRF11
   mtu: 1500
   ip_address: 10.255.129.125/31

@@ -257,9 +257,9 @@ vlan internal order ascending range 1006 1199
 | 150 | Tenant_A_WAN_Zone_1 | - |
 | 250 | Tenant_B_WAN_Zone_1 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | MLAG |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | MLAG |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | MLAG |
+| 3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | MLAG |
+| 3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | MLAG |
 | 4093 | MLAG_L3 | MLAG |
 | 4094 | MLAG | MLAG |
 
@@ -277,15 +277,15 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 !
 vlan 3013
-   name MLAG_iBGP_Tenant_A_WAN_Zone
+   name MLAG_L3_VRF_Tenant_A_WAN_Zone
    trunk group MLAG
 !
 vlan 3020
-   name MLAG_iBGP_Tenant_B_WAN_Zone
+   name MLAG_L3_VRF_Tenant_B_WAN_Zone
    trunk group MLAG
 !
 vlan 3030
-   name MLAG_iBGP_Tenant_C_WAN_Zone
+   name MLAG_L3_VRF_Tenant_C_WAN_Zone
    trunk group MLAG
 !
 vlan 4093
@@ -428,9 +428,9 @@ interface Loopback1
 | Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | False |
 | Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | False |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
-| Vlan3013 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
-| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
-| Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
+| Vlan3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
+| Vlan3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
+| Vlan3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -470,21 +470,21 @@ interface Vlan350
    ip address virtual 10.3.50.1/24
 !
 interface Vlan3013
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
+   description MLAG_L3_VRF_Tenant_A_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WAN_Zone
    ip address 10.255.251.11/31
 !
 interface Vlan3020
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
+   description MLAG_L3_VRF_Tenant_B_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_WAN_Zone
    ip address 10.255.251.11/31
 !
 interface Vlan3030
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
+   description MLAG_L3_VRF_Tenant_C_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_WAN_Zone
@@ -740,7 +740,7 @@ router bgp 65104
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 10.255.251.10 description DC1-BL1A
+   neighbor 10.255.251.10 description DC1-BL1A_Vlan4093
    neighbor 172.31.255.48 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.48 remote-as 65001
    neighbor 172.31.255.48 description DC1-SPINE1_Ethernet7
@@ -755,16 +755,16 @@ router bgp 65104
    neighbor 172.31.255.54 description DC1-SPINE4_Ethernet7
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
@@ -800,7 +800,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.10 description DC1-BL1A
+      neighbor 10.255.251.10 description DC1-BL1A_Vlan3013
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -810,7 +810,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.10 description DC1-BL1A
+      neighbor 10.255.251.10 description DC1-BL1A_Vlan3020
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -820,7 +820,7 @@ router bgp 65104
       router-id 192.168.255.11
       update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.10 description DC1-BL1A
+      neighbor 10.255.251.10 description DC1-BL1A_Vlan3030
       redistribute connected
 ```
 

@@ -699,8 +699,8 @@ Priority Flow Control is **Off** on all interfaces.
 ```eos
 !
 priority-flow-control all off
-priority-flow-control pause watchdog action no-drop
 priority-flow-control pause watchdog default timeout 0.05
-priority-flow-control pause watchdog default polling-interval 10.001
 priority-flow-control pause watchdog default recovery-time 1.22
+priority-flow-control pause watchdog default polling-interval 10.001
+priority-flow-control pause watchdog action no-drop
 ```

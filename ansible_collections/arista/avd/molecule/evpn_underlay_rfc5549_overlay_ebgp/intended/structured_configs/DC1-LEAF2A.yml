@@ -57,7 +57,7 @@ router_bgp:
     peer_group: MLAG_PEER
     peer: DC1-LEAF2B
     remote_as: '65102'
-    description: DC1-LEAF2B
+    description: DC1-LEAF2B_Vlan4093
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
@@ -93,22 +93,22 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE1
-    description: DC1-SPINE1
+    description: DC1-SPINE1_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE2
-    description: DC1-SPINE2
+    description: DC1-SPINE2_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE3
-    description: DC1-SPINE3
+    description: DC1-SPINE3_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE4
-    description: DC1-SPINE4
+    description: DC1-SPINE4_Loopback0
     remote_as: '65001'
   vrfs:
   - name: Tenant_A_APP_Zone
@@ -128,7 +128,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3011
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -154,7 +154,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3012
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -180,7 +180,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3009
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -206,7 +206,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3010
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -232,7 +232,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3019
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -258,7 +258,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan2
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -447,7 +447,7 @@ vlans:
   name: Tenant_A_APP_Zone_2
   tenant: Tenant_A
 - id: 3011
-  name: MLAG_iBGP_Tenant_A_APP_Zone
+  name: MLAG_L3_VRF_Tenant_A_APP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -458,7 +458,7 @@ vlans:
   name: Tenant_A_DB_Zone_2
   tenant: Tenant_A
 - id: 3012
-  name: MLAG_iBGP_Tenant_A_DB_Zone
+  name: MLAG_L3_VRF_Tenant_A_DB_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -469,7 +469,7 @@ vlans:
   name: Tenant_A_OP_Zone_2
   tenant: Tenant_A
 - id: 3009
-  name: MLAG_iBGP_Tenant_A_OP_Zone
+  name: MLAG_L3_VRF_Tenant_A_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -480,7 +480,7 @@ vlans:
   name: Tenant_A_WEBZone_2
   tenant: Tenant_A
 - id: 3010
-  name: MLAG_iBGP_Tenant_A_WEB_Zone
+  name: MLAG_L3_VRF_Tenant_A_WEB_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_A
@@ -497,7 +497,7 @@ vlans:
   name: Tenant_B_OP_Zone_2
   tenant: Tenant_B
 - id: 3019
-  name: MLAG_iBGP_Tenant_B_OP_Zone
+  name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_B
@@ -508,7 +508,7 @@ vlans:
   name: Tenant_C_OP_Zone_2
   tenant: Tenant_C
 - id: 2
-  name: MLAG_iBGP_Tenant_C_OP_Zone
+  name: MLAG_L3_VRF_Tenant_C_OP_Zone
   trunk_groups:
   - MLAG
   tenant: Tenant_C
@@ -545,7 +545,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
+  description: MLAG_L3_VRF_Tenant_A_APP_Zone
   vrf: Tenant_A_APP_Zone
   mtu: 1500
   ip_address: 10.255.251.2/31
@@ -570,7 +570,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
+  description: MLAG_L3_VRF_Tenant_A_DB_Zone
   vrf: Tenant_A_DB_Zone
   mtu: 1500
   ip_address: 10.255.251.2/31
@@ -598,7 +598,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_A_OP_Zone
   vrf: Tenant_A_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.2/31
@@ -628,7 +628,7 @@ vlan_interfaces:
   tenant: Tenant_A
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
+  description: MLAG_L3_VRF_Tenant_A_WEB_Zone
   vrf: Tenant_A_WEB_Zone
   mtu: 1500
   ip_address: 10.255.251.2/31
@@ -652,7 +652,7 @@ vlan_interfaces:
   tenant: Tenant_B
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_B_OP_Zone
   vrf: Tenant_B_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.2/31
@@ -676,7 +676,7 @@ vlan_interfaces:
   tenant: Tenant_C
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
+  description: MLAG_L3_VRF_Tenant_C_OP_Zone
   vrf: Tenant_C_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.2/31

@@ -198,8 +198,8 @@ vlan internal order ascending range 1006 1199
 | 12 | VRF10_VLAN12 | - |
 | 21 | VRF11_VLAN21 | - |
 | 22 | VRF11_VLAN22 | - |
-| 3009 | MLAG_iBGP_VRF10 | MLAG |
-| 3010 | MLAG_iBGP_VRF11 | MLAG |
+| 3009 | MLAG_L3_VRF_VRF10 | MLAG |
+| 3010 | MLAG_L3_VRF_VRF11 | MLAG |
 | 3401 | L2_VLAN3401 | - |
 | 3402 | L2_VLAN3402 | - |
 | 4093 | MLAG_L3 | MLAG |
@@ -222,11 +222,11 @@ vlan 22
    name VRF11_VLAN22
 !
 vlan 3009
-   name MLAG_iBGP_VRF10
+   name MLAG_L3_VRF_VRF10
    trunk group MLAG
 !
 vlan 3010
-   name MLAG_iBGP_VRF11
+   name MLAG_L3_VRF_VRF11
    trunk group MLAG
 !
 vlan 3401
@@ -416,8 +416,8 @@ interface Loopback11
 | Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
 | Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
-| Vlan3009 | MLAG_PEER_L3_iBGP: vrf VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_PEER_L3_iBGP: vrf VRF11 | VRF11 | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -463,14 +463,14 @@ interface Vlan22
    ip address virtual 10.10.22.1/24
 !
 interface Vlan3009
-   description MLAG_PEER_L3_iBGP: vrf VRF10
+   description MLAG_L3_VRF_VRF10
    no shutdown
    mtu 1500
    vrf VRF10
    ip address 10.255.1.100/31
 !
 interface Vlan3010
-   description MLAG_PEER_L3_iBGP: vrf VRF11
+   description MLAG_L3_VRF_VRF11
    no shutdown
    mtu 1500
    vrf VRF11
@@ -749,15 +749,15 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.0.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.0.1 remote-as 65100
-   neighbor 10.255.0.1 description dc1-spine1
+   neighbor 10.255.0.1 description dc1-spine1_Loopback0
    neighbor 10.255.0.2 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.0.2 remote-as 65100
-   neighbor 10.255.0.2 description dc1-spine2
+   neighbor 10.255.0.2 description dc1-spine2_Loopback0
    neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 10.255.1.101 description dc1-leaf2b
+   neighbor 10.255.1.101 description dc1-leaf2b_Vlan4093
    neighbor 10.255.128.15 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.128.15 remote-as 65202
-   neighbor 10.255.128.15 description dc2-leaf2a
+   neighbor 10.255.128.15 description dc2-leaf2a_Loopback0
    neighbor 10.255.255.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.8 remote-as 65100
    neighbor 10.255.255.8 description dc1-spine1_Ethernet3
@@ -829,7 +829,7 @@ router bgp 65102
       route-target export evpn 10:10
       router-id 10.255.0.5
       neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.1.101 description dc1-leaf2b
+      neighbor 10.255.1.101 description dc1-leaf2b_Vlan3009
       redistribute connected
    !
    vrf VRF11
@@ -838,7 +838,7 @@ router bgp 65102
       route-target export evpn 11:11
       router-id 10.255.0.5
       neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.1.101 description dc1-leaf2b
+      neighbor 10.255.1.101 description dc1-leaf2b_Vlan3010
       redistribute connected
 ```
 

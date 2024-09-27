@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.255.247.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: trunk-group-tests-l3leaf1b
-    description: trunk-group-tests-l3leaf1b
+    description: trunk-group-tests-l3leaf1b_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -69,7 +69,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: trunk-group-tests-l3leaf1b
+      description: trunk-group-tests-l3leaf1b_Vlan3099
     updates:
       wait_install: true
   - name: TG_200
@@ -89,7 +89,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: trunk-group-tests-l3leaf1b
+      description: trunk-group-tests-l3leaf1b_Vlan3199
     updates:
       wait_install: true
   - name: TG_300
@@ -109,7 +109,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: trunk-group-tests-l3leaf1b
+      description: trunk-group-tests-l3leaf1b_Vlan3299
     updates:
       wait_install: true
   vlans:
@@ -302,12 +302,12 @@ vlans:
   name: l2vlan399_without_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3099
-  name: MLAG_iBGP_TG_100
+  name: MLAG_L3_VRF_TG_100
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
-  name: MLAG_iBGP_TG_200
+  name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
@@ -319,7 +319,7 @@ vlans:
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
 - id: 3299
-  name: MLAG_iBGP_TG_300
+  name: MLAG_L3_VRF_TG_300
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
@@ -355,7 +355,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_100'
+  description: MLAG_L3_VRF_TG_100
   vrf: TG_100
   mtu: 9214
   ip_address: 10.255.247.0/31
@@ -372,7 +372,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
+  description: MLAG_L3_VRF_TG_200
   vrf: TG_200
   mtu: 9214
   ip_address: 10.255.247.0/31
@@ -406,7 +406,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_300'
+  description: MLAG_L3_VRF_TG_300
   vrf: TG_300
   mtu: 9214
   ip_address: 10.255.247.0/31
