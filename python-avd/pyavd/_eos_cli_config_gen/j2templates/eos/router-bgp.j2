@@ -678,9 +678,6 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endif %}
 {%         for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort('name') %}
-{%             if peer_group.additional_paths.receive is arista.avd.defined(true) %}
-      neighbor {{ peer_group.name }} additional-paths receive
-{%             endif %}
 {%             if peer_group.route_map_in is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_in }} in
 {%             endif %}
@@ -706,6 +703,9 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} activate
 {%             elif peer_group.activate is arista.avd.defined(false) %}
       no neighbor {{ peer_group.name }} activate
+{%             endif %}
+{%             if peer_group.additional_paths.receive is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} additional-paths receive
 {%             endif %}
 {%             if peer_group.additional_paths.send is arista.avd.defined %}
 {%                 if peer_group.additional_paths.send == 'disabled' %}
@@ -884,9 +884,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4.bgp.additional_paths.send is arista.avd.defined %}
 {%             if router_bgp.address_family_ipv4.bgp.additional_paths.send == 'disabled' %}
-      bgp additional-paths send
+      no bgp additional-paths send
 {%             elif router_bgp.address_family_ipv4.bgp.additional_paths.send == 'disabled_any' %}
-      bgp additional-paths send any
+      no bgp additional-paths send any
 {%             elif router_bgp.address_family_ipv4.bgp.additional_paths.send_ecmp_limit is arista.avd.defined and router_bgp.address_family_ipv4.bgp.additional_paths.send == 'ecmp' %}
       bgp additional-paths send ecmp limit {{ router_bgp.address_family_ipv4.bgp.additional_paths.send_ecmp_limit }}
 {%             elif router_bgp.address_family_ipv4.bgp.additional_paths.send == 'limit' %}
@@ -1169,7 +1169,7 @@ router bgp {{ router_bgp.as }}
       bgp additional-paths send ecmp limit {{ router_bgp.address_family_ipv6.bgp.additional_paths.send_ecmp_limit }}
 {%             elif router_bgp.address_family_ipv6.bgp.additional_paths.send == 'limit' %}
 {%                 if router_bgp.address_family_ipv6.bgp.additional_paths.send_limit is arista.avd.defined %}
-{%                     set add_path_cli = 'bgp additional-paths send limit ' ~ router_bgp.address_family_ipv6.bgp.additional_paths.send_limit %}
+      bgp additional-paths send limit {{ router_bgp.address_family_ipv6.bgp.additional_paths.send_limit }}
 {%                 endif %}
       bgp additional-paths send limit {{ router_bgp.address_family_ipv6.bgp.additional_paths.send_limit }}
 {%             else %}
@@ -1513,9 +1513,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.additional_paths.send is arista.avd.defined %}
 {%                 if neighbor.additional_paths.send == 'disabled' %}
-      no neighbor {{ neighbor.ip_address }} send
+      no neighbor {{ neighbor.ip_address }} additional-paths send
 {%                 elif neighbor.additional_paths.send == 'disabled_any' %}
-      no neighbor {{ neighbor.ip_address }} send any
+      no neighbor {{ neighbor.ip_address }} additional-paths send any
 {%                 elif neighbor.additional_paths.send_ecmp_limit is arista.avd.defined and neighbor.additional_paths.send == 'ecmp' %}
       neighbor {{ neighbor.ip_address }} additional-paths send ecmp limit {{ neighbor.additional_paths.send_ecmp_limit }}
 {%                 elif neighbor.additional_paths.send == 'limit' %}

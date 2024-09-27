@@ -276,8 +276,8 @@ router bgp 65101
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
       neighbor default encapsulation path-selection
-      neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
       neighbor ADDITIONAL-PATH-PG-1 activate
+      neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
       neighbor ADDITIONAL-PATH-PG-1 additional-paths send any
       neighbor ADDITIONAL-PATH-PG-2 activate
       neighbor ADDITIONAL-PATH-PG-2 additional-paths send backup
@@ -288,7 +288,7 @@ router bgp 65101
       neighbor ADDITIONAL-PATH-PG-5 activate
       neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
       neighbor ADDITIONAL-PATH-PG-6 activate
-      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send
+      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
       neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote

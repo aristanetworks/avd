@@ -19380,7 +19380,11 @@ $defs:
 
           ecmp: All paths in best path ECMP group.
 
-          limit: Limit to n eligible paths.'
+          limit: Limit to n eligible paths.
+
+          disabled: Disable sending the paths
+
+          disabled_any: Disable sending any path'
         valid_values:
         - any
         - backup

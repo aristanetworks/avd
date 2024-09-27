@@ -138,7 +138,7 @@ router_bgp:
       - name: ADDITIONAL-PATH-PG-6
         activate: true
         additional_paths:
-          send: 'disabled'
+          send: 'disabled_any'
       - name: TEST-ENCAPSULATION
         activate: true
         encapsulation: mpls
