@@ -31,6 +31,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
@@ -113,20 +114,23 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_666
   dhcp_client_accept_default_route: true
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.5.5/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10555
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.20.20.20/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast-5G_AF830
 loopback_interfaces:
 - name: Loopback0

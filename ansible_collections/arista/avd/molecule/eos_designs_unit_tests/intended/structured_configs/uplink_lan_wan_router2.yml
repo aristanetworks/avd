@@ -30,6 +30,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
@@ -110,7 +111,8 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK_LAN_L2LEAF_Ethernet2
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   mtu: 9218
 - name: Ethernet2.10
   peer: uplink_lan_l2leaf
@@ -118,8 +120,8 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: VLAN10_NATIVE
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: VRF1
   ip_address: 10.0.10.1/24
   mtu: 9218
@@ -131,8 +133,8 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: My vlan 100
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   vrf: VRF1
   ip_address: 10.0.100.1/24
   ipv6_address: cafe::cafe/64
@@ -145,7 +147,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.9.9.1/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast_999
 loopback_interfaces:
 - name: Loopback0

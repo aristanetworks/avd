@@ -64,10 +64,12 @@ router_bgp:
     remote_as: '65000'
   address_family_evpn:
     peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
     - name: WAN-RR-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4_sr_te:
@@ -145,13 +147,15 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.9.9.9/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: SFR_999
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.19.9.9/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT-MPLS_10999
 loopback_interfaces:
 - name: Loopback0

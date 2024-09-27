@@ -76,6 +76,7 @@ router_bgp:
       next_hop_self_received_evpn_routes:
         enable: true
         inter_domain: true
+      encapsulation: path-selection
     domain_identifier: "65101:0"
     neighbors:
       - ip_address: 10.100.100.1
@@ -95,6 +96,12 @@ router_bgp:
         default_route:
           enabled: true
           rcf: RCF_DEFAULT_ROUTE()
+      - ip_address: 10.100.100.4
+        activate: true
+        encapsulation: path-selection
+      - ip_address: 10.100.100.5
+        activate: true
+        encapsulation: mpls
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
@@ -132,6 +139,12 @@ router_bgp:
         activate: true
         additional_paths:
           send: 'disabled'
+      - name: TEST-ENCAPSULATION
+        activate: true
+        encapsulation: mpls
+      - name: TEST-ENCAPSULATION-2
+        activate: true
+        encapsulation: path-selection
     evpn_hostflap_detection:
       enabled: true
       window: 10

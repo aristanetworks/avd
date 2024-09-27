@@ -166,30 +166,30 @@ ptp:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 11
   name: VLAN11
   tenant: PTP
 - id: 3000
-  name: MLAG_iBGP_VRF1
+  name: MLAG_L3_VRF_VRF1
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
   tenant: PTP
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 10.254.1.97/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -204,19 +204,20 @@ vlan_interfaces:
   tenant: PTP
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF1'
+  description: MLAG_L3_VRF_VRF1
   vrf: VRF1
   mtu: 9214
   ip_address: 10.254.1.97/31
 port_channel_interfaces:
 - name: Port-Channel9
-  description: MLAG_PEER_ptp-tests-leaf1_Po9
-  type: switched
+  description: MLAG_ptp-tests-leaf1_Port-Channel9
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
   ptp:
     announce:
       interval: 0
@@ -228,17 +229,21 @@ port_channel_interfaces:
     enable: true
 - name: Port-Channel11
   description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 11
 - name: Port-Channel12
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 12
   ptp:
     announce:
@@ -251,14 +256,15 @@ port_channel_interfaces:
     enable: true
 - name: Port-Channel14
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
   shutdown: false
-  mode: trunk
-  vlans: '11'
   mlag: 14
 - name: Port-Channel6
-  description: Endpoint-with-mpass
-  type: switched
+  description: SERVER_Endpoint-with-mpass
   shutdown: false
   ptp:
     announce:
@@ -271,16 +277,17 @@ port_channel_interfaces:
     enable: true
     role: master
     mpass: true
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   mlag: 6
 ethernet_interfaces:
 - name: Ethernet9
   peer: ptp-tests-leaf1
   peer_interface: Ethernet9
   peer_type: mlag_peer
-  description: MLAG_PEER_ptp-tests-leaf1_Ethernet9
-  type: port-channel-member
+  description: MLAG_ptp-tests-leaf1_Ethernet9
   shutdown: false
   channel_group:
     id: 9
@@ -289,8 +296,7 @@ ethernet_interfaces:
   peer: ptp-tests-leaf1
   peer_interface: Ethernet10
   peer_type: mlag_peer
-  description: MLAG_PEER_ptp-tests-leaf1_Ethernet10
-  type: port-channel-member
+  description: MLAG_ptp-tests-leaf1_Ethernet10
   shutdown: false
   channel_group:
     id: 9
@@ -302,7 +308,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -320,7 +327,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet4
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     announce:
       interval: 0
@@ -337,7 +345,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -347,7 +354,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -357,7 +363,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -365,11 +370,12 @@ ethernet_interfaces:
   peer: video-endpoint
   peer_interface: PCI2
   peer_type: server
-  description: video-endpoint_PCI2
+  description: SERVER_video-endpoint_PCI2
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '11'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '11'
   spanning_tree_portfast: edge
   ptp:
     announce:
@@ -385,9 +391,8 @@ ethernet_interfaces:
   peer: Endpoint-with-mpass
   peer_interface: PCI2
   peer_type: server
-  description: Endpoint-with-mpass_PCI2
+  description: SERVER_Endpoint-with-mpass_PCI2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 6
     mode: active

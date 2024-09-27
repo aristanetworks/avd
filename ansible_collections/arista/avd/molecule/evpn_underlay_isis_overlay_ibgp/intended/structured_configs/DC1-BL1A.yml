@@ -114,17 +114,17 @@ ntp:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 1500
   ip_address: 10.255.251.10/31
@@ -133,27 +133,27 @@ vlan_interfaces:
   isis_metric: 50
   isis_network_point_to_point: true
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
   ip_address: 10.255.252.10/31
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1-BL1B_Po5
-  type: switched
+  description: MLAG_DC1-BL1B_Port-Channel5
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet5
   peer: DC1-BL1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-BL1B_Ethernet5
-  type: port-channel-member
+  description: MLAG_DC1-BL1B_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -162,8 +162,7 @@ ethernet_interfaces:
   peer: DC1-BL1B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1-BL1B_Ethernet6
-  type: port-channel-member
+  description: MLAG_DC1-BL1B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -175,7 +174,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.41/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -189,7 +189,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.43/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -203,7 +204,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.45/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -217,7 +219,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.47/31
   isis_enable: EVPN_UNDERLAY
   isis_bfd: true
@@ -229,7 +232,8 @@ ethernet_interfaces:
   peer_interface: Ethernet8
   peer_type: other
   description: P2P_LINK_TO_ROUTERX_Ethernet8
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 100.64.0.0/31

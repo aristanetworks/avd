@@ -128,7 +128,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.12.3/31
@@ -141,7 +142,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.12.67/31
@@ -154,7 +156,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.120.2/31
@@ -163,7 +166,8 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 200.200.200.101/24
   ptp:

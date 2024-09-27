@@ -104,32 +104,32 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
   ip_address: 192.168.253.205/31
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_PEER_bgp-peer-groups-1_Po3
-  type: switched
+  description: MLAG_bgp-peer-groups-1_Port-Channel3
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
 ethernet_interfaces:
 - name: Ethernet3
   peer: bgp-peer-groups-1
   peer_interface: Ethernet3
   peer_type: mlag_peer
-  description: MLAG_PEER_bgp-peer-groups-1_Ethernet3
-  type: port-channel-member
+  description: MLAG_bgp-peer-groups-1_Ethernet3
   shutdown: false
   channel_group:
     id: 3

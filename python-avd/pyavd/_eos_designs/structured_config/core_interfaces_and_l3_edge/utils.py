@@ -216,7 +216,7 @@ class UtilsMixin:
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],
             "description": get(p2p_link, "data.description", default=default_description),
-            "type": "routed",
+            "switchport": {"enabled": False},
             "shutdown": False,
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
@@ -310,15 +310,12 @@ class UtilsMixin:
         Return partial structured_config for one p2p_link.
 
         Covers config for ethernet interfaces that are port-channel members.
-
-        TODO: Change description for members to be the physical peer interface instead of port-channel
         """
         peer = p2p_link["data"]["peer"]
         peer_interface = member["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         return {
             "name": member["interface"],
-            "type": "port-channel-member",
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],

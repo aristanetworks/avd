@@ -611,7 +611,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
       mode: trunk # (7)!
       spanning_tree_portfast: edge # (8)!
       port_channel: # (9)!
-        description: PortChannel dc1-leaf1-server1
+        endpoint_port_channel: Bond1
         mode: active
 
     - endpoint_ports: [ iLO ]
@@ -630,7 +630,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
 6. `native_vlan` specifies the native VLAN when the switch port mode is set to trunk.
 7. `mode` is set to trunk for the dual-attached server ports and access for the iLO port.
 8. `spanning_tree_portfast` defines whether the switch port should be a spanning tree edge or network port.
-9. `port_channel` defines the description and mode for the port-channel.
+9. `port_channel` defines the port-channel name on the endpoint that will be used in the port-channel description and mode for the port-channel.
 
 ## The playbooks
 

@@ -264,7 +264,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR1_Ethernet1
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1000
@@ -286,7 +287,6 @@ ethernet_interfaces:
       igp_sync: true
   speed: forced 40gfull
 - name: Ethernet11
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet12
   peer_type: p
@@ -297,7 +297,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
 - name: Ethernet12
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet13
   peer_type: p
@@ -308,7 +307,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
 - name: Ethernet13
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet14
   peer_type: p
@@ -319,7 +317,6 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
 - name: Ethernet14
-  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Ethernet15
   peer_type: p
@@ -334,16 +331,16 @@ ethernet_interfaces:
   ip_address: 123.1.1.2/31
   shutdown: false
   description: TENANT_B_SITE_5_INTRA_L3VPN
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: TENANT_B_INTRA
 - name: Ethernet6.100
   peer_type: l3_interface
   ip_address: 192.168.48.4/31
   shutdown: false
   description: TENANT_B_SITE_3_OSPF
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   vrf: TENANT_B_WAN
   ospf_area: '0'
   ospf_network_point_to_point: true
@@ -353,32 +350,32 @@ ethernet_interfaces:
   ip_address: 192.168.48.2/31
   shutdown: false
   description: TENANT_B_SITE_5
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 101
+  encapsulation_dot1q:
+    vlan: 101
   vrf: TENANT_B_WAN
 - name: Ethernet6
   peer_type: l3_interface
   ip_address: 123.10.10.2/31
   shutdown: false
   description: TENANT_B_SITE_5_WAN_TEST
-  type: routed
+  switchport:
+    enabled: false
   vrf: TENANT_B_WAN
 - name: Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   peer_type: point_to_point_service
   shutdown: false
   lldp:
     transmit: false
     receive: false
 - name: Ethernet4
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 4
     mode: active
 - name: Ethernet5
-  type: port-channel-member
   peer_type: point_to_point_service
   shutdown: false
   channel_group:
@@ -389,11 +386,13 @@ ethernet_interfaces:
   peer_interface: eth0
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
-  description: CPE_TENANT_A_SITE2_eth0
+  description: CPE_CPE_TENANT_A_SITE2_eth0
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: '10'
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '10'
   spanning_tree_portfast: edge
 port_channel_interfaces:
 - name: Port-Channel11
@@ -401,7 +400,8 @@ port_channel_interfaces:
   peer_interface: Port-Channel12
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1600
@@ -426,7 +426,8 @@ port_channel_interfaces:
   peer_interface: Port-Channel110
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR2_Port-Channel110
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   mtu: 9178
   eos_cli: 'link-debounce time 1600
@@ -447,57 +448,53 @@ port_channel_interfaces:
       interface: true
       igp_sync: true
 - name: Port-Channel4.1000
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1000
+      encapsulation: dot1q
+      vlan: 1000
     network:
-      client: true
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1001
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1001
+      encapsulation: dot1q
+      vlan: 1001
     network:
-      client: true
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1002
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1002
+      encapsulation: dot1q
+      vlan: 1002
     network:
-      client: true
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1003
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1003
+      encapsulation: dot1q
+      vlan: 1003
     network:
-      client: true
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4.1004
-  type: l2dot1q
   peer_type: point_to_point_service
   encapsulation_vlan:
     client:
-      dot1q:
-        vlan: 1004
+      encapsulation: dot1q
+      vlan: 1004
     network:
-      client: true
+      encapsulation: client
   shutdown: false
 - name: Port-Channel4
-  type: routed
+  switchport:
+    enabled: false
   peer_type: system
   shutdown: false
 patch_panel:

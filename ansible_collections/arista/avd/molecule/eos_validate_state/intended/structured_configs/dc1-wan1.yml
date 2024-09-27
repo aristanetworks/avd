@@ -75,6 +75,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
     neighbor_default:
@@ -83,6 +84,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.2
       activate: true
+      encapsulation: path-selection
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -166,7 +168,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.1/31
 - name: Ethernet2
   peer: dc1-leaf1b
@@ -175,19 +178,22 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet6
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.255.255.3/31
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: 172.18.3.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: mpls-sp-1_DC1-MPLS-3
 - name: Ethernet4
   peer_type: l3_interface
   ip_address: 100.64.3.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: isp-1_DC1-INET-3
 loopback_interfaces:
 - name: Loopback0

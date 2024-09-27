@@ -61,9 +61,9 @@ HTTPS certificate and private key are configured.
 !
 management api http-commands
    protocol https
-   protocol https ssl profile SSL_PROFILE
    no protocol http
    default-services
+   protocol https ssl profile SSL_PROFILE
    no shutdown
    !
    vrf default

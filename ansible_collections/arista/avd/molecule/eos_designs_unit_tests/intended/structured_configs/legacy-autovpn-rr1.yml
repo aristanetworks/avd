@@ -48,10 +48,12 @@ router_bgp:
     route_reflector_client: true
   address_family_evpn:
     peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
     - name: WAN-RR-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4:
@@ -113,7 +115,8 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_777
   dhcp_client_accept_default_route: true
 loopback_interfaces:
