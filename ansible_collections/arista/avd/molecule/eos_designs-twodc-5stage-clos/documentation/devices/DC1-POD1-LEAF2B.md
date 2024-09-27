@@ -929,15 +929,15 @@ router bgp 65112.100
    neighbor 11.1.0.39 bfd
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
-   neighbor 172.16.10.1 description DC1-RS1
+   neighbor 172.16.10.1 description DC1-RS1_Loopback0
    neighbor 172.16.10.1 route-map RM-EVPN-FILTER-AS65101 out
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110.100
-   neighbor 172.16.110.1 description DC1-POD1-SPINE1
+   neighbor 172.16.110.1 description DC1-POD1-SPINE1_Loopback0
    neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110.100 out
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.3 remote-as 65111.100
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.110.3 description DC1-POD1-LEAF1A_Loopback0
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111.100 out
    neighbor 172.17.110.16 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.16 remote-as 65110.100
@@ -952,7 +952,7 @@ router bgp 65112.100
    neighbor 172.17.110.22 remote-as 65110.100
    neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
    neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.110.2 description DC1.POD1.LEAF2A
+   neighbor 172.20.110.2 description DC1.POD1.LEAF2A_Vlan4094
    redistribute attached-host
    redistribute connected
    !

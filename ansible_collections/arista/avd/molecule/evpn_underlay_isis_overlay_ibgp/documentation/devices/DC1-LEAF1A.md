@@ -522,9 +522,9 @@ router bgp 65000
    neighbor OVERLAY-PEERS send-community
    neighbor OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group OVERLAY-PEERS
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.4 peer group OVERLAY-PEERS
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    !
    address-family evpn
       neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-IN in

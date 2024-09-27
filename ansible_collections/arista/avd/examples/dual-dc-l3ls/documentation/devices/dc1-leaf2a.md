@@ -749,15 +749,15 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.0.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.0.1 remote-as 65100
-   neighbor 10.255.0.1 description dc1-spine1
+   neighbor 10.255.0.1 description dc1-spine1_Loopback0
    neighbor 10.255.0.2 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.0.2 remote-as 65100
-   neighbor 10.255.0.2 description dc1-spine2
+   neighbor 10.255.0.2 description dc1-spine2_Loopback0
    neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 10.255.1.101 description dc1-leaf2b
+   neighbor 10.255.1.101 description dc1-leaf2b_Vlan4093
    neighbor 10.255.128.15 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.128.15 remote-as 65202
-   neighbor 10.255.128.15 description dc2-leaf2a
+   neighbor 10.255.128.15 description dc2-leaf2a_Loopback0
    neighbor 10.255.255.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.8 remote-as 65100
    neighbor 10.255.255.8 description dc1-spine1_Ethernet3
@@ -829,7 +829,7 @@ router bgp 65102
       route-target export evpn 10:10
       router-id 10.255.0.5
       neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.1.101 description dc1-leaf2b
+      neighbor 10.255.1.101 description dc1-leaf2b_Vlan3009
       redistribute connected
    !
    vrf VRF11
@@ -838,7 +838,7 @@ router bgp 65102
       route-target export evpn 11:11
       router-id 10.255.0.5
       neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.1.101 description dc1-leaf2b
+      neighbor 10.255.1.101 description dc1-leaf2b_Vlan3010
       redistribute connected
 ```
 
