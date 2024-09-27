@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 100.64.1.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: inband-mgmt-parent-dualstack1
-    description: inband-mgmt-parent-dualstack1
+    description: inband-mgmt-parent-dualstack1_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -70,7 +70,7 @@ router_bgp:
     neighbors:
     - ip_address: 100.64.1.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: inband-mgmt-parent-dualstack1
+      description: inband-mgmt-parent-dualstack1_Vlan3000
     updates:
       wait_install: true
 service_routing_protocols_model: multi-agent

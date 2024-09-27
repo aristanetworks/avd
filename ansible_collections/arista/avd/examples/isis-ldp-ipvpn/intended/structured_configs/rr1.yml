@@ -48,19 +48,19 @@ router_bgp:
   - ip_address: 10.255.1.1
     peer_group: MPLS-OVERLAY-PEERS
     peer: pe1
-    description: pe1
+    description: pe1_Loopback0
   - ip_address: 10.255.1.2
     peer_group: MPLS-OVERLAY-PEERS
     peer: pe2
-    description: pe2
+    description: pe2_Loopback0
   - ip_address: 10.255.1.3
     peer_group: MPLS-OVERLAY-PEERS
     peer: pe3
-    description: pe3
+    description: pe3_Loopback0
   - ip_address: 10.255.2.2
     peer_group: RR-OVERLAY-PEERS
     peer: rr2
-    description: rr2
+    description: rr2_Loopback0
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

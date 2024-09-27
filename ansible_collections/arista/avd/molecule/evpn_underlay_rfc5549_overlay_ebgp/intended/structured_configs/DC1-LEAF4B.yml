@@ -63,7 +63,7 @@ router_bgp:
     peer_group: MLAG_PEER
     peer: DC1-LEAF4A
     remote_as: '65107'
-    description: DC1-LEAF4A
+    description: DC1-LEAF4A_Vlan4093
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
@@ -84,7 +84,7 @@ router_bgp:
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE6
-    description: DC1-SPINE6
+    description: DC1-SPINE6_Loopback0
     remote_as: '65001'
   vrfs:
   - name: Tenant_A_APP_Zone
@@ -105,7 +105,7 @@ router_bgp:
     - name: Vlan3011
       peer_group: MLAG_PEER
       remote_as: '65107'
-      description: DC1-LEAF4A
+      description: DC1-LEAF4A_Vlan3011
   - name: Tenant_A_DB_Zone
     rd: 192.168.255.15:13
     route_targets:
@@ -124,7 +124,7 @@ router_bgp:
     - name: Vlan3012
       peer_group: MLAG_PEER
       remote_as: '65107'
-      description: DC1-LEAF4A
+      description: DC1-LEAF4A_Vlan3012
   - name: Tenant_A_OP_Zone
     rd: 192.168.255.15:10
     route_targets:
@@ -143,7 +143,7 @@ router_bgp:
     - name: Vlan3009
       peer_group: MLAG_PEER
       remote_as: '65107'
-      description: DC1-LEAF4A
+      description: DC1-LEAF4A_Vlan3009
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.15:11
     route_targets:
@@ -162,7 +162,7 @@ router_bgp:
     - name: Vlan3010
       peer_group: MLAG_PEER
       remote_as: '65107'
-      description: DC1-LEAF4A
+      description: DC1-LEAF4A_Vlan3010
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.15:20
     route_targets:
@@ -181,7 +181,7 @@ router_bgp:
     - name: Vlan3019
       peer_group: MLAG_PEER
       remote_as: '65107'
-      description: DC1-LEAF4A
+      description: DC1-LEAF4A_Vlan3019
   - name: Tenant_C_OP_Zone
     rd: 192.168.255.15:30
     route_targets:
@@ -200,7 +200,7 @@ router_bgp:
     - name: Vlan2
       peer_group: MLAG_PEER
       remote_as: '65107'
-      description: DC1-LEAF4A
+      description: DC1-LEAF4A_Vlan2
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.15:12

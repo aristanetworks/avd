@@ -48,6 +48,7 @@ class UtilsMixin:
                 {
                     "bgp_as": str(_as) if (_as := gw_remote_peer_dict.get("bgp_as")) else None,
                     "ip_address": gw_remote_peer_dict.get("ip_address"),
+                    # Not adding the "overlay_peering_interface" since we do not know it for this device. Only used for description.
                 }
             )
 
@@ -145,6 +146,7 @@ class UtilsMixin:
             ipvpn_gateway_remote_peers[ipvpn_gw_peer_dict["hostname"]] = {
                 "bgp_as": str(bgp_as) if bgp_as is not None else None,
                 "ip_address": ipvpn_gw_peer_dict["ip_address"],
+                # Not adding the "overlay_peering_interface" since we do not know it for this device. Only used for description.
             }
 
         return ipvpn_gateway_remote_peers
@@ -248,6 +250,7 @@ class UtilsMixin:
             peer_name: {
                 "bgp_as": bgp_as,
                 "ip_address": overlay.peering_address,
+                "overlay_peering_interface": "Loopback0"
             }
         }.
         """
@@ -260,6 +263,7 @@ class UtilsMixin:
                 required=True,
                 org_key=f"switch.overlay.peering_address for {peer_name}",
             ),
+            "overlay_peering_interface": "Loopback0",
         }
 
     @cached_property

@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.10.224.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: MLAG_SAME_SUBNET_L3LEAF1A
-    description: MLAG_SAME_SUBNET_L3LEAF1A
+    description: MLAG_SAME_SUBNET_L3LEAF1A_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -69,7 +69,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.224.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: MLAG_SAME_SUBNET_L3LEAF1A
+      description: MLAG_SAME_SUBNET_L3LEAF1A_Vlan3000
     updates:
       wait_install: true
   vlans:

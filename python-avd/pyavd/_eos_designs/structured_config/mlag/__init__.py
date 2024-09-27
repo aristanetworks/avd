@@ -302,17 +302,23 @@ class AvdStructuredConfigMlag(AvdFacts):
         peer_group_name = self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]
         router_bgp = self._router_bgp_mlag_peer_group()
 
+        vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
+        interface_name = f"Vlan{vlan}"
+
         # Underlay MLAG peering
         if self.shared_utils.underlay_rfc5549:
-            vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
-            neighbor_interface_name = f"Vlan{vlan}"
             router_bgp["neighbor_interfaces"] = [
                 {
-                    "name": neighbor_interface_name,
+                    "name": interface_name,
                     "peer_group": peer_group_name,
                     "peer": self.shared_utils.mlag_peer,
                     "remote_as": self.shared_utils.bgp_as,
-                    "description": self.shared_utils.mlag_peer,
+                    "description": AvdStringFormatter().format(
+                        self.shared_utils.mlag_bgp_peer_description,
+                        mlag_peer=self.shared_utils.mlag_peer,
+                        interface=interface_name,
+                        peer_interface=interface_name,
+                    ),
                 },
             ]
 
@@ -323,7 +329,12 @@ class AvdStructuredConfigMlag(AvdFacts):
                     "ip_address": neighbor_ip,
                     "peer_group": peer_group_name,
                     "peer": self.shared_utils.mlag_peer,
-                    "description": self.shared_utils.mlag_peer,
+                    "description": AvdStringFormatter().format(
+                        self.shared_utils.mlag_bgp_peer_description,
+                        mlag_peer=self.shared_utils.mlag_peer,
+                        interface=interface_name,
+                        peer_interface=interface_name,
+                    ),
                 },
             ]
 
@@ -342,7 +353,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "type": "ipv4",
             "remote_as": self.shared_utils.bgp_as,
             "next_hop_self": True,
-            "description": self.shared_utils.mlag_peer,
+            "description": AvdStringFormatter().format(self.shared_utils.mlag_bgp_peer_group_description, mlag_peer=self.shared_utils.mlag_peer),
             "password": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["password"],
             "bfd": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["bfd"],
             "maximum_routes": 12000,
