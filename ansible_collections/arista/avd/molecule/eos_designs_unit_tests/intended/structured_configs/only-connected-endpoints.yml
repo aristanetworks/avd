@@ -1,4 +1,4 @@
-hostname: null
+hostname: only-connected-endpoints
 is_deployed: null
 service_routing_protocols_model: null
 vlan_internal_order: null
