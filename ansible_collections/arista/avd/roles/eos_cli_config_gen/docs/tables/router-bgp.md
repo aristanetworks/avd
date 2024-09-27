@@ -1504,6 +1504,9 @@
 
               # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
               send_limit: <int; 2-64>
+
+            # Transport encapsulation for the neighbor.
+            encapsulation: <str; "vxlan" | "mpls" | "path-selection">
         peer_groups:
 
             # Peer-group name.

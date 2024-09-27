@@ -759,6 +759,7 @@ router bgp {{ router_bgp.as }}
 {%                 else %}
       neighbor {{ neighbor.ip_address }} additional-paths send {{ neighbor.additional_paths.send }}
 {%                 endif %}
+{%             endif %}
 {%             if neighbor.encapsulation is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} encapsulation {{ neighbor.encapsulation }}
 {%             endif %}
