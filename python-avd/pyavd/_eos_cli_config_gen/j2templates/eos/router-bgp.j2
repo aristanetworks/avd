@@ -2577,9 +2577,9 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if neighbor.additional_paths.send is arista.avd.defined %}
 {%                     if neighbor.additional_paths.send == 'disabled' %}
-         no neighbor {{ neighbor.ip_address }} send
+         no neighbor {{ neighbor.ip_address }} additional-paths send
 {%                     elif neighbor.additional_paths.send == 'disabled_any' %}
-         no neighbor {{ neighbor.ip_address }} send any
+         no neighbor {{ neighbor.ip_address }} additional-paths send any
 {%                     elif neighbor.additional_paths.send_ecmp_limit is arista.avd.defined and neighbor.additional_paths.send == 'ecmp' %}
          neighbor {{ neighbor.ip_address }} additional-paths send ecmp limit {{ neighbor.additional_paths.send_ecmp_limit }}
 {%                     elif neighbor.additional_paths.send == 'limit' %}
