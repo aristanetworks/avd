@@ -41,7 +41,7 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-SPINE1
-    description: EVPN-MULTICAST-SPINE1
+    description: EVPN-MULTICAST-SPINE1_Loopback0
     remote_as: '65001'
   address_family_evpn:
     peer_groups:
@@ -700,7 +700,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet4
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.7/31
   pim:
     ipv4:
@@ -711,7 +712,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   pim:
     ipv4:
@@ -722,8 +724,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 - name: Ethernet8
   peer_type: l3_interface
@@ -731,13 +733,15 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: routed
+  switchport:
+    enabled: false
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   pim:
     ipv4:
       sparse_mode: true
 - name: Ethernet7
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 loopback_interfaces:

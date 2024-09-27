@@ -282,9 +282,9 @@ interface Ethernet7
 interface Port-Channel3
    description DC2-POD1-L2LEAF1A_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 4092
    switchport mode trunk
+   switchport
    service-profile QOS-PROFILE
 ```
 
@@ -571,19 +571,19 @@ router bgp 65211
    neighbor 100.100.100.101 description DC1.POD1.LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
-   neighbor 172.16.10.1 description DC1-RS1
+   neighbor 172.16.10.1 description DC1-RS1_Loopback0
    neighbor 172.16.10.2 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.2 remote-as 65102
-   neighbor 172.16.10.2 description DC1-RS2
+   neighbor 172.16.10.2 description DC1-RS2_Loopback0
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110.100
-   neighbor 172.16.110.1 description DC1-POD1-SPINE1
+   neighbor 172.16.110.1 description DC1-POD1-SPINE1_Loopback0
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.3 remote-as 65111.100
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.110.3 description DC1-POD1-LEAF1A_Loopback0
    neighbor 172.16.210.4 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.4 remote-as 65212
-   neighbor 172.16.210.4 description DC2-POD1-LEAF2A
+   neighbor 172.16.210.4 description DC2-POD1-LEAF2A_Loopback0
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210
    neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3

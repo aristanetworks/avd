@@ -161,11 +161,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.10/32
    ipv6 address 2000:1234:ffff:ffff::a/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 210
    node-segment ipv6 index 210
+   isis enable CORE
+   isis passive
 ```
 
 ## Routing
@@ -330,10 +330,10 @@ router isis CORE
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 100.70.0.10
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces

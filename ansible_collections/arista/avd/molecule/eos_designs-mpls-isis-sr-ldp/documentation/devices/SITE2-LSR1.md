@@ -255,11 +255,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.3/32
    ipv6 address 2000:1234:ffff:ffff::3/128
-   isis enable CUSTOM_NAME
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 303
    node-segment ipv6 index 303
+   isis enable CUSTOM_NAME
+   isis passive
 ```
 
 ## Routing
@@ -414,10 +414,10 @@ router isis CUSTOM_NAME
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 100.70.0.3
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces

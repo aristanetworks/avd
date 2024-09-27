@@ -240,8 +240,8 @@ STP Root Super: **True**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 ```
 
@@ -490,9 +490,9 @@ interface Ethernet21
 interface Port-Channel7
    description CUSTOM_DC1_L2LEAF1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:1234:0808:0707:0606
       route-target import 08:08:07:07:06:06
@@ -501,9 +501,9 @@ interface Port-Channel7
 interface Port-Channel9
    description CUSTOM_DC1-L2LEAF3A_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
+   switchport
    evpn ethernet-segment
       identifier 0000:1234:0606:0707:0808
       route-target import 06:06:07:07:08:08
@@ -512,16 +512,17 @@ interface Port-Channel9
 interface Port-Channel10
    description CUSTOM_server01_MLAG_PortChanne1
    no shutdown
-   switchport
    switchport trunk allowed vlan 210-211
    switchport mode trunk
+   switchport
 !
 interface Port-Channel11
    description CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
    no shutdown
    mtu 1600
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
 !
 interface Port-Channel12
    description CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
@@ -532,9 +533,9 @@ interface Port-Channel12
 interface Port-Channel20
    description CUSTOM_FIREWALL01_PortChanne1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   switchport
 ```
 
 ### Loopback Interfaces
@@ -1005,16 +1006,16 @@ router bgp 65102
    neighbor 172.31.255.38 description DC1-SPINE4_Ethernet3
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
@@ -1153,8 +1154,9 @@ router bfd
 ```eos
 !
 queue-monitor length
-queue-monitor length log 5
 queue-monitor length notifying
+!
+queue-monitor length log 5
 ```
 
 ## Multicast

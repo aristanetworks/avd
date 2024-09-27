@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: underlay_filter_peer_as_evpn_1
-    description: underlay_filter_peer_as_evpn_1
+    description: underlay_filter_peer_as_evpn_1_Loopback0
     remote_as: '64512'
   address_family_evpn:
     peer_groups:
@@ -77,7 +77,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 192.168.153.2/31
 loopback_interfaces:
 - name: Loopback0

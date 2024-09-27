@@ -69,22 +69,22 @@ router_bgp:
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-LEAF1A
-    description: DC1-POD1-LEAF1A
+    description: DC1-POD1-LEAF1A_Loopback0
     remote_as: '65111.100'
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-SPINE1
-    description: DC1-POD1-SPINE1
+    description: DC1-POD1-SPINE1_Loopback0
     remote_as: '65110.100'
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS1
-    description: DC1-RS1
+    description: DC1-RS1_Loopback0
     remote_as: '65101'
   - ip_address: 172.16.10.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS2
-    description: DC1-RS2
+    description: DC1-RS2_Loopback0
     remote_as: '65102'
   - ip_address: 11.1.2.0
     remote_as: '65100'
@@ -153,7 +153,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.21.0/31
@@ -164,7 +165,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.21.2/31
@@ -175,7 +177,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-RS1_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.0/31
 - name: Ethernet5
   peer: DC2-RS2
@@ -184,7 +187,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-RS2_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.8/31
 - name: Ethernet6
   peer: DC2-RS1
@@ -193,7 +197,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-RS1_Ethernet2
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.2/31
 - name: Ethernet7
   peer: DC2-RS2
@@ -202,14 +207,16 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-RS2_Ethernet2
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.10/31
 - name: Ethernet4
   peer: DC1-SUPER-SPINE1
   peer_interface: Ethernet6
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet6
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 11.1.2.1/31
   mac_security:

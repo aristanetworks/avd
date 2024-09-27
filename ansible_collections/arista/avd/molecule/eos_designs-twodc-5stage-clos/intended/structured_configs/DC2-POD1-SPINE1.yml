@@ -59,22 +59,22 @@ router_bgp:
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-LEAF1A
-    description: DC1-POD1-LEAF1A
+    description: DC1-POD1-LEAF1A_Loopback0
     remote_as: '65111.100'
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-SPINE1
-    description: DC1-POD1-SPINE1
+    description: DC1-POD1-SPINE1_Loopback0
     remote_as: '65110.100'
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS1
-    description: DC1-RS1
+    description: DC1-RS1_Loopback0
     remote_as: '65101'
   - ip_address: 172.16.10.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS2
-    description: DC1-RS2
+    description: DC1-RS2_Loopback0
     remote_as: '65102'
   - ip_address: 11.1.1.18
     remote_as: '65120'
@@ -143,7 +143,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.21.1/31
@@ -154,7 +155,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.21.65/31
@@ -165,7 +167,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.0/31
@@ -176,7 +179,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.17.210.4/31
@@ -185,7 +189,8 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 11.1.1.19/31
 loopback_interfaces:

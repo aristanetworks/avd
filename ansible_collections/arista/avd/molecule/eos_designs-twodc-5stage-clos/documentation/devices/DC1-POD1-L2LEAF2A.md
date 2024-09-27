@@ -183,7 +183,7 @@ vlan internal order ascending range 1006 1199
 | 2600 | web-l2-vlan-2 | - |
 | 2601 | l2vlan_with_no_vxlan | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -223,7 +223,7 @@ vlan 4085
    name L2LEAF_INBAND_MGMT
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -239,8 +239,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1.POD1.LEAF2A_Ethernet3 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
 | Ethernet2 | DC1-POD1-LEAF2B_Ethernet3 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
-| Ethernet3 | MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
-| Ethernet4 | MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet3 | MLAG_DC1-POD1-L2LEAF2B_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_DC1-POD1-L2LEAF2B_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -259,12 +259,12 @@ interface Ethernet2
    channel-group 1 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet3
+   description MLAG_DC1-POD1-L2LEAF2B_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet4
+   description MLAG_DC1-POD1-L2LEAF2B_Ethernet4
    no shutdown
    channel-group 3 mode active
 ```
@@ -278,7 +278,7 @@ interface Ethernet4
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | RACK2_MLAG_Po3 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2B_Po3 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel3 | MLAG_DC1-POD1-L2LEAF2B_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -287,18 +287,18 @@ interface Ethernet4
 interface Port-Channel1
    description RACK2_MLAG_Po3
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk
+   switchport
    mlag 1
    service-profile QOS-PROFILE
 !
 interface Port-Channel3
-   description MLAG_PEER_DC1-POD1-L2LEAF2B_Po3
+   description MLAG_DC1-POD1-L2LEAF2B_Port-Channel3
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
    service-profile QOS-PROFILE
 ```
 
@@ -309,7 +309,7 @@ interface Port-Channel3
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
-| Vlan4094 | MLAG_PEER | default | - | False |
+| Vlan4094 | MLAG | default | - | False |
 
 ##### IPv4
 
@@ -328,7 +328,7 @@ interface Vlan4085
    ip address 172.21.110.5/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    no autostate
    ip address 172.20.110.2/31

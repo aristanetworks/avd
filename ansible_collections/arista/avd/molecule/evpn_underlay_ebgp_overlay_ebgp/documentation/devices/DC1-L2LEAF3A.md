@@ -334,9 +334,9 @@ interface Ethernet2
 interface Port-Channel1
    description CUSTOM_DC1_LEAF2_Po9
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
+   switchport
 ```
 
 ## Routing
@@ -402,6 +402,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 

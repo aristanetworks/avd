@@ -878,6 +878,32 @@ keys:
 
       '
     type: str
+  default_connected_endpoints_description:
+    type: str
+    documentation_options:
+      table: default-connected-endpoints-description
+    description: "Default description or description template to be used on all ports
+      to connected endpoints.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
+      like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
+      \ - `endpoint_port`: The value from `endpoint_ports` for this switch port if
+      set.\n\nBy default the description is templated from the type, name and port
+      of the endpoint if set."
+    default: '{endpoint_type!u}_{endpoint}{endpoint_port?<_}'
+  default_connected_endpoints_port_channel_description:
+    type: str
+    documentation_options:
+      table: default-connected-endpoints-description
+    description: "Default description or description template to be used on all port-channels
+      to connected endpoints.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
+      like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
+      \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
+      \ - `port_channel_id`: The port-channel number for the switch.\n  - `adapter_description`:
+      The adapter's description if set.\n  - `adapter_description_or_endpoint`: Helper
+      alias of the adapter_description or endpoint.\n\nBy default the description
+      is templated from the type, name and port-channel name of the endpoint if set."
+    default: '{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}'
   default_igmp_snooping_enabled:
     documentation_options:
       table: system-settings
@@ -965,6 +991,30 @@ keys:
     - inband
     - none
     default: oob
+  default_network_ports_description:
+    type: str
+    documentation_options:
+      table: default-network-ports-description
+    description: "Default description or description template to be used on all ports
+      defined under `network_ports`.\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `endpoint_type`: Always set
+      to `network_port`.\n  - `endpoint`: The value of the `endpoint` key if set.\n\nBy
+      default the description is templated from the `endpoint` key if set."
+    default: '{endpoint?}'
+  default_network_ports_port_channel_description:
+    type: str
+    documentation_options:
+      table: default-network-ports-description
+    description: "Default description or description template to be used on all port-channels
+      defined under `network_ports`.\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `endpoint_type`: Always set
+      to `network_port`.\n  - `endpoint`: The value of the `endpoint` key if set.\n
+      \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
+      \ - `port_channel_id`: The port-channel number for the switch.\n  - `adapter_description`:
+      The adapter's description if set.\n  - `adapter_description_or_endpoint`: Helper
+      alias of the adapter_description or endpoint.\n\nBy default the description
+      is templated from the `endpoint` key if set."
+    default: '{endpoint?}{endpoint_port_channel?<_}'
   default_node_types:
     type: list
     primary_key: node_type
@@ -1393,6 +1443,20 @@ keys:
             convert_types:
             - str
             description: IPv4 prefix length used for L3 point-to-point uplinks.
+      wan_ha:
+        type: dict
+        description: Allow to manipulate the IP addressing scheme for WAN HA direct
+          subnets.
+        keys:
+          ipv4_prefix_length:
+            type: int
+            default: 31
+            min: 1
+            max: 31
+            convert_types:
+            - str
+            description: IPv4 prefix length used for point-to-point interface for
+              direct WAN HA link.
   fabric_name:
     documentation_options:
       table: fabric-topology
@@ -2003,6 +2067,27 @@ keys:
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
+  mlag_bgp_peer_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on the MLAG BGP peers
+      including those in VRFs.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG L3 VLAN interface.\n  - `peer_interface`: The
+      MLAG L3 VLAN interface on the MLAG peer.\n  - `vrf`: The name of the VRF. Not
+      available for the underlay peering.\n\nThe default description is built from
+      the name and interface of the MLAG peer and optionally the VRF."
+    default: '{mlag_peer}_{peer_interface}'
+  mlag_bgp_peer_group_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on the MLAG BGP peer-group.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n\nThe default description
+      is the name of the MLAG peers."
+    default: '{mlag_peer}'
   mlag_ibgp_peering_vrfs:
     documentation_options:
       table: network-services-vrfs-settings
@@ -2028,6 +2113,19 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  mlag_member_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peer-link
+      ethernet interfaces.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
+      The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
+      local MLAG port-channel ID.\n  - `mlag_peer_port_channel_id`: The port-channel
+      ID on the MLAG peer.\n\nBy default the description is templated from the name
+      and interface of the MLAG peer."
+    default: MLAG_{mlag_peer}_{peer_interface}
   mlag_on_orphan_port_channel_downlink:
     type: bool
     documentation_options:
@@ -2038,6 +2136,76 @@ keys:
       If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
       dual-homed to two MLAG switches.'
     default: false
+  mlag_peer_l3_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG L3 peering
+      SVI (Interface Vlan4093 by default).\nThis can be a template using the format
+      string syntax.\nThe available template fields are:\n  - `mlag_peer`: The name
+      of the MLAG peer.\n  - `interface`: The MLAG L3 peering SVI name.\n  - `mlag_peer_l3_vlan`:
+      The MLAG L3 peering VLAN ID."
+    default: MLAG_L3
+  mlag_peer_l3_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_l3_vlan`:
+      The MLAG L3 peering VLAN ID."
+    default: MLAG_L3
+  mlag_peer_l3_vrf_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG L3 peering
+      SVI for VRFs.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `interface`:
+      The MLAG L3 VRF peering SVI name.\n  - `vlan`: The MLAG L3 VRF peering VLAN
+      ID.\n  - `vrf`: The VRF name."
+    default: MLAG_L3_VRF_{vrf}
+  mlag_peer_l3_vrf_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG L3 peering VLAN for VRFs.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `vlan`: The MLAG L3 VRF
+      peering VLAN ID.\n  - `vrf`: The VRF name."
+    default: MLAG_L3_VRF_{vrf}
+  mlag_peer_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peering SVI
+      (Interface Vlan4094 by default).\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `mlag_peer`: The name of the
+      MLAG peer.\n  - `interface`: The MLAG peering SVI name.\n  - `mlag_peer_vlan`:
+      The MLAG peering VLAN ID."
+    default: MLAG
+  mlag_peer_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG peering VLAN (VLAN 4094
+      by default).\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_vlan`:
+      The MLAG peering VLAN ID."
+    default: MLAG
+  mlag_port_channel_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peer-link
+      port-channel interfaces.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
+      The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
+      local MLAG port-channel ID.\n  - `mlag_peer_port_channel_id`: The port-channel
+      ID on the MLAG peer.\n\nBy default the description is templated from the name
+      and port-channel interface of the MLAG peer."
+    default: MLAG_{mlag_peer}_{peer_interface}
   name_servers:
     documentation_options:
       table: management-settings
@@ -2071,7 +2239,15 @@ keys:
             type: str
         description:
           type: str
-          description: Description to be used on all ports.
+          description: "Description or description template to be used on all ports.\nThis
+            can be a template using the format string syntax.\nThe available template
+            fields are:\n  - `endpoint_type` - always set to `network_port`.\n  -
+            `endpoint` - content of the `endpoint` key if set.\n\nThe default description
+            is set by `default_network_ports_description`.\nBy default the description
+            is templated from the `endpoint` key if set."
+        endpoint:
+          type: str
+          description: Name or description of the endpoints connected to these ports.
   network_services_keys:
     type: list
     primary_key: name
@@ -2505,6 +2681,16 @@ keys:
 
       '
     default: false
+  overlay_bgp_peer_description:
+    type: str
+    documentation_options:
+      table: overlay-settings
+    description: "Description or description template to be used on the overlay BGP
+      peers.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `peer`: The name of the BGP peer.\n  - `peer_interface`:
+      The interface on the BGP peer if available.\n\nThe default description is built
+      from the name and interface of the BGP peer."
+    default: '{peer}{peer_interface?<_}'
   overlay_cvx_servers:
     documentation_options:
       table: overlay-settings
@@ -3926,7 +4112,7 @@ keys:
         keys:
           name:
             type: str
-            default: LEAF_PEER_L3
+            default: MLAG
       uplink:
         type: dict
         description: 'Trunk Group used on L2 Leaf switches when "enable_trunk_groups"
@@ -4276,6 +4462,15 @@ keys:
 
             WAN interfaces require an inbound access-list to be set unless the carrier
             is "trusted".'
+  wan_encapsulation:
+    documentation_options:
+      table: wan-settings
+    description: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
+    type: str
+    default: path-selection
+    valid_values:
+    - path-selection
+    - vxlan
   wan_ha:
     documentation_options:
       table: wan-settings
@@ -4788,11 +4983,14 @@ $defs:
           '
       description:
         type: str
-        description: 'By default the description is built leveraging `<peer>_<peer_interface>`.
-
-          When set this key will override the default value on the physical ports.
-
-          '
+        description: "Description or description template to be used on all ports.\nThis
+          can be a template using the format string syntax.\nThe available template
+          fields are:\n  - `endpoint_type` - the `type` from `connected_endpoints_keys`
+          like `server`, `router` etc.\n  - `endpoint` - The name of the connected
+          endpoint\n  - `endpoint_port` - The value from `endpoint_ports` for this
+          switch port if set.\n\nThe default description is set by `default_connected_endpoints_description`.\nBy
+          default the description is templated from the type, name and port of the
+          endpoint if set."
       profile:
         type: str
         description: Port-profile name to inherit configuration.
@@ -5269,13 +5467,23 @@ $defs:
               '
           description:
             type: str
-            description: 'By default the description is built leveraging `<peer>`
-              name or `adapter.description` when defined.
+            description: "Description or description template to be used on the port-channel
+              interface.\nThis can be a template using the format string syntax.\nThe
+              available template fields are:\n  - `endpoint_type` - the `type` from
+              `connected_endpoints_keys` like `server`, `router` etc.\n  - `endpoint`
+              - The name of the connected endpoint\n  - `endpoint_port_channel` -
+              The value from `endpoint_port_channel` if set.\n  - `port_channel_id`
+              - The port-channel number for the switch.\n  - `adapter_description`
+              - The adapter's description if set.\n  - `adapter_description_or_endpoint`
+              - Helper alias of the adapter_description or endpoint.\n\nThe default
+              description is set by `default_connected_endpoints_port_channel_description`.\nBy
+              default the description is templated from the type, name and port_channel
+              interface of the endpoint if set."
+          endpoint_port_channel:
+            type: str
+            description: 'Name of the port-channel interface on the endpoint.
 
-              When this key is defined, it will append its content to the physical
-              port description.
-
-              '
+              Used for the port-channel description template with the field name `peer_interface`'
           enabled:
             type: bool
             default: true
@@ -5490,13 +5698,15 @@ $defs:
                   '
                 items:
                   type: str
-                  description: Interface name.
+                  description: Port name on the endpoint.
               descriptions:
                 type: list
-                description: 'Unique description per port. When set, takes priority
-                  over description.
-
-                  '
+                description: "Unique description per port. When set, takes priority
+                  over description.\nThis can be a template using the format string
+                  syntax.\nThe available template fields are:\n  - `endpoint_type`
+                  - the `type` from `connected_endpoints_keys` like `server`, `router`
+                  etc.\n  - `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
+                  - The value from `endpoint_ports` for this switch port if set."
   flow_tracking_link:
     type: dict
     keys:

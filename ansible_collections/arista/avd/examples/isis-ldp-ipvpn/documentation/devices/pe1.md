@@ -286,9 +286,9 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 10.255.1.1/32
+   mpls ldp interface
    isis enable CORE
    isis passive
-   mpls ldp interface
 ```
 
 ## Routing
@@ -506,9 +506,9 @@ router bgp 65001
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 10.255.2.1 peer group MPLS-OVERLAY-PEERS
-   neighbor 10.255.2.1 description rr1
+   neighbor 10.255.2.1 description rr1_Loopback0
    neighbor 10.255.2.2 peer group MPLS-OVERLAY-PEERS
-   neighbor 10.255.2.2 description rr2
+   neighbor 10.255.2.2 description rr2_Loopback0
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
@@ -579,10 +579,10 @@ router bfd
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 10.255.1.1
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces
