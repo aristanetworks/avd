@@ -176,7 +176,7 @@ class RouterBgpMixin(UtilsMixin):
                     if (bgp_vrf_redistribute_static := vrf.get("redistribute_static")) is True or (
                         vrf["static_routes"] and bgp_vrf_redistribute_static is not False
                     ):
-                        bgp_vrf.setdefault("redistribute_routes", []).append({"source_protocol": "static"})
+                        bgp_vrf["redistribute_routes"].append({"source_protocol": "static"})
 
                 elif bgp_vrf:
                     # VRF default with RD/RT and eos_cli/struct_cfg which should go under the vrf default context.
@@ -190,6 +190,12 @@ class RouterBgpMixin(UtilsMixin):
                     )
                     # Resetting bgp_vrf so we only add global keys if there are any neighbors for VRF default
                     bgp_vrf = {}
+
+                if vrf_name == "default" and self.shared_utils.underlay_routing_protocol == "none":
+                    # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
+                    bgp_vrf |= {
+                        "redistribute_routes": [{"source_protocol": "connected"}],
+                    }
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
