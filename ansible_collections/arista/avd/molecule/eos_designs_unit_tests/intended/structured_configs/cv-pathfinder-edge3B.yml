@@ -77,7 +77,7 @@ router_bgp:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.6
     peer: cv-pathfinder-edge3A
     description: cv-pathfinder-edge3A
@@ -166,7 +166,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-edge3A
   shutdown: false
   description: DIRECT LAN HA LINK
-  ip_address: 10.10.10.1/31
+  ip_address: 10.10.10.2/24
   flow_tracker: null
   mtu: 9100
 loopback_interfaces:
@@ -421,7 +421,7 @@ router_path_selection:
     - router_ip: 192.168.142.6
       name: cv-pathfinder-edge3A
       ipv4_addresses:
-      - 10.10.10.0
+      - 10.10.10.1
     ipsec_profile: DP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE

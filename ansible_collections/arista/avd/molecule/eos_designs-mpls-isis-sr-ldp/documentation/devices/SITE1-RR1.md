@@ -463,13 +463,13 @@ router bgp 65000
    neighbor RR-OVERLAY-PEERS send-community
    neighbor RR-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.5 description SITE1-LER1
+   neighbor 100.70.0.5 description SITE1-LER1_Loopback0
    neighbor 100.70.0.6 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.6 description SITE1-LER2
+   neighbor 100.70.0.6 description SITE1-LER2_Loopback0
    neighbor 100.70.0.7 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.7 description SITE2-LER1
+   neighbor 100.70.0.7 description SITE2-LER1_Loopback0
    neighbor 100.70.0.9 peer group RR-OVERLAY-PEERS
-   neighbor 100.70.0.9 description SITE2-RR1
+   neighbor 100.70.0.9 description SITE2-RR1_Loopback0
    !
    address-family evpn
       neighbor default encapsulation mpls
