@@ -19811,6 +19811,7 @@ $defs:
     keys:
       receive:
         type: bool
+        description: Enable or disable reception of additional-paths.
       send:
         type: str
         description: 'Select an option to send multiple paths for same prefix through
@@ -19822,15 +19823,13 @@ $defs:
 
           ecmp: All paths in best path ECMP group.
 
-        valid_values:
-        - any
-        - backup
-        - ecmp
-        - limit
-        - disabled
+          limit: Limit to n eligible paths.
+
+          disabled: Disable sending any path.'
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
+          this setting. If this key-value pair is not set, it will send all paths
           in best ECMP group.
         convert_types:
         - str
