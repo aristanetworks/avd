@@ -918,10 +918,10 @@ router bfd
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 100.70.0.7
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces
