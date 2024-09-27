@@ -100,9 +100,9 @@ router bgp 65001
    !
    vrf VRF01
       bgp additional-paths install
+      bgp additional-paths receive
       bgp additional-paths send any
       no bgp redistribute-internal
-      bgp additional-paths receive
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit

@@ -1915,6 +1915,9 @@ router bgp {{ router_bgp.as }}
 {%         elif vrf.bgp.additional_paths.install_ecmp_primary is arista.avd.defined(true) %}
       bgp additional-paths install ecmp-primary
 {%         endif %}
+{%         if vrf.bgp.additional_paths.receive is arista.avd.defined(true) %}
+      bgp additional-paths receive
+{%         endif %}
 {%         if vrf.bgp.additional_paths.send is arista.avd.defined %}
 {%             if vrf.bgp.additional_paths.send == 'disabled' %}
       no bgp additional-paths send
@@ -1932,9 +1935,6 @@ router bgp {{ router_bgp.as }}
       bgp redistribute-internal
 {%         elif vrf.bgp.redistribute_internal is arista.avd.defined(false) %}
       no bgp redistribute-internal
-{%         endif %}
-{%         if vrf.bgp.additional_paths.receive is arista.avd.defined(true) %}
-      bgp additional-paths receive
 {%         endif %}
 {%         for aggregate_address in vrf.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
