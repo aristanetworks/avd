@@ -634,11 +634,11 @@ router bgp 65121
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.120.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.1 remote-as 65120
-   neighbor 172.16.120.1 description DC1-POD2-SPINE1
+   neighbor 172.16.120.1 description DC1-POD2-SPINE1_Loopback0
    neighbor 172.16.120.1 route-map RM-EVPN-FILTER-AS65120 out
    neighbor 172.16.120.2 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.2 remote-as 65120
-   neighbor 172.16.120.2 description DC1-POD2-SPINE2
+   neighbor 172.16.120.2 description DC1-POD2-SPINE2_Loopback0
    neighbor 172.16.120.2 route-map RM-EVPN-FILTER-AS65120 out
    neighbor 172.17.10.13 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.13 remote-as 65102

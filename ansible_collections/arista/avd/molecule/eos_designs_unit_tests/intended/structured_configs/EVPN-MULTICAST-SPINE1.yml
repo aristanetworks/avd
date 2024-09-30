@@ -67,32 +67,32 @@ router_bgp:
   - ip_address: 192.168.255.8
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-DISABLED
-    description: EVPN-MULTICAST-DISABLED
+    description: EVPN-MULTICAST-DISABLED_Loopback0
     remote_as: '65106'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-L3LEAF1A
-    description: EVPN-MULTICAST-L3LEAF1A
+    description: EVPN-MULTICAST-L3LEAF1A_Loopback0
     remote_as: '65101'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-L3LEAF1B
-    description: EVPN-MULTICAST-L3LEAF1B
+    description: EVPN-MULTICAST-L3LEAF1B_Loopback0
     remote_as: '65101'
   - ip_address: 192.168.255.5
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-L3LEAF2A
-    description: EVPN-MULTICAST-L3LEAF2A
+    description: EVPN-MULTICAST-L3LEAF2A_Loopback0
     remote_as: '65103'
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-L3LEAF3A
-    description: EVPN-MULTICAST-L3LEAF3A
+    description: EVPN-MULTICAST-L3LEAF3A_Loopback0
     remote_as: '65104'
   - ip_address: 192.168.255.7
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-L3LEAF3B
-    description: EVPN-MULTICAST-L3LEAF3B
+    description: EVPN-MULTICAST-L3LEAF3B_Loopback0
     remote_as: '65105'
   address_family_evpn:
     peer_groups:

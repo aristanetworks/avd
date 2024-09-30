@@ -57,7 +57,7 @@ router_bgp:
     peer_group: MLAG_PEER
     peer: DC1-LEAF2B
     remote_as: '65102'
-    description: DC1-LEAF2B
+    description: DC1-LEAF2B_Vlan4093
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
@@ -93,22 +93,22 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE1
-    description: DC1-SPINE1
+    description: DC1-SPINE1_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE2
-    description: DC1-SPINE2
+    description: DC1-SPINE2_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE3
-    description: DC1-SPINE3
+    description: DC1-SPINE3_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE4
-    description: DC1-SPINE4
+    description: DC1-SPINE4_Loopback0
     remote_as: '65001'
   vrfs:
   - name: Tenant_A_APP_Zone
@@ -128,7 +128,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3011
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -154,7 +154,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3012
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -180,7 +180,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3009
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -206,7 +206,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3010
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -232,7 +232,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan3019
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3
@@ -258,7 +258,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      description: DC1-LEAF2B
+      description: DC1-LEAF2B_Vlan2
     address_family_ipv4:
       neighbors:
       - ip_address: 10.255.251.3

@@ -480,7 +480,7 @@ router bgp 65001
    neighbor 192.168.253.5 remote-as 65000
    neighbor 192.168.253.5 description DUMMY-CORE
    neighbor 192.168.254.1 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 192.168.254.1 description BGP-SPINE2
+   neighbor 192.168.254.1 description BGP-SPINE2_Vlan4094
    redistribute attached-host
    redistribute connected
    !
