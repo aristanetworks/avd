@@ -54,7 +54,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: SFLOW-TESTS-LEAF-MLAG_Po17
+  description: sflow-tests-leaf-mlag_Po17
   switchport:
     enabled: true
     mode: trunk

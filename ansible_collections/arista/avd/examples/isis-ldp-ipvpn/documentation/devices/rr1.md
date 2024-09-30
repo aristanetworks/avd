@@ -175,9 +175,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_p3_Ethernet2 | - | 10.255.3.12/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_p1_Ethernet3 | - | 10.255.3.10/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_rr2_Ethernet4 | - | 10.255.3.14/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_p3_Ethernet2 | - | 10.255.3.12/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_p1_Ethernet3 | - | 10.255.3.10/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_rr2_Ethernet4 | - | 10.255.3.14/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -192,7 +192,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 interface Ethernet2
-   description P2P_LINK_TO_p3_Ethernet2
+   description P2P_p3_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -209,7 +209,7 @@ interface Ethernet2
    isis authentication key 7 <removed>
 !
 interface Ethernet3
-   description P2P_LINK_TO_p1_Ethernet3
+   description P2P_p1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
@@ -226,7 +226,7 @@ interface Ethernet3
    isis authentication key 7 <removed>
 !
 interface Ethernet4
-   description P2P_LINK_TO_rr2_Ethernet4
+   description P2P_rr2_Ethernet4
    no shutdown
    mtu 1500
    no switchport

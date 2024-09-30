@@ -1330,7 +1330,7 @@ ethernet_interfaces:
   peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet1
+  description: P2P_EVPN-MULTICAST-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:

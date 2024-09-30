@@ -300,7 +300,6 @@ ethernet_interfaces:
   peer: WAN
   peer_interface: Ethernet1/1
   peer_type: other
-  description: P2P_LINK_TO_WAN_Ethernet1/1
   switchport:
     enabled: false
   shutdown: false
@@ -308,6 +307,7 @@ ethernet_interfaces:
   ip_address: 10.0.0.5/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  description: P2P_WAN_Ethernet1/1
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094
