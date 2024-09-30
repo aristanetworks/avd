@@ -591,7 +591,11 @@ metadata:
         - name: Site404
           id: 404
           location:
-            address: Not Found
+            address: Atlantis
+        - name: Site405
+          id: 405
+          location:
+            address: El Dorado
         - name: Site422
           id: 422
           location:
