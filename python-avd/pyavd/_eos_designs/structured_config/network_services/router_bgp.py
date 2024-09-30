@@ -193,9 +193,7 @@ class RouterBgpMixin(UtilsMixin):
 
                 if vrf_name == "default" and self.shared_utils.underlay_routing_protocol == "none":
                     # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
-                    bgp_vrf |= {
-                        "redistribute_routes": [{"source_protocol": "connected"}],
-                    }
+                    bgp_vrf["redistribute_routes"] = [{"source_protocol": "connected"}]
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
