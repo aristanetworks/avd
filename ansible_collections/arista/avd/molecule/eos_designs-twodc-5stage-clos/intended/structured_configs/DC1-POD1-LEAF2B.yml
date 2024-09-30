@@ -57,7 +57,7 @@ router_bgp:
   - ip_address: 172.20.110.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: DC1.POD1.LEAF2A
-    description: DC1.POD1.LEAF2A
+    description: DC1.POD1.LEAF2A_Vlan4094
   - ip_address: 172.17.110.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
@@ -81,19 +81,19 @@ router_bgp:
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-LEAF1A
-    description: DC1-POD1-LEAF1A
+    description: DC1-POD1-LEAF1A_Loopback0
     remote_as: '65111.100'
     route_map_out: RM-EVPN-FILTER-AS65111.100
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-SPINE1
-    description: DC1-POD1-SPINE1
+    description: DC1-POD1-SPINE1_Loopback0
     remote_as: '65110.100'
     route_map_out: RM-EVPN-FILTER-AS65110.100
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS1
-    description: DC1-RS1
+    description: DC1-RS1_Loopback0
     remote_as: '65101'
     route_map_out: RM-EVPN-FILTER-AS65101
   - ip_address: 1.1.1.1
@@ -117,10 +117,10 @@ router_bgp:
         enable: true
         inter_domain: false
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-CORE
       domain_remote: true
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
     route:
       import_match_failure_action: discard
@@ -361,7 +361,7 @@ snmp_server:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -399,7 +399,7 @@ vlans:
   name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   ip_address: 172.20.110.3/31
@@ -480,7 +480,7 @@ vlan_interfaces:
   - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
+  description: MLAG_DC1.POD1.LEAF2A_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
@@ -554,7 +554,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
+  description: MLAG_DC1.POD1.LEAF2A_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -563,7 +563,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
+  description: MLAG_DC1.POD1.LEAF2A_Ethernet6
   shutdown: false
   channel_group:
     id: 5

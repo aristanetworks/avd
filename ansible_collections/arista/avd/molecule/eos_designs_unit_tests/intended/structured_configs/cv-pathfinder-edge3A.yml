@@ -43,6 +43,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
     neighbor_default:
@@ -51,6 +52,7 @@ router_bgp:
     neighbors:
     - ip_address: 192.168.142.7
       activate: true
+      encapsulation: path-selection
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -75,7 +77,7 @@ router_bgp:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.7
     peer: cv-pathfinder-edge3B
     description: cv-pathfinder-edge3B
@@ -165,7 +167,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-edge3B
   shutdown: false
   description: DIRECT LAN HA LINK
-  ip_address: 10.10.10.0/31
+  ip_address: 10.10.10.1/24
   flow_tracker: null
   mtu: 9100
 loopback_interfaces:
@@ -419,7 +421,7 @@ router_path_selection:
     - router_ip: 192.168.142.7
       name: cv-pathfinder-edge3B
       ipv4_addresses:
-      - 10.10.10.1
+      - 10.10.10.2
     ipsec_profile: DP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE

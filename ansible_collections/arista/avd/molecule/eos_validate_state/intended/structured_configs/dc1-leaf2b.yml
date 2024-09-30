@@ -53,7 +53,7 @@ router_bgp:
   - ip_address: 10.255.1.100
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: dc1-leaf2a
-    description: dc1-leaf2a
+    description: dc1-leaf2a_Vlan4093
   - ip_address: 10.255.255.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
@@ -67,17 +67,17 @@ router_bgp:
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc1-spine1
-    description: dc1-spine1
+    description: dc1-spine1_Loopback0
     remote_as: '65100'
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: dc1-spine2
-    description: dc1-spine2
+    description: dc1-spine2_Loopback0
     remote_as: '65100'
   - ip_address: 10.255.128.16
     peer_group: EVPN-OVERLAY-CORE
     peer: dc2-leaf2b
-    description: dc2-leaf2b
+    description: dc2-leaf2b_Loopback0
     remote_as: '65202'
   - ip_address: 192.168.100.3
     remote_as: '65202'
@@ -94,10 +94,10 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-CORE
       domain_remote: true
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
   vrfs:
   - name: VRF10
@@ -117,7 +117,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.100
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: dc1-leaf2a
+      description: dc1-leaf2a_Vlan3009
   - name: VRF11
     rd: 10.255.0.6:11
     route_targets:
@@ -135,7 +135,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.100
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: dc1-leaf2a
+      description: dc1-leaf2a_Vlan3010
   vlans:
   - id: 11
     tenant: TENANT1
@@ -278,12 +278,12 @@ management_api_http:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 11
@@ -293,7 +293,7 @@ vlans:
   name: VRF10_VLAN12
   tenant: TENANT1
 - id: 3009
-  name: MLAG_iBGP_VRF10
+  name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
   tenant: TENANT1
@@ -304,7 +304,7 @@ vlans:
   name: VRF11_VLAN22
   tenant: TENANT1
 - id: 3010
-  name: MLAG_iBGP_VRF11
+  name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
   tenant: TENANT1
@@ -319,12 +319,12 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 1500
   ip_address: 10.255.1.101/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -345,7 +345,7 @@ vlan_interfaces:
   tenant: TENANT1
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
+  description: MLAG_L3_VRF_VRF10
   vrf: VRF10
   mtu: 1500
   ip_address: 10.255.1.101/31
@@ -365,7 +365,7 @@ vlan_interfaces:
   tenant: TENANT1
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
+  description: MLAG_L3_VRF_VRF11
   vrf: VRF11
   mtu: 1500
   ip_address: 10.255.1.101/31
@@ -381,7 +381,7 @@ vlan_interfaces:
   - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_PEER_dc1-leaf2a_Po3
+  description: MLAG_dc1-leaf2a_Port-Channel3
   switchport:
     enabled: true
     mode: trunk
@@ -414,7 +414,7 @@ ethernet_interfaces:
   peer: dc1-leaf2a
   peer_interface: Ethernet3
   peer_type: mlag_peer
-  description: MLAG_PEER_dc1-leaf2a_Ethernet3
+  description: MLAG_dc1-leaf2a_Ethernet3
   shutdown: false
   channel_group:
     id: 3
@@ -423,7 +423,7 @@ ethernet_interfaces:
   peer: dc1-leaf2a
   peer_interface: Ethernet4
   peer_type: mlag_peer
-  description: MLAG_PEER_dc1-leaf2a_Ethernet4
+  description: MLAG_dc1-leaf2a_Ethernet4
   shutdown: false
   channel_group:
     id: 3

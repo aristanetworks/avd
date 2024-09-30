@@ -61,12 +61,12 @@ ntp:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -101,14 +101,14 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 1500
   ip_address: 10.1.1.1/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -206,7 +206,7 @@ vlan_interfaces:
   - 10.10.10.1
 port_channel_interfaces:
 - name: Port-Channel551
-  description: MLAG_PEER_SPINE1_Po551
+  description: MLAG_SPINE1_Port-Channel551
   switchport:
     enabled: true
     mode: trunk
@@ -246,7 +246,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet55/1
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE1_Ethernet55/1
+  description: MLAG_SPINE1_Ethernet55/1
   shutdown: false
   channel_group:
     id: 551
@@ -255,7 +255,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet56/1
   peer_type: mlag_peer
-  description: MLAG_PEER_SPINE1_Ethernet56/1
+  description: MLAG_SPINE1_Ethernet56/1
   shutdown: false
   channel_group:
     id: 551
