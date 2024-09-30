@@ -1392,7 +1392,7 @@ router bgp 65103
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.255.252.6 peer group MLAG-PEERS
-   neighbor 10.255.252.6 description DC1-SVC3A
+   neighbor 10.255.252.6 description DC1-SVC3A_Vlan4092
    neighbor 172.31.255.64 peer group UNDERLAY-PEERS
    neighbor 172.31.255.64 remote-as 65001
    neighbor 172.31.255.64 description DC1-SPINE1_Ethernet5
@@ -1407,16 +1407,16 @@ router bgp 65103
    neighbor 172.31.255.70 description DC1-SPINE4_Ethernet5
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
@@ -1501,7 +1501,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3011
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1511,7 +1511,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3012
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1521,7 +1521,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3009
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1533,7 +1533,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3013
       redistribute connected
       redistribute static
    !
@@ -1544,7 +1544,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3010
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1554,7 +1554,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3019
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1564,7 +1564,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3020
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1574,7 +1574,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan2
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1584,7 +1584,7 @@ router bgp 65103
       router-id 192.168.255.13
       update wait-install
       neighbor 10.255.252.6 peer group MLAG-PEERS
-      neighbor 10.255.252.6 description DC1-SVC3A
+      neighbor 10.255.252.6 description DC1-SVC3A_Vlan3030
       redistribute connected
 ```
 
@@ -1619,6 +1619,7 @@ router bfd
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 

@@ -18,6 +18,11 @@ mlag_peer_vlan_name: "MLAG_PEER"
 mlag_peer_l3_vlan_name: "LEAF_PEER_L3"
 mlag_peer_l3_vrf_svi_description: "MLAG_PEER_L3_iBGP: vrf {vrf}"
 mlag_peer_l3_vrf_vlan_name: "MLAG_iBGP_{vrf}"
+mlag_bgp_peer_description: "{mlag_peer}"
+overlay_bgp_peer_description: "{peer}"
+
+# Test for custom description templates
+mlag_bgp_peer_group_description: "MLAG_PEER_{mlag_peer}"
 
 # local users
 local_users:

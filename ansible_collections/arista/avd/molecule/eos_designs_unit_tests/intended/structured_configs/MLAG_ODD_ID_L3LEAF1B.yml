@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.10.224.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: MLAG_ODD_ID_L3LEAF1A
-    description: MLAG_ODD_ID_L3LEAF1A
+    description: MLAG_ODD_ID_L3LEAF1A_Vlan4093
   - ip_address: 10.254.255.254
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65123'

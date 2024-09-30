@@ -474,7 +474,7 @@ router bgp 65212
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.3 remote-as 65211
-   neighbor 172.16.210.3 description DC2-POD1-LEAF1A
+   neighbor 172.16.210.3 description DC2-POD1-LEAF1A_Loopback0
    neighbor 172.17.210.4 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.4 remote-as 65210
    neighbor 172.17.210.4 description DC2-POD1-SPINE1_Ethernet4

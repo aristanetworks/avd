@@ -104,11 +104,11 @@ router_bgp:
   - ip_address: 192.168.144.2
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder1
-    description: cv-pathfinder-pathfinder1
+    description: cv-pathfinder-pathfinder1_Dps1
   - ip_address: 6.6.6.6
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder3
-    description: cv-pathfinder-pathfinder3
+    description: cv-pathfinder-pathfinder3_Dps1
   vrfs:
   - name: default
     rd: 192.168.44.3:1

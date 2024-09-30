@@ -104,7 +104,7 @@ router_bgp:
   - ip_address: 192.168.144.1
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   vrfs:
   - name: default
     rd: 192.168.44.1:1
