@@ -248,7 +248,7 @@ vlan internal order ascending range 1006 1199
 | 310 | IDF3-Data | - |
 | 320 | IDF3-Voice | - |
 | 330 | IDF3-Guest | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -267,7 +267,7 @@ vlan 330
    name IDF3-Guest
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -382,8 +382,8 @@ vlan 4094
 | Ethernet97/3 | LEAF3C_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 973 |
 | Ethernet97/4 | LEAF3D_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 974 |
 | Ethernet98/1 | LEAF3E_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 981 |
-| Ethernet98/3 | MLAG_PEER_LEAF3A_Ethernet98/3 | *trunk | *- | *- | *MLAG | 983 |
-| Ethernet98/4 | MLAG_PEER_LEAF3A_Ethernet98/4 | *trunk | *- | *- | *MLAG | 983 |
+| Ethernet98/3 | MLAG_LEAF3A_Ethernet98/3 | *trunk | *- | *- | *MLAG | 983 |
+| Ethernet98/4 | MLAG_LEAF3A_Ethernet98/4 | *trunk | *- | *- | *MLAG | 983 |
 
 *Inherited from Port-Channel Interface
 
@@ -2438,12 +2438,12 @@ interface Ethernet98/1
    channel-group 981 mode active
 !
 interface Ethernet98/3
-   description MLAG_PEER_LEAF3A_Ethernet98/3
+   description MLAG_LEAF3A_Ethernet98/3
    no shutdown
    channel-group 983 mode active
 !
 interface Ethernet98/4
-   description MLAG_PEER_LEAF3A_Ethernet98/4
+   description MLAG_LEAF3A_Ethernet98/4
    no shutdown
    channel-group 983 mode active
 ```
@@ -2460,7 +2460,7 @@ interface Ethernet98/4
 | Port-Channel973 | LEAF3C_Po971 | trunk | 10,310,320,330 | - | - | - | - | 973 | - |
 | Port-Channel974 | LEAF3D_Po971 | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
 | Port-Channel981 | LEAF3E_Po971 | trunk | 10,310,320,330 | - | - | - | - | 981 | - |
-| Port-Channel983 | MLAG_PEER_LEAF3A_Po983 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel983 | MLAG_LEAF3A_Port-Channel983 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -2499,7 +2499,7 @@ interface Port-Channel981
    mlag 981
 !
 interface Port-Channel983
-   description MLAG_PEER_LEAF3A_Po983
+   description MLAG_LEAF3A_Port-Channel983
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
@@ -2513,7 +2513,7 @@ interface Port-Channel983
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -2533,7 +2533,7 @@ interface Vlan10
    ip address 10.10.10.10/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

@@ -248,7 +248,7 @@ vlan internal order ascending range 1006 1199
 | 110 | IDF1-Data | - |
 | 120 | IDF1-Voice | - |
 | 130 | IDF1-Guest | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -267,7 +267,7 @@ vlan 130
    name IDF1-Guest
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -330,8 +330,8 @@ vlan 4094
 | Ethernet47 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet48 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet51 | SPINE2_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
-| Ethernet53 | MLAG_PEER_LEAF1A_Ethernet53 | *trunk | *- | *- | *MLAG | 53 |
-| Ethernet54 | MLAG_PEER_LEAF1A_Ethernet54 | *trunk | *- | *- | *MLAG | 53 |
+| Ethernet53 | MLAG_LEAF1A_Ethernet53 | *trunk | *- | *- | *MLAG | 53 |
+| Ethernet54 | MLAG_LEAF1A_Ethernet54 | *trunk | *- | *- | *MLAG | 53 |
 
 *Inherited from Port-Channel Interface
 
@@ -1358,12 +1358,12 @@ interface Ethernet51
    channel-group 51 mode active
 !
 interface Ethernet53
-   description MLAG_PEER_LEAF1A_Ethernet53
+   description MLAG_LEAF1A_Ethernet53
    no shutdown
    channel-group 53 mode active
 !
 interface Ethernet54
-   description MLAG_PEER_LEAF1A_Ethernet54
+   description MLAG_LEAF1A_Ethernet54
    no shutdown
    channel-group 53 mode active
 ```
@@ -1377,7 +1377,7 @@ interface Ethernet54
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel51 | SPINES_Po1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
-| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel53 | MLAG_LEAF1A_Port-Channel53 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -1392,7 +1392,7 @@ interface Port-Channel51
    mlag 51
 !
 interface Port-Channel53
-   description MLAG_PEER_LEAF1A_Po53
+   description MLAG_LEAF1A_Port-Channel53
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
@@ -1406,7 +1406,7 @@ interface Port-Channel53
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -1426,7 +1426,7 @@ interface Vlan10
    ip address 10.10.10.7/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

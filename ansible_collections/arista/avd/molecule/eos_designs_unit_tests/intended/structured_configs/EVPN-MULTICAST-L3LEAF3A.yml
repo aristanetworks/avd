@@ -41,7 +41,7 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-SPINE1
-    description: EVPN-MULTICAST-SPINE1
+    description: EVPN-MULTICAST-SPINE1_Loopback0
     remote_as: '65001'
   address_family_evpn:
     peer_groups:
@@ -724,8 +724,8 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 10
+  encapsulation_dot1q:
+    vlan: 10
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
 - name: Ethernet8
   peer_type: l3_interface

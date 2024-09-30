@@ -434,10 +434,10 @@ router bgp 65001
    neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor 2001:1::c peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::c remote-as 65106
-   neighbor 2001:1::c description DC1-LEAF3A
+   neighbor 2001:1::c description DC1-LEAF3A_Loopback0
    neighbor 2001:1::d peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::d remote-as 65106
-   neighbor 2001:1::d description DC1-LEAF3B
+   neighbor 2001:1::d description DC1-LEAF3B_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

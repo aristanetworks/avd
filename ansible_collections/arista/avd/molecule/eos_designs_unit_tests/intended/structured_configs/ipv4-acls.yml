@@ -105,9 +105,9 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.21.21.0/31
   shutdown: false
-  type: l3dot1q
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
-  encapsulation_dot1q_vlan: 6
+  encapsulation_dot1q:
+    vlan: 6
 - name: Ethernet6/6
   switchport:
     enabled: false
