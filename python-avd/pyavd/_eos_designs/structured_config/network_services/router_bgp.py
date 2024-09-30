@@ -178,22 +178,24 @@ class RouterBgpMixin(UtilsMixin):
                     ):
                         bgp_vrf["redistribute_routes"].append({"source_protocol": "static"})
 
-                elif bgp_vrf:
-                    # VRF default with RD/RT and eos_cli/struct_cfg which should go under the vrf default context.
-                    # Any peers added later will be put directly under router_bgp
-                    append_if_not_duplicate(
-                        list_of_dicts=router_bgp["vrfs"],
-                        primary_key="name",
-                        new_dict={"name": vrf_name, **bgp_vrf},
-                        context="BGP VRFs defined under network services",
-                        context_keys=["name"],
-                    )
-                    # Resetting bgp_vrf so we only add global keys if there are any neighbors for VRF default
-                    bgp_vrf = {}
+                else:
+                    # VRF default
+                    if bgp_vrf:
+                        # RD/RT and/or eos_cli/struct_cfg which should go under the vrf default context.
+                        # Any peers added later will be put directly under router_bgp
+                        append_if_not_duplicate(
+                            list_of_dicts=router_bgp["vrfs"],
+                            primary_key="name",
+                            new_dict={"name": vrf_name, **bgp_vrf},
+                            context="BGP VRFs defined under network services",
+                            context_keys=["name"],
+                        )
+                        # Resetting bgp_vrf so we only add global keys if there are any neighbors for VRF default
+                        bgp_vrf = {}
 
-                if vrf_name == "default" and self.shared_utils.underlay_routing_protocol == "none":
-                    # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
-                    bgp_vrf["redistribute_routes"] = [{"source_protocol": "connected"}]
+                    if self.shared_utils.underlay_routing_protocol == "none":
+                        # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
+                        bgp_vrf["redistribute_routes"] = [{"source_protocol": "connected"}]
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
