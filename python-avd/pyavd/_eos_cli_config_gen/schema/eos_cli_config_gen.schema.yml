@@ -19791,9 +19791,9 @@ $defs:
 
           limit: Limit to n eligible paths.
 
-          disabled: Disable sending the paths
+          disabled: Disable sending the paths.
 
-          disabled_any: Disable sending any path'
+          disabled_any: Disable sending any path.'
         valid_values:
         - any
         - backup

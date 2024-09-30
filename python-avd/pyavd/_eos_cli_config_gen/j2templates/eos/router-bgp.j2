@@ -1476,7 +1476,6 @@ router bgp {{ router_bgp.as }}
 {%                 if router_bgp.address_family_ipv6.bgp.additional_paths.send_limit is arista.avd.defined %}
       bgp additional-paths send limit {{ router_bgp.address_family_ipv6.bgp.additional_paths.send_limit }}
 {%                 endif %}
-      bgp additional-paths send limit {{ router_bgp.address_family_ipv6.bgp.additional_paths.send_limit }}
 {%             else %}
       bgp additional-paths send {{ router_bgp.address_family_ipv6.bgp.additional_paths.send }}
 {%             endif %}
