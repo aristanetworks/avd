@@ -13803,7 +13803,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    description: Generate redistribute ospf with or without mathc
+                    description: Generate redistribute ospf with or without match
                       internal, include leaked and route map.
                   match_external:
                     description: OSPF routes learned from external sources.
@@ -13847,7 +13847,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    description: Generate redistribute ospf with or without mathc
+                    description: Generate redistribute ospf with or without match
                       internal, include leaked and route map.
                   match_external:
                     description: OSPF routes learned from external sources.
@@ -14153,7 +14153,7 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    description: Generate redistribute ospf with or without mathc
+                    description: Generate redistribute ospf with or without match
                       internal, include leaked and route map.
                   match_external:
                     description: OSPF routes learned from external sources.
@@ -15418,7 +15418,7 @@ keys:
                   keys:
                     enabled:
                       type: bool
-                      description: Generate redistribute ospf with or without mathc
+                      description: Generate redistribute ospf with or without match
                         internal, include leaked and route map.
                     match_external:
                       description: OSPF routes learned from external sources.
@@ -15474,7 +15474,7 @@ keys:
                   keys:
                     enabled:
                       type: bool
-                      description: Generate redistribute ospf with or without mathc
+                      description: Generate redistribute ospf with or without match
                         internal, include leaked and route map.
                     match_external:
                       description: OSPF routes learned from external sources.

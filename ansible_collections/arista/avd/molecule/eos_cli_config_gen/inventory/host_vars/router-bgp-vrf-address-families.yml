@@ -40,6 +40,39 @@ router_bgp:
         activate: false
   vrfs:
     - name: VRF01
+      redistribute:
+        user:
+          enabled: true
+          rcf: RCF_VRF_USER()
+        static:
+          enabled: true
+          route_map: RM_VRF_STATIC
+        rip:
+          enabled: true
+          route_map: RM_VRF_RIP
+        ospf:
+          match_nssa_external:
+            enabled: true
+            route_map: RM_VRF_OSPFV3
+        ospfv3:
+          match_internal:
+            enabled: true
+            include_leaked: true
+            route_map: RM_VRF_OSPF
+        isis:
+          enabled: true
+          isis_level: level-2
+          rcf: RCF_VRF_ISIS()
+        connected:
+          enabled: true
+          include_leaked: true
+          rcf: RCF_VRF_CONNECTED()
+        bgp:
+          enabled: true
+          route_map: RM_VRF_BGP
+        attached_host:
+          enabled: true
+          route_map: RM_VRF_ATTACHED-HOST
       bgp:
         redistribute_internal: false
       address_family_ipv4:
@@ -183,6 +216,31 @@ router_bgp:
           additional_paths:
             send:
               limit: 3
+      redistribute:
+        dynamic:
+          enabled: true
+        user:
+          enabled: true
+        static:
+          enabled: true
+        rip:
+          enabled: true
+        ospf:
+          enabled: true
+          include_leaked: true
+        ospfv3:
+          match_external:
+            enabled: true
+        isis:
+          enabled: true
+          isis_level: level-2
+          route_map: RM_VRF_ISIS
+        connected:
+          enabled: true
+        bgp:
+          enabled: true
+        attached_host:
+          enabled: true
 
     - name: VRF03
       address_family_ipv4:

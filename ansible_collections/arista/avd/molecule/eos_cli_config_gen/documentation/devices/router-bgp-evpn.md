@@ -172,8 +172,8 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
 | --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | - | IPv4: True<br>Transit: False |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | - | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>bgp | IPv4: True<br>Transit: False |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
 

@@ -180,6 +180,16 @@ router_bgp:
       connected:
         enabled: true
         rcf: Address_Family_IPV6_Connected()
+      attached_host:
+        enabled: true
+      dhcp:
+        enabled: true
+      dynamic:
+        enabled: true
+      user:
+        enabled: true
+      isis:
+        enabled: true
   neighbors:
     - ip_address: 192.0.3.1
       remote_as: 65432
