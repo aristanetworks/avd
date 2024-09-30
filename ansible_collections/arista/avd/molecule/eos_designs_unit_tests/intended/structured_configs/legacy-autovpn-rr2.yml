@@ -77,7 +77,7 @@ router_bgp:
   - ip_address: 192.168.131.1
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: legacy-autovpn-rr1
-    description: legacy-autovpn-rr1
+    description: legacy-autovpn-rr1_Dps1
   vrfs:
   - name: default
     rd: 192.168.31.2:1
