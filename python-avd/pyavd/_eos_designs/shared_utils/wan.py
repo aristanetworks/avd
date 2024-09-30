@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from re import findall
 from typing import TYPE_CHECKING, Literal
 
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
@@ -360,18 +361,13 @@ class WanMixin:
                         f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdMissingVariableError(msg)
                 if wan_path_groups is None:
                     msg = (
                         f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
                         " or something is wrong with the peer facts."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
-
+                    raise AristaAvdMissingVariableError(msg)
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 vtep_ip = get(wan_rs_dict, "vtep_ip", required=True)
@@ -515,16 +511,21 @@ class WanMixin:
 
     @cached_property
     def use_uplinks_for_wan_ha(self: SharedUtils) -> bool:
-        """Return true or false."""
+        """
+        Indicates whether the device is using its uplinks for WAN HA or direct HA.
+
+        Returns:
+            bool: True if uplinks are used for HA, False otherwise
+
+        Raises:
+            AristaAvdError: when the list of configured interfaces is a mix of uplinks and none uplinks.
+        """
         interfaces = set(self.configured_wan_ha_interfaces)
         uplink_interfaces = set(self.vrf_default_uplink_interfaces)
 
         if interfaces.issubset(uplink_interfaces):
             return True
         if not interfaces.intersection(uplink_interfaces):
-            if len(interfaces) > 1:
-                msg = "AVD does not support multiple HA interfaces when not using uplinks."
-                raise AristaAvdError(msg)
             return False
         msg = "Either all `wan_ha.ha_interfaces` must be uplink interfaces or all of them must not be uplinks."
         raise AristaAvdError(msg)
@@ -543,17 +544,43 @@ class WanMixin:
         return natural_sort(set(self.configured_wan_ha_interfaces), "name")
 
     @cached_property
+    def wan_ha_port_channel_id(self: SharedUtils) -> int:
+        """
+        Port-channel ID to use for direct WAN HA port-channel.
+
+        If not provided, computed from the list of configured members.
+        """
+        return get(self.switch_data_combined, "wan_ha.port_channel_id", default=int("".join(findall(r"\d", self.wan_ha_interfaces[0]))))
+
+    @cached_property
+    def use_port_channel_for_direct_ha(self: SharedUtils) -> bool:
+        """
+        Indicate if port-channel should be used for direct HA.
+
+        Returns:
+            bool: False is use_uplinks_for_wan_ha is True
+                  True if strictly there is more than one configured wan_ha.interfaces
+                  otherwise the value of `wan_ha.use_port_channel_for_direct_ha` which defaults to True.
+        """
+        if self.use_uplinks_for_wan_ha:
+            return False
+
+        interfaces = set(self.configured_wan_ha_interfaces)
+
+        return len(interfaces) > 1 or get(self.switch_data_combined, "wan_ha.use_port_channel_for_direct_ha", True)
+
+    @cached_property
     def wan_ha_peer_ip_addresses(self: SharedUtils) -> list:
         """
         Read the IP addresses/prefix length from HA peer uplinks.
 
         Used also to generate the prefix list of the PEER HA prefixes.
         """
-        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
         if self.use_uplinks_for_wan_ha:
             peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
             vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+            interfaces = set(self.configured_wan_ha_interfaces)
             for uplink in vrf_default_peer_uplinks:
                 if not interfaces or uplink["interface"] in interfaces:
                     ip_address = get(
@@ -578,10 +605,10 @@ class WanMixin:
 
         Used to generate the prefix list.
         """
-        interfaces = set(self.configured_wan_ha_interfaces)
         ip_addresses = []
 
         if self.use_uplinks_for_wan_ha:
+            interfaces = set(self.configured_wan_ha_interfaces)
             for uplink in self.vrf_default_uplinks:
                 if not interfaces or uplink["interface"] in interfaces:
                     ip_address = get(
@@ -614,6 +641,7 @@ class WanMixin:
 
     @cached_property
     def wan_stun_dtls_profile_name(self: SharedUtils) -> str | None:
+        """Return the DTLS profile name to use for STUN for WAN."""
         if not self.is_wan_router or get(self.hostvars, "wan_stun_dtls_disable") is True:
             return None
 
