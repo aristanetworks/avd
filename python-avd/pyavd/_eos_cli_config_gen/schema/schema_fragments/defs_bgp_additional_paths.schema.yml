@@ -18,6 +18,7 @@ $defs:
           ecmp: All paths in best path ECMP group.
           limit: Limit to n eligible paths.
           disabled: Disable sending any path.
+        valid_values: [ 'any', 'backup', 'ecmp', 'limit', 'disabled' ]
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
