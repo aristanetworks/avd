@@ -51,6 +51,27 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+  vrfs:
+  - name: VRF
+    rd: 192.168.255.36:666
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 666:666
+      export:
+      - address_family: evpn
+        route_targets:
+        - 666:666
+    router_id: 192.168.255.36
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.10.224.4
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: MLAG_PEER_WITH_L3_INTERFACE
+    updates:
+      wait_install: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -67,6 +88,9 @@ transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: VRF
+  tenant: TENANT
+  ip_routing: true
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -92,6 +116,11 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
+- id: 3665
+  name: MLAG_iBGP_VRF
+  trunk_groups:
+  - MLAG
+  tenant: TENANT
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
@@ -104,6 +133,14 @@ vlan_interfaces:
   no_autostate: true
   mtu: 9214
   ip_address: 10.10.255.5/31
+- name: Vlan3665
+  tenant: TENANT
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf VRF'
+  vrf: VRF
+  mtu: 9214
+  ip_address: 10.10.224.5/31
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_MLAG_PEER_WITH_L3_INTERFACE_Port-Channel5
@@ -184,5 +221,8 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
+      vrfs:
+      - name: VRF
+        vni: 666
 metadata:
   platform: vEOS-LAB

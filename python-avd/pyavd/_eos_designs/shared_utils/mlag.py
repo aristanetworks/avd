@@ -214,3 +214,7 @@ class MlagMixin:
     @cached_property
     def mlag_ibgp_peering_vrfs_base_vlan(self: SharedUtils) -> int:
         return int(get(self.hostvars, "mlag_ibgp_peering_vrfs.base_vlan", default=3000))
+
+    @cached_property
+    def mlag_peer_vrfs(self: SharedUtils) -> list[str]:
+        return self.get_mlag_peer_facts.shared_utils.vrfs
