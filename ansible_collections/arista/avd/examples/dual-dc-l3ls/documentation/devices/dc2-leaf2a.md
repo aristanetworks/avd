@@ -265,23 +265,23 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SPINE1_Ethernet3 | - | 10.255.255.113/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SPINE2_Ethernet3 | - | 10.255.255.115/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_dc1-leaf2a_Ethernet6 | - | 172.16.100.1/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_dc2-spine1_Ethernet3 | - | 10.255.255.113/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_dc2-spine2_Ethernet3 | - | 10.255.255.115/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_dc1-leaf2a_Ethernet6 | - | 172.16.100.1/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SPINE1_Ethernet3
+   description P2P_dc2-spine1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.255.113/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SPINE2_Ethernet3
+   description P2P_dc2-spine2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
@@ -303,7 +303,7 @@ interface Ethernet5
    channel-group 5 mode active
 !
 interface Ethernet6
-   description P2P_LINK_TO_dc1-leaf2a_Ethernet6
+   description P2P_dc1-leaf2a_Ethernet6
    no shutdown
    mtu 1500
    no switchport

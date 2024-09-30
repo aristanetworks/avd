@@ -326,22 +326,22 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | - | 10.255.255.5/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 10.255.255.7/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_dc1-spine1_Ethernet2 | - | 10.255.255.5/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet2 | - | 10.255.255.7/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet2
+   description P2P_dc1-spine1_Ethernet2
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.255.5/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
+   description P2P_dc1-spine2_Ethernet2
    no shutdown
    mtu 1500
    no switchport

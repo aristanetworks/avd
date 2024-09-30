@@ -187,7 +187,7 @@ ethernet_interfaces:
   peer: site-ha-disabled-leaf
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2
+  description: P2P_site-ha-disabled-leaf_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -198,7 +198,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2.1000_vrf_IT
+  description: P2P_site-ha-disabled-leaf_Ethernet2.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -209,7 +209,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2.142_vrf_PROD
+  description: P2P_site-ha-disabled-leaf_Ethernet2.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -220,7 +220,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.666
   peer_type: l3leaf
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_site-ha-disabled-leaf_Ethernet2.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666

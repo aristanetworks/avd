@@ -653,7 +653,7 @@ ethernet_interfaces:
   peer: DC1-SPINE6
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE6_Ethernet2
+  description: P2P_DC1-SPINE6_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:

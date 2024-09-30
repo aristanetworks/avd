@@ -356,7 +356,7 @@ ethernet_interfaces:
   peer: dc2-spine1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE1_Ethernet1
+  description: P2P_dc2-spine1_Ethernet1
   shutdown: false
   mtu: 1500
   switchport:
@@ -366,7 +366,7 @@ ethernet_interfaces:
   peer: dc2-spine2
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE2_Ethernet1
+  description: P2P_dc2-spine2_Ethernet1
   shutdown: false
   mtu: 1500
   switchport:

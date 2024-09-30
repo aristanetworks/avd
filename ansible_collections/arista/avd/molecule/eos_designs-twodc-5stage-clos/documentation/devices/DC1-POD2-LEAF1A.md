@@ -250,16 +250,16 @@ vlan 2601
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
+| Ethernet3 | P2P_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
+   description P2P_DC1-POD2-SPINE1_Ethernet3
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -268,7 +268,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+   description P2P_DC1-POD2-SPINE2_Ethernet3
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -277,7 +277,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-RS2_Ethernet3
+   description P2P_DC1-RS2_Ethernet3
    no shutdown
    no switchport
    ip address 172.17.10.12/31

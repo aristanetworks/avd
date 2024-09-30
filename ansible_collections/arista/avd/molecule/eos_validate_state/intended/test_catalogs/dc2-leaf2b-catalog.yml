@@ -317,13 +317,13 @@ anta.tests.interfaces:
     - name: Ethernet1
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet4 = 'up'
+      custom_field: Interface Ethernet1 - P2P_dc2-spine1_Ethernet4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet2
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet4 = 'up'
+      custom_field: Interface Ethernet2 - P2P_dc2-spine2_Ethernet4 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet8
@@ -335,7 +335,7 @@ anta.tests.interfaces:
     - name: Ethernet6
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet6 - P2P_LINK_TO_dc1-leaf2b_Ethernet6 = 'up'
+      custom_field: Interface Ethernet6 - P2P_dc1-leaf2b_Ethernet6 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet5

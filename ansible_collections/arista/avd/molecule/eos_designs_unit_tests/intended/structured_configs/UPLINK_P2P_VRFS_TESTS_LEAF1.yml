@@ -99,7 +99,7 @@ ethernet_interfaces:
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   mac_security:
@@ -112,7 +112,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.42
   peer_type: spine
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_vrf_PROD
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 42
@@ -123,7 +123,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.66
   peer_type: spine
   vrf: ONLY-ON-L2LEAF
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_VRF_ONLY-ON-L2LEAF
   shutdown: false
   encapsulation_dot1q:
     vlan: 66
@@ -133,7 +133,7 @@ ethernet_interfaces:
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
   shutdown: false
   mtu: 9214
   mac_security:
@@ -146,7 +146,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.100
   peer_type: spine
   vrf: IT
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_vrf_IT
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 100
@@ -157,7 +157,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2.42
   peer_type: spine
   vrf: PROD
-  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_vrf_PROD
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 42
