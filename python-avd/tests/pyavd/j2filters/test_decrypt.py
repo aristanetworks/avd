@@ -11,7 +11,7 @@ from pyavd.j2filters import decrypt
 
 
 @pytest.mark.parametrize(
-    "password, passwd_type, key, kwargs, expected_raise",
+    ("password", "passwd_type", "key", "kwargs", "expected_raise"),
     [
         pytest.param("dummy", None, "dummy", {}, pytest.raises(TypeError), id="Missing Type"),
         pytest.param("dummy", "eigrp", "dummy", {}, pytest.raises(KeyError), id="Wrong Type"),
@@ -27,7 +27,7 @@ from pyavd.j2filters import decrypt
         ),
     ],
 )
-def test_decrypt(password, passwd_type, key, kwargs, expected_raise):
+def test_decrypt(password: str, passwd_type: str | None, key: str, kwargs: dict, expected_raise: object) -> None:
     """Test decrypt method for non existing and existing type."""
     with expected_raise:
         decrypt(password, passwd_type=passwd_type, key=key, **kwargs)

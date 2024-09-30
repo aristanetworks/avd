@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
@@ -48,20 +49,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.113/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.113/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.113/24
@@ -152,6 +153,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -241,7 +246,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 210 | Tenant_B_OP_Zone_1 | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -251,7 +256,7 @@ vlan 210
    name Tenant_B_OP_Zone_1
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -267,8 +272,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1-SVC3A_Ethernet7 | *trunk | *210 | *- | *- | 1 |
 | Ethernet2 | DC1-SVC3B_Ethernet7 | *trunk | *210 | *- | *- | 1 |
-| Ethernet3 | MLAG_PEER_DC1-L2LEAF2B_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-L2LEAF2B_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_DC1-L2LEAF2B_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_DC1-L2LEAF2B_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -287,12 +292,12 @@ interface Ethernet2
    channel-group 1 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_DC1-L2LEAF2B_Ethernet3
+   description MLAG_DC1-L2LEAF2B_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_DC1-L2LEAF2B_Ethernet4
+   description MLAG_DC1-L2LEAF2B_Ethernet4
    no shutdown
    channel-group 3 mode active
 ```
@@ -303,10 +308,10 @@ interface Ethernet4
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 210 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | DC1_SVC3_Po7 | trunk | 210 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_DC1-L2LEAF2B_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -315,17 +320,17 @@ interface Ethernet4
 interface Port-Channel1
    description DC1_SVC3_Po7
    no shutdown
-   switchport
    switchport trunk allowed vlan 210
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel3
-   description MLAG_PEER_DC1-L2LEAF2B_Po3
+   description MLAG_DC1-L2LEAF2B_Port-Channel3
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces
@@ -334,7 +339,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -347,7 +352,7 @@ interface Port-Channel3
 ```eos
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

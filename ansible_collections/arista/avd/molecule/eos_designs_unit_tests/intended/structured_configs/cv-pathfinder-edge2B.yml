@@ -56,7 +56,7 @@ router_bgp:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.2
     peer: cv-pathfinder-edge2A
     description: cv-pathfinder-edge2A
@@ -152,6 +152,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: vxlan
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
     neighbor_default:
@@ -160,6 +161,7 @@ router_bgp:
     neighbors:
     - ip_address: 192.168.142.2
       activate: true
+      encapsulation: vxlan
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -182,6 +184,11 @@ router_bgp:
           any: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -209,7 +216,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.9/31
 - name: Ethernet52.1000
   peer: site-ha-enabled-leaf2A
@@ -218,8 +226,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.1000_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1000
+  encapsulation_dot1q:
+    vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.9/31
 - name: Ethernet52.142
@@ -229,8 +237,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.142_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 142
+  encapsulation_dot1q:
+    vlan: 142
   mtu: 9214
   ip_address: 172.17.0.9/31
 - name: Ethernet52.666
@@ -240,8 +248,8 @@ ethernet_interfaces:
   vrf: ATTRACTED-VRF-FROM-UPLINK
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 666
+  encapsulation_dot1q:
+    vlan: 666
   mtu: 9214
   ip_address: 172.17.0.9/31
 - name: Ethernet53
@@ -251,7 +259,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.11/31
 - name: Ethernet53.1000
   peer: site-ha-enabled-leaf2B
@@ -260,8 +269,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.1000_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1000
+  encapsulation_dot1q:
+    vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.11/31
 - name: Ethernet53.142
@@ -271,8 +280,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.142_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 142
+  encapsulation_dot1q:
+    vlan: 142
   mtu: 9214
   ip_address: 172.17.0.11/31
 - name: Ethernet53.666
@@ -282,19 +291,20 @@ ethernet_interfaces:
   vrf: ATTRACTED-VRF-FROM-UPLINK
   description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 666
+  encapsulation_dot1q:
+    vlan: 666
   mtu: 9214
   ip_address: 172.17.0.11/31
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.15.6.6/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10423
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.3/32
 as_path:
@@ -415,31 +425,15 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.42.2:423
 ip_security:
   ike_policies:
-  - name: DP-IKE-POLICY
-    local_id: 192.168.142.3
   - name: CP-IKE-POLICY
     local_id: 192.168.142.3
   sa_policies:
-  - name: DP-SA-POLICY
-    esp:
-      encryption: aes256gcm128
-    pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
       encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
-  - name: DP-PROFILE
-    ike_policy: DP-IKE-POLICY
-    sa_policy: DP-SA-POLICY
-    connection: start
-    shared_key: ABCDEF1234567890666
-    dpd:
-      interval: 10
-      time: 50
-      action: clear
-    mode: transport
-  - name: CP-PROFILE
+  - name: ONE-PROFILE-TO-CONTROL-THEM-ALL
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
     connection: start
@@ -450,7 +444,7 @@ ip_security:
       action: clear
     mode: transport
   key_controller:
-    profile: DP-PROFILE
+    profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
 management_security:
   ssl_profiles:
   - name: profileA
@@ -590,7 +584,7 @@ router_path_selection:
       ipv4_addresses:
       - 172.17.0.5
       - 172.17.0.7
-    ipsec_profile: DP-PROFILE
+    ipsec_profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
@@ -702,7 +696,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.3/32
   flow_tracker:
     hardware: FLOW-TRACKER

@@ -8,6 +8,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
 - [MLAG](#mlag)
@@ -59,20 +60,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.9/16 | 192.168.1.254 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.9/16 | 192.168.1.254 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.1.9/16
@@ -133,6 +134,10 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Monitoring
 
@@ -231,7 +236,7 @@ vlan internal order ascending range 1006 1199
 | 2600 | web-l2-vlan-2 | - |
 | 2601 | l2vlan_with_no_vxlan | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -271,7 +276,7 @@ vlan 4085
    name L2LEAF_INBAND_MGMT
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -287,24 +292,24 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
-| Ethernet5 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet16 | server-1_Eth2 | *access | *110 | *- | *- | 16 |
+| Ethernet5 | MLAG_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet16 | SERVER_server-1_Eth2 | *access | *110 | *- | *- | 16 |
 | Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
-| Ethernet18 | server-1_Eth6 | *access | *110 | *- | *- | 18 |
-| Ethernet19 | server-1_Eth8 | *access | *110 | *- | *- | 19 |
+| Ethernet18 | SERVER_server-1_Eth6 | *access | *110 | *- | *- | 18 |
+| Ethernet19 | SERVER_server-1_Eth8 | *access | *110 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5 | routed | - | 172.17.110.17/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.110.19/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7 | routed | - | 11.1.0.38/31 | default | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8 | routed | - | 172.17.110.21/31 | default | - | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8 | routed | - | 172.17.110.23/31 | default | - | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8 | - | 172.17.110.21/31 | default | - | False | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8 | - | 172.17.110.23/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -339,12 +344,12 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
+   description MLAG_DC1.POD1.LEAF2A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
+   description MLAG_DC1.POD1.LEAF2A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -374,7 +379,7 @@ interface Ethernet12
    service-profile QOS-PROFILE
 !
 interface Ethernet16
-   description server-1_Eth2
+   description SERVER_server-1_Eth2
    no shutdown
    channel-group 16 mode active
    comment
@@ -392,7 +397,7 @@ interface Ethernet17
 
 !
 interface Ethernet18
-   description server-1_Eth6
+   description SERVER_server-1_Eth6
    no shutdown
    channel-group 18 mode active
    comment
@@ -401,7 +406,7 @@ interface Ethernet18
 
 !
 interface Ethernet19
-   description server-1_Eth8
+   description SERVER_server-1_Eth8
    no shutdown
    channel-group 19 mode active
    comment
@@ -416,14 +421,14 @@ interface Ethernet19
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
-| Port-Channel5 | MLAG_PEER_DC1.POD1.LEAF2A_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
-| Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
-| Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
-| Port-Channel19 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 19 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | RACK2_MLAG_Po1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
+| Port-Channel5 | MLAG_DC1.POD1.LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
+| Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
+| Port-Channel18 | PortChannel | access | 110 | - | - | - | - | 18 | - |
+| Port-Channel19 | PortChannel | access | 110 | - | - | - | - | 19 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -432,42 +437,44 @@ interface Ethernet19
 interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk
+   switchport
    mlag 3
    service-profile QOS-PROFILE
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1.POD1.LEAF2A_Po5
+   description MLAG_DC1.POD1.LEAF2A_Port-Channel5
    no shutdown
-   switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
    service-profile QOS-PROFILE
 !
 interface Port-Channel16
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 16
    service-profile bar
 !
 interface Port-Channel17
    description Set using structured_config on server adapter port-channel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 17
    service-profile foo
 !
 interface Port-Channel18
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 18
    service-profile foo
    comment
@@ -476,10 +483,11 @@ interface Port-Channel18
 
 !
 interface Port-Channel19
-   description server-1_PortChannel
+   description PortChannel
    no shutdown
-   switchport
    switchport access vlan 110
+   switchport mode access
+   switchport
    mlag 19
    service-profile foo
    comment
@@ -496,8 +504,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.5/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.4/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.110.5/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.4/32 |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.5/32 |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.101.5/32 |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.5/32 |
@@ -506,8 +514,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | ROUTER_ID | default | - |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 | Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | - |
@@ -517,12 +525,12 @@ interface Port-Channel19
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.110.5/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description VXLAN_TUNNEL_SOURCE
    no shutdown
    ip address 172.18.110.4/32
 !
@@ -559,7 +567,7 @@ interface Loopback102
 | Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | False |
 | Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | False |
 | Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
-| Vlan4094 | MLAG_PEER | default | - | False |
+| Vlan4094 | MLAG | default | - | False |
 
 ##### IPv4
 
@@ -633,7 +641,7 @@ interface Vlan4085
    ip virtual-router address 172.21.110.1
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    no autostate
    ip address 172.20.110.3/31
@@ -921,15 +929,15 @@ router bgp 65112.100
    neighbor 11.1.0.39 bfd
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
-   neighbor 172.16.10.1 description DC1-RS1
+   neighbor 172.16.10.1 description DC1-RS1_Loopback0
    neighbor 172.16.10.1 route-map RM-EVPN-FILTER-AS65101 out
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110.100
-   neighbor 172.16.110.1 description DC1-POD1-SPINE1
+   neighbor 172.16.110.1 description DC1-POD1-SPINE1_Loopback0
    neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110.100 out
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.3 remote-as 65111.100
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.110.3 description DC1-POD1-LEAF1A_Loopback0
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111.100 out
    neighbor 172.17.110.16 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.16 remote-as 65110.100
@@ -944,7 +952,7 @@ router bgp 65112.100
    neighbor 172.17.110.22 remote-as 65110.100
    neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
    neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.110.2 description DC1.POD1.LEAF2A
+   neighbor 172.20.110.2 description DC1.POD1.LEAF2A_Vlan4094
    redistribute attached-host
    redistribute connected
    !

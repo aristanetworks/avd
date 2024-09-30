@@ -8,17 +8,27 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
-    | [<samp>mlag_on_orphan_port_channel_downlink</samp>](## "mlag_on_orphan_port_channel_downlink") | Boolean |  | `True` |  | If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.<br>If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.<br>Note the default value will change to `false` in AVD version 5.0 |
+    | [<samp>mlag_bgp_peer_description</samp>](## "mlag_bgp_peer_description") | String |  | `{mlag_peer}_{peer_interface}` |  | Description or description template to be used on the MLAG BGP peers including those in VRFs.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG L3 VLAN interface.<br>  - `peer_interface`: The MLAG L3 VLAN interface on the MLAG peer.<br>  - `vrf`: The name of the VRF. Not available for the underlay peering.<br><br>The default description is built from the name and interface of the MLAG peer and optionally the VRF. |
+    | [<samp>mlag_bgp_peer_group_description</samp>](## "mlag_bgp_peer_group_description") | String |  | `{mlag_peer}` |  | Description or description template to be used on the MLAG BGP peer-group.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br><br>The default description is the name of the MLAG peers. |
+    | [<samp>mlag_member_description</samp>](## "mlag_member_description") | String |  | `MLAG_{mlag_peer}_{peer_interface}` |  | Description or description template to be used on MLAG peer-link ethernet interfaces.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG port-channel interface.<br>  - `peer_interface`: The port-channel interface on the MLAG peer.<br>  - `mlag_port_channel_id`: The local MLAG port-channel ID.<br>  - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.<br><br>By default the description is templated from the name and interface of the MLAG peer. |
+    | [<samp>mlag_on_orphan_port_channel_downlink</samp>](## "mlag_on_orphan_port_channel_downlink") | Boolean |  | `False` |  | If `true` an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.<br>If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches. |
+    | [<samp>mlag_peer_l3_svi_description</samp>](## "mlag_peer_l3_svi_description") | String |  | `MLAG_L3` |  | Description or description template to be used on MLAG L3 peering SVI (Interface Vlan4093 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The MLAG L3 peering SVI name.<br>  - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID. |
+    | [<samp>mlag_peer_l3_vlan_name</samp>](## "mlag_peer_l3_vlan_name") | String |  | `MLAG_L3` |  | Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID. |
+    | [<samp>mlag_peer_l3_vrf_svi_description</samp>](## "mlag_peer_l3_vrf_svi_description") | String |  | `MLAG_L3_VRF_{vrf}` |  | Description or description template to be used on MLAG L3 peering SVI for VRFs.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The MLAG L3 VRF peering SVI name.<br>  - `vlan`: The MLAG L3 VRF peering VLAN ID.<br>  - `vrf`: The VRF name. |
+    | [<samp>mlag_peer_l3_vrf_vlan_name</samp>](## "mlag_peer_l3_vrf_vlan_name") | String |  | `MLAG_L3_VRF_{vrf}` |  | Name or name template to be used on MLAG L3 peering VLAN for VRFs.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `vlan`: The MLAG L3 VRF peering VLAN ID.<br>  - `vrf`: The VRF name. |
+    | [<samp>mlag_peer_svi_description</samp>](## "mlag_peer_svi_description") | String |  | `MLAG` |  | Description or description template to be used on MLAG peering SVI (Interface Vlan4094 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The MLAG peering SVI name.<br>  - `mlag_peer_vlan`: The MLAG peering VLAN ID. |
+    | [<samp>mlag_peer_vlan_name</samp>](## "mlag_peer_vlan_name") | String |  | `MLAG` |  | Name or name template to be used on MLAG peering VLAN (VLAN 4094 by default).<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `mlag_peer_vlan`: The MLAG peering VLAN ID. |
+    | [<samp>mlag_port_channel_description</samp>](## "mlag_port_channel_description") | String |  | `MLAG_{mlag_peer}_{peer_interface}` |  | Description or description template to be used on MLAG peer-link port-channel interfaces.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG port-channel interface.<br>  - `peer_interface`: The port-channel interface on the MLAG peer.<br>  - `mlag_port_channel_id`: The local MLAG port-channel ID.<br>  - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.<br><br>By default the description is templated from the name and port-channel interface of the MLAG peer. |
     | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | `False` |  | A vlan can have many trunk_groups assigned.<br>To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,<br>this feature will only configure the vlan trunk groups matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true".<br> |
-    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU. |
+    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU.<br>Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214 |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links. |
-    | [<samp>shutdown_bgp_towards_undeployed_peers</samp>](## "shutdown_bgp_towards_undeployed_peers") | Boolean |  | `False` |  | When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the peer. |
-    | [<samp>shutdown_interfaces_towards_undeployed_peers</samp>](## "shutdown_interfaces_towards_undeployed_peers") | Boolean |  | `False` |  | - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.<br><br>```yaml<br># Use at the host level<br>is_deployed: < true or false or default -> true ><br>```<br><br>- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.<br>- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.<br>- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.<br>- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.<br>- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.<br> |
+    | [<samp>shutdown_bgp_towards_undeployed_peers</samp>](## "shutdown_bgp_towards_undeployed_peers") | Boolean |  | `True` |  | When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the peer. |
+    | [<samp>shutdown_interfaces_towards_undeployed_peers</samp>](## "shutdown_interfaces_towards_undeployed_peers") | Boolean |  | `True` |  | - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.<br><br>```yaml<br># Use at the host level<br>is_deployed: < true or false or default -> true ><br>```<br><br>- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.<br>- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.<br>- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.<br>- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.<br>- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.<br> |
     | [<samp>trunk_groups</samp>](## "trunk_groups") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;mlag</samp>](## "trunk_groups.mlag") | Dictionary |  |  |  | Trunk Group used for MLAG VLAN (Typically VLAN 4094).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag.name") | String |  | `MLAG` |  |  |
     | [<samp>&nbsp;&nbsp;mlag_l3</samp>](## "trunk_groups.mlag_l3") | Dictionary |  |  |  | Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093).<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag_l3.name") | String |  | `LEAF_PEER_L3` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag_l3.name") | String |  | `MLAG` |  |  |
     | [<samp>&nbsp;&nbsp;uplink</samp>](## "trunk_groups.uplink") | Dictionary |  |  |  | Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.uplink.name") | String |  | `UPLINK` |  |  |
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | `False` |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note that this setting cannot be used while there are EVPN services present in the default VRF.<br> |
@@ -51,10 +61,99 @@
     # See "Details on enable_trunk_groups" below before enabling this feature.
     enable_trunk_groups: <bool; default=False>
 
-    # If `true` (default) an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.
-    # If `false` an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.
-    # Note the default value will change to `false` in AVD version 5.0
-    mlag_on_orphan_port_channel_downlink: <bool; default=True>
+    # Description or description template to be used on the MLAG BGP peers including those in VRFs.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The local MLAG L3 VLAN interface.
+    #   - `peer_interface`: The MLAG L3 VLAN interface on the MLAG peer.
+    #   - `vrf`: The name of the VRF. Not available for the underlay peering.
+    #
+    # The default description is built from the name and interface of the MLAG peer and optionally the VRF.
+    mlag_bgp_peer_description: <str; default="{mlag_peer}_{peer_interface}">
+
+    # Description or description template to be used on the MLAG BGP peer-group.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #
+    # The default description is the name of the MLAG peers.
+    mlag_bgp_peer_group_description: <str; default="{mlag_peer}">
+
+    # Description or description template to be used on MLAG peer-link ethernet interfaces.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The local MLAG port-channel interface.
+    #   - `peer_interface`: The port-channel interface on the MLAG peer.
+    #   - `mlag_port_channel_id`: The local MLAG port-channel ID.
+    #   - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.
+    #
+    # By default the description is templated from the name and interface of the MLAG peer.
+    mlag_member_description: <str; default="MLAG_{mlag_peer}_{peer_interface}">
+
+    # If `true` an MLAG ID will always be configured on a Port-Channel downlink even if the downlink is only on one node in the MLAG pair.
+    # If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks dual-homed to two MLAG switches.
+    mlag_on_orphan_port_channel_downlink: <bool; default=False>
+
+    # Description or description template to be used on MLAG L3 peering SVI (Interface Vlan4093 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The MLAG L3 peering SVI name.
+    #   - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID.
+    mlag_peer_l3_svi_description: <str; default="MLAG_L3">
+
+    # Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID.
+    mlag_peer_l3_vlan_name: <str; default="MLAG_L3">
+
+    # Description or description template to be used on MLAG L3 peering SVI for VRFs.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The MLAG L3 VRF peering SVI name.
+    #   - `vlan`: The MLAG L3 VRF peering VLAN ID.
+    #   - `vrf`: The VRF name.
+    mlag_peer_l3_vrf_svi_description: <str; default="MLAG_L3_VRF_{vrf}">
+
+    # Name or name template to be used on MLAG L3 peering VLAN for VRFs.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `vlan`: The MLAG L3 VRF peering VLAN ID.
+    #   - `vrf`: The VRF name.
+    mlag_peer_l3_vrf_vlan_name: <str; default="MLAG_L3_VRF_{vrf}">
+
+    # Description or description template to be used on MLAG peering SVI (Interface Vlan4094 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The MLAG peering SVI name.
+    #   - `mlag_peer_vlan`: The MLAG peering VLAN ID.
+    mlag_peer_svi_description: <str; default="MLAG">
+
+    # Name or name template to be used on MLAG peering VLAN (VLAN 4094 by default).
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `mlag_peer_vlan`: The MLAG peering VLAN ID.
+    mlag_peer_vlan_name: <str; default="MLAG">
+
+    # Description or description template to be used on MLAG peer-link port-channel interfaces.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `mlag_peer`: The name of the MLAG peer.
+    #   - `interface`: The local MLAG port-channel interface.
+    #   - `peer_interface`: The port-channel interface on the MLAG peer.
+    #   - `mlag_port_channel_id`: The local MLAG port-channel ID.
+    #   - `mlag_peer_port_channel_id`: The port-channel ID on the MLAG peer.
+    #
+    # By default the description is templated from the name and port-channel interface of the MLAG peer.
+    mlag_port_channel_description: <str; default="MLAG_{mlag_peer}_{peer_interface}">
 
     # A vlan can have many trunk_groups assigned.
     # To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,
@@ -64,13 +163,14 @@
     only_local_vlan_trunk_groups: <bool; default=False>
 
     # Point to Point Links MTU.
+    # Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214
     p2p_uplinks_mtu: <int; 68-65535; default=9214>
 
     # QOS Profile assigned on all infrastructure links.
     p2p_uplinks_qos_profile: <str>
 
     # When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the peer.
-    shutdown_bgp_towards_undeployed_peers: <bool; default=False>
+    shutdown_bgp_towards_undeployed_peers: <bool; default=True>
 
     # - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.
     #
@@ -84,7 +184,7 @@
     # - If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.
     # - To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.
     # - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.
-    shutdown_interfaces_towards_undeployed_peers: <bool; default=False>
+    shutdown_interfaces_towards_undeployed_peers: <bool; default=True>
     trunk_groups:
 
       # Trunk Group used for MLAG VLAN (Typically VLAN 4094).
@@ -93,7 +193,7 @@
 
       # Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093).
       mlag_l3:
-        name: <str; default="LEAF_PEER_L3">
+        name: <str; default="MLAG">
 
       # Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.
       uplink:

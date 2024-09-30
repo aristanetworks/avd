@@ -49,22 +49,22 @@ router_bgp:
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-LEAF1A
-    description: DC1-POD1-LEAF1A
+    description: DC1-POD1-LEAF1A_Loopback0
     remote_as: '65111.100'
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-SPINE1
-    description: DC1-POD1-SPINE1
+    description: DC1-POD1-SPINE1_Loopback0
     remote_as: '65110.100'
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS1
-    description: DC1-RS1
+    description: DC1-RS1_Loopback0
     remote_as: '65101'
   - ip_address: 172.16.10.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS2
-    description: DC1-RS2
+    description: DC1-RS2_Loopback0
     remote_as: '65102'
   address_family_evpn:
     peer_groups:
@@ -87,6 +87,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 local_users:
@@ -100,7 +106,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.1.18/24
@@ -121,7 +127,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.1/31
 - name: Ethernet2
   peer: DC2-SUPER-SPINE1
@@ -130,11 +137,12 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.20.3/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.20.1/32
 prefix_lists:

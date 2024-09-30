@@ -4,10 +4,8 @@
 from pyavd import get_avd_facts
 
 
-def test_get_avd_facts(all_inputs: dict):
-    """
-    Test get_avd_facts
-    """
+def test_get_avd_facts(all_inputs: dict) -> None:
+    """Test get_avd_facts."""
     avd_facts = get_avd_facts(all_inputs)
 
     assert isinstance(avd_facts, dict)

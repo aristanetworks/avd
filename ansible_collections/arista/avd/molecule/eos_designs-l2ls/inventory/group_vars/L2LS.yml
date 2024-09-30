@@ -7,9 +7,6 @@
 # Two spine and two leaf switches per POD
 # Core interfaces to non-existing core switch. (to test the underlay routing)
 
-design:
-  type: l2ls
-
 fabric_name: L2LS
 
 mgmt_gateway: 172.31.0.1

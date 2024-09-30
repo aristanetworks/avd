@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
@@ -49,20 +50,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.102/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.102/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.102/24
@@ -153,6 +154,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -231,15 +236,15 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | False | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | False | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | False | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42 | routed | - | 172.31.255.50/31 | default | 1500 | False | - | - |
-| Ethernet5 | CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42 | routed | - | 172.31.255.66/31 | default | 1500 | False | - | - |
-| Ethernet6 | CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42 | routed | - | 172.31.255.82/31 | default | 1500 | False | - | - |
-| Ethernet7 | CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46 | routed | - | 172.31.255.98/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | - | 172.31.255.2/31 | default | 1500 | False | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | - | 172.31.255.18/31 | default | 1500 | False | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | - | 172.31.255.34/31 | default | 1500 | False | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42 | - | 172.31.255.50/31 | default | 1500 | False | - | - |
+| Ethernet5 | CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42 | - | 172.31.255.66/31 | default | 1500 | False | - | - |
+| Ethernet6 | CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42 | - | 172.31.255.82/31 | default | 1500 | False | - | - |
+| Ethernet7 | CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46 | - | 172.31.255.98/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -310,20 +315,20 @@ interface Ethernet7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.2/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.2/32
 ```
@@ -491,25 +496,25 @@ router bgp 65001
    neighbor 172.31.255.99 description DC1-BL1B_Ethernet46
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
-   neighbor 192.168.255.9 description DC1-LEAF1A
+   neighbor 192.168.255.9 description DC1-LEAF1A_Loopback0
    neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.10 remote-as 65102
-   neighbor 192.168.255.10 description DC1-LEAF2A
+   neighbor 192.168.255.10 description DC1-LEAF2A_Loopback0
    neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.11 remote-as 65102
-   neighbor 192.168.255.11 description DC1-LEAF2B
+   neighbor 192.168.255.11 description DC1-LEAF2B_Loopback0
    neighbor 192.168.255.12 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.12 remote-as 65103
-   neighbor 192.168.255.12 description DC1-SVC3A
+   neighbor 192.168.255.12 description DC1-SVC3A_Loopback0
    neighbor 192.168.255.13 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.13 remote-as 65103
-   neighbor 192.168.255.13 description DC1-SVC3B
+   neighbor 192.168.255.13 description DC1-SVC3B_Loopback0
    neighbor 192.168.255.14 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.14 remote-as 65104
-   neighbor 192.168.255.14 description DC1-BL1A
+   neighbor 192.168.255.14 description DC1-BL1A_Loopback0
    neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.15 remote-as 65105
-   neighbor 192.168.255.15 description DC1-BL1B
+   neighbor 192.168.255.15 description DC1-BL1B_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -551,6 +556,7 @@ router bfd
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 

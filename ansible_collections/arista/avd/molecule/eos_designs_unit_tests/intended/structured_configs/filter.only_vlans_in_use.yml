@@ -10,6 +10,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -31,8 +37,10 @@ ethernet_interfaces:
   peer: testserver
   peer_interface: Nic1
   peer_type: server
-  description: testserver_Nic1
+  description: SERVER_testserver_Nic1
   shutdown: false
-  type: switched
-  mode: trunk
-  vlans: 1-2
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-2

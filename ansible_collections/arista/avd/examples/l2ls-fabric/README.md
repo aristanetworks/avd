@@ -169,7 +169,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_FABRIC"
-    At the fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. In addition, the fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include spanning-tree mode, priority, and an MLAG IP pool.
+    At the fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. In addition, the fabric name, spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include spanning-tree mode, priority, and an MLAG IP pool.
 
     Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
 
@@ -182,7 +182,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_SPINES"
-    In an L2LS design, there are two types of spine nodes: `spine` and `l3spine`. In AVD, the node type defines the functionality and the EOS CLI configuration to be generated. For an L2LS design, we will use node type: spine. Later, we will add routing to the spines by changing the node type to l3spine.
+    In an L2LS design, there are two types of spine nodes: `l2spine` and `l3spine`. In AVD, the node type defines the functionality and the EOS CLI configuration to be generated. For an L2LS design, we will use node type `l2spine`. Later, we will add routing to the spines by changing the node type to `l3spine`.
 
     ``` yaml
     --8<--
@@ -191,7 +191,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_LEAFS"
-    In an L2LS design, we have one type of leaf node: `leaf`.
+    In an L2LS design, we have one type of leaf node: `l2leaf`.
 
     ``` yaml
     --8<--

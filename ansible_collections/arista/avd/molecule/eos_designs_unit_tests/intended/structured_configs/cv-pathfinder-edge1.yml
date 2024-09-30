@@ -54,11 +54,11 @@ router_bgp:
   - ip_address: 192.168.144.2
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder1
-    description: cv-pathfinder-pathfinder1
+    description: cv-pathfinder-pathfinder1_Dps1
   - ip_address: 192.168.144.3
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder2
-    description: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2_Dps1
   vrfs:
   - name: IT
     router_id: 192.168.42.2
@@ -133,6 +133,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4_sr_te:
@@ -157,6 +158,11 @@ router_bgp:
           any: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -184,7 +190,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.0.3/31
 - name: Ethernet52.1000
   peer: site-ha-disabled-leaf
@@ -193,8 +200,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2.1000_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1000
+  encapsulation_dot1q:
+    vlan: 1000
   mtu: 9214
   ip_address: 172.17.0.3/31
 - name: Ethernet52.142
@@ -204,8 +211,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2.142_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 142
+  encapsulation_dot1q:
+    vlan: 142
   mtu: 9214
   ip_address: 172.17.0.3/31
 - name: Ethernet52.666
@@ -215,30 +222,32 @@ ethernet_interfaces:
   vrf: ATTRACTED-VRF-FROM-UPLINK
   description: P2P_LINK_TO_SITE-HA-DISABLED-LEAF_Ethernet2.666_vrf_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 666
+  encapsulation_dot1q:
+    vlan: 666
   mtu: 9214
   ip_address: 172.17.0.3/31
 - name: Ethernet1/49.3
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: l3dot1q
   description: Inmrasat_S511
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1_49.3
-  encapsulation_dot1q_vlan: 3
+  encapsulation_dot1q:
+    vlan: 3
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: AWS-1_212
   dhcp_client_accept_default_route: true
 - name: Ethernet3
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ATT_404
   dhcp_client_accept_default_route: true
   ip_nat:
@@ -247,21 +256,24 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   dhcp_client_accept_default_route: true
 - name: Ethernet5
   peer_type: l3_interface
   ip_address: dhcp
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   dhcp_client_accept_default_route: true
 - name: Ethernet1/49
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   shutdown: false
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.2/32
 prefix_lists:
@@ -809,7 +821,7 @@ router_internet_exit:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.2/32
   flow_tracker:
     hardware: FLOW-TRACKER

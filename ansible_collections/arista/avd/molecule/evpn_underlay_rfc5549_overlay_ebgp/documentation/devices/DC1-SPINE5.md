@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
@@ -46,20 +47,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.105/24 | 192.168.200.5 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.105/24
@@ -150,6 +151,10 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
+### Enable Password
+
+Enable password has been disabled
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -212,12 +217,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF3A_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF3B_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF3A_Ethernet2 | routed | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-LEAF3B_Ethernet2 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF3A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF3B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF3A_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-LEAF3B_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -260,20 +265,20 @@ interface Ethernet4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.5/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.255.5/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | 2001:1::5/128 |
+| Loopback0 | ROUTER_ID | default | 2001:1::5/128 |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.255.5/32
    ipv6 address 2001:1::5/128
@@ -429,10 +434,10 @@ router bgp 65001
    neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor 2001:1::c peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::c remote-as 65106
-   neighbor 2001:1::c description DC1-LEAF3A
+   neighbor 2001:1::c description DC1-LEAF3A_Loopback0
    neighbor 2001:1::d peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::d remote-as 65106
-   neighbor 2001:1::d description DC1-LEAF3B
+   neighbor 2001:1::d description DC1-LEAF3B_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

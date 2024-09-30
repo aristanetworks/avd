@@ -12,6 +12,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -22,7 +28,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.110/24
@@ -35,7 +41,7 @@ management_api_http:
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
 - name: Loopback0
-  description: LSR_Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.10/32
   ipv6_address: 2000:1234:ffff:ffff::a/128
@@ -50,7 +56,7 @@ loopback_interfaces:
 router_isis:
   instance: CORE
   log_adjacency_changes: true
-  net: 49.0001.0000.0001.0010.00
+  net: 49.0001.1000.7000.0010.00
   router_id: 100.70.0.10
   is_type: level-1-2
   address_family_ipv4:

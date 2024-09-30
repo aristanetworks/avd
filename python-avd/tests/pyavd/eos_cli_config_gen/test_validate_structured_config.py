@@ -8,20 +8,18 @@ from pyavd.avd_schema_tools import AvdSchemaTools
 SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
 
 
-def test_validate_structured_config_with_valid_data(hostname: str, all_inputs: dict):
-    """
-    Test validate_structured_config
-    """
+def test_validate_structured_config_with_valid_data(hostname: str, all_inputs: dict) -> None:
+    """Test validate_structured_config."""
     structured_config = all_inputs[hostname]
     validation_result = validate_structured_config(structured_config)
-    assert hostname and validation_result.validation_errors == []
-    assert hostname and validation_result.failed is False
+    assert hostname
+    assert validation_result.validation_errors == []
+    assert hostname
+    assert validation_result.failed is False
 
 
-def test_validate_structured_config_with_invalid_data(hostname: str, all_inputs: dict):
-    """
-    Test validate_structured_config
-    """
+def test_validate_structured_config_with_invalid_data(hostname: str, all_inputs: dict) -> None:
+    """Test validate_structured_config."""
     structured_config: dict = all_inputs[hostname]
 
     updated = False

@@ -19,20 +19,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -52,28 +52,28 @@ PTP Profile: g8275.1
 ```eos
 !
 ptp clock-identity 11:11:11:11:11:11
-ptp source ip 1.1.2.3
+ptp domain 17
+ptp message-type event dscp 46 default
+ptp message-type general dscp 36 default
+ptp mode boundary one-step
 ptp priority1 101
 ptp priority2 102
 ptp profile g8275.1
+ptp source ip 1.1.2.3
 ptp ttl 12
-ptp domain 17
-ptp message-type general dscp 36 default
-ptp message-type event dscp 46 default
-ptp mode boundary one-step
 ptp forward-unicast
 ptp monitor threshold offset-from-master 11
 ptp monitor threshold mean-path-delay 12
-ptp monitor threshold offset-from-master 13 nanoseconds drop
 ptp monitor threshold mean-path-delay 14 nanoseconds drop
-ptp monitor threshold missing-message announce 101 intervals
-ptp monitor threshold missing-message follow-up 102 intervals
+ptp monitor threshold offset-from-master 13 nanoseconds drop
 ptp monitor threshold missing-message sync 103 intervals
+ptp monitor threshold missing-message follow-up 102 intervals
+ptp monitor threshold missing-message announce 101 intervals
 ptp monitor sequence-id
-ptp monitor threshold missing-message announce 201 sequence-ids
-ptp monitor threshold missing-message delay-resp 202 sequence-ids
-ptp monitor threshold missing-message follow-up 203 sequence-ids
 ptp monitor threshold missing-message sync 204 sequence-ids
+ptp monitor threshold missing-message follow-up 203 sequence-ids
+ptp monitor threshold missing-message delay-resp 202 sequence-ids
+ptp monitor threshold missing-message announce 201 sequence-ids
 ```
 
 ## Interfaces
@@ -86,16 +86,16 @@ ptp monitor threshold missing-message sync 204 sequence-ids
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.15/31 | default | 1500 | - | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet6 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | - | 172.31.255.15/31 | default | 1500 | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -139,9 +139,9 @@ interface Ethernet6
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -149,9 +149,9 @@ interface Ethernet6
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
-   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   switchport
    mlag 5
    ptp enable
    ptp mpass

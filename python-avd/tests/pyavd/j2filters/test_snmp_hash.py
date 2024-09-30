@@ -1,9 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 from contextlib import nullcontext as does_not_raise
 
@@ -18,7 +16,7 @@ GET_HASH_OBJECT_TEST_CASES = [
     ("sha256", "sha256", does_not_raise()),
     ("sha384", "sha384", does_not_raise()),
     ("sha512", "sha512", does_not_raise()),
-    ("toto", None, pytest.raises(ValueError)),
+    ("toto", None, pytest.raises(ValueError)),  # noqa: PT011
 ]
 
 KEY_FROM_PASSPHRASE_TEST_CASES = [
@@ -34,7 +32,7 @@ KEY_FROM_PASSPHRASE_TEST_CASES = [
         "c005b901a9a29e140e2749bb5d51789bba97f614c3c8060a1c080d775f12494ba6d968dc22526bb06532e96e2e4d3bd0e746f2696439a4a034d040e1c7de0aaa",
         does_not_raise(),
     ),
-    ("testauth", "toto", None, pytest.raises(ValueError)),
+    ("testauth", "toto", None, pytest.raises(ValueError)),  # noqa: PT011
 ]
 
 LOCALIZE_PASSPHRASE_TEST_CASES = [
@@ -59,31 +57,31 @@ LOCALIZE_PASSPHRASE_TEST_CASES = [
         "bccbd436115c60540422ad8e98b8373dee507fd9e77730372f03dcf8e8a074a43d9f04bd6b7be64eb806bdbaeff43ccd1ca93c4606ab46eb797720e4c59abcc7",
         does_not_raise(),
     ),
-    ("testauth", "toto", "424242424242424242", None, None, pytest.raises(ValueError)),
+    ("testauth", "toto", "424242424242424242", None, None, pytest.raises(ValueError)),  # noqa: PT011
     # only testing priv with one auth algorithm, the longest, to verify key length
     ("testpriv", "sha512", "424242424242424242", "des", "ca5e54b5c49e7addba0046c591f8f541", does_not_raise()),
     ("testpriv", "sha512", "424242424242424242", "aes", "ca5e54b5c49e7addba0046c591f8f541", does_not_raise()),
     ("testpriv", "sha512", "424242424242424242", "aes192", "ca5e54b5c49e7addba0046c591f8f5417338cdc1043068ab", does_not_raise()),
     ("testpriv", "sha512", "424242424242424242", "aes256", "ca5e54b5c49e7addba0046c591f8f5417338cdc1043068abf8c2a7ab751f13dc", does_not_raise()),
-    ("testpriv", "sha512", "424242424242424242", "toto", None, pytest.raises(ValueError)),
+    ("testpriv", "sha512", "424242424242424242", "toto", None, pytest.raises(ValueError)),  # noqa: PT011
     # non hex engine_id
-    ("testpriv", "sha512", "zzzzzzzzzzzz", "toto", None, pytest.raises(ValueError)),
+    ("testpriv", "sha512", "zzzzzzzzzzzz", "toto", None, pytest.raises(ValueError)),  # noqa: PT011
 ]
 
 
 class TestSNMPHashFilter:
-    @pytest.mark.parametrize("auth_type, result, expectation", GET_HASH_OBJECT_TEST_CASES)
-    def test_get_hash_object(self, auth_type, result, expectation):
+    @pytest.mark.parametrize(("auth_type", "result", "expectation"), GET_HASH_OBJECT_TEST_CASES)
+    def test_get_hash_object(self, auth_type: str, result: str, expectation: object) -> None:
         with expectation:
             assert _get_hash_object(auth_type).name == result
 
-    @pytest.mark.parametrize("passphrase, auth_type, result, expectation", KEY_FROM_PASSPHRASE_TEST_CASES)
-    def test_key_from_passphrase(self, passphrase, auth_type, result, expectation):
+    @pytest.mark.parametrize(("passphrase", "auth_type", "result", "expectation"), KEY_FROM_PASSPHRASE_TEST_CASES)
+    def test_key_from_passphrase(self, passphrase: str, auth_type: str, result: str, expectation: object) -> None:
         with expectation:
             assert _key_from_passphrase(passphrase, auth_type) == result
 
-    @pytest.mark.parametrize("passphrase, auth_type, engine_id, priv_type, result, expectation", LOCALIZE_PASSPHRASE_TEST_CASES)
-    def test_localize_passphrase(self, passphrase, auth_type, engine_id, priv_type, result, expectation):
+    @pytest.mark.parametrize(("passphrase", "auth_type", "engine_id", "priv_type", "result", "expectation"), LOCALIZE_PASSPHRASE_TEST_CASES)
+    def test_localize_passphrase(self, passphrase: str, auth_type: str, engine_id: str, priv_type: str, result: str, expectation: object) -> None:
         with expectation:
             localized_passphrase = _localize_passphrase(passphrase, auth_type, engine_id, priv_type=priv_type)
             assert localized_passphrase == result

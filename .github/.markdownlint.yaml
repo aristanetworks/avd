@@ -91,3 +91,8 @@ MD049:
 MD050:
   # Strong style should be consistent
   style: "asterisk"
+
+# MD037/no-space-in-emphasis - Spaces inside emphasis markers
+# This incorrectly catches stars used in table contents, so *foo | *bar is triggered to remove the space between | and *bar.
+MD037:
+  false

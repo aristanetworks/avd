@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from typing import Any
+
 import pytest
 from jinja2.runtime import Undefined
 
@@ -13,7 +15,7 @@ DEFAULT_VALUE_LIST = [["default"], [None, 1], [None, "abc"], [None, None, "2"], 
 class TestDefaultFilter:
     @pytest.mark.parametrize("primary_value", PRIMARY_VALUE_LIST)
     @pytest.mark.parametrize("default_value", DEFAULT_VALUE_LIST)
-    def test_default(self, primary_value, default_value):
+    def test_default(self, primary_value: Any, default_value: Any) -> None:
         resp = default(primary_value, *default_value)
         if isinstance(primary_value, Undefined) or primary_value is None and len(DEFAULT_VALUE_LIST) >= 1:
             for i in default_value:

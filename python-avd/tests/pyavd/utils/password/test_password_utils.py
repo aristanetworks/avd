@@ -12,52 +12,42 @@ VALID_PASSWORD_KEY_PAIRS = [("42.42.42.42", b"3QGcqpU2YTwKh2jVQ4Vj/A=="), ("AVD-
 INVALID_PASSWORD_KEY_PAIRS = [("10.42.42.43", b"3QGcqpU2YTwKh2jVQ4Vj/A=="), ("AVD-TEST-DUMMY", b"bM7t58t04qSqLHAfZR/Szg==")]
 
 
-@pytest.mark.parametrize("key, expected", VALID_PASSWORD_KEY_PAIRS)
-def test_cbc_encrypt(key, expected):
-    """
-    Valid cases for both neighbor IP and peer group name
-    """
+@pytest.mark.parametrize(("key", "expected"), VALID_PASSWORD_KEY_PAIRS)
+def test_cbc_encrypt(key: str, expected: str) -> None:
+    """Valid cases for both neighbor IP and peer group name."""
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
     assert cbc_encrypt(augmented_key, b"arista") == expected
 
 
-@pytest.mark.parametrize("key, password", VALID_PASSWORD_KEY_PAIRS)
-def test_cbc_decrypt(key, password):
-    """
-    Valid cases for both neighbor IP and peer group name
-    """
+@pytest.mark.parametrize(("key", "password"), VALID_PASSWORD_KEY_PAIRS)
+def test_cbc_decrypt(key: str, password: str) -> None:
+    """Valid cases for both neighbor IP and peer group name."""
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
     assert cbc_decrypt(augmented_key, password) == b"arista"
 
 
 @pytest.mark.parametrize(
-    "key, password, expected_raise",
+    ("key", "password", "expected_raise"),
     [
         pytest.param("TOTO", b"3QGcqpU2YTwKh2jVQ4Vj/A==", ValueError, id="ValueError"),
     ],
 )
-def test_cbc_decrypt_failure(key, password, expected_raise):
-    """
-    Valid cases for both neighbor IP and peer group name
-    """
+def test_cbc_decrypt_failure(key: str, password: str, expected_raise: Exception) -> None:
+    """Valid cases for both neighbor IP and peer group name."""
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
     with pytest.raises(expected_raise):
         cbc_decrypt(augmented_key, password)
 
 
-@pytest.mark.parametrize("key, password", VALID_PASSWORD_KEY_PAIRS)
-def test_cbc_check_password_success(key, password):
-    """
-    Valid cases for both neighbor IP and peer group name
-    """
+@pytest.mark.parametrize(("key", "password"), VALID_PASSWORD_KEY_PAIRS)
+def test_cbc_check_password_success(key: str, password: str) -> None:
+    """Valid cases for both neighbor IP and peer group name."""
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
     assert cbc_check_password(augmented_key, password) is True
 
 
-@pytest.mark.parametrize("key, password", INVALID_PASSWORD_KEY_PAIRS)
-def test_cbc_check_password_invalid_values(key, password):
-    """
-    Invalid cases for both neighbor IP and peer group name
-    """
+@pytest.mark.parametrize(("key", "password"), INVALID_PASSWORD_KEY_PAIRS)
+def test_cbc_check_password_invalid_values(key: str, password: str) -> None:
+    """Invalid cases for both neighbor IP and peer group name."""
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
     assert cbc_check_password(augmented_key, password) is False

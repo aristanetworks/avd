@@ -4,10 +4,8 @@
 from pyavd import get_device_structured_config, validate_inputs
 
 
-def test_get_device_structured_config(hostname: str, all_inputs: dict, avd_facts: dict, structured_configs: dict):
-    """
-    Test get_device_structured_config
-    """
+def test_get_device_structured_config(hostname: str, all_inputs: dict, avd_facts: dict, structured_configs: dict) -> None:
+    """Test get_device_structured_config."""
     inputs = all_inputs[hostname]
 
     # run validation on inputs to ensure it is converted

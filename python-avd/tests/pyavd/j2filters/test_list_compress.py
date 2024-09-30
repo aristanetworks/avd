@@ -1,9 +1,9 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
+
+from typing import Any
 
 import pytest
 
@@ -25,13 +25,13 @@ LIST_COMPRESS_VALID_TESTS = [
 
 
 class TestListCompressFilter:
-    @pytest.mark.parametrize("invalid_list_to_compress, error_msg", LIST_COMPRESS_INVALID_TESTS)
-    def test_list_compress_invalid(self, invalid_list_to_compress, error_msg):
+    @pytest.mark.parametrize(("invalid_list_to_compress", "error_msg"), LIST_COMPRESS_INVALID_TESTS)
+    def test_list_compress_invalid(self, invalid_list_to_compress: Any, error_msg: str) -> None:
         with pytest.raises(TypeError) as exc_info:
             list_compress(invalid_list_to_compress)
         assert str(exc_info.value) == error_msg
 
-    @pytest.mark.parametrize("valid_list_to_compress, compressed_string", LIST_COMPRESS_VALID_TESTS)
-    def test_list_compress_valid(self, valid_list_to_compress, compressed_string):
+    @pytest.mark.parametrize(("valid_list_to_compress", "compressed_string"), LIST_COMPRESS_VALID_TESTS)
+    def test_list_compress_valid(self, valid_list_to_compress: list, compressed_string: str) -> None:
         resp = list_compress(valid_list_to_compress)
         assert resp in compressed_string

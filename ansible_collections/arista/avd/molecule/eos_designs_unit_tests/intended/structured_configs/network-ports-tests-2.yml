@@ -10,6 +10,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -22,7 +28,7 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 100
@@ -33,58 +39,63 @@ vlans:
   tenant: TEST
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
   ip_address: 10.255.252.1/31
 port_channel_interfaces:
 - name: Port-Channel101
-  description: MLAG_PEER_network-ports-tests.1_Po101
-  type: switched
+  description: MLAG_network-ports-tests.1_Port-Channel101
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
   shutdown: false
-  mode: trunk
-  trunk_groups:
-  - MLAG
 - name: Port-Channel1
   description: AP1 with port_channel
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '101'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '101'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   mlag: 1
 - name: Port-Channel2
   description: AP1 with port_channel
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '101'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '101'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   mlag: 2
 - name: Port-Channel42
   description: Checking port-channels
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   mlag: 42
 - name: Port-Channel44
-  description: Checking monitor sessions on port-channels
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   mlag: 44
 - name: Port-Channel43
-  type: switched
   shutdown: false
+  switchport:
+    enabled: true
   mlag: 43
 ethernet_interfaces:
 - name: Ethernet10/1
   peer: network-ports-tests.1
   peer_interface: Ethernet10/1
   peer_type: mlag_peer
-  description: MLAG_PEER_network-ports-tests.1_Ethernet10/1
-  type: port-channel-member
+  description: MLAG_network-ports-tests.1_Ethernet10/1
   shutdown: false
   channel_group:
     id: 101
@@ -95,7 +106,6 @@ ethernet_interfaces:
   port_profile: ap_with_port_channel
   description: AP1 with port_channel
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -105,7 +115,6 @@ ethernet_interfaces:
   port_profile: ap_with_port_channel
   description: AP1 with port_channel
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 2
     mode: active
@@ -115,9 +124,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet4
@@ -126,9 +136,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/1
@@ -137,9 +148,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/2
@@ -148,9 +160,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/3
@@ -159,9 +172,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/4
@@ -170,9 +184,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/5
@@ -181,9 +196,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/6
@@ -192,9 +208,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/7
@@ -203,9 +220,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/8
@@ -214,9 +232,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/9
@@ -225,9 +244,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/10
@@ -236,9 +256,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/11
@@ -247,9 +268,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/12
@@ -258,9 +280,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/13
@@ -269,9 +292,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/14
@@ -280,9 +304,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/15
@@ -291,9 +316,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/16
@@ -302,9 +328,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/17
@@ -313,9 +340,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/18
@@ -324,9 +352,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/19
@@ -335,9 +364,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/20
@@ -346,9 +376,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/21
@@ -357,9 +388,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/22
@@ -368,9 +400,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/23
@@ -379,9 +412,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/24
@@ -390,9 +424,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/25
@@ -401,9 +436,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/26
@@ -412,9 +448,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/27
@@ -423,9 +460,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/28
@@ -434,9 +472,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/29
@@ -445,9 +484,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/30
@@ -456,9 +496,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/31
@@ -467,9 +508,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/32
@@ -478,9 +520,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/33
@@ -489,9 +532,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/34
@@ -500,9 +544,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/35
@@ -511,9 +556,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/36
@@ -522,9 +568,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/37
@@ -533,9 +580,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/38
@@ -544,9 +592,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/39
@@ -555,9 +604,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/40
@@ -566,9 +616,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/41
@@ -577,9 +628,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/42
@@ -588,9 +640,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/43
@@ -599,9 +652,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/44
@@ -610,9 +664,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/45
@@ -621,9 +676,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/46
@@ -632,9 +688,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/47
@@ -643,9 +700,10 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet2/48
@@ -654,41 +712,43 @@ ethernet_interfaces:
   port_profile: pc
   description: PCs
   shutdown: false
-  type: switched
-  mode: access
-  vlans: '100'
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet11
-  peer: Phones with attached PCs
   peer_type: network_port
   port_profile: phone_with_pc
   description: Phones with attached PCs
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 100
-  phone:
-    vlan: 300
-    trunk: untagged
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 100
+    phone:
+      vlan: 300
+      trunk: untagged
 - name: Ethernet12
-  peer: Phones with attached PCs
   peer_type: network_port
   port_profile: phone_with_pc
   description: Phones with attached PCs
   shutdown: false
-  type: switched
-  mode: trunk phone
-  native_vlan: 100
-  phone:
-    vlan: 300
-    trunk: untagged
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 100
+    phone:
+      vlan: 300
+      trunk: untagged
 - name: Ethernet7
   peer: Checking port-channels
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -697,7 +757,6 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -706,7 +765,6 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -715,51 +773,44 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 42
     mode: active
 - name: Ethernet14
-  peer: Checking monitor sessions on single interface
   peer_type: network_port
   description: Checking monitor sessions on single interface
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
 - name: Ethernet15
-  peer: Checking monitor sessions on port-channels
   peer_type: network_port
   description: Checking monitor sessions on port-channels
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 44
     mode: active
 - name: Ethernet16
-  peer: Checking monitor sessions on port-channels
   peer_type: network_port
   description: Checking monitor sessions on port-channels
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 44
     mode: active
 - name: Ethernet17
-  peer: Monitor sessions destination
   peer_type: network_port
   description: Monitor sessions destination
   shutdown: false
-  type: switched
+  switchport:
+    enabled: true
 - name: Ethernet51
   peer_type: network_port
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 43
     mode: active
 - name: Ethernet52
   peer_type: network_port
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 43
     mode: active

@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Enable Password](#enable-password)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -36,20 +38,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.105/24 | 172.31.0.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.105/24 | 172.31.0.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.200.105/24
@@ -80,6 +82,12 @@ management api http-commands
    vrf MGMT
       no shutdown
 ```
+
+## Authentication
+
+### Enable Password
+
+Enable password has been disabled
 
 ## Internal VLAN Allocation Policy
 
@@ -146,9 +154,9 @@ interface Ethernet1
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | ISIS-SPINE1_Po1 | switched | trunk | 110,4092 | - | - | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | ISIS-SPINE1_Po1 | trunk | 110,4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -157,9 +165,9 @@ interface Ethernet1
 interface Port-Channel1
    description ISIS-SPINE1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 110,4092
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

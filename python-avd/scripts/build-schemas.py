@@ -6,6 +6,7 @@ from pathlib import Path
 from sys import path
 from textwrap import indent
 
+import jsonschema
 from deepmerge import always_merger
 from yaml import CSafeDumper, CSafeLoader
 from yaml import dump as yaml_dump
@@ -45,6 +46,14 @@ def combine_schemas() -> None:
             schema_stream.write(yaml_dump(schema, Dumper=CSafeDumper, sort_keys=False))
 
 
+def validate_schemas(schema_store: dict) -> None:
+    """Validate schemas according to metaschema."""
+    schema_validator = jsonschema.Draft7Validator(schema_store["avd_meta_schema"])
+    for schema_name in SCHEMA_FRAGMENTS_PATHS:
+        print(f"Validating schema '{schema_name}'")
+        schema_validator.validate(schema_store[schema_name])
+
+
 def build_schema_tables(schema_store: dict) -> None:
     """Build schema tables."""
     for schema_name in SCHEMA_PATHS:
@@ -76,6 +85,7 @@ def main() -> None:
     combine_schemas()
     print("Rebuilding pickled schemas")
     schema_store = create_store(force_rebuild=True)
+    validate_schemas(schema_store)
     build_schema_tables(schema_store)
 
 

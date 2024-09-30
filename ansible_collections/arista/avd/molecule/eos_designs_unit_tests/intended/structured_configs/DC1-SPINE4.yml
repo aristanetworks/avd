@@ -108,13 +108,11 @@ router_bgp:
     remote_as: '65110'
     peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A_Ethernet52/1
-    shutdown: true
   - ip_address: 172.31.255.167
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
     peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet52/1
-    shutdown: true
   - ip_address: 192.168.255.14
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-BL1A
@@ -175,13 +173,11 @@ router_bgp:
     peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A
     remote_as: '65110'
-    shutdown: true
   - ip_address: 192.168.255.22
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     remote_as: '65111'
-    shutdown: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -207,6 +203,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -237,7 +239,7 @@ vrfs:
   ip_routing: false
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.104/24
@@ -270,7 +272,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.6/31
 - name: Ethernet3/1
   peer: DC1-LEAF2A
@@ -280,7 +283,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.42/31
 - name: Ethernet4/1
   peer: DC1-LEAF2A
@@ -290,7 +294,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.44/31
 - name: Ethernet5/1
   peer: DC1-LEAF2B
@@ -300,7 +305,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.74/31
 - name: Ethernet6/1
   peer: DC1-LEAF2B
@@ -310,7 +316,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.76/31
 - name: Ethernet7/1
   peer: DC1-SVC3A
@@ -320,7 +327,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.102/31
 - name: Ethernet9/1
   peer: DC1-SVC3B
@@ -330,7 +338,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.134/31
 - name: Ethernet22
   peer: DC1-BL1A
@@ -340,7 +349,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.166/31
 - name: Ethernet23
   peer: DC1-BL1B
@@ -350,7 +360,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.198/31
 - name: Ethernet24
   peer: DC1-BL2A
@@ -360,7 +371,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.254.230/31
 - name: Ethernet25
   peer: DC1-BL2B
@@ -370,7 +382,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.6/31
 - name: Ethernet26
   peer: DC1-CL1A
@@ -380,7 +393,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.38/31
 - name: Ethernet27
   peer: DC1-CL1B
@@ -390,7 +404,8 @@ ethernet_interfaces:
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.70/31
 - name: Ethernet28
   peer: DC1_UNDEPLOYED_LEAF1A
@@ -398,9 +413,10 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet52/1
   speed: 100g-2
-  shutdown: true
+  shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.134/31
 - name: Ethernet29
   peer: DC1_UNDEPLOYED_LEAF1B
@@ -408,13 +424,14 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet52/1
   speed: forced 100gfull
-  shutdown: true
+  shutdown: false
   mtu: 1500
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.31.255.166/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.4/32
 prefix_lists:

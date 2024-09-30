@@ -72,6 +72,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -98,7 +104,8 @@ ethernet_interfaces:
   mtu: 9214
   mac_security:
     profile: TEST
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.42.42.9/31
 - name: Ethernet1.42
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
@@ -107,8 +114,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 42
+  encapsulation_dot1q:
+    vlan: 42
   mtu: 9214
   ip_address: 10.42.42.9/31
 - name: Ethernet1.66
@@ -118,8 +125,8 @@ ethernet_interfaces:
   vrf: ONLY-ON-L2LEAF
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 66
+  encapsulation_dot1q:
+    vlan: 66
   mtu: 9214
   ip_address: 10.42.42.9/31
 - name: Ethernet2
@@ -131,7 +138,8 @@ ethernet_interfaces:
   mtu: 9214
   mac_security:
     profile: TEST
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.42.42.11/31
 - name: Ethernet2.100
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
@@ -140,8 +148,8 @@ ethernet_interfaces:
   vrf: IT
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_vrf_IT
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   mtu: 9214
   ip_address: 10.42.42.11/31
 - name: Ethernet2.42
@@ -151,8 +159,8 @@ ethernet_interfaces:
   vrf: PROD
   description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_vrf_PROD
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 42
+  encapsulation_dot1q:
+    vlan: 42
   mtu: 9214
   ip_address: 10.42.42.11/31
 - name: Ethernet51
@@ -161,7 +169,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet1
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 51
     mode: active
@@ -171,20 +178,21 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet2
   shutdown: false
-  type: port-channel-member
   channel_group:
     id: 51
     mode: active
 port_channel_interfaces:
 - name: Port-Channel51
   description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Po1
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '66'
   shutdown: false
-  mode: trunk
-  vlans: '66'
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.3/32
 vlans:

@@ -9,6 +9,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [MLAG](#mlag)
@@ -48,20 +49,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 172.16.100.101/24 | 172.16.100.1 |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.101/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management0
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.100.101/24
@@ -153,6 +154,10 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin nopassword
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authentication
 
@@ -259,7 +264,7 @@ vlan internal order ascending range 1006 1199
 | 10 | BLUE-NET | - |
 | 20 | GREEN-NET | - |
 | 30 | ORANGE-NET | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -275,7 +280,7 @@ vlan 30
    name ORANGE-NET
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -293,9 +298,9 @@ vlan 4094
 | Ethernet2 | LEAF2_Ethernet1 | *trunk | *10,20 | *- | *- | 1 |
 | Ethernet3 | LEAF3_Ethernet1 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet4 | LEAF4_Ethernet1 | *trunk | *10,30 | *- | *- | 3 |
-| Ethernet5 | FIREWALL_Eth1 | *trunk | *10,20,30 | *- | *- | 5 |
-| Ethernet47 | MLAG_PEER_SPINE2_Ethernet47 | *trunk | *- | *- | *['MLAG'] | 47 |
-| Ethernet48 | MLAG_PEER_SPINE2_Ethernet48 | *trunk | *- | *- | *['MLAG'] | 47 |
+| Ethernet5 | FIREWALL_FIREWALL_Eth1 | *trunk | *10,20,30 | *- | *- | 5 |
+| Ethernet47 | MLAG_SPINE2_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet48 | MLAG_SPINE2_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -324,17 +329,17 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description FIREWALL_Eth1
+   description FIREWALL_FIREWALL_Eth1
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet47
-   description MLAG_PEER_SPINE2_Ethernet47
+   description MLAG_SPINE2_Ethernet47
    no shutdown
    channel-group 47 mode active
 !
 interface Ethernet48
-   description MLAG_PEER_SPINE2_Ethernet48
+   description MLAG_SPINE2_Ethernet48
    no shutdown
    channel-group 47 mode active
 ```
@@ -345,12 +350,12 @@ interface Ethernet48
 
 ##### L2
 
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | RACK1_Po1 | switched | trunk | 10,20 | - | - | - | - | 1 | - |
-| Port-Channel3 | RACK2_Po1 | switched | trunk | 10,30 | - | - | - | - | 3 | - |
-| Port-Channel5 | FIREWALL | switched | trunk | 10,20,30 | - | - | - | - | 5 | - |
-| Port-Channel47 | MLAG_PEER_SPINE2_Po47 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | RACK1_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
+| Port-Channel3 | RACK2_Po1 | trunk | 10,30 | - | - | - | - | 3 | - |
+| Port-Channel5 | FIREWALL_FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
+| Port-Channel47 | MLAG_SPINE2_Port-Channel47 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -359,33 +364,33 @@ interface Ethernet48
 interface Port-Channel1
    description RACK1_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,20
    switchport mode trunk
+   switchport
    mlag 1
 !
 interface Port-Channel3
    description RACK2_Po1
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,30
    switchport mode trunk
+   switchport
    mlag 3
 !
 interface Port-Channel5
-   description FIREWALL
+   description FIREWALL_FIREWALL
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,20,30
    switchport mode trunk
+   switchport
    mlag 5
 !
 interface Port-Channel47
-   description MLAG_PEER_SPINE2_Po47
+   description MLAG_SPINE2_Port-Channel47
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces
@@ -394,7 +399,7 @@ interface Port-Channel47
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -407,7 +412,7 @@ interface Port-Channel47
 ```eos
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

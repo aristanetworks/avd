@@ -67,17 +67,17 @@ router_bgp:
   - ip_address: 192.168.1.10
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-pools-l3leaf1
-    description: downlink-pools-l3leaf1
+    description: downlink-pools-l3leaf1_Loopback0
     remote_as: '65009'
   - ip_address: 192.168.1.30
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-pools-l3leaf3
-    description: downlink-pools-l3leaf3
+    description: downlink-pools-l3leaf3_Loopback0
     remote_as: '65029'
   - ip_address: 192.168.1.40
     peer_group: EVPN-OVERLAY-PEERS
     peer: downlink-pools-l3leaf4
-    description: downlink-pools-l3leaf4
+    description: downlink-pools-l3leaf4_Loopback0
     remote_as: '65039'
   address_family_evpn:
     peer_groups:
@@ -90,6 +90,12 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+transceiver_qsfp_default_mode_4x10: true
 spanning_tree:
   mode: none
 vrfs:
@@ -107,7 +113,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.1.0/31
 - name: Ethernet4
   peer: downlink-pools-l3leaf1
@@ -116,7 +123,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF1_Ethernet2
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.1.2/31
 - name: Ethernet5
   peer: downlink-pools-l3leaf3
@@ -125,7 +133,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF3_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.1.4/31
 - name: Ethernet6
   peer: downlink-pools-l3leaf4
@@ -134,7 +143,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF4_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.1.6/31
 - name: Ethernet15
   peer: downlink-pools-l3leaf3
@@ -143,7 +153,8 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF3_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.3.0/31
 - name: Ethernet16
   peer: downlink-pools-l3leaf4
@@ -152,11 +163,12 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DOWNLINK-POOLS-L3LEAF4_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 10.0.3.18/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.0.10/32
 prefix_lists:

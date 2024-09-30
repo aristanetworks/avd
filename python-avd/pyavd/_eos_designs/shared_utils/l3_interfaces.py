@@ -37,7 +37,8 @@ class L3InterfacesMixin:
             # Nothing to do
             return l3_interface
 
-        profile = get_item(self.l3_interface_profiles, "profile", l3_interface["profile"], default={})
+        msg = f"Profile '{l3_interface['profile']}' applied under l3_interface '{l3_interface['name']}' does not exist in `l3_interface_profiles`."
+        profile = get_item(self.l3_interface_profiles, "profile", l3_interface["profile"], required=True, custom_error_msg=msg)
         merged_dict: dict = merge(profile, l3_interface, list_merge="replace", destructive_merge=False)
         merged_dict.pop("profile", None)
         return merged_dict
@@ -46,18 +47,13 @@ class L3InterfacesMixin:
     def l3_interface_profiles(self: SharedUtils) -> list:
         return get(self.hostvars, "l3_interface_profiles", default=[])
 
-    # TODO: Add sflow knob under fabric_sflow to cover l3_interfaces defined under the node_types.
-    # TODO: @cached_property
-    # TODO: def _l3_interfaces_sflow(self) -> bool | None:
-    # TODO:    return get(self._hostvars, f"fabric_sflow.{self.data_model}")
-
     @cached_property
     def l3_interfaces(self: SharedUtils) -> list:
         """Returns the list of l3_interfaces, where any referenced profiles are applied."""
         if not (l3_interfaces := get(self.switch_data_combined, "l3_interfaces")):
             return []
 
-        # Apply l3_interfaces._profile if set. Silently ignoring missing profile.
+        # Apply l3_interfaces._profile if set.
         if self.l3_interface_profiles:
             l3_interfaces = [self.apply_l3_interfaces_profile(l3_interface) for l3_interface in l3_interfaces]
 

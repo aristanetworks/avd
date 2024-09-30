@@ -30,6 +30,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
@@ -58,7 +59,6 @@ router_bgp:
           any: true
   vrfs:
   - name: VRF1
-    router_id: 192.168.1.1
     rd: 192.168.1.1:123
     route_targets:
       import:
@@ -69,6 +69,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 123:123
+    router_id: 192.168.1.1
     redistribute_routes:
     - source_protocol: connected
   - name: default
@@ -85,6 +86,11 @@ router_bgp:
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
 ip_routing: true
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
 transceiver_qsfp_default_mode_4x10: false
 spanning_tree:
   mode: none
@@ -106,10 +112,11 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK_LAN_L2LEAF_Ethernet1
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   vrf: VRF1
   ip_address: 10.0.10.1/24
-  mtu: 9214
+  mtu: 9218
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet2.100
@@ -118,8 +125,8 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: My vlan 100
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   vrf: VRF1
   ip_address: 10.0.100.1/24
   ipv6_address: cafe::cafe/64
@@ -132,11 +139,12 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 10.9.9.9/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Comcast_999
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.1.1/32
 prefix_lists:
@@ -294,7 +302,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.2.1/32
   flow_tracker:
     hardware: FLOW-TRACKER

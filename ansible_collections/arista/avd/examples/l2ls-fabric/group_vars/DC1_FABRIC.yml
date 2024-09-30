@@ -4,10 +4,6 @@
 # Set the Fabric Name - must match an Ansible Inventory Group
 fabric_name: DC1_FABRIC
 
-# Set Design Type to l2ls
-design:
-  type: l2ls
-
 # Ansible connectivity definitions
 # eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
 ansible_connection: ansible.netcommon.httpapi
@@ -25,7 +21,7 @@ ansible_httpapi_use_ssl: true
 ansible_httpapi_validate_certs: false
 
 # Spine Switches (L2 only)
-spine:
+l2spine:
   defaults:
     platform: cEOS-LAB
     spanning_tree_mode: mstp
@@ -43,7 +39,7 @@ spine:
           mgmt_ip: 172.16.100.102/24
 
 # Leaf Switches
-leaf:
+l2leaf:
   defaults:
     platform: cEOS-LAB
     mlag_peer_ipv4_pool: 192.168.0.0/24
