@@ -1,4 +1,5 @@
-# Attempting to generate a minimum config to only cover connected endpoints
+---
+# Minimum config to only generate connected endpoints
 node_type_keys:
   - key: device
     type: device
