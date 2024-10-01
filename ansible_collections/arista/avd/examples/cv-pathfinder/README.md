@@ -17,7 +17,8 @@ This example goes over how to use the CV Pathfinder models in AVD in an introduc
 !!! important
     - CVaaS is required to run this example. Without it, only configuration generation is possible.
     - Minimum EOS version 4.32.2F is required to run this example.
-    - The devices must be able to reach CVaaS via their Management Interface
+    - The devices must be able to reach CVaaS via their Management Interface.
+    - Proper licenses are required for all nodes.
 
 This example aims to present the basic configuration blocks required to deploy CV Pathfinder but does not cover all CV Pathfinder features. In particular, it does not cover:
 
@@ -334,6 +335,7 @@ examples/cv-pathfinder/group_vars/WAN//cv_pathfinder_settings.yml
    ingress ACL on the WAN interfaces. Each carrier is tied to a path-group.
 8. More on virtual topologies after the snippet.
 9. Application classification is used to configure `application_profiles` that match traffic categories in the policies and apply them to a virtual topology.
+10. When policies are defined but no path exists (in this case MPLS for site 3) the path groups configuration will not be included in the final rendering.
 
 #### Virtual topologies
 
