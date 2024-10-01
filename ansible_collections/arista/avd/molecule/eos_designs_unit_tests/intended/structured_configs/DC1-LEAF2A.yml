@@ -862,12 +862,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.254.10/32
 - name: Loopback100
-  description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_Tenant_A_OP_Zone
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.10/32
 - name: Loopback101
-  description: Tenant_A_OSPF_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_Tenant_A_OSPF
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.255.11.10/32

@@ -298,8 +298,8 @@ interface Port-Channel3
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 172.16.210.3/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.210.3/32 |
-| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.201.3/32 |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 10.101.201.3/32 |
 
 ##### IPv6
 
@@ -307,8 +307,8 @@ interface Port-Channel3
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | - |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -325,13 +325,13 @@ interface Loopback1
    ip address 172.18.210.3/32
 !
 interface Loopback100
-   description vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
    no shutdown
    vrf vrf_with_loopbacks_from_overlapping_pool
    ip address 10.100.0.3/32
 !
 interface Loopback101
-   description vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_from_pod_pools
    no shutdown
    vrf vrf_with_loopbacks_from_pod_pools
    ip address 10.101.201.3/32

@@ -49,8 +49,6 @@ ASN Notation: asplain
 
 | BGP Tuning |
 | ---------- |
-| no bgp additional-paths receive |
-| bgp additional-paths send ecmp limit 30 |
 
 #### Router BGP Device Configuration
 
@@ -58,6 +56,4 @@ ASN Notation: asplain
 !
 router bgp 65101
    router-id 192.168.255.42
-   no bgp additional-paths receive
-   bgp additional-paths send ecmp limit 30
 ```
