@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.10.224.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: MLAG_PEER_WITH_L3_INTERFACE
-    description: MLAG_PEER_WITH_L3_INTERFACE
+    description: MLAG_PEER_WITH_L3_INTERFACE_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -66,10 +66,11 @@ router_bgp:
     router_id: 192.168.255.36
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.10.224.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: MLAG_PEER_WITH_L3_INTERFACE
+      description: MLAG_PEER_WITH_L3_INTERFACE_Vlan3665
     updates:
       wait_install: true
 service_routing_protocols_model: multi-agent
@@ -117,7 +118,7 @@ vlans:
   trunk_groups:
   - MLAG
 - id: 3665
-  name: MLAG_iBGP_VRF
+  name: MLAG_L3_VRF_VRF
   trunk_groups:
   - MLAG
   tenant: TENANT
@@ -137,7 +138,7 @@ vlan_interfaces:
   tenant: TENANT
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf VRF'
+  description: MLAG_L3_VRF_VRF
   vrf: VRF
   mtu: 9214
   ip_address: 10.10.224.5/31
@@ -191,6 +192,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -207,6 +216,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.224.4/31
 router_bfd:
   multihop:
     interval: 300
