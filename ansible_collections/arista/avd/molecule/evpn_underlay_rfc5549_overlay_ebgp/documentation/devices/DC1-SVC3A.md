@@ -1358,7 +1358,7 @@ router bgp 65103
       route-target export evpn 12:12
       router-id 192.168.255.8
       neighbor interface Vlan3011 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.8:13
@@ -1366,7 +1366,7 @@ router bgp 65103
       route-target export evpn 13:13
       router-id 192.168.255.8
       neighbor interface Vlan3012 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.8:10
@@ -1374,7 +1374,7 @@ router bgp 65103
       route-target export evpn 10:10
       router-id 192.168.255.8
       neighbor interface Vlan3009 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.8:14
@@ -1382,7 +1382,7 @@ router bgp 65103
       route-target export evpn 14:14
       router-id 192.168.255.8
       neighbor interface Vlan3013 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.8:11
@@ -1390,7 +1390,7 @@ router bgp 65103
       route-target export evpn 11:11
       router-id 192.168.255.8
       neighbor interface Vlan3010 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.8:20
@@ -1398,7 +1398,7 @@ router bgp 65103
       route-target export evpn 20:20
       router-id 192.168.255.8
       neighbor interface Vlan3019 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.8:21
@@ -1406,7 +1406,7 @@ router bgp 65103
       route-target export evpn 21:21
       router-id 192.168.255.8
       neighbor interface Vlan3020 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.8:30
@@ -1414,7 +1414,7 @@ router bgp 65103
       route-target export evpn 30:30
       router-id 192.168.255.8
       neighbor interface Vlan2 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.8:31
@@ -1422,7 +1422,7 @@ router bgp 65103
       route-target export evpn 31:31
       router-id 192.168.255.8
       neighbor interface Vlan3030 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
