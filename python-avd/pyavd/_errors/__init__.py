@@ -22,7 +22,9 @@ class AristaAvdError(Exception):
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
-    pass
+    def __init__(self, message: str, *, custom_message: bool = False) -> None:
+        self.custom_message = custom_message
+        super().__init__(message)
 
 
 class AvdSchemaError(AristaAvdError):

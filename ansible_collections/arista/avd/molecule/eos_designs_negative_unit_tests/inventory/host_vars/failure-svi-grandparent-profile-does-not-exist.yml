@@ -1,5 +1,6 @@
 ---
 type: l3leaf
+fabric_name: FAILURE-SVI-GRANDPARENT-PROFILE-DOES-NOT-EXIST
 
 svi_profiles:
   - profile: PROFILE-1
