@@ -412,7 +412,7 @@ interface Ethernet4
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | CUSTOM_DC1_SVC3_Po7 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel1 | CUSTOM_DC1-SVC3A_Po7 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_DC1-L2LEAF2A_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -420,7 +420,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description CUSTOM_DC1_SVC3_Po7
+   description CUSTOM_DC1-SVC3A_Po7
    no shutdown
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk

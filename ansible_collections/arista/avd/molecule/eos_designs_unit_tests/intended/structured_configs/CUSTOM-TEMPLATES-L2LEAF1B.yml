@@ -57,7 +57,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L3LEAF1A_Po1_To_Po5_CUSTOM_TEMPLATES_L3LEAF1
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L3LEAF1A_Po1_To_Po5_
   switchport:
     enabled: true
     mode: trunk

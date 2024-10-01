@@ -150,6 +150,9 @@ keys:
             keys:
               d_path:
                 type: bool
+          additional_paths:
+            type: dict
+            $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
           redistribute_internal:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.

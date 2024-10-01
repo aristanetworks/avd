@@ -187,7 +187,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-transit1A
   peer_interface: Ethernet52
   peer_type: wan_router
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52
+  description: P2P_cv-pathfinder-transit1A_Ethernet52
   shutdown: false
   mtu: 9214
   switchport:
@@ -198,7 +198,7 @@ ethernet_interfaces:
   peer_interface: Ethernet52.1000
   peer_type: wan_router
   vrf: IT
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52.1000_vrf_IT
+  description: P2P_cv-pathfinder-transit1A_Ethernet52.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -209,7 +209,7 @@ ethernet_interfaces:
   peer_interface: Ethernet52.142
   peer_type: wan_router
   vrf: PROD
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52.142_vrf_PROD
+  description: P2P_cv-pathfinder-transit1A_Ethernet52.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -220,7 +220,7 @@ ethernet_interfaces:
   peer_interface: Ethernet52.666
   peer_type: wan_router
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1A_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-transit1A_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
@@ -230,7 +230,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-transit1B
   peer_interface: Ethernet52
   peer_type: wan_router
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52
+  description: P2P_cv-pathfinder-transit1B_Ethernet52
   shutdown: false
   mtu: 9214
   switchport:
@@ -241,7 +241,7 @@ ethernet_interfaces:
   peer_interface: Ethernet52.1000
   peer_type: wan_router
   vrf: IT
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52.1000_vrf_IT
+  description: P2P_cv-pathfinder-transit1B_Ethernet52.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -252,7 +252,7 @@ ethernet_interfaces:
   peer_interface: Ethernet52.142
   peer_type: wan_router
   vrf: PROD
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52.142_vrf_PROD
+  description: P2P_cv-pathfinder-transit1B_Ethernet52.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -263,7 +263,7 @@ ethernet_interfaces:
   peer_interface: Ethernet52.666
   peer_type: wan_router
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_CV-PATHFINDER-TRANSIT1B_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-transit1B_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666

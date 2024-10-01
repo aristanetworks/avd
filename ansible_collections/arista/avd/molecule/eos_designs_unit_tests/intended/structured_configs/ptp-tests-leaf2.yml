@@ -305,7 +305,7 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet3
+  description: P2P_ptp-tests-spine1_Ethernet3
   shutdown: false
   mtu: 9214
   switchport:
@@ -324,7 +324,7 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet4
+  description: P2P_ptp-tests-spine1_Ethernet4
   shutdown: false
   mtu: 9214
   switchport:

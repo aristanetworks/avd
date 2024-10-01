@@ -8,6 +8,7 @@ $defs:
     keys:
       receive:
         type: bool
+        description: Enable or disable reception of additional-paths.
       send:
         type: str
         description: |-
