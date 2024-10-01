@@ -328,7 +328,7 @@ class FilteredTenantsMixin:
 
         # Need to loop through the not selected VRFs and check if they should be added because of the MLAG peer.
         for vrf in not_selected_vrfs[tenant_name]:
-            if self.vrf["name"] in self.mlag_peer_vrfs:
+            if vrf["name"] in self.mlag_peer_vrfs:
                 filtered_vrfs.append(vrf)
 
         return filtered_vrfs
