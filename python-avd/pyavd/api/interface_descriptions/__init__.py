@@ -498,7 +498,7 @@ class InterfaceDescriptionData:
     peer_channel_group_id: int | None
     """Port channel ID of peer"""
     peer_node_group: str | None
-    """MLAG group of peer"""
+    """Node group of peer"""
     peer_type: str | None
     """Type of peer"""
     port_channel_id: int | None
