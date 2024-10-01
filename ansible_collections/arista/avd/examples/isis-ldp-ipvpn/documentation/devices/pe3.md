@@ -218,7 +218,7 @@ interface Ethernet2
    no switchport
    vrf C1_VRF1
    ip address 10.0.1.9/30
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet3
    description P2P_p4_Ethernet3
@@ -369,7 +369,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet2 | 0 | - | False |
+| Ethernet2 | 0.0.0.0 | - | False |
 
 #### Router OSPF Device Configuration
 

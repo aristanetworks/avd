@@ -418,7 +418,7 @@ class FilteredTenantsMixin:
         if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
             svi_config.update(
                 {
-                    "ospf_area": svi["ospf"].get("area", "0"),
+                    "ospf_area": svi["ospf"].get("area", "0.0.0.0"),
                     "ospf_network_point_to_point": svi["ospf"].get("point_to_point", False),
                     "ospf_cost": svi["ospf"].get("cost"),
                 },
