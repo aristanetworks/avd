@@ -63,7 +63,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet49/1
   peer_type: l3spine
-  description: SPINE1_Ethernet49/1
+  description: L2_SPINE1_Ethernet49/1
   shutdown: false
   channel_group:
     id: 11
@@ -72,7 +72,7 @@ ethernet_interfaces:
   peer: SPINE2
   peer_interface: Ethernet49/1
   peer_type: l3spine
-  description: SPINE2_Ethernet49/1
+  description: L2_SPINE2_Ethernet49/1
   shutdown: false
   channel_group:
     id: 11
@@ -10159,7 +10159,7 @@ ethernet_interfaces:
       class: 4
 port_channel_interfaces:
 - name: Port-Channel11
-  description: SPINES_Po491
+  description: L2_SPINES_Port-Channel491
   switchport:
     enabled: true
     mode: trunk

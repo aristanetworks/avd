@@ -162,7 +162,7 @@ vlan 4085
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF1A_Ethernet1 | *trunk | *4085 | *- | *- | 3 |
+| Ethernet3 | L2_DC1-POD1-L2LEAF1A_Ethernet1 | *trunk | *4085 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -197,7 +197,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description DC1-POD1-L2LEAF1A_Ethernet1
+   description L2_DC1-POD1-L2LEAF1A_Ethernet1
    no shutdown
    channel-group 3 mode active
 !
@@ -217,14 +217,14 @@ interface Ethernet4
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | DC1-POD1-L2LEAF1A_Po1 | trunk | 4085 | - | - | - | - | - | - |
+| Port-Channel3 | L2_DC1-POD1-L2LEAF1A_Port-Channel1 | trunk | 4085 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel3
-   description DC1-POD1-L2LEAF1A_Po1
+   description L2_DC1-POD1-L2LEAF1A_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 4085
    switchport mode trunk

@@ -229,7 +229,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel7
-  description: DC1-L2LEAF1A_Po1
+  description: L2_DC1-L2LEAF1A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -328,7 +328,7 @@ ethernet_interfaces:
   peer: DC1-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC1-L2LEAF1A_Ethernet2
+  description: L2_DC1-L2LEAF1A_Ethernet2
   shutdown: false
   channel_group:
     id: 7

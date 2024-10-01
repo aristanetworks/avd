@@ -207,7 +207,7 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   mlag: 11
 - name: Port-Channel16
-  description: SFLOW-TESTS-L2-LEAF1_Po1
+  description: L2_sflow-tests-l2-leaf1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -218,7 +218,7 @@ port_channel_interfaces:
     enable: true
   mlag: 16
 - name: Port-Channel17
-  description: SFLOW-TESTS-L2-LEAF2_Po1
+  description: L2_sflow-tests-l2-leaf2_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -297,7 +297,7 @@ ethernet_interfaces:
   peer: sflow-tests-l2-leaf1
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: SFLOW-TESTS-L2-LEAF1_Ethernet1
+  description: L2_sflow-tests-l2-leaf1_Ethernet1
   shutdown: false
   channel_group:
     id: 16
@@ -306,7 +306,7 @@ ethernet_interfaces:
   peer: sflow-tests-l2-leaf2
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: SFLOW-TESTS-L2-LEAF2_Ethernet1
+  description: L2_sflow-tests-l2-leaf2_Ethernet1
   shutdown: false
   channel_group:
     id: 17

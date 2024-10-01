@@ -209,7 +209,7 @@ port_channel_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Port-Channel31
-  description: FLOW-TRACKING-TESTS-L2-LEAF1_Po1
+  description: L2_flow-tracking-tests-l2-leaf1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -218,7 +218,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 31
 - name: Port-Channel32
-  description: FLOW-TRACKING-TESTS-L2-LEAF2_Po1
+  description: L2_flow-tracking-tests-l2-leaf2_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -304,7 +304,7 @@ ethernet_interfaces:
   peer: flow-tracking-tests-l2-leaf1
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: FLOW-TRACKING-TESTS-L2-LEAF1_Ethernet2
+  description: L2_flow-tracking-tests-l2-leaf1_Ethernet2
   shutdown: false
   channel_group:
     id: 31
@@ -313,7 +313,7 @@ ethernet_interfaces:
   peer: flow-tracking-tests-l2-leaf2
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: FLOW-TRACKING-TESTS-L2-LEAF2_Ethernet2
+  description: L2_flow-tracking-tests-l2-leaf2_Ethernet2
   shutdown: false
   channel_group:
     id: 32
