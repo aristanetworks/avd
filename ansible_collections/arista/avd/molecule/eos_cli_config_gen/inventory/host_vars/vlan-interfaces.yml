@@ -358,15 +358,11 @@ vlan_interfaces:
     shutdown: false
     ipv6_address: a0::4/64
     ipv6_dhcp_relay_destinations:
-      - address: a0::4
-        vrf: ZZZZ
       - address: a0::5
         vrf: TEST
         source_address: a0::6
         link_address: a0::7
       - address: a0::8
-      - address: a0::9
-        vrf: AAAA
 
   - name: Vlan50
     description: IP NAT Testing

@@ -278,9 +278,7 @@ interface Vlan44
    description SVI Description
    no shutdown
    ipv6 dhcp relay destination a0::8
-   ipv6 dhcp relay destination a0::9 vrf AAAA
    ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
-   ipv6 dhcp relay destination a0::4 vrf ZZZZ
    ipv6 address a0::4/64
 !
 interface Vlan50

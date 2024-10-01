@@ -97,11 +97,11 @@ interface {{ vlan_interface.name }}
    {{ ip_helper_cli }}
 {%     endfor %}
 {%     if vlan_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
-{%         set with_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('vrf') %}
+{%         set with_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') | arista.avd.natural_sort('vrf') %}
 {%         set without_vrf_dest = vlan_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('address') %}
 {%         set sorted_ipv6_dhcp_relay_destinations =  without_vrf_dest | list + with_vrf_dest | list %}
 {%     endif %}
-{%     for destination in sorted_ipv6_dhcp_relay_destinations | arista.avd.default([])%}
+{%     for destination in sorted_ipv6_dhcp_relay_destinations | arista.avd.default([]) %}
 {%         set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
 {%         if destination.vrf is arista.avd.defined %}
 {%             set destination_cli = destination_cli ~ " vrf " ~ destination.vrf %}
@@ -143,7 +143,7 @@ interface {{ vlan_interface.name }}
 {%         set host_proxy_cli =  "ip igmp host-proxy" %}
    {{ host_proxy_cli }}
 {%         if vlan_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
-{%             for proxy_group in vlan_interface.ip_igmp_host_proxy.groups | arista.avd.natural_sort %}
+{%             for proxy_group in vlan_interface.ip_igmp_host_proxy.groups %}
 {%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
 {%                     if proxy_group.include is arista.avd.defined %}
 {%                         for include_source in proxy_group.include %}
