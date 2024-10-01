@@ -111,7 +111,7 @@ router_bgp:
         receive: true
         install: true
         send: ecmp
-        send_ecmp_limit: 20
+        send_limit: 20
     peer_groups:
       - name: foo
         prefix_list_in: PL-BAR-v4-IN
@@ -122,7 +122,7 @@ router_bgp:
         additional_paths:
           receive: true
           send: ecmp
-          send_ecmp_limit: 20
+          send_limit: 20
           prefix_list: PL1
     neighbors:
       - ip_address: 192.0.2.1
@@ -173,7 +173,7 @@ router_bgp:
         additional_paths:
           receive: true
           send: ecmp
-          send_ecmp_limit: 20
+          send_limit: 20
           prefix_list: PL2
     neighbors:
       - ip_address: 2001:db8::1
@@ -182,7 +182,7 @@ router_bgp:
         additional_paths:
           receive: true
           send: ecmp
-          send_ecmp_limit: 20
+          send_limit: 20
           prefix_list: PL2
       - ip_address: 2001:db8::2
         rcf_in: Address_Family_IPV6_In()

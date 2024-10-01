@@ -74,7 +74,7 @@ router_bgp:
             install_ecmp_primary: true
             receive: true
             send: ecmp
-            send_ecmp_limit: 4
+            send_limit: 4
           redistribute_internal: false
         neighbors:
           - ip_address: 1.2.3.4
@@ -212,7 +212,7 @@ router_bgp:
           additional_paths:
             receive: true
             send: ecmp
-            send_ecmp_limit: 24
+            send_limit: 24
       address_family_ipv4:
         bgp:
           additional_paths:

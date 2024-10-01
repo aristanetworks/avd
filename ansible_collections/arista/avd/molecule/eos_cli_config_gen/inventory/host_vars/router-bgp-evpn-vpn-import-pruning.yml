@@ -36,7 +36,7 @@ router_bgp:
     bgp:
       additional_paths:
         send: ecmp
-        send_ecmp_limit: 20
+        send_limit: 20
     domain_identifier: "65101:0"
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
