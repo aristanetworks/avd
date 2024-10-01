@@ -13803,10 +13803,9 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    description: Generate redistribute ospf with or without match
-                      internal, include leaked and route map.
+                    description: Redistribute OSPF routes.
                   match_external:
-                    description: OSPF routes learned from external sources.
+                    description: Redistribute OSPF routes learned from external sources.
                     type: dict
                     keys:
                       enabled:
@@ -13815,7 +13814,7 @@ keys:
                       route_map:
                         type: str
                   match_internal:
-                    description: OSPF routes learned from internal sources.
+                    description: Redistribute OSPF routes learned from internal sources.
                     type: dict
                     keys:
                       enabled:
@@ -13824,7 +13823,8 @@ keys:
                       route_map:
                         type: str
                   match_nssa_external:
-                    description: OSPF routes learned from external NSSA sources.
+                    description: Redistribute OSPF routes learned from external NSSA
+                      sources.
                     type: dict
                     keys:
                       enabled:
@@ -13847,10 +13847,10 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    description: Generate redistribute ospf with or without match
-                      internal, include leaked and route map.
+                    description: Redistribute OSPFv3 routes.
                   match_external:
-                    description: OSPF routes learned from external sources.
+                    description: Redistribute OSPFv3 routes learned from external
+                      sources.
                     type: dict
                     keys:
                       enabled:
@@ -13859,7 +13859,8 @@ keys:
                       route_map:
                         type: str
                   match_internal:
-                    description: OSPF routes learned from internal sources.
+                    description: Redistribute OSPFv3 routes learned from internal
+                      sources.
                     type: dict
                     keys:
                       enabled:
@@ -13868,7 +13869,8 @@ keys:
                       route_map:
                         type: str
                   match_nssa_external:
-                    description: OSPF routes learned from external NSSA sources.
+                    description: Redistribute OSPFv3 routes learned from external
+                      NSSA sources.
                     type: dict
                     keys:
                       enabled:
@@ -14153,10 +14155,10 @@ keys:
                 keys:
                   enabled:
                     type: bool
-                    description: Generate redistribute ospf with or without match
-                      internal, include leaked and route map.
+                    description: Redistribute OSPFv3 routes.
                   match_external:
-                    description: OSPF routes learned from external sources.
+                    description: Redistribute OSPFv3 routes learned from external
+                      sources.
                     type: dict
                     keys:
                       enabled:
@@ -14168,7 +14170,8 @@ keys:
                         description: Include following routes while redistributing.
                         type: bool
                   match_internal:
-                    description: OSPF routes learned from internal sources.
+                    description: Redistribute OSPFv3 routes learned from internal
+                      sources.
                     type: dict
                     keys:
                       enabled:
@@ -14180,7 +14183,8 @@ keys:
                         description: Include following routes while redistributing.
                         type: bool
                   match_nssa_external:
-                    description: OSPF routes learned from external NSSA sources.
+                    description: Redistribute OSPFv3 routes learned from external
+                      NSSA sources.
                     type: dict
                     keys:
                       enabled:
@@ -15418,10 +15422,10 @@ keys:
                   keys:
                     enabled:
                       type: bool
-                      description: Generate redistribute ospf with or without match
-                        internal, include leaked and route map.
+                      description: Redistribute OSPF routes.
                     match_external:
-                      description: OSPF routes learned from external sources.
+                      description: Redistribute OSPF routes learned from external
+                        sources.
                       type: dict
                       keys:
                         enabled:
@@ -15433,7 +15437,8 @@ keys:
                           description: Include following routes while redistributing.
                           type: bool
                     match_internal:
-                      description: OSPF routes learned from internal sources.
+                      description: Redistribute OSPF routes learned from internal
+                        sources.
                       type: dict
                       keys:
                         enabled:
@@ -15445,7 +15450,8 @@ keys:
                           description: Include following routes while redistributing.
                           type: bool
                     match_nssa_external:
-                      description: OSPF routes learned from external NSSA sources.
+                      description: Redistribute OSPF routes learned from external
+                        NSSA sources.
                       type: dict
                       keys:
                         enabled:
@@ -15474,10 +15480,10 @@ keys:
                   keys:
                     enabled:
                       type: bool
-                      description: Generate redistribute ospf with or without match
-                        internal, include leaked and route map.
+                      description: Redistribute OSPFv3 routes.
                     match_external:
-                      description: OSPF routes learned from external sources.
+                      description: Redistribute OSPFv3 routes learned from external
+                        sources.
                       type: dict
                       keys:
                         enabled:
@@ -15489,7 +15495,8 @@ keys:
                           description: Include following routes while redistributing.
                           type: bool
                     match_internal:
-                      description: OSPF routes learned from internal sources.
+                      description: Redistribute OSPFv3 routes learned from internal
+                        sources.
                       type: dict
                       keys:
                         enabled:
@@ -15501,7 +15508,8 @@ keys:
                           description: Include following routes while redistributing.
                           type: bool
                     match_nssa_external:
-                      description: OSPF routes learned from external NSSA sources.
+                      description: Redistribute OSPFv3 routes learned from external
+                        NSSA sources.
                       type: dict
                       keys:
                         enabled:

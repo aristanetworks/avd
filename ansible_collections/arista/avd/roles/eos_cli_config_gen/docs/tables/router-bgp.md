@@ -530,27 +530,27 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.enabled") | Boolean |  |  |  | Generate redistribute ospf with or without match internal, include leaked and route map. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external") | Dictionary |  |  |  | OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.enabled") | Boolean |  |  |  | Redistribute OSPF routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal") | Dictionary |  |  |  | OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal") | Dictionary |  |  |  | Redistribute OSPF routes learned from internal sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external") | Dictionary |  |  |  | OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external NSSA sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.enabled") | Boolean |  |  |  | Generate redistribute ospf with or without match internal, include leaked and route map. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external") | Dictionary |  |  |  | OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal") | Dictionary |  |  |  | OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
@@ -625,16 +625,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.enabled") | Boolean |  |  |  | Generate redistribute ospf with or without match internal, include leaked and route map. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external") | Dictionary |  |  |  | OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal") | Dictionary |  |  |  | OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
@@ -949,16 +949,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.isis.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.isis.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "router_bgp.vrfs.[].redistribute.ospf") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.enabled") | Boolean |  |  |  | Generate redistribute ospf with or without match internal, include leaked and route map. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external") | Dictionary |  |  |  | OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.enabled") | Boolean |  |  |  | Redistribute OSPF routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal") | Dictionary |  |  |  | OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal") | Dictionary |  |  |  | Redistribute OSPF routes learned from internal sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external") | Dictionary |  |  |  | OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external NSSA sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.route_map") | String |  |  |  |  |
@@ -966,16 +966,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.enabled") | Boolean |  |  |  | Generate redistribute ospf with or without match internal, include leaked and route map. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external") | Dictionary |  |  |  | OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal") | Dictionary |  |  |  | OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
@@ -2216,20 +2216,20 @@
             include_leaked: <bool>
           ospf:
 
-            # Generate redistribute ospf with or without match internal, include leaked and route map.
+            # Redistribute OSPF routes.
             enabled: <bool>
 
-            # OSPF routes learned from external sources.
+            # Redistribute OSPF routes learned from external sources.
             match_external:
               enabled: <bool; required>
               route_map: <str>
 
-            # OSPF routes learned from internal sources.
+            # Redistribute OSPF routes learned from internal sources.
             match_internal:
               enabled: <bool; required>
               route_map: <str>
 
-            # OSPF routes learned from external NSSA sources.
+            # Redistribute OSPF routes learned from external NSSA sources.
             match_nssa_external:
               enabled: <bool; required>
 
@@ -2239,20 +2239,20 @@
             route_map: <str>
           ospfv3:
 
-            # Generate redistribute ospf with or without match internal, include leaked and route map.
+            # Redistribute OSPFv3 routes.
             enabled: <bool>
 
-            # OSPF routes learned from external sources.
+            # Redistribute OSPFv3 routes learned from external sources.
             match_external:
               enabled: <bool; required>
               route_map: <str>
 
-            # OSPF routes learned from internal sources.
+            # Redistribute OSPFv3 routes learned from internal sources.
             match_internal:
               enabled: <bool; required>
               route_map: <str>
 
-            # OSPF routes learned from external NSSA sources.
+            # Redistribute OSPFv3 routes learned from external NSSA sources.
             match_nssa_external:
               enabled: <bool; required>
 
@@ -2410,10 +2410,10 @@
             include_leaked: <bool>
           ospfv3:
 
-            # Generate redistribute ospf with or without match internal, include leaked and route map.
+            # Redistribute OSPFv3 routes.
             enabled: <bool>
 
-            # OSPF routes learned from external sources.
+            # Redistribute OSPFv3 routes learned from external sources.
             match_external:
               enabled: <bool; required>
               route_map: <str>
@@ -2421,7 +2421,7 @@
               # Include following routes while redistributing.
               include_leaked: <bool>
 
-            # OSPF routes learned from internal sources.
+            # Redistribute OSPFv3 routes learned from internal sources.
             match_internal:
               enabled: <bool; required>
               route_map: <str>
@@ -2429,7 +2429,7 @@
               # Include following routes while redistributing.
               include_leaked: <bool>
 
-            # OSPF routes learned from external NSSA sources.
+            # Redistribute OSPFv3 routes learned from external NSSA sources.
             match_nssa_external:
               enabled: <bool; required>
 
@@ -3011,10 +3011,10 @@
               include_leaked: <bool>
             ospf:
 
-              # Generate redistribute ospf with or without match internal, include leaked and route map.
+              # Redistribute OSPF routes.
               enabled: <bool>
 
-              # OSPF routes learned from external sources.
+              # Redistribute OSPF routes learned from external sources.
               match_external:
                 enabled: <bool; required>
                 route_map: <str>
@@ -3022,7 +3022,7 @@
                 # Include following routes while redistributing.
                 include_leaked: <bool>
 
-              # OSPF routes learned from internal sources.
+              # Redistribute OSPF routes learned from internal sources.
               match_internal:
                 enabled: <bool; required>
                 route_map: <str>
@@ -3030,7 +3030,7 @@
                 # Include following routes while redistributing.
                 include_leaked: <bool>
 
-              # OSPF routes learned from external NSSA sources.
+              # Redistribute OSPF routes learned from external NSSA sources.
               match_nssa_external:
                 enabled: <bool; required>
 
@@ -3046,10 +3046,10 @@
               include_leaked: <bool>
             ospfv3:
 
-              # Generate redistribute ospf with or without match internal, include leaked and route map.
+              # Redistribute OSPFv3 routes.
               enabled: <bool>
 
-              # OSPF routes learned from external sources.
+              # Redistribute OSPFv3 routes learned from external sources.
               match_external:
                 enabled: <bool; required>
                 route_map: <str>
@@ -3057,7 +3057,7 @@
                 # Include following routes while redistributing.
                 include_leaked: <bool>
 
-              # OSPF routes learned from internal sources.
+              # Redistribute OSPFv3 routes learned from internal sources.
               match_internal:
                 enabled: <bool; required>
                 route_map: <str>
@@ -3065,7 +3065,7 @@
                 # Include following routes while redistributing.
                 include_leaked: <bool>
 
-              # OSPF routes learned from external NSSA sources.
+              # Redistribute OSPFv3 routes learned from external NSSA sources.
               match_nssa_external:
                 enabled: <bool; required>
 
