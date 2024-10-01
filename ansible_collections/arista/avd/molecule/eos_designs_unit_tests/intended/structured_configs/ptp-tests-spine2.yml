@@ -130,11 +130,11 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
+  description: P2P_ptp-tests-spine1_Ethernet6
   ptp:
     announce:
       interval: 0
@@ -148,11 +148,11 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet7
   peer_type: spine
-  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
+  description: P2P_ptp-tests-spine1_Ethernet7
   ptp:
     announce:
       interval: 0
@@ -166,11 +166,11 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet8
   peer_type: spine
-  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
+  description: P2P_ptp-tests-spine1_Ethernet8
   ptp:
     announce:
       interval: 0
@@ -184,11 +184,11 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet9
   peer_type: spine
-  description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
+  description: P2P_ptp-tests-spine1_Ethernet9
   ptp:
     announce:
       interval: 0

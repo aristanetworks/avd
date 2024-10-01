@@ -172,7 +172,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
 
         Does _not_ include checks if the peering is enabled at all, so that should be checked first.
         """
-        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is True  # noqa: FBT003
+        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), False) is True  # noqa: FBT003
 
     @cached_property
     def _configure_bgp_mlag_peer_group(self: AvdStructuredConfigNetworkServices) -> bool:

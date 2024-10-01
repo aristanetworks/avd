@@ -185,7 +185,7 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | - | 192.168.253.4/31 | default | 9214 | False | - | - |
+| Ethernet5 | P2P_DUMMY-CORE_Ethernet1/3 | - | 192.168.253.4/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -212,7 +212,7 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description P2P_LINK_TO_DUMMY-CORE_Ethernet1/3
+   description P2P_DUMMY-CORE_Ethernet1/3
    no shutdown
    mtu 9214
    no switchport

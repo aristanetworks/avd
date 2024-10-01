@@ -204,15 +204,15 @@ vlan 4092
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4 | - | 172.17.210.5/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4 | - | 172.17.210.7/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC2-POD1-SPINE1_Ethernet4 | - | 172.17.210.5/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC2-POD1-SPINE2_Ethernet4 | - | 172.17.210.7/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
+   description P2P_DC2-POD1-SPINE1_Ethernet4
    no shutdown
    no switchport
    ip address 172.17.210.5/31
@@ -220,7 +220,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
+   description P2P_DC2-POD1-SPINE2_Ethernet4
    no shutdown
    no switchport
    ip address 172.17.210.7/31

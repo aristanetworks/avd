@@ -173,22 +173,22 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3 | - | 172.17.20.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6 | - | 172.17.20.3/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC2-SUPER-SPINE1_Ethernet3 | - | 172.17.20.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC2-SUPER-SPINE1_Ethernet6 | - | 172.17.20.3/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3
+   description P2P_DC2-SUPER-SPINE1_Ethernet3
    no shutdown
    no switchport
    ip address 172.17.20.1/31
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6
+   description P2P_DC2-SUPER-SPINE1_Ethernet6
    no shutdown
    no switchport
    ip address 172.17.20.3/31

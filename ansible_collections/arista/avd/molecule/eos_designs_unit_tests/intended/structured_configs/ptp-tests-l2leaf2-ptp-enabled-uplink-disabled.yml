@@ -67,7 +67,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: PTP-TEST-LEAF_Po14
+  description: ptp-test-leaf_Po14
   switchport:
     enabled: true
     mode: trunk
