@@ -19795,16 +19795,13 @@ $defs:
 
           limit: Limit to n eligible paths.
 
-          disabled: Disable sending the paths.
-
-          disabled_any: Disable sending any path.'
+          disabled: Disable sending any paths.'
         valid_values:
         - any
         - backup
         - ecmp
         - limit
         - disabled
-        - disabled_any
       send_ecmp_limit:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
